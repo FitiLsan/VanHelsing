@@ -1,0 +1,55 @@
+namespace Items
+{
+    /// <summary>
+    /// Типы предметов
+    /// </summary>
+    public enum ItemClasses
+    {
+        Consumable = 0x000,
+        Potion = 0x001,
+        Elixir = 0x002,
+        Scroll = 0x003,
+        Food = 0x004,
+        ItemEnhancement = 0x005,
+        Bag = 0x100,
+        Axe1h = 0x200,
+        Axe2h = 0x201,
+        Bow = 0x202,
+        Gun1h = 0x203,
+        Mace1h = 0x204,
+        Mace2h = 0x205,
+        Polearm = 0x206,
+        Sword1h = 0x207,
+        Sword2h = 0x208,
+        Staff = 0x209,
+        Fist = 0x20A,
+        Dagger = 0x20B,
+        Thrown = 0x20C,
+        Spear = 0x20D,
+        Crossbow1h = 0x20E,
+        Wand = 0x20F,
+        FishingPole = 0x210,
+        Gun2h = 0x211,
+        Crossbow2h = 0x212,
+        Shanbao = 0x213,
+        Cloth = 0x300,
+        Leather = 0x301,
+        Mail = 0x302,
+        Plate = 0x303,
+        Shield = 0x304,
+        Trinket = 0x305,
+        Ring = 0x306,
+        Arrow = 0x400,
+        Bolt = 0x401,
+        Bullet = 0x402,
+        TradeGoods = 0x500,
+        Parts = 0x501,
+        Explosives = 0x502,
+        Devices = 0x503,
+        Materials = 0x504,
+        Recipe = 0x600,
+        Quest = 0x700,
+        Key = 0x800,
+        Miscellaneous = 0x900
+    }
+}
