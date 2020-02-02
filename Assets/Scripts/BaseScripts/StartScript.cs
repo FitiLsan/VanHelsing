@@ -5,7 +5,9 @@ using Interfaces;
 using Items;
 using Models;
 using Quests;
+using Settings;
 using UnityEngine;
+
 
 namespace BaseScripts
 {
@@ -58,7 +60,7 @@ namespace BaseScripts
                 Player.GetComponent<HealthModel>());
             QuestLogController = new QuestLogController(_questStorage);
             InventoryController = new InventoryController(_itemStorage);
-
+            DayTimeController = new DayTimeController(new DayTimeSettings(50, 50, 50, 50));
             //Находим необходимые контроллеры которые висят на объектах
             SwordStartController = FindObjectOfType<SwordStartController>();
 
@@ -73,7 +75,7 @@ namespace BaseScripts
             _allControllers.Add(HealthController);
             _allControllers.Add(QuestLogController);
             _allControllers.Add(InventoryController);
-
+            _allControllers.Add(DayTimeController);
             #endregion
         }
 
@@ -156,6 +158,10 @@ namespace BaseScripts
         /// </summary>
         public SwordStartController SwordStartController { get; private set; }
 
+        /// <summary>
+        /// Контроллер времени суток
+        /// </summary>
+        public DayTimeController DayTimeController { get; private set; }
         /// <summary>
         /// Коллекция контроллеров
         /// </summary>
