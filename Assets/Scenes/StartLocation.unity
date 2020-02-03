@@ -447,6 +447,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6272626964840734449, guid: db7ee548abfd6d44b8f929f2365a29c3,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5937332357644261978, guid: db7ee548abfd6d44b8f929f2365a29c3,
         type: 3}
       propertyPath: m_Value
@@ -3622,6 +3627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1459739506}
   - component: {fileID: 1459739507}
+  - component: {fileID: 1459739508}
   m_Layer: 0
   m_Name: UnitManager
   m_TagString: Untagged
@@ -3655,6 +3661,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1ffbdd5e4cd4e9691ff57ab7b0d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1459739508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459739505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d7bbadf83e3af40be558cec52a6c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guardianPull:
+  - {fileID: 11400000, guid: fcdc61837fc8dca43af6e7b6d428c0ff, type: 2}
 --- !u!4 &1479215966 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2040688881574770879, guid: e3ac13d30b6840b44bd087930e6b06a6,
