@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace ContextTest
+
+namespace BeastHunter
 {
-    public class GameStateController
+    public abstract class GameStateController
     {
         #region Fields
 

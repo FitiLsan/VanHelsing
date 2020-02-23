@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-namespace ContextTest
+namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "Data", menuName = "DataTest")]
     public sealed class Data : ScriptableObject

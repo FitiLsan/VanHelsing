@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using BaseScripts;
 
-namespace ContextTest
+
+namespace BeastHunter
 {
     public class ControllersStart : BaseController
     {
@@ -28,7 +29,7 @@ namespace ContextTest
 
         public override void Tick()
         {
-            for (var index = 0; index < _tickControllers.Count; ++index)
+            for (var index = 0; index < _tickControllers.Count; index++)
             {
                 _tickControllers[index].Tick();
             }
@@ -41,7 +42,7 @@ namespace ContextTest
 
         public override void OnAwake()
         {
-            for (var index = 0; index < _awakeControllers.Count; ++index)
+            for (var index = 0; index < _awakeControllers.Count; index++)
             {
                 _awakeControllers[index].OnAwake();
             }

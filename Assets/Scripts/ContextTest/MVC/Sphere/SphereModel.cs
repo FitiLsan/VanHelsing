@@ -1,18 +1,14 @@
 ﻿using UnityEngine;
 
-public class SphereModel
+
+public sealed class SphereModel
 {
-
-
-    #region Property
-
-    public GameObject SphereTarget;
-
-    public SphereCollider SphereRadius;
-
-    public Transform SphereTransform;
+    #region Fields
 
     public float SphereSpeed;
+    public GameObject SphereTarget { get; }
+    public SphereCollider SphereRadius { get; }
+    public Transform SphereTransform { get; }
 
     #endregion
 
@@ -29,4 +25,21 @@ public class SphereModel
 
     #endregion
 
+
+    #region Metods
+
+    public void Move()
+    {
+        SphereTransform.position = Vector3.MoveTowards
+            (SphereTransform.position,
+            SphereTarget.transform.position,
+            SphereSpeed);
+    }
+
+    public void ChangeBox()
+    {
+        SphereRadius.radius = 0.5f;
+    }
+
+    #endregion
 }

@@ -1,4 +1,4 @@
-﻿namespace ContextTest
+﻿namespace BeastHunter
 {
     public sealed class GameSystemsController : GameStateController
     {

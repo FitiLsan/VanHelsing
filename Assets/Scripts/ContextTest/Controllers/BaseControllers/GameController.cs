@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ContextTest
+
+namespace BeastHunter
 {
-    public class GameController : MonoBehaviour
+    public sealed class GameController : MonoBehaviour
     {
         #region Feilds
 

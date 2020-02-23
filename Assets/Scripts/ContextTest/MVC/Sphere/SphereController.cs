@@ -1,27 +1,23 @@
 ﻿using BaseScripts;
 using UnityEngine;
 
-namespace ContextTest
+
+namespace BeastHunter
 {
-    public class SphereController : BaseController
+    public sealed class SphereController : BaseController
     {
         #region Fields
-        public SphereModel Model { get; private set; }
-
-        public SphereView View { get; private set; }
 
         private readonly GameContext _context;
+
         #endregion
 
 
         #region ClassLifeCycle
 
-        public SphereController(GameContext context, Services services, SphereData spheredata)
+        public SphereController(GameContext context, Services services)
         {
             _context = context;
-            GameObject instance = GameObject.Instantiate(spheredata.prefab);
-            View = new SphereView(); //UI
-            Model = new SphereModel(instance, spheredata);
         }
 
         #endregion
@@ -31,8 +27,8 @@ namespace ContextTest
 
         public override void Tick()
         {
-            Move();
-            ChangeBox();
+            _context._sphereModel.Move();
+            _context._sphereModel.ChangeBox();
         }
 
         #endregion
@@ -43,28 +39,13 @@ namespace ContextTest
 
         public override void OnAwake()
         {
-
+            var SphereData = Data.SphereData;
+            GameObject instance = GameObject.Instantiate(SphereData.prefab);
+            SphereModel Sphere = new SphereModel(instance, SphereData);
+            _context._sphereModel = Sphere;
         }
 
-        #endregion
-
-
-        #region Metods
-
-        void Move()
-        {
-            Model.SphereTransform.position = Vector3.MoveTowards
-                (Model.SphereTransform.position,
-                Model.SphereTarget.transform.position,
-                Model.SphereSpeed);
-        }
-
-        void ChangeBox()
-        {
-            Model.SphereRadius.radius = 0.5f;
-        }
-
-        #endregion
+        #endregion        
     }
 }
 
