@@ -39,12 +39,12 @@ namespace BeastHunter
             _updateFeatures.Add(controller);
         }
 
-        public void Tick(TickType tickType)
+        public void Updating(UpdateType updateType)
         {
             List<ControllersStart> features = null;
-            switch (tickType)
+            switch (updateType)
             {
-                case TickType.Update:
+                case UpdateType.Update:
                     features = _updateFeatures;
                     break;
 
@@ -54,7 +54,7 @@ namespace BeastHunter
 
             foreach (var feature in features)
             {
-                feature.Tick();
+                feature.Updating();
             }
         }
         #endregion

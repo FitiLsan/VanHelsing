@@ -18,6 +18,7 @@ namespace BeastHunter
 
         #endregion
 
+
         #region ClassLifeCycles
 
         public GameContext()
@@ -31,43 +32,43 @@ namespace BeastHunter
 
         #region Methods
 
-        public void AddTriggers(InteractableObjectType type, ITrigger trigger)
+        public void AddTriggers(InteractableObjectType InteractionType, ITrigger TriggerInterface)
         {
-            if (!_interactables.Contains(trigger))
+            if (!_interactables.Contains(TriggerInterface))
             {
-                _interactables.Add(trigger);
+                _interactables.Add(TriggerInterface);
             }
 
-            if (_onTriggers.ContainsKey(type))
+            if (_onTriggers.ContainsKey(InteractionType))
             {
-                _onTriggers[type].Add(trigger);
+                _onTriggers[InteractionType].Add(TriggerInterface);
             }
             else
             {
-                _onTriggers.Add(type, new List<IInteractable>
+                _onTriggers.Add(InteractionType, new List<IInteractable>
                 {
-                    trigger
+                    TriggerInterface
                 });
             }
 
-            trigger.DestroyHandler = DestroyHandler;
-            AddObjectHandler.Invoke(trigger);
+            TriggerInterface.DestroyHandler = DestroyHandler;
+            AddObjectHandler.Invoke(TriggerInterface);
         }
 
-        private void DestroyHandler(ITrigger obj, InteractableObjectType type)
+        private void DestroyHandler(ITrigger TriggerInterface, InteractableObjectType InteractionType)
         {
-            _onTriggers[type].Remove(obj);
-            _interactables.Remove(obj);
+            _onTriggers[InteractionType].Remove(TriggerInterface);
+            _interactables.Remove(TriggerInterface);
         }
 
-        public List<T> GetTriggers<T>(InteractableObjectType type) where T : class, IInteractable
+        public List<T> GetTriggers<T>(InteractableObjectType InteractionType) where T : class, IInteractable
         {
-            return _onTriggers.ContainsKey(type) ? _onTriggers[type].Select(trigger => trigger as T).ToList() : null;
+            return _onTriggers.ContainsKey(InteractionType) ? _onTriggers[InteractionType].Select(trigger => trigger as T).ToList() : null;
         }
 
-        public List<IInteractable> GetTriggers(InteractableObjectType type)
+        public List<IInteractable> GetTriggers(InteractableObjectType InteractionType)
         {
-            return _onTriggers.ContainsKey(type) ? _onTriggers[type] : _onTriggers[type] = new List<IInteractable>();
+            return _onTriggers.ContainsKey(InteractionType) ? _onTriggers[InteractionType] : _onTriggers[InteractionType] = new List<IInteractable>();
         }
 
         public List<IInteractable> GetListInteractable()

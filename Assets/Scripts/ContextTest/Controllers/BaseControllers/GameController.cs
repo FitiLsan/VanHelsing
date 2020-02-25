@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace BeastHunter
 {
     public sealed class GameController : MonoBehaviour
     {
-        #region Feilds
+        #region Fields
 
         private GameStateController _activeController;
 
@@ -20,14 +18,14 @@ namespace BeastHunter
         {
             GameContext context = new GameContext();
             Services services = Services.SharedInstance;
-            //services.Initialize(context);
+            services.Initialize(context);
 
             _activeController = new GameSystemsController(context, services);
             _activeController.Initialize();
         }
         private void Update()
         {
-            _activeController.Tick(TickType.Update);
+            _activeController.Updating(UpdateType.Update);
         }
 
         #endregion

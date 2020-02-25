@@ -2,8 +2,8 @@
 {
     public enum InteractableObjectType
     {
-        None = 0,
+        None   = 0,
         Sphere = 1,
-        Cube = 2
+        Cube   = 2
     }
 }

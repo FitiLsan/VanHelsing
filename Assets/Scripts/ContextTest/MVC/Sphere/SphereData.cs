@@ -6,11 +6,15 @@ public class SphereData : ScriptableObject
 {
     #region Fields
 
-    public float speed;
+    public float MoveSpeed;
 
-    public GameObject prefab;
+    public float SphereRadius;
+
+    public GameObject Prefab;
 
     public GameObject Target;
 
     #endregion
+
+    
 }

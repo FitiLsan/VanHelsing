@@ -9,9 +9,12 @@ namespace BeastHunter
     {
         #region Fields
 
-        [SerializeField] public static SphereData _sphereData;
+        public static SphereData _sphereData;
 
         #endregion
+
+
+        #region Properties
 
         public static SphereData SphereData
         {
@@ -24,5 +27,7 @@ namespace BeastHunter
                 return _sphereData;
             }
         }
+
+        #endregion
     }
 }

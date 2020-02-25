@@ -7,7 +7,7 @@ namespace BeastHunter
     {
         #region Fields
 
-        private const string IGNORERAYCAST = "Ignore Raycast";
+        private const string IGNORE_RAYCAST = "Ignore Raycast";
         private const string WATER = "Water";
         private const string ENVIRONMENT = "Environment";
         private const string DEFAULT = "Default";
@@ -15,7 +15,7 @@ namespace BeastHunter
         private const string GROUND = "Ground";
         private const string UI = "UI";
 
-        public const int DEFAULTLAYER = 0;
+        public const int DEFAULT_LAYER = 0;
 
         #endregion
 
@@ -36,7 +36,7 @@ namespace BeastHunter
 
         static LayerManager()
         {
-            IgnoreRaycastLayer = LayerMask.GetMask(IGNORERAYCAST, WATER, NONCOLLIDABLE);
+            IgnoreRaycastLayer = LayerMask.GetMask(IGNORE_RAYCAST, WATER, NONCOLLIDABLE);
             EnvironmentLayer = LayerMask.GetMask(ENVIRONMENT, GROUND);
             DefaultLayer = LayerMask.GetMask(DEFAULT);
             GroundLayer = LayerMask.GetMask(GROUND);

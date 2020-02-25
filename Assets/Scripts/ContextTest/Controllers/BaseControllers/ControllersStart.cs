@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
-using BaseScripts;
 
 
 namespace BeastHunter
 {
-    public class ControllersStart : BaseController
+    public class ControllersStart : IAwake, IUpdate
     {
         #region Fields
 
         protected readonly List<IAwake> _awakeControllers;
-        protected readonly List<ITick> _tickControllers;
+        protected readonly List<IUpdate> _updateControllers;
 
         #endregion
 
@@ -19,19 +18,19 @@ namespace BeastHunter
         protected ControllersStart()
         {
             _awakeControllers = new List<IAwake>();
-            _tickControllers = new List<ITick>();
+            _updateControllers = new List<IUpdate>();
         }
 
         #endregion
 
 
-        #region Tick
+        #region Updating
 
-        public override void Tick()
+        public void Updating()
         {
-            for (var index = 0; index < _tickControllers.Count; index++)
+            for (var index = 0; index < _updateControllers.Count; index++)
             {
-                _tickControllers[index].Tick();
+                _updateControllers[index].Updating();
             }
         }
 
@@ -40,7 +39,7 @@ namespace BeastHunter
 
         #region OnAwake
 
-        public override void OnAwake()
+        public void OnAwake()
         {
             for (var index = 0; index < _awakeControllers.Count; index++)
             {
@@ -55,9 +54,9 @@ namespace BeastHunter
 
         protected virtual ControllersStart Add(IController controller)
         {
-            if (controller is ITick tickController)
+            if (controller is IUpdate updateController)
             {
-                _tickControllers.Add(tickController);
+                _updateControllers.Add(updateController);
             }
 
             if (controller is IAwake awakeController)

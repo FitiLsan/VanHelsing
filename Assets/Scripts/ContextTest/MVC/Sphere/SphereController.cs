@@ -1,10 +1,9 @@
-﻿using BaseScripts;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace BeastHunter
 {
-    public sealed class SphereController : BaseController
+    public sealed class SphereController : IAwake, IUpdate
     {
         #region Fields
 
@@ -23,9 +22,9 @@ namespace BeastHunter
         #endregion
 
 
-        #region Tick
+        #region Updating
 
-        public override void Tick()
+        public void Updating()
         {
             _context._sphereModel.Move();
             _context._sphereModel.ChangeBox();
@@ -37,10 +36,10 @@ namespace BeastHunter
         #region OnAwake
 
 
-        public override void OnAwake()
+        public void OnAwake()
         {
             var SphereData = Data.SphereData;
-            GameObject instance = GameObject.Instantiate(SphereData.prefab);
+            GameObject instance = GameObject.Instantiate(SphereData.Prefab);
             SphereModel Sphere = new SphereModel(instance, SphereData);
             _context._sphereModel = Sphere;
         }

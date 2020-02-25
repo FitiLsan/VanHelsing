@@ -8,7 +8,7 @@ namespace BeastHunter
     {
         #region Fields
 
-        private const int COLLIDEDOBJECTSIZE = 20;
+        private const int COLLIDER_OBJECT_SIZE = 20;
 
         private readonly Collider[] _collidedObjects;
         private readonly RaycastHit[] _castBuffer;
@@ -21,7 +21,7 @@ namespace BeastHunter
 
         public PhysicsService(Contexts contexts) : base(contexts)
         {
-            _collidedObjects = new Collider[COLLIDEDOBJECTSIZE];
+            _collidedObjects = new Collider[COLLIDER_OBJECT_SIZE];
             _castBuffer = new RaycastHit[64];
             _triggeredObjects = new List<ITrigger>();
         }
@@ -31,7 +31,7 @@ namespace BeastHunter
 
         #region Methods
 
-        public List<ITrigger> GetObjectsInRadius(Vector2 position, float radius, int layerMask = LayerManager.DEFAULTLAYER)
+        public List<ITrigger> GetObjectsInRadius(Vector2 position, float radius, int layerMask = LayerManager.DEFAULT_LAYER)
         {
             _triggeredObjects.Clear();
             ITrigger trigger;
@@ -52,7 +52,7 @@ namespace BeastHunter
         }
 
         public HashSet<ITrigger> SphereCastObject(Vector2 center, float radius, HashSet<ITrigger> outBuffer,
-            int layerMask = LayerManager.DEFAULTLAYER)
+            int layerMask = LayerManager.DEFAULT_LAYER)
         {
             outBuffer.Clear();
 
