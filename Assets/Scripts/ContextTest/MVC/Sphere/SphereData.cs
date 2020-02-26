@@ -16,5 +16,9 @@ public class SphereData : ScriptableObject
 
     #endregion
 
+    public void Execute(Transform transform, Transform target)
+    {
+        //Move()
+    }
     
 }

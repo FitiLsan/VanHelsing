@@ -35,13 +35,9 @@ namespace BeastHunter
 
         #region OnAwake
 
-
         public void OnAwake()
         {
-            var SphereData = Data.SphereData;
-            GameObject instance = GameObject.Instantiate(SphereData.Prefab);
-            SphereModel Sphere = new SphereModel(instance, SphereData);
-            _context._sphereModel = Sphere;
+            
         }
 
         #endregion        

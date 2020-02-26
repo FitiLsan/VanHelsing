@@ -6,7 +6,9 @@
 
         public MainControllers(GameContext context, Services services)
         {
+            Add(new SphereInitilizeController(context, services));
             Add(new SphereController(context, services));
+
         }
 
         #endregion

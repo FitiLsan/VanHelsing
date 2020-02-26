@@ -30,6 +30,11 @@ public sealed class SphereModel
 
     #region Metods
 
+    public void Initilize()
+    {
+        //SphereData.Execute(SphereTransform, SphereTarget);
+    }
+
     public void Move()
     {
         SphereTransform.position = Vector3.MoveTowards
