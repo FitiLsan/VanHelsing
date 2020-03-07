@@ -2,23 +2,29 @@
 
 
 [CreateAssetMenu(fileName = "NewModel", menuName = "CreateModel/Sphere", order = 0)]
-public class SphereData : ScriptableObject
+public sealed class SphereData : ScriptableObject
 {
     #region Fields
 
-    public float MoveSpeed;
-
-    public float SphereRadius;
-
-    public GameObject Prefab;
-
-    public GameObject Target;
+    public SphereStruct SphereStruct;
 
     #endregion
 
-    public void Execute(Transform transform, Transform target)
+
+    #region Metods
+
+    public void Move(Transform transform, GameObject target, float speed)
     {
-        //Move()
+        transform.position = Vector3.MoveTowards
+            (transform.position,
+            target.transform.position,
+            speed);
     }
-    
+
+    public void ChangeBox(SphereCollider SphereCollider, float SphereRadius)
+    {
+        SphereCollider.radius = SphereRadius;
+    }
+
+    #endregion
 }
