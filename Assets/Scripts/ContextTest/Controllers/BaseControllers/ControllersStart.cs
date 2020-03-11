@@ -3,12 +3,14 @@
 
 namespace BeastHunter
 {
-    public class ControllersStart : IAwake, IUpdate
+    public class ControllersStart : IAwake, IUpdate, ICleanup, ITearDown
     {
         #region Fields
 
         protected readonly List<IAwake> _awakeControllers;
         protected readonly List<IUpdate> _updateControllers;
+        protected readonly List<ICleanup> _cleanupControllers;
+        protected readonly List<ITearDown> _tearDownControllers;
 
         #endregion
 
@@ -19,6 +21,8 @@ namespace BeastHunter
         {
             _awakeControllers = new List<IAwake>();
             _updateControllers = new List<IUpdate>();
+            _cleanupControllers = new List<ICleanup>();
+            _tearDownControllers = new List<ITearDown>();
         }
 
         #endregion
@@ -50,6 +54,32 @@ namespace BeastHunter
         #endregion
 
 
+        #region ICleanup
+
+        public virtual void Cleanup()
+        {
+            for (var index = 0; index < _cleanupControllers.Count; index++)
+            {
+                _cleanupControllers[index].Cleanup();
+            }
+        }
+
+        #endregion
+
+
+        #region ITearDown
+
+        public virtual void TearDown()
+        {
+            for (var index = 0; index < _tearDownControllers.Count; index++)
+            {
+                _tearDownControllers[index].TearDown();
+            }
+        }
+
+        #endregion
+
+
         #region Metods
 
         protected virtual ControllersStart Add(IController controller)
@@ -62,6 +92,16 @@ namespace BeastHunter
             if (controller is IAwake awakeController)
             {
                 _awakeControllers.Add(awakeController);
+            }
+
+            if (controller is ICleanup cleanupController)
+            {
+                _cleanupControllers.Add(cleanupController);
+            }
+
+            if (controller is ITearDown tearDownController)
+            {
+                _tearDownControllers.Add(tearDownController);
             }
             return this;
         }

@@ -3,13 +3,12 @@
 
 public sealed class SphereModel
 {
-    #region Fields
+    #region Properties
 
-    public float SphereSpeed;
-    public float SphereRadius;
-    public GameObject SphereTarget { get; }
     public SphereCollider SphereCollider { get; }
     public Transform SphereTransform { get; }
+    public SphereData SphereData;
+    public SphereStruct SphereStruct;
 
     #endregion
 
@@ -18,11 +17,10 @@ public sealed class SphereModel
 
     public SphereModel(GameObject prefab, SphereData spheredata)
     {
-        SphereSpeed = spheredata.MoveSpeed;
+        SphereData = spheredata;
+        SphereStruct = spheredata.SphereStruct;
         SphereTransform = prefab.transform;
-        SphereTarget = spheredata.Target;
         SphereCollider = prefab.gameObject.GetComponent<SphereCollider>();
-        SphereRadius = spheredata.SphereRadius;
     }
 
     #endregion
@@ -32,20 +30,8 @@ public sealed class SphereModel
 
     public void Initilize()
     {
-        //SphereData.Execute(SphereTransform, SphereTarget);
-    }
-
-    public void Move()
-    {
-        SphereTransform.position = Vector3.MoveTowards
-            (SphereTransform.position,
-            SphereTarget.transform.position,
-            SphereSpeed);
-    }
-
-    public void ChangeBox()
-    {
-        SphereCollider.radius = SphereRadius;
+        SphereData.ChangeSphereCollider(SphereCollider, SphereStruct.SphereRadius);
+        SphereData.Move(SphereTransform, SphereStruct.Target, SphereStruct.MoveSpeed);
     }
 
     #endregion
