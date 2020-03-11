@@ -13,7 +13,7 @@ public sealed class SphereData : ScriptableObject
 
     #region Metods
 
-    public void Move(Transform transform, GameObject target, float speed)
+    public void Move(Transform transform, Transform target, float speed)
     {
         transform.position = Vector3.MoveTowards
             (transform.position,
@@ -23,7 +23,10 @@ public sealed class SphereData : ScriptableObject
 
     public void ChangeBox(SphereCollider SphereCollider, float SphereRadius)
     {
-        SphereCollider.radius = SphereRadius;
+        if(SphereCollider != null)
+        {
+            SphereCollider.radius = SphereRadius;
+        }       
     }
 
     #endregion

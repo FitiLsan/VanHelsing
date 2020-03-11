@@ -3,7 +3,7 @@
 
 public sealed class SphereModel
 {
-    #region Fields
+    #region Properties
 
     public SphereCollider SphereCollider { get; }
     public Transform SphereTransform { get; }

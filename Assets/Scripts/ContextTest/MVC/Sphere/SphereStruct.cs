@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System;
 
-[System.Serializable]
+
+[Serializable]
 public struct SphereStruct
 {
     #region Fields
@@ -11,7 +13,7 @@ public struct SphereStruct
 
     public GameObject Prefab;
 
-    public GameObject Target;
+    public Transform Target;
 
     #endregion
 }
