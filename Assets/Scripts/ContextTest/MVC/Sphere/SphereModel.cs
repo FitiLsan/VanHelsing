@@ -30,7 +30,7 @@ public sealed class SphereModel
 
     public void Initilize()
     {
-        SphereData.ChangeBox(SphereCollider, SphereStruct.SphereRadius);
+        SphereData.ChangeSphereCollider(SphereCollider, SphereStruct.SphereRadius);
         SphereData.Move(SphereTransform, SphereStruct.Target, SphereStruct.MoveSpeed);
     }
 

@@ -21,7 +21,7 @@ public sealed class SphereData : ScriptableObject
             speed);
     }
 
-    public void ChangeBox(SphereCollider SphereCollider, float SphereRadius)
+    public void ChangeSphereCollider(SphereCollider SphereCollider, float SphereRadius)
     {
         if(SphereCollider != null)
         {
