@@ -23,9 +23,25 @@ namespace BeastHunter
             _activeController = new GameSystemsController(context, services);
             _activeController.Initialize();
         }
+
         private void Update()
         {
             _activeController.Updating(UpdateType.Update);
+        }
+
+        private void FixedUpdate()
+        {
+            _activeController.Updating(UpdateType.Fixed);
+        }
+
+        private void LateUpdate()
+        {
+            _activeController.Updating(UpdateType.Late);
+        }
+
+        private void OnDestroy()
+        {
+            _activeController.TearDown();
         }
 
         #endregion
