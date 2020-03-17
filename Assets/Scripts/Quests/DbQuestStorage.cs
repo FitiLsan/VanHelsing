@@ -48,7 +48,7 @@ namespace Quests
         /// <exception cref="NotImplementedException"></exception>
         public void QuestCompleted(int id)
         {
-            throw new NotImplementedException();
+            Debug.Log("УРА УРА ВЫПОЛНЕН ПЕРВЫЙ КВЕСТ,ДЕРЖИ НАГРАДУ");
         }
 
         /// <summary>

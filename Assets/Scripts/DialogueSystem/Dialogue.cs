@@ -1,24 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace DialogueSystem
 {
     [Serializable]
-    public class Dialogue
+    public sealed class Dialogue
     {
-        public string _npcText;
+        #region Properties
 
-        public List<PlayerAnswer> playerAnswers;
+        public string NpcText { get; private set; }
+        
+        public List<PlayerAnswer> PlayerAnswers { get; private set; }
+
+        #endregion
 
 
-        public Dialogue(string _npcText, List<PlayerAnswer> playerAnswers)
+        #region ClassLifeCycles
+
+        public Dialogue(string npcText, List<PlayerAnswer> playerAnswers)
         {
-            this._npcText = _npcText;
-            this.playerAnswers = playerAnswers;
+            NpcText = npcText;
+            PlayerAnswers = playerAnswers;
         }
 
-        public Dialogue()
-        {
-        }
+        #endregion
     }
 }

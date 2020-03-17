@@ -1,19 +1,31 @@
 ﻿using UnityEngine;
 
 namespace DialogueSystem
-
 {
     public class ButtonClick : MonoBehaviour
     {
-        private int _toNode;
-        private DialogueSystem dialogueSystem;
+        public delegate void ButtonCheck(int number);
+        public static event ButtonCheck MouseClickEvent;
 
+        public delegate void KeyBoardButtonDown(string buttonName);
+        public static event KeyBoardButtonDown KeyBoardButtonDownEvent;
 
-        public void OnButtonClick(int buttonNumber)
+        public void ButtonClickMouse(int buttonNumber)
         {
-            dialogueSystem = FindObjectOfType<DialogueSystem>();
-            dialogueSystem._currentNode = _toNode;
-            dialogueSystem.DialogueAnswerClear();
+            MouseClickEvent?.Invoke(buttonNumber);
+        }
+
+        public void ButtonClickKeyBoard()
+        {
+            if(Input.anyKeyDown)
+            {
+                KeyBoardButtonDownEvent?.Invoke(Input.inputString);
+            }
+        }
+        private void Update()
+        {
+            ButtonClickKeyBoard();
         }
     }
 }
+                                     

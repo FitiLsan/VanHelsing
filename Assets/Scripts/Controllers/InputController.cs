@@ -22,45 +22,48 @@ namespace Controllers
 
         #endregion
 
+        private bool isLocked = false;
+
         public override void ControllerUpdate()
         {
             ForwardBackward = Input.GetAxis("Horizontal");
 
             LeftRight = Input.GetAxis("Vertical");
+            if (!isLocked)
+            {
+                Jump = Input.GetButtonDown("Jump");
 
-            Jump = Input.GetButtonDown("Jump");
+                Run = Input.GetButton("Sprint");
 
-            Run = Input.GetButton("Sprint");
+                RotationY = Input.GetAxis("Mouse X");
 
-            RotationY = Input.GetAxis("Mouse X");
+                RotationX = -Input.GetAxis("Mouse Y");
 
-            RotationX = -Input.GetAxis("Mouse Y");
+                Aim = Input.GetButton("AimButton");
 
-            Aim = Input.GetButton("AimButton");
+                LeftClickDown = Input.GetMouseButtonDown(0);
 
-            LeftClickDown = Input.GetMouseButtonDown(0);
+                LeftClickPressing = Input.GetMouseButton(0);
 
-            LeftClickPressing = Input.GetMouseButton(0);
+                LeftClickUp = Input.GetMouseButtonUp(0);
 
-            LeftClickUp = Input.GetMouseButtonUp(0);
+                Zoom = Input.GetAxis("Mouse ScrollWheel");
 
-            Zoom = Input.GetAxis("Mouse ScrollWheel");
+                Roll = Input.GetButton("Roll");
 
-            Roll = Input.GetButton("Roll");
+                Defence = Input.GetButton("Block");
 
-            Defence = Input.GetButton("Block");
+                CameraCenter = Input.GetButton("CenterCamera");
 
-            CameraCenter = Input.GetButton("CenterCamera");
-			
-			Inventory = Input.GetButtonDown("Inventory");
-
+                Inventory = Input.GetButtonDown("Inventory");
+            }
             #region Проверка на зажатие левой кнопки мыши для Тяжелой Атаки 2
 
             if (LeftClickPressing && !testFlagForHeavyAttack)
             {
                 countOfHeavyAttackTimer += Time.deltaTime;
-                if(countOfHeavyAttackTimer >= timerOfHeavyAttack)
-                {                    
+                if (countOfHeavyAttackTimer >= timerOfHeavyAttack)
+                {
                     countOfHeavyAttackTimer = 0;
                     HeavyAttackClick = true;
                     testFlagForHeavyAttack = true;
@@ -73,7 +76,7 @@ namespace Controllers
                 HeavyAttackClick = false;
                 testFlagForHeavyAttack = false;
             }
-            
+
             #endregion
 
             #region Проверка на Двойной клик ЛКМ для тяжелой атаки
@@ -119,8 +122,8 @@ namespace Controllers
         public bool Defence { get; private set; }
 
         public bool CameraCenter { get; private set; }
-		
-		public bool Inventory { get; private set; }
+
+        public bool Inventory { get; private set; }
 
         #endregion
 
@@ -163,5 +166,21 @@ namespace Controllers
         public bool isLeftClickUp = false;
 
         #endregion
+
+        public void LockAction()
+        {
+            if (!isLocked)
+            {
+                isLocked = true;
+            }
+        }
+
+        public void UnlockAction()
+        {
+            if (isLocked)
+            {
+                isLocked = false;
+            }
+        }
     }
 }

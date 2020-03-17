@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2781224403887432025}
-  - component: {fileID: 2781224403887432024}
+  - component: {fileID: 8158566297557292697}
   m_Layer: 0
   m_Name: DialogueSystem
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2781224403887432024
+--- !u!114 &8158566297557292697
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,15 +41,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2781224403887432030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbd7fdffc4b418c419f3420f5d8a223d, type: 3}
+  m_Script: {fileID: 11500000, guid: b38c5565d1ffe42479a6ff571e95001a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dialogueCanvas: {fileID: 0}
-  _dialoguePanel: {fileID: 0}
-  _dialogueNPCText: {fileID: 0}
-  _AnswerButtons: []
-  _currentNode: 0
-  dialogueNode: []
+  answerButtons: []
+  dialogueCanvas: {fileID: 0}
+  dialogueNPCText: {fileID: 0}
 --- !u!1 &2781224403977539306
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,7 +325,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2781224403887432024}
+      - m_Target: {fileID: 0}
         m_MethodName: ButtonClickCheck
         m_Mode: 3
         m_Arguments:
@@ -485,7 +482,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2781224403887432024}
+      - m_Target: {fileID: 0}
         m_MethodName: ButtonClickCheck
         m_Mode: 3
         m_Arguments:
@@ -697,7 +694,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2781224403887432024}
+      - m_Target: {fileID: 0}
         m_MethodName: ButtonClickCheck
         m_Mode: 3
         m_Arguments:
@@ -1025,7 +1022,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2781224403887432024}
+      - m_Target: {fileID: 0}
         m_MethodName: ButtonClickCheck
         m_Mode: 3
         m_Arguments:

@@ -854,6 +854,11 @@ PrefabInstance:
       propertyPath: _npcID
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2445043336024350708, guid: a3d7f96b7e082b7439af7b71499abed2,
+        type: 3}
+      propertyPath: _npcID
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3d7f96b7e082b7439af7b71499abed2, type: 3}
 --- !u!1 &225111783
@@ -2229,36 +2234,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0549289455cd2de4bb51c1a3ad9cbb11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &560155204 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8047070584764629995, guid: a3d7f96b7e082b7439af7b71499abed2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1205976589}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &560155210 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 651657959388500837, guid: a3d7f96b7e082b7439af7b71499abed2,
     type: 3}
   m_PrefabInstance: {fileID: 1205976589}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &560155211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 560155204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0836f5b0aa3711b47b1c224573db44b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _canvasQuBoard: {fileID: 729778184}
-  CanTakeIcon: {fileID: 1076918578}
-  QuCompleteIcon: {fileID: 1395109653}
-  _QuCanTake: 1
-  _QuComplete: 0
-  _AllQuComplete: 0
 --- !u!1 &563077732
 GameObject:
   m_ObjectHideFlags: 0
@@ -3325,6 +3306,11 @@ PrefabInstance:
       propertyPath: _npcID
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2445043336024350708, guid: a3d7f96b7e082b7439af7b71499abed2,
+        type: 3}
+      propertyPath: _npcID
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3d7f96b7e082b7439af7b71499abed2, type: 3}
 --- !u!224 &1262439084 stripped
@@ -3943,6 +3929,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8047070584764629996, guid: a3d7f96b7e082b7439af7b71499abed2,
+        type: 3}
+      propertyPath: _npcID
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445043336024350708, guid: a3d7f96b7e082b7439af7b71499abed2,
         type: 3}
       propertyPath: _npcID
       value: 4
