@@ -1,5 +1,4 @@
-﻿
-public interface ITick
+﻿public interface ITick : IController
 {
     void Tick();
 }
