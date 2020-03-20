@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class BaseEntitiesInitializeController : BaseEntitiesController
+public class BaseEntitiesInitializeController : IAwake
 {
-    #region IAwake
-
-    public override void OnAwake()
+    
+    public void OnAwake()
     {
-        ManagerUpdate.AddTo(this);
+
     }
 
-    #endregion
 }
