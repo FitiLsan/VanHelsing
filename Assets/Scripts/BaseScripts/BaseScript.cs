@@ -2,10 +2,12 @@
 
 namespace BaseScripts
 {
-    public abstract class BaseEntity
+    public abstract class BaseScript : MonoBehaviour
     {
+
         // objectName
         // discription
+
     }
 }
 
