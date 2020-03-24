@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace DialogueSystem
 {
-    public class DialogueSystemController : BaseController
+    public class DialogueSystemController : BaseController, IAwake
     {
         public DialogueSystemModel Model{ get; private set;}
         public DialogueSystemView View { get; private set; }
@@ -14,8 +14,10 @@ namespace DialogueSystem
         public DialogueSystemController()
         {
             Model = new DialogueSystemModel();
+            //View = new DialogueSystemView();
          //  DialogueAnswerClear();
             //dialogueCanvas.enabled = false;
+
             ButtonClick.MouseClickEvent += SelectAnswer;
             ButtonClick.KeyBoardButtonDownEvent += ButtonClickNumber;
             StartDialogueController.ShowCanvasEvent += CanvasSwitcher;

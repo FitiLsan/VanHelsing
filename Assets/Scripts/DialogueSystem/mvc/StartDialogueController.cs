@@ -18,7 +18,7 @@ namespace DialogueSystem
         {
             Model = new StartDialogueModel();
         }
-
+        
         //private void Start()
         //{
         //    View.canvasNPC.SetActive(false);

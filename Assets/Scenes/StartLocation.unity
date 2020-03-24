@@ -462,6 +462,11 @@ PrefabInstance:
       propertyPath: m_Value
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 702061070595965125, guid: db7ee548abfd6d44b8f929f2365a29c3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -22.599854
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db7ee548abfd6d44b8f929f2365a29c3, type: 3}
 --- !u!1 &99256804
@@ -3094,7 +3099,56 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8158566297557292697, guid: b4fe68741c2539a4c9eed2834a5f86aa,
+        type: 3}
+      propertyPath: dialogueSystemViewPrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2781224404062120770, guid: b4fe68741c2539a4c9eed2834a5f86aa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ButtonClickMouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 2781224404062120770, guid: b4fe68741c2539a4c9eed2834a5f86aa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1452738527}
+    - target: {fileID: 2781224404350244203, guid: b4fe68741c2539a4c9eed2834a5f86aa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ButtonClickMouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 2781224404350244203, guid: b4fe68741c2539a4c9eed2834a5f86aa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1452738527}
+    - target: {fileID: 2781224405152664238, guid: b4fe68741c2539a4c9eed2834a5f86aa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1452738527}
+    - target: {fileID: 2781224405152664238, guid: b4fe68741c2539a4c9eed2834a5f86aa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ButtonClickMouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 2781224405234019170, guid: b4fe68741c2539a4c9eed2834a5f86aa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1452738527}
+    - target: {fileID: 2781224405234019170, guid: b4fe68741c2539a4c9eed2834a5f86aa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ButtonClickMouse
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2781224404062120783, guid: b4fe68741c2539a4c9eed2834a5f86aa, type: 3}
+    - {fileID: 2781224404350244244, guid: b4fe68741c2539a4c9eed2834a5f86aa, type: 3}
+    - {fileID: 2781224405234019183, guid: b4fe68741c2539a4c9eed2834a5f86aa, type: 3}
+    - {fileID: 2781224405152664235, guid: b4fe68741c2539a4c9eed2834a5f86aa, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b4fe68741c2539a4c9eed2834a5f86aa, type: 3}
 --- !u!1 &1177305600 stripped
 GameObject:
@@ -3608,6 +3662,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d29e24bc93cb56444b399ec69af86d12, type: 3}
+--- !u!1 &1452738526 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2781224403887432030, guid: b4fe68741c2539a4c9eed2834a5f86aa,
+    type: 3}
+  m_PrefabInstance: {fileID: 1172037314}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1452738527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452738526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ecd4e5f95cc2654b87e290871f5a347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1459739505
 GameObject:
   m_ObjectHideFlags: 0

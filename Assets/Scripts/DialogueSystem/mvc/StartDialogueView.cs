@@ -32,7 +32,6 @@ namespace DialogueSystem
                 }
             }
 
-            //dialogueSystem = FindObjectOfType<DialogueSystem>();
             dialogueSystemView = FindObjectOfType<DialogueSystemView>();
             text = canvasNPC.transform.Find("Image").gameObject.GetComponentInChildren<Text>();
             npcPos = gameObject.transform.position;
@@ -41,7 +40,7 @@ namespace DialogueSystem
 
         private void Start()
         {
-            Controller = StartScript.GetStartScript.StartDialogueController;
+           // Controller = StartScript.GetStartScript.StartDialogueController;
             dialogueSystemModel = StartScript.GetStartScript.DialogueSystemController.Model;
             canvasNPC.SetActive(false);
             text.text = "\"E\" Начать диалог";
@@ -54,12 +53,9 @@ namespace DialogueSystem
             {
                 Controller.GetView(this);
                 canvasNPC.transform.position = new Vector3(npcPos.x, npcPos.y + Controller.GetCanvasOffset(), npcPos.z);
-              //  Model.dialogAreaEnter = true;
                 Controller.DialogAreaEnterSwitcher(true);
                 dialogueSystemModel.npcID = _npcID;
                 dialogueSystemModel.dialogueNode = DialogueGenerate.DialogueCreate(_npcID);
-                //dialogueSystem._npcID = _npcID;
-                //dialogueSystem.dialogueNode = DialogueGenerate.DialogueCreate(_npcID);
             }
         }
 
@@ -68,7 +64,6 @@ namespace DialogueSystem
             if (other.transform.tag == "Player")
             {
                 Controller.DialogAreaEnterSwitcher(false);
-               // Model.dialogAreaEnter = false;
             }
         }
     }
