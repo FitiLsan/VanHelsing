@@ -1,33 +1,49 @@
-﻿using BaseScripts;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
-namespace DialogueSystem
+namespace BeastHunter
 {
-    public class StartDialogueController : BaseController
+    public sealed class StartDialogueController : IUpdate
     {
+        #region Fields
+        private readonly GameContext _context;
+        #endregion
+        #region Properties
         public StartDialogueModel Model { get; private set; }
         public StartDialogueView View { get; private set; }
+        #endregion
+        #region ClassLifeCycle
+        public StartDialogueController(GameContext context, Services services)
+        {
+            _context = context;
+        }
+        #endregion
+        #region Updating
 
+        public void Updating()
+        {
+            if (Model == null)
+            {
+                Model = _context._startDialogueModel;
+            }
+
+            if (View == null)
+            {
+                View = GameObject.FindObjectOfType<StartDialogueView>();
+                View.GetModel(Model);
+                _context._startDialogueModel.Initilize();
+                SetPerent();
+            }
+           
+
+            DialogUsing();
+        }
+
+        #endregion
+ 
         public delegate void DialogueView(bool isShow);  // вынести в EventManager?
         public static event DialogueView ShowCanvasEvent;
 
-        public StartDialogueController()
-        {
-            Model = new StartDialogueModel();
-        }
-        
-        //private void Start()
-        //{
-        //    View.canvasNPC.SetActive(false);
-        //    View.text.text = "\"E\" Начать диалог";
-        //}
-        public override void ControllerUpdate()
-        {
-            DialogUsing();
-        }
+        #region Methods
 
         private void DialogUsing()
         {
@@ -80,5 +96,11 @@ namespace DialogueSystem
         {
             View = view;
         }
+        public void SetPerent()
+        {
+            View.transform.parent = _context._startDialogueModel.parentTransform;
+            View.transform.position = _context._startDialogueModel.parentTransform.transform.position;
+        }
+        #endregion
     }
 }

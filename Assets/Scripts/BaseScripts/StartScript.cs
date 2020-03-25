@@ -64,7 +64,7 @@ namespace BaseScripts
             DayTimeController = new DayTimeController(new DayTimeSettings(50, 50, 50, 50));
             //Находим необходимые контроллеры которые висят на объектах
             SwordStartController = FindObjectOfType<SwordStartController>();
-            StartDialogueController = new StartDialogueController();
+          //  StartDialogueController = new StartDialogueController();
             DialogueSystemController = new DialogueSystemController();
 
             #region Добавляем контроллеры в коллекцию
@@ -79,7 +79,7 @@ namespace BaseScripts
             _allControllers.Add(QuestLogController);
             _allControllers.Add(InventoryController);
             _allControllers.Add(DayTimeController);
-            _allControllers.Add(StartDialogueController);
+         //   _allControllers.Add(StartDialogueController);
             _allControllers.Add(DialogueSystemController);
             #endregion
         }
@@ -163,7 +163,7 @@ namespace BaseScripts
         /// </summary>
         public SwordStartController SwordStartController { get; private set; }
 
-        public StartDialogueController StartDialogueController { get; private set; }
+     //   public StartDialogueController StartDialogueController { get; private set; }
 
         public DialogueSystemController DialogueSystemController { get; private set; }
 

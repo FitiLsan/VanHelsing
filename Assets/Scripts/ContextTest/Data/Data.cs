@@ -11,6 +11,9 @@ namespace BeastHunter
 
         public static SphereData _sphereData;
 
+        public static StartDialogueData _startDialogueData;
+    
+
         #endregion
 
 
@@ -25,6 +28,18 @@ namespace BeastHunter
                     _sphereData = Resources.Load<SphereData>("Data/SphereData");
                 }
                 return _sphereData;
+            }
+        }
+
+        public static StartDialogueData StartDialogueData
+        {
+            get
+            {
+                if (_startDialogueData == null)
+                {
+                    _startDialogueData = Resources.Load<StartDialogueData>("Data/StartDialogueData");
+                }
+                return _startDialogueData;
             }
         }
 

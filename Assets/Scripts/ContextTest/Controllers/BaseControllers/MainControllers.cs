@@ -8,6 +8,8 @@
         {
             Add(new SphereInitilizeController(context, services));
             Add(new SphereController(context, services));
+            Add(new StartDialogueController(context, services));
+            Add(new StartDialogueInitializeController(context, services));
             Add(new InitializeInteractableObjectController(context, services));
         }
 

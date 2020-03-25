@@ -1,4 +1,5 @@
 ﻿using BaseScripts;
+using BeastHunter;
 using Events;
 using Events.Args;
 using System.Collections;
@@ -14,9 +15,6 @@ namespace DialogueSystem
         public DialogueSystemController()
         {
             Model = new DialogueSystemModel();
-            //View = new DialogueSystemView();
-         //  DialogueAnswerClear();
-            //dialogueCanvas.enabled = false;
 
             ButtonClick.MouseClickEvent += SelectAnswer;
             ButtonClick.KeyBoardButtonDownEvent += ButtonClickNumber;
