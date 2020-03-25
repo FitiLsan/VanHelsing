@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class SphereInitilizeController : IAwake
+    public sealed class SphereInitilizeController : IAwake
     {
         #region Field
 
@@ -27,7 +27,7 @@ namespace BeastHunter
         public void OnAwake()
         {
             var SphereData = Data.SphereData;
-            GameObject instance = GameObject.Instantiate(SphereData.Prefab);
+            GameObject instance = GameObject.Instantiate(SphereData.SphereStruct.Prefab);
             SphereModel Sphere = new SphereModel(instance, SphereData);
             _context._sphereModel = Sphere;
         }

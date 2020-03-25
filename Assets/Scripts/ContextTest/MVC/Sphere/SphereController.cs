@@ -26,8 +26,7 @@ namespace BeastHunter
 
         public void Updating()
         {
-            _context._sphereModel.Move();
-            _context._sphereModel.ChangeBox();
+            _context._sphereModel.Initilize();
         }
 
         #endregion
