@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+
 
 namespace BeastHunter
 {
@@ -30,6 +30,20 @@ namespace BeastHunter
 
 
         #region Methods
+
+        public bool CheckGround(Vector3 position, float distanceRay, out Vector3 hitPoint)
+        {
+            hitPoint = Vector3.zero;
+
+            bool isHit = Physics.Raycast(position, Vector3.down, out RaycastHit hit, distanceRay);
+
+            if (isHit)
+            {
+                hitPoint = hit.point;
+            }
+
+            return isHit;
+        }
 
         public List<ITrigger> GetObjectsInRadius(Vector2 position, float radius, int layerMask = LayerManager.DEFAULT_LAYER)
         {
@@ -72,7 +86,6 @@ namespace BeastHunter
                 }
             }
 
-
             return outBuffer;
         }
 
@@ -95,6 +108,7 @@ namespace BeastHunter
 
             return result;
         }
+
         #endregion
     }
 }

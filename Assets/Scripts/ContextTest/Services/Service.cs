@@ -14,7 +14,6 @@
         protected Service(Contexts contexts)
         {
             _contexts = contexts;
-
         }
 
         #endregion
