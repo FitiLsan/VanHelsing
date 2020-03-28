@@ -1,18 +1,14 @@
 ﻿using UnityEngine;
 
-public class SphereModel
+
+public sealed class SphereModel
 {
+    #region Properties
 
-
-    #region Property
-
-    public GameObject SphereTarget;
-
-    public SphereCollider SphereRadius;
-
-    public Transform SphereTransform;
-
-    public float SphereSpeed;
+    public SphereCollider SphereCollider { get; }
+    public Transform SphereTransform { get; }
+    public SphereData SphereData;
+    public SphereStruct SphereStruct;
 
     #endregion
 
@@ -21,12 +17,22 @@ public class SphereModel
 
     public SphereModel(GameObject prefab, SphereData spheredata)
     {
-        SphereSpeed = spheredata.speed;
+        SphereData = spheredata;
+        SphereStruct = spheredata.SphereStruct;
         SphereTransform = prefab.transform;
-        SphereTarget = spheredata.Target;
-        SphereRadius = prefab.gameObject.GetComponent<SphereCollider>();
+        SphereCollider = prefab.gameObject.GetComponent<SphereCollider>();
     }
 
     #endregion
 
+
+    #region Metods
+
+    public void Initilize()
+    {
+        SphereData.ChangeSphereCollider(SphereCollider, SphereStruct.SphereRadius);
+        SphereData.Move(SphereTransform, SphereStruct.Target, SphereStruct.MoveSpeed);
+    }
+
+    #endregion
 }

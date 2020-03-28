@@ -1,12 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
+
 [CreateAssetMenu(fileName = "NewModel", menuName = "CreateModel/Sphere", order = 0)]
-public class SphereData : ScriptableObject
+public sealed class SphereData : ScriptableObject
 {
-    public float speed;
+    #region Fields
 
-    public GameObject prefab;
+    public SphereStruct SphereStruct;
 
-    public GameObject Target;
+    #endregion
+
+
+    #region Metods
+
+    public void Move(Transform transform, Transform target, float speed)
+    {
+        transform.position = Vector3.MoveTowards
+            (transform.position,
+            target.transform.position,
+            speed);
+    }
+
+    public void ChangeSphereCollider(SphereCollider SphereCollider, float SphereRadius)
+    {
+        if(SphereCollider != null)
+        {
+            SphereCollider.radius = SphereRadius;
+        }       
+    }
+
+    #endregion
 }

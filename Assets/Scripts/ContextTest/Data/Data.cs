@@ -2,16 +2,19 @@
 using UnityEngine;
 
 
-namespace ContextTest
+namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "Data", menuName = "DataTest")]
     public sealed class Data : ScriptableObject
     {
         #region Fields
 
-        [SerializeField] public static SphereData _sphereData;
+        public static SphereData _sphereData;
 
         #endregion
+
+
+        #region Properties
 
         public static SphereData SphereData
         {
@@ -24,5 +27,7 @@ namespace ContextTest
                 return _sphereData;
             }
         }
+
+        #endregion
     }
 }

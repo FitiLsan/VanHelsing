@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace ContextTest
+
+namespace BeastHunter
 {
-    public class GameController : MonoBehaviour
+    public sealed class GameController : MonoBehaviour
     {
-        #region Feilds
+        #region Fields
 
         private GameStateController _activeController;
 
@@ -19,14 +18,30 @@ namespace ContextTest
         {
             GameContext context = new GameContext();
             Services services = Services.SharedInstance;
-            //services.Initialize(context);
+            services.Initialize(context);
 
             _activeController = new GameSystemsController(context, services);
             _activeController.Initialize();
         }
+
         private void Update()
         {
-            _activeController.Tick(TickType.Update);
+            _activeController.Updating(UpdateType.Update);
+        }
+
+        private void FixedUpdate()
+        {
+            _activeController.Updating(UpdateType.Fixed);
+        }
+
+        private void LateUpdate()
+        {
+            _activeController.Updating(UpdateType.Late);
+        }
+
+        private void OnDestroy()
+        {
+            _activeController.TearDown();
         }
 
         #endregion

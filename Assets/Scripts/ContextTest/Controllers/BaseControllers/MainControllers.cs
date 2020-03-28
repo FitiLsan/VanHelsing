@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace ContextTest
+﻿namespace BeastHunter
 {
     public sealed class MainControllers : ControllersStart
     {
@@ -10,7 +6,9 @@ namespace ContextTest
 
         public MainControllers(GameContext context, Services services)
         {
-            Add(new SphereController(context, services, Data.SphereData));
+            Add(new SphereInitilizeController(context, services));
+            Add(new SphereController(context, services));
+            Add(new InitializeInteractableObjectController(context, services));
         }
 
         #endregion

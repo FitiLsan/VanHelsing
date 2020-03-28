@@ -1,4 +1,4 @@
-﻿namespace ContextTest
+﻿namespace BeastHunter
 {
     public abstract class Contexts { }
 }

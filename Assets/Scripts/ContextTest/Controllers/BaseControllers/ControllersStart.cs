@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
-using BaseScripts;
 
-namespace ContextTest
+
+namespace BeastHunter
 {
-    public class ControllersStart : BaseController
+    public class ControllersStart : IAwake, IUpdate, ICleanup, ITearDown
     {
         #region Fields
 
         protected readonly List<IAwake> _awakeControllers;
-        protected readonly List<ITick> _tickControllers;
+        protected readonly List<IUpdate> _updateControllers;
+        protected readonly List<ICleanup> _cleanupControllers;
+        protected readonly List<ITearDown> _tearDownControllers;
 
         #endregion
 
@@ -18,19 +20,21 @@ namespace ContextTest
         protected ControllersStart()
         {
             _awakeControllers = new List<IAwake>();
-            _tickControllers = new List<ITick>();
+            _updateControllers = new List<IUpdate>();
+            _cleanupControllers = new List<ICleanup>();
+            _tearDownControllers = new List<ITearDown>();
         }
 
         #endregion
 
 
-        #region Tick
+        #region Updating
 
-        public override void Tick()
+        public void Updating()
         {
-            for (var index = 0; index < _tickControllers.Count; ++index)
+            for (var index = 0; index < _updateControllers.Count; index++)
             {
-                _tickControllers[index].Tick();
+                _updateControllers[index].Updating();
             }
         }
 
@@ -39,11 +43,37 @@ namespace ContextTest
 
         #region OnAwake
 
-        public override void OnAwake()
+        public void OnAwake()
         {
-            for (var index = 0; index < _awakeControllers.Count; ++index)
+            for (var index = 0; index < _awakeControllers.Count; index++)
             {
                 _awakeControllers[index].OnAwake();
+            }
+        }
+
+        #endregion
+
+
+        #region ICleanup
+
+        public virtual void Cleanup()
+        {
+            for (var index = 0; index < _cleanupControllers.Count; index++)
+            {
+                _cleanupControllers[index].Cleanup();
+            }
+        }
+
+        #endregion
+
+
+        #region ITearDown
+
+        public virtual void TearDown()
+        {
+            for (var index = 0; index < _tearDownControllers.Count; index++)
+            {
+                _tearDownControllers[index].TearDown();
             }
         }
 
@@ -54,14 +84,24 @@ namespace ContextTest
 
         protected virtual ControllersStart Add(IController controller)
         {
-            if (controller is ITick tickController)
+            if (controller is IUpdate updateController)
             {
-                _tickControllers.Add(tickController);
+                _updateControllers.Add(updateController);
             }
 
             if (controller is IAwake awakeController)
             {
                 _awakeControllers.Add(awakeController);
+            }
+
+            if (controller is ICleanup cleanupController)
+            {
+                _cleanupControllers.Add(cleanupController);
+            }
+
+            if (controller is ITearDown tearDownController)
+            {
+                _tearDownControllers.Add(tearDownController);
             }
             return this;
         }
