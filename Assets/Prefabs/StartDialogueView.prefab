@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 20060835954078239}
   - component: {fileID: 6920201082720871976}
-  - component: {fileID: 6059704821100474215}
+  - component: {fileID: 6122683192883833822}
   m_Layer: 0
   m_Name: StartDialogueView
   m_TagString: Untagged
@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4553418772370073976}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
+  m_LocalScale: {x: 1, y: 1.1939, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -51,8 +51,8 @@ MonoBehaviour:
   canvasNPC: {fileID: 0}
   _npcID: 0
   dialogueSystemView: {fileID: 0}
---- !u!135 &6059704821100474215
-SphereCollider:
+--- !u!65 &6122683192883833822
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -62,5 +62,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.61, y: 0.53, z: 1.74}
+  m_Center: {x: 1.22, y: 0, z: 0}

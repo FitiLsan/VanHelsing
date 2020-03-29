@@ -1,16 +1,14 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 
 namespace BeastHunter
 {
 
     [Serializable]
-    public struct StartDialogueStruct
+    public class DialogueSystemStruct
     {
         #region Fields
-
         public GameObject Prefab;
-        public Transform PlayerTransform;
         #endregion
     }
 }

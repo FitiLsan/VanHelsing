@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class StartDialogueModel
 {
+    #region Fields
+    public GameContext _context;
+    #endregion
     #region Properties
 
     public Transform StartDialogueTransform;// { get; }
@@ -17,11 +20,12 @@ public class StartDialogueModel
 
     #region ClassLifeCycle
 
-    public StartDialogueModel(GameObject prefab, StartDialogueData startDialogueData)
+    public StartDialogueModel(GameObject prefab, StartDialogueData startDialogueData, GameContext context)
     {
         StartDialogueData = startDialogueData;
         StartDialogueStruct = startDialogueData.StartDialogueStruct;
         StartDialogueTransform = prefab.transform;
+        _context = context;
     }
 
     #endregion
@@ -30,6 +34,7 @@ public class StartDialogueModel
     public void Initilize()
     {
        parentTransform= StartDialogueData.GetParent();
+        // create view;
     }
 
     #endregion

@@ -12,7 +12,9 @@ namespace BeastHunter
         public static SphereData _sphereData;
 
         public static StartDialogueData _startDialogueData;
-    
+
+        public static DialogueSystemData _dialogueSystemData;
+
 
         #endregion
 
@@ -43,6 +45,17 @@ namespace BeastHunter
             }
         }
 
+        public static DialogueSystemData DialogueSystemData
+        {
+            get
+            {
+                if (_dialogueSystemData == null)
+                {
+                    _dialogueSystemData = Resources.Load<DialogueSystemData>("Data/DialogueSystemData");
+                }
+                return _dialogueSystemData;
+            }
+        }
         #endregion
     }
 }

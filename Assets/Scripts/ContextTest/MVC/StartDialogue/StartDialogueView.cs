@@ -32,7 +32,7 @@ namespace BeastHunter
                     canvasNPC = Instantiate(canvasPref);
                 }
             }
-            dialogueSystemView = FindObjectOfType<DialogueSystemView>();
+            //dialogueSystemView = FindObjectOfType<DialogueSystemView>();
             text = canvasNPC.transform.Find("Image").gameObject.GetComponentInChildren<Text>();
 
 
@@ -40,12 +40,10 @@ namespace BeastHunter
 
         private void Start()
         {
-      
-            //  Controller = StartScript.GetStartScript.StartDialogueController;
+            dialogueSystemView = FindObjectOfType<DialogueSystemView>();
             canvasNPC.SetActive(false);
             text.text = "\"E\" Начать диалог";
-            dialogueSystemModel = StartScript.GetStartScript.DialogueSystemController.Model;
-            //Model = GameObject.FindGameObjectWithTag("");
+           // StartScript.GetStartScript.DialogueSystemController.Model;
         }
 
         public void OnTriggerEnter(Collider other)
@@ -53,10 +51,10 @@ namespace BeastHunter
            
             if (other.transform.tag == "NPC")
             {
+                dialogueSystemModel = Model._context._dialogueSystemModel;
                 var getNpcInfo = other.GetComponent<IGetNpcInfo>().GetInfo();
                 _npcID = getNpcInfo.Item1;
                 npcPos = getNpcInfo.Item2;
-                // Controller.GetView(this);
                 canvasNPC.transform.position = new Vector3(npcPos.x, npcPos.y + 1.5f, npcPos.z);//Controller.GetCanvasOffset(), npcPos.z);
                 Model.dialogAreaEnter = true;
 

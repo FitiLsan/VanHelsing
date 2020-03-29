@@ -65,7 +65,7 @@ namespace BaseScripts
             //Находим необходимые контроллеры которые висят на объектах
             SwordStartController = FindObjectOfType<SwordStartController>();
           //  StartDialogueController = new StartDialogueController();
-            DialogueSystemController = new DialogueSystemController();
+          //  DialogueSystemController = new DialogueSystemController();
 
             #region Добавляем контроллеры в коллекцию
 
@@ -80,7 +80,7 @@ namespace BaseScripts
             _allControllers.Add(InventoryController);
             _allControllers.Add(DayTimeController);
          //   _allControllers.Add(StartDialogueController);
-            _allControllers.Add(DialogueSystemController);
+          //  _allControllers.Add(DialogueSystemController);
             #endregion
         }
 
@@ -165,7 +165,7 @@ namespace BaseScripts
 
      //   public StartDialogueController StartDialogueController { get; private set; }
 
-        public DialogueSystemController DialogueSystemController { get; private set; }
+      //  public DialogueSystemController DialogueSystemController { get; private set; }
 
         /// <summary>
         /// Контроллер времени суток

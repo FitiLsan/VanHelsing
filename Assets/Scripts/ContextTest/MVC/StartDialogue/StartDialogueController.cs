@@ -14,7 +14,7 @@ namespace BeastHunter
         #region ClassLifeCycle
         public StartDialogueController(GameContext context, Services services)
         {
-            _context = context;
+            _context = context;   
         }
         #endregion
         #region Updating
