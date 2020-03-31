@@ -10,6 +10,7 @@ namespace BeastHunter
         #region Fields
 
         public SphereModel _sphereModel;
+        public WolfModel _wolfModel;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;
