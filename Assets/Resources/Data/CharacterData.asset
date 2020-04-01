@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d188b74f1b32ed747b065a91ad8e0d3c, type: 3}
+  m_Name: CharacterData
+  m_EditorClassIdentifier: 
+  _characterStruct:
+    _prefab: {fileID: 1210876326423076, guid: bcdf5c806f4211d4f9d3698be5a0ca9b, type: 3}
+    _characterCamera: {fileID: 5296010943117555874, guid: 331dcbff4c90e7249a42146bd6820d5b,
+      type: 3}
+    _characterCinemachineCamera: {fileID: 1046887095545056062, guid: ffe73034ef64698439bb105d6f12a131,
+      type: 3}
+    _characterAnimator: {fileID: 9100000, guid: a8be910b9daf62b46bbc4d77d12e66a7,
+      type: 2}
+    _instantiatePosition: {x: 80, y: 30, z: 90}
+    _instantiateDirection: -40
+    _rigitbodyMass: 1
+    _rigitbodyDrag: 0
+    _rigitbodyAngularDrag: 0.5
+    _capsuleColliderCenter: {x: 0, y: 1, z: 0}
+    _capsuleColliderRadius: 0.3
+    _capsuleColliderHeight: 1.92
+    _walkSpeed: 2.5
+    _runSpeed: 7.8
+    _inBattleSpeedReduction: 0.6
+    _jumpForce: 4.8
+    _fallingForce: 1
+    _longJumpFallingForce: 2
+    _groundCheckHeight: 1.14
+    _speedMeasureFrame: 0.1
+    _accelerationLag: 0.07
+    _decelerationLag: 0
+    _directionChangeLag: 0.15
+    _maximalHealth: 100
+    _currentlHealth: 100
+    _maximalStamina: 100
+    _currentStamina: 100
+    _cameraHeight: 1.56
+    _cameraLowSideAngle: 45
+    _cameraHalfSideAngle: 90
+    _cameraBackSideAngle: 215
+    _cameraBackAngle: 180
