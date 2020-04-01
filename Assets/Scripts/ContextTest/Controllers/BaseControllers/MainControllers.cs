@@ -6,9 +6,10 @@
 
         public MainControllers(GameContext context, Services services)
         {
+            Add(new InitializeInteractableObjectController(context, services));
             Add(new SphereInitilizeController(context, services));
             Add(new SphereController(context, services));
-            Add(new InitializeInteractableObjectController(context, services));
+            Add(new TargetController(context, services));
         }
 
         #endregion
