@@ -1,41 +1,60 @@
-﻿using BeastHunter;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 
-public class StartDialogueModel
+namespace BeastHunter
 {
-    #region Fields
-    public GameContext _context;
-    #endregion
-    #region Properties
 
-    public Transform StartDialogueTransform;// { get; }
-    public StartDialogueData StartDialogueData;
-    public StartDialogueStruct StartDialogueStruct;
-    public Transform parentTransform { get; private set; }
 
-    #endregion
-    public float canvasOffset = 1.5f;
-    public bool _startDialogFlag;
-    public bool dialogAreaEnter;
-
-    #region ClassLifeCycle
-
-    public StartDialogueModel(GameObject prefab, StartDialogueData startDialogueData, GameContext context)
+    public class StartDialogueModel
     {
-        StartDialogueData = startDialogueData;
-        StartDialogueStruct = startDialogueData.StartDialogueStruct;
-        StartDialogueTransform = prefab.transform;
-        _context = context;
+        #region Fields
+        public GameContext _context;
+
+        public GameObject canvasNpc;
+        public DialogueSystemView dialogueSystemView;
+        public DialogueSystemModel dialogueSystemModel;
+
+
+        public float canvasOffset = 1.5f;
+        public bool _startDialogFlag;
+        public bool dialogAreaEnter;
+        #endregion
+
+        #region Properties
+
+        public Transform StartDialogueTransform;// { get; }
+        public StartDialogueData StartDialogueData;
+        public StartDialogueStruct StartDialogueStruct;
+      //  public Transform parentTransform { get; private set; }
+        #endregion
+
+        #region ClassLifeCycle
+
+        public StartDialogueModel(GameObject prefab,GameObject canvasNpc, StartDialogueData startDialogueData, GameContext context)
+        {
+            StartDialogueTransform = prefab.transform;
+            StartDialogueData = startDialogueData;
+            StartDialogueStruct = startDialogueData.StartDialogueStruct;
+            _context = context;
+            this.canvasNpc = canvasNpc;
+        }
+
+        #endregion
+        #region Metods
+
+        public void Initilize()
+        {
+            StartDialogueData.DialogUsing(this);            
+        }
+
+        public void GetDialogueSystemModel(DialogueSystemModel model)
+        {
+            dialogueSystemModel = model;
+            dialogueSystemView = GameObject.FindObjectOfType<DialogueSystemView>();
+        }
+
+        
+
+        #endregion
     }
-
-    #endregion
-    #region Metods
-
-    public void Initilize()
-    {
-       parentTransform= StartDialogueData.GetParent();
-        // create view;
-    }
-
-    #endregion
 }

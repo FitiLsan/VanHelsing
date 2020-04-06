@@ -24,7 +24,7 @@ namespace BeastHunter
 
             ButtonClick.MouseClickEvent += SelectAnswer;
             ButtonClick.KeyBoardButtonDownEvent += ButtonClickNumber;
-            StartDialogueController.ShowCanvasEvent += CanvasSwitcher;
+           // StartDialogueData.ShowCanvasEvent += CanvasSwitcher;
         }
         #endregion
         #region Updating

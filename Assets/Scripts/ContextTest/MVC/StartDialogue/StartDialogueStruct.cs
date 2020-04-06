@@ -11,6 +11,7 @@ namespace BeastHunter
 
         public GameObject Prefab;
         public Transform PlayerTransform;
+        public GameObject PrefabCanvasNpc;
         #endregion
     }
 }
