@@ -1,5 +1,4 @@
-﻿using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace BeastHunter
@@ -10,7 +9,11 @@ namespace BeastHunter
         #region Fields
 
         public static SphereData _sphereData;
+<<<<<<< HEAD
         public static WolfData _wolfData;
+=======
+        public static CharacterData _characterData;
+>>>>>>> upstream
 
         #endregion
 
@@ -29,6 +32,7 @@ namespace BeastHunter
             }
         }
 
+<<<<<<< HEAD
         public static WolfData WolfData
         {
             get
@@ -38,6 +42,17 @@ namespace BeastHunter
                     _wolfData = Resources.Load<WolfData>("Data/WolfData");
                 }
                 return _wolfData;
+=======
+        public static CharacterData CharacterData
+        {
+            get
+            {
+                if (_characterData == null)
+                {
+                    _characterData = Resources.Load<CharacterData>("Data/CharacterData");
+                }
+                return _characterData;
+>>>>>>> upstream
             }
         }
 
