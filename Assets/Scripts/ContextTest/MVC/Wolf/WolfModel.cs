@@ -31,6 +31,7 @@ public sealed class WolfModel
     public void Initialize()
     {
         WolfData.Move(WolfTransfrom, WolfStruct.Target, WolfStruct.MoveSpeed);
+        WolfData.ChangeWolfCollider(WolfCollider, WolfStruct.SphereRadius);
     }
 
     #endregion

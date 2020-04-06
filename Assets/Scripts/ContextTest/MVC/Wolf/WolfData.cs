@@ -6,7 +6,7 @@ public sealed class WolfData : ScriptableObject
 {
     #region Fields
 
-    public WolfStruct WolfStruct { get; internal set; }
+    public WolfStruct WolfStruct;
 
     #endregion
 
@@ -18,9 +18,12 @@ public sealed class WolfData : ScriptableObject
         transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed);
     }
 
-    public void ChangeWolfCollider()
+    public void ChangeWolfCollider(SphereCollider sphereCollider, float sphereRadius)
     {
-
+        if(sphereCollider!=null)
+        {
+            sphereCollider.radius = sphereRadius;
+        }
     }
 
     #endregion
