@@ -37,11 +37,11 @@ namespace BeastHunter {
             canvasNpc = Model.canvasNpc;
             if (Model.dialogAreaEnter)
             {
-               // if (!dialogueSystemView.dialogueCanvas.enabled)
-              //  {
+                if (!dialogueSystemView.dialogueCanvas.enabled)
+                {
                     canvasNpc.SetActive(true);
                     canvasNpc.transform.LookAt(Camera.main.transform);
-              //  }
+                }
                 if (Input.GetButton("Use"))
                 {
                     DialogStatus(true);
@@ -58,10 +58,10 @@ namespace BeastHunter {
                 if (Model != null)
                 {
                     canvasNpc.SetActive(false);
-                   // if (dialogueSystemView.dialogueCanvas.enabled)
-                 //   {
+                    if (dialogueSystemView.dialogueCanvas.enabled)
+                    {
                         DialogStatus(false);
-                  //  }
+                    }
                 }
             }
         }
@@ -93,34 +93,22 @@ namespace BeastHunter {
             startDialogueTransform.position = parent.position;
         }
 
-        //====View=====//
-        
-        //public void OnTriggerEnter(Collider other)
-        //{
+        public void OnTriggerEnter(Collider other)
+        {
+                dialogueSystemModel = Model._context._dialogueSystemModel;
+                var getNpcInfo = other.GetComponent<IGetNpcInfo>().GetInfo();
+                _npcID = getNpcInfo.Item1;
+                npcPos = getNpcInfo.Item2;
+                canvasNpc.transform.position = new Vector3(npcPos.x, npcPos.y + GetCanvasOffset(), npcPos.z);
+                DialogAreaEnterSwitcher(true);
+                dialogueSystemModel.npcID = _npcID;
+                dialogueSystemModel.dialogueNode = DialogueGenerate.DialogueCreate(_npcID);
+        }
 
-        //    if (other.transform.tag == "NPC")
-        //    {
-        //        Debug.Log("enter into npc");
-        //        dialogueSystemModel = Model._context._dialogueSystemModel;
-        //        //var getNpcInfo = other.GetComponent<IGetNpcInfo>().GetInfo();
-        //        //_npcID = getNpcInfo.Item1;
-        //        //npcPos = getNpcInfo.Item2;
-        //        //canvasNpc.transform.position = new Vector3(npcPos.x, npcPos.y + Model.canvasOffset, npcPos.z);//Controller.GetCanvasOffset(), npcPos.z);
-        //        //Model.dialogAreaEnter = true;
-        //       // //   Controller.DialogAreaEnterSwitcher(true);
-        //        dialogueSystemModel.npcID = _npcID;
-        //        dialogueSystemModel.dialogueNode = DialogueGenerate.DialogueCreate(_npcID);
-        //    }
-        //}
-
-        //public void OnTriggerExit(Collider other)
-        //{
-        //    if (other.transform.tag == "NPC") Debug.Log("Exit from npc");
-        //    //{
-        //    //    Model.dialogAreaEnter = false;
-        //    //   // //   Controller.DialogAreaEnterSwitcher(false);
-        //    //}
-        //}
+        public void OnTriggerExit(Collider other)
+        {
+            DialogAreaEnterSwitcher(false);
+        }
 
         public void GetDialogueSystemModel(DialogueSystemModel model)
         {

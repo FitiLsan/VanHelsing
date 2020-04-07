@@ -22,10 +22,9 @@ namespace BeastHunter
 
         #region Properties
 
-        public Transform StartDialogueTransform;// { get; }
+        public Transform StartDialogueTransform;
         public StartDialogueData StartDialogueData;
         public StartDialogueStruct StartDialogueStruct;
-      //  public Transform parentTransform { get; private set; }
         #endregion
 
         #region ClassLifeCycle
@@ -37,8 +36,6 @@ namespace BeastHunter
             StartDialogueStruct = startDialogueData.StartDialogueStruct;
             _context = context;
             this.canvasNpc = canvasNpc;
-            var view = prefab.GetComponent<StartDialogueView>();
-            view.GetModel(this);
         }
 
         #endregion
@@ -48,14 +45,6 @@ namespace BeastHunter
         {
             StartDialogueData.DialogUsing(this);            
         }
-
-        //public void GetDialogueSystemModel(DialogueSystemModel model)
-        //{
-        //    dialogueSystemModel = model;
-        //    dialogueSystemView = GameObject.FindObjectOfType<DialogueSystemView>();
-        //}
-
-
         #endregion
     }
 }
