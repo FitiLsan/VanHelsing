@@ -22,7 +22,7 @@ namespace BeastHunter
         #endregion
 
 
-        #region OnAwake
+        #region IAwake
 
         public void OnAwake()
         {
@@ -58,9 +58,9 @@ namespace BeastHunter
 
         #region Methods
 
-        private bool OnFilterHandler(Collider obj)
+        private bool OnFilterHandler(Collider tagObject)
         {
-            return obj.CompareTag(TagManager.SPHERE);
+            return tagObject.CompareTag(TagManager.SPHERE);
         }
 
         private void OnTriggerEnterHandler(ITrigger enteredObject)
