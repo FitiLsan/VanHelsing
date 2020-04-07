@@ -4,7 +4,7 @@ namespace BaseScripts
     /// <summary>
     /// Абстрактный класс, от которого наследуются все не MonoBehavior контроллеры
     /// </summary>
-    public abstract class BaseController : BaseEntity, ITick, IAwake
+    public abstract class BaseController : BaseEntity, IAwake
     {
         /// <summary>
         /// Состояние контроллера (вкл/выкл)

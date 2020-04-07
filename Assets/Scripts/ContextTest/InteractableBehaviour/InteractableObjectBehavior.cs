@@ -15,7 +15,7 @@ namespace BeastHunter
 
         #region Properties
 
-        public Predicate<Collider2D> OnFilterHandler { get; set; }
+        public Predicate<Collider> OnFilterHandler { get; set; }
         public Action<ITrigger> OnTriggerEnterHandler { get; set; }
         public Action<ITrigger> OnTriggerExitHandler { get; set; }
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
@@ -28,7 +28,7 @@ namespace BeastHunter
 
         #region UnityMethods
 
-        private void OnTriggerEnter2D(Collider2D other)
+        private void OnTriggerEnter(Collider other)
         {
             if (OnFilterHandler.Invoke(other))
             {
@@ -36,7 +36,7 @@ namespace BeastHunter
             }
         }
 
-        private void OnTriggerExit2D(Collider2D other)
+        private void OnTriggerExit(Collider other)
         {
             if (OnFilterHandler.Invoke(other))
             {
