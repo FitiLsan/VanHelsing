@@ -22,7 +22,7 @@ namespace BeastHunter
         #endregion
 
 
-        #region Updating
+        #region IUpdate
 
         public void Updating()
         {
@@ -32,7 +32,7 @@ namespace BeastHunter
         #endregion
 
 
-        #region OnAwake
+        #region IAwake
 
         public void OnAwake()
         {

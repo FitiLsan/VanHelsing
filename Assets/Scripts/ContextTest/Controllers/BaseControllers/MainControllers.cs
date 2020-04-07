@@ -6,6 +6,7 @@
 
         public MainControllers(GameContext context, Services services)
         {
+            Add(new InitializeInteractableObjectController(context, services));
             Add(new SphereInitilizeController(context, services));
             Add(new SphereController(context, services));
             Add(new DialogueSystemInitializeController(context, services));
@@ -13,7 +14,9 @@
             Add(new StartDialogueInitializeController(context, services));
             Add(new StartDialogueController(context, services));
             Add(new InitializeInteractableObjectController(context, services));
-            
+            Add(new CharacterInitilizeController(context, services));
+            Add(new CharacterInputController(context, services));
+            Add(new TargetController(context, services));
         }
 
         #endregion
