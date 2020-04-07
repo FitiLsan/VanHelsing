@@ -95,32 +95,32 @@ namespace BeastHunter {
 
         //====View=====//
         
-        public void OnTriggerEnter(Collider other)
-        {
+        //public void OnTriggerEnter(Collider other)
+        //{
 
-            if (other.transform.tag == "NPC")
-            {
-                Debug.Log("enter into npc");
-                dialogueSystemModel = Model._context._dialogueSystemModel;
-                //var getNpcInfo = other.GetComponent<IGetNpcInfo>().GetInfo();
-                //_npcID = getNpcInfo.Item1;
-                //npcPos = getNpcInfo.Item2;
-                //canvasNpc.transform.position = new Vector3(npcPos.x, npcPos.y + Model.canvasOffset, npcPos.z);//Controller.GetCanvasOffset(), npcPos.z);
-                //Model.dialogAreaEnter = true;
-               // //   Controller.DialogAreaEnterSwitcher(true);
-                dialogueSystemModel.npcID = _npcID;
-                dialogueSystemModel.dialogueNode = DialogueGenerate.DialogueCreate(_npcID);
-            }
-        }
+        //    if (other.transform.tag == "NPC")
+        //    {
+        //        Debug.Log("enter into npc");
+        //        dialogueSystemModel = Model._context._dialogueSystemModel;
+        //        //var getNpcInfo = other.GetComponent<IGetNpcInfo>().GetInfo();
+        //        //_npcID = getNpcInfo.Item1;
+        //        //npcPos = getNpcInfo.Item2;
+        //        //canvasNpc.transform.position = new Vector3(npcPos.x, npcPos.y + Model.canvasOffset, npcPos.z);//Controller.GetCanvasOffset(), npcPos.z);
+        //        //Model.dialogAreaEnter = true;
+        //       // //   Controller.DialogAreaEnterSwitcher(true);
+        //        dialogueSystemModel.npcID = _npcID;
+        //        dialogueSystemModel.dialogueNode = DialogueGenerate.DialogueCreate(_npcID);
+        //    }
+        //}
 
-        public void OnTriggerExit(Collider other)
-        {
-            if (other.transform.tag == "NPC") Debug.Log("Exit from npc");
-            //{
-            //    Model.dialogAreaEnter = false;
-            //   // //   Controller.DialogAreaEnterSwitcher(false);
-            //}
-        }
+        //public void OnTriggerExit(Collider other)
+        //{
+        //    if (other.transform.tag == "NPC") Debug.Log("Exit from npc");
+        //    //{
+        //    //    Model.dialogAreaEnter = false;
+        //    //   // //   Controller.DialogAreaEnterSwitcher(false);
+        //    //}
+        //}
 
         public void GetDialogueSystemModel(DialogueSystemModel model)
         {

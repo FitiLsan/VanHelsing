@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 
 namespace BeastHunter
 {
@@ -18,6 +17,7 @@ namespace BeastHunter
         public float canvasOffset = 1.5f;
         public bool _startDialogFlag;
         public bool dialogAreaEnter;
+        
         #endregion
 
         #region Properties
@@ -37,6 +37,8 @@ namespace BeastHunter
             StartDialogueStruct = startDialogueData.StartDialogueStruct;
             _context = context;
             this.canvasNpc = canvasNpc;
+            var view = prefab.GetComponent<StartDialogueView>();
+            view.GetModel(this);
         }
 
         #endregion
@@ -47,13 +49,12 @@ namespace BeastHunter
             StartDialogueData.DialogUsing(this);            
         }
 
-        public void GetDialogueSystemModel(DialogueSystemModel model)
-        {
-            dialogueSystemModel = model;
-            dialogueSystemView = GameObject.FindObjectOfType<DialogueSystemView>();
-        }
+        //public void GetDialogueSystemModel(DialogueSystemModel model)
+        //{
+        //    dialogueSystemModel = model;
+        //    dialogueSystemView = GameObject.FindObjectOfType<DialogueSystemView>();
+        //}
 
-        
 
         #endregion
     }

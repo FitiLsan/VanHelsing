@@ -22,8 +22,11 @@ namespace BeastHunter
         public void Updating()
         {
             _context._startDialogueModel.Initilize();         
+
+
         }
+        
         #endregion
-      
+
     }
 }
