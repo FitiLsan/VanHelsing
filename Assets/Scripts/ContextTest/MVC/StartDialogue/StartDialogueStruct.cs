@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System;
 
+
 namespace BeastHunter
 {
-
     [Serializable]
     public struct StartDialogueStruct
     {
@@ -12,6 +12,7 @@ namespace BeastHunter
         public GameObject Prefab;
         public Transform PlayerTransform;
         public GameObject PrefabCanvasNpc;
+
         #endregion
     }
 }

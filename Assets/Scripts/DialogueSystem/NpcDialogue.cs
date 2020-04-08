@@ -1,19 +1,35 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
-public class NpcDialogue : MonoBehaviour, IGetNpcInfo
+namespace BeastHunter
 {
-    public Vector3 npcPos;
-    public int _npcID;
-
-    private void Awake()
+    public class NpcDialogue : MonoBehaviour, IGetNpcInfo
     {
-        npcPos = gameObject.transform.position;
-    }
-    public (int, Vector3) GetInfo()
-    {
-        var turple = (_npcID, npcPos);
-        return turple;
-    }
+        #region Fields
+       
+        public Vector3 npcPos;
+        public int _npcID;
 
+        #endregion
+
+
+        #region UnityMethods
+
+        private void Awake()
+        {
+            npcPos = gameObject.transform.position;
+        }
+
+        #endregion
+
+        #region Methods
+
+        public (int, Vector3) GetInfo()
+        {
+            var turple = (_npcID, npcPos);
+            return turple;
+        }
+
+        #endregion
+
+    }
 }

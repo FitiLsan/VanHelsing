@@ -1,26 +1,28 @@
 ﻿using BaseScripts;
 using UnityEngine;
 
-public sealed class LockCharAction
+namespace BeastHunter
 {
-    #region Methods
-
-    public static void LockAction(bool isCanvasShow)
+    public sealed class LockCharAction
     {
-        if (isCanvasShow)
+        #region Methods
+
+        public static void LockAction(bool isCanvasShow)
         {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            StartScript.GetStartScript.InputController.LockAction();
+            if (isCanvasShow)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                StartScript.GetStartScript.InputController.LockAction();
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                StartScript.GetStartScript.InputController.UnlockAction();
+            }
         }
-        else
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            StartScript.GetStartScript.InputController.UnlockAction();
-        }
+
+        #endregion
     }
-
-    #endregion
-
 }

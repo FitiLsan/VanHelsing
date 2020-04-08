@@ -1,11 +1,15 @@
 ﻿using Extensions;
 using System.Collections.Generic;
+using DialogueSystem;
 
-namespace DialogueSystem
 
+namespace BeastHunter
 {
-    public class DialogueGenerate
+    public sealed class DialogueGenerate
     {
+
+        #region Methods
+        
         public static List<Dialogue> DialogueCreate(int _npcID)
         {
             List<Dialogue> dialogueNode = new List<Dialogue>();
@@ -32,9 +36,11 @@ namespace DialogueSystem
                     var answer_taskQuest = answer_dt.Rows[i].GetInt(9);
                     dialogueNode[j].PlayerAnswers.Add(new PlayerAnswer(answer_id, answer_text, answer_toNode, answer_endDialogue, answer_isStartQuest, answer_isEndQuest, answer_questId, answer_taskQuest));
                 }
-
             }
             return dialogueNode;
         }
+
+        #endregion
+
     }
 }

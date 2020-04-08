@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 
 namespace BeastHunter
 {
@@ -12,6 +11,7 @@ namespace BeastHunter
 
         #endregion
 
+
         #region ClassLifeCycle
 
         public StartDialogueInitializeController(GameContext context, Services services)
@@ -20,6 +20,7 @@ namespace BeastHunter
         }
 
         #endregion
+
 
         #region IAwake
 

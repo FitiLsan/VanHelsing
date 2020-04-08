@@ -1,31 +1,30 @@
 ﻿using UnityEngine;
 
+
 namespace BeastHunter
 {
-
-
     public class StartDialogueModel
     {
         #region Fields
-        public GameContext _context;
 
-        public GameObject canvasNpc;
-        public DialogueSystemView dialogueSystemView;
+        public GameContext _context;
         public DialogueSystemModel dialogueSystemModel;
 
-
         public float canvasOffset = 1.5f;
-        public bool _startDialogFlag;
-        public bool dialogAreaEnter;
+        public bool isStartDialogueFlagOn;
+        public bool isDialogueAreaEnter;
         
         #endregion
+
 
         #region Properties
 
         public Transform StartDialogueTransform;
         public StartDialogueData StartDialogueData;
         public StartDialogueStruct StartDialogueStruct;
+
         #endregion
+
 
         #region ClassLifeCycle
 
@@ -35,16 +34,20 @@ namespace BeastHunter
             StartDialogueData = startDialogueData;
             StartDialogueStruct = startDialogueData.StartDialogueStruct;
             _context = context;
-            this.canvasNpc = canvasNpc;
+            startDialogueData.Model = this;
+            startDialogueData.canvasNpc = canvasNpc;
         }
 
         #endregion
+
+
         #region Metods
 
         public void Initilize()
         {
-            StartDialogueData.DialogUsing(this);            
+            StartDialogueData.DialogUsing();            
         }
+
         #endregion
     }
 }

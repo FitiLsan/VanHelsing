@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 namespace BeastHunter
 {
     public sealed class DialogueSystemInitializeController : IAwake
@@ -10,14 +11,19 @@ namespace BeastHunter
 
         #endregion
 
+
         #region ClassLifeCycle
 
         public DialogueSystemInitializeController(GameContext context, Services services)
         {
             _context = context;
         }
+
         #endregion
+
+
         #region IAwake
+
         public void OnAwake()
         {
             var DialogueSystemData = Data.DialogueSystemData;
@@ -25,6 +31,7 @@ namespace BeastHunter
             DialogueSystemModel DialogueSystem = new DialogueSystemModel(instance, DialogueSystemData);
             _context._dialogueSystemModel = DialogueSystem;
         }
+
         #endregion
     }
 }

@@ -1,6 +1,8 @@
 ﻿using DialogueSystem;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace BeastHunter
 {
@@ -8,17 +10,25 @@ namespace BeastHunter
     {
         #region Properties
 
-        public Transform DialogueSystemTransform;// { get; }
-        public DialogueSystemData DialogueSystemData;
-        public DialogueSystemStruct DialogueSystemStruct;
-        public Transform parentTransform { get; private set; }
+        public Transform DialogueSystemTransform{ get; }
+        public DialogueSystemData DialogueSystemData { get; }
+        public DialogueSystemStruct DialogueSystemStruct { get; }
+
+        public Button[] answerButtons { get; }
+        public Canvas dialogueCanvas { get; }
+        public Text dialogueNPCText { get; }
 
         #endregion
+
+
+        #region Fields
+
         public int currentNode;
-        public bool isDialogueReady;
-        public int npcID { get; set; }
-        [SerializeField]
+        public int npcID;
         public List<Dialogue> dialogueNode;
+
+        #endregion
+
 
         #region ClassLifeCycle
 
@@ -27,9 +37,20 @@ namespace BeastHunter
             DialogueSystemData = dialogueSystemData;
             DialogueSystemStruct = dialogueSystemData.DialogueSystemStruct;
             DialogueSystemTransform = prefab.transform;
+            dialogueSystemData.Model = this;
+            dialogueCanvas = prefab.GetComponentInChildren<Canvas>();
+            dialogueNPCText = prefab.GetComponentInChildren<Text>();
+            answerButtons = prefab.GetComponentsInChildren<Button>();
+            dialogueCanvas.enabled = false;
+
+            ButtonClick.MouseClickEvent += dialogueSystemData.SelectAnswer;
+            ButtonClick.KeyBoardButtonDownEvent += dialogueSystemData.ButtonClickNumber;
+            StartDialogueData.ShowCanvasEvent += dialogueSystemData.CanvasSwitcher;
         }
 
         #endregion
+
+
         #region Metods
 
         public void Initilize()

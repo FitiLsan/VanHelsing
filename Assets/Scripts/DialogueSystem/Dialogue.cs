@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using DialogueSystem;
 
 
-namespace DialogueSystem
+namespace BeastHunter
 {
     [Serializable]
     public sealed class Dialogue
     {
         #region Properties
 
-        public string NpcText { get; private set; }
-        
+        public string npcText { get; private set; }        
         public List<PlayerAnswer> PlayerAnswers { get; private set; }
 
         #endregion
@@ -20,7 +20,7 @@ namespace DialogueSystem
 
         public Dialogue(string npcText, List<PlayerAnswer> playerAnswers)
         {
-            NpcText = npcText;
+            this.npcText = npcText;
             PlayerAnswers = playerAnswers;
         }
 

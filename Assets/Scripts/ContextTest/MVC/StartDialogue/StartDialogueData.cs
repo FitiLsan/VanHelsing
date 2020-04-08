@@ -1,6 +1,6 @@
 ﻿using DialogueSystem;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 namespace BeastHunter {
     [CreateAssetMenu(fileName = "NewModel", menuName = "CreateModel/StartDialogue", order = 0)]
@@ -10,34 +10,29 @@ namespace BeastHunter {
 
         public StartDialogueStruct StartDialogueStruct;
         public StartDialogueModel Model;
-        //=================View==//
-        [SerializeField]
-        public GameObject canvasPref;
-        [SerializeField]
-        public Text text;
         public Vector3 npcPos;   
         public int _npcID;
-        public DialogueSystemView dialogueSystemView;
         public DialogueSystemModel dialogueSystemModel;
         public GameObject canvasNpc;
+
         #endregion
 
-        #region Metods
 
         #region Events
-        public delegate void DialogueView(bool isShow);  // вынести в EventManager?
+
+        public delegate void DialogueView(bool isShow);
         public static event DialogueView ShowCanvasEvent;
+
         #endregion
 
+   
+        #region Metods
 
-      
-        public void DialogUsing(StartDialogueModel Model)
+        public void DialogUsing()
         {
-            this.Model = Model;
-            canvasNpc = Model.canvasNpc;
-            if (Model.dialogAreaEnter)
+            if (Model.isDialogueAreaEnter)
             {
-                if (!dialogueSystemView.dialogueCanvas.enabled)
+                if (!dialogueSystemModel.dialogueCanvas.enabled)
                 {
                     canvasNpc.SetActive(true);
                     canvasNpc.transform.LookAt(Camera.main.transform);
@@ -58,7 +53,7 @@ namespace BeastHunter {
                 if (Model != null)
                 {
                     canvasNpc.SetActive(false);
-                    if (dialogueSystemView.dialogueCanvas.enabled)
+                    if (dialogueSystemModel.dialogueCanvas.enabled)
                     {
                         DialogStatus(false);
                     }
@@ -73,7 +68,7 @@ namespace BeastHunter {
 
         public void DialogAreaEnterSwitcher(bool isOn)
         {
-            Model.dialogAreaEnter = isOn;
+            Model.isDialogueAreaEnter = isOn;
         }
 
         public float GetCanvasOffset()
@@ -113,8 +108,8 @@ namespace BeastHunter {
         public void GetDialogueSystemModel(DialogueSystemModel model)
         {
             dialogueSystemModel = model;
-            dialogueSystemView = FindObjectOfType<DialogueSystemView>();
         }
+
         #endregion
     }
 }

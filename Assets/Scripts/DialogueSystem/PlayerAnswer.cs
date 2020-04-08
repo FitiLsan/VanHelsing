@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace DialogueSystem
 
+namespace DialogueSystem
 {
     [Serializable]
     public sealed class PlayerAnswer
