@@ -24,15 +24,28 @@ namespace BeastHunter
 
         #region Methods
 
-        public void UpdateAnimation(bool isGrounded, bool isRunning, bool isInBattleMode, bool isMovingForward, 
-            bool isTurningRight, bool isTurningLeft)
+        public void SetDefaultMovementAnimation(bool isMoving, bool isGrounded, float moveSpeed)
         {
+            CharacterAnimator.SetBool("IsMoving", isMoving);
             CharacterAnimator.SetBool("IsGrounded", isGrounded);
-            CharacterAnimator.SetBool("IsRunning", isRunning);
-            CharacterAnimator.SetBool("IsInBattleMode", isInBattleMode);
-            CharacterAnimator.SetBool("IsMovingForward", isMovingForward);
-            CharacterAnimator.SetBool("IsTurningRight", isTurningRight);
-            CharacterAnimator.SetBool("IsTurningLeft", isTurningLeft);
+            CharacterAnimator.SetFloat("MovementSpeed", moveSpeed);
+        }
+
+        public void SetBattleAnimation(float axisY, float axisX, bool isMoving)
+        {
+            CharacterAnimator.SetFloat("AxisY", axisY);
+            CharacterAnimator.SetFloat("AxisX", axisX);
+            CharacterAnimator.SetBool("IsMoving", isMoving);
+        }
+
+        public void SetJumpingAnimation()
+        {
+            //TODO
+        }
+
+        public void SetFallingAnimation()
+        {
+            //TODO
         }
 
         public void SetAnimationsSpeed(float speed)
@@ -43,6 +56,11 @@ namespace BeastHunter
         public void SetAnimationsBaseSpeed()
         {
             CharacterAnimator.speed = 1;
+        }
+
+        public void ChangeRuntimeAnimator(RuntimeAnimatorController newController)
+        {
+            CharacterAnimator.runtimeAnimatorController = newController;
         }
 
         #endregion
