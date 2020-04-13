@@ -10,6 +10,7 @@ namespace BeastHunter
         #region Fields
 
         public static SphereData _sphereData;
+        public static ButterflyData _butterflyData;
 
         #endregion
 
@@ -25,6 +26,18 @@ namespace BeastHunter
                     _sphereData = Resources.Load<SphereData>("Data/SphereData");
                 }
                 return _sphereData;
+            }
+        }
+
+        public static ButterflyData ButterflyData
+        {
+            get
+            {
+                if (_butterflyData == null)
+                {
+                    _butterflyData = Resources.Load<ButterflyData>("Data/ButterflyData");
+                }
+                return _butterflyData;
             }
         }
 

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6da35ebbad2bc048be3bbb657fbee9e, type: 3}
+  m_Name: ButterflyData
+  m_EditorClassIdentifier: 
+  ButterflyStruct:
+    MoveSpeed: 0.1
+    ButterflyRadius: 0.5
+    Prefab: {fileID: 6727500622053232648, guid: 043cc326f10746a4f9c21f14ae3552c6,
+      type: 3}
+    Target: {fileID: 8946489080760387140, guid: ad328408c8cfe1c4e8ec1b92ff795e48,
+      type: 3}
