@@ -3,17 +3,15 @@
 
 namespace BeastHunter
 {
-    public class StartDialogueModel
+    public sealed class StartDialogueModel
     {
         #region Fields
 
-        public GameContext _context;
-        public DialogueSystemModel dialogueSystemModel;
+        public GameContext Context;
+        public DialogueSystemModel DialogueSystemModel;
+        public bool IsStartDialogueFlagOn;
+        public bool IsDialogueAreaEnter;
 
-        public float canvasOffset = 1.5f;
-        public bool isStartDialogueFlagOn;
-        public bool isDialogueAreaEnter;
-        
         #endregion
 
 
@@ -28,14 +26,14 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public StartDialogueModel(GameObject prefab,GameObject canvasNpc, StartDialogueData startDialogueData, GameContext context)
+        public StartDialogueModel(GameObject prefab, GameObject canvasNpc, StartDialogueData startDialogueData, GameContext context)
         {
             StartDialogueTransform = prefab.transform;
             StartDialogueData = startDialogueData;
             StartDialogueStruct = startDialogueData.StartDialogueStruct;
-            _context = context;
+            Context = context;
             startDialogueData.Model = this;
-            startDialogueData.canvasNpc = canvasNpc;
+            startDialogueData.CanvasNpc = canvasNpc;
         }
 
         #endregion
@@ -43,7 +41,7 @@ namespace BeastHunter
 
         #region Metods
 
-        public void Initilize()
+        public void Execute()
         {
             StartDialogueData.DialogUsing();            
         }

@@ -7,8 +7,9 @@ namespace BeastHunter
     {
         #region Fields
 
-        private readonly GameContext _context;
+        private readonly GameContext context;
         private Collider target;
+
         #endregion
 
 
@@ -16,7 +17,7 @@ namespace BeastHunter
 
         public DialogueTriggerController(GameContext context, Services services)
         {
-            _context = context;
+            this.context = context;
         }
 
         #endregion
@@ -26,7 +27,7 @@ namespace BeastHunter
 
         public void OnAwake()
         {
-            var sphers = _context.GetTriggers(InteractableObjectType.Npc);
+            var sphers = context.GetTriggers(InteractableObjectType.Npc);
             foreach (var trigger in sphers)
             {
                 var targetBehaviour = trigger as TargetBehaviour;
@@ -43,8 +44,8 @@ namespace BeastHunter
 
         public void TearDown()
         {
-            var sphers = _context.GetTriggers(InteractableObjectType.Npc);
-            foreach (var trigger in sphers)
+            var npcs = context.GetTriggers(InteractableObjectType.Npc);
+            foreach (var trigger in npcs)
             {
                 var targetBehaviour = trigger as TargetBehaviour;
                 targetBehaviour.OnFilterHandler -= OnFilterHandler;
@@ -68,14 +69,14 @@ namespace BeastHunter
         {
             enteredObject.IsInteractable = true;
             Debug.Log($"Enter NPC Dialogue {target.name}");
-            _context._startDialogueModel.StartDialogueData.OnTriggerEnter(target);
+            context._startDialogueModel.StartDialogueData.OnTriggerEnter(target);
         }
 
         private void OnTriggerExitHandler(ITrigger enteredObject)
         {
             enteredObject.IsInteractable = false;
             Debug.Log($"Exit NPC Dialogue {target.name}");
-            _context._startDialogueModel.StartDialogueData.OnTriggerExit(target);
+            context._startDialogueModel.StartDialogueData.OnTriggerExit(target);
         }
 
         #endregion

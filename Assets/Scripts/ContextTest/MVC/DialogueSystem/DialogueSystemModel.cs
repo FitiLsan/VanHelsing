@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace BeastHunter
 {
-    public class DialogueSystemModel
+    public sealed class DialogueSystemModel
     {
         #region Properties
 
@@ -14,19 +14,19 @@ namespace BeastHunter
         public DialogueSystemData DialogueSystemData { get; }
         public DialogueSystemStruct DialogueSystemStruct { get; }
 
-        public Button[] answerButtons { get; }
-        public Canvas dialogueCanvas { get; }
-        public Text dialogueNPCText { get; }
+        public Button[] AnswerButtons { get; }
+        public Canvas DialogueCanvas { get; }
+        public Text DialogueNPCText { get; }
 
         #endregion
 
 
         #region Fields
 
-        public int currentNode;
-        public int npcID;
-        public List<Dialogue> dialogueNode;
-
+        public List<Dialogue> DialogueNode;
+        public int CurrentNode;
+        public int NpcID;
+        
         #endregion
 
 
@@ -38,10 +38,10 @@ namespace BeastHunter
             DialogueSystemStruct = dialogueSystemData.DialogueSystemStruct;
             DialogueSystemTransform = prefab.transform;
             dialogueSystemData.Model = this;
-            dialogueCanvas = prefab.GetComponentInChildren<Canvas>();
-            dialogueNPCText = prefab.GetComponentInChildren<Text>();
-            answerButtons = prefab.GetComponentsInChildren<Button>();
-            dialogueCanvas.enabled = false;
+            DialogueCanvas = prefab.GetComponentInChildren<Canvas>();
+            DialogueNPCText = prefab.GetComponentInChildren<Text>();
+            AnswerButtons = prefab.GetComponentsInChildren<Button>();
+            DialogueCanvas.enabled = false;
 
             ButtonClick.MouseClickEvent += dialogueSystemData.SelectAnswer;
             ButtonClick.KeyBoardButtonDownEvent += dialogueSystemData.ButtonClickNumber;

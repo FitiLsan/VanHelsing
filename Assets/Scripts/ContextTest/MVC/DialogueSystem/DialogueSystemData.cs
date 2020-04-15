@@ -1,6 +1,7 @@
 ﻿using DialogueSystem;
 using Events;
 using Events.Args;
+using System;
 using UnityEngine;
 
 
@@ -21,21 +22,21 @@ namespace BeastHunter
 
         public void DialogueAnswerClear()
         {
-            foreach (var b in Model.answerButtons)
+            foreach (var answerButton in Model.AnswerButtons)
             {
-                b.gameObject.SetActive(false);
+                answerButton.gameObject.SetActive(false);
             }
         }
 
         public void DialogueUpdate()
         {
-            if (Model.dialogueNode.Count != 0)
+            if (Model.DialogueNode.Count != 0)
             {
-                DialogueLoadToGUI.GetDialogueNode(Model.dialogueNode, Model.currentNode, Model.dialogueNPCText, Model.answerButtons);
+                DialogueLoadToGUI.GetDialogueNode(Model.DialogueNode, Model.CurrentNode, Model.DialogueNPCText, Model.AnswerButtons);
 
-                for (var i = Model.dialogueNode[Model.currentNode].PlayerAnswers.Count; i < Model.answerButtons.Length; i++)
+                for (var i = Model.DialogueNode[Model.CurrentNode].PlayerAnswers.Count; i < Model.AnswerButtons.Length; i++)
                 {
-                    Model.answerButtons[i].gameObject.SetActive(false);
+                    Model.AnswerButtons[i].gameObject.SetActive(false);
                 }
             }
             else
@@ -46,26 +47,26 @@ namespace BeastHunter
 
         public void SelectAnswer(int buttonNumber)
         {
-            EventManager.TriggerEvent(GameEventTypes.DialogAnswerSelect, new DialogArgs(Model.dialogueNode[Model.currentNode].PlayerAnswers[buttonNumber].AnswerId, Model.npcID));
+            EventManager.TriggerEvent(GameEventTypes.DialogAnswerSelect, new DialogArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId, Model.NpcID));
 
-            Debug.Log($"id answer {Model.dialogueNode[Model.currentNode].PlayerAnswers[buttonNumber].AnswerId}, id npc  {Model.npcID}");
+            Debug.Log($"id answer {Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId}, id npc  {Model.NpcID}");
 
-            if (Model.dialogueNode[Model.currentNode].PlayerAnswers[buttonNumber].IsStartQuest)
+            if (Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].IsStartQuest)
             {
-                EventManager.TriggerEvent(GameEventTypes.QuestAccepted, new IdArgs(Model.dialogueNode[Model.currentNode].PlayerAnswers[buttonNumber].QuestId));
+                EventManager.TriggerEvent(GameEventTypes.QuestAccepted, new IdArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].QuestId));
             }
 
-            if (Model.dialogueNode[Model.currentNode].PlayerAnswers[buttonNumber].IsEndQuest)
+            if (Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].IsEndQuest)
             {
-                EventManager.TriggerEvent(GameEventTypes.QuestReported, new IdArgs(Model.dialogueNode[Model.currentNode].PlayerAnswers[buttonNumber].QuestId));
+                EventManager.TriggerEvent(GameEventTypes.QuestReported, new IdArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].QuestId));
             }
 
-            if (Model.dialogueNode[Model.currentNode].PlayerAnswers[buttonNumber].IsEnd)
+            if (Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].IsEnd)
             {
                 CanvasSwitcher(false);
                 return;
             }
-            Model.currentNode = Model.dialogueNode[Model.currentNode].PlayerAnswers[buttonNumber].ToNode;
+            Model.CurrentNode = Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].ToNode;
             DialogueUpdate();
         }
 
@@ -73,36 +74,49 @@ namespace BeastHunter
         {
             if (isActive)
             {
-                Model.dialogueCanvas.enabled = true;
                 DialogueUpdate();
-                LockCharAction.LockAction(true);
             }
             else
             {
-                Model.dialogueCanvas.enabled = false;
-                Model.currentNode = 0;
-                LockCharAction.LockAction(false);
-
+                Model.CurrentNode = 0;
             }
+
+            Model.DialogueCanvas.enabled = isActive;
+            LockCharAction.LockAction(isActive);
         }
 
         public void ButtonClickNumber(string buttonName)
         {
-            if (Model.dialogueCanvas.enabled)
+            if (Model.DialogueCanvas.enabled)
             {
-                for (var i = 1; i < Model.answerButtons.Length + 1; i++)
+                if (Model.DialogueNode.Count != 0 && Model.DialogueNode[Model.CurrentNode].PlayerAnswers.Count != 0)
                 {
-                    if (buttonName == i.ToString())
+                    int buttonNum;
+
+                    if (int.TryParse(buttonName, out buttonNum))
                     {
-                        if (Model.dialogueNode.Count != 0 && Model.dialogueNode[Model.currentNode].PlayerAnswers.Count != 0)
+                        if (buttonNum - 1 < Model.DialogueNode[Model.CurrentNode].PlayerAnswers.Count)
                         {
-                            if (i - 1 < Model.dialogueNode[Model.currentNode].PlayerAnswers.Count)
+                            switch (buttonNum)
                             {
-                                SelectAnswer(i - 1);
-                            }
-                            else
-                            {
-                                return;
+                                case 1:
+                                    SelectAnswer(0);
+                                    break;
+
+                                case 2:
+                                    SelectAnswer(1);
+                                    break;
+
+                                case 3:
+                                    SelectAnswer(2);
+                                    break;
+
+                                case 4:
+                                    SelectAnswer(3);
+                                    break;
+
+                                default:
+                                    return;
                             }
                         }
                     }

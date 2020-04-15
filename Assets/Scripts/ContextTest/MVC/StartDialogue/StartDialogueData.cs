@@ -1,8 +1,10 @@
 ﻿using DialogueSystem;
+using System;
 using UnityEngine;
 
 
-namespace BeastHunter {
+namespace BeastHunter
+{
     [CreateAssetMenu(fileName = "NewModel", menuName = "CreateModel/StartDialogue", order = 0)]
     public sealed class StartDialogueData : ScriptableObject
     {
@@ -10,50 +12,56 @@ namespace BeastHunter {
 
         public StartDialogueStruct StartDialogueStruct;
         public StartDialogueModel Model;
-        public Vector3 npcPos;   
-        public int _npcID;
-        public DialogueSystemModel dialogueSystemModel;
-        public GameObject canvasNpc;
+        public Vector3 NpcPos;
+        public int NpcID;
+        public DialogueSystemModel DialogueSystemModel;
+        public GameObject CanvasNpc;
+
+        #endregion
+
+
+        #region
+
+        public const float CANVAS_OFFSET = 1.5f;
 
         #endregion
 
 
         #region Events
 
-        public delegate void DialogueView(bool isShow);
-        public static event DialogueView ShowCanvasEvent;
+        public static event Action<bool> ShowCanvasEvent;
 
         #endregion
 
-   
+
         #region Metods
 
         public void DialogUsing()
         {
-            if (Model.isDialogueAreaEnter)
+            if (Model.IsDialogueAreaEnter)
             {
-                if (!dialogueSystemModel.dialogueCanvas.enabled)
+                if (!DialogueSystemModel.DialogueCanvas.enabled)
                 {
-                    canvasNpc.SetActive(true);
-                    canvasNpc.transform.LookAt(Camera.main.transform);
+                    CanvasNpc.SetActive(true);
+                    CanvasNpc.transform.LookAt(Camera.main.transform);
                 }
                 if (Input.GetButton("Use"))
                 {
                     DialogStatus(true);
-                    canvasNpc.SetActive(false);
+                    CanvasNpc.SetActive(false);
                 }
                 if (Input.GetButton("Cancel"))
                 {
                     DialogStatus(false);
-                    canvasNpc.SetActive(true);
+                    CanvasNpc.SetActive(true);
                 }
             }
             else
             {
                 if (Model != null)
                 {
-                    canvasNpc.SetActive(false);
-                    if (dialogueSystemModel.dialogueCanvas.enabled)
+                    CanvasNpc.SetActive(false);
+                    if (DialogueSystemModel.DialogueCanvas.enabled)
                     {
                         DialogStatus(false);
                     }
@@ -68,17 +76,17 @@ namespace BeastHunter {
 
         public void DialogAreaEnterSwitcher(bool isOn)
         {
-            Model.isDialogueAreaEnter = isOn;
+            Model.IsDialogueAreaEnter = isOn;
         }
 
         public float GetCanvasOffset()
         {
-            return Model.canvasOffset;
+            return  CANVAS_OFFSET;
         }
 
         public Transform GetParent()
         {
-            var player = GameObject.FindGameObjectWithTag("Player");
+            var player = GameObject.FindGameObjectWithTag(TagManager.PLAYER);
             return player.transform;
         }
 
@@ -90,14 +98,14 @@ namespace BeastHunter {
 
         public void OnTriggerEnter(Collider other)
         {
-                dialogueSystemModel = Model._context._dialogueSystemModel;
-                var getNpcInfo = other.GetComponent<IGetNpcInfo>().GetInfo();
-                _npcID = getNpcInfo.Item1;
-                npcPos = getNpcInfo.Item2;
-                canvasNpc.transform.position = new Vector3(npcPos.x, npcPos.y + GetCanvasOffset(), npcPos.z);
-                DialogAreaEnterSwitcher(true);
-                dialogueSystemModel.npcID = _npcID;
-                dialogueSystemModel.dialogueNode = DialogueGenerate.DialogueCreate(_npcID);
+            DialogueSystemModel = Model.Context._dialogueSystemModel;
+            var getNpcInfo = other.GetComponent<IGetNpcInfo>().GetInfo();
+            NpcID = getNpcInfo.Item1;
+            NpcPos = getNpcInfo.Item2;
+            CanvasNpc.transform.position = new Vector3(NpcPos.x, NpcPos.y + GetCanvasOffset(), NpcPos.z);
+            DialogAreaEnterSwitcher(true);
+            DialogueSystemModel.NpcID = NpcID;
+            DialogueSystemModel.DialogueNode = DialogueGenerate.DialogueCreate(NpcID);
         }
 
         public void OnTriggerExit(Collider other)
@@ -107,7 +115,7 @@ namespace BeastHunter {
 
         public void GetDialogueSystemModel(DialogueSystemModel model)
         {
-            dialogueSystemModel = model;
+            DialogueSystemModel = model;
         }
 
         #endregion

@@ -9,13 +9,6 @@
         #endregion
 
 
-        #region Properties
-
-        public DialogueSystemModel Model { get; private set; }
-
-        #endregion
-
-
         #region ClassLifeCycle
 
         public DialogueSystemController(GameContext context, Services services)

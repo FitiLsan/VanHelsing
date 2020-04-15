@@ -10,31 +10,31 @@ namespace BeastHunter
 
         #region Methods
         
-        public static List<Dialogue> DialogueCreate(int _npcID)
+        public static List<Dialogue> DialogueCreate(int npcID)
         {
             List<Dialogue> dialogueNode = new List<Dialogue>();
 
-            var npc_dt = DatabaseWrapper.DatabaseWrapper.GetTable($"select * from 'dialogue_node' where Npc_id={_npcID};");
+            var npcDt = DatabaseWrapper.DatabaseWrapper.GetTable($"select * from 'dialogue_node' where Npc_id={npcID};");
 
-            for (var j = 0; j < npc_dt.Rows.Count; j++)
+            for (var j = 0; j < npcDt.Rows.Count; j++)
             {
-                var npc_text = npc_dt.Rows[j].GetString(3);
+                var npcText = npcDt.Rows[j].GetString(3);
 
-                dialogueNode.Add(new Dialogue(npc_text, new List<PlayerAnswer>()));
+                dialogueNode.Add(new Dialogue(npcText, new List<PlayerAnswer>()));
 
-                var answer_dt = DatabaseWrapper.DatabaseWrapper.GetTable($"select * from 'dialogue_answers' where Node_id={j} and Npc_id={_npcID};");
+                var answerDt = DatabaseWrapper.DatabaseWrapper.GetTable($"select * from 'dialogue_answers' where Node_id={j} and Npc_id={npcID};");
 
-                for (var i = 0; i < answer_dt.Rows.Count; i++)
+                for (var i = 0; i < answerDt.Rows.Count; i++)
                 {
-                    var answer_id = answer_dt.Rows[i].GetInt(0);
-                    var answer_text = answer_dt.Rows[i].GetString(2);
-                    var answer_toNode = answer_dt.Rows[i].GetInt(3);
-                    var answer_endDialogue = answer_dt.Rows[i].GetInt(4);
-                    var answer_isStartQuest = answer_dt.Rows[i].GetInt(6);
-                    var answer_isEndQuest = answer_dt.Rows[i].GetInt(7);
-                    var answer_questId = answer_dt.Rows[i].GetInt(8);
-                    var answer_taskQuest = answer_dt.Rows[i].GetInt(9);
-                    dialogueNode[j].PlayerAnswers.Add(new PlayerAnswer(answer_id, answer_text, answer_toNode, answer_endDialogue, answer_isStartQuest, answer_isEndQuest, answer_questId, answer_taskQuest));
+                    var answerId = answerDt.Rows[i].GetInt(0);
+                    var answerText = answerDt.Rows[i].GetString(2);
+                    var answerToNode = answerDt.Rows[i].GetInt(3);
+                    var answerEndDialogue = answerDt.Rows[i].GetInt(4);
+                    var answerIsStartQuest = answerDt.Rows[i].GetInt(6);
+                    var answerIsEndQuest = answerDt.Rows[i].GetInt(7);
+                    var answerQuestId = answerDt.Rows[i].GetInt(8);
+                    var answerTaskQuest = answerDt.Rows[i].GetInt(9);
+                    dialogueNode[j].PlayerAnswers.Add(new PlayerAnswer(answerId, answerText, answerToNode, answerEndDialogue, answerIsStartQuest, answerIsEndQuest, answerQuestId, answerTaskQuest));
                 }
             }
             return dialogueNode;

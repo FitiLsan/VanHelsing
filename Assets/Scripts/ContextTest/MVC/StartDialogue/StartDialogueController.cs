@@ -30,7 +30,7 @@
 
         public void Updating()
         {
-            _context._startDialogueModel.Initilize();         
+            _context._startDialogueModel.Execute();         
         }
         
         #endregion

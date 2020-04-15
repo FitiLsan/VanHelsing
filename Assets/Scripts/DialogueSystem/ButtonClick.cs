@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System;
 
 namespace BeastHunter
 {
@@ -8,11 +8,8 @@ namespace BeastHunter
 
         #region Events
 
-        public delegate void ButtonCheck(int number);
-        public static event ButtonCheck MouseClickEvent;
-
-        public delegate void KeyBoardButtonDown(string buttonName);
-        public static event KeyBoardButtonDown KeyBoardButtonDownEvent;
+        public static event Action<int>  MouseClickEvent;
+        public static event Action<string> KeyBoardButtonDownEvent;
 
         #endregion
 

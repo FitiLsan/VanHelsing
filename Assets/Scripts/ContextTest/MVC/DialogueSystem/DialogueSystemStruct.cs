@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BeastHunter
 {
     [Serializable]
-    public class DialogueSystemStruct
+    public sealed class DialogueSystemStruct
     {
         #region Fields
 
