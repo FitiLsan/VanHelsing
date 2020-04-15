@@ -14,7 +14,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public CharacterInitilizeController(GameContext context, Services services)
+        public CharacterInitilizeController(GameContext context)
         {
             _context = context;
         }

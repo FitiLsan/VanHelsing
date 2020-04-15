@@ -4,7 +4,7 @@
     {
         #region ClassLifeCycles
 
-        public MainFixedControllers(GameContext context, Services services)
+        public MainFixedControllers(GameContext context)
         {
             
         }

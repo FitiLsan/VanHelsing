@@ -14,7 +14,7 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public InitializeInteractableObjectController(GameContext context, Services services)
+        public InitializeInteractableObjectController(GameContext context)
         {
             _context = context;
         }
