@@ -18,6 +18,12 @@ namespace BeastHunter
         [Tooltip("Default: 2")]
         public float JumpHeight;
 
+        [Tooltip("Default: 3")]
+        public float ViewRadius;
+
+        [Tooltip("Default: 100"), Range(0.0f, 180.0f)]
+        public float ViewAngle;
+
         public bool CanIdle;
 
         public GameObject Prefab;

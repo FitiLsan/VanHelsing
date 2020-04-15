@@ -7,11 +7,22 @@ namespace BeastHunter
     [CreateAssetMenu(fileName = "NewModel", menuName = "CreateModel/Rabbit", order = 1)]
     public sealed class RabbitData : ScriptableObject
     {
-        #region Fields
+        #region Constants
 
         private const float ROTATION_SPEED = 5.0f;
         private const float HOP_FORCE_MULTIPLIER = 100.0f;
         private const float MAX_ANGLE_DEVIATION = 40.0f;
+        private const float TURN_FORWARD = 0.0f;
+        private const float TURN_BACK = 180.0f;
+        private const float TURN_RIGHT = 270.0f;
+        private const float TURN_LEFT = 90.0f;
+
+        public const float STOP_RETURNING_DISTANCE_FACTOR = 3.0f;
+
+        #endregion
+
+
+        #region Fields
 
         public RabbitStruct RabbitStruct;
 
@@ -22,7 +33,49 @@ namespace BeastHunter
 
         public bool CheckIfOnGround(Transform transform)
         {
-            return Physics.Raycast(transform.position, Vector3.down, 1.0f, ~LayerMask.NameToLayer("Ground"));
+            return Physics.Raycast(transform.position, Vector3.down, 1.0f, LayerManager.GroundLayer);
+        }
+
+        public bool CheckForEnemiesInRadius(Transform transform)
+        {
+            var result = false;
+            var targets = Physics.OverlapSphere(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer); //change layer!!
+            foreach(Collider target in targets)
+            {
+                if (!target.CompareTag(TagManager.RABBIT))
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        public bool CheckForEnemiesInFieldOfView(Transform transform, out GameObject closestTargetTransform)
+        {
+            closestTargetTransform = null;
+            var closestTargetDistance = RabbitStruct.ViewRadius * RabbitStruct.ViewRadius + 0.01f;
+            var result = false;
+            var targets = Physics.OverlapSphere(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer); //change layer!!
+            foreach (Collider target in targets)
+            {
+                if (!target.CompareTag(TagManager.RABBIT))
+                {
+                    var dirToTarget = target.transform.position - transform.position;
+                    if (dirToTarget.sqrMagnitude <= closestTargetDistance)
+                    {
+                        closestTargetDistance = dirToTarget.sqrMagnitude;
+                        closestTargetTransform = target.gameObject;
+                    }
+                    if (Vector3.Angle(transform.forward, dirToTarget.normalized) < RabbitStruct.ViewAngle)
+                    {
+                        if (!Physics.Raycast(transform.position, dirToTarget.normalized, dirToTarget.magnitude, LayerManager.EnvironmentLayer))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         public void RotateTo(Transform transform, Vector3 from, Vector3 to, out bool rotationFinished)
@@ -39,7 +92,31 @@ namespace BeastHunter
             rigidbody.AddForce((direction * RabbitStruct.MoveSpeed * acceleration + Vector3.up * RabbitStruct.JumpHeight) * HOP_FORCE_MULTIPLIER);
         }
 
-        public Vector3 ReturningNextCoord(Transform transform, Vector3 startPosition) // NextCoord and ReturningAngle + RandomAngle
+        public Vector3 RandomNextCoord(Transform transform, Vector3 startPosition)
+        {
+            var direction = Random.Range(0.0f, 100.0f);
+            var angle = TURN_FORWARD;
+            if (direction >= 80.0f)
+            {
+                angle = TURN_LEFT;
+            }
+            else if (direction >= 60.0f)
+            {
+                angle = TURN_RIGHT;
+            }
+            else if (direction >= 45.0f)
+            {
+                angle = TURN_BACK;
+            }
+            angle += Random.Range(-MAX_ANGLE_DEVIATION, MAX_ANGLE_DEVIATION);
+            angle *= Mathf.Deg2Rad;
+
+            // Nearest neighbour distance < x => angle = nnd+180
+            var forward = new Vector2(transform.forward.x, transform.forward.z);
+            return new Vector3(RotateByAngle(forward, angle).x, transform.forward.y, RotateByAngle(forward, angle).y);
+        }
+
+        public Vector3 ReturningNextCoord(Transform transform, Vector3 startPosition)
         {
             var next = (startPosition - transform.position).normalized;
             //var distance = (transform.position - startPosition).magnitude;
@@ -60,14 +137,14 @@ namespace BeastHunter
         public float AngleDeviation(float distance) // linear, use with distance magnitude
         {
             var R = RabbitStruct.RunningRadius;
-            var f = 3.0f;
+            var f = STOP_RETURNING_DISTANCE_FACTOR;
             return (MAX_ANGLE_DEVIATION * f) / (f - 1.0f) * (-(distance / R) + 1);
         }
 
         public float AngleDeviationSqr(float distance) // parabolic, use with distance sqrMagnitude (variant 1, point on runningRadius/returnFactor)
         {
             var R = RabbitStruct.RunningRadius;
-            var f = 3.0f;
+            var f = STOP_RETURNING_DISTANCE_FACTOR;
             var a = (MAX_ANGLE_DEVIATION * f * f) / (R * R * (2.0f * f - f * f - 1.0f));
             var b = -(2.0f * a * R) / f;
             var c = (a * R * R * (2.0f - f)) / f;
@@ -77,34 +154,10 @@ namespace BeastHunter
         public float AngleDeviationSqrPlain(float distance) // parabolic, use with distance sqrMagnitude (variant 2, point on startPos)
         {
             var R = RabbitStruct.RunningRadius;
-            var f = 3.0f;
+            var f = STOP_RETURNING_DISTANCE_FACTOR;
             var a = -((MAX_ANGLE_DEVIATION * f * f) / (R * R * (f * f - 1.0f)));
             var c = -a * R * R;
             return a * distance * distance + c;
-        }
-
-        public Vector3 RandomNextCoord(Transform transform, Vector3 startPosition) 
-        {
-            var direction = Random.Range(0.0f, 100.0f);
-            var angle = 0f; // turn forward
-            if (direction >= 80.0f)
-            {
-                angle = 90.0f; // turn left
-            }
-            else if (direction >= 60.0f)
-            {
-                angle = 270.0f; // turn right
-            }
-            else if (direction >= 45.0f)
-            {
-                angle = 180.0f; // turn back
-            }
-            angle += Random.Range(-MAX_ANGLE_DEVIATION, MAX_ANGLE_DEVIATION);
-            angle *= Mathf.Deg2Rad;
-
-            // Nearest neighbour distance < x => angle = nnd+180
-            var forward = new Vector2(transform.forward.x, transform.forward.z);
-            return new Vector3(RotateByAngle(forward, angle).x, transform.forward.y, RotateByAngle(forward, angle).y);
         }
 
         private Vector2 RotateByAngle(Vector2 vector, float angle)

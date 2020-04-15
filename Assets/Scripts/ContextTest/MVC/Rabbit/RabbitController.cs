@@ -28,7 +28,7 @@ namespace BeastHunter
 
         public void Updating()
         {
-            _context.RabbitModel.Initilaize();
+            _context.RabbitModel.Execute();
         }
 
         #endregion

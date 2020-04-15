@@ -19,17 +19,24 @@ namespace BeastHunter
         #endregion
 
 
-        #region Fields
+        #region Constants
 
         private const float TIME_UNTIL_CAN_CHANGE_STATE = 10.0f;
         private const float IDLE_ANIMATION_DURATION = 3.0f;
+        private const float STOP_FLEEING_TIME = 2.0f;
         private const float HOP_FREQUENCY = 1.0f;
         private const float MAX_HOP_FREQUENCY = 2.0f;
         private const float FLEE_ACCELERATION_FACTOR = 1.3f;
 
+        #endregion
+
+
+        #region Fields
+               
         private float _timeLeft = 1.0f;
         private float _timeElapsed = 0.0f;
         private float _timeElapsedAfterStateChange = 0.0f;
+        private float _timeElapsedAfterStartFleeing = 0.0f;
         private bool _isOnGround;
         private Vector3 _nextCoord;
         private GameObject _dangerousObject;
@@ -82,10 +89,12 @@ namespace BeastHunter
 
         #region Metods
 
-        public void Initilaize()
+        public void Execute()
         {
-            // check for enemies (in field of wiew only)
-
+            if ((_rabbitState != BehaviourState.Fleeing) && (RabbitData.CheckForEnemiesInFieldOfView(RabbitTransform, out _dangerousObject)))
+            {
+                _rabbitState = BehaviourState.Fleeing;
+            }
             switch (_rabbitState)
             {
                 case BehaviourState.Idling:
@@ -118,7 +127,7 @@ namespace BeastHunter
                 case BehaviourState.Returning:
                     {
                         Return();
-                        var moveDistance = RabbitStruct.RunningRadius / 3.0f; // stop return factor
+                        var moveDistance = RabbitStruct.RunningRadius / RabbitData.STOP_RETURNING_DISTANCE_FACTOR;
                         if ((RabbitTransform.position - RabbitStartPosition).sqrMagnitude < moveDistance * moveDistance)
                         {
                             _rabbitState = BehaviourState.Roaming;
@@ -127,9 +136,21 @@ namespace BeastHunter
                     }
                 case BehaviourState.Fleeing:
                     {
-                        Flee();
-                        // stop flee logic (field of view radius)
-                        // time after lost target
+                        _timeElapsedAfterStartFleeing += Time.deltaTime;
+                        if (_dangerousObject != null)
+                            Flee();
+                        if (_timeElapsedAfterStartFleeing > STOP_FLEEING_TIME)
+                        {
+                            if (RabbitData.CheckForEnemiesInRadius(RabbitTransform))
+                            {
+                                _timeElapsedAfterStartFleeing = 0;
+                            }
+                            else if (!RabbitData.CheckForEnemiesInFieldOfView(RabbitTransform, out _dangerousObject))
+                            {
+                                _rabbitState = BehaviourState.Roaming;
+                                _dangerousObject = null;
+                            }
+                        }
                         break;
                     }
                 default:
@@ -152,7 +173,7 @@ namespace BeastHunter
             Move(RabbitData.ReturningNextCoord);
         }
 
-        private void Move(Func<Transform, Vector3, Vector3> nextCoordFunc) // Move to RabbitData? Pass private fields as parameters?
+        private void Move(Func<Transform, Vector3, Vector3> nextCoordFunc)
         {
             _timeLeft -= Time.deltaTime;
             _timeElapsed += Time.deltaTime;
@@ -175,25 +196,18 @@ namespace BeastHunter
             }
         }
 
-        private void Flee() // Merge to Move()? Don`t know how
+        private void Flee()
         {
-            //_timeElapsed += Time.deltaTime;
             bool canHop;
             RabbitData.RotateTo(RabbitTransform, RabbitTransform.forward, _nextCoord, out canHop);
+            _timeLeft -= Time.deltaTime;
             _isOnGround = RabbitData.CheckIfOnGround(RabbitTransform);
-            if (_isOnGround)
-            {
-                //if (_timeElapsed >= 0.5f)
-                //{
-                //    canHop = true;
-                //}
-                //if (canHop)
-                //{
-                    RabbitData.Hop(RabbitRigidbody, _nextCoord, FLEE_ACCELERATION_FACTOR);
-                    var next = (RabbitTransform.position - _dangerousObject.transform.position).normalized;
-                    _nextCoord = new Vector3(next.x, 0.0f, next.z);
-                //_timeElapsed = 0.0f;
-                //}
+            if (_timeLeft < 0.0f && _isOnGround)
+            { 
+                var next = (RabbitTransform.position - _dangerousObject.transform.position).normalized;
+                _nextCoord = new Vector3(next.x, 0.0f, next.z);
+                RabbitData.Hop(RabbitRigidbody, _nextCoord, FLEE_ACCELERATION_FACTOR);
+                _timeLeft = HOP_FREQUENCY;
             }
         }
 
