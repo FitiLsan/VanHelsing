@@ -28,7 +28,10 @@ namespace BeastHunter
 
         public void Updating()
         {
-            _context.RabbitModel.Execute();
+            foreach(var rabbit in _context.RabbitModel)
+            {
+                rabbit.Execute();
+            }
         }
 
         #endregion

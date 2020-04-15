@@ -41,6 +41,7 @@ namespace BeastHunter
         private Vector3 _nextCoord;
         private GameObject _dangerousObject;
         private BehaviourState _rabbitState;
+        private PhysicsService _physicsService;
 
         public RabbitData RabbitData;
         public RabbitStruct RabbitStruct;
@@ -68,6 +69,7 @@ namespace BeastHunter
                 RabbitTransform = prefab.transform;
                 RabbitRigidbody = prefab.GetComponent<Rigidbody>();
                 RabbitStartPosition = prefab.transform.position;
+                _physicsService = Services.SharedInstance.PhysicsService;
                 _nextCoord = rabbitData.RandomNextCoord(prefab.transform, RabbitStartPosition);
                 if (RabbitStruct.CanIdle)
                 {
@@ -177,8 +179,8 @@ namespace BeastHunter
         {
             _timeLeft -= Time.deltaTime;
             _timeElapsed += Time.deltaTime;
-            _isOnGround = RabbitData.CheckIfOnGround(RabbitTransform);
-            if (_timeLeft < 0.0f && _isOnGround)
+            Vector3 hitPoint;
+            if (_timeLeft < 0.0f && _physicsService.CheckGround(RabbitTransform.position, 1.0f, out hitPoint))
             {
                 bool canHop;
                 RabbitData.RotateTo(RabbitTransform, RabbitTransform.forward, _nextCoord, out canHop);
@@ -201,8 +203,8 @@ namespace BeastHunter
             bool canHop;
             RabbitData.RotateTo(RabbitTransform, RabbitTransform.forward, _nextCoord, out canHop);
             _timeLeft -= Time.deltaTime;
-            _isOnGround = RabbitData.CheckIfOnGround(RabbitTransform);
-            if (_timeLeft < 0.0f && _isOnGround)
+            Vector3 hitPoint;
+            if (_timeLeft < 0.0f && _physicsService.CheckGround(RabbitTransform.position, 1.0f, out hitPoint))
             { 
                 var next = (RabbitTransform.position - _dangerousObject.transform.position).normalized;
                 _nextCoord = new Vector3(next.x, 0.0f, next.z);

@@ -31,10 +31,6 @@ namespace BeastHunter
 
         #region Metods
 
-        public bool CheckIfOnGround(Transform transform)
-        {
-            return Physics.Raycast(transform.position, Vector3.down, 1.0f, LayerManager.GroundLayer);
-        }
 
         public bool CheckForEnemiesInRadius(Transform transform)
         {
@@ -136,27 +132,27 @@ namespace BeastHunter
 
         public float AngleDeviation(float distance) // linear, use with distance magnitude
         {
-            var R = RabbitStruct.RunningRadius;
+            var r = RabbitStruct.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
-            return (MAX_ANGLE_DEVIATION * f) / (f - 1.0f) * (-(distance / R) + 1);
+            return (MAX_ANGLE_DEVIATION * f) / (f - 1.0f) * (-(distance / r) + 1);
         }
 
         public float AngleDeviationSqr(float distance) // parabolic, use with distance sqrMagnitude (variant 1, point on runningRadius/returnFactor)
         {
-            var R = RabbitStruct.RunningRadius;
+            var r = RabbitStruct.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
-            var a = (MAX_ANGLE_DEVIATION * f * f) / (R * R * (2.0f * f - f * f - 1.0f));
-            var b = -(2.0f * a * R) / f;
-            var c = (a * R * R * (2.0f - f)) / f;
+            var a = (MAX_ANGLE_DEVIATION * f * f) / (r * r * (2.0f * f - f * f - 1.0f));
+            var b = -(2.0f * a * r) / f;
+            var c = (a * r * r * (2.0f - f)) / f;
             return a * distance * distance + b * distance + c;
         }
 
         public float AngleDeviationSqrPlain(float distance) // parabolic, use with distance sqrMagnitude (variant 2, point on startPos)
         {
-            var R = RabbitStruct.RunningRadius;
+            var r = RabbitStruct.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
-            var a = -((MAX_ANGLE_DEVIATION * f * f) / (R * R * (f * f - 1.0f)));
-            var c = -a * R * R;
+            var a = -((MAX_ANGLE_DEVIATION * f * f) / (r * r * (f * f - 1.0f)));
+            var c = -a * r * r;
             return a * distance * distance + c;
         }
 

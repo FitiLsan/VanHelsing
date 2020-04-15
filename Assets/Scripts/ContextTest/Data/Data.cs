@@ -10,7 +10,7 @@ namespace BeastHunter
 
         public static SphereData _sphereData;
         public static CharacterData _characterData;
-        public static RabbitData _rabbitData;
+        private static RabbitData _rabbitData;
 
         #endregion
 
