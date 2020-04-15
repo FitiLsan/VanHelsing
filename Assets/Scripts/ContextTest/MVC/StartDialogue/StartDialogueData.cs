@@ -79,13 +79,20 @@ namespace BeastHunter {
         public Transform GetParent()
         {
             var player = GameObject.FindGameObjectWithTag("Player");
-            return player.transform;
+            if (player != null)
+            {
+                return player.transform;
+            }
+            return null;
         }
 
         public void SetPerent(Transform startDialogueTransform, Transform parent)
         {
-            startDialogueTransform.parent = parent;
-            startDialogueTransform.position = parent.position;
+            if (parent != null)
+            {
+                startDialogueTransform.parent = parent;
+                startDialogueTransform.position = parent.position;
+            }
         }
 
         public void OnTriggerEnter(Collider other)
