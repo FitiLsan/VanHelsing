@@ -52,7 +52,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public CharacterInputController(GameContext context, Services services)
+        public CharacterInputController(GameContext context)
         {
             _context = context;
         }
