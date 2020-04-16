@@ -32,8 +32,10 @@ namespace BeastHunter
         #region Metods
 
 
-        public bool CheckForEnemiesInRadius(Transform transform)
+        public bool CheckForEnemiesInRadius(Transform transform, out GameObject closestTarget)
         {
+            closestTarget = null;
+            var closestTargetDistance = RabbitStruct.ViewRadius * RabbitStruct.ViewRadius + 0.01f;
             var result = false;
             var targets = Physics.OverlapSphere(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer); //change layer!!
             foreach(Collider target in targets)
@@ -41,14 +43,20 @@ namespace BeastHunter
                 if (!target.CompareTag(TagManager.RABBIT))
                 {
                     result = true;
+                    var dirToTarget = target.bounds.center - transform.position;
+                    if (dirToTarget.sqrMagnitude <= closestTargetDistance)
+                    {
+                        closestTargetDistance = dirToTarget.sqrMagnitude;
+                        closestTarget = target.gameObject;
+                    }
                 }
             }
             return result;
         }
 
-        public bool CheckForEnemiesInFieldOfView(Transform transform, out GameObject closestTargetTransform)
+        public bool CheckForEnemiesInFieldOfView(Transform transform, out GameObject closestTarget)
         {
-            closestTargetTransform = null;
+            closestTarget = null;
             var closestTargetDistance = RabbitStruct.ViewRadius * RabbitStruct.ViewRadius + 0.01f;
             var result = false;
             var targets = Physics.OverlapSphere(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer); //change layer!!
@@ -56,16 +64,18 @@ namespace BeastHunter
             {
                 if (!target.CompareTag(TagManager.RABBIT))
                 {
-                    var dirToTarget = target.transform.position - transform.position;
-                    if (dirToTarget.sqrMagnitude <= closestTargetDistance)
-                    {
-                        closestTargetDistance = dirToTarget.sqrMagnitude;
-                        closestTargetTransform = target.gameObject;
-                    }
+                    //Debug.DrawLine(transform.position, target.transform.position, Color.green);
+                    var dirToTarget = target.bounds.center - transform.position;
                     if (Vector3.Angle(transform.forward, dirToTarget.normalized) < RabbitStruct.ViewAngle)
-                    {
+                    {   
                         if (!Physics.Raycast(transform.position, dirToTarget.normalized, dirToTarget.magnitude, LayerManager.EnvironmentLayer))
                         {
+                            if (dirToTarget.sqrMagnitude <= closestTargetDistance)
+                            {
+                                closestTargetDistance = dirToTarget.sqrMagnitude;
+                                closestTarget = target.gameObject;
+                            }
+                            //Debug.DrawLine(transform.position, closestTarget.transform.position, Color.red);
                             result = true;
                         }
                     }
@@ -115,15 +125,14 @@ namespace BeastHunter
         public Vector3 ReturningNextCoord(Transform transform, Vector3 startPosition)
         {
             var next = (startPosition - transform.position).normalized;
-            //var distance = (transform.position - startPosition).magnitude;
+            //var distance = Mathf.Min((transform.position - startPosition).magnitude, RabbitStruct.RunningRadius);
             //var angle = AngleDeviation(distance);
 
-            //var distance = (transform.position - startPosition).sqrMagnitude;
+            //var distance = Mathf.Min((transform.position - startPosition).magnitude, RabbitStruct.RunningRadius);
             //var angle = AngleDeviationSqr(distance);
 
-            var distance = (transform.position - startPosition).sqrMagnitude;
+            var distance = Mathf.Min((transform.position - startPosition).sqrMagnitude, RabbitStruct.RunningRadius * RabbitStruct.RunningRadius);
             var angle = AngleDeviationSqrPlain(distance);
-
             angle = Random.Range(-angle, angle);
             angle *= Mathf.Deg2Rad;
             var forward = new Vector2(next.x, next.z);
@@ -137,7 +146,7 @@ namespace BeastHunter
             return (MAX_ANGLE_DEVIATION * f) / (f - 1.0f) * (-(distance / r) + 1);
         }
 
-        public float AngleDeviationSqr(float distance) // parabolic, use with distance sqrMagnitude (variant 1, point on runningRadius/returnFactor)
+        public float AngleDeviationSqr(float distance) // parabolic, use with distance magnitude (variant 1, point on runningRadius/returnFactor)
         {
             var r = RabbitStruct.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
@@ -153,7 +162,7 @@ namespace BeastHunter
             var f = STOP_RETURNING_DISTANCE_FACTOR;
             var a = -((MAX_ANGLE_DEVIATION * f * f) / (r * r * (f * f - 1.0f)));
             var c = -a * r * r;
-            return a * distance * distance + c;
+            return a * distance + c;
         }
 
         private Vector2 RotateByAngle(Vector2 vector, float angle)
