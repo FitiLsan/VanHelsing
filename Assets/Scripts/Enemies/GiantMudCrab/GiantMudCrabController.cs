@@ -37,6 +37,7 @@ namespace BeastHunter
         public void OnAwake()
         {
             _context.GiantMudCrabModel.CrabAgent = _context.GiantMudCrabModel.Crab.GetComponent<NavMeshAgent>();
+            _context.GiantMudCrabModel.GiantMudCrabData.NextAttackRate = 0;
 
             var Crabs = _context.GetTriggers(InteractableObjectType.Crab);
             foreach (var trigger in Crabs)
