@@ -52,6 +52,7 @@ namespace BeastHunter
                 return _giantMudCrabData;
             }
         }
+
         #endregion
     }
 }

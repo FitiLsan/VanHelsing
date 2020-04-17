@@ -10,7 +10,7 @@ public sealed class GiantMudCrabData : ScriptableObject
     public GiantMudCrabStruct GiantMudCrabStruct;
     private float _idleTime = 0;
     private Vector3 _destination;
-    private float _nextAttackRate = 0;
+    public float NextAttackRate = 0;
 
     #endregion
 
@@ -41,11 +41,11 @@ public sealed class GiantMudCrabData : ScriptableObject
             {
                 CrabAgent.isStopped = true;
                 CrabAgent.ResetPath();
-                if (Time.time > _nextAttackRate)
-                {
-                    _nextAttackRate = giantMudCrabStruct.AttackSpeed + Time.time;
+                if (Time.time >= NextAttackRate)
+                {                
                     Debug.Log("Attacking");
-                    //Instantiate(giantMudCrabStruct.CrabProjectile, giantMudCrabStruct.CrabMouth.position, Quaternion.identity);
+                    new GiantMudCrabProjectile(giantMudCrabStruct.AttackDamage, Target.transform, Prefab.transform.GetChild(0), giantMudCrabStruct.CrabProjectile);
+                    NextAttackRate = giantMudCrabStruct.AttackSpeed + Time.time;
                 }
             }
             else if (DistanceBetweenTargetAndPrefab > giantMudCrabStruct.AttackRange)

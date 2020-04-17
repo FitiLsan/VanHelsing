@@ -13,6 +13,7 @@ public sealed class GiantMudCrabModel
     public NavMeshAgent CrabAgent;
     public GameObject Player;
     public GameObject Crab;
+    public Transform CrabMouth;
 
     #endregion
 
@@ -26,6 +27,7 @@ public sealed class GiantMudCrabModel
         GiantMudCrabTransform = prefab.transform;
         Player = GameObject.FindGameObjectWithTag("Player");
         Crab = prefab;
+        CrabMouth = prefab.transform.GetChild(0);
     }
 
     #endregion
