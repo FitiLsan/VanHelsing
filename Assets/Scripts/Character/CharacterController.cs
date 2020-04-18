@@ -3,23 +3,27 @@
 
 namespace BeastHunter
 {
-    public sealed class CharacterController : IAwake, IUpdate
+    public sealed class CharacterController : IAwake, IUpdate, ITearDown, IDealDamage, ITakeDamage
     {
         #region Fields
 
         public CharacterModel _characterModel;
-        public CharacterAnimationsController _characterAnimationsController;
+        private InputModel _inputModel;
 
         private readonly GameContext _context;
-    
-        private CharacterInputController _inputController;
+
         private CharacterStateMachine _stateMachine;
         private Services _services;
 
+        private DefaultIdleState _defaultIdleState;
+        private BattleIdleState _battleIdleState;
         private DefaultMovementState _defaultMovementState;
-        private BattleState _battleState;
+        private BattleMovementState _battleMovementState;
+        private AttackingState _attackingState;
         private JumpingState _jumpingState;
+        private DodgingState _dodgingState;
         private FallingState _fallingState;
+        private DeadState _deadState;
 
         private Vector3 _groundHit;
         private Vector3 _lastPosition;
@@ -27,30 +31,18 @@ namespace BeastHunter
 
         private float _speedCountTime;
         private float _speedCountFrame;
-
-        #endregion
-
-
-        #region Properties
-
-        public float CurrentSpeed { get; private set; }
-        public float BattleIgnoreTime { get; private set; }
-        public float CurrentBattleIgnoreTime { get; private set; }
-
-        public bool IsGrounded { get; private set; }
-        public bool IsEnemyNear { get; private set; }
-        public bool IsInBattleMode { get; private set; }
-        public bool IsCameraFixed { get; private set; }
+        private float _currentHealth;
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public CharacterController(GameContext context, Services services)
+        public CharacterController(GameContext context)
         {
             _context = context;
-            _services = services;
+            _inputModel = _context._inputModel;
+            _services = Services.SharedInstance;
         }
 
         #endregion
@@ -61,31 +53,34 @@ namespace BeastHunter
         public void OnAwake()
         {
             Cursor.visible = false;  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            IsInBattleMode = false;
-            IsEnemyNear = false;
 
             _characterModel = _context._characterModel;
-            _characterAnimationsController = new CharacterAnimationsController(_characterModel.CharacterAnimator);
-            _inputController = new CharacterInputController();
-            _inputController.Initialize();
-            _speedCountFrame = _characterModel.CharacterStruct.SpeedMeasureFrame;
+
+            _speedCountFrame = _characterModel.CharacterCommonSettings.SpeedMeasureFrame;
             _lastPosition = _characterModel.CharacterTransform.position;
             _currentPosition = _lastPosition;
+            _currentHealth = _characterModel.CharacterCommonSettings.HealthPoints;
 
-            _defaultMovementState = new DefaultMovementState(_inputController, this, _characterModel);
-            _battleState = new BattleState(_inputController, this, _characterModel);
-            _jumpingState = new JumpingState(_inputController, this, _characterModel);
-            _fallingState = new FallingState(_inputController, this, _characterModel);
+            _defaultIdleState = new DefaultIdleState(_characterModel, _inputModel);
+            _battleIdleState = new BattleIdleState(_characterModel, _inputModel);
+            _defaultMovementState = new DefaultMovementState(_characterModel, _inputModel);
+            _battleMovementState = new BattleMovementState(_characterModel, _inputModel);
+            _attackingState = new AttackingState(_characterModel, _inputModel);
+            _jumpingState = new JumpingState(_characterModel, _inputModel);
+            _dodgingState = new DodgingState(_characterModel, _inputModel);
+            _fallingState = new FallingState(_characterModel, _inputModel);
+            _deadState = new DeadState(_characterModel, _inputModel);
 
-            _stateMachine = new CharacterStateMachine(_defaultMovementState);
-            BattleIgnoreTime = _characterModel.CharacterStruct.BattleIgnoreTime;
-            CurrentBattleIgnoreTime = BattleIgnoreTime;
+            _stateMachine = new CharacterStateMachine(_defaultIdleState);
 
-            _characterModel.PlayerBehaviour.OnCollidersNearChange.AddListener(CheckTrigger);
-            _inputController.OnJump.AddListener(SetJumpingState);
-            _inputController.OnBattleExit.AddListener(SetDefaultMovementState);
-            _inputController.OnTargetLock.AddListener(ChangeCameraFix);
-            IsCameraFixed = false;
+            _inputModel.OnJump += SetJumpingState;
+            _inputModel.OnBattleExit += ExitBattle;
+            _inputModel.OnTargetLock += ChangeCameraFix;
+            _inputModel.OnAttack += SetAttackingState;
+
+            _characterModel.PlayerBehaviour.OnFilterHandler += OnFilterHandler;
+            _characterModel.PlayerBehaviour.OnTriggerEnterHandler += OnTriggerEnterHandler;
+            _characterModel.PlayerBehaviour.OnTriggerExitHandler += OnTriggerExitHandler;
         }
 
         #endregion
@@ -95,12 +90,50 @@ namespace BeastHunter
 
         public void Updating()
         {
-            GroundCheck();
-            SpeedCheck();
-            StateCheck();
+            if (!_characterModel.IsDead)
+            {
+                HealthCheck();
+                GroundCheck();
+                SpeedCheck();
+                StateCheck();
 
-            _inputController.GetInput();
-            _stateMachine.CurrentState.Execute();
+                _stateMachine.CurrentState.Execute();
+            }
+        }
+
+        #endregion
+
+        #region ITearDownController
+
+        public void TearDown()
+        {
+            _characterModel.PlayerBehaviour.OnFilterHandler -= OnFilterHandler;
+            _characterModel.PlayerBehaviour.OnTriggerEnterHandler -= OnTriggerEnterHandler;
+            _characterModel.PlayerBehaviour.OnTriggerExitHandler -= OnTriggerExitHandler;
+            _inputModel.OnJump -= SetJumpingState;
+            _inputModel.OnBattleExit -= ExitBattle;
+            _inputModel.OnTargetLock -= ChangeCameraFix;
+            _inputModel.OnAttack -= SetAttackingState;
+        }
+
+        #endregion
+
+
+        #region IDealDamage
+
+        public void DealDamage(Collider enemy, DamageStruct damage)
+        {
+
+        }
+
+        #endregion
+
+
+        #region ITakeDamage
+
+        public void TakeDamage(DamageStruct damage)
+        {
+
         }
 
         #endregion
@@ -108,10 +141,18 @@ namespace BeastHunter
 
         #region Methods     
 
+        private void HealthCheck()
+        {
+            if(_currentHealth <= 0)
+            {
+                _characterModel.IsDead = true;
+            }
+        }
+
         private void GroundCheck()
         {
-            IsGrounded = _services.PhysicsService.CheckGround(_characterModel.CharacterCapsuleCollider.transform.position + 
-                Vector3.up, _characterModel.CharacterStruct.GroundCheckHeight, out _groundHit);
+            _characterModel.IsGrounded = _services.PhysicsService.CheckGround(_characterModel.CharacterCapsuleCollider.
+                transform.position + Vector3.up, _characterModel.CharacterCommonSettings.GroundCheckHeight, out _groundHit);
         }
 
         private void SpeedCheck()
@@ -124,58 +165,89 @@ namespace BeastHunter
             {
                 _speedCountTime = _speedCountFrame;
                 _currentPosition = _characterModel.CharacterTransform.position;
-                CurrentSpeed = Mathf.Sqrt((_currentPosition - _lastPosition).sqrMagnitude) / _speedCountFrame;
+                _characterModel.CurrentSpeed = Mathf.Sqrt((_currentPosition - _lastPosition).sqrMagnitude) / 
+                    _speedCountFrame;
                 _lastPosition = _currentPosition;
             }
+
+            _characterModel.VerticalSpeed = _characterModel.CharacterRigitbody.velocity.y;
         }
 
         private void CheckTrigger()
         {
-            bool foundEnemy = false;
+            _characterModel.IsEnemyNear = _characterModel.EnemiesInTrigger.Count > 0;
 
-            foreach (var collider in _characterModel._collidersInTrigger)
+            if (_characterModel.IsEnemyNear)
             {
-                if (collider.tag == "Enemy")
-                {
-                    foundEnemy = true;
-                    break;
-                }
-            }
-
-            IsEnemyNear = foundEnemy;
-
-            if (IsEnemyNear)
-            {
-                _stateMachine.SetState(_battleState);
+                _characterModel.IsInBattleMode = true;
             }
             else
             {
-                SetDefaultMovementState();
+                _characterModel.IsInBattleMode = false;
             }
         }
 
         private void ChangeCameraFix()
         {
-            IsCameraFixed = !IsCameraFixed;
+            _characterModel.IsCameraFixed = !_characterModel.IsCameraFixed;
 
-            if (IsCameraFixed)
+            if (_characterModel.IsCameraFixed)
             {
-                _characterModel.CharacterCinemachineTargetCamera.Priority = 15;
+                _characterModel.CharacterTargetCamera.Priority = 15;
             }
             else
             {
-                _characterModel.CharacterCinemachineTargetCamera.Priority = 5;
+                _characterModel.CharacterTargetCamera.Priority = 5;
             }
         }
 
+        #endregion
+
+
+        #region StateControl
+
         private void StateCheck()
         {
-            // TODO
+            if (_characterModel.IsDead)
+            {
+                _stateMachine.SetStateOverride(_deadState);
+            }
+            else if (!_characterModel.IsAttacking && (_inputModel.inputStruct._inputAxisX != 0 ||
+                _inputModel.inputStruct._inputAxisY != 0))
+            {
+                if (_characterModel.IsInBattleMode)
+                {
+                    _stateMachine.SetStateOverride(_battleMovementState);
+                }
+                else
+                {
+                    _stateMachine.SetState(_defaultMovementState);
+                }
+            }
+            else if (!_characterModel.IsAttacking)
+            {
+                if (_characterModel.IsInBattleMode)
+                {
+                    _stateMachine.SetStateOverride(_battleIdleState);
+                }
+                else
+                {
+                    _stateMachine.SetState(_defaultIdleState);
+                }
+            }
         }
 
         private void SetJumpingState()
         {
-            _stateMachine.SetState(_jumpingState);
+            if (_characterModel.IsGrounded)
+            {
+                _stateMachine.SetStateOverride(_jumpingState);
+            }
+        }
+
+        private void SetDodgingState()
+        {
+            _stateMachine.SetState(_dodgingState);
         }
 
         private void SetFallingState()
@@ -183,18 +255,39 @@ namespace BeastHunter
             _stateMachine.SetState(_fallingState);
         }
 
-        private void SetDefaultMovementState()
+        private void SetAttackingState()
         {
-            _stateMachine.SetState(_defaultMovementState);
+            if (_stateMachine.CurrentState != _attackingState && _characterModel.IsInBattleMode)
+            {
+                _stateMachine.SetStateOverride(_attackingState);
+            }
         }
 
-        private void SetBattleState()
+        private void ExitBattle()
         {
-            if (IsEnemyNear)
-            {
-                _stateMachine.SetState(_battleState);
-                CurrentBattleIgnoreTime = BattleIgnoreTime;
-            }
+            _characterModel.IsInBattleMode = false;
+        }
+
+        #endregion
+
+
+        #region TriggerControl
+
+        private bool OnFilterHandler(Collider tagObject)
+        {
+            return tagObject.CompareTag(TagManager.ENEMY);
+        }
+
+        private void OnTriggerEnterHandler(ITrigger thisdObject, Collider enteredObject)
+        {
+            _characterModel.EnemiesInTrigger.Add(enteredObject);
+            CheckTrigger();
+        }
+
+        private void OnTriggerExitHandler(ITrigger thisdObject, Collider exitedObject)
+        {
+            _characterModel.EnemiesInTrigger.Remove(exitedObject);
+            CheckTrigger();
         }
 
         #endregion

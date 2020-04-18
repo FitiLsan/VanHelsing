@@ -8,17 +8,15 @@ namespace BeastHunter
         #region Field
 
         GameContext _context;
-        Services _services;
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public CharacterInitilizeController(GameContext context, Services services)
+        public CharacterInitilizeController(GameContext context)
         {
             _context = context;
-            _services = services;
         }
 
         #endregion
@@ -30,10 +28,10 @@ namespace BeastHunter
         {
             var characterData = Data.CharacterData;
 
-            Vector3 instantiatePosition = characterData._characterStruct.InstantiatePosition;
+            Vector3 instantiatePosition = characterData._characterCommonSettings.InstantiatePosition;
             Vector3 groundedInstancePosition = GetGroundedPosition(instantiatePosition);
 
-            GameObject instance = GameObject.Instantiate(characterData._characterStruct.Prefab);
+            GameObject instance = GameObject.Instantiate(characterData._characterCommonSettings.Prefab);
 
             CharacterModel character = new CharacterModel(instance, characterData, groundedInstancePosition);
             _context._characterModel = character;
@@ -48,7 +46,7 @@ namespace BeastHunter
         {
             Vector3 groundedPosition = new Vector3();
 
-            bool isGroundBelow = _services.PhysicsService.FindGround(startPosition, out groundedPosition);
+            bool isGroundBelow = Services.SharedInstance.PhysicsService.FindGround(startPosition, out groundedPosition);
 
             if (!isGroundBelow)
             {

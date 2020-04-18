@@ -11,6 +11,7 @@ namespace BeastHunter
 
         public SphereModel _sphereModel;
         public CharacterModel _characterModel;
+        public InputModel _inputModel;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;

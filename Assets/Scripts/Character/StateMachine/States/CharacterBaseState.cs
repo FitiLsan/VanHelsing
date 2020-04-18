@@ -6,8 +6,7 @@ namespace BeastHunter
     {
         #region Fields
 
-        protected readonly CharacterInputController _inputController;
-        protected readonly CharacterController _characterController;
+        protected readonly InputModel _inputModel;
         protected readonly CharacterModel _characterModel;
 
         #endregion
@@ -22,12 +21,10 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public CharacterBaseState(CharacterInputController inputController, CharacterController characterController,
-            CharacterModel characterModel)
+        public CharacterBaseState(CharacterModel characterModel, InputModel inputModel)
         {
-            _inputController = inputController;
-            _characterController = characterController;
             _characterModel = characterModel;
+            _inputModel = inputModel;
         }
 
         #endregion
@@ -41,5 +38,4 @@ namespace BeastHunter
 
         #endregion
     }
-
 }

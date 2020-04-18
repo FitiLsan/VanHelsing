@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEditor;
 using Cinemachine;
+using System.Collections.Generic;
 
 
 namespace BeastHunter
@@ -10,19 +11,31 @@ namespace BeastHunter
         #region Properties
 
         public Camera CharacterCamera { get; }
-        public CinemachineFreeLook CharacterCinemachineCamera { get; }
-        public CinemachineVirtualCamera CharacterCinemachineTargetCamera { get; }
+        public CinemachineFreeLook CharacterFreelookCamera { get; }
+        public CinemachineVirtualCamera CharacterTargetCamera { get; }
+        public GameObject CameraTarget { get; }
+        public Transform CameraTargetTransform { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
         public SphereCollider CharacterSphereCollider { get; }
         public Transform CharacterTransform { get; }
         public Rigidbody CharacterRigitbody { get; }
-        public GameObject CameraTarget { get; }
-        public Transform CameraTargetTransform { get; }
-        public CharacterData CharacterData { get; }
-        public CharacterStruct CharacterStruct { get; }
-        public Animator CharacterAnimator { get; }
         public PlayerBehaviour PlayerBehaviour { get; }
-        public List<Collider> _collidersInTrigger { get; }
+        public CharacterData CharacterData { get; }
+        public CharacterCommonSettingsStruct CharacterCommonSettings { get; }
+        public CharacterCameraStruct CharacterCameraSettings { get; }
+        public Animator CharacterAnimator { get; set; }
+        public List<Collider> EnemiesInTrigger { get; set; }
+
+        public float CurrentSpeed { get; set; }
+        public float VerticalSpeed { get; set; }
+        public bool IsGrounded { get; set; }
+        public bool IsEnemyNear { get; set; }
+        public bool IsTargeting { get; set; }
+        public bool IsInBattleMode { get; set; }
+        public bool IsAttacking { get; set; }
+        public bool IsCameraFixed { get; set; }
+        public bool IsDead { get; set; }
+        public int AttackIndex { get; set; }
 
         #endregion
 
@@ -32,11 +45,12 @@ namespace BeastHunter
         public CharacterModel(GameObject prefab, CharacterData characterData, Vector3 groundPosition)
         {
             CharacterData = characterData;
-            CharacterStruct = CharacterData._characterStruct;
+            CharacterCommonSettings = CharacterData._characterCommonSettings;
+            CharacterCameraSettings = CharacterData._characterCameraSettings;
             CharacterTransform = prefab.transform;
-            CharacterTransform.rotation = Quaternion.Euler(0, CharacterStruct.InstantiateDirection, 0);
-            CharacterTransform.name = "Player";
-            CharacterTransform.tag = "Player";
+            CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
+            CharacterTransform.name = CharacterCommonSettings.InstanceName;
+            CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
 
             if (prefab.GetComponent<Rigidbody>() != null)
             {
@@ -46,9 +60,9 @@ namespace BeastHunter
             {
                 CharacterRigitbody = prefab.AddComponent<Rigidbody>();
                 CharacterRigitbody.freezeRotation = true;
-                CharacterRigitbody.mass = CharacterStruct.RigitbodyMass;
-                CharacterRigitbody.drag = CharacterStruct.RigitbodyDrag;
-                CharacterRigitbody.angularDrag = CharacterStruct.RigitbodyAngularDrag;
+                CharacterRigitbody.mass = CharacterCommonSettings.RigitbodyMass;
+                CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
+                CharacterRigitbody.angularDrag = CharacterCommonSettings.RigitbodyAngularDrag;
             }
 
             if (prefab.GetComponent<CapsuleCollider>() != null)
@@ -58,9 +72,9 @@ namespace BeastHunter
             else
             {
                 CharacterCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
-                CharacterCapsuleCollider.center = CharacterStruct.CapsuleColliderCenter;
-                CharacterCapsuleCollider.radius = CharacterStruct.CapsuleColliderRadius;
-                CharacterCapsuleCollider.height = CharacterStruct.CapsuleColliderHeight;
+                CharacterCapsuleCollider.center = CharacterCommonSettings.CapsuleColliderCenter;
+                CharacterCapsuleCollider.radius = CharacterCommonSettings.CapsuleColliderRadius;
+                CharacterCapsuleCollider.height = CharacterCommonSettings.CapsuleColliderHeight;
             }
 
             CharacterCapsuleCollider.transform.position = groundPosition;
@@ -73,76 +87,17 @@ namespace BeastHunter
             else
             {
                 CharacterSphereCollider = prefab.AddComponent<SphereCollider>();
-                CharacterSphereCollider.center = CharacterStruct.SphereColliderCenter;
-                CharacterSphereCollider.radius = CharacterStruct.SphereColliderRadius;
+                CharacterSphereCollider.center = CharacterCommonSettings.SphereColliderCenter;
+                CharacterSphereCollider.radius = CharacterCommonSettings.SphereColliderRadius;
                 CharacterSphereCollider.isTrigger = true;
             }
 
-            CharacterCamera = GameObject.Instantiate(CharacterStruct.Camera);
-            CharacterCamera.name = "CharacterCamera";
-            CharacterCinemachineCamera = GameObject.Instantiate(CharacterStruct.CinemachineCamera);
-            CharacterCinemachineCamera.name = "CharacterCinemachineCamera";
-            CharacterCinemachineTargetCamera = GameObject.Instantiate(CharacterStruct.CinemachineTargetCamera);
-            CharacterCinemachineTargetCamera.name = "CharacterCinemachineTargetCamera";
-
-            CameraTarget = new GameObject{ name = "CameraTarget" };
-
-            CameraTarget.transform.SetParent(CharacterTransform);
+            CameraTarget = CharacterCameraSettings.CreateCameraTarget(CharacterTransform);
             CameraTargetTransform = CameraTarget.transform;
-            CameraTargetTransform.localPosition = Vector3.zero;
-            CameraTargetTransform.localRotation = Quaternion.Euler(0, 0, 0);
-
-            CharacterCinemachineCamera.Follow = CameraTargetTransform;
-            CharacterCinemachineCamera.LookAt = CameraTargetTransform;
-
-            CharacterCamera.transform.rotation = Quaternion.Euler(0, CharacterStruct.InstantiateDirection, 0);
-
-            CharacterCinemachineCamera.m_XAxis.m_InvertAxis = CharacterStruct.IsInvertedX;
-            CharacterCinemachineCamera.m_XAxis.m_MaxSpeed = CharacterStruct.CameraSpeedX;
-            CharacterCinemachineCamera.m_XAxis.m_AccelTime = CharacterStruct.CameraAccelerationLagX;
-            CharacterCinemachineCamera.m_XAxis.m_DecelTime = CharacterStruct.CameraDecelerationLagX;
-
-            CharacterCinemachineCamera.m_YAxis.m_InvertAxis = CharacterStruct.IsInvertedY;
-            CharacterCinemachineCamera.m_YAxis.m_MaxSpeed = CharacterStruct.CameraSpeedY;
-            CharacterCinemachineCamera.m_YAxis.m_AccelTime = CharacterStruct.CameraAccelerationLagY;
-            CharacterCinemachineCamera.m_YAxis.m_DecelTime = CharacterStruct.CameraDecelerationLagY;
-
-            for (var rig = 0; rig < 3; rig++)
-            {
-                CinemachineVirtualCamera cinemachineRig = CharacterCinemachineCamera.GetRig(rig);
-                cinemachineRig.LookAt = CameraTargetTransform;
-
-                CinemachineComposer composerFromData = CharacterStruct.GetComposer(rig);
-                CinemachineComposer composerFromCamera = cinemachineRig.GetCinemachineComponent<CinemachineComposer>();
-
-                composerFromCamera.m_TrackedObjectOffset.y = composerFromData.m_TrackedObjectOffset.y;
-                composerFromCamera.m_DeadZoneHeight = composerFromData.m_DeadZoneHeight;
-                composerFromCamera.m_DeadZoneWidth = composerFromData.m_DeadZoneWidth;
-                composerFromCamera.m_SoftZoneHeight = composerFromData.m_SoftZoneHeight;
-                composerFromCamera.m_SoftZoneWidth = composerFromData.m_SoftZoneWidth;
-
-                CinemachineFreeLook.Orbit currentOrbit = CharacterStruct.GetOrbit(rig);
-                CharacterCinemachineCamera.m_Orbits[rig] = currentOrbit;
-            }
-
-            CharacterCinemachineTargetCamera.Follow = CameraTargetTransform;
-            CharacterCinemachineTargetCamera.LookAt = CameraTargetTransform;
-
-            CinemachineTransposer targetTransposer = CharacterCinemachineTargetCamera.
-                GetCinemachineComponent<CinemachineTransposer>();
-
-            targetTransposer.m_FollowOffset.y = CharacterStruct.TargetCameraBodyOffsetY;
-            targetTransposer.m_FollowOffset.z = CharacterStruct.TargetCameraBodyOffsetZ;
-
-            CinemachineComposer targetComposer = CharacterCinemachineTargetCamera.
-                GetCinemachineComponent<CinemachineComposer>();
-
-            targetComposer.m_TrackedObjectOffset.y = CharacterStruct.TargetCameraAimOffsetY;
-            targetComposer.m_TrackedObjectOffset.z = CharacterStruct.TargetCameraAimOffsetZ;
-            targetComposer.m_DeadZoneWidth = CharacterStruct.TargetCameraDeadZoneWidth;
-            targetComposer.m_DeadZoneHeight = CharacterStruct.TargetCameraDeadZoneHeight;
-            targetComposer.m_SoftZoneWidth = CharacterStruct.TargetCameraSoftZoneWidth;
-            targetComposer.m_SoftZoneHeight = CharacterStruct.TargetCameraSoftZoneHeight;
+            CharacterCamera = CharacterCameraSettings.CreateCharacterCamera();
+            CharacterCamera.transform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
+            CharacterFreelookCamera = CharacterCameraSettings.CreateCharacterFreelookCamera(CameraTargetTransform);
+            CharacterTargetCamera = CharacterCameraSettings.CreateCharacterTargetCamera(CameraTargetTransform);
 
             if (prefab.GetComponent<Animator>() != null)
             {
@@ -153,21 +108,51 @@ namespace BeastHunter
                 CharacterAnimator = prefab.AddComponent<Animator>();
             }
 
-            CharacterAnimator.runtimeAnimatorController = CharacterStruct.CharacterDefaultMovementAnimator;
-            CharacterAnimator.applyRootMotion = false;        
+            CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterDefaultMovementAnimator;
+            CharacterAnimator.applyRootMotion = false;
 
-            if(prefab.GetComponent<PlayerBehaviour>() != null)
+            if (prefab.GetComponent<PlayerBehaviour>() != null)
             {
                 PlayerBehaviour = prefab.GetComponent<PlayerBehaviour>();
-                _collidersInTrigger = PlayerBehaviour.CollidersInTriger;
             }
             else
             {
                 PlayerBehaviour = prefab.AddComponent<PlayerBehaviour>();
-                _collidersInTrigger = PlayerBehaviour.CollidersInTriger;
             }
+
+            PlayerBehaviour.SetType(InteractableObjectType.Player);
+
+            EnemiesInTrigger = new List<Collider>();
+            IsGrounded = false;
+            IsCameraFixed = false;
+            IsEnemyNear = false;
+            IsTargeting = false;
+            IsInBattleMode = false;
+            IsAttacking = false;
+            IsDead = false;
+            CurrentSpeed = 0;
+            AttackIndex = 0;
+
+#if (UNITY_EDITOR)
+            EditorApplication.playModeStateChanged += SaveCameraSettings;
+#endif
         }
 
+        #endregion
+
+        #region Methods
+
+#if (UNITY_EDITOR)
+        private void SaveCameraSettings(PlayModeStateChange state)
+        {
+            if(state == PlayModeStateChange.ExitingPlayMode)
+            {
+                Data.CharacterData._characterCameraSettings.
+                    SaveCameraSettings(CharacterFreelookCamera, CharacterTargetCamera);
+                EditorApplication.playModeStateChanged -= SaveCameraSettings;
+            }
+        }
+#endif
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 
 namespace BeastHunter
@@ -8,7 +9,9 @@ namespace BeastHunter
     {
         #region PrivateData
 
-        public CharacterStruct _characterStruct;
+        public CharacterCommonSettingsStruct _characterCommonSettings;
+        public CharacterCameraStruct _characterCameraSettings;
+        public Action Hit { get; set; }
 
         #endregion
 
@@ -45,6 +48,15 @@ namespace BeastHunter
         public void Dodge(Rigidbody rigidbody, float force, Vector3 direction)
         {
             //TODO
+        }
+
+        public void OnHit()
+        {
+            Debug.Log("hit");
+            if(Hit != null)
+            {
+                Hit.Invoke();
+            }
         }
 
         #endregion

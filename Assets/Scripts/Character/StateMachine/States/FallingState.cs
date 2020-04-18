@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-
+﻿
 
 namespace BeastHunter
 {
@@ -19,10 +18,9 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public FallingState(CharacterInputController inputController, CharacterController characterController,
-            CharacterModel characterModel) : base(inputController, characterController, characterModel)
+        public FallingState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
         {
-            CanExit = true;
+            CanExit = false;
         }
 
         #endregion
@@ -37,7 +35,15 @@ namespace BeastHunter
 
         public override void Execute()
         {
+            ExitCheck();
+        }
 
+        public void ExitCheck()
+        {
+            if (_characterModel.IsGrounded)
+            {
+                CanExit = true;
+            }
         }
 
         #endregion

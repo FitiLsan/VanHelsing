@@ -9,8 +9,6 @@ namespace BeastHunter
         #region Fields
 
 
-        [SerializeField] private List<AnimationClip> _animationClips;
-
         #endregion
 
 

@@ -39,6 +39,16 @@ namespace BeastHunter
             }          
         }
 
+        public void SetStateOverride(CharacterBaseState newState)
+        {
+            if (CurrentState != newState)
+            {
+                PreviousState = CurrentState;
+                CurrentState = newState;
+                CurrentState.Initialize();
+            }
+        }
+
         public void ReturnState()
         {
             if (CurrentState.CanExit)

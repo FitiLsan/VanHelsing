@@ -3,20 +3,50 @@
 
 namespace BeastHunter
 {
-    public sealed class CharacterAnimationsController
+    public sealed class CharacterAnimationsController : IAwake, IUpdate
     {
         #region Properties
 
-        public Animator CharacterAnimator { get; }
+        private readonly GameContext _context;
+
+        private CharacterModel _characterModel;
+        private InputModel _inputModel;
+        private Animator CharacterAnimator { get; set; }
+        private bool IsCharacterMoving { get; set; }
 
         #endregion
 
 
         #region ClassLifeCycles
 
-        public CharacterAnimationsController(Animator characterAnimator)
+        public CharacterAnimationsController(GameContext context)
         {
-            CharacterAnimator = characterAnimator;
+            _context = context;
+        }
+
+        #endregion
+
+
+        #region OnAwake
+
+        public void OnAwake()
+        {
+            _characterModel = _context._characterModel;
+            _inputModel = _context._inputModel;
+            CharacterAnimator = _characterModel.CharacterAnimator;
+            IsCharacterMoving = false;
+            CreateAnimationEvents();
+        }
+
+        #endregion
+
+
+        #region Updating
+
+        public void Updating()
+        {
+            CheckCharacterMoving();
+            UpdateAnimation();
         }
 
         #endregion
@@ -24,18 +54,53 @@ namespace BeastHunter
 
         #region Methods
 
-        public void SetDefaultMovementAnimation(bool isMoving, bool isGrounded, float moveSpeed)
+        public void UpdateAnimation()
         {
-            CharacterAnimator.SetBool("IsMoving", isMoving);
-            CharacterAnimator.SetBool("IsGrounded", isGrounded);
-            CharacterAnimator.SetFloat("MovementSpeed", moveSpeed);
+            if(CharacterAnimator != null)
+            {
+                CharacterAnimator.SetBool("IsMoving", IsCharacterMoving);
+                CharacterAnimator.SetBool("IsGrounded", _characterModel.IsGrounded);
+                CharacterAnimator.SetBool("IsInBattleMode", _characterModel.IsInBattleMode);
+                CharacterAnimator.SetBool("IsAttacking", _characterModel.IsAttacking);
+                CharacterAnimator.SetBool("IsDead", _characterModel.IsDead);
+                CharacterAnimator.SetFloat("MovementSpeed", _characterModel.CurrentSpeed);
+                CharacterAnimator.SetFloat("VerticalSpeed", _characterModel.VerticalSpeed);
+                CharacterAnimator.SetFloat("AxisX", _inputModel.inputStruct._inputAxisX);
+                CharacterAnimator.SetFloat("AxisY", _inputModel.inputStruct._inputAxisY);
+                CharacterAnimator.SetInteger("AttackIndex", _characterModel.AttackIndex);
+            }
         }
 
-        public void SetBattleAnimation(float axisY, float axisX, bool isMoving)
+        public void CreateAnimationEvents()
         {
-            CharacterAnimator.SetFloat("AxisY", axisY);
-            CharacterAnimator.SetFloat("AxisX", axisX);
-            CharacterAnimator.SetBool("IsMoving", isMoving);
+            var animationClips = CharacterAnimator.runtimeAnimatorController.animationClips;
+
+            for (int clip = 0; clip < animationClips.Length; clip++)
+            {
+                foreach (var clipEvent in animationClips[clip].events)
+                {
+                    clipEvent.objectReferenceParameter = _characterModel.PlayerBehaviour;
+                    clipEvent.functionName = "EventHit";
+                    Debug.Log("added event");
+                }
+            }
+        }
+
+        private void setException()
+        {
+            throw new System.Exception("animationEvent");
+        }
+
+        public void CheckCharacterMoving()
+        {
+            if(_inputModel.inputStruct._inputAxisX != 0 || _inputModel.inputStruct._inputAxisY != 0)
+            {
+                IsCharacterMoving = true;
+            }
+            else
+            {
+                IsCharacterMoving = false;
+            }
         }
 
         public void SetJumpingAnimation()

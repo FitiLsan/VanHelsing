@@ -5,6 +5,17 @@ namespace BeastHunter
 {
     public sealed class DefaultMovementState : CharacterBaseState
     {
+        #region Constants
+
+        private const float CAMERA_LOW_SIDE_ANGLE = 45f;
+        private const float CAMERA_HALF_SIDE_ANGLE = 90f;
+        private const float CAMERA_BACK_SIDE_ANGLE = 225f;
+        private const float CAMERA_BACK_ANGLE = 180f;
+        private const float EXIT_TIME = 1f;
+
+        #endregion
+
+
         #region Fields
 
         private float _currentHorizontalInput;
@@ -13,6 +24,7 @@ namespace BeastHunter
         private float _targetSpeed;
         private float _speedChangeLag;
         private float _currentVelocity;
+        private float _currentExitTime;
 
         #endregion
 
@@ -20,21 +32,21 @@ namespace BeastHunter
         #region Properties
 
         private bool IsMovingForward { get; set; }
-        public float TargetDirection { get; private set; }
-        public float CurrentDirecton { get; private set; }
-        public float AdditionalDirection { get; private set; }
-        public float CurrentAngle { get; private set; }
-        public float MovementSpeed { get; private set; }
+        private float TargetDirection { get; set; }
+        private float CurrentDirecton { get; set; }
+        private float AdditionalDirection { get; set; }
+        private float CurrentAngle { get; set; }
+        private float MovementSpeed { get; set; }
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public DefaultMovementState(CharacterInputController inputController, CharacterController characterController,
-            CharacterModel characterModel) : base(inputController, characterController, characterModel)
+        public DefaultMovementState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
         {
-            CanExit = true;
+            CanExit = false;
+            _currentExitTime = EXIT_TIME;
         }
 
         #endregion
@@ -44,23 +56,38 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            _characterController._characterAnimationsController.
-                ChangeRuntimeAnimator(_characterModel.CharacterStruct.CharacterDefaultMovementAnimator);
-            _characterModel.CharacterSphereCollider.radius = _characterModel.CharacterStruct.SphereColliderRadius;
-            _characterController._characterAnimationsController.SetAnimationsBaseSpeed();
+            _characterModel.CharacterSphereCollider.radius = _characterModel.CharacterCommonSettings.SphereColliderRadius;
         }
 
         public override void Execute()
         {
+            ExitCheck();
             CountSpeed();
             CheckMovingForward();
             MovementControl();
-            AnimationControl();
+        }
+
+        private void ExitCheck()
+        {
+            if (!IsMovingForward)
+            {
+                _currentExitTime -= Time.deltaTime;
+
+                if(_currentExitTime <= 0)
+                {
+                    CanExit = true;
+                }
+            }
+            else
+            {
+                CanExit = false;
+                _currentExitTime = EXIT_TIME;
+            }
         }
 
         private void CheckMovingForward()
         {
-            if(_inputController.InputAxisX != 0 || _inputController.InputAxisY != 0)
+            if(_inputModel.inputStruct._inputAxisX != 0 || _inputModel.inputStruct._inputAxisY != 0)
             {
                 IsMovingForward = true;
             }
@@ -72,32 +99,29 @@ namespace BeastHunter
 
         private void MovementControl()
         {
-            if (IsMovingForward && _characterController.IsGrounded)
+            if (IsMovingForward && _characterModel.IsGrounded)
             {
-                _currentHorizontalInput = _inputController.InputAxisX > 0 ? 1 : _inputController.InputAxisX < 0 ? -1 : 0;
-                _currentVerticalInput = _inputController.InputAxisY > 0 ? 1 : _inputController.InputAxisY < 0 ? -1 : 0;
+                _currentHorizontalInput = _inputModel.inputStruct._inputAxisX > 0 ? 1 : _inputModel.inputStruct._inputAxisX < 0 ? -1 : 0;
+                _currentVerticalInput = _inputModel.inputStruct._inputAxisY > 0 ? 1 : _inputModel.inputStruct._inputAxisY < 0 ? -1 : 0;
 
                 switch (_currentVerticalInput)
                 {
                     case 1:
-                        AdditionalDirection = _characterModel.CharacterStruct.CameraLowSideAngle *
-                            _currentHorizontalInput;
+                        AdditionalDirection = CAMERA_LOW_SIDE_ANGLE * _currentHorizontalInput;
                         break;
                     case -1:
                         switch (_currentHorizontalInput)
                         {
                             case 0:
-                                AdditionalDirection = _characterModel.CharacterStruct.CameraBackAngle;
+                                AdditionalDirection = CAMERA_BACK_ANGLE;
                                 break;
                             default:
-                                AdditionalDirection = -_characterModel.CharacterStruct.CameraBackSideAngle *
-                                    _currentHorizontalInput;
+                                AdditionalDirection = -CAMERA_BACK_SIDE_ANGLE * _currentHorizontalInput;
                                 break;
                         }
                         break;
                     case 0:
-                        AdditionalDirection = _characterModel.CharacterStruct.CameraHalfSideAngle *
-                            _currentHorizontalInput;
+                        AdditionalDirection = CAMERA_HALF_SIDE_ANGLE * _currentHorizontalInput;
                         break;
                     default:
                         break;
@@ -107,30 +131,24 @@ namespace BeastHunter
                 TargetDirection = _characterModel.CharacterCamera.transform.localEulerAngles.y + AdditionalDirection;
 
                 CurrentAngle = Mathf.SmoothDampAngle(CurrentDirecton, TargetDirection, ref _currentAngleVelocity,
-                    _characterModel.CharacterStruct.DirectionChangeLag);
+                    _characterModel.CharacterCommonSettings.DirectionChangeLag);
 
                 _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle, 0);
                 _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, MovementSpeed);
             }
         }
 
-        private void AnimationControl()
-        {
-            _characterController._characterAnimationsController.
-                SetDefaultMovementAnimation(IsMovingForward, _characterController.IsGrounded, MovementSpeed);
-        }
-
         private void CountSpeed()
         {
             if (IsMovingForward)
             {
-                if (_inputController.InputRun)
+                if (_inputModel.inputStruct._isInputRun)
                 {
-                    _targetSpeed = _characterModel.CharacterStruct.RunSpeed;
+                    _targetSpeed = _characterModel.CharacterCommonSettings.RunSpeed;
                 }
                 else
                 {
-                    _targetSpeed = _characterModel.CharacterStruct.WalkSpeed;
+                    _targetSpeed = _characterModel.CharacterCommonSettings.WalkSpeed;
                 }
             }
             else
@@ -138,16 +156,16 @@ namespace BeastHunter
                 _targetSpeed = 0;
             }
 
-            if (_characterController.CurrentSpeed < _targetSpeed)
+            if (_characterModel.CurrentSpeed < _targetSpeed)
             {
-               _speedChangeLag = _characterModel.CharacterStruct.AccelerationLag;            
+               _speedChangeLag = _characterModel.CharacterCommonSettings.AccelerationLag;            
             }
             else
             {
-                _speedChangeLag = _characterModel.CharacterStruct.DecelerationLag;
+                _speedChangeLag = _characterModel.CharacterCommonSettings.DecelerationLag;
             }
 
-            MovementSpeed = Mathf.SmoothDamp(_characterController.CurrentSpeed, _targetSpeed, ref _currentVelocity, 
+            MovementSpeed = Mathf.SmoothDamp(_characterModel.CurrentSpeed, _targetSpeed, ref _currentVelocity, 
                 _speedChangeLag);
         }
 
