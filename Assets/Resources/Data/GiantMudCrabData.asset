@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c43b53840e1642541bb3128d171f3e82, type: 3}
+  m_Name: GiantMudCrabData
+  m_EditorClassIdentifier: 
+  GiantMudCrabStruct:
+    MoveSpeed: 2
+    AttackSpeed: 3
+    AttackDamage: 1
+    AttackRange: 5
+    MaxHealth: 2
+    CurrentHealth: 2
+    PatrolDistance: 10
+    TriggerDistance: 0
+    DiggingDistance: 0
+    Prefab: {fileID: 3048340415476073624, guid: e488a15a664cdec49b62374408f99915,
+      type: 3}
+    SpawnPoint: {x: 0, y: -6, z: 0}
+    CrabProjectile: {fileID: 3884286201436219033, guid: 0d46cc5e5d63e9b458a925e16ed02499,
+      type: 3}
+    CrabMouth: {fileID: 0}
+    CanAttack: 0
+    ShouldDigIn: 0
+    IsPatrol: 1
+    IsChase: 0

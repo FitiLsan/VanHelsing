@@ -4,7 +4,7 @@
     {
         #region ClassLifeCycles
 
-        public MainLateControllers(GameContext context, Services services)
+        public MainLateControllers(GameContext context)
         {
 
         }
