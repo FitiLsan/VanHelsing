@@ -28,21 +28,37 @@ namespace BeastHunter
 
         public void SetState(CharacterBaseState newState)
         {
-            if(CurrentState != newState)
+            if (CurrentState != newState)
             {
                 if (CurrentState.CanExit)
                 {
+                    CurrentState.OnExit();
                     PreviousState = CurrentState;
                     CurrentState = newState;
                     CurrentState.Initialize();
                 }
-            }          
+            }
         }
 
         public void SetStateOverride(CharacterBaseState newState)
         {
             if (CurrentState != newState)
             {
+                if (CurrentState.CanBeOverriden)
+                {
+                    CurrentState.OnExit();
+                    PreviousState = CurrentState;
+                    CurrentState = newState;
+                    CurrentState.Initialize();
+                }
+            }
+        }
+
+        public void SetStateAnyway(CharacterBaseState newState)
+        {
+            if (CurrentState != newState)
+            {
+                CurrentState.OnExit();
                 PreviousState = CurrentState;
                 CurrentState = newState;
                 CurrentState.Initialize();
@@ -53,11 +69,33 @@ namespace BeastHunter
         {
             if (CurrentState.CanExit)
             {
+                CurrentState.OnExit();
                 CharacterBaseState tempState = PreviousState;
                 PreviousState = CurrentState;
                 CurrentState = tempState;
                 CurrentState.Initialize();
             }
+        }
+
+        public void ReturnStateOverride()
+        {
+            if (CurrentState.CanBeOverriden)
+            {
+                CurrentState.OnExit();
+                CharacterBaseState tempState = PreviousState;
+                PreviousState = CurrentState;
+                CurrentState = tempState;
+                CurrentState.Initialize();
+            }
+        }
+
+        public void ReturnStateAnyway()
+        {
+            CurrentState.OnExit();
+            CharacterBaseState tempState = PreviousState;
+            PreviousState = CurrentState;
+            CurrentState = tempState;
+            CurrentState.Initialize();
         }
 
         #endregion

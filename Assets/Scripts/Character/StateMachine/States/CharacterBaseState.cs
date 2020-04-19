@@ -15,6 +15,7 @@ namespace BeastHunter
         #region Properties
 
         public bool CanExit { get; protected set; }
+        public bool CanBeOverriden { get; protected set; }
 
         #endregion
 
@@ -35,6 +36,8 @@ namespace BeastHunter
         public abstract void Initialize();
 
         public abstract void Execute();
+
+        public abstract void OnExit();
 
         #endregion
     }

@@ -46,6 +46,7 @@ namespace BeastHunter
         public DefaultMovementState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
         {
             CanExit = false;
+            CanBeOverriden = true;
             _currentExitTime = EXIT_TIME;
         }
 
@@ -65,6 +66,11 @@ namespace BeastHunter
             CountSpeed();
             CheckMovingForward();
             MovementControl();
+        }
+
+        public override void OnExit()
+        {
+            
         }
 
         private void ExitCheck()

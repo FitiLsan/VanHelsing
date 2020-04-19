@@ -7,6 +7,7 @@
         Cube   = 2,
         Crab   = 3,
         Player = 4,
-        Enemy  = 5
+        Enemy  = 5,
+        HitBox = 6
     }
 }

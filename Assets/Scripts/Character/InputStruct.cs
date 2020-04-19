@@ -15,6 +15,7 @@ namespace BeastHunter
         public bool _isInputBattleExit;
         public bool _isInputTargetLock;
         public bool _isInputAttack;
+        public bool _isInputDance;
 
         #endregion
     }

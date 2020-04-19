@@ -952,6 +952,11 @@ namespace BeastHunter
             return characterTargetCamera;
         }
 
+        public void SetBlendTime(float time)
+        {
+            CharacterCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = time;
+        }
+
         #endregion
     }
 }

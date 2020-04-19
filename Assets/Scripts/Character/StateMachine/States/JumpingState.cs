@@ -39,6 +39,8 @@ namespace BeastHunter
 
         public JumpingState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
         {
+            CanExit = false;
+            CanBeOverriden = true;
             JumpVerticalForce = _characterModel.CharacterCommonSettings.JumpVerticalForce;
             JumpHorizontalForce = _characterModel.CharacterCommonSettings.JumpHorizontalForce;
         }
@@ -61,6 +63,11 @@ namespace BeastHunter
         {
             ExitCheck();
             Jumping();
+        }
+
+        public override void OnExit()
+        {
+
         }
 
         private void ExitCheck()

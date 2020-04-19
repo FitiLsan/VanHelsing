@@ -11,9 +11,11 @@
             Add(new InitializeInteractableObjectController(context));
             Add(new SphereInitilizeController(context));
             Add(new SphereController(context));
-            Add(new CharacterInputController(context));
             Add(new GiantMudCrabController(context));
             Add(new TargetController(context));
+            Add(new InputController(context));
+            Add(new CharacterController(context));
+            Add(new CharacterAnimationsController(context));
         }
 
         #endregion

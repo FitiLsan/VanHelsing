@@ -20,7 +20,7 @@ namespace BeastHunter
         {
             _context = context;
             _inputModel = new InputModel();
-            _context._inputModel = _inputModel;
+            _context.InputModel = _inputModel;
         }
 
         #endregion
@@ -39,6 +39,7 @@ namespace BeastHunter
             _inputStruct._isInputBattleExit = false;
             _inputStruct._isInputTargetLock = false;
             _inputStruct._isInputAttack = false;
+            _inputStruct._isInputDance = false;
         }
 
         #endregion
@@ -67,6 +68,7 @@ namespace BeastHunter
             _inputStruct._isInputDodge = Input.GetButtonDown("Dodge");
             _inputStruct._isInputTargetLock = Input.GetButtonDown("Target lock");
             _inputStruct._isInputAttack = Input.GetButtonDown("Fire");
+            _inputStruct._isInputDance = Input.GetButtonDown("Use");
 
             CheckEvents();
         }
@@ -110,6 +112,14 @@ namespace BeastHunter
                 if (_inputModel.OnBattleExit != null)
                 {
                     _inputModel.OnBattleExit.Invoke();
+                }
+            }
+
+            if (_inputStruct._isInputDance)
+            {
+                if (_inputModel.OnDance != null)
+                {
+                    _inputModel.OnDance.Invoke();
                 }
             }
         }

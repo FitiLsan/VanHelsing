@@ -31,8 +31,8 @@ namespace BeastHunter
 
         public void OnAwake()
         {
-            _characterModel = _context._characterModel;
-            _inputModel = _context._inputModel;
+            _characterModel = _context.CharacterModel;
+            _inputModel = _context.InputModel;
             CharacterAnimator = _characterModel.CharacterAnimator;
             IsCharacterMoving = false;
             CreateAnimationEvents();
@@ -63,12 +63,16 @@ namespace BeastHunter
                 CharacterAnimator.SetBool("IsInBattleMode", _characterModel.IsInBattleMode);
                 CharacterAnimator.SetBool("IsAttacking", _characterModel.IsAttacking);
                 CharacterAnimator.SetBool("IsDead", _characterModel.IsDead);
+                CharacterAnimator.SetBool("IsTargeting", _characterModel.IsTargeting);
+                CharacterAnimator.SetBool("IsDancing", _characterModel.IsDansing);
                 CharacterAnimator.SetFloat("MovementSpeed", _characterModel.CurrentSpeed);
                 CharacterAnimator.SetFloat("VerticalSpeed", _characterModel.VerticalSpeed);
                 CharacterAnimator.SetFloat("AxisX", _inputModel.inputStruct._inputAxisX);
                 CharacterAnimator.SetFloat("AxisY", _inputModel.inputStruct._inputAxisY);
                 CharacterAnimator.SetInteger("AttackIndex", _characterModel.AttackIndex);
             }
+
+            CharacterAnimator.speed = _characterModel.AnimationSpeed;
         }
 
         public void CreateAnimationEvents()

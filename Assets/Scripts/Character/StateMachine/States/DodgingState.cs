@@ -20,6 +20,7 @@ namespace BeastHunter
         public DodgingState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
         {
             CanExit = true;
+            CanBeOverriden = false;
         }
 
         #endregion
@@ -33,6 +34,11 @@ namespace BeastHunter
         }
 
         public override void Execute()
+        {
+
+        }
+
+        public override void OnExit()
         {
 
         }

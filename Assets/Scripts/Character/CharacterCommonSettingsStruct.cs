@@ -134,7 +134,35 @@ namespace BeastHunter
 
         [Tooltip("Hit distance between 0 and 10.")]
         [Range(0.0f, 10.0f)]
-        [SerializeField] private float _hitDistance;       
+        [SerializeField] private float _hitDistance;
+
+        [Tooltip("Battle ignore time between 0 and 1-0.")]
+        [Range(0.0f, 100.0f)]
+        [SerializeField] private float _battleIgnoreTime;
+
+        [Tooltip("Path of the first hit box object of prefab")]
+        [SerializeField] private string _firstHitBoxObjectPath;
+
+        [Tooltip("First hit box radius between 0 and 50.")]
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float _firstHitBoxRadius;
+
+        [Tooltip("Path of the second hit box object of prefab")]
+        [SerializeField] private string _secondHitBoxObjectPath;
+
+        [Tooltip("Second hit box radius between 0 and 50.")]
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float _secondHitBoxRadius;
+
+        [Tooltip("Path of the third hit box object of prefab")]
+        [SerializeField] private string _thirdHitBoxObjectPath;
+
+        [Tooltip("Third hit box radius between 0 and 50.")]
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float _thirdHitBoxRadius;
+
+        [Tooltip("Damage structure.")]
+        [SerializeField] private DamageStruct _damageStruct;
 
         #endregion
 
@@ -179,6 +207,17 @@ namespace BeastHunter
         public float DirectionChangeLag => _directionChangeLag;
 
         public float HitDistance => _hitDistance;
+        public float BattleIgnoreTime => _battleIgnoreTime;
+
+        public string FirstHitBoxObjectPath => _firstHitBoxObjectPath;
+        public string SecondHitBoxObjectPath => _secondHitBoxObjectPath;
+        public string ThirdHitBoxObjectPath => _thirdHitBoxObjectPath;
+
+        public float FirstHitBoxRadius => _firstHitBoxRadius;
+        public float SecondHitBoxRadius => _secondHitBoxRadius;
+        public float ThirdHitBoxRadius => _thirdHitBoxRadius;
+
+        public DamageStruct CharacterDamage => _damageStruct;
 
         #endregion
 

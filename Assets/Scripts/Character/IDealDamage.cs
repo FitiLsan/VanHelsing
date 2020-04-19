@@ -4,7 +4,7 @@ namespace BeastHunter
 {
     public interface IDealDamage
     {
-        void DealDamage(Collider enemy, DamageStruct damage);
+        void DealDamage(InteractableObjectBehavior enemy, DamageStruct damage);
     }
 }
 

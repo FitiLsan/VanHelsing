@@ -20,7 +20,7 @@ MonoBehaviour:
       type: 2}
     _characterBattleAnimator: {fileID: 9100000, guid: 71768c8e0d54fb34396989829cda6ca1,
       type: 2}
-    _instantiatePosition: {x: 10, y: 0, z: 10}
+    _instantiatePosition: {x: 60, y: 100, z: 80}
     _instantiateDirection: -40
     _rigitbodyMass: 1
     _rigitbodyDrag: 0
@@ -31,11 +31,11 @@ MonoBehaviour:
     _sphereColliderCenter: {x: 0, y: 1, z: 0}
     _sphereColliderRadius: 7.2
     _sphereColliderRadiusIncrease: 1.365
-    _healthPoints: 9.2
+    _healthPoints: 34.1
     _walkSpeed: 4.6
     _runSpeed: 7.4
     _inBattleWalkSpeed: 2.2
-    _inBattleRunSpeed: 3.9
+    _inBattleRunSpeed: 4
     _jumpHorizontalForce: 4.56
     _jumpVerticalForce: 4.52
     _groundCheckHeight: 1.2
@@ -46,6 +46,15 @@ MonoBehaviour:
     _inBattleDecelerationLag: 0.022
     _directionChangeLag: 0.073
     _hitDistance: 0
+    _battleIgnoreTime: 23
+    _firstHitBoxObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L
+    _firstHitBoxRadius: 33.3
+    _secondHitBoxObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R
+    _secondHitBoxRadius: 33.8
+    _thirdHitBoxObjectPath: Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L
+    _thirdHitBoxRadius: 35.8
+    _damageStruct:
+      damage: 5
   _characterCameraSettings:
     _characterCamera: {fileID: 5296010943117555874, guid: 331dcbff4c90e7249a42146bd6820d5b,
       type: 3}
@@ -68,18 +77,18 @@ MonoBehaviour:
     _freeLookSpeedY: 2
     _freeLookAccelerationLagY: 0.1
     _freeLookDecelerationLagY: 0.1
-    _isInvertedAxisY: 0
+    _isInvertedAxisY: 1
     _freeLookSplineCurvature: 0.2
-    _freeLookTopRigHeight: 4.5
-    _freeLookTopRigRadius: 2.64
-    _freeLookMiddleRigHeight: 2.02
-    _freeLookMiddleRigRadius: 4.49
-    _freeLookBottomRigHeight: 0.52
-    _freeLookBottomRigRadius: 2.68
+    _freeLookTopRigHeight: 1
+    _freeLookTopRigRadius: 3
+    _freeLookMiddleRigHeight: 3
+    _freeLookMiddleRigRadius: 4
+    _freeLookBottomRigHeight: 5
+    _freeLookBottomRigRadius: 2.51
     _freeLookTopRigBodyDampingY: 1
     _freeLookTopRigBodyDampingZ: 1
     _freeLookTopRigOffsetX: 0
-    _freeLookTopRigOffsetY: 2
+    _freeLookTopRigOffsetY: 1.6
     _freeLookTopRigOffsetZ: 0
     _freeLookTopRigLookaheadTime: 0
     _freeLookTopRigLookaheadSmoothing: 0
@@ -96,7 +105,7 @@ MonoBehaviour:
     _freeLookMiddleRigBodyDampingY: 1
     _freeLookMiddleRigBodyDampingZ: 1
     _freeLookMiddleRigOffsetX: 0
-    _freeLookMiddleRigOffsetY: 2
+    _freeLookMiddleRigOffsetY: 1.6
     _freeLookMiddleRigOffsetZ: 0
     _freeLookMiddleRigLookaheadTime: 0
     _freeLookMiddleRigLookaheadSmoothing: 0
@@ -113,7 +122,7 @@ MonoBehaviour:
     _freeLookBottomRigBodyDampingY: 1
     _freeLookBottomRigBodyDampingZ: 1
     _freeLookBottomRigOffsetX: 0
-    _freeLookBottomRigOffsetY: 2
+    _freeLookBottomRigOffsetY: 1.6
     _freeLookBottomRigOffsetZ: 0
     _freeLookBottomRigLookaheadTime: 0
     _freeLookBottomRigLookaheadSmoothing: 0

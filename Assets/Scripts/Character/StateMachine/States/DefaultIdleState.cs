@@ -9,6 +9,7 @@ namespace BeastHunter
         public DefaultIdleState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
         {
             CanExit = true;
+            CanBeOverriden = true;
         }
 
         #endregion
@@ -23,6 +24,11 @@ namespace BeastHunter
         public override void Execute()
         {
             StayOnOnePlace();
+        }
+
+        public override void OnExit()
+        {
+
         }
 
         private void StayOnOnePlace()

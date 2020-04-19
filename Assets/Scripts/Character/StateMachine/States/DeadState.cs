@@ -21,6 +21,7 @@ namespace BeastHunter
         public DeadState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
         {
             CanExit = false;
+            CanBeOverriden = false;
         }
 
         #endregion
@@ -36,6 +37,11 @@ namespace BeastHunter
         public override void Execute()
         {
             StayDead();
+        }
+
+        public override void OnExit()
+        {
+
         }
 
         private void StayDead()

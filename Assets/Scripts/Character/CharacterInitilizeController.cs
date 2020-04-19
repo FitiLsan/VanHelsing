@@ -34,7 +34,7 @@ namespace BeastHunter
             GameObject instance = GameObject.Instantiate(characterData._characterCommonSettings.Prefab);
 
             CharacterModel character = new CharacterModel(instance, characterData, groundedInstancePosition);
-            _context._characterModel = character;
+            _context.CharacterModel = character;
         }
 
         #endregion

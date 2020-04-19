@@ -21,6 +21,7 @@ namespace BeastHunter
         public FallingState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
         {
             CanExit = false;
+            CanBeOverriden = true;
         }
 
         #endregion
@@ -36,6 +37,11 @@ namespace BeastHunter
         public override void Execute()
         {
             ExitCheck();
+        }
+
+        public override void OnExit()
+        {
+
         }
 
         public void ExitCheck()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public abstract class InteractableObjectBehavior : MonoBehaviour, ITrigger
+    public abstract class InteractableObjectBehavior : MonoBehaviour, ITrigger, ITakeDamage
     {
         #region Fields
 
@@ -15,9 +15,10 @@ namespace BeastHunter
 
         #region Properties
 
-        public bool IsInteractable { get; set; }
+        [SerializeField] public bool IsInteractable { get; set; }
 
         public Predicate<Collider> OnFilterHandler { get; set; }
+        public Action<DamageStruct> OnTakeDamage { get; set; }
         public Action<ITrigger, Collider> OnTriggerEnterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerExitHandler { get; set; }
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
@@ -47,7 +48,18 @@ namespace BeastHunter
 
         private void OnDisable()
         {
-            DestroyHandler.Invoke(this, _type);
+            if(DestroyHandler != null)
+            {
+                DestroyHandler.Invoke(this, _type);
+            }
+        }
+
+        public void TakeDamage(DamageStruct damage)
+        {
+            if (OnTakeDamage != null)
+            {
+                OnTakeDamage.Invoke(damage);
+            }
         }
 
         #endregion

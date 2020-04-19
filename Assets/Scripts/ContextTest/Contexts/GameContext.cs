@@ -10,9 +10,9 @@ namespace BeastHunter
         #region Fields
 
         public SphereModel SphereModel;
-        public CharacterModel _characterModel;
+        public CharacterModel CharacterModel;
 
-        public InputModel _inputModel;
+        public InputModel InputModel;
         public GiantMudCrabModel GiantMudCrabModel;
 
 

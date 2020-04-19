@@ -7,8 +7,8 @@ namespace BeastHunter
     {
         #region Constants
 
-        private const float EXIT_TIME = 0.5f;
-        private readonly float[] ATTACKS_TIME = new float[3] { 1.5f, 2f, 1.5f };
+        private const float EXIT_TIME = 0.1f;
+        private readonly float[] ATTACKS_TIME = new float[3] { 0.8f, 1f, 0.8f };
 
         #endregion
 
@@ -27,7 +27,9 @@ namespace BeastHunter
         public AttackingState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
         {
             CanExit = false;
+            CanBeOverriden = true;
             _inputModel.OnAttack += OnPressAttack;
+            _currentAttackIndex = ATTACKS_TIME.Length-1;
         }
 
         #endregion
@@ -36,34 +38,45 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            _characterModel.IsInBattleMode = true;
+            StayInBattle();
             _currentExitTime = EXIT_TIME;
-            _currentAttackTime = 0;
             _characterModel.IsAttacking = true;
         }
 
         public override void Execute()
         {
-            CountTimeBetweenAttacks();
+            CountTimeBetweenAttacks();         
             ExitCheck();
             StayInBattle();
         }
 
+        public override void OnExit()
+        {
+            foreach (var hitBox in _characterModel.PlayerHitBoxes)
+            {
+                hitBox.IsInteractable = false;
+            }
+        }
+
         private void ExitCheck()
         {
-            if(_currentExitTime > 0)
+            if (_currentAttackTime <= 0)
             {
-                _currentExitTime -= Time.deltaTime;
+                if (_currentExitTime > 0)
+                {
+                    _currentExitTime -= Time.deltaTime;
+                }
+                else
+                {
+                    _currentExitTime = 0;
+                    CanExit = true;
+                    _characterModel.IsAttacking = false;
+                }
             }
             else
             {
-                _currentExitTime = 0;
-            }
-
-            if (_currentExitTime + _currentAttackTime <= 0)
-            {
-                _characterModel.IsAttacking = false;
-                CanExit = true;
+                _currentExitTime = EXIT_TIME;
+                CanExit = false;
             }
         }
 
@@ -95,11 +108,13 @@ namespace BeastHunter
 
         private void OnPressAttack()
         {
-            if(_currentAttackTime < EXIT_TIME)
+            if(_currentAttackTime == 0)
             {
+                SetNextAttack();
                 _currentAttackTime = ATTACKS_TIME[_currentAttackIndex];
                 _currentExitTime = EXIT_TIME;
-                SetNextAttack();
+                _characterModel.PlayerHitBoxes[_currentAttackIndex].IsInteractable = true;
+                Debug.Log(_currentAttackIndex);
             }
         }
 

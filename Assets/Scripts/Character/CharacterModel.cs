@@ -19,21 +19,24 @@ namespace BeastHunter
         public SphereCollider CharacterSphereCollider { get; }
         public Transform CharacterTransform { get; }
         public Rigidbody CharacterRigitbody { get; }
-        public PlayerBehaviour PlayerBehaviour { get; }
+        public PlayerBehavior PlayerBehaviour { get; }
         public CharacterData CharacterData { get; }
         public CharacterCommonSettingsStruct CharacterCommonSettings { get; }
         public CharacterCameraStruct CharacterCameraSettings { get; }
         public Animator CharacterAnimator { get; set; }
+        public PlayerHitBoxBehavior[] PlayerHitBoxes { get; set; }
         public List<Collider> EnemiesInTrigger { get; set; }
 
         public float CurrentSpeed { get; set; }
         public float VerticalSpeed { get; set; }
+        public float AnimationSpeed { get; set; }
         public bool IsGrounded { get; set; }
         public bool IsEnemyNear { get; set; }
         public bool IsTargeting { get; set; }
         public bool IsInBattleMode { get; set; }
         public bool IsAttacking { get; set; }
         public bool IsCameraFixed { get; set; }
+        public bool IsDansing { get; set; }
         public bool IsDead { get; set; }
         public int AttackIndex { get; set; }
 
@@ -111,13 +114,13 @@ namespace BeastHunter
             CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterDefaultMovementAnimator;
             CharacterAnimator.applyRootMotion = false;
 
-            if (prefab.GetComponent<PlayerBehaviour>() != null)
+            if (prefab.GetComponent<PlayerBehavior>() != null)
             {
-                PlayerBehaviour = prefab.GetComponent<PlayerBehaviour>();
+                PlayerBehaviour = prefab.GetComponent<PlayerBehavior>();
             }
             else
             {
-                PlayerBehaviour = prefab.AddComponent<PlayerBehaviour>();
+                PlayerBehaviour = prefab.AddComponent<PlayerBehavior>();
             }
 
             PlayerBehaviour.SetType(InteractableObjectType.Player);
@@ -130,8 +133,49 @@ namespace BeastHunter
             IsInBattleMode = false;
             IsAttacking = false;
             IsDead = false;
+            IsDansing = false;
             CurrentSpeed = 0;
             AttackIndex = 0;
+            AnimationSpeed = 1f;
+
+            PlayerHitBoxes = new PlayerHitBoxBehavior[3];
+
+            string[] hitBoxesPaths = new string[3]
+            {
+                CharacterCommonSettings.FirstHitBoxObjectPath,
+                CharacterCommonSettings.SecondHitBoxObjectPath,
+                CharacterCommonSettings.ThirdHitBoxObjectPath
+            };
+
+            float[] hitBoxesRadiuses = new float[3]
+{
+                CharacterCommonSettings.FirstHitBoxRadius,
+                CharacterCommonSettings.SecondHitBoxRadius,
+                CharacterCommonSettings.ThirdHitBoxRadius
+            };
+
+            for (int hitBox = 0; hitBox < PlayerHitBoxes.Length; hitBox++)
+            {
+                Transform hitBoxTransform = CharacterTransform.Find(hitBoxesPaths[hitBox]);
+
+                if (hitBoxTransform != null && hitBoxTransform.GetComponent<Collider>() == null)
+                {
+                    SphereCollider trigger = hitBoxTransform.gameObject.AddComponent<SphereCollider>();
+                    trigger.radius = hitBoxesRadiuses[hitBox];
+                    trigger.isTrigger = true;
+                }
+                else if (hitBoxTransform.GetComponent<SphereCollider>() != null)
+                {
+                    SphereCollider trigger = hitBoxTransform.GetComponent<SphereCollider>();
+                    trigger.radius = hitBoxesRadiuses[hitBox];
+                    trigger.isTrigger = true;
+                }
+
+                PlayerHitBoxes[hitBox] = hitBoxTransform.gameObject.AddComponent<PlayerHitBoxBehavior>();
+                PlayerHitBoxes[hitBox].SetType(InteractableObjectType.HitBox);
+                PlayerHitBoxes[hitBox].IsInteractable = false;
+                hitBoxTransform.gameObject.AddComponent<Rigidbody>().isKinematic = true;
+            }
 
 #if (UNITY_EDITOR)
             EditorApplication.playModeStateChanged += SaveCameraSettings;
