@@ -29,7 +29,9 @@ namespace BeastHunter
         public void OnAwake()
         {
             var GiantMudCrabData = Data.GiantMudCrabData;
-            GameObject instance = GameObject.Instantiate(GiantMudCrabData.GiantMudCrabStruct.Prefab, GiantMudCrabData.GiantMudCrabStruct.SpawnPoint, Quaternion.identity);
+            Vector3 spawnPoint = Vector3.zero;
+            Services.SharedInstance.PhysicsService.FindGround(GiantMudCrabData.GiantMudCrabStruct.SpawnPoint, out spawnPoint);
+            GameObject instance = GameObject.Instantiate(GiantMudCrabData.GiantMudCrabStruct.Prefab, spawnPoint, Quaternion.identity);
             GiantMudCrabModel GiantMudCrab = new GiantMudCrabModel(instance, GiantMudCrabData);
             _context.GiantMudCrabModel = GiantMudCrab;
         }

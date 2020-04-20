@@ -46,6 +46,7 @@ namespace BeastHunter
                 giantMudCrabBehaviour.OnFilterHandler += OnFilterHandler;
                 giantMudCrabBehaviour.OnTriggerEnterHandler += OnTriggerEnterHandler;
                 giantMudCrabBehaviour.OnTriggerExitHandler += OnTriggerExitHandler;
+                giantMudCrabBehaviour.OnTakeDamage += OnTakeDamage;
                 Debug.Log("Activate");
             }
         }
@@ -63,6 +64,7 @@ namespace BeastHunter
                 giantMudCrabBehaviour.OnFilterHandler -= OnFilterHandler;
                 giantMudCrabBehaviour.OnTriggerEnterHandler -= OnTriggerEnterHandler;
                 giantMudCrabBehaviour.OnTriggerExitHandler -= OnTriggerExitHandler;
+                giantMudCrabBehaviour.OnTakeDamage -= OnTakeDamage;
             }
         }
 
@@ -71,12 +73,27 @@ namespace BeastHunter
 
         #region Methods
 
+        private void OnTakeDamage(DamageStruct damage)
+        {
+            _context.GiantMudCrabModel.CurrentHealth -= damage.damage;
+
+            Debug.Log("crab got " + damage.damage + " damage");
+
+            if(_context.GiantMudCrabModel.CurrentHealth <= 0)
+            {
+                _context.GiantMudCrabModel.GiantMudCrabStruct.IsDead = true;
+                Debug.Log("The crab is dead");
+                _context.GiantMudCrabModel.Crab.GetComponent<Renderer>().material.color = Color.red;
+                _context.GiantMudCrabModel.Crab.GetComponent<InteractableObjectBehavior>().enabled = false;
+            }
+        }
+
         private bool OnFilterHandler(Collider tagObject)
         {
             return tagObject.CompareTag(TagManager.PLAYER);
         }
 
-        private void OnTriggerEnterHandler(ITrigger enteredObject)
+        private void OnTriggerEnterHandler(ITrigger enteredObject, Collider other)
         {
             enteredObject.IsInteractable = true;
             _context.GiantMudCrabModel.GiantMudCrabStruct.CanAttack = true;
@@ -84,7 +101,7 @@ namespace BeastHunter
             Debug.Log("Enter");
         }
 
-        private void OnTriggerExitHandler(ITrigger enteredObject)
+        private void OnTriggerExitHandler(ITrigger enteredObject, Collider other)
         {
             enteredObject.IsInteractable = false;
             _context.GiantMudCrabModel.GiantMudCrabStruct.CanAttack = false;

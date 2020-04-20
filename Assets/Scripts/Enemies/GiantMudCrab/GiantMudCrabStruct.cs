@@ -1,45 +1,50 @@
 ﻿using System;
 using UnityEngine;
 
-
-[Serializable]
-public struct GiantMudCrabStruct
+namespace BeastHunter
 {
-    #region Fields
+    [Serializable]
+    public struct GiantMudCrabStruct
+    {
+        #region Fields
 
-    public float MoveSpeed;
+        public DamageStruct AttackDamage;
 
-    public float AttackSpeed;
+        public float MoveSpeed;
 
-    public float AttackDamage;
+        public float AttackSpeed;
 
-    public float AttackRange;
+        public float AttackRange;
 
-    public float MaxHealth;
+        public float MaxHealth;
 
-    public float CurrentHealth;
+        public float CurrentHealth;
 
-    public float PatrolDistance;
+        public float PatrolDistance;
 
-    public float TriggerDistance;
+        public float TriggerDistance;
 
-    public float DiggingDistance;
+        public float DiggingDistance;
 
-    public GameObject Prefab;
+        public GameObject Prefab;
 
-    public Vector3 SpawnPoint;
+        public Vector3 SpawnPoint;
 
-    public GameObject CrabProjectile;
+        public GameObject CrabProjectile;
 
-    public Transform CrabMouth;
+        public Transform CrabMouth;
 
-    public bool CanAttack;
+        public bool CanAttack;
 
-    public bool ShouldDigIn;
+        public bool ShouldDigIn;
 
-    public bool IsPatrol;
+        public bool IsPatrol;
 
-    public bool IsChase;
+        public bool IsChase;
 
-    #endregion
+        public bool IsDead;
+
+        #endregion
+    }
 }
+

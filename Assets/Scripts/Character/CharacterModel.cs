@@ -1,99 +1,202 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using Cinemachine;
+using System.Collections.Generic;
 
 
-public sealed class CharacterModel
+namespace BeastHunter
 {
-    #region Properties
-
-    public Camera CharacterCamera { get; }
-    public CinemachineFreeLook CharacterCinemachineCamera { get; }
-    public CapsuleCollider CharacterCapsuleCollider { get; }
-    public Transform CharacterTransform { get; }
-    public Rigidbody CharacterRigitbody { get; }
-    public GameObject CameraTarget { get; }
-    public Transform CameraTargetTransform { get; }
-    public CharacterData CharacterData { get; }
-    public CharacterStruct CharacterStruct { get; }
-    public Animator CharacterAnimator { get; }
-
-    #endregion
-
-
-    #region ClassLifeCycle
-
-    public CharacterModel(GameObject prefab, CharacterData characterData)
+    public sealed class CharacterModel
     {
-        CharacterData = characterData;
-        CharacterStruct = CharacterData._characterStruct;
-        CharacterTransform = prefab.transform;
-        CharacterTransform.rotation = Quaternion.Euler(0, CharacterStruct.InstantiateDirection, 0);
-        CharacterTransform.name = "Player";
-        CharacterTransform.tag = "Player";
+        #region Properties
 
-        if (prefab.GetComponent<Rigidbody>() != null)
+        public Camera CharacterCamera { get; }
+        public CinemachineFreeLook CharacterFreelookCamera { get; }
+        public CinemachineVirtualCamera CharacterTargetCamera { get; }
+        public GameObject CameraTarget { get; }
+        public Transform CameraTargetTransform { get; }
+        public CapsuleCollider CharacterCapsuleCollider { get; }
+        public SphereCollider CharacterSphereCollider { get; }
+        public Transform CharacterTransform { get; }
+        public Rigidbody CharacterRigitbody { get; }
+        public PlayerBehavior PlayerBehaviour { get; }
+        public CharacterData CharacterData { get; }
+        public CharacterCommonSettingsStruct CharacterCommonSettings { get; }
+        public CharacterCameraStruct CharacterCameraSettings { get; }
+        public Animator CharacterAnimator { get; set; }
+        public PlayerHitBoxBehavior[] PlayerHitBoxes { get; set; }
+        public List<Collider> EnemiesInTrigger { get; set; }
+
+        public float CurrentSpeed { get; set; }
+        public float VerticalSpeed { get; set; }
+        public float AnimationSpeed { get; set; }
+        public bool IsGrounded { get; set; }
+        public bool IsEnemyNear { get; set; }
+        public bool IsTargeting { get; set; }
+        public bool IsInBattleMode { get; set; }
+        public bool IsAttacking { get; set; }
+        public bool IsCameraFixed { get; set; }
+        public bool IsDansing { get; set; }
+        public bool IsDead { get; set; }
+        public int AttackIndex { get; set; }
+
+        #endregion
+
+
+        #region ClassLifeCycle
+
+        public CharacterModel(GameObject prefab, CharacterData characterData, Vector3 groundPosition)
         {
-            CharacterRigitbody = prefab.GetComponent<Rigidbody>();
+            CharacterData = characterData;
+            CharacterCommonSettings = CharacterData._characterCommonSettings;
+            CharacterCameraSettings = CharacterData._characterCameraSettings;
+            CharacterTransform = prefab.transform;
+            CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
+            CharacterTransform.name = CharacterCommonSettings.InstanceName;
+            CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
+
+            if (prefab.GetComponent<Rigidbody>() != null)
+            {
+                CharacterRigitbody = prefab.GetComponent<Rigidbody>();
+            }
+            else
+            {
+                CharacterRigitbody = prefab.AddComponent<Rigidbody>();
+                CharacterRigitbody.freezeRotation = true;
+                CharacterRigitbody.mass = CharacterCommonSettings.RigitbodyMass;
+                CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
+                CharacterRigitbody.angularDrag = CharacterCommonSettings.RigitbodyAngularDrag;
+            }
+
+            if (prefab.GetComponent<CapsuleCollider>() != null)
+            {
+                CharacterCapsuleCollider = prefab.GetComponent<CapsuleCollider>();
+            }
+            else
+            {
+                CharacterCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
+                CharacterCapsuleCollider.center = CharacterCommonSettings.CapsuleColliderCenter;
+                CharacterCapsuleCollider.radius = CharacterCommonSettings.CapsuleColliderRadius;
+                CharacterCapsuleCollider.height = CharacterCommonSettings.CapsuleColliderHeight;
+            }
+
+            CharacterCapsuleCollider.transform.position = groundPosition;
+
+            if (prefab.GetComponent<SphereCollider>() != null)
+            {
+                CharacterSphereCollider = prefab.GetComponent<SphereCollider>();
+                CharacterSphereCollider.isTrigger = true;
+            }
+            else
+            {
+                CharacterSphereCollider = prefab.AddComponent<SphereCollider>();
+                CharacterSphereCollider.center = CharacterCommonSettings.SphereColliderCenter;
+                CharacterSphereCollider.radius = CharacterCommonSettings.SphereColliderRadius;
+                CharacterSphereCollider.isTrigger = true;
+            }
+
+            CameraTarget = CharacterCameraSettings.CreateCameraTarget(CharacterTransform);
+            CameraTargetTransform = CameraTarget.transform;
+            CharacterCamera = CharacterCameraSettings.CreateCharacterCamera();
+            CharacterCamera.transform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
+            CharacterFreelookCamera = CharacterCameraSettings.CreateCharacterFreelookCamera(CameraTargetTransform);
+            CharacterTargetCamera = CharacterCameraSettings.CreateCharacterTargetCamera(CameraTargetTransform);
+
+            if (prefab.GetComponent<Animator>() != null)
+            {
+                CharacterAnimator = prefab.GetComponent<Animator>();
+            }
+            else
+            {
+                CharacterAnimator = prefab.AddComponent<Animator>();
+            }
+
+            CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterDefaultMovementAnimator;
+            CharacterAnimator.applyRootMotion = false;
+
+            if (prefab.GetComponent<PlayerBehavior>() != null)
+            {
+                PlayerBehaviour = prefab.GetComponent<PlayerBehavior>();
+            }
+            else
+            {
+                PlayerBehaviour = prefab.AddComponent<PlayerBehavior>();
+            }
+
+            PlayerBehaviour.SetType(InteractableObjectType.Player);
+
+            EnemiesInTrigger = new List<Collider>();
+            IsGrounded = false;
+            IsCameraFixed = false;
+            IsEnemyNear = false;
+            IsTargeting = false;
+            IsInBattleMode = false;
+            IsAttacking = false;
+            IsDead = false;
+            IsDansing = false;
+            CurrentSpeed = 0;
+            AttackIndex = 0;
+            AnimationSpeed = 1f;
+
+            PlayerHitBoxes = new PlayerHitBoxBehavior[3];
+
+            string[] hitBoxesPaths = new string[3]
+            {
+                CharacterCommonSettings.FirstHitBoxObjectPath,
+                CharacterCommonSettings.SecondHitBoxObjectPath,
+                CharacterCommonSettings.ThirdHitBoxObjectPath
+            };
+
+            float[] hitBoxesRadiuses = new float[3]
+{
+                CharacterCommonSettings.FirstHitBoxRadius,
+                CharacterCommonSettings.SecondHitBoxRadius,
+                CharacterCommonSettings.ThirdHitBoxRadius
+            };
+
+            for (int hitBox = 0; hitBox < PlayerHitBoxes.Length; hitBox++)
+            {
+                Transform hitBoxTransform = CharacterTransform.Find(hitBoxesPaths[hitBox]);
+
+                if (hitBoxTransform != null && hitBoxTransform.GetComponent<Collider>() == null)
+                {
+                    SphereCollider trigger = hitBoxTransform.gameObject.AddComponent<SphereCollider>();
+                    trigger.radius = hitBoxesRadiuses[hitBox];
+                    trigger.isTrigger = true;
+                }
+                else if (hitBoxTransform.GetComponent<SphereCollider>() != null)
+                {
+                    SphereCollider trigger = hitBoxTransform.GetComponent<SphereCollider>();
+                    trigger.radius = hitBoxesRadiuses[hitBox];
+                    trigger.isTrigger = true;
+                }
+
+                PlayerHitBoxes[hitBox] = hitBoxTransform.gameObject.AddComponent<PlayerHitBoxBehavior>();
+                PlayerHitBoxes[hitBox].SetType(InteractableObjectType.HitBox);
+                PlayerHitBoxes[hitBox].IsInteractable = false;
+                hitBoxTransform.gameObject.AddComponent<Rigidbody>().isKinematic = true;
+            }
+
+#if (UNITY_EDITOR)
+            EditorApplication.playModeStateChanged += SaveCameraSettings;
+#endif
         }
-        else
+
+        #endregion
+
+        #region Methods
+
+#if (UNITY_EDITOR)
+        private void SaveCameraSettings(PlayModeStateChange state)
         {
-            CharacterRigitbody = prefab.AddComponent<Rigidbody>();
-            CharacterRigitbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-            CharacterRigitbody.mass = CharacterStruct.RigitbodyMass;
-            CharacterRigitbody.drag = CharacterStruct.RigitbodyDrag;
-            CharacterRigitbody.angularDrag = CharacterStruct.RigitbodyAngularDrag;
+            if(state == PlayModeStateChange.ExitingPlayMode)
+            {
+                Data.CharacterData._characterCameraSettings.
+                    SaveCameraSettings(CharacterFreelookCamera, CharacterTargetCamera);
+                EditorApplication.playModeStateChanged -= SaveCameraSettings;
+            }
         }
-
-        if (prefab.GetComponent<CapsuleCollider>() != null)
-        {
-            CharacterCapsuleCollider = prefab.GetComponent<CapsuleCollider>();
-        }
-        else
-        {
-            CharacterCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
-            CharacterCapsuleCollider.center = CharacterStruct.CapsuleColliderCenter;
-            CharacterCapsuleCollider.radius = CharacterStruct.CapsuleColliderRadius;
-            CharacterCapsuleCollider.height = CharacterStruct.CapsuleColliderHeight;
-        }
-
-        CharacterCamera = GameObject.Instantiate(CharacterStruct._characterCamera);
-        CharacterCamera.name = "CharacterCamera";
-        CharacterCinemachineCamera = GameObject.Instantiate(CharacterStruct._characterCinemachineCamera);
-        CharacterCinemachineCamera.name = "CharacterCinemachineCamera";
-
-        CameraTarget = new GameObject
-        {
-            name = "CameraTarget"
-        };
-        CameraTarget.transform.SetParent(CharacterTransform);
-        CameraTargetTransform = CameraTarget.transform;
-        CameraTargetTransform.localPosition = Vector3.zero;
-        CameraTargetTransform.localRotation = Quaternion.Euler(0, 0, 0);
-
-        CharacterCinemachineCamera.Follow = CameraTargetTransform;
-        CharacterCinemachineCamera.LookAt = CameraTargetTransform;
-
-        CharacterCamera.transform.rotation = Quaternion.Euler(0, CharacterStruct.InstantiateDirection, 0);
-
-        for (var rig = 0; rig < 3; rig++)
-        {
-            CharacterCinemachineCamera.GetRig(rig).LookAt = CameraTargetTransform;
-            CharacterCinemachineCamera.GetRig(rig).GetCinemachineComponent<CinemachineComposer>().m_TrackedObjectOffset.y =
-                CharacterStruct.CameraHeight;
-        }
-        
-        if (prefab.GetComponent<Animator>() != null)
-        {
-            CharacterAnimator = prefab.GetComponent<Animator>();
-        }
-        else
-        {
-            CharacterAnimator = prefab.AddComponent<Animator>();
-        }
-
-        CharacterAnimator.runtimeAnimatorController = CharacterStruct._characterAnimator;
-        CharacterAnimator.applyRootMotion = false;
+#endif
+        #endregion
     }
-
-    #endregion
 }

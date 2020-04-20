@@ -63,15 +63,15 @@ namespace BeastHunter
             return tagObject.CompareTag(TagManager.SPHERE);
         }
 
-        private void OnTriggerEnterHandler(ITrigger enteredObject)
+        private void OnTriggerEnterHandler(ITrigger enteredObject, Collider other)
         {
             enteredObject.IsInteractable = true;
             Debug.Log("Enter");
         }
 
-        private void OnTriggerExitHandler(ITrigger enteredObject)
+        private void OnTriggerExitHandler(ITrigger exitedObject, Collider other)
         {
-            enteredObject.IsInteractable = false;
+            exitedObject.IsInteractable = false;
             Debug.Log("Exit");
         }
 

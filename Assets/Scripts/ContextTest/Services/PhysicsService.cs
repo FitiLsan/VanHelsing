@@ -45,6 +45,20 @@ namespace BeastHunter
             return isHit;
         }
 
+        public bool FindGround(Vector3 position, out Vector3 hitPoint)
+        {
+            hitPoint = Vector3.zero;
+
+            bool isHit = Physics.Raycast(position, Vector3.down, out RaycastHit hit);
+
+            if (isHit)
+            {
+                hitPoint = hit.point;
+            }
+
+            return isHit;
+        }
+
         public List<ITrigger> GetObjectsInRadius(Vector2 position, float radius, int layerMask = LayerManager.DEFAULT_LAYER)
         {
             _triggeredObjects.Clear();
