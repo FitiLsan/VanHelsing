@@ -9,8 +9,6 @@ public struct ButterflyStruct
 
     public float MoveSpeed;
 
-    public float ButterflyRadius;
-
     public GameObject Prefab;
 
     public Transform Target;

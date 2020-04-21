@@ -3,7 +3,7 @@
 
 public sealed class ButterflyModel
 {
-    #region Properties
+    #region Fields
 
     public SphereCollider ButterflyCollider { get; }
     public Transform ButterflyTransform { get; }
@@ -30,7 +30,6 @@ public sealed class ButterflyModel
 
     public void Initilize()
     {
-        ButterflyData.ChangeButterflyCollider(ButterflyCollider, ButterflyStruct.ButterflyRadius);
         ButterflyData.Move(ButterflyTransform, ButterflyStruct.Target, ButterflyStruct.MoveSpeed);
     }
 

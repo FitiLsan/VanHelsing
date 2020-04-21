@@ -29,7 +29,7 @@ namespace BeastHunter
             var ButterflyData = Data.ButterflyData;
             GameObject instance = GameObject.Instantiate(ButterflyData.ButterflyStruct.Prefab);
             ButterflyModel Butterfly = new ButterflyModel(instance, ButterflyData);
-            _context._butterflyModel = Butterfly;
+            _context.ButterflyModel = Butterfly;
         }
 
         #endregion

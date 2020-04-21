@@ -21,13 +21,5 @@ public sealed class ButterflyData : ScriptableObject
             speed);
     }
 
-    public void ChangeButterflyCollider(SphereCollider SphereCollider, float ButterflyRadius)
-    {
-        if (SphereCollider != null)
-        {
-            SphereCollider.radius = ButterflyRadius;
-        }
-    }
-
     #endregion
 }
