@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 
 namespace BeastHunter
 {
-    public sealed class SphereController : IAwake, IUpdate
+    public sealed class RabbitController : IAwake, IUpdate
     {
         #region Fields
 
@@ -12,9 +14,9 @@ namespace BeastHunter
         #endregion
 
 
-        #region ClassLifeCycle
+        #region ClassLifeCycles
 
-        public SphereController(GameContext context, Services services)
+        public RabbitController(GameContext context, Services services)
         {
             _context = context;
         }
@@ -26,7 +28,10 @@ namespace BeastHunter
 
         public void Updating()
         {
-            _context.SphereModel.Initilize();
+            foreach(var rabbit in _context.RabbitModel)
+            {
+                rabbit.Execute();
+            }
         }
 
         #endregion
@@ -36,11 +41,9 @@ namespace BeastHunter
 
         public void OnAwake()
         {
-            
+
         }
 
         #endregion        
     }
 }
-
-
