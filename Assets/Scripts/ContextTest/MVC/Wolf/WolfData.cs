@@ -18,12 +18,11 @@ public sealed class WolfData : ScriptableObject
         transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed);
     }
 
-    public void ChangeWolfCollider(SphereCollider sphereCollider, float sphereRadius)
+    public void FindTArgetsInAggroRange(float aggroRange)
     {
-        if(sphereCollider!=null)
-        {
-            sphereCollider.radius = sphereRadius;
-        }
+        WolfStruct.TargetsInAggroRange.Clear();
+
+               
     }
 
     #endregion

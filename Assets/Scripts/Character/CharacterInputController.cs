@@ -71,7 +71,7 @@ namespace BeastHunter
             IsTurningRight = false;
             IsTurningLeft = false;
 
-            _characterModel = _context._characterModel;
+            _characterModel = _context.CharacterModel;
             _characterAnimationsController =
                 new CharacterAnimationsController(_characterModel.CharacterAnimator);
             _physics = new PhysicsService(_context);

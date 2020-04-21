@@ -27,9 +27,16 @@ namespace BeastHunter
         public void OnAwake()
         {
             var WolfData = Data.WolfData;
-            GameObject instance = GameObject.Instantiate(WolfData.WolfStruct.Prefab);
+            WolfData.WolfStruct.SpawnPosition = GameObject.FindGameObjectWithTag("Spawner").transform;
+            WolfData.WolfStruct.PatrolWaypointsList.Clear();
+            WolfData.WolfStruct.PatrolWaypoints = GameObject.FindGameObjectWithTag("PatrolWaypointsForest");
+            foreach(Transform waypoint in WolfData.WolfStruct.PatrolWaypoints.transform)
+            {
+                WolfData.WolfStruct.PatrolWaypointsList.Add(waypoint.position);
+            }
+            GameObject instance = GameObject.Instantiate(WolfData.WolfStruct.Prefab, WolfData.WolfStruct.SpawnPosition);
             WolfModel Wolf = new WolfModel(instance, WolfData);
-            _context._wolfModel = Wolf;
+            _context.WolfModel.Add(Wolf);
         }
 
         #endregion

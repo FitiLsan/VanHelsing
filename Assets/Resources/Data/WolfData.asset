@@ -13,9 +13,21 @@ MonoBehaviour:
   m_Name: WolfData
   m_EditorClassIdentifier: 
   WolfStruct:
-    MoveSpeed: 0.01
-    SphereRadius: 0.4
-    Prefab: {fileID: 6953022481052749130, guid: 5486b6c5985f0a74dab7aa0548b222f6,
+    WalkSpeed: 1
+    RunSpeed: 2
+    CurrentSpeed: 1
+    AggroRange: 4
+    MaxHealth: 100
+    CurrentHealth: 100
+    IsPatroling: 0
+    SpawnPosition: {fileID: 0}
+    Prefab: {fileID: 6610553143965407537, guid: dec8818a73a404d4d926add0d3e2a107,
       type: 3}
-    Target: {fileID: 8946489080760387140, guid: ad328408c8cfe1c4e8ec1b92ff795e48,
-      type: 3}
+    PatrolWaypoints: {fileID: 0}
+    PatrolWaypointsList:
+    - {x: 72.51, y: 30.6, z: 49.77}
+    - {x: 83.89, y: 30.6, z: 46.61}
+    - {x: 80.85, y: 30.6, z: 52.329998}
+    - {x: 79.4, y: 30.6, z: 40.03}
+    - {x: 75.44, y: 30.6, z: 56.1}
+    TargetsInAggroRange: []

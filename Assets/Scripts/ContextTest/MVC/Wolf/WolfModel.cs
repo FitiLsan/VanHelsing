@@ -28,10 +28,10 @@ public sealed class WolfModel
 
     #region Methods
 
-    public void Initialize()
+    public void Patroling()
     {
-        WolfData.Move(WolfTransfrom, WolfStruct.Target, WolfStruct.MoveSpeed);
-        WolfData.ChangeWolfCollider(WolfCollider, WolfStruct.SphereRadius);
+        //WolfData.Move(WolfTransfrom, WolfStruct.Target, WolfStruct.MoveSpeed);
+        //WolfData.ChangeWolfCollider(WolfCollider, WolfStruct.SphereRadius);
     }
 
     #endregion

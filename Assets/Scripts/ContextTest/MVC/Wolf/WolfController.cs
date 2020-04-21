@@ -26,7 +26,10 @@ namespace BeastHunter
 
         public void Updating()
         {
-            _context._wolfModel.Initialize();
+            foreach(var wolf in _context.WolfModel)
+            {
+                wolf.Patroling();
+            }
         }
 
         #endregion
@@ -36,7 +39,7 @@ namespace BeastHunter
 
         public void OnAwake()
         {
-            
+
         }
 
         #endregion
