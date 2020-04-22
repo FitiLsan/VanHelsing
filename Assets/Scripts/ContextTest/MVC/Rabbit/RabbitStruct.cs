@@ -7,7 +7,10 @@ namespace BeastHunter
     [Serializable]
     public struct RabbitStruct
     {
-        #region Fields
+        #region Properties
+
+        [Tooltip("Default: 10")]
+        public float MaxHealth;
 
         [Tooltip("Default: 10")]
         public float RunningRadius;
@@ -21,7 +24,8 @@ namespace BeastHunter
         [Tooltip("Default: 3")]
         public float ViewRadius;
 
-        [Tooltip("Default: 100"), Range(0.0f, 180.0f)]
+        [Tooltip("Default: 100")]
+        [Range(0.0f, 180.0f)]
         public float ViewAngle;
 
         public bool CanIdle;
