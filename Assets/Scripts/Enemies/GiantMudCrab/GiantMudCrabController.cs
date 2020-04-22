@@ -46,7 +46,7 @@ namespace BeastHunter
                 giantMudCrabBehaviour.OnFilterHandler += OnFilterHandler;
                 giantMudCrabBehaviour.OnTriggerEnterHandler += OnTriggerEnterHandler;
                 giantMudCrabBehaviour.OnTriggerExitHandler += OnTriggerExitHandler;
-                giantMudCrabBehaviour.OnTakeDamage += OnTakeDamage;
+                giantMudCrabBehaviour.OnTakeDamageHandler += OnTakeDamage;
                 Debug.Log("Activate");
             }
         }
@@ -64,7 +64,7 @@ namespace BeastHunter
                 giantMudCrabBehaviour.OnFilterHandler -= OnFilterHandler;
                 giantMudCrabBehaviour.OnTriggerEnterHandler -= OnTriggerEnterHandler;
                 giantMudCrabBehaviour.OnTriggerExitHandler -= OnTriggerExitHandler;
-                giantMudCrabBehaviour.OnTakeDamage -= OnTakeDamage;
+                giantMudCrabBehaviour.OnTakeDamageHandler -= OnTakeDamage;
             }
         }
 

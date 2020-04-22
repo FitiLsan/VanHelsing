@@ -8,7 +8,7 @@ namespace BeastHunter
         #region Constants
 
         private const float NOT_CHECK_GROUND_TIME = 0.2f;
-        private const float EXIT_TIME = 2f;
+        private const float EXIT_TIME = 1f;
         private const float SPEED_FORCE_COMPENSATOR = 0.5f;
 
         #endregion
@@ -23,7 +23,6 @@ namespace BeastHunter
         private float _currentExitTime;
         private float _speedBeforeJump;
         
-
         #endregion
 
 
@@ -37,7 +36,8 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public JumpingState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
+        public JumpingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
             CanExit = false;
             CanBeOverriden = true;
@@ -56,6 +56,7 @@ namespace BeastHunter
             _speedBeforeJump = _characterModel.CurrentSpeed;
             _currentGroundCheckTime = NOT_CHECK_GROUND_TIME;
             _currentExitTime = EXIT_TIME;
+            _animationController.PlayJumpAnimation();
             UpdatePosition();
         }
 
@@ -93,17 +94,19 @@ namespace BeastHunter
 
             if(_currentPosition.y >= _previousPosition.y)
             {
-                _jumpVector = _characterModel.CharacterTransform.position + (Vector3.up * JumpVerticalForce * _currentExitTime / EXIT_TIME + _characterModel.CharacterTransform.forward *
-                    (JumpHorizontalForce + _speedBeforeJump * SPEED_FORCE_COMPENSATOR)) * Time.smoothDeltaTime;
+                _jumpVector = _characterModel.CharacterTransform.position + (Vector3.up * 
+                    JumpVerticalForce * _currentExitTime / EXIT_TIME + _characterModel.CharacterTransform.forward *
+                        (JumpHorizontalForce + _speedBeforeJump * SPEED_FORCE_COMPENSATOR)) * Time.smoothDeltaTime;
                 _characterModel.VerticalSpeed = 1;
             }
             else
             {
-                _jumpVector = _characterModel.CharacterTransform.position + _characterModel.CharacterTransform.forward * (JumpHorizontalForce + _speedBeforeJump * SPEED_FORCE_COMPENSATOR) * 
-                    Time.smoothDeltaTime;
+                _jumpVector = _characterModel.CharacterTransform.position + _characterModel.CharacterTransform.forward * 
+                    (JumpHorizontalForce + _speedBeforeJump * SPEED_FORCE_COMPENSATOR) * Time.smoothDeltaTime;
             }
 
-            _characterModel.CharacterTransform.position = Vector3.Lerp(_characterModel.CharacterTransform.position, _jumpVector, 1);
+            _characterModel.CharacterTransform.position = Vector3.Lerp(_characterModel.CharacterTransform.position, 
+                _jumpVector, 1);
         }
 
         #endregion

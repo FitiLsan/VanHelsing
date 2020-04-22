@@ -13,12 +13,10 @@ MonoBehaviour:
   m_Name: CharacterData
   m_EditorClassIdentifier: 
   _characterCommonSettings:
-    _prefab: {fileID: 1197466442980508, guid: a7d563f9ba734624bbd44ff9d206e7ba, type: 3}
+    _prefab: {fileID: 1549762263890820, guid: d333e574c78741a478cde0da944a5e59, type: 3}
     _instanceName: Player
     _instanceTag: Player
-    _characterDefaultMovementAnimator: {fileID: 9100000, guid: a8be910b9daf62b46bbc4d77d12e66a7,
-      type: 2}
-    _characterBattleAnimator: {fileID: 9100000, guid: 71768c8e0d54fb34396989829cda6ca1,
+    _characterAnimator: {fileID: 9100000, guid: 71768c8e0d54fb34396989829cda6ca1,
       type: 2}
     _instantiatePosition: {x: 60, y: 100, z: 80}
     _instantiateDirection: -40
@@ -31,22 +29,23 @@ MonoBehaviour:
     _sphereColliderCenter: {x: 0, y: 1, z: 0}
     _sphereColliderRadius: 7.2
     _sphereColliderRadiusIncrease: 1.365
-    _healthPoints: 34.1
+    _healthPoints: 100
     _walkSpeed: 4.6
     _runSpeed: 7.4
-    _inBattleWalkSpeed: 2.2
-    _inBattleRunSpeed: 4
+    _inBattleWalkSpeed: 2
+    _inBattleRunSpeed: 3
     _jumpHorizontalForce: 4.56
     _jumpVerticalForce: 4.52
     _groundCheckHeight: 1.2
+    _groundCheckHeightReduction: 0.872
     _speedMeasureFrame: 0.14
     _accelerationLag: 0.028
     _decelerationLag: 0.034
     _inBattleAccelerationLag: 0.028
     _inBattleDecelerationLag: 0.022
     _directionChangeLag: 0.073
-    _hitDistance: 0
-    _battleIgnoreTime: 23
+    _animatorBaseSpeed: 1
+    _battleIgnoreTime: 20.3
     _firstHitBoxObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L
     _firstHitBoxRadius: 33.3
     _secondHitBoxObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R
@@ -55,6 +54,10 @@ MonoBehaviour:
     _thirdHitBoxRadius: 35.8
     _damageStruct:
       damage: 5
+      stunProbability: 0
+    _rollTime: 0.5
+    _rollFrameDistance: 5.55
+    _rollAnimationSpeed: 1
   _characterCameraSettings:
     _characterCamera: {fileID: 5296010943117555874, guid: 331dcbff4c90e7249a42146bd6820d5b,
       type: 3}

@@ -8,6 +8,8 @@ namespace BeastHunter
 
         public float _inputAxisX;
         public float _inputAxisY;
+        public float _inputTotalAxisX;
+        public float _inputTotalAxisY;
 
         public bool _isInputJump;
         public bool _isInputRun;

@@ -2,6 +2,7 @@
 using Cinemachine;
 using UnityEngine;
 
+
 namespace BeastHunter
 {
     [Serializable]

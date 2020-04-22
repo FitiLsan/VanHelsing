@@ -1,7 +1,4 @@
-﻿using System;
-
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public sealed class PlayerBehavior : InteractableObjectBehavior
     {

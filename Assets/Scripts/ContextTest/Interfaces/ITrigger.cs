@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+
 namespace BeastHunter
 {
     public interface ITrigger : IInteractable

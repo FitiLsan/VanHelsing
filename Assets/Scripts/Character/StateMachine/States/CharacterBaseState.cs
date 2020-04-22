@@ -1,6 +1,4 @@
-﻿
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public abstract class CharacterBaseState
     {
@@ -8,6 +6,8 @@ namespace BeastHunter
 
         protected readonly InputModel _inputModel;
         protected readonly CharacterModel _characterModel;
+        protected CharacterAnimationController _animationController;
+        protected CharacterStateMachine _stateMachine;
 
         #endregion
 
@@ -22,10 +22,13 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public CharacterBaseState(CharacterModel characterModel, InputModel inputModel)
+        public CharacterBaseState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController, 
+            CharacterStateMachine stateMachine)
         {
             _characterModel = characterModel;
             _inputModel = inputModel;
+            _animationController = animationController;
+            _stateMachine = stateMachine;
         }
 
         #endregion

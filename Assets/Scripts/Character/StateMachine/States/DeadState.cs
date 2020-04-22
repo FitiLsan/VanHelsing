@@ -1,6 +1,4 @@
-﻿
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public class DeadState : CharacterBaseState
     {
@@ -18,7 +16,8 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public DeadState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
+        public DeadState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
             CanExit = false;
             CanBeOverriden = false;
@@ -31,22 +30,17 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-
+            _animationController.PlayDeadAnimation();
         }
 
         public override void Execute()
         {
-            StayDead();
+
         }
 
         public override void OnExit()
         {
 
-        }
-
-        private void StayDead()
-        {
-            _characterModel.IsDead = true;
         }
 
         #endregion

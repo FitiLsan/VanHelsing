@@ -1,27 +1,18 @@
-﻿
+﻿using UnityEngine;
+
 
 namespace BeastHunter
 {
     public class FallingState : CharacterBaseState
     {
-        #region Fields
-
-
-        #endregion
-
-
-        #region Properties
-
-
-        #endregion
-
 
         #region ClassLifeCycle
 
-        public FallingState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
+        public FallingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
             CanExit = false;
-            CanBeOverriden = true;
+            CanBeOverriden = false;
         }
 
         #endregion
@@ -31,7 +22,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-
+            _animationController.PlayFallAnimation();
         }
 
         public override void Execute()
@@ -44,7 +35,7 @@ namespace BeastHunter
 
         }
 
-        public void ExitCheck()
+        private void ExitCheck()
         {
             if (_characterModel.IsGrounded)
             {

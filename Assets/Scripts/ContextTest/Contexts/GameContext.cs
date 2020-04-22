@@ -15,7 +15,6 @@ namespace BeastHunter
         public InputModel InputModel;
         public GiantMudCrabModel GiantMudCrabModel;
 
-
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;
         private readonly List<IInteractable> _interactables;

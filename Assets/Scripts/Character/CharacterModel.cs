@@ -13,6 +13,7 @@ namespace BeastHunter
         public Camera CharacterCamera { get; }
         public CinemachineFreeLook CharacterFreelookCamera { get; }
         public CinemachineVirtualCamera CharacterTargetCamera { get; }
+        public CinemachineBrain CameraCinemachineBrain { get; }
         public GameObject CameraTarget { get; }
         public Transform CameraTargetTransform { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
@@ -30,15 +31,11 @@ namespace BeastHunter
         public float CurrentSpeed { get; set; }
         public float VerticalSpeed { get; set; }
         public float AnimationSpeed { get; set; }
+        public bool IsMoving { get; set; }
         public bool IsGrounded { get; set; }
-        public bool IsEnemyNear { get; set; }
-        public bool IsTargeting { get; set; }
         public bool IsInBattleMode { get; set; }
-        public bool IsAttacking { get; set; }
-        public bool IsCameraFixed { get; set; }
-        public bool IsDansing { get; set; }
-        public bool IsDead { get; set; }
-        public int AttackIndex { get; set; }
+        public bool IsEnemyNear { get; set; }
+        public bool IsAxisInputsLocked { get; set; }
 
         #endregion
 
@@ -98,6 +95,7 @@ namespace BeastHunter
             CameraTarget = CharacterCameraSettings.CreateCameraTarget(CharacterTransform);
             CameraTargetTransform = CameraTarget.transform;
             CharacterCamera = CharacterCameraSettings.CreateCharacterCamera();
+            CameraCinemachineBrain = CharacterCamera.GetComponent<CinemachineBrain>() ?? null;
             CharacterCamera.transform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
             CharacterFreelookCamera = CharacterCameraSettings.CreateCharacterFreelookCamera(CameraTargetTransform);
             CharacterTargetCamera = CharacterCameraSettings.CreateCharacterTargetCamera(CameraTargetTransform);
@@ -111,7 +109,7 @@ namespace BeastHunter
                 CharacterAnimator = prefab.AddComponent<Animator>();
             }
 
-            CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterDefaultMovementAnimator;
+            CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterAnimator;
             CharacterAnimator.applyRootMotion = false;
 
             if (prefab.GetComponent<PlayerBehavior>() != null)
@@ -126,17 +124,13 @@ namespace BeastHunter
             PlayerBehaviour.SetType(InteractableObjectType.Player);
 
             EnemiesInTrigger = new List<Collider>();
+            IsMoving = false;
             IsGrounded = false;
-            IsCameraFixed = false;
             IsEnemyNear = false;
-            IsTargeting = false;
             IsInBattleMode = false;
-            IsAttacking = false;
-            IsDead = false;
-            IsDansing = false;
+            IsAxisInputsLocked = false;
             CurrentSpeed = 0;
-            AttackIndex = 0;
-            AnimationSpeed = 1f;
+            AnimationSpeed = CharacterData._characterCommonSettings.AnimatorBaseSpeed;
 
             PlayerHitBoxes = new PlayerHitBoxBehavior[3];
 
