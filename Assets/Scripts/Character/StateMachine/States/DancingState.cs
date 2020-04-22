@@ -1,5 +1,4 @@
-﻿
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public class DancingState : CharacterBaseState
     {
@@ -17,7 +16,8 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public DancingState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
+        public DancingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
             CanExit = false;
             CanBeOverriden = true;
@@ -30,7 +30,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            _characterModel.IsDansing = true;
+            _animationController.PlayDancingAnimation();
         }
 
         public override void Execute()

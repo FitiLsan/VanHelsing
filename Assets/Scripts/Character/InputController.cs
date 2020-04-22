@@ -8,6 +8,7 @@ namespace BeastHunter
         #region Properties
 
         private readonly GameContext _context;
+        private CharacterModel _characterModel;
         private InputModel _inputModel;
         private InputStruct _inputStruct;
 
@@ -30,8 +31,11 @@ namespace BeastHunter
 
         public void OnAwake()
         {
+            _characterModel = _context.CharacterModel;
             _inputStruct._inputAxisX = 0;
             _inputStruct._inputAxisY = 0;
+            _inputStruct._inputTotalAxisX = 0;
+            _inputStruct._inputTotalAxisY = 0;
 
             _inputStruct._isInputJump = false;
             _inputStruct._isInputRun = false;
@@ -70,7 +74,17 @@ namespace BeastHunter
             _inputStruct._isInputAttack = Input.GetButtonDown("Fire");
             _inputStruct._isInputDance = Input.GetButtonDown("Use");
 
+            CheckAxisTotal();
             CheckEvents();
+        }
+
+        private void CheckAxisTotal()
+        {
+            if (!_characterModel.IsAxisInputsLocked)
+            {
+                _inputStruct._inputTotalAxisX = _inputStruct._inputAxisX > 0 ? 1 : _inputStruct._inputAxisX < 0 ? -1 : 0;
+                _inputStruct._inputTotalAxisY = _inputStruct._inputAxisY > 0 ? 1 : _inputStruct._inputAxisY < 0 ? -1 : 0;
+            }
         }
 
         private void CheckEvents()

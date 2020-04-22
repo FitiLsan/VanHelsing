@@ -36,7 +36,7 @@ namespace BeastHunter
 
         public void DealDamage(InteractableObjectBehavior enemy, DamageStruct damage)
         {
-            enemy.GetComponent<PlayerBehavior>().OnTakeDamage(damage);
+            enemy.GetComponent<PlayerBehavior>().OnTakeDamageHandler(damage);
             Debug.Log("Dealed " + damage.damage + " damage to player!");
         }
 

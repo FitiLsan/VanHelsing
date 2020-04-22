@@ -15,13 +15,14 @@ MonoBehaviour:
   GiantMudCrabStruct:
     AttackDamage:
       damage: 10
+      stunProbability: 0.5
     MoveSpeed: 2
     AttackSpeed: 3
     AttackRange: 5
     MaxHealth: 30
     CurrentHealth: 20
-    PatrolDistance: 10
-    TriggerDistance: 0
+    PatrolDistance: 24.42
+    TriggerDistance: 9.65
     DiggingDistance: 0
     Prefab: {fileID: 3048340415476073624, guid: e488a15a664cdec49b62374408f99915,
       type: 3}
@@ -34,4 +35,4 @@ MonoBehaviour:
     IsPatrol: 1
     IsChase: 0
     IsDead: 0
-  NextAttackRate: 23.742996
+  NextAttackRate: 31.516424

@@ -1,12 +1,11 @@
-﻿
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public class DefaultIdleState : CharacterBaseState
     {
         #region ClassLifeCycle
 
-        public DefaultIdleState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
+        public DefaultIdleState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
             CanExit = true;
             CanBeOverriden = true;
@@ -18,22 +17,19 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-
+            _animationController.PlayDefaultIdleAnimation();
+            _characterModel.CameraCinemachineBrain.m_DefaultBlend.m_Time = 0f;
+            _characterModel.CharacterTargetCamera.Priority = 5;
         }
 
         public override void Execute()
         {
-            StayOnOnePlace();
+
         }
 
         public override void OnExit()
         {
 
-        }
-
-        private void StayOnOnePlace()
-        {
-            _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, 0);
         }
 
         #endregion

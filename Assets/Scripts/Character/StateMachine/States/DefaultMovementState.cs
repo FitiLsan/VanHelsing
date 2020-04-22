@@ -11,7 +11,6 @@ namespace BeastHunter
         private const float CAMERA_HALF_SIDE_ANGLE = 90f;
         private const float CAMERA_BACK_SIDE_ANGLE = 225f;
         private const float CAMERA_BACK_ANGLE = 180f;
-        private const float EXIT_TIME = 1f;
 
         #endregion
 
@@ -24,14 +23,12 @@ namespace BeastHunter
         private float _targetSpeed;
         private float _speedChangeLag;
         private float _currentVelocity;
-        private float _currentExitTime;
 
         #endregion
 
 
         #region Properties
 
-        private bool IsMovingForward { get; set; }
         private float TargetDirection { get; set; }
         private float CurrentDirecton { get; set; }
         private float AdditionalDirection { get; set; }
@@ -43,11 +40,11 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public DefaultMovementState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
+        public DefaultMovementState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
-            CanExit = false;
+            CanExit = true;
             CanBeOverriden = true;
-            _currentExitTime = EXIT_TIME;
         }
 
         #endregion
@@ -58,13 +55,14 @@ namespace BeastHunter
         public override void Initialize()
         {
             _characterModel.CharacterSphereCollider.radius = _characterModel.CharacterCommonSettings.SphereColliderRadius;
+            _animationController.PlayDefaultMovementAnimation();
+            _characterModel.CameraCinemachineBrain.m_DefaultBlend.m_Time = 0f;
+            _characterModel.CharacterTargetCamera.Priority = 5;
         }
 
         public override void Execute()
         {
-            ExitCheck();
             CountSpeed();
-            CheckMovingForward();
             MovementControl();
         }
 
@@ -73,42 +71,12 @@ namespace BeastHunter
             
         }
 
-        private void ExitCheck()
-        {
-            if (!IsMovingForward)
-            {
-                _currentExitTime -= Time.deltaTime;
-
-                if(_currentExitTime <= 0)
-                {
-                    CanExit = true;
-                }
-            }
-            else
-            {
-                CanExit = false;
-                _currentExitTime = EXIT_TIME;
-            }
-        }
-
-        private void CheckMovingForward()
-        {
-            if(_inputModel.inputStruct._inputAxisX != 0 || _inputModel.inputStruct._inputAxisY != 0)
-            {
-                IsMovingForward = true;
-            }
-            else
-            {
-                IsMovingForward = false;
-            }
-        }
-
         private void MovementControl()
         {
-            if (IsMovingForward && _characterModel.IsGrounded)
+            if (_characterModel.IsGrounded)
             {
-                _currentHorizontalInput = _inputModel.inputStruct._inputAxisX > 0 ? 1 : _inputModel.inputStruct._inputAxisX < 0 ? -1 : 0;
-                _currentVerticalInput = _inputModel.inputStruct._inputAxisY > 0 ? 1 : _inputModel.inputStruct._inputAxisY < 0 ? -1 : 0;
+                _currentHorizontalInput = _inputModel.inputStruct._inputTotalAxisX;
+                _currentVerticalInput = _inputModel.inputStruct._inputTotalAxisY;
 
                 switch (_currentVerticalInput)
                 {
@@ -146,7 +114,7 @@ namespace BeastHunter
 
         private void CountSpeed()
         {
-            if (IsMovingForward)
+            if (_characterModel.IsMoving)
             {
                 if (_inputModel.inputStruct._isInputRun)
                 {

@@ -1,5 +1,4 @@
-﻿
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public class FallOnGroundState : CharacterBaseState
     {
@@ -17,7 +16,8 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public FallOnGroundState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
+        public FallOnGroundState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
             CanExit = false;
             CanBeOverriden = true;

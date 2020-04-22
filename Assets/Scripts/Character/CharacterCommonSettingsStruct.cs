@@ -21,10 +21,7 @@ namespace BeastHunter
         [SerializeField] private string _instanceTag;
 
         [Tooltip("Character default movement runtime animator controller.")]
-        [SerializeField] private RuntimeAnimatorController _characterDefaultMovementAnimator;
-
-        [Tooltip("Character battle runtime animator controller.")]
-        [SerializeField] private RuntimeAnimatorController _characterBattleAnimator;
+        [SerializeField] private RuntimeAnimatorController _characterAnimator;
 
         [Tooltip("Vector 3 prefab position on the scene")]
         [SerializeField] private Vector3 _instantiatePosition;
@@ -106,6 +103,10 @@ namespace BeastHunter
         [Range(0.0f, 2.0f)]
         [SerializeField] private float _groundCheckHeight;
 
+        [Tooltip("Ground check height reduction while jumping between 0 and 2.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _groundCheckHeightReduction;
+
         [Tooltip("Character speed measuring time frame between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _speedMeasureFrame;
@@ -130,11 +131,11 @@ namespace BeastHunter
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _directionChangeLag;
 
-        [Header("Character battle settings")]
+        [Tooltip("Base animator speed between 0 and 2.")]
+        [Range(0.0f, 2.0f)]
+        [SerializeField] private float _animatorBaseSpeed;
 
-        [Tooltip("Hit distance between 0 and 10.")]
-        [Range(0.0f, 10.0f)]
-        [SerializeField] private float _hitDistance;
+        [Header("Character battle settings")]
 
         [Tooltip("Battle ignore time between 0 and 1-0.")]
         [Range(0.0f, 100.0f)]
@@ -164,6 +165,18 @@ namespace BeastHunter
         [Tooltip("Damage structure.")]
         [SerializeField] private DamageStruct _damageStruct;
 
+        [Tooltip("Actual rolling time between 0 and 10.")]
+        [Range(0.0f, 10.0f)]
+        [SerializeField] private float _rollTime;
+
+        [Tooltip("Actual roll distance between 0 and 10.")]
+        [Range(0.0f, 10.0f)]
+        [SerializeField] private float _rollFrameDistance;
+
+        [Tooltip("Actual roll speed between 0 and 10.")]
+        [Range(0.0f, 10.0f)]
+        [SerializeField] private float _rollAnimationSpeed;
+
         #endregion
 
 
@@ -171,8 +184,7 @@ namespace BeastHunter
 
         public GameObject Prefab => _prefab;
 
-        public RuntimeAnimatorController CharacterDefaultMovementAnimator => _characterDefaultMovementAnimator;
-        public RuntimeAnimatorController CharacterBattleAnimator => _characterBattleAnimator;
+        public RuntimeAnimatorController CharacterAnimator => _characterAnimator;
 
         public Vector3 InstantiatePosition => _instantiatePosition;
         public Vector3 CapsuleColliderCenter => _capsuleColliderCenter;
@@ -199,14 +211,15 @@ namespace BeastHunter
         public float JumpHorizontalForce => _jumpHorizontalForce;
         public float JumpVerticalForce => _jumpVerticalForce;
         public float GroundCheckHeight => _groundCheckHeight;
+        public float GroundCHeckHeightReduction => _groundCheckHeightReduction;
         public float SpeedMeasureFrame => _speedMeasureFrame;
         public float AccelerationLag => _accelerationLag;
         public float DecelerationLag => _decelerationLag;
         public float InBattleAccelerationLag => _inBattleAccelerationLag;
         public float InBattleDecelerationLag => _inBattleDecelerationLag;
         public float DirectionChangeLag => _directionChangeLag;
+        public float AnimatorBaseSpeed => _animatorBaseSpeed;
 
-        public float HitDistance => _hitDistance;
         public float BattleIgnoreTime => _battleIgnoreTime;
 
         public string FirstHitBoxObjectPath => _firstHitBoxObjectPath;
@@ -217,9 +230,12 @@ namespace BeastHunter
         public float SecondHitBoxRadius => _secondHitBoxRadius;
         public float ThirdHitBoxRadius => _thirdHitBoxRadius;
 
+        public float RollTime => _rollTime;
+        public float RollFrameDistance => _rollFrameDistance;
+        public float RollAnimationSpeed => _rollAnimationSpeed;
+
         public DamageStruct CharacterDamage => _damageStruct;
 
         #endregion
-
     }
 }

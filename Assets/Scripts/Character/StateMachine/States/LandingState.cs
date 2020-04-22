@@ -1,5 +1,4 @@
-﻿
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public class LandingState : CharacterBaseState
     {
@@ -17,7 +16,8 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public LandingState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
+        public LandingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
             CanExit = false;
             CanBeOverriden = true;

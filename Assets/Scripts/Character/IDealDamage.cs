@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public interface IDealDamage
     {

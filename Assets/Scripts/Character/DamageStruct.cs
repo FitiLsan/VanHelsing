@@ -9,6 +9,7 @@ namespace BeastHunter
         #region Fields
 
         public float damage;
+        public float stunProbability;
 
         #endregion
     }

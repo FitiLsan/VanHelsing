@@ -15,7 +15,6 @@
             Add(new TargetController(context));
             Add(new InputController(context));
             Add(new CharacterController(context));
-            Add(new CharacterAnimationsController(context));
         }
 
         #endregion

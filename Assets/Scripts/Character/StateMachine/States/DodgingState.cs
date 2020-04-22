@@ -1,5 +1,4 @@
-﻿
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public class DodgingState : CharacterBaseState
     {
@@ -17,9 +16,10 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public DodgingState(CharacterModel characterModel, InputModel inputModel) : base(characterModel, inputModel)
+        public DodgingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
-            CanExit = true;
+            CanExit = false;
             CanBeOverriden = false;
         }
 

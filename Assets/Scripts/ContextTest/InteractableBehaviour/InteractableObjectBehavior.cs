@@ -15,15 +15,15 @@ namespace BeastHunter
 
         #region Properties
 
-        [SerializeField] public bool IsInteractable { get; set; }
-
         public Predicate<Collider> OnFilterHandler { get; set; }
-        public Action<DamageStruct> OnTakeDamage { get; set; }
+        public Action<DamageStruct> OnTakeDamageHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerEnterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerExitHandler { get; set; }
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
         public GameObject GameObject => gameObject;
         public InteractableObjectType Type { get => _type; }
+
+        public bool IsInteractable { get; set; }
 
         #endregion
 
@@ -56,9 +56,9 @@ namespace BeastHunter
 
         public void TakeDamage(DamageStruct damage)
         {
-            if (OnTakeDamage != null)
+            if (OnTakeDamageHandler != null)
             {
-                OnTakeDamage.Invoke(damage);
+                OnTakeDamageHandler.Invoke(damage);
             }
         }
 

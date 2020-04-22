@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class BattleMovementState : CharacterBaseState
+    public class BattleTargetMovementState : CharacterBaseState
     {
         #region Constants
 
@@ -11,6 +11,7 @@ namespace BeastHunter
         private const float CAMERA_HALF_SIDE_ANGLE = 90f;
         private const float CAMERA_BACK_SIDE_ANGLE = 225f;
         private const float CAMERA_BACK_ANGLE = 180f;
+        private const float ANGLE_SPEED_INCREASE = 1.225f;
 
         #endregion
 
@@ -23,16 +24,16 @@ namespace BeastHunter
         private float _targetSpeed;
         private float _speedChangeLag;
         private float _currentVelocity;
+        private float _angleSpeedIncrease;
 
         #endregion
 
 
         #region Properties
 
-        private float TargetDirection { get; set; }
-        private float CurrentDirecton { get; set; }
-        private float AdditionalDirection { get; set; }
-        private float CurrentAngle { get; set; }
+        public Vector3 MoveDirection { get; private set; }
+        public Collider ClosestEnemy { get; private set; }
+
         public float MovementSpeed { get; private set; }
         public float SpeedIncreace { get; private set; }
 
@@ -41,12 +42,12 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public BattleMovementState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+        public BattleTargetMovementState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
-            CanExit = true;
+            CanExit = false;
             CanBeOverriden = true;
-            SpeedIncreace = _characterModel.CharacterCommonSettings.InBattleRunSpeed / 
+            SpeedIncreace = _characterModel.CharacterCommonSettings.InBattleRunSpeed /
                 _characterModel.CharacterCommonSettings.InBattleWalkSpeed;
         }
 
@@ -59,14 +60,17 @@ namespace BeastHunter
         {
             _characterModel.CharacterSphereCollider.radius *= _characterModel.CharacterCommonSettings.
                 SphereColliderRadiusIncrese;
-            _animationController.PlayBattleMovementAnimation();
-            _characterModel.CameraCinemachineBrain.m_DefaultBlend.m_Time = 0f;
-            _characterModel.CharacterTargetCamera.Priority = 5;
+            GetClosestEnemy();
+            _animationController.PlayBattleTargetMovementAnimation();
+            _characterModel.CameraCinemachineBrain.m_DefaultBlend.m_Time = 1f;
+            _characterModel.CharacterTargetCamera.Priority = 15;
         }
 
         public override void Execute()
         {
-            CountSpeed();   
+            ExitCheck();
+            GetClosestEnemy();
+            CountSpeed();
             MovementControl();
             StayInBattle();
         }
@@ -74,6 +78,14 @@ namespace BeastHunter
         public override void OnExit()
         {
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
+        }
+
+        private void ExitCheck()
+        {
+            if(ClosestEnemy == null)
+            {
+                CanExit = true;
+            }
         }
 
         private void StayInBattle()
@@ -87,38 +99,22 @@ namespace BeastHunter
             {
                 _currentHorizontalInput = _inputModel.inputStruct._inputTotalAxisX;
                 _currentVerticalInput = _inputModel.inputStruct._inputTotalAxisY;
+                _angleSpeedIncrease = _characterModel.IsMoving ? ANGLE_SPEED_INCREASE : 1;
 
-                switch (_currentVerticalInput)
+                MoveDirection = (Vector3.forward * _currentVerticalInput + Vector3.right * _currentHorizontalInput) /
+                    (Mathf.Abs(_currentVerticalInput) + Mathf.Abs(_currentHorizontalInput)) * _angleSpeedIncrease;
+
+                if (ClosestEnemy != null)
                 {
-                    case 1:
-                        AdditionalDirection = CAMERA_LOW_SIDE_ANGLE * _currentHorizontalInput;
-                        break;
-                    case -1:
-                        switch (_currentHorizontalInput)
-                        {
-                            case 0:
-                                AdditionalDirection = CAMERA_BACK_ANGLE;
-                                break;
-                            default:
-                                AdditionalDirection = -CAMERA_BACK_SIDE_ANGLE * _currentHorizontalInput;
-                                break;
-                        }
-                        break;
-                    case 0:
-                        AdditionalDirection = CAMERA_HALF_SIDE_ANGLE * _currentHorizontalInput;
-                        break;
-                    default:
-                        break;
+                    Vector3 lookPos = ClosestEnemy.transform.position - _characterModel.CharacterTransform.position;
+                    lookPos.y = 0;
+                    Quaternion rotation = Quaternion.LookRotation(lookPos);
+                    _characterModel.CharacterTransform.rotation = rotation;
                 }
-
-                CurrentDirecton = _characterModel.CharacterTransform.localEulerAngles.y;
-                TargetDirection = _characterModel.CharacterCamera.transform.localEulerAngles.y + AdditionalDirection;
-
-                CurrentAngle = Mathf.SmoothDampAngle(CurrentDirecton, TargetDirection, ref _currentAngleVelocity,
-                    _characterModel.CharacterCommonSettings.DirectionChangeLag);
-
-                _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle, 0);
-                _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, MovementSpeed);
+                if (_characterModel.IsMoving)
+                {
+                    _characterModel.CharacterData.Move(_characterModel.CharacterTransform, MovementSpeed, MoveDirection);
+                }
             }
         }
 
@@ -129,12 +125,12 @@ namespace BeastHunter
                 if (_inputModel.inputStruct._isInputRun)
                 {
                     _targetSpeed = _characterModel.CharacterCommonSettings.InBattleRunSpeed;
-                    _characterModel.AnimationSpeed = SpeedIncreace;
+                    _characterModel.AnimationSpeed = SpeedIncreace * ANGLE_SPEED_INCREASE;
                 }
                 else
                 {
                     _targetSpeed = _characterModel.CharacterCommonSettings.InBattleWalkSpeed;
-                    _characterModel.AnimationSpeed = 1;
+                    _characterModel.AnimationSpeed = ANGLE_SPEED_INCREASE;
                 }
             }
             else
@@ -155,6 +151,30 @@ namespace BeastHunter
                 _speedChangeLag);
         }
 
+        private void GetClosestEnemy()
+        {
+            Collider enemy = null;
+
+            float minimalDistance = _characterModel.CharacterCommonSettings.SphereColliderRadius;
+            float countDistance = minimalDistance;
+
+            foreach (var collider in _characterModel.EnemiesInTrigger)
+            {
+                countDistance = Mathf.Sqrt((_characterModel.CharacterTransform.position -
+                    collider.transform.position).sqrMagnitude);
+
+                if (countDistance < minimalDistance)
+                {
+                    minimalDistance = countDistance;
+                    enemy = collider;
+                }
+            }
+
+            ClosestEnemy = enemy;
+        }
+
         #endregion
     }
 }
+
+
