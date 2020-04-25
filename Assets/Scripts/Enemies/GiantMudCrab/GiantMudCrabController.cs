@@ -53,6 +53,7 @@ namespace BeastHunter
 
         #endregion
 
+
         #region ITearDownController
 
         public void TearDown()
@@ -75,9 +76,16 @@ namespace BeastHunter
 
         private void OnTakeDamage(DamageStruct damage)
         {
-            _context.GiantMudCrabModel.CurrentHealth -= damage.damage;
-
-            Debug.Log("crab got " + damage.damage + " damage");
+            if (_context.GiantMudCrabModel.GiantMudCrabStruct.IsDigIn)
+            {
+                _context.GiantMudCrabModel.CurrentHealth -= damage.damage/2;
+                Debug.Log("crab got " + damage.damage/2 + " damage");
+            }
+            else
+            {
+                _context.GiantMudCrabModel.CurrentHealth -= damage.damage;
+                Debug.Log("crab got " + damage.damage + " damage");
+            }
 
             if(_context.GiantMudCrabModel.CurrentHealth <= 0)
             {
