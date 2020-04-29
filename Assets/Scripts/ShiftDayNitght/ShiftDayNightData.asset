@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd5fa496ea1eff47a9296355ebb9f47, type: 3}
+  m_Name: ShiftDayNightData
+  m_EditorClassIdentifier: 
+  Sun: {fileID: 4876048753846167150, guid: 26d9f44d168a6044f8491e710cf63424, type: 3}
+  secondsInMorning: 30
+  secondsInDay: 30
+  secondsInEvening: 30
+  secondsInNight: 30
+  nightfallMessage: 
