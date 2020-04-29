@@ -1,5 +1,4 @@
-﻿using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace BeastHunter
@@ -10,6 +9,7 @@ namespace BeastHunter
         #region Fields
 
         public static SphereData _sphereData;
+        public static CharacterData _characterData;
 
         #endregion
 
@@ -25,6 +25,18 @@ namespace BeastHunter
                     _sphereData = Resources.Load<SphereData>("Data/SphereData");
                 }
                 return _sphereData;
+            }
+        }
+
+        public static CharacterData CharacterData
+        {
+            get
+            {
+                if (_characterData == null)
+                {
+                    _characterData = Resources.Load<CharacterData>("Data/CharacterData");
+                }
+                return _characterData;
             }
         }
 
