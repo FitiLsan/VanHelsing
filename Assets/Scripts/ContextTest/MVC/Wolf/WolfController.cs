@@ -26,9 +26,10 @@ namespace BeastHunter
 
         public void Updating()
         {
-            foreach(var wolf in _context.WolfModel)
+
+            foreach (var wolf in _context.WolfModel)
             {
-                wolf.Patroling();
+                wolf.Initialize();
             }
         }
 

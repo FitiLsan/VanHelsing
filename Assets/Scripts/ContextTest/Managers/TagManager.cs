@@ -10,6 +10,8 @@
 
         public const string SPHERE = "Sphere";
 
+        public const string WOLF = "Wolf";
+
         #endregion
     }
 }

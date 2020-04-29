@@ -8,9 +8,9 @@ namespace BeastHunter
     {
         #region Fields
 
-        public static SphereData _sphereData;
-        public static WolfData _wolfData;
-        public static CharacterData _characterData;
+        private static SphereData _sphereData;
+        private static WolfData _wolfData;
+        private static CharacterData _characterData;
         private static RabbitData _rabbitData;
 
 

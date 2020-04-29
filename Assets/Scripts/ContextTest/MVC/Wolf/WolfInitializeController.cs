@@ -29,7 +29,7 @@ namespace BeastHunter
             var WolfData = Data.WolfData;
             WolfData.WolfStruct.SpawnPosition = GameObject.FindGameObjectWithTag("Spawner").transform;
             WolfData.WolfStruct.PatrolWaypointsList.Clear();
-            WolfData.WolfStruct.PatrolWaypoints = GameObject.FindGameObjectWithTag("PatrolWaypointsForest");
+            WolfData.WolfStruct.PatrolWaypoints = GameObject.FindGameObjectWithTag("PatrolWayPointsForest");
             foreach(Transform waypoint in WolfData.WolfStruct.PatrolWaypoints.transform)
             {
                 WolfData.WolfStruct.PatrolWaypointsList.Add(waypoint.position);

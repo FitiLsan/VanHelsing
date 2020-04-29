@@ -13,8 +13,8 @@ namespace BeastHunter
         public List<WolfModel> WolfModel;
         public CharacterModel CharacterModel;
 
-        public SphereModel _sphereModel;
-        public CharacterModel _characterModel;
+        //public SphereModel _sphereModel;
+        //public CharacterModel _characterModel;
         public List<RabbitModel> RabbitModel;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
