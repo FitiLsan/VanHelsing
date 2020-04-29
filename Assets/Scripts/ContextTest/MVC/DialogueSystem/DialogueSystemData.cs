@@ -49,7 +49,7 @@ namespace BeastHunter
         {
             EventManager.TriggerEvent(GameEventTypes.DialogAnswerSelect, new DialogArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId, Model.NpcID));
 
-            Debug.Log($"id answer {Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId}, id npc  {Model.NpcID}");
+           // Debug.Log($"id answer {Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId}, id npc  {Model.NpcID}");
 
             if (Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].IsStartQuest)
             {

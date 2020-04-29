@@ -34,7 +34,7 @@ namespace Models.NPCScripts.Enemy
             currentPoint = route[count];
             if (Distance() && count < route.Length - 1)
             {
-                Debug.Log("Count: " + count);
+               // Debug.Log("Count: " + count);
                 count++;
             }
             else if (Distance() && count == route.Length - 1)

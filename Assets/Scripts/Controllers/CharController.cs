@@ -174,8 +174,8 @@ namespace Controllers
             // завел делегат, т.к. длинное название получилось
             Func<StatContainer, Stats, int> calcBase = BaseStatsDependency.ParentToChildCalculation;
             
-            var bonusStats = _inventory.GetBonusStats();
-            var passiveBonus = _inventory.GetPassiveBonuses();
+          //  var bonusStats = _inventory.GetBonusStats();
+           // var passiveBonus = _inventory.GetPassiveBonuses();
             var playerAssigment = PlayerStatsAssigment.GetStatsAssigment();
             /* здесь могут быть ваши  бафы */
 
@@ -185,9 +185,9 @@ namespace Controllers
                 int totalStatValue = 0;
 
                 #region Расчет значений, даваемых предметами
-                bonusStats.TryGetValue(stat, out int bonusValue);
-                passiveBonus.TryGetValue(stat, out int passiveValue);
-                totalStatValue = bonusValue +  passiveValue;
+                //bonusStats.TryGetValue(stat, out int bonusValue);
+            //    passiveBonus.TryGetValue(stat, out int passiveValue);
+             //  totalStatValue = bonusValue +  passiveValue;
                 #endregion
 
                 #region Добавление основных значения

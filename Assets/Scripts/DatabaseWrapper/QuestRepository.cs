@@ -107,6 +107,7 @@ namespace DatabaseWrapper
                         Description = tmp,
                         IsOptional = row.GetInt(QUEST_OBJECTIVES_ISOPTIONAL) == 1
                     };
+					questDto.Tasks.Add(task); //new
                 }
                 //Rewards
 

@@ -68,14 +68,14 @@ namespace BeastHunter
         private void OnTriggerEnterHandler(ITrigger enteredObject)
         {
             enteredObject.IsInteractable = true;
-            Debug.Log($"Enter NPC Dialogue {target.name}");
+         //   Debug.Log($"Enter NPC Dialogue {target.name}");
             context._startDialogueModel.StartDialogueData.OnTriggerEnter(target);
         }
 
         private void OnTriggerExitHandler(ITrigger enteredObject)
         {
             enteredObject.IsInteractable = false;
-            Debug.Log($"Exit NPC Dialogue {target.name}");
+         //   Debug.Log($"Exit NPC Dialogue {target.name}");
             context._startDialogueModel.StartDialogueData.OnTriggerExit(target);
         }
 

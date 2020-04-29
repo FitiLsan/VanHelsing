@@ -20,6 +20,7 @@ namespace Controllers
         /// </summary>
         private readonly List<Quest> _quests;
 
+        private readonly List<int> _completedQuests;
         /// <summary>
         ///     Data access layer for quests
         /// </summary>
@@ -33,6 +34,7 @@ namespace Controllers
         {
             _questStorage = questStorage;
             _quests = _questStorage.LoadQuestLog();
+            _completedQuests = _questStorage.GetAllCompletedQuests();
             EventManager.StartListening(GameEventTypes.QuestAccepted, OnQuestAccept);
             EventManager.StartListening(GameEventTypes.NpcDie, OnNpcDie);
             EventManager.StartListening(GameEventTypes.AreaEnter, OnAreaEnter);
@@ -55,7 +57,7 @@ namespace Controllers
         ///     List of currently accepted quests
         /// </summary>
         public IEnumerable<Quest> Quests => _quests.AsReadOnly();
-
+        public List<int> CompletedQuests => _completedQuests;
         /// <summary>
         ///     When world object used
         /// </summary>
@@ -93,7 +95,7 @@ namespace Controllers
         private void OnDialogAnswerSelect(EventArgs arg0)
         {
             if (!(arg0 is DialogArgs dialogArgs)) return;
-            Debug.Log($"QuestLogController>>> Quest dialogue talknpc {dialogArgs.Id}");
+           // Debug.Log($"QuestLogController>>> Quest dialogue talknpc {dialogArgs.Id}");
             QuestUpdate(QuestTaskTypes.AnswerSelect, dialogArgs.Id);
         }
 
@@ -124,9 +126,11 @@ namespace Controllers
             
                 _questStorage.QuestCompleted(t.Id);
                 _quests.Remove(t);
+
             
 #if UNITY_EDITOR
             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Reported");
+            StartScript.GetStartScript._saveManager.SaveGame("TestSave.bytes");
 #endif
         }
 
@@ -210,7 +214,7 @@ namespace Controllers
                     if (task.Type != eventType || task.TargetId != targetId) continue;
                     task.AddAmount(amount);
 #if UNITY_EDITOR
-                    Debug.Log($"QuestLogController>>> Task [{task.Id}] from quest [{quest.Id}] updated");
+                    Debug.Log($"QuestLogController>>> Task [{task.Id}] [{quest.Tasks[0].CurrentAmount}] from quest [{quest.Id}] updated");
 #endif
                 }
 

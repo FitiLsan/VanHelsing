@@ -1,6 +1,7 @@
 ﻿using Extensions;
 using System.Collections.Generic;
 using DialogueSystem;
+using BaseScripts;
 
 
 namespace BeastHunter
@@ -34,7 +35,10 @@ namespace BeastHunter
                     var answerIsEndQuest = answerDt.Rows[i].GetInt(7);
                     var answerQuestId = answerDt.Rows[i].GetInt(8);
                     var answerTaskQuest = answerDt.Rows[i].GetInt(9);
-                    dialogueNode[j].PlayerAnswers.Add(new PlayerAnswer(answerId, answerText, answerToNode, answerEndDialogue, answerIsStartQuest, answerIsEndQuest, answerQuestId, answerTaskQuest));
+                    if (!StartScript.GetStartScript.QuestLogController.CompletedQuests.Contains(answerQuestId))
+                    {
+                        dialogueNode[j].PlayerAnswers.Add(new PlayerAnswer(answerId, answerText, answerToNode, answerEndDialogue, answerIsStartQuest, answerIsEndQuest, answerQuestId, answerTaskQuest));
+                    }
                 }
             }
             return dialogueNode;

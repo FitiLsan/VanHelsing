@@ -6,6 +6,7 @@ using Interfaces;
 using Items;
 using Models;
 using Quests;
+using SaveSystem;
 using Settings;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace BaseScripts
     /// </summary>
     internal class StartScript : MonoBehaviour
     {
+        public ISaveManager _saveManager;
         /// <summary>
         /// Прослойка, обеспечивающая работу с предметами в рамках базы мира и файла сейва
         /// </summary>
@@ -40,8 +42,9 @@ namespace BaseScripts
             QuestRepository.Init();
             ItemTemplateRepository.Init();
 
-            _questStorage = new DbQuestStorage();
-            _itemStorage = new DbItemStorage();
+            _saveManager = new SaveManager(new ProgressDatabaseWrapper(), _itemStorage);
+            _questStorage = new DbQuestStorage(_saveManager);
+            _itemStorage = new DbItemStorage(_saveManager);
 
             //Get objects
             var Player = GameObject.FindGameObjectWithTag("Player");
