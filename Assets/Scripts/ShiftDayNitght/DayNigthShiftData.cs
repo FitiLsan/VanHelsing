@@ -5,9 +5,9 @@ public class DayNigthShiftData
 {
     #region Constant
 
-    private const int _constFullday = 2400;
+    private const int _constFullday = 2400;  //  The number of seconds for one day, constant
 
-    private const int _secondInTimes = 600;
+    private const int _secondInTimes = 600;  //  The number of seconds per stage of the day, constant
 
     #endregion
 
@@ -47,10 +47,9 @@ public class DayNigthShiftData
 
     #endregion
 
-
     #region Construction
 
-    public DayNigthShiftData(DayNightShiftStruct contex, Light sun, Color sunColorDay, Color sunColorNight)
+    public DayNigthShiftData(DayNightShiftStruct contex, Light sun, Color sunColorDay, Color sunColorNight)  //  class constructor for processing data received from outside
     {
 
         if (contex.SecondInDay != 0)
@@ -115,8 +114,6 @@ public class DayNigthShiftData
 
     #endregion
 
-
-
     #region Metods
 
     public float RotationLimit
@@ -174,10 +171,6 @@ public class DayNigthShiftData
 
         _sun.color = _gradient.Evaluate(_flagGradient);
 
-        Debug.Log("_rotationLimit = " + _rotationLimit);
-        Debug.Log("_flagGradient = " + _flagGradient);
-
-
         _sun.transform.localRotation = Quaternion.Euler(_x, _rotationLimit, _z);
         
    }
@@ -186,7 +179,7 @@ public class DayNigthShiftData
     {
 
         _secondsInFullDay = _secondsInMorning + _secondsInDay + _secondsInEvening + _secondsInNight;  //  summation of all time periods
-        if (_secondsInFullDay == 0)
+        if (_secondsInFullDay == 0)  //  Foolproof
         {
             _secondsInFullDay = _constFullday;
             Debug.Log("All variable values ​​are 0, the default value is " + _constFullday + " seconds.");
@@ -194,7 +187,7 @@ public class DayNigthShiftData
         return _secondsInFullDay;
     }
 
-    public void MassageLog()
+    public void MassageLog()  //  Method for displaying an evening message, obtained from SO
     {
         if (_flagMessege)
         {

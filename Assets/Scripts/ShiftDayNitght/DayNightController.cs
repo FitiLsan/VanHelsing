@@ -7,6 +7,8 @@ namespace BeastHunter
     public class DayNightController : MonoBehaviour, IAwake, IUpdate
     {
 
+
+        #region Variable
         public Light Sun;
 
         public DayNightShiftStruct _dayNightShiftStruct;
@@ -17,15 +19,11 @@ namespace BeastHunter
         public Color _colorDay;
 
         public Color _colorNight;
+        #endregion
 
+
+        #region Start
         public void Start()
-        {
-            _dayNightShiftData = new DayNigthShiftData(_dayNightShiftStruct, Sun, _colorDay, _colorNight);
-        }
-
-        #region ClassLifeCycle
-
-        public DayNightController(Services services)
         {
             _dayNightShiftData = new DayNigthShiftData(_dayNightShiftStruct, Sun, _colorDay, _colorNight);
         }
@@ -33,10 +31,12 @@ namespace BeastHunter
         #endregion
 
 
-        //public void Start()
-        //{
-        //    _dayNightShiftData = new DayNigthShiftData(_dayNightShiftStruct, Sun, _colorDay, _colorNight);
-        //}
+        #region ClassLifeCycle
+
+        public DayNightController(Services services)
+        {
+            _dayNightShiftData = new DayNigthShiftData(_dayNightShiftStruct, Sun, _colorDay, _colorNight);
+        }
 
         public void Updating()
         {
@@ -53,5 +53,9 @@ namespace BeastHunter
         {
             _dayNightShiftData.RotationSunDayNigth();
         }
+
+        #endregion
+
+
     }
 }

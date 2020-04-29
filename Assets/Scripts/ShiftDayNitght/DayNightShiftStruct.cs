@@ -12,24 +12,24 @@ public class DayNightShiftStruct : ScriptableObject
     #region Fields
 
     public Light Sun;
+
     [Range (0,5000)]
     [SerializeField]
+    public int secondsInMorning; // seconds in the morning
 
-    public int secondsInMorning;
     [Range(0, 5000)]
     [SerializeField]
+    public int secondsInDay;  //  seconds per day
 
-    public int secondsInDay;
     [Range(0, 5000)]
     [SerializeField]
+    public int secondsInEvening;  //  seconds in the evening
 
-    public int secondsInEvening;
     [Range(0, 5000)]
     [SerializeField]
+    public int secondsInNight; //  seconds per night
 
-    public int secondsInNight;
-
-    public string nightfallMessage;
+    public string nightfallMessage;  //  The message that is displayed when night approaches
 
     #endregion
 
