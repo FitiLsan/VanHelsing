@@ -13,8 +13,6 @@
             Add(new CharacterInputController(context, services));
             
             Add(new InitializeInteractableObjectController(context, services));
-            Add(new WolfController(context, services));
-            Add(new WolfInitializeController(context, services));
 
             Add(new SphereController(context, services));
             Add(new RabbitController(context, services));

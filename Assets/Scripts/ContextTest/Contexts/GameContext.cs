@@ -10,11 +10,7 @@ namespace BeastHunter
         #region Fields
 
         public SphereModel SphereModel;
-        public List<WolfModel> WolfModel;
         public CharacterModel CharacterModel;
-
-        //public SphereModel _sphereModel;
-        //public CharacterModel _characterModel;
         public List<RabbitModel> RabbitModel;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
@@ -30,7 +26,6 @@ namespace BeastHunter
         {
             _onTriggers = new SortedList<InteractableObjectType, List<IInteractable>>();
             _interactables = new List<IInteractable>();
-            WolfModel = new List<WolfModel>();
             RabbitModel = new List<RabbitModel>(8);
         }
 

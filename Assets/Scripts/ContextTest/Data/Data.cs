@@ -9,7 +9,6 @@ namespace BeastHunter
         #region Fields
 
         private static SphereData _sphereData;
-        private static WolfData _wolfData;
         private static CharacterData _characterData;
         private static RabbitData _rabbitData;
 
@@ -31,19 +30,6 @@ namespace BeastHunter
             }
         }
 
-
-        public static WolfData WolfData
-        {
-            get
-            {
-                if (_wolfData == null)
-                {
-                    _wolfData = Resources.Load<WolfData>("Data/WolfData");
-                }
-                return _wolfData;
-            }
-        }
-
         public static CharacterData CharacterData
         {
             get
@@ -53,7 +39,6 @@ namespace BeastHunter
                     _characterData = Resources.Load<CharacterData>("Data/CharacterData");
                 }
                 return _characterData;
-
             }
         }
 
