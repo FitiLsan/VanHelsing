@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,12 @@ namespace BeastHunter
 {
     public sealed class DialogueLoadToGUI
     {
+        #region Fields
+
+        private static StringBuilder stringBuilder = new StringBuilder();
+
+        #endregion
+
 
         #region Methods 
 
@@ -24,25 +31,29 @@ namespace BeastHunter
 
                 if (dialogueNode[currentNode].PlayerAnswers[i].IsStartQuest)
                 {
+                    stringBuilder.Clear();
                     buttonText.color = Color.green;
-                    buttonText.text += "(начать квест)";
+                    buttonText.text += stringBuilder.Append("(начать квест)");
                 }
 
                 if (dialogueNode[currentNode].PlayerAnswers[i].IsEndQuest)
                 {
+                    stringBuilder.Clear();
                     buttonText.color = Color.red;
-                    buttonText.text += "(закончить квест)";
+                    buttonText.text += stringBuilder.Append("(закончить квест)");
                 }
 
                 if (dialogueNode[currentNode].PlayerAnswers[i].IsEnd)
                 {
-                    buttonText.text += "(выход)";
+                    stringBuilder.Clear();
+                    buttonText.text += stringBuilder.Append ("(выход)");
                 }
 
                 if (dialogueNode[currentNode].PlayerAnswers[i].HasTaskQuest)
                 {
+                    stringBuilder.Clear();
                     buttonText.color = Color.yellow;
-                    buttonText.text += "(задача)";
+                    buttonText.text += stringBuilder.Append("(задача)");
                 }
             }
         }
