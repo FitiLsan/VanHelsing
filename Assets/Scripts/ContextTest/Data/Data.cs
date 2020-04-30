@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 
 
 namespace BeastHunter
@@ -8,6 +9,11 @@ namespace BeastHunter
     {
         #region Fields
 
+        [SerializeField] private string _sphereDataPath;
+        [SerializeField] private string _characterDataPath;
+        [SerializeField] private string _startDialogueDataPath;
+        [SerializeField] private string _dialogueSystemDataPath;
+        private static Data _instance;
         public static SphereData _sphereData;
         public static CharacterData _characterData;
         public static StartDialogueData _startDialogueData;
@@ -18,13 +24,26 @@ namespace BeastHunter
 
         #region Properties
 
+        public static Data Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = Resources.Load<Data>("Data/" + typeof(Data).Name);
+                }
+
+                return _instance;
+            }
+        }
+
         public static SphereData SphereData
         {
             get
             {
                 if (_sphereData == null)
                 {
-                    _sphereData = Resources.Load<SphereData>("Data/SphereData");
+                    _sphereData = Load<SphereData>("Data/" + Instance._sphereDataPath);
                 }
                 return _sphereData;
             }
@@ -36,7 +55,7 @@ namespace BeastHunter
             {
                 if (_startDialogueData == null)
                 {
-                    _startDialogueData = Resources.Load<StartDialogueData>("Data/StartDialogueData");
+                    _startDialogueData = Load<StartDialogueData>("Data/" + Instance._startDialogueDataPath);
                 }
                 return _startDialogueData;
             }
@@ -48,7 +67,7 @@ namespace BeastHunter
             {
                 if (_dialogueSystemData == null)
                 {
-                    _dialogueSystemData = Resources.Load<DialogueSystemData>("Data/DialogueSystemData");
+                    _dialogueSystemData = Load<DialogueSystemData>("Data/" + Instance._dialogueSystemDataPath);
                 }
                 return _dialogueSystemData;
             }
@@ -60,11 +79,19 @@ namespace BeastHunter
             {
                 if (_characterData == null)
                 {
-                    _characterData = Resources.Load<CharacterData>("Data/CharacterData");
+                    _characterData = Load<CharacterData>("Data/" + Instance._characterDataPath);
                 }
                 return _characterData;
             }
         }
+
+        #endregion
+
+
+        #region Methods
+
+        private static T Load<T>(string resourcesPath) where T : Object =>
+           Resources.Load<T>(Path.ChangeExtension(resourcesPath, null));
 
         #endregion
     }
