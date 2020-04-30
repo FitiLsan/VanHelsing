@@ -6,7 +6,7 @@ using System.Data;
 
 namespace BeastHunter
 {
-    public sealed class QuestTest
+    public class QuestTest
     {
         public QuestTest(int id)
         {

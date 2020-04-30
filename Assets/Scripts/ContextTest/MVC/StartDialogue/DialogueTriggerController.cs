@@ -7,8 +7,8 @@ namespace BeastHunter
     {
         #region Fields
 
-        private readonly GameContext _context;
-        private Collider _target;
+        private readonly GameContext context;
+        private Collider target;
 
         #endregion
 
@@ -17,7 +17,7 @@ namespace BeastHunter
 
         public DialogueTriggerController(GameContext context, Services services)
         {
-            this._context = context;
+            this.context = context;
         }
 
         #endregion
@@ -27,7 +27,7 @@ namespace BeastHunter
 
         public void OnAwake()
         {
-            var sphers = _context.GetTriggers(InteractableObjectType.Npc);
+            var sphers = context.GetTriggers(InteractableObjectType.Npc);
             foreach (var trigger in sphers)
             {
                 var targetBehaviour = trigger as TargetBehaviour;
@@ -44,7 +44,7 @@ namespace BeastHunter
 
         public void TearDown()
         {
-            var npcs = _context.GetTriggers(InteractableObjectType.Npc);
+            var npcs = context.GetTriggers(InteractableObjectType.Npc);
             foreach (var trigger in npcs)
             {
                 var targetBehaviour = trigger as TargetBehaviour;
@@ -61,22 +61,22 @@ namespace BeastHunter
 
         private bool OnFilterHandler(Collider tagObject)
         {
-            _target = tagObject;
+            target = tagObject;
             return tagObject.CompareTag(TagManager.NPC);
         }
 
         private void OnTriggerEnterHandler(ITrigger enteredObject)
         {
             enteredObject.IsInteractable = true;
-            Debug.Log($"Enter NPC Dialogue {_target.name}");
-            _context._startDialogueModel.StartDialogueData.OnTriggerEnter(_target);
+            Debug.Log($"Enter NPC Dialogue {target.name}");
+            context._startDialogueModel.StartDialogueData.OnTriggerEnter(target);
         }
 
         private void OnTriggerExitHandler(ITrigger enteredObject)
         {
             enteredObject.IsInteractable = false;
-            Debug.Log($"Exit NPC Dialogue {_target.name}");
-            _context._startDialogueModel.StartDialogueData.OnTriggerExit(_target);
+            Debug.Log($"Exit NPC Dialogue {target.name}");
+            context._startDialogueModel.StartDialogueData.OnTriggerExit(target);
         }
 
         #endregion

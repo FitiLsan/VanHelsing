@@ -17,9 +17,9 @@ namespace BeastHunter
 
         #region Properties
 
-        public Transform StartDialogueTransform { get; }
-        public StartDialogueData StartDialogueData { get; }
-        public StartDialogueStruct StartDialogueStruct { get; }
+        public Transform StartDialogueTransform;
+        public StartDialogueData StartDialogueData;
+        public StartDialogueStruct StartDialogueStruct;
 
         #endregion
 

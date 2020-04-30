@@ -9,7 +9,7 @@ namespace BeastHunter
     public sealed class StartDialogueData : ScriptableObject
     {
         #region Fields
-        private Transform _camera = Camera.main.transform;
+
         public StartDialogueStruct StartDialogueStruct;
         public StartDialogueModel Model;
         public Vector3 NpcPos;
@@ -17,9 +17,15 @@ namespace BeastHunter
         public DialogueSystemModel DialogueSystemModel;
         public GameObject CanvasNpc;
 
-        public const float CANVAS_OFFSET = 1.5f;
         #endregion
-    
+
+
+        #region
+
+        public const float CANVAS_OFFSET = 1.5f;
+
+        #endregion
+
 
         #region Events
 
@@ -37,7 +43,7 @@ namespace BeastHunter
                 if (!DialogueSystemModel.DialogueCanvas.enabled)
                 {
                     CanvasNpc.SetActive(true);
-                    CanvasNpc.transform.LookAt(_camera);
+                    CanvasNpc.transform.LookAt(Camera.main.transform);
                 }
                 if (Input.GetButton("Use"))
                 {
