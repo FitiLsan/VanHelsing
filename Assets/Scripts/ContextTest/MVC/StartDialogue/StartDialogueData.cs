@@ -16,16 +16,10 @@ namespace BeastHunter
         public int NpcID;
         public DialogueSystemModel DialogueSystemModel;
         public GameObject CanvasNpc;
-
-        #endregion
-
-
-        #region
-
         public const float CANVAS_OFFSET = 1.5f;
 
         #endregion
-
+    
 
         #region Events
 
@@ -43,7 +37,7 @@ namespace BeastHunter
                 if (!DialogueSystemModel.DialogueCanvas.enabled)
                 {
                     CanvasNpc.SetActive(true);
-                    CanvasNpc.transform.LookAt(Camera.main.transform);
+                    CanvasNpc.transform.LookAt(Model.MainCamera);
                 }
                 if (Input.GetButton("Use"))
                 {

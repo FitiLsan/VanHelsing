@@ -10,11 +10,8 @@ namespace BeastHunter
 
         public static SphereData _sphereData;
         public static CharacterData _characterData;
-
         public static StartDialogueData _startDialogueData;
-
         public static DialogueSystemData _dialogueSystemData;
-
 
         #endregion
 

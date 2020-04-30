@@ -11,6 +11,7 @@ namespace BeastHunter
         public DialogueSystemModel DialogueSystemModel;
         public bool IsStartDialogueFlagOn;
         public bool IsDialogueAreaEnter;
+        public Transform MainCamera = Camera.main.transform;
 
         #endregion
 
