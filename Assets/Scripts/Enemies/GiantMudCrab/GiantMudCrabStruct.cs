@@ -36,11 +36,9 @@ namespace BeastHunter
 
         public bool CanAttack;
 
-        public bool ShouldDigIn;
+        public bool IsDigIn;
 
         public bool IsPatrol;
-
-        public bool IsChase;
 
         public bool IsDead;
 
