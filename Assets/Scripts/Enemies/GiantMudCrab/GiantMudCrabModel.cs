@@ -44,8 +44,12 @@ namespace BeastHunter
         {
             if (!GiantMudCrabStruct.IsDead)
             {
-                GiantMudCrabData.Patrol(CrabAgent, GiantMudCrabStruct.SpawnPoint, GiantMudCrabStruct.PatrolDistance, GiantMudCrabStruct.IsPatrol);
-                GiantMudCrabData.Attack(GiantMudCrabStruct, CrabAgent, Player, Crab);
+                if (!GiantMudCrabStruct.IsDigIn)
+                {
+                    GiantMudCrabData.Patrol(CrabAgent, GiantMudCrabStruct.SpawnPoint, GiantMudCrabStruct.PatrolDistance, GiantMudCrabStruct.IsPatrol);
+                    GiantMudCrabData.Attack(GiantMudCrabStruct, CrabAgent, Player, Crab);
+                }
+                GiantMudCrabStruct.IsDigIn = GiantMudCrabData.DigIn(Crab, Player, GiantMudCrabStruct.DiggingDistance, CurrentHealth, GiantMudCrabStruct.MaxHealth, GiantMudCrabStruct.IsDigIn);
             }
         }
 

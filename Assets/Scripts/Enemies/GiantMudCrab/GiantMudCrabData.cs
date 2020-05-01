@@ -38,12 +38,13 @@ namespace BeastHunter
         public void Attack(GiantMudCrabStruct giantMudCrabStruct, NavMeshAgent CrabAgent, GameObject Target, GameObject Prefab)
         {
             float DistanceBetweenTargetAndPrefab = Vector3.Distance(Target.transform.position, Prefab.transform.position);
-            if (giantMudCrabStruct.CanAttack && !giantMudCrabStruct.ShouldDigIn)
+            if (giantMudCrabStruct.CanAttack && !giantMudCrabStruct.IsDigIn)
             {
                 if (DistanceBetweenTargetAndPrefab <= giantMudCrabStruct.AttackRange)
                 {
                     CrabAgent.isStopped = true;
                     CrabAgent.ResetPath();
+                    RotateTowards(Target.transform, Prefab.transform);
                     if (Time.time >= NextAttackRate)
                     {
                         Debug.Log("Attacking");
@@ -58,26 +59,29 @@ namespace BeastHunter
             }
         }
 
-        public void DigIn(GameObject Prefab, GameObject Target, float TriggerDistance)
+        public bool DigIn(GameObject Prefab, GameObject Target, float DiggingDistance, float CurrentHealth, float MaxHealth, bool IsDigIn)
         {
-            float DistanceBetweenTargetAndPrefab = Vector2.Distance(Target.transform.position, Prefab.transform.position);
-            if (DistanceBetweenTargetAndPrefab < TriggerDistance)
-                return;
-        }
-
-        public void Chase(GameObject Target, NavMeshAgent CrabAgent, bool IsChase)
-        {
-            if (IsChase)
+            float DistanceBetweenTargetAndPrefab = Vector3.Distance(Target.transform.position, Prefab.transform.position);
+            if (DistanceBetweenTargetAndPrefab < DiggingDistance && CurrentHealth <= MaxHealth / 3)
             {
-
+                IsDigIn = true;
+                return IsDigIn;
             }
+            IsDigIn = false;
+            return IsDigIn;
         }
 
-        public void BackHome(Vector3 HomePoint, Transform Pregab)
+        public void BackHome(Vector3 HomePoint, Transform Prefab)
         {
 
         }
 
+        public void RotateTowards(Transform target, Transform Prefab)
+        {
+            Vector3 direction = (target.position - Prefab.transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            Prefab.transform.rotation = Quaternion.Slerp(Prefab.transform.rotation, lookRotation, Time.deltaTime * 3);
+        }
         #endregion
     }
 }
