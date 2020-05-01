@@ -36,18 +36,6 @@ namespace BeastHunter
             prefabTransform.Translate(_movementVector, Space.Self);
         }
 
-        public void JumpForward(Rigidbody rigitbody, float horizontalForce, float verticalForce, float currentSpeed)
-        {
-            rigitbody.AddForce(rigitbody.transform.forward * 
-                (horizontalForce + currentSpeed), ForceMode.Impulse);
-            rigitbody.AddForce(Vector3.up * verticalForce, ForceMode.Impulse);
-        }
-
-        public void Dodge(Rigidbody rigidbody, float force, Vector3 direction)
-        {
-            //TODO
-        }
-
         #endregion
     }
 }

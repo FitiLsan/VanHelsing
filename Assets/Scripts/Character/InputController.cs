@@ -80,11 +80,8 @@ namespace BeastHunter
 
         private void CheckAxisTotal()
         {
-            if (!_characterModel.IsAxisInputsLocked)
-            {
-                _inputStruct._inputTotalAxisX = _inputStruct._inputAxisX > 0 ? 1 : _inputStruct._inputAxisX < 0 ? -1 : 0;
-                _inputStruct._inputTotalAxisY = _inputStruct._inputAxisY > 0 ? 1 : _inputStruct._inputAxisY < 0 ? -1 : 0;
-            }
+            _inputStruct._inputTotalAxisX = _inputStruct._inputAxisX > 0 ? 1 : _inputStruct._inputAxisX < 0 ? -1 : 0;
+            _inputStruct._inputTotalAxisY = _inputStruct._inputAxisY > 0 ? 1 : _inputStruct._inputAxisY < 0 ? -1 : 0;
         }
 
         private void CheckEvents()

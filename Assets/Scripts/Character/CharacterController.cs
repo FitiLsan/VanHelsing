@@ -43,7 +43,8 @@ namespace BeastHunter
 
         public void OnAwake()
         {
-            Cursor.visible = false;  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
 
             _characterModel = _context.CharacterModel;
             _animationController = new CharacterAnimationController(_characterModel.CharacterAnimator);
@@ -95,8 +96,8 @@ namespace BeastHunter
                 _stateMachine.CurrentState.Execute();
             }
 
-            _animationController.UpdateAnimationParameters(_inputModel.inputStruct._inputTotalAxisX, _inputModel.inputStruct._inputTotalAxisY,
-                _characterModel.CurrentSpeed, _characterModel.AnimationSpeed);
+            _animationController.UpdateAnimationParameters(_inputModel.inputStruct._inputTotalAxisX, 
+                _inputModel.inputStruct._inputTotalAxisY, _characterModel.CurrentSpeed, _characterModel.AnimationSpeed);
         }
 
         #endregion
