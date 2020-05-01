@@ -58,6 +58,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            CanExit = false;
             _characterModel.CharacterSphereCollider.radius *= _characterModel.CharacterCommonSettings.
                 SphereColliderRadiusIncrese;
             GetClosestEnemy();

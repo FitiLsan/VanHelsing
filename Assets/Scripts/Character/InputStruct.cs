@@ -1,6 +1,4 @@
-﻿
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public struct InputStruct
     {

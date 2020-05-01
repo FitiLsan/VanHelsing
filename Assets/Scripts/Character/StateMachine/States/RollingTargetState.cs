@@ -22,6 +22,8 @@ namespace BeastHunter
         private Vector3 MoveDirection;
         private Collider ClosestEnemy;
         private float _angleSpeedIncrease;
+        private float _currentHorizontalInput;
+        private float _currentVerticalInput;
 
         #endregion
 
@@ -50,14 +52,15 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            if (_characterModel.IsMoving)
+            if (CanRoll())
             {
+                _currentHorizontalInput = _inputModel.inputStruct._inputTotalAxisX;
+                _currentVerticalInput = _inputModel.inputStruct._inputTotalAxisY;
                 RollTime = _characterModel.CharacterCommonSettings.RollTime;
                 _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.RollAnimationSpeed;
+                PrepareRoll(_currentHorizontalInput, _currentVerticalInput);
                 CanExit = false;
                 CanBeOverriden = false;
-                LockInputData();
-                _animationController.PlayRollAnimation();
             }
             else
             {
@@ -78,7 +81,6 @@ namespace BeastHunter
         public override void OnExit()
         {
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
-            _characterModel.IsAxisInputsLocked = false;
         }
 
         private void ExitCheck()
@@ -91,6 +93,11 @@ namespace BeastHunter
                 CanBeOverriden = true;
                 _stateMachine.ReturnState();
             }
+        }
+
+        private bool CanRoll()
+        {
+           return _inputModel.inputStruct._inputAxisX != 0 || _inputModel.inputStruct._inputAxisY != 0 ? true : false;           
         }
 
         private void Roll()
@@ -132,14 +139,14 @@ namespace BeastHunter
             ClosestEnemy = enemy;
         }
 
-        private void LockInputData()
+        private void PrepareRoll(float rollingX, float rollingY)
         {
-            _characterModel.IsAxisInputsLocked = true;
-            _angleSpeedIncrease = _characterModel.IsMoving ? ANGLE_SPEED_INCREASE : 1;
+            _angleSpeedIncrease = rollingX != 0 && rollingY != 0 ? ANGLE_SPEED_INCREASE : 1;
 
-            MoveDirection = (Vector3.forward * _inputModel.inputStruct._inputTotalAxisY + Vector3.right *
-                _inputModel.inputStruct._inputTotalAxisX) / (Mathf.Abs(_inputModel.inputStruct._inputTotalAxisY) +
-                    Mathf.Abs(_inputModel.inputStruct._inputTotalAxisX)) * _angleSpeedIncrease;
+            MoveDirection = (Vector3.forward * rollingY + Vector3.right * rollingX) / (Mathf.Abs(rollingY) + 
+                Mathf.Abs(rollingX)) * _angleSpeedIncrease;
+
+            _animationController.PlayRollAnimation(rollingX, rollingY);
         }
 
         private void StayInBattle()
