@@ -2,7 +2,7 @@
 {
     public class ClothItem : BaseItem
     {
-        SlotEnum SlotEnum;
+        public PocketInfo[] pocketInfos;
     }
 }
 

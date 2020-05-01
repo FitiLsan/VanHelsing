@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public enum SlotEnum
+    public enum SlotSize
     {
         None   = 0,
         Small  = 1,

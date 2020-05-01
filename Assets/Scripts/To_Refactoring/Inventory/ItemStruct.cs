@@ -6,6 +6,8 @@
 
         public string Discription;
 
+        public SlotSize SlotSize;
+        public ItemType ItemType;
         //public Image Icon;
     }
 }
