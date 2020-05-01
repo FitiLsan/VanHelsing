@@ -102,8 +102,10 @@ namespace BeastHunter
             CharacterAnimator.Play(_jumpHash);
         }
 
-        public void PlayRollAnimation()
+        public void PlayRollAnimation(float rollingX, float rollingY)
         {
+            CharacterAnimator.SetFloat("RollingX", rollingX);
+            CharacterAnimator.SetFloat("RollingY", rollingY);
             CharacterAnimator.Play(_rollHash);
         }
 

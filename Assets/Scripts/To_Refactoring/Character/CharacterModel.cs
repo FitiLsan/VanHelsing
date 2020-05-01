@@ -35,7 +35,6 @@ namespace BeastHunter
         public bool IsGrounded { get; set; }
         public bool IsInBattleMode { get; set; }
         public bool IsEnemyNear { get; set; }
-        public bool IsAxisInputsLocked { get; set; }
 
         #endregion
 
@@ -64,6 +63,8 @@ namespace BeastHunter
                 CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
                 CharacterRigitbody.angularDrag = CharacterCommonSettings.RigitbodyAngularDrag;
             }
+
+            CharacterRigitbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
             if (prefab.GetComponent<CapsuleCollider>() != null)
             {
@@ -128,7 +129,6 @@ namespace BeastHunter
             IsGrounded = false;
             IsEnemyNear = false;
             IsInBattleMode = false;
-            IsAxisInputsLocked = false;
             CurrentSpeed = 0;
             AnimationSpeed = CharacterData._characterCommonSettings.AnimatorBaseSpeed;
 
