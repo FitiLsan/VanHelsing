@@ -10,6 +10,7 @@ namespace BeastHunter
 
         public static SphereData _sphereData;
         public static CharacterData _characterData;
+        public static GiantMudCrabData _giantMudCrabData;
 
         #endregion
 
@@ -37,6 +38,18 @@ namespace BeastHunter
                     _characterData = Resources.Load<CharacterData>("Data/CharacterData");
                 }
                 return _characterData;
+            }
+        }
+
+        public static GiantMudCrabData GiantMudCrabData
+        {
+            get
+            {
+                if (_giantMudCrabData == null)
+                {
+                    _giantMudCrabData = Resources.Load<GiantMudCrabData>("Data/GiantMudCrabData");
+                }
+                return _giantMudCrabData;
             }
         }
 

@@ -4,14 +4,17 @@
     {
         #region ClassLifeCycles
 
-        public MainControllers(GameContext context, Services services)
+        public MainControllers(GameContext context)
         {
-            Add(new InitializeInteractableObjectController(context, services));
-            Add(new SphereInitilizeController(context, services));
-            Add(new SphereController(context, services));
-            Add(new CharacterInitilizeController(context, services));
-            Add(new CharacterInputController(context, services));
-            Add(new TargetController(context, services));
+            Add(new CharacterInitilizeController(context));
+            Add(new GiantMudCrabInitilizeController(context));
+            Add(new InitializeInteractableObjectController(context));
+            Add(new SphereInitilizeController(context));
+            Add(new SphereController(context));
+            Add(new GiantMudCrabController(context));
+            Add(new TargetController(context));
+            Add(new InputController(context));
+            Add(new CharacterController(context));
         }
 
         #endregion

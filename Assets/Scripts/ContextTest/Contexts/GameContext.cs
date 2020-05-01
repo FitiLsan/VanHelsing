@@ -9,8 +9,11 @@ namespace BeastHunter
     {
         #region Fields
 
-        public SphereModel _sphereModel;
-        public CharacterModel _characterModel;
+        public SphereModel SphereModel;
+        public CharacterModel CharacterModel;
+
+        public InputModel InputModel;
+        public GiantMudCrabModel GiantMudCrabModel;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;

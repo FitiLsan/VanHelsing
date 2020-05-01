@@ -20,7 +20,7 @@ namespace BeastHunter
             Services services = Services.SharedInstance;
             services.Initialize(context);
 
-            _activeController = new GameSystemsController(context, services);
+            _activeController = new GameSystemsController(context);
             _activeController.Initialize();
         }
 
