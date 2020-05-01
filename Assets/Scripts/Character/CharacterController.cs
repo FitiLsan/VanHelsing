@@ -42,7 +42,10 @@ namespace BeastHunter
         #region OnAwake
 
         public void OnAwake()
-        { 
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
             _characterModel = _context.CharacterModel;
             _animationController = new CharacterAnimationController(_characterModel.CharacterAnimator);
 
@@ -83,8 +86,6 @@ namespace BeastHunter
 
         public void Updating()
         {
-            Cursor.visible = false; 
-
             if (_stateMachine.CurrentState != _stateMachine._deadState)
             {
                 BattleIgnoreCheck();
