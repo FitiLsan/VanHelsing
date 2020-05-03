@@ -1,19 +1,17 @@
-using System;
 using System.Collections.Generic;
 using DatabaseWrapper;
-using Interfaces;
-using UnityEngine;
+using Quests;
 
-namespace Quests
+namespace BeastHunter
 {
     /// <summary>
     ///     Обертка для работы с источниками данных о квестах
     /// </summary>
     public class DbQuestStorage : IQuestStorage
     {
-        private readonly IQuestSaveAgent _agent;
+        private readonly ISaveManager _agent;
         
-        public DbQuestStorage(IQuestSaveAgent agent)
+        public DbQuestStorage(ISaveManager agent)
         {
             _agent = agent;
         }
@@ -62,6 +60,21 @@ namespace Quests
         public List<int> GetAllCompletedQuests()
         {
             return _agent.GetAllCompletedQuests();
+        }
+
+        public List<Quest> GetAllActiveQuests()
+        {
+            return _agent.GetAllActiveQuests();
+        }
+
+        public void SaveGame(string file)
+        {
+            _agent.SaveGame(file);
+        }
+
+        public void LoadGame(string file)
+        {
+            _agent.LoadGame(file);
         }
     }
 }

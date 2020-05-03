@@ -31,7 +31,7 @@ namespace Controllers
         /// </summary>
         [SerializeField]
         private PhysicsParams _physicsParams;
-        private InventoryController _inventory;
+      //  private InventoryController _inventory;
 
         [HideInInspector] public bool charIsGrounded;
 
@@ -91,7 +91,7 @@ namespace Controllers
             _foot.radius = _charCollider.radius;
             _foot.isTrigger = true;
 
-            _inventory = BaseScripts.StartScript.GetStartScript.InventoryController;
+            //_inventory = BaseScripts.StartScript.GetStartScript.InventoryController;
 
             // заполняем модель состояния персонажа
             _charCharacteristic = new BaseCharacterModel_ver2(_baseStats);

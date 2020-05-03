@@ -13,10 +13,12 @@
             Add(new StartDialogueInitializeController(context, services));
             Add(new StartDialogueController(context, services));
             Add(new InitializeInteractableObjectController(context, services));
-         //   Add(new CharacterInitilizeController(context, services));
-         //   Add(new CharacterInputController(context, services));
+            Add(new QuestInitializeController(context));
+            //   Add(new CharacterInitilizeController(context, services));
+            //   Add(new CharacterInputController(context, services));
             Add(new TargetController(context, services));
-            Add(new DialogueTriggerController(context, services));
+            Add(new DialogueTriggerController(context, services));  
+            Add(new QuestController(context));
         }
 
         #endregion

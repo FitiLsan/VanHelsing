@@ -13,7 +13,7 @@ namespace BeastHunter
         public StartDialogueModel _startDialogueModel;
         public DialogueSystemModel _dialogueSystemModel;
         public CharacterModel _characterModel;
-
+        public QuestModel _questModel;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;

@@ -1,17 +1,9 @@
 using Quests;
 
-namespace Interfaces
+namespace BeastHunter
 {
-    /// <summary>
-    /// Инфтерфес для работы с базой и с сохранениями
-    /// </summary>
-    public interface IQuestStorage : IQuestSaveAgent
+    public interface IQuestStorage : ISaveManager
     {
-        /// <summary>
-        /// Получаем квест из базы
-        /// </summary>
-        /// <param name="id">Ид квеста</param>
-        /// <returns>квест</returns>
         Quest GetQuestById(int id);
     }
 }

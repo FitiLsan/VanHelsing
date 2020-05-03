@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Extensions;
-using Interfaces;
 using Quests;
-using SaveSystem.SaveDto;
 using UnityEngine;
 
-namespace DatabaseWrapper
+namespace BeastHunter
 {
     public class ProgressDatabaseWrapper : ISaveFileWrapper
     {
@@ -121,104 +118,7 @@ namespace DatabaseWrapper
             AddSaveData(param.Key, param.Value);
         }
 
-        public void SaveInventory(IEnumerable<SaveItemDto> items)
-        {
-            var strBuilder = new StringBuilder();
-            strBuilder.Append("BEGIN TRANSACTION; ");
-            foreach (var x in items)
-            {
-                strBuilder.Append(
-                    $@"insert into '{SaveTables.inventory.ToString()}' 
-                    (Entry,
-                    ItemId,
-                    Count,
-                    TimeLeft,
-                    ScriptUsed,
-                    SpellCharges1,
-                    SpellCharges2,
-                    Durability) 
-                    values 
-                    ({x.Entry},
-                     {x.ItemId},
-                     {x.Count},
-                     {x.TimeLeft},
-                     {(x.ScriptUsed?1:0)},
-                     {x.SpellCharges1},
-                     {x.SpellCharges2},
-                     {x.Durability});");
-            }
-            strBuilder.Append("COMMIT;");
-            ExecuteQueryWithoutAnswer(strBuilder.ToString());
-        }
-        public void SaveEquipment(IEnumerable<SaveItemDto> items)
-        {
-            var strBuilder = new StringBuilder();    
-            strBuilder.Append("BEGIN TRANSACTION; ");
-            foreach (var x in items)
-            {
-                strBuilder.Append(
-                    $@"insert into '{SaveTables.equipment.ToString()}' 
-                    (Entry,
-                    ItemId,
-                    Count,
-                    TimeLeft,
-                    ScriptUsed,
-                    SpellCharges1,
-                    SpellCharges2,
-                    Durability,
-                    Slot) 
-                    values 
-                    ({x.Entry},
-                     {x.ItemId},
-                     {x.Count},
-                     {x.TimeLeft},
-                     {(x.ScriptUsed?1:0)},
-                     {x.SpellCharges1},
-                     {x.SpellCharges2},
-                     {x.Durability},
-                     {x.Slot});");
-            }
-            strBuilder.Append("COMMIT;");
-            ExecuteQueryWithoutAnswer(strBuilder.ToString());
-        }
-
-        public IEnumerable<SaveItemDto> LoadInventory()
-        {
-            foreach (DataRow row in _saveData.Tables[SaveTables.inventory.ToString()].Rows)
-            {
-                yield return new SaveItemDto
-                {
-                    Entry = row.GetInt("Entry"),
-                    ItemId = row.GetInt("ItemId"),
-                    Count = row.GetInt("Count"),
-                    TimeLeft = row.GetInt("TimeLeft"),
-                    ScriptUsed = row.GetInt("ScriptUsed")==1,
-                    Durability = row.GetInt("Durability"),
-                    SpellCharges1 = row.GetInt("SpellCharges1"),
-                    SpellCharges2 = row.GetInt("SpellCharges2")
-                };
-            }
-        }
-
-        public IEnumerable<SaveItemDto> LoadEquipment()
-        {
-            foreach (DataRow row in _saveData.Tables[SaveTables.equipment.ToString()].Rows)
-            {
-                yield return new SaveItemDto
-                {
-                    Entry = row.GetInt("Entry"),
-                    ItemId = row.GetInt("ItemId"),
-                    Count = row.GetInt("Count"),
-                    TimeLeft = row.GetInt("TimeLeft"),
-                    ScriptUsed = row.GetInt("ScriptUsed")==1,
-                    Durability = row.GetInt("Durability"),
-                    SpellCharges1 = row.GetInt("SpellCharges1"),
-                    SpellCharges2 = row.GetInt("SpellCharges2"),
-                    Slot = row.GetInt("Slot")
-                };
-            }
-        }
-
+        
         private enum SaveTables
         {
             // ReSharper disable once InconsistentNaming

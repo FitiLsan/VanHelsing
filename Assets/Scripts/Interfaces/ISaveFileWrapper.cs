@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using Quests;
-using SaveSystem.SaveDto;
 
-namespace Interfaces
+namespace BeastHunter
 {
     public interface ISaveFileWrapper
     {
@@ -17,12 +16,5 @@ namespace Interfaces
         int GetNextItemEntry();
         void AddSaveData(string key, string value);
         void AddSaveData(KeyValuePair<string, string> param);
-
-        void SaveInventory(IEnumerable<SaveItemDto> items);
-
-        void SaveEquipment(IEnumerable<SaveItemDto> items);
-
-        IEnumerable<SaveItemDto> LoadInventory();
-        IEnumerable<SaveItemDto> LoadEquipment();
     }
 }

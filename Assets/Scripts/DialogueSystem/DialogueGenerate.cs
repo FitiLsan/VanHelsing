@@ -1,17 +1,15 @@
 ﻿using Extensions;
 using System.Collections.Generic;
 using DialogueSystem;
-using BaseScripts;
 
 
 namespace BeastHunter
 {
     public sealed class DialogueGenerate
     {
-
         #region Methods
-        
-        public static List<Dialogue> DialogueCreate(int npcID)
+
+        public static List<Dialogue> DialogueCreate(int npcID, GameContext context)
         {
             List<Dialogue> dialogueNode = new List<Dialogue>();
 
@@ -35,7 +33,7 @@ namespace BeastHunter
                     var answerIsEndQuest = answerDt.Rows[i].GetInt(7);
                     var answerQuestId = answerDt.Rows[i].GetInt(8);
                     var answerTaskQuest = answerDt.Rows[i].GetInt(9);
-                    if (!StartScript.GetStartScript.QuestLogController.CompletedQuests.Contains(answerQuestId))
+                    if (!context._questModel.CompletedQuests.Contains(answerQuestId))
                     {
                         dialogueNode[j].PlayerAnswers.Add(new PlayerAnswer(answerId, answerText, answerToNode, answerEndDialogue, answerIsStartQuest, answerIsEndQuest, answerQuestId, answerTaskQuest));
                     }

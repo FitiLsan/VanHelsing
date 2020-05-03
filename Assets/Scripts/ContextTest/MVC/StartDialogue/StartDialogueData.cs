@@ -105,7 +105,7 @@ namespace BeastHunter
             CanvasNpc.transform.position = new Vector3(NpcPos.x, NpcPos.y + GetCanvasOffset(), NpcPos.z);
             DialogAreaEnterSwitcher(true);
             DialogueSystemModel.NpcID = NpcID;
-            DialogueSystemModel.DialogueNode = DialogueGenerate.DialogueCreate(NpcID);
+            DialogueSystemModel.DialogueNode = DialogueGenerate.DialogueCreate(NpcID, Model.Context);
         }
 
         public void OnTriggerExit(Collider other)
