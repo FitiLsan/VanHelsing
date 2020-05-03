@@ -6,11 +6,13 @@ using Events;
 using Quests;
 using UnityEngine;
 
+
 namespace BeastHunter
 {
-    public class SaveManager : ISaveManager
+    public sealed class SaveManager : ISaveManager
     {
-        #region private members
+        #region Fields
+
         private int _newEntry = 1;
         private List<int> _completedQuests;
         private List<Quest> _activeQuests;
@@ -18,16 +20,14 @@ namespace BeastHunter
         
         #endregion
         
-        #region "Public" methods
+
+        #region Methods
 
         public SaveManager(ISaveFileWrapper wrapper)
         {
             _saveFileWrapper = wrapper;
         }
         
-        /// <summary>
-        /// Logic: Call this function to prepare save file, then this class triggers saving event for other systems
-        /// </summary>
         public void SaveGame(string filename)//= null)
         {
             _saveFileWrapper.CreateNewSave(filename ?? DateTime.Now.ToString("s").Replace(':','-')+".bytes");
@@ -48,9 +48,6 @@ namespace BeastHunter
             _activeQuests = LoadQuestLog();
         }
         
-        #endregion
-        
-        #region quest
         public void SaveQuestLog(List<Quest> quests)
         {
             _saveFileWrapper.SaveQuestLog(quests, _completedQuests);           
@@ -97,6 +94,7 @@ namespace BeastHunter
         {
             return _activeQuests ?? (_activeQuests = LoadQuestLog());
         }
+
         #endregion
     }
 }

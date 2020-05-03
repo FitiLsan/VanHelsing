@@ -1,7 +1,4 @@
-﻿using Quests;
-
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public sealed class QuestInitializeController : IAwake
     {

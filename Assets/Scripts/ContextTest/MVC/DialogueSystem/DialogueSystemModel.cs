@@ -8,6 +8,15 @@ namespace BeastHunter
 {
     public sealed class DialogueSystemModel
     {
+        #region Fields
+
+        public List<Dialogue> DialogueNode;
+        public int CurrentNode;
+        public int NpcID;
+
+        #endregion
+
+
         #region Properties
 
         public Transform DialogueSystemTransform{ get; }
@@ -18,15 +27,6 @@ namespace BeastHunter
         public Canvas DialogueCanvas { get; }
         public Text DialogueNPCText { get; }
 
-        #endregion
-
-
-        #region Fields
-
-        public List<Dialogue> DialogueNode;
-        public int CurrentNode;
-        public int NpcID;
-        
         #endregion
 
 

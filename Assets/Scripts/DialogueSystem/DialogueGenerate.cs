@@ -43,6 +43,5 @@ namespace BeastHunter
         }
 
         #endregion
-
     }
 }

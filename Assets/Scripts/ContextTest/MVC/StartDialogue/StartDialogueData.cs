@@ -9,6 +9,7 @@ namespace BeastHunter
     public sealed class StartDialogueData : ScriptableObject
     {
         #region Fields
+        public const float CANVAS_OFFSET = 1.5f;
 
         public StartDialogueStruct StartDialogueStruct;
         public StartDialogueModel Model;
@@ -16,13 +17,6 @@ namespace BeastHunter
         public int NpcID;
         public DialogueSystemModel DialogueSystemModel;
         public GameObject CanvasNpc;
-
-        #endregion
-
-
-        #region
-
-        public const float CANVAS_OFFSET = 1.5f;
 
         #endregion
 

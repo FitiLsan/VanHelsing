@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
 namespace BeastHunter
 {
     public sealed class QuestModel
@@ -21,12 +22,13 @@ namespace BeastHunter
 
         #endregion
 
-        public List<int> CompletedQuests { get; }
 
         #region Properties
 
+        public List<int> CompletedQuests { get; }
 
         #endregion
+
 
         #region ClassLifeCycle
 
@@ -111,9 +113,24 @@ namespace BeastHunter
             if (!(args is IdArgs idArgs)) return;
             var t = _questStorage.GetQuestById(idArgs.Id);
             if (t != null)
+            {
+                if (_quests.Count != 0)
+                {
+                    foreach (Quest quest in _quests)
+                    {
+                        if (quest.Id == t.Id)
+                        {
+                            Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Already Accepted");
+                            return;
+                        }
+                    }
+                }
                 _quests.Add(t);
+                Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Accepted");
+
+            }
 #if UNITY_EDITOR
-            Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Accepted");
+            
 #endif
         }
 
@@ -139,16 +156,19 @@ namespace BeastHunter
                 foreach (var task in quest.Tasks)
                 {
                     if (task.Type != eventType || task.TargetId != targetId) continue;
-                    task.AddAmount(amount);
+                    if (task.CurrentAmount!=task.NeededAmount)
+                    {
+                        task.AddAmount(amount);
+                    }
 #if UNITY_EDITOR
-                    Debug.Log($"QuestLogController>>> Task [{task.Id}] [{quest.Tasks[0].CurrentAmount}] from quest [{quest.Id}] updated");
+                    Debug.Log($"QuestLogController>>> Task ID:[{task.Id}] [{task.CurrentAmount} out of {task.NeededAmount}] from quest ID:[{quest.Id}] updated");
 #endif
                 }
 
                 if (quest.IsComplete)
                 {
                     EventManager.TriggerEvent(GameEventTypes.QuestCompleted, new IdArgs(quest.Id));
-                    Debug.Log($"QuestLogController>>> Quest [{quest.Id}] Complete");
+                    Debug.Log($"QuestLogController>>> Quest ID:[{quest.Id}] Complete");
                 }
             }
         }

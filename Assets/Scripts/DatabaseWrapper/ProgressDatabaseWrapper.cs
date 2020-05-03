@@ -8,19 +8,43 @@ using Extensions;
 using Quests;
 using UnityEngine;
 
+
 namespace BeastHunter
 {
     public class ProgressDatabaseWrapper : ISaveFileWrapper
     {
-        private const string SaveFileTemplate = "progress.bytes";
+        #region PrivateData
+
+        private enum SaveTables
+        {
+            equipment,
+            inventory,
+            quest,
+            quest_objectives,
+            save_info,
+            completed_quests
+        }
+
+        #endregion
+
+
+        #region Fields
+
+        private const string SAVE_FILE_TAMPLATE = "progress.bytes";
+
         private SQLiteConnection _connection;
         private readonly DataSet _saveData = new DataSet();
-        
+
+        #endregion
+
+
+        #region Methods
+
         public void CreateNewSave(string file)
         {
             if (File.Exists(file))
                 File.Delete(file);
-            var fromPath = Path.Combine(Application.streamingAssetsPath, SaveFileTemplate);
+            var fromPath = Path.Combine(Application.streamingAssetsPath, SAVE_FILE_TAMPLATE);
             File.Copy(fromPath, file);
             _connection = new SQLiteConnection("Data Source="+file);
         }
@@ -79,11 +103,11 @@ namespace BeastHunter
                     strBuilder.Append($"insert into 'quest_objectives' (ObjectiveId, Value) values ({task.Id}, {task.CurrentAmount}); ");
                 }
             }
+
             foreach (var id in completeQuests)
             {
                 strBuilder.Append($"insert into 'completed_quests' (QuestId) values ({id}); ");
             }
-
 
             strBuilder.Append("COMMIT;");
             ExecuteQueryWithoutAnswer(strBuilder.ToString());
@@ -95,14 +119,13 @@ namespace BeastHunter
             {
                 if (row.GetString("ParamName") == "NextEntry") return row.GetInt("ParamValue");
             }
-
             return 1;
         }
 
         public void AddSaveData(string key, string value)
         {
-            var cmd = new SQLiteCommand { CommandText = $"select count(*) from 'save_info' where ParamName ='{key}'"};
-           // cmd.Parameters.Add(new SQLiteParameter("@key", key));
+            var cmd = new SQLiteCommand { CommandText = $"select count(*) from 'save_info' where ParamName = @key"};
+            cmd.Parameters.Add(new SQLiteParameter("@key", key));
             var c = Convert.ToInt32( ExecuteScalar(cmd));
             cmd.CommandText = c != 0
                 ? "update 'save_info' set ParamValue = @value where ParamName = @key;"
@@ -116,23 +139,6 @@ namespace BeastHunter
         public void AddSaveData(KeyValuePair<string, string> param)
         {
             AddSaveData(param.Key, param.Value);
-        }
-
-        
-        private enum SaveTables
-        {
-            // ReSharper disable once InconsistentNaming
-            equipment,
-            // ReSharper disable once InconsistentNaming
-            inventory,
-            // ReSharper disable once InconsistentNaming
-            quest,
-            // ReSharper disable once InconsistentNaming
-            quest_objectives,
-            // ReSharper disable once InconsistentNaming
-            save_info,
-            // ReSharper disable once InconsistentNaming
-            completed_quests
         }
         
         private DataTable GetDataTable(string sql)
@@ -193,5 +199,8 @@ namespace BeastHunter
             _connection.Close();
             return r;
         }
+
+        #endregion
+
     }
 }
