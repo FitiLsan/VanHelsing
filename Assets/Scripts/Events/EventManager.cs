@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace BeastHunter
 {
-    public class EventManager //Todo: maybe convert to simple static class?
+    public sealed class EventManager //Todo: maybe convert to simple static class?
     {
         #region Fileds
 

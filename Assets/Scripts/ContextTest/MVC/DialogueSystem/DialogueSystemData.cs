@@ -1,8 +1,4 @@
-﻿using DialogueSystem;
-using Events;
-using Events.Args;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace BeastHunter

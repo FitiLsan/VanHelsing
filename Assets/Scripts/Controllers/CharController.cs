@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Character;
 using Models;
 using UnityEngine;
-using BaseScripts;
 
 namespace Controllers
 {
@@ -97,7 +96,7 @@ namespace Controllers
             _charCharacteristic = new BaseCharacterModel_ver2(_baseStats);
             _baseStats = null; // чтоб не хранить в памяти лишнего
 
-            Events.EventManager.StartListening(Events.GameEventTypes.EquipmentChanged, UpdateStats);
+          //  Events.EventManager.StartListening(Events.GameEventTypes.EquipmentChanged, UpdateStats);
 
             // сразу обновим статы
             // null - т.к. никакие параметры не нужны, а этот же метод используется в 
@@ -210,7 +209,7 @@ namespace Controllers
                 _charCharacteristic.StatsList[stat] = totalStatValue;
             }
 
-            Events.EventManager.TriggerEvent(Events.GameEventTypes.StatsRecalculated, new EventArgs());
+        //    Events.EventManager.TriggerEvent(Events.GameEventTypes.StatsRecalculated, new EventArgs());
 
         }
 

@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
 using BeastHunter;
 using Controllers;
-using DatabaseWrapper;
-using DialogueSystem;
-using Interfaces;
 using Models;
-using Quests;
 using UnityEngine;
 
 

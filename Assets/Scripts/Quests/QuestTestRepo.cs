@@ -1,6 +1,4 @@
-﻿
-using Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 
 
@@ -24,7 +22,7 @@ namespace BeastHunter
 
         public void GetAllQuest(int zoneId)
         {
-            var dtZ = DatabaseWrapper.DatabaseWrapper.GetTable($"select Id from 'quest' where ZoneId={zoneId};");
+            var dtZ = DatabaseWrapper.GetTable($"select Id from 'quest' where ZoneId={zoneId};");
             foreach (DataRow row in dtZ.Rows)
             {
                 questList.Add(new QuestTest(row.GetInt(0)));
