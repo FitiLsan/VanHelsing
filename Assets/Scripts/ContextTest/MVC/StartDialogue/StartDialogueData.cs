@@ -37,7 +37,7 @@ namespace BeastHunter
                 if (!DialogueSystemModel.DialogueCanvas.enabled)
                 {
                     CanvasNpc.SetActive(true);
-                    CanvasNpc.transform.LookAt(Camera.main.transform);
+                    CanvasNpc.transform.LookAt(Model.MainCamera);
                 }
                 if (Input.GetButton("Use"))
                 {
