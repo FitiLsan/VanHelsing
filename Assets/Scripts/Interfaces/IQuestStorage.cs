@@ -1,5 +1,6 @@
 using Quests;
 
+
 namespace BeastHunter
 {
     public interface IQuestStorage : ISaveManager

@@ -13,7 +13,7 @@ namespace BeastHunter
         {
             List<Dialogue> dialogueNode = new List<Dialogue>();
 
-            var npcDt = DatabaseWrapper.DatabaseWrapper.GetTable($"select * from 'dialogue_node' where Npc_id={npcID};");
+            var npcDt = DatabaseWrapper.GetTable($"select * from 'dialogue_node' where Npc_id={npcID};");
 
             for (var j = 0; j < npcDt.Rows.Count; j++)
             {
@@ -21,7 +21,7 @@ namespace BeastHunter
 
                 dialogueNode.Add(new Dialogue(npcText, new List<PlayerAnswer>()));
 
-                var answerDt = DatabaseWrapper.DatabaseWrapper.GetTable($"select * from 'dialogue_answers' where Node_id={j} and Npc_id={npcID};");
+                var answerDt = DatabaseWrapper.GetTable($"select * from 'dialogue_answers' where Node_id={j} and Npc_id={npcID};");
 
                 for (var i = 0; i < answerDt.Rows.Count; i++)
                 {

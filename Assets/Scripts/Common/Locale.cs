@@ -1,8 +1,5 @@
-namespace Common
+namespace BeastHunter
 {
-    /// <summary>
-    /// Возможные языки
-    /// </summary>
     public enum Locale
     {
         RU = 1,

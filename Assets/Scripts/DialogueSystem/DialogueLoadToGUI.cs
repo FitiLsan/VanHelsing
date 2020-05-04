@@ -7,7 +7,6 @@ namespace BeastHunter
 {
     public sealed class DialogueLoadToGUI
     {
-
         #region Methods 
 
         public static void GetDialogueNode(List<Dialogue> dialogueNode, int currentNode, Text dialogueNPCText, Button[] AnswerButtons)
@@ -48,6 +47,5 @@ namespace BeastHunter
         }
 
         #endregion
-
     }
 }

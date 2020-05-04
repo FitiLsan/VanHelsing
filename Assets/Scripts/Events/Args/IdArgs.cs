@@ -1,17 +1,24 @@
 using System;
 
-namespace Events.Args
+
+namespace BeastHunter
 {
-    /// <summary>
-    ///     Параметры с Id
-    /// </summary>
-    public class IdArgs : EventArgs
+    public sealed class IdArgs : EventArgs
     {
+        #region Properties
+
+        public int Id { get; }
+
+        #endregion
+
+
+        #region ClassLifeCycle
+
         public IdArgs(int id)
         {
             Id = id;
         }
 
-        public int Id { get; }
+        #endregion
     }
 }

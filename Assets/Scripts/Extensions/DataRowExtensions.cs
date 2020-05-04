@@ -2,10 +2,13 @@ using System;
 using System.Data;
 using System.Linq;
 
-namespace Extensions
+
+namespace BeastHunter
 {
     public static class DataRowExtensions
     {
+        #region Methods
+
         public static int GetInt(this DataRow row, int column)
         {
             return Convert.ToInt32(row[column]);
@@ -47,5 +50,7 @@ namespace Extensions
                    || value is DBNull
                    || string.IsNullOrWhiteSpace(value.ToString());
         }
+
+        #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BaseScripts;
 using UnityEngine;
 
+
 namespace BeastHunter
 {
     public sealed class LockCharAction

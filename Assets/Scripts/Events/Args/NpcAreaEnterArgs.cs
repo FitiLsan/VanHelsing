@@ -1,10 +1,15 @@
 using System;
 
-namespace Events.Args
+
+namespace BeastHunter
 {
-    public class NpcAreaEnterArgs : EventArgs
+    public sealed class NpcAreaEnterArgs : EventArgs
     {
+        #region Properties
+
         public int NpcId { get; set; }
         public int AreaId { get; set; }
+
+        #endregion
     }
 }

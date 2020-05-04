@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 namespace BeastHunter
 {
     public sealed class NpcDialogue : MonoBehaviour, IGetNpcInfo
