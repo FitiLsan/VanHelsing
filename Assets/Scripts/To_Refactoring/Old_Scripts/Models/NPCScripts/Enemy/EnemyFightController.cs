@@ -1,5 +1,7 @@
-﻿using Interfaces;
+﻿using System;
+using Interfaces;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Models.NPCScripts.Enemy
 {
@@ -291,6 +293,11 @@ namespace Models.NPCScripts.Enemy
             }
         }
 
+        private void SetDamage(IDamageable damageable, float currentDamage)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         ///     Метод ближнего боя (в будущем)
         /// </summary>
@@ -313,10 +320,10 @@ namespace Models.NPCScripts.Enemy
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="damage"></param>
-        private void SetDamage(IDamageable obj, float damage)
-        {
-            if (obj != null) obj.TakeDamage(damage);
-        }
+        //private void SetDamage(IDamageable obj, float damage)
+        //{
+        //    if (obj != null) obj.TakeDamage(damage);
+        //}
 
         /// <summary>
         ///     Активатор спец способности

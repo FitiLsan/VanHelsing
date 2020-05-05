@@ -1,5 +1,4 @@
-﻿using Interfaces;
-using Models.ConditionsAndActions;
+﻿using Models.ConditionsAndActions;
 using Models.ConditionsAndActions.Helpers;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,7 +9,7 @@ namespace Models.NPCScripts.Enemy
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(SphereCollider))]
-    public class Enemy : MonoBehaviour, ISetDamage, IGetConditions
+    public class Enemy : MonoBehaviour
     {
         public delegate void SeeEnemy(string unitName);
 

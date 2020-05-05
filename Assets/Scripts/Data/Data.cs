@@ -13,7 +13,10 @@ namespace BeastHunter
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
+        [SerializeField] private string _giantMudCrabDataPath;
+
         private static Data _instance;
+
         private static SphereData _sphereData;
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
@@ -92,7 +95,7 @@ namespace BeastHunter
             {
                 if (_giantMudCrabData == null)
                 {
-                    _giantMudCrabData = Resources.Load<GiantMudCrabData>("Data/GiantMudCrabData");
+                    _giantMudCrabData = Load<GiantMudCrabData>("Data/" + Instance._giantMudCrabDataPath);
                 }
                 return _giantMudCrabData;
             }

@@ -47,7 +47,7 @@ namespace BaseScripts
 
             //Создаем контроллеры
             AnimController = new AnimController(PlayerAnimator);
-            InputController = new InputController();
+            InputController = new Controllers.InputController();
             CameraController = new CameraController(Camera.main.GetComponent<CameraModel>(), CameraCenter, Camera.main,
                 InputController);
             MovementController = new MovementController(Player.transform, Player.GetComponent<CharController>());
@@ -121,7 +121,7 @@ namespace BaseScripts
         /// <summary>
         /// Контроллер пользовательского ввода
         /// </summary>
-        public InputController InputController { get; private set; }
+        public Controllers.InputController InputController { get; private set; }
 
         /// <summary>
         /// Контроллер передвижения персонажа

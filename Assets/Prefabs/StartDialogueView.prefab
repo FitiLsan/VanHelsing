@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 20060835954078239}
   - component: {fileID: 6122683192883833822}
-  - component: {fileID: 6015871068551357680}
+  - component: {fileID: 7719524051742788578}
   m_Layer: 0
   m_Name: StartDialogueView
   m_TagString: Untagged
@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4553418772370073976}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0}
-  m_LocalScale: {x: 1, y: 1.1939, z: 1}
+  m_LocalRotation: {x: 0, y: -0.3420201, z: 0, w: 0.9396927}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -40, z: 0}
 --- !u!65 &6122683192883833822
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -43,9 +43,9 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.61, y: 0.53, z: 1.74}
-  m_Center: {x: 1.22, y: 0, z: 0}
---- !u!114 &6015871068551357680
+  m_Size: {x: 1, y: 0.3, z: 1}
+  m_Center: {x: 0, y: 1, z: 0.5}
+--- !u!114 &7719524051742788578
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4553418772370073976}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae350a95eb7c0f94d832b859785bb633, type: 3}
+  m_Script: {fileID: 11500000, guid: 4398cb4939869f144b1eb76b2d1b16cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 3
+  _type: 7
