@@ -14,7 +14,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public SphereInitilizeController(GameContext context, Services services)
+        public SphereInitilizeController(GameContext context)
         {
             _context = context;
         }

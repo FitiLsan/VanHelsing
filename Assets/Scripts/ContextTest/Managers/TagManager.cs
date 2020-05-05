@@ -9,6 +9,7 @@
         public const string RABBIT = "Rabbit";
 
         public const string SPHERE = "Sphere";
+        public const string ENEMY = "Enemy";
 
         public const string WOLF = "Wolf";
 

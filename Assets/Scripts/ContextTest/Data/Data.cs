@@ -8,10 +8,9 @@ namespace BeastHunter
     {
         #region Fields
 
-        private static SphereData _sphereData;
-        private static CharacterData _characterData;
-        private static RabbitData _rabbitData;
-
+        public static SphereData _sphereData;
+        public static CharacterData _characterData;
+        public static GiantMudCrabData _giantMudCrabData;
 
         #endregion
 
@@ -42,15 +41,15 @@ namespace BeastHunter
             }
         }
 
-        public static RabbitData RabbitData
+        public static GiantMudCrabData GiantMudCrabData
         {
             get
             {
-                if (_rabbitData == null)
+                if (_giantMudCrabData == null)
                 {
-                    _rabbitData = Resources.Load<RabbitData>("Data/RabbitData");
+                    _giantMudCrabData = Resources.Load<GiantMudCrabData>("Data/GiantMudCrabData");
                 }
-                return _rabbitData;
+                return _giantMudCrabData;
             }
         }
 
