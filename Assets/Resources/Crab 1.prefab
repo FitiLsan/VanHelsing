@@ -1047,7 +1047,7 @@ GameObject:
   - component: {fileID: 8758401916189457439}
   - component: {fileID: 450145706122675393}
   m_Layer: 0
-  m_Name: Crab
+  m_Name: Crab 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1062,7 +1062,7 @@ Transform:
   m_GameObject: {fileID: 6926224206468418117}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 20, z: 0}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalScale: {x: 3, y: 1.5, z: 3}
   m_Children:
   - {fileID: 1773132220732829453}
   - {fileID: 6715621443388246946}
@@ -1096,7 +1096,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b01bef707e0569249b6a5b6cca7dd1f6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1127,7 +1127,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 20
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2459583007552320401
 MonoBehaviour:
@@ -1152,7 +1152,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 0.07
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1175,8 +1175,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Radius: 0.5064308
+  m_Center: {x: 0.013382356, y: 0.34269398, z: -0.0137217045}
 --- !u!114 &450145706122675393
 MonoBehaviour:
   m_ObjectHideFlags: 0

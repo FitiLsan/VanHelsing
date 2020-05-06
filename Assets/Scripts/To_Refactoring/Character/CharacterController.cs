@@ -62,7 +62,7 @@ namespace BeastHunter
             _inputModel.OnBattleExit += ExitBattle;
             _inputModel.OnTargetLock += ChangeTargetMode;
             _inputModel.OnAttack += SetAttackingState;
-            _inputModel.OnDance += ChangeDancingState;
+           // _inputModel.OnDance += ChangeDancingState;
 
             _characterModel.PlayerBehaviour.OnFilterHandler += OnFilterHandler;
             _characterModel.PlayerBehaviour.OnTriggerEnterHandler += OnTriggerEnterHandler;

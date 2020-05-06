@@ -86,7 +86,7 @@ namespace BeastHunter
         {
             return _completedQuests ?? (_completedQuests = _saveFileWrapper.GetCompletedQuests().ToList());
         }
-        
+       
         public List<Quest> GetAllActiveQuests()
         {
             return _activeQuests ?? (_activeQuests = LoadQuestLog());

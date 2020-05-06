@@ -32,10 +32,42 @@ namespace BeastHunter
                     var answerIsEndQuest = answerDt.Rows[i].GetInt(7);
                     var answerQuestId = answerDt.Rows[i].GetInt(8);
                     var answerTaskQuest = answerDt.Rows[i].GetInt(9);
-                    if (!context.QuestModel.CompletedQuests.Contains(answerQuestId))
+
+                    if (context.QuestModel.CompletedQuests.Contains(answerQuestId))
                     {
-                        dialogueNode[j].PlayerAnswers.Add(new PlayerAnswer(answerId, answerText, answerToNode, answerEndDialogue, answerIsStartQuest, answerIsEndQuest, answerQuestId, answerTaskQuest));
+                        continue;
                     }
+
+                    if (context.QuestModel._quests.Count != 0)
+                    {
+                        var flag =false;
+                        foreach (Quest quest in context.QuestModel._quests)
+                        {
+                            if (context.QuestModel.AllTaskCompletedInQuests.Count != 0)
+                            {
+                                if (!context.QuestModel.AllTaskCompletedInQuests.Contains(answerQuestId))
+                                {
+                                    break;
+                                }
+                            }
+                            else if (answerIsEndQuest == 1)
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if(flag)
+                        {
+                            continue;
+                        }
+                    }
+                    else if(answerIsEndQuest == 1 || answerTaskQuest == 1)
+                    {
+                        continue;
+                    }
+                  
+                        dialogueNode[j].PlayerAnswers.Add(new PlayerAnswer(answerId, answerText, answerToNode, answerEndDialogue, answerIsStartQuest, answerIsEndQuest, answerQuestId, answerTaskQuest));
+                    
                 }
             }
             return dialogueNode;

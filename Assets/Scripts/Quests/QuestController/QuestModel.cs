@@ -10,12 +10,13 @@ namespace BeastHunter
     {
         #region Fields
 
-        private readonly List<Quest> _quests;
+        public readonly List<Quest> _quests;
         private readonly IQuestStorage _questStorage;
 
         public int QuestCount => _quests.Count;
         public IEnumerable<Quest> Quests => _quests.AsReadOnly();
         public GameContext Context;
+        public List<int> AllTaskCompletedInQuests = new List<int>();
 
         #endregion
 
@@ -23,6 +24,7 @@ namespace BeastHunter
         #region Properties
 
         public List<int> CompletedQuests { get; }
+    //    public List<int> AllTaskCompletedInQuests { get; }
 
         #endregion
 
@@ -164,6 +166,7 @@ namespace BeastHunter
 
                 if (quest.IsComplete)
                 {
+                    AllTaskCompletedInQuests.Add(quest.Id);
                     EventManager.TriggerEvent(GameEventTypes.QuestCompleted, new IdArgs(quest.Id));
                     Debug.Log($"QuestLogController>>> Quest ID:[{quest.Id}] Complete");
                 }
@@ -175,6 +178,7 @@ namespace BeastHunter
             if (!(args is EnemyDieArgs dieArgs)) return;
             QuestUpdate(QuestTaskTypes.KillNpc, dieArgs.Id);
             QuestUpdate(QuestTaskTypes.KillEnemyFamily, dieArgs.FamilyId);
+            Debug.Log($"NPC with ID:{dieArgs.Id}");
         }
 
         private void OnAreaEnter(EventArgs args)
