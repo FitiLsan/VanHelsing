@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: SphereData
   m_EditorClassIdentifier: 
   SphereStruct:
-    MoveSpeed: 0.1
+    MoveSpeed: 2
     SphereRadius: 0.5
-    Prefab: {fileID: 6953022481052749130, guid: 5486b6c5985f0a74dab7aa0548b222f6,
+    Prefab: {fileID: 7296218821090669790, guid: 5486b6c5985f0a74dab7aa0548b222f6,
       type: 3}
-    Target: {fileID: 8946489080760387140, guid: ad328408c8cfe1c4e8ec1b92ff795e48,
+    Target: {fileID: 7609554646284220334, guid: d78c7aea80ed0b64187b91bdf90e56ba,
       type: 3}
+    boxCollider: {fileID: 0}
+  moveingRight: 0
+  reyDistance: 10
+  _speed: 0

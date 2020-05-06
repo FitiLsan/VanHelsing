@@ -6,7 +6,7 @@ using System;
 public struct SphereStruct
 {
     #region Fields
-
+  
     public float MoveSpeed;
 
     public float SphereRadius;
@@ -15,5 +15,7 @@ public struct SphereStruct
 
     public Transform Target;
 
+  
+    public BoxCollider boxCollider;
     #endregion
 }

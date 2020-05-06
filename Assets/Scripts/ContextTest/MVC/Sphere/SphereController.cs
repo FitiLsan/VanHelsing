@@ -16,27 +16,30 @@ namespace BeastHunter
 
         public SphereController(GameContext context, Services services)
         {
+           
             _context = context;
+           
         }
 
         #endregion
 
 
-        #region Updating
+        #region IUpdate
 
         public void Updating()
         {
+          
             _context._sphereModel.Initilize();
         }
 
         #endregion
 
 
-        #region OnAwake
+        #region IAwake
 
         public void OnAwake()
         {
-            
+        
         }
 
         #endregion        

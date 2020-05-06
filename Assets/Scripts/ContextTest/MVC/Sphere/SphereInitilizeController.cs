@@ -1,13 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 
 namespace BeastHunter
 {
     public sealed class SphereInitilizeController : IAwake
     {
-        #region Field
 
+        #region Field
+       
         GameContext _context;
+        
 
         #endregion
 
@@ -17,6 +20,7 @@ namespace BeastHunter
         public SphereInitilizeController(GameContext context, Services services)
         {
             _context = context;
+           
         }
 
         #endregion
@@ -24,13 +28,37 @@ namespace BeastHunter
 
         #region IAwake
 
-        public void OnAwake()
+
+
+
+        public void TimeSpn()
         {
             var SphereData = Data.SphereData;
             GameObject instance = GameObject.Instantiate(SphereData.SphereStruct.Prefab);
             SphereModel Sphere = new SphereModel(instance, SphereData);
             _context._sphereModel = Sphere;
+           
         }
+
+
+
+        public void OnAwake()
+        {
+
+           
+
+            //  var TimeRemaining = new TimeRemaining(TimeSpn, 0.1f, false);
+
+
+
+            TimeSpn();
+
+
+
+
+
+        }
+     
 
         #endregion
     }
