@@ -50,8 +50,17 @@ namespace BeastHunter
             _inputModel.OnStop += StartCountExitTime;
             _inputModel.OnMove += StopCountExitTime;
             _inputModel.OnSneakSlide += () => SneakOrSlide();
-            _inputModel.OnAttack += () => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
+            if (_characterModel.CurrentWeaponData.Value != null)
+            {
+                if (_characterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting)
+                {
+                    _inputModel.OnAttack += () => _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Shooting]);
+                }
+                else
+                {
+                    _inputModel.OnAttack += () => _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
+                }
+            }
             _inputModel.OnJump += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Jumping]);
             _inputModel.OnAim += () => _stateMachine.
@@ -104,12 +113,18 @@ namespace BeastHunter
 
         private void StartCountExitTime()
         {
-            IsStopping = true;
+            if (_characterModel.CurrentWeaponData.Value != null && _characterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting) {
+                IsStopping = false;    
+            }
+            else
+            {
+                IsStopping = true;
+            }
         }
 
         private void StopCountExitTime()
         {
-            IsStopping = false;
+            IsStopping = false; 
             ExitTime = _characterModel.CharacterData.CharacterCommonSettings.TImeToContinueMovingAfterStop;
         }
 

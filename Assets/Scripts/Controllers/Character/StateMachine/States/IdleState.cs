@@ -28,8 +28,18 @@
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
             _inputModel.OnSneakSlide += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Sneaking]);
-            _inputModel.OnAttack += () => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
+            if (_characterModel.CurrentWeaponData.Value != null)
+            {
+                if (_characterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting)
+                {
+                    _inputModel.OnAttack += () => _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Shooting]);
+                }
+                else
+                {
+                    _inputModel.OnAttack += () => _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
+                }
+            }
+            
             _inputModel.OnJump += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Jumping]);
             _inputModel.OnAim += () => _stateMachine.

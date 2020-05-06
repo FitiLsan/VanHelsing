@@ -39,7 +39,7 @@ namespace BeastHunter
 
         public override bool CanBeActivated()
         {
-            if(!_characterModel.IsWeaponInHands && _characterModel.CurrentPlacingTrapModel.Value != null)
+            if (!_characterModel.IsWeaponInHands && _characterModel.CurrentPlacingTrapModel.Value != null)
             {
                 _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.TrapPlacing]);
             }

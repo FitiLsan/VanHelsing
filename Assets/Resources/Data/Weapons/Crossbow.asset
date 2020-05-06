@@ -26,13 +26,19 @@ MonoBehaviour:
     _volume: 0
     _pitch: 0
     _doLoop: 0
+  _weaponDamage:
+    PhysicalDamageType: 0
+    PhysicalDamageValue: 0
+    ElementDamageType: 0
+    ElementDamageValue: 0
   _simpleAttacks:
   - Name: Simple shot
     AnimationName: Shoot
     AttackDamage:
-      PhysicalDamage: 3
-      StunProbability: 0
-      FireDamage: 0
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
     WeaponItem: {fileID: 11400000, guid: e2a1624ec5a336945b8c75bb80548e57, type: 2}
     AttackType: 3
     AttackTime: 0.5

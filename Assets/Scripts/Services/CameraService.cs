@@ -208,6 +208,12 @@ namespace BeastHunter
                     SetBlendTime(_cameraData.CharacterFreelookCameraSettings.CharacterFreelookCameraBlendTime);
                     SetActiveCamera(CharacterFreelookCamera);
                     break;
+                case CharacterStatesEnum.Shooting:
+                    CenterCameraTarget();
+                    SetBlendTime(_cameraData.CharacterAimingCameraSettings.CharacterAimingCameraBlendTIme);
+                    SetActiveCamera(CharacterFreelookCamera);
+                    GetWeaponShootTransform();
+                    break;
                 default:
                     break;
             }
