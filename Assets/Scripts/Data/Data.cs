@@ -14,6 +14,7 @@ namespace BeastHunter
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
         [SerializeField] private string _giantMudCrabDataPath;
+        [SerializeField] private string _questIndicatorDataPath;
 
         private static Data _instance;
 
@@ -22,6 +23,7 @@ namespace BeastHunter
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
         private static GiantMudCrabData _giantMudCrabData;
+        private static QuestIndicatorData _questIndicatorData;
 
         #endregion
 
@@ -98,6 +100,18 @@ namespace BeastHunter
                     _giantMudCrabData = Load<GiantMudCrabData>("Data/" + Instance._giantMudCrabDataPath);
                 }
                 return _giantMudCrabData;
+            }
+        }
+
+        public static QuestIndicatorData QuestIndicatorData
+        {
+            get
+            {
+                if (_questIndicatorData == null)
+                {
+                    _questIndicatorData = Load<QuestIndicatorData>("Data/" + Instance._questIndicatorDataPath);
+                }
+                return _questIndicatorData;
             }
         }
 

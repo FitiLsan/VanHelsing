@@ -59,7 +59,7 @@ namespace BeastHunter
             return isHit;
         }
 
-        public List<ITrigger> GetObjectsInRadius(Vector2 position, float radius, int layerMask = LayerManager.DEFAULT_LAYER)
+        public List<ITrigger> GetObjectsInRadius(Vector3 position, float radius, int layerMask )//= LayerManager.DEFAULT_LAYER)
         {
             _triggeredObjects.Clear();
             ITrigger trigger;
