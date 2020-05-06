@@ -47,6 +47,7 @@ namespace BeastHunter
                 giantMudCrabBehaviour.OnTriggerEnterHandler += OnTriggerEnterHandler;
                 giantMudCrabBehaviour.OnTriggerExitHandler += OnTriggerExitHandler;
                 giantMudCrabBehaviour.OnTakeDamageHandler += OnTakeDamage;
+                giantMudCrabBehaviour.Stats = _context.GiantMudCrabModel.GiantMudCrabStruct.Stats;
                 Debug.Log("Activate");
             }
         }
@@ -74,17 +75,24 @@ namespace BeastHunter
 
         #region Methods
 
-        private void OnTakeDamage(DamageStruct damage)
+        private void OnTakeDamage(Damage damage)
         {
             if (_context.GiantMudCrabModel.GiantMudCrabStruct.IsDigIn)
             {
-                _context.GiantMudCrabModel.CurrentHealth -= damage.damage/2;
-                Debug.Log("crab got " + damage.damage/2 + " damage");
+                _context.GiantMudCrabModel.CurrentHealth -= damage.PhysicalDamage / 2;
+                Debug.Log("crab got " + damage.PhysicalDamage/2 + " damage");
             }
             else
             {
-                _context.GiantMudCrabModel.CurrentHealth -= damage.damage;
-                Debug.Log("crab got " + damage.damage + " damage");
+                _context.GiantMudCrabModel.CurrentHealth -= damage.PhysicalDamage;
+                Debug.Log("crab got " + damage.PhysicalDamage + " damage");
+            }
+
+            float stunProbability = Random.Range(0f, 1f);
+
+            if(damage.StunProbability > stunProbability)
+            {
+                Debug.Log("crab should be stunned");
             }
 
             if(_context.GiantMudCrabModel.CurrentHealth <= 0)

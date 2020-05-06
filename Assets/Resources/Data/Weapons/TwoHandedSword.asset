@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6b6e6a3a4733e4bb82f476c7e2cba8, type: 3}
+  m_Name: TwoHandedSword
+  m_EditorClassIdentifier: 
+  ItemStruct:
+    Name: TwoHandedSword
+    Discription: large two handed sword
+    SlotSize: 2
+    ItemType: 2
+  WeaponHandType: 1
+  WeaponType: 0
+  WeaponPrefab: {fileID: 2541537832628782672, guid: 21784e92168284f4c9d810067f4d9446,
+    type: 3}
+  PrefabPositionInHand: {x: 7.5, y: 5, z: 1.25}
+  PrefabRotationInHand: {x: -115, y: 0, z: 0}
+  Weight: 5
+  TimeToGet: 1
+  TimeToAppear: 0.5
+  TimeToRemove: 1
+  TimeToDisappear: 0.5
+  CurrentAttack:
+    Time: 1.2
+    AttackDamage:
+      PhysicalDamage: 2
+      StunProbability: 0
+  AttacksLeft:
+  - Time: 1.2
+    AttackDamage:
+      PhysicalDamage: 2
+      StunProbability: 0
+  - Time: 1.2
+    AttackDamage:
+      PhysicalDamage: 2
+      StunProbability: 0
+  - Time: 1.2
+    AttackDamage:
+      PhysicalDamage: 2
+      StunProbability: 0
+  AttacksRight:
+  - Time: 1
+    AttackDamage:
+      PhysicalDamage: 2
+      StunProbability: 0
+  - Time: 1.2
+    AttackDamage:
+      PhysicalDamage: 2
+      StunProbability: 0
+  - Time: 1.3
+    AttackDamage:
+      PhysicalDamage: 2
+      StunProbability: 0
+  SpecialAttackLeft:
+    Time: 0
+    AttackDamage:
+      PhysicalDamage: 0
+      StunProbability: 0
+  SpecialAttackRight:
+    Time: 0
+    AttackDamage:
+      PhysicalDamage: 0
+      StunProbability: 0
+  SimpleAttackAnimationName: AttackTwoHandedSword
+  SpecialAttackAnimationName: AttackTwoHandedSwordSpecial

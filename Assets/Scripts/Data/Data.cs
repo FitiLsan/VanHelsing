@@ -11,6 +11,8 @@ namespace BeastHunter
         public static SphereData _sphereData;
         public static CharacterData _characterData;
         public static GiantMudCrabData _giantMudCrabData;
+        public static WeaponItem _feast;
+        public static ClothItem _jacket;
 
         #endregion
 
@@ -50,6 +52,30 @@ namespace BeastHunter
                     _giantMudCrabData = Resources.Load<GiantMudCrabData>("Data/GiantMudCrabData");
                 }
                 return _giantMudCrabData;
+            }
+        }
+
+        public static WeaponItem Feast
+        {
+            get
+            {
+                if (_feast == null)
+                {
+                    _feast = Resources.Load<WeaponItem>("Data/Weapons/FeastWeapon");
+                }
+                return _feast;
+            }
+        }
+
+        public static ClothItem Jacket
+        {
+            get
+            {
+                if (_jacket == null)
+                {
+                    _jacket = Resources.Load<ClothItem>("Data/Clothes/Jacket");
+                }
+                return _jacket;
             }
         }
 

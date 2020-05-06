@@ -16,7 +16,8 @@ namespace BeastHunter
         public BattleIdleState _battleIdleState;
         public BattleMovementState _battleMovementState;
         public BattleTargetMovementState _battleTargetMovementState;
-        public AttackingState _attackingState;
+        public AttackingFromLeftState _attackingLeftState;
+        public AttackingFromRightState _attackingRightState;
         public DodgingState _dodgingState;
         public StunnedState _stunnedState;
         public DeadState _deadState;
@@ -24,6 +25,8 @@ namespace BeastHunter
         public RollingTargetState _rollingTargetState;
         public TalkingState _talkingState;
         public DancingState _dancingState;
+        public GettingWeaponState _gettingWeaponState;
+        public RemovingWeaponState _removingWeaponState;
 
         #endregion
 
@@ -55,7 +58,8 @@ namespace BeastHunter
             _defaultMovementState = new DefaultMovementState(_characterModel, _inputModel, _animationController, this);
             _battleMovementState = new BattleMovementState(_characterModel, _inputModel, _animationController, this);
             _battleTargetMovementState = new BattleTargetMovementState(_characterModel, _inputModel, _animationController, this);
-            _attackingState = new AttackingState(_characterModel, _inputModel, _animationController, this);
+            _attackingLeftState = new AttackingFromLeftState(_characterModel, _inputModel, _animationController, this);
+            _attackingRightState = new AttackingFromRightState(_characterModel, _inputModel, _animationController, this);
             _jumpingState = new JumpingState(_characterModel, _inputModel, _animationController, this);
             _dodgingState = new DodgingState(_characterModel, _inputModel, _animationController, this);
             _fallingState = new FallingState(_characterModel, _inputModel, _animationController, this);
@@ -67,6 +71,8 @@ namespace BeastHunter
             _stunnedState = new StunnedState(_characterModel, _inputModel, _animationController, this);
             _talkingState = new TalkingState(_characterModel, _inputModel, _animationController, this);
             _deadState = new DeadState(_characterModel, _inputModel, _animationController, this);
+            _gettingWeaponState = new GettingWeaponState(_characterModel, _inputModel, _animationController, this);
+            _removingWeaponState = new RemovingWeaponState(_characterModel, _inputModel, _animationController, this);
         }
 
         #endregion

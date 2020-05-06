@@ -61,22 +61,21 @@ namespace BeastHunter
             _inputModel.OnJump += SetJumpingState;
             _inputModel.OnBattleExit += ExitBattle;
             _inputModel.OnTargetLock += ChangeTargetMode;
-            _inputModel.OnAttack += SetAttackingState;
+            _inputModel.OnAttackLeft += SetAttackingLeftState;
+            _inputModel.OnAttackRight += SetAttackingRightState;
             _inputModel.OnDance += ChangeDancingState;
 
-            _characterModel.PlayerBehaviour.OnFilterHandler += OnFilterHandler;
-            _characterModel.PlayerBehaviour.OnTriggerEnterHandler += OnTriggerEnterHandler;
-            _characterModel.PlayerBehaviour.OnTriggerExitHandler += OnTriggerExitHandler;
-            _characterModel.PlayerBehaviour.OnTakeDamageHandler += TakeDamage;
+            _characterModel.PlayerBehavior.OnFilterHandler += OnFilterHandler;
+            _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterHandler;
+            _characterModel.PlayerBehavior.OnTriggerExitHandler += OnTriggerExitHandler;
+            _characterModel.PlayerBehavior.OnTakeDamageHandler += TakeDamage;
 
             _stateMachine.OnStateChangeHandler += OnStateChange;
 
-            foreach (var hitBoxBehavior in _characterModel.PlayerHitBoxes)
-            {
-                hitBoxBehavior.OnFilterHandler += OnHitBoxFilter;
-                hitBoxBehavior.OnTriggerEnterHandler += OnHitBoxHit;
-                hitBoxBehavior.OnTriggerExitHandler += OnHitEnded;
-            }
+            SetRightWeapon(_services.InventoryService.GetWeapons()[0]);
+            //SetLeftWeapon(_services.InventoryService.Feast);
+            //SetRightWeapon(_services.InventoryService.Feast);
+            _services.InventoryService.HideWepons(_characterModel);
         }
 
         #endregion
@@ -93,6 +92,7 @@ namespace BeastHunter
                 MovementCheck();
                 SpeedCheck();
                 StateCheck();
+                GetClosestEnemy();
                 _stateMachine.CurrentState.Execute();
             }
 
@@ -106,24 +106,18 @@ namespace BeastHunter
 
         public void TearDown()
         {
-            _characterModel.PlayerBehaviour.OnFilterHandler -= OnFilterHandler;
-            _characterModel.PlayerBehaviour.OnTriggerEnterHandler -= OnTriggerEnterHandler;
-            _characterModel.PlayerBehaviour.OnTriggerExitHandler -= OnTriggerExitHandler;
-            _characterModel.PlayerBehaviour.OnTakeDamageHandler -= TakeDamage;
+            _characterModel.PlayerBehavior.OnFilterHandler -= OnFilterHandler;
+            _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterHandler;
+            _characterModel.PlayerBehavior.OnTriggerExitHandler -= OnTriggerExitHandler;
+            _characterModel.PlayerBehavior.OnTakeDamageHandler -= TakeDamage;
 
             _inputModel.OnJump -= SetJumpingState;
             _inputModel.OnBattleExit -= ExitBattle;
             _inputModel.OnTargetLock -= ChangeTargetMode;
-            _inputModel.OnAttack -= SetAttackingState;
+            _inputModel.OnAttackLeft -= SetAttackingLeftState;
+            _inputModel.OnAttackRight -= SetAttackingRightState;
             _inputModel.OnDance -= ChangeDancingState;
             _stateMachine.OnStateChangeHandler -= OnStateChange;
-
-            foreach (var hitBoxBehavior in _characterModel.PlayerHitBoxes)
-            {
-                hitBoxBehavior.OnFilterHandler -= OnHitBoxFilter;
-                hitBoxBehavior.OnTriggerEnterHandler -= OnHitBoxHit;
-                hitBoxBehavior.OnTriggerExitHandler -= OnHitEnded;
-            }
         }
 
         #endregion
@@ -131,7 +125,7 @@ namespace BeastHunter
 
         #region IDealDamage
 
-        public void DealDamage(InteractableObjectBehavior enemy, DamageStruct damage)
+        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
         {
             if(enemy.GetComponent<InteractableObjectBehavior>() != null)
             {
@@ -144,18 +138,19 @@ namespace BeastHunter
 
         #region ITakeDamage
 
-        private void TakeDamage(DamageStruct damage)
+        private void TakeDamage(Damage damage)
         {
             if (_stateMachine.CurrentState != _stateMachine._deadState)
             {
-                _currentHealth -= damage.damage;
+                _currentHealth -= damage.PhysicalDamage;
+                Debug.Log("player got " + damage.PhysicalDamage + " physical damage");
                 float stunProbability = Random.Range(0f, 1f);
 
                 if (_currentHealth <= 0)
                 {
                     _stateMachine.SetStateAnyway(_stateMachine._deadState);
                 }
-                else if (stunProbability > damage.stunProbability)
+                else if (damage.StunProbability > stunProbability)
                 {
                     _stateMachine.SetStateAnyway(_stateMachine._stunnedState);
                 }
@@ -233,6 +228,95 @@ namespace BeastHunter
             else
             {
                 _characterModel.IsInBattleMode = false;
+                _characterModel.ClosestEnemy = null;
+            }
+        }
+
+        private void GetClosestEnemy()
+        {
+            if(_characterModel.IsEnemyNear && _stateMachine.CurrentState != _stateMachine._battleTargetMovementState &&
+                _stateMachine.CurrentState != _stateMachine._rollingTargetState)
+            {
+                Collider enemy = null;
+
+                float minimalDistance = _characterModel.CharacterCommonSettings.SphereColliderRadius;
+                float countDistance = minimalDistance;
+
+                foreach (var collider in _characterModel.EnemiesInTrigger)
+                {
+                    countDistance = Mathf.Sqrt((_characterModel.CharacterTransform.position -
+                        collider.transform.position).sqrMagnitude);
+
+                    if (countDistance < minimalDistance)
+                    {
+                        minimalDistance = countDistance;
+                        enemy = collider;
+                    }
+                }
+
+                _characterModel.ClosestEnemy = enemy;
+            } 
+        }
+
+        private void SetLeftWeapon(WeaponItem newWeapon)
+        {
+            if(newWeapon.WeaponHandType == WeaponHandType.OneHanded)
+            {
+                if (_characterModel.LeftWeaponBehavior != null)
+                {
+                    _characterModel.LeftWeaponBehavior.OnFilterHandler -= OnHitBoxFilter;
+                    _characterModel.LeftWeaponBehavior.OnTriggerEnterHandler -= OnLeftHitBoxHit;
+                }
+
+                _services.InventoryService.SetWeaponInLeftHand(_characterModel, newWeapon, out WeaponHitBoxBehavior newBehaviour);
+                _characterModel.LeftWeaponBehavior = newBehaviour;
+
+                _characterModel.LeftWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
+                _characterModel.LeftWeaponBehavior.OnTriggerEnterHandler += OnLeftHitBoxHit;
+            }
+            else
+            {
+                // if two handed
+            }
+        }
+
+        private void SetRightWeapon(WeaponItem newWeapon)
+        {
+            if (newWeapon.WeaponHandType == WeaponHandType.OneHanded)
+            {
+                if (_characterModel.RightWeaponBehavior != null)
+                {
+                    _characterModel.RightWeaponBehavior.OnFilterHandler -= OnHitBoxFilter;
+                    _characterModel.RightWeaponBehavior.OnTriggerEnterHandler -= OnRightHitBoxHit;
+                }
+
+                _services.InventoryService.SetWeaponInRightHand(_characterModel, newWeapon, out WeaponHitBoxBehavior newBehaviour);
+                _characterModel.RightWeaponBehavior = newBehaviour;
+
+                _characterModel.RightWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
+                _characterModel.RightWeaponBehavior.OnTriggerEnterHandler += OnRightHitBoxHit;
+            }
+            else
+            {
+                if (_characterModel.RightWeaponBehavior != null)
+                {
+                    _characterModel.RightWeaponBehavior.OnFilterHandler -= OnHitBoxFilter;
+                    _characterModel.RightWeaponBehavior.OnTriggerEnterHandler -= OnRightHitBoxHit;
+                }
+                if (_characterModel.LeftWeaponBehavior != null)
+                {
+                    _characterModel.LeftWeaponBehavior.OnFilterHandler -= OnHitBoxFilter;
+                    _characterModel.LeftWeaponBehavior.OnTriggerEnterHandler -= OnLeftHitBoxHit;
+                }
+
+                _services.InventoryService.SetWeaponInRightHand(_characterModel, newWeapon, out WeaponHitBoxBehavior newBehaviour);
+                _characterModel.RightWeaponBehavior = newBehaviour;
+                _characterModel.LeftWeaponBehavior = newBehaviour;
+
+                _characterModel.RightWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
+                _characterModel.RightWeaponBehavior.OnTriggerEnterHandler += OnRightHitBoxHit;
+                _characterModel.LeftWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
+                _characterModel.LeftWeaponBehavior.OnTriggerEnterHandler += OnLeftHitBoxHit;
             }
         }
 
@@ -350,12 +434,23 @@ namespace BeastHunter
             }
         }
 
-        private void SetAttackingState()
+        private void SetAttackingLeftState()
         {
-            if (_stateMachine.CurrentState != _stateMachine._attackingState && _characterModel.IsGrounded)
+            if (_stateMachine.CurrentState != _stateMachine._attackingLeftState &&
+                _stateMachine.CurrentState != _stateMachine._attackingRightState && _characterModel.IsGrounded)
             {
                 _characterModel.IsInBattleMode = true;
-                _stateMachine.SetStateOverride(_stateMachine._attackingState);
+                _stateMachine.SetStateOverride(_stateMachine._attackingLeftState);
+            }
+        }
+
+        private void SetAttackingRightState()
+        {
+            if (_stateMachine.CurrentState != _stateMachine._attackingLeftState &&
+                _stateMachine.CurrentState != _stateMachine._attackingRightState && _characterModel.IsGrounded)
+            {
+                _characterModel.IsInBattleMode = true;
+                _stateMachine.SetStateOverride(_stateMachine._attackingRightState);
             }
         }
 
@@ -375,9 +470,37 @@ namespace BeastHunter
             _characterModel.IsInBattleMode = false;
         }
 
-        private void OnStateChange(CharacterBaseState previousState, CharacterBaseState newState)
+        private void OnStateChange(CharacterBaseState previousState, CharacterBaseState currentState)
         {
+            if(_characterModel.TargetMarkTransform.GetComponentInParent<Transform>().tag == 
+                _characterModel.CharacterCommonSettings.InstanceTag && currentState == _stateMachine._battleTargetMovementState)
+            {
+                _characterModel.TargetMark.transform.SetParent(_characterModel.ClosestEnemy.transform);
+                _characterModel.TargetMarkTransform.localPosition = Vector3.zero + Vector3.up * 
+                    _characterModel.CharacterCommonSettings.TargetMarkHeight;
+                _characterModel.TargetMark.SetActive(true);
+            }
+            else if ((previousState == _stateMachine._battleTargetMovementState || previousState == _stateMachine._rollingTargetState) &&
+                    currentState != _stateMachine._battleTargetMovementState && currentState != _stateMachine._rollingTargetState &&
+                        currentState != _stateMachine._attackingLeftState)
+            {
+                _characterModel.TargetMark.transform.SetParent(_characterModel.CharacterTransform);
+                _characterModel.TargetMarkTransform.localPosition = Vector3.zero;
+                _characterModel.TargetMark.SetActive(false);
+            }
 
+            if((currentState == _stateMachine._battleIdleState || currentState == _stateMachine._battleMovementState || currentState == 
+                _stateMachine._battleTargetMovementState || currentState == _stateMachine._attackingLeftState ||
+                    currentState == _stateMachine._attackingRightState) && !_characterModel.IsWeaponInHands)
+            {
+                _stateMachine.SetStateAnyway(_stateMachine._gettingWeaponState);
+            }
+
+            if((currentState == _stateMachine._defaultIdleState || currentState == _stateMachine._defaultMovementState) &&
+                _characterModel.IsWeaponInHands)
+            {
+                _stateMachine.SetStateAnyway(_stateMachine._removingWeaponState);
+            }
         }
 
         #endregion
@@ -413,8 +536,9 @@ namespace BeastHunter
         private bool OnHitBoxFilter(Collider hitedObject)
         {
             bool isEnemyColliderHit = hitedObject.CompareTag(TagManager.ENEMY);
-
-            if (hitedObject.isTrigger || _stateMachine.CurrentState != _stateMachine._attackingState)
+            
+            if (hitedObject.isTrigger || (_stateMachine.CurrentState != _stateMachine._attackingLeftState && 
+                _stateMachine.CurrentState != _stateMachine._attackingRightState))
             {
                 isEnemyColliderHit = false;
             }
@@ -422,19 +546,28 @@ namespace BeastHunter
             return isEnemyColliderHit;
         }
 
-        private void OnHitBoxHit(ITrigger hitBox, Collider enemy)
+        private void OnLeftHitBoxHit(ITrigger hitBox, Collider enemy)
         {
             if (enemy.transform.GetComponent<InteractableObjectBehavior>() != null && hitBox.IsInteractable)
             {
-                DealDamage(enemy.transform.GetComponent<InteractableObjectBehavior>(), 
-                    _characterModel.CharacterCommonSettings.CharacterDamage);
+                InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
+
+                DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.LeftHandWeapon, 
+                    _characterModel.CharacterStatsSettings, enemyBehavior.Stats));
                 hitBox.IsInteractable = false;
             }
         }
 
-        private void OnHitEnded(ITrigger hitBox, Collider enemy)
+        private void OnRightHitBoxHit(ITrigger hitBox, Collider enemy)
         {
+            if (enemy.transform.GetComponent<InteractableObjectBehavior>() != null && hitBox.IsInteractable)
+            {
+                InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
+                DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.RightHandWeapon,
+                    _characterModel.CharacterStatsSettings, enemyBehavior.Stats));
+                hitBox.IsInteractable = false;
+            }
         }
 
         #endregion

@@ -3,15 +3,8 @@
 
 namespace BeastHunter
 {
-    public class AttackingState : CharacterBaseState
+    public class AttackingFromLeftState : CharacterBaseState
     {
-        #region Constants
-
-        private readonly float[] ATTACKS_TIME = new float[3] { 0.9f, 0.8f, 0.9f };
-
-        #endregion
-
-
         #region Fields
 
         private float _currentAttackTime;
@@ -22,12 +15,12 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public AttackingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
+        public AttackingFromLeftState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
             CanExit = false;
             CanBeOverriden = false;
-            _currentAttackIndex = ATTACKS_TIME.Length-1;
+            _currentAttackIndex = 0;
         }
 
         #endregion
@@ -37,10 +30,11 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            SetNextAttack();
-            _currentAttackTime = ATTACKS_TIME[_currentAttackIndex];
-            _characterModel.PlayerHitBoxes[_currentAttackIndex].IsInteractable = true;
-            _animationController.PlayAttackAnimation(_currentAttackIndex);
+            _currentAttackIndex = Random.Range(0, _characterModel.LeftHandWeapon.AttacksLeft.Length);
+            _characterModel.LeftHandWeapon.CurrentAttack = _characterModel.LeftHandWeapon.AttacksLeft[_currentAttackIndex];
+            _currentAttackTime = _characterModel.LeftHandWeapon.CurrentAttack.Time;
+            _animationController.PlayAttackAnimation(_characterModel.LeftHandWeapon.SimpleAttackFromLeftkAnimationHash, _currentAttackIndex);
+            _characterModel.LeftWeaponBehavior.IsInteractable = true;
             CanExit = false;
         }
 
@@ -52,10 +46,7 @@ namespace BeastHunter
 
         public override void OnExit()
         {
-            foreach (var hitBox in _characterModel.PlayerHitBoxes)
-            {
-                hitBox.IsInteractable = false;
-            }
+            _characterModel.LeftWeaponBehavior.IsInteractable = false;
         }
 
         private void ExitCheck()
@@ -72,18 +63,6 @@ namespace BeastHunter
                 {
                     _stateMachine.ReturnState();
                 }
-            }
-        }
-
-        private void SetNextAttack()
-        {
-            if(_currentAttackIndex == ATTACKS_TIME.Length - 1)
-            {
-                _currentAttackIndex = 0;
-            }
-            else
-            {
-                _currentAttackIndex++;
             }
         }
 

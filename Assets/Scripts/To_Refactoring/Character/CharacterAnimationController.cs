@@ -12,13 +12,16 @@ namespace BeastHunter
         private int _jumpHash;
         private int _fallHash;
         private int _battleIdleHash;
+        private int _battleIdleTwoHandedSliceHash;
         private int _battleMovementHash;
+        private int _battleMovementTwoHandedSliceHash;
         private int _battleTargetMovementHash;
+        private int _battleTargetMovementTwoHandedSliceHash;
         private int _rollHash;
+        private int _rollTwoHandedSliceHash;
         private int _rollForwardHash;
         private int _dancingHash;
         private int _stunnedHash;
-        private int _attackHash;
         private int _deadHash;
 
         #endregion
@@ -52,11 +55,14 @@ namespace BeastHunter
             _dancingHash = Animator.StringToHash("Dancing");
             _fallHash = Animator.StringToHash("Fall");
             _rollHash = Animator.StringToHash("Roll");
+            _rollTwoHandedSliceHash = Animator.StringToHash("RollTwoHandedSlice");
             _rollForwardHash = Animator.StringToHash("RollForward");
             _battleIdleHash = Animator.StringToHash("BattleIdle");
+            _battleIdleTwoHandedSliceHash = Animator.StringToHash("BattleIdleTwoHandedSlice");
             _battleMovementHash = Animator.StringToHash("BattleMovement");
+            _battleMovementTwoHandedSliceHash = Animator.StringToHash("BattleMovementTwoHandedSlice");
             _battleTargetMovementHash = Animator.StringToHash("BattleTargetMovement");
-            _attackHash = Animator.StringToHash("Attack");
+            _battleTargetMovementTwoHandedSliceHash = Animator.StringToHash("BattleTargetMovementTwoHandedSlice");
             _stunnedHash = Animator.StringToHash("Stunned");
             _deadHash = Animator.StringToHash("Dead");
         }
@@ -82,19 +88,43 @@ namespace BeastHunter
             CharacterAnimator.Play(_defaultMovementHash);
         }
 
-        public void PlayBattleIdleAnimation()
+        public void PlayBattleIdleAnimation(WeaponItem leftWeapon, WeaponItem rightWeapon)
         {
-            CharacterAnimator.Play(_battleIdleHash);
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! to refactor
+            if (leftWeapon.WeaponHandType == WeaponHandType.TwoHanded && leftWeapon.WeaponType == WeaponType.MeleeCutting)
+            {
+                CharacterAnimator.Play(_battleIdleTwoHandedSliceHash);
+            }
+            else
+            {
+                CharacterAnimator.Play(_battleIdleHash);
+            }
         }
 
-        public void PlayBattleMovementAnimation()
+        public void PlayBattleMovementAnimation(WeaponItem leftWeapon, WeaponItem rightWeapon)
         {
-            CharacterAnimator.Play(_battleMovementHash);
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! to refactor
+            if (leftWeapon.WeaponHandType == WeaponHandType.TwoHanded && leftWeapon.WeaponType == WeaponType.MeleeCutting)
+            {
+                CharacterAnimator.Play(_battleMovementTwoHandedSliceHash);
+            }
+            else
+            {
+                CharacterAnimator.Play(_battleMovementHash);
+            }
         }
 
-        public void PlayBattleTargetMovementAnimation()
+        public void PlayBattleTargetMovementAnimation(WeaponItem leftWeapon, WeaponItem rightWeapon)
         {
-            CharacterAnimator.Play(_battleTargetMovementHash);
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! to refactor
+            if (leftWeapon.WeaponHandType == WeaponHandType.TwoHanded && leftWeapon.WeaponType == WeaponType.MeleeCutting)
+            {
+                CharacterAnimator.Play(_battleTargetMovementTwoHandedSliceHash);
+            }
+            else
+            {
+                CharacterAnimator.Play(_battleTargetMovementHash);
+            }
         }
 
         public void PlayJumpAnimation()
@@ -102,11 +132,20 @@ namespace BeastHunter
             CharacterAnimator.Play(_jumpHash);
         }
 
-        public void PlayRollAnimation(float rollingX, float rollingY)
-        {
+        public void PlayRollAnimation(float rollingX, float rollingY, WeaponItem leftWeapon, WeaponItem rightWeapon)
+        {   
             CharacterAnimator.SetFloat("RollingX", rollingX);
             CharacterAnimator.SetFloat("RollingY", rollingY);
-            CharacterAnimator.Play(_rollHash);
+
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! to refactor
+            if (leftWeapon.WeaponHandType == WeaponHandType.TwoHanded && leftWeapon.WeaponType == WeaponType.MeleeCutting)
+            {
+                CharacterAnimator.Play(_rollTwoHandedSliceHash);
+            }
+            else
+            {
+                CharacterAnimator.Play(_rollHash);
+            }
         }
 
         public void PlayRollForwardAnimation()
@@ -119,10 +158,10 @@ namespace BeastHunter
             CharacterAnimator.Play(_dancingHash);
         }
 
-        public void PlayAttackAnimation(float attackForce)
+        public void PlayAttackAnimation(int attackHash, float attackNumber)
         {
-            CharacterAnimator.SetFloat("AttackForce", attackForce);
-            CharacterAnimator.Play(_attackHash);
+            CharacterAnimator.SetFloat("AttackNumber", attackNumber);
+            CharacterAnimator.Play(attackHash);
         }
 
         public void PlayStunnedAnimation()
@@ -138,6 +177,16 @@ namespace BeastHunter
         public void PlayFallAnimation()
         {
             CharacterAnimator.Play(_fallHash);
+        }
+
+        public void PlayGettingWeaponAnimation(int gettingHash)
+        {
+            CharacterAnimator.Play(gettingHash);
+        }
+
+        public void PlayRemovingWeaponAnimation(int removingHash)
+        {
+            CharacterAnimator.Play(removingHash);
         }
 
         #endregion

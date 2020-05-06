@@ -11,7 +11,6 @@ namespace BeastHunter
 
         public SphereModel SphereModel;
         public CharacterModel CharacterModel;
-
         public InputModel InputModel;
         public GiantMudCrabModel GiantMudCrabModel;
 

@@ -42,7 +42,8 @@ namespace BeastHunter
             _inputStruct._isInputDodge = false;
             _inputStruct._isInputBattleExit = false;
             _inputStruct._isInputTargetLock = false;
-            _inputStruct._isInputAttack = false;
+            _inputStruct._isInputAttackLeft = false;
+            _inputStruct._isInputAttackRight = false;
             _inputStruct._isInputDance = false;
         }
 
@@ -71,7 +72,8 @@ namespace BeastHunter
             _inputStruct._isInputBattleExit = Input.GetButtonDown("Battle Exit");
             _inputStruct._isInputDodge = Input.GetButtonDown("Dodge");
             _inputStruct._isInputTargetLock = Input.GetButtonDown("Target lock");
-            _inputStruct._isInputAttack = Input.GetButtonDown("Fire");
+            _inputStruct._isInputAttackLeft = Input.GetButtonDown("AttackLeft");
+            _inputStruct._isInputAttackRight = Input.GetButtonDown("AttackRight");
             _inputStruct._isInputDance = Input.GetButtonDown("Use");
 
             CheckAxisTotal();
@@ -102,11 +104,19 @@ namespace BeastHunter
                 }
             }
 
-            if (_inputStruct._isInputAttack)
+            if (_inputStruct._isInputAttackLeft)
             {
-                if (_inputModel.OnAttack != null)
+                if (_inputModel.OnAttackLeft != null)
                 {
-                    _inputModel.OnAttack.Invoke();
+                    _inputModel.OnAttackLeft.Invoke();
+                }
+            }
+
+            if (_inputStruct._isInputAttackRight)
+            {
+                if (_inputModel.OnAttackRight != null)
+                {
+                    _inputModel.OnAttackRight.Invoke();
                 }
             }
 
