@@ -7,7 +7,8 @@ namespace BeastHunter
     {
         #region Fields
 
-        public DamageStruct Damage;
+        public Damage Damage;
+        public BaseStatsClass Stats;
 
         #endregion
 
@@ -34,10 +35,10 @@ namespace BeastHunter
 
         #region Methods
 
-        public void DealDamage(InteractableObjectBehavior enemy, DamageStruct damage)
+        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
         {
-            enemy.GetComponent<PlayerBehavior>().OnTakeDamageHandler(damage);
-            Debug.Log("Dealed " + damage.damage + " damage to player!");
+            InteractableObjectBehavior enemyBehavior = enemy.GetComponent<PlayerBehavior>();
+            enemyBehavior.OnTakeDamageHandler(Services.SharedInstance.AttackService.CountDamage(damage, Stats, enemyBehavior.Stats));
         }
 
         #endregion

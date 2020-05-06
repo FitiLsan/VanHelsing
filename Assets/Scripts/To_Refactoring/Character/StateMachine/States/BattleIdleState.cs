@@ -28,7 +28,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            _animationController.PlayBattleIdleAnimation();
+            _animationController.PlayBattleIdleAnimation(_characterModel.LeftHandWeapon, _characterModel.RightHandWeapon);
         }
 
         public override void Execute()

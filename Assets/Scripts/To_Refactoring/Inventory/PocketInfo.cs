@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
 
 
 namespace BeastHunter
 {
+    [Serializable]
     public struct PocketInfo
     {
         public SlotSize SlotEnum;

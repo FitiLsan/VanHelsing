@@ -2,6 +2,6 @@
 {
     public interface ITakeDamage
     {
-        void TakeDamage(DamageStruct damage);
+        void TakeDamage(Damage damage);
     }
 }

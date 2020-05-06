@@ -16,13 +16,13 @@ namespace BeastHunter
         #region Properties
 
         public Predicate<Collider> OnFilterHandler { get; set; }
-        public Action<DamageStruct> OnTakeDamageHandler { get; set; }
+        public Action<Damage> OnTakeDamageHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerEnterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerExitHandler { get; set; }
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
         public GameObject GameObject => gameObject;
         public InteractableObjectType Type { get => _type; }
-
+        public BaseStatsClass Stats { get; set; }
         public bool IsInteractable { get; set; }
 
         #endregion
@@ -54,7 +54,7 @@ namespace BeastHunter
             }
         }
 
-        public void TakeDamage(DamageStruct damage)
+        public void TakeDamage(Damage damage)
         {
             if (OnTakeDamageHandler != null)
             {

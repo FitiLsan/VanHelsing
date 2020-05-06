@@ -2,14 +2,14 @@
 
 
 namespace BeastHunter
-{
+{   
     [Serializable]
-    public class DamageStruct
+    public struct AttackModel
     {
         #region Fields
 
-        public float damage;
-        public float stunProbability;
+        public float Time;
+        public Damage AttackDamage;
 
         #endregion
     }

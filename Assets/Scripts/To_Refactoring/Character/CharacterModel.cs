@@ -14,19 +14,40 @@ namespace BeastHunter
         public CinemachineFreeLook CharacterFreelookCamera { get; }
         public CinemachineVirtualCamera CharacterTargetCamera { get; }
         public CinemachineBrain CameraCinemachineBrain { get; }
+
         public GameObject CameraTarget { get; }
+        public GameObject TargetMark { get; }
+        public GameObject LeftHandWeaponObject { get; set; }
+        public GameObject RightHandWeaponObject { get; set; }
+
+        public Transform LeftHand { get; }
+        public Transform RightHand { get; }
+        public Transform LeftFoot { get; }
+        public Transform RightFoot { get; }
         public Transform CameraTargetTransform { get; }
+        public Transform TargetMarkTransform { get; }
+        public Transform CharacterTransform { get; }
+
+        public WeaponHitBoxBehavior LeftFootBehavior { get; }
+        public WeaponHitBoxBehavior RightFootBehavior { get; }
+        public WeaponHitBoxBehavior LeftWeaponBehavior { get; set; }
+        public WeaponHitBoxBehavior RightWeaponBehavior { get; set; } 
+
+        public Vector3 TargetMarkBasePosition { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
         public SphereCollider CharacterSphereCollider { get; }
-        public Transform CharacterTransform { get; }
         public Rigidbody CharacterRigitbody { get; }
-        public PlayerBehavior PlayerBehaviour { get; }
+        public PlayerBehavior PlayerBehavior { get; }
         public CharacterData CharacterData { get; }
         public CharacterCommonSettingsStruct CharacterCommonSettings { get; }
         public CharacterCameraStruct CharacterCameraSettings { get; }
+        public BaseStatsClass CharacterStatsSettings { get; }
+
         public Animator CharacterAnimator { get; set; }
-        public PlayerHitBoxBehavior[] PlayerHitBoxes { get; set; }
         public List<Collider> EnemiesInTrigger { get; set; }
+        public Collider ClosestEnemy { get; set; }
+        public WeaponItem LeftHandWeapon { get; set; }
+        public WeaponItem RightHandWeapon { get; set; }
 
         public float CurrentSpeed { get; set; }
         public float VerticalSpeed { get; set; }
@@ -35,6 +56,7 @@ namespace BeastHunter
         public bool IsGrounded { get; set; }
         public bool IsInBattleMode { get; set; }
         public bool IsEnemyNear { get; set; }
+        public bool IsWeaponInHands { get; set; }
 
         #endregion
 
@@ -46,10 +68,19 @@ namespace BeastHunter
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData._characterCommonSettings;
             CharacterCameraSettings = CharacterData._characterCameraSettings;
+            CharacterStatsSettings = CharacterData._characterStatsSettings;
             CharacterTransform = prefab.transform;
             CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
             CharacterTransform.name = CharacterCommonSettings.InstanceName;
             CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
+            CharacterTransform.gameObject.layer = CharacterCommonSettings.InstanceLayer;
+
+            Transform[] children = CharacterTransform.GetComponentsInChildren<Transform>();
+
+            foreach (var child in children)
+            {
+                child.gameObject.layer = CharacterCommonSettings.InstanceLayer;
+            }
 
             if (prefab.GetComponent<Rigidbody>() != null)
             {
@@ -95,6 +126,13 @@ namespace BeastHunter
 
             CameraTarget = CharacterCameraSettings.CreateCameraTarget(CharacterTransform);
             CameraTargetTransform = CameraTarget.transform;
+
+            TargetMarkBasePosition = new Vector3(CharacterTransform.localPosition.x,
+                CharacterTransform.localPosition.y + CharacterCapsuleCollider.height +
+                    CharacterCommonSettings.TargetMarkHeight, CharacterTransform.localPosition.z);
+
+            TargetMark = CharacterCommonSettings.CreateTargetMark(CharacterTransform, TargetMarkBasePosition);
+            TargetMarkTransform = TargetMark.transform;
             CharacterCamera = CharacterCameraSettings.CreateCharacterCamera();
             CameraCinemachineBrain = CharacterCamera.GetComponent<CinemachineBrain>() ?? null;
             CharacterCamera.transform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
@@ -115,61 +153,51 @@ namespace BeastHunter
 
             if (prefab.GetComponent<PlayerBehavior>() != null)
             {
-                PlayerBehaviour = prefab.GetComponent<PlayerBehavior>();
+                PlayerBehavior = prefab.GetComponent<PlayerBehavior>();
             }
             else
             {
-                PlayerBehaviour = prefab.AddComponent<PlayerBehavior>();
+                PlayerBehavior = prefab.AddComponent<PlayerBehavior>();
             }
 
-            PlayerBehaviour.SetType(InteractableObjectType.Player);
+            PlayerBehavior.SetType(InteractableObjectType.Player);
+            PlayerBehavior.Stats = CharacterStatsSettings;
 
             EnemiesInTrigger = new List<Collider>();
+            ClosestEnemy = null;
             IsMoving = false;
             IsGrounded = false;
             IsEnemyNear = false;
             IsInBattleMode = false;
+            IsWeaponInHands = false;
             CurrentSpeed = 0;
             AnimationSpeed = CharacterData._characterCommonSettings.AnimatorBaseSpeed;
 
-            PlayerHitBoxes = new PlayerHitBoxBehavior[3];
+            LeftHand = CharacterTransform.Find(CharacterCommonSettings.LeftHandObjectPath);
+            RightHand = CharacterTransform.Find(CharacterCommonSettings.RightHandObjectPath);
+            LeftFoot = CharacterTransform.Find(CharacterCommonSettings.LeftFootObjectPath);
+            RightFoot = CharacterTransform.Find(CharacterCommonSettings.RightFootObjectPath);
 
-            string[] hitBoxesPaths = new string[3]
-            {
-                CharacterCommonSettings.FirstHitBoxObjectPath,
-                CharacterCommonSettings.SecondHitBoxObjectPath,
-                CharacterCommonSettings.ThirdHitBoxObjectPath
-            };
+            //SphereCollider LeftFootTrigger = LeftFoot.gameObject.AddComponent<SphereCollider>();
+            //LeftFootTrigger.radius = CharacterCommonSettings.LeftFootHitBoxRadius;
+            //LeftFootTrigger.isTrigger = true;
+            //LeftFoot.gameObject.AddComponent<Rigidbody>().isKinematic = true;
+            //LeftFootBehavior = LeftFoot.gameObject.AddComponent<WeaponHitBoxBehavior>();
+            //LeftFootBehavior.SetType(InteractableObjectType.HitBox);
+            //LeftFootBehavior.IsInteractable = false;
 
-            float[] hitBoxesRadiuses = new float[3]
-{
-                CharacterCommonSettings.FirstHitBoxRadius,
-                CharacterCommonSettings.SecondHitBoxRadius,
-                CharacterCommonSettings.ThirdHitBoxRadius
-            };
+            //SphereCollider RightFootTrigger = RightFoot.gameObject.AddComponent<SphereCollider>();
+            //RightFootTrigger.radius = CharacterCommonSettings.RightFootHitBoxRadius;
+            //RightFootTrigger.isTrigger = true;
+            //RightFoot.gameObject.AddComponent<Rigidbody>().isKinematic = true;
+            //RightFootBehavior = RightFoot.gameObject.AddComponent<WeaponHitBoxBehavior>();
+            //RightFootBehavior.SetType(InteractableObjectType.HitBox);
+            //RightFootBehavior.IsInteractable = false;
 
-            for (int hitBox = 0; hitBox < PlayerHitBoxes.Length; hitBox++)
-            {
-                Transform hitBoxTransform = CharacterTransform.Find(hitBoxesPaths[hitBox]);
-
-                if (hitBoxTransform != null && hitBoxTransform.GetComponent<Collider>() == null)
-                {
-                    SphereCollider trigger = hitBoxTransform.gameObject.AddComponent<SphereCollider>();
-                    trigger.radius = hitBoxesRadiuses[hitBox];
-                    trigger.isTrigger = true;
-                }
-                else if (hitBoxTransform.GetComponent<SphereCollider>() != null)
-                {
-                    SphereCollider trigger = hitBoxTransform.GetComponent<SphereCollider>();
-                    trigger.radius = hitBoxesRadiuses[hitBox];
-                    trigger.isTrigger = true;
-                }
-
-                PlayerHitBoxes[hitBox] = hitBoxTransform.gameObject.AddComponent<PlayerHitBoxBehavior>();
-                PlayerHitBoxes[hitBox].SetType(InteractableObjectType.HitBox);
-                PlayerHitBoxes[hitBox].IsInteractable = false;
-                hitBoxTransform.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            }
+            LeftHandWeapon = null;
+            RightHandWeapon = null;
+            LeftHandWeaponObject = null;
+            RightHandWeaponObject = null;
 
 #if (UNITY_EDITOR)
             EditorApplication.playModeStateChanged += SaveCameraSettings;

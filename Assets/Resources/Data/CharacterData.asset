@@ -16,6 +16,7 @@ MonoBehaviour:
     _prefab: {fileID: 1549762263890820, guid: d333e574c78741a478cde0da944a5e59, type: 3}
     _instanceName: Player
     _instanceTag: Player
+    _instanceLayer: 8
     _characterAnimator: {fileID: 9100000, guid: 71768c8e0d54fb34396989829cda6ca1,
       type: 2}
     _instantiatePosition: {x: 489, y: 20, z: 480}
@@ -45,16 +46,17 @@ MonoBehaviour:
     _inBattleDecelerationLag: 0.022
     _directionChangeLag: 0.073
     _animatorBaseSpeed: 1
+    _targetPrefab: {fileID: 2890280644428487904, guid: 3a80d21ca1e78194c8abdb87e28d79a0,
+      type: 3}
+    _targetMarkHeight: 1
+    _targetMarkName: TargetMark
     _battleIgnoreTime: 20.3
-    _firstHitBoxObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L
-    _firstHitBoxRadius: 33.3
-    _secondHitBoxObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R
-    _secondHitBoxRadius: 33.8
-    _thirdHitBoxObjectPath: Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L
-    _thirdHitBoxRadius: 35.8
-    _damageStruct:
-      damage: 5
-      stunProbability: 0
+    _leftHandObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L
+    _rightHandObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R
+    _leftFootObjectPath: Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L
+    _leftFootHitBoxRadius: 10
+    _rightFootObjectPath: Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R
+    _rightFootHitBoxRadius: 10
     _rollTime: 0.5
     _rollFrameDistance: 5.55
     _rollAnimationSpeed: 1
@@ -100,9 +102,9 @@ MonoBehaviour:
     _freeLookTopRigScreenX: 0.5
     _freeLookTopRigScreenY: 0.5
     _freeLookTopRigDeadZoneWidth: 0
-    _freeLookTopRigDeadZoneHeight: 0
+    _freeLookTopRigDeadZoneHeight: 0.2
     _freeLookTopRigSoftZoneWidth: 0
-    _freeLookTopRigSoftZoneHeight: 0
+    _freeLookTopRigSoftZoneHeight: 0.2
     _freeLookTopRigBiasX: 0
     _freeLookTopRigBiasY: 0
     _freeLookMiddleRigBodyDampingY: 1
@@ -117,9 +119,9 @@ MonoBehaviour:
     _freeLookMiddleRigScreenX: 0.5
     _freeLookMiddleRigScreenY: 0.5
     _freeLookMiddleRigDeadZoneWidth: 0
-    _freeLookMiddleRigDeadZoneHeight: 0
+    _freeLookMiddleRigDeadZoneHeight: 0.2
     _freeLookMiddleRigSoftZoneWidth: 0
-    _freeLookMiddleRigSoftZoneHeight: 0
+    _freeLookMiddleRigSoftZoneHeight: 0.2
     _freeLookMiddleRigBiasX: 0
     _freeLookMiddleRigBiasY: 0
     _freeLookBottomRigBodyDampingY: 1
@@ -134,9 +136,9 @@ MonoBehaviour:
     _freeLookBottomRigScreenX: 0.5
     _freeLookBottomRigScreenY: 0.5
     _freeLookBottomRigDeadZoneWidth: 0
-    _freeLookBottomRigDeadZoneHeight: 0
+    _freeLookBottomRigDeadZoneHeight: 0.2
     _freeLookBottomRigSoftZoneWidth: 0
-    _freeLookBottomRigSoftZoneHeight: 0
+    _freeLookBottomRigSoftZoneHeight: 0.2
     _freeLookBottomRigBiasX: 0
     _freeLookBottomRigBiasY: 0
     _colliderMinDistanceFromTarget: 0.1
@@ -173,3 +175,7 @@ MonoBehaviour:
     _targetCameraSoftZoneHeight: 0.055
     _targetCameraBiasX: 0
     _targetCameraBiasY: 0
+  _characterStatsSettings:
+    _physicalPower: 2
+    _physicalDamageResistance: 0.25
+    _stunProbabilityResistance: 0.075

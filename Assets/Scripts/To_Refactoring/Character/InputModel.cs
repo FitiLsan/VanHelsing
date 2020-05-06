@@ -16,7 +16,8 @@ namespace BeastHunter
 
         public Action OnJump { get; set; }
         public Action OnDodge { get; set; }
-        public Action OnAttack { get; set; }
+        public Action OnAttackLeft { get; set; }
+        public Action OnAttackRight { get; set; }
         public Action OnTargetLock { get; set; }
         public Action OnBattleExit { get; set; }
         public Action OnDance { get; set; }

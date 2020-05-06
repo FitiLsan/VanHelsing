@@ -20,7 +20,6 @@ namespace BeastHunter
         #region Fields
 
         private Vector3 MoveDirection;
-        private Collider ClosestEnemy;
         private float _angleSpeedIncrease;
         private float _currentHorizontalInput;
         private float _currentVerticalInput;
@@ -73,7 +72,6 @@ namespace BeastHunter
         public override void Execute()
         {
             ExitCheck();
-            GetClosestEnemy();
             Roll();
             StayInBattle();
         }
@@ -104,9 +102,9 @@ namespace BeastHunter
         {
             if (RollTime > 0)
             {
-                if (ClosestEnemy != null)
+                if (_characterModel.ClosestEnemy != null)
                 {
-                    Vector3 lookPos = ClosestEnemy.transform.position - _characterModel.CharacterTransform.position;
+                    Vector3 lookPos = _characterModel.ClosestEnemy.transform.position - _characterModel.CharacterTransform.position;
                     lookPos.y = 0;
                     Quaternion rotation = Quaternion.LookRotation(lookPos);
                     _characterModel.CharacterTransform.rotation = rotation;
@@ -117,28 +115,6 @@ namespace BeastHunter
             }
         }
 
-        private void GetClosestEnemy()
-        {
-            Collider enemy = null;
-
-            float minimalDistance = _characterModel.CharacterCommonSettings.SphereColliderRadius;
-            float countDistance = minimalDistance;
-
-            foreach (var collider in _characterModel.EnemiesInTrigger)
-            {
-                countDistance = Mathf.Sqrt((_characterModel.CharacterTransform.position -
-                    collider.transform.position).sqrMagnitude);
-
-                if (countDistance < minimalDistance)
-                {
-                    minimalDistance = countDistance;
-                    enemy = collider;
-                }
-            }
-
-            ClosestEnemy = enemy;
-        }
-
         private void PrepareRoll(float rollingX, float rollingY)
         {
             _angleSpeedIncrease = rollingX != 0 && rollingY != 0 ? ANGLE_SPEED_INCREASE : 1;
@@ -146,7 +122,7 @@ namespace BeastHunter
             MoveDirection = (Vector3.forward * rollingY + Vector3.right * rollingX) / (Mathf.Abs(rollingY) + 
                 Mathf.Abs(rollingX)) * _angleSpeedIncrease;
 
-            _animationController.PlayRollAnimation(rollingX, rollingY);
+            _animationController.PlayRollAnimation(rollingX, rollingY, _characterModel.LeftHandWeapon, _characterModel.RightHandWeapon);
         }
 
         private void StayInBattle()

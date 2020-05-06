@@ -7,7 +7,7 @@ namespace BeastHunter
     {
         #region Fields
 
-        public DamageStruct Damage;
+        public Damage Damage;
         public GameObject Mud;
         public Rigidbody RB;
 
@@ -16,10 +16,11 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public GiantMudCrabProjectile(DamageStruct damage, Transform player, Transform CrabMouth, GameObject Prefab)
+        public GiantMudCrabProjectile(Damage damage, BaseStatsClass stats, Transform player, Transform CrabMouth, GameObject Prefab)
         {
             Damage = damage;
             Prefab.GetComponent<CrabPtojectileBehaviour>().Damage = Damage;
+            Prefab.GetComponent<CrabPtojectileBehaviour>().Stats = stats;
             Mud = GameObject.Instantiate(Prefab, CrabMouth.position, Quaternion.identity);
             RB = Mud.GetComponent<Rigidbody>();
             Vector3 forceVector = player.position - Mud.transform.position;

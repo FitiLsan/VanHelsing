@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GiantMudCrabStruct:
     AttackDamage:
-      damage: 10
-      stunProbability: 0.5
-    MoveSpeed: 5
+      PhysicalDamage: 2.01
+      StunProbability: 0.494
+    Stats:
+      _physicalPower: 3
+      _physicalDamageResistance: 0.35
+      _stunProbabilityResistance: 0.1
+    MoveSpeed: 2
     AttackSpeed: 3
     AttackRange: 5
     MaxHealth: 30
@@ -34,4 +38,4 @@ MonoBehaviour:
     IsDigIn: 0
     IsPatrol: 0
     IsDead: 0
-  NextAttackRate: 21.627481
+  NextAttackRate: 9.535521

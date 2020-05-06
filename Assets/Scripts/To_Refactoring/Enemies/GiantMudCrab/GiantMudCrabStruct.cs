@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+
 namespace BeastHunter
 {
     [Serializable]
@@ -8,7 +9,9 @@ namespace BeastHunter
     {
         #region Fields
 
-        public DamageStruct AttackDamage;
+        public Damage AttackDamage;
+
+        public BaseStatsClass Stats;
 
         public float MoveSpeed;
 

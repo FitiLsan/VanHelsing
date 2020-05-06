@@ -14,7 +14,8 @@
         public bool _isInputDodge;
         public bool _isInputBattleExit;
         public bool _isInputTargetLock;
-        public bool _isInputAttack;
+        public bool _isInputAttackLeft;
+        public bool _isInputAttackRight;
         public bool _isInputDance;
 
         #endregion

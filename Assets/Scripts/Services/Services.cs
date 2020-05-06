@@ -7,6 +7,8 @@
         #region Properties
 
         public PhysicsService PhysicsService { get; private set; }
+        public InventoryService InventoryService { get; private set; }
+        public AttackService AttackService { get; private set; }
 
         #endregion
 
@@ -16,6 +18,8 @@
         public void Initialize(Contexts contexts)
         {
             PhysicsService = new PhysicsService(contexts);
+            InventoryService = new InventoryService(contexts);
+            AttackService = new AttackService(contexts);
         }
 
         #endregion
