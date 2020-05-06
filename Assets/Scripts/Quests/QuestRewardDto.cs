@@ -1,13 +1,14 @@
-namespace Quests
+namespace BeastHunter
 {
-    /// <summary>
-    ///     Этот класс используется ТОЛЬКО для передачи данных
-    /// </summary>
-    public class QuestRewardDto
+    public sealed class QuestRewardDto
     {
+        #region Properties
+
         public QuestRewardTypes Type { get; set; }
         public QuestRewardObjectTypes ObjectType { get; set; }
         public int ObjectId { get; set; }
         public int ObjectCount { get; set; }
+
+        #endregion
     }
 }

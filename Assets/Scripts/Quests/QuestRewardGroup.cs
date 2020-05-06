@@ -1,12 +1,23 @@
 using System.Collections.Generic;
 
-namespace Quests
+
+namespace BeastHunter
 {
-    /// <summary>
-    ///     Группа наград
-    /// </summary>
-    public class QuestRewardGroup
+    public sealed class QuestRewardGroup
     {
+        #region Properties
+
+        public QuestRewardTypes Type { get; }
+
+        public QuestRewardObjectTypes ObjectType { get; }
+
+        public List<QuestReward> Rewards { get; }
+
+        #endregion
+
+
+        #region ClassLifeCycle
+
         public QuestRewardGroup(QuestRewardTypes rt, QuestRewardObjectTypes ot)
         {
             Type = rt;
@@ -14,28 +25,16 @@ namespace Quests
             Rewards = new List<QuestReward>();
         }
 
-        /// <summary>
-        ///     Тип награды (на выбор, фиксированная)
-        /// </summary>
-        public QuestRewardTypes Type { get; }
+        #endregion
 
-        /// <summary>
-        ///     Что даем в награду (предметы, заклинания, баффы)
-        /// </summary>
-        public QuestRewardObjectTypes ObjectType { get; }
 
-        /// <summary>
-        ///     Список наград
-        /// </summary>
-        public List<QuestReward> Rewards { get; }
+        #region Methods
 
-        /// <summary>
-        ///     Добавляет награду в группу
-        /// </summary>
-        /// <param name="dto"></param>
         public void AddReward(QuestRewardDto dto)
         {
             if (dto.Type == Type && dto.ObjectType == ObjectType) Rewards.Add(new QuestReward(dto));
         }
+
+        #endregion
     }
 }

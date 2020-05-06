@@ -168,8 +168,7 @@ GameObject:
   - component: {fileID: 2903964071056430678}
   - component: {fileID: 2247410896087409589}
   - component: {fileID: 3620248023425529362}
-  - component: {fileID: 8047070584764629996}
-  - component: {fileID: 2780092874442079954}
+  - component: {fileID: 1199832545314381599}
   m_Layer: 0
   m_Name: TestNPC
   m_TagString: NPC
@@ -252,7 +251,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8047070584764629996
+--- !u!114 &1199832545314381599
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -261,24 +260,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8047070584764629995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0662740e67583544297f41581e71afbd, type: 3}
+  m_Script: {fileID: 11500000, guid: 1246cfba549a59e459a523c7c7098dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvasNPC: {fileID: 0}
-  _dialogPanel: {fileID: 0}
+  npcPos: {x: 0, y: 0, z: 0}
   _npcID: 0
-  _startDialogFlag: 0
-  _text: {fileID: 0}
---- !u!65 &2780092874442079954
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8047070584764629995}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.7279053, y: 0.11407089, z: 1.7848511}
-  m_Center: {x: 0, y: 0.5755596, z: 1.120636}

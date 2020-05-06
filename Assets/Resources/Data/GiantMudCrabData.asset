@@ -16,22 +16,22 @@ MonoBehaviour:
     AttackDamage:
       damage: 10
       stunProbability: 0.5
-    MoveSpeed: 2
+    MoveSpeed: 5
     AttackSpeed: 3
     AttackRange: 5
     MaxHealth: 30
     CurrentHealth: 20
-    PatrolDistance: 24.42
-    TriggerDistance: 9.65
+    PatrolDistance: 7
+    TriggerDistance: 5
     DiggingDistance: 3
-    Prefab: {fileID: 6926224206468418117, guid: 399210276d586634088218e14ac4c814,
+    Prefab: {fileID: 6926224206468418117, guid: 2b3af0f05f7bf3440820ed67829daab3,
       type: 3}
-    SpawnPoint: {x: 490, y: 50, z: 500}
+    SpawnPoint: {x: 493.49, y: 1.18, z: 512}
     CrabProjectile: {fileID: 3884286201436219033, guid: 0d46cc5e5d63e9b458a925e16ed02499,
       type: 3}
     CrabMouth: {fileID: 0}
     CanAttack: 0
     IsDigIn: 0
-    IsPatrol: 1
+    IsPatrol: 0
     IsDead: 0
-  NextAttackRate: 7.6202216
+  NextAttackRate: 21.627481

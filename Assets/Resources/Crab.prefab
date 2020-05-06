@@ -1045,6 +1045,7 @@ GameObject:
   - component: {fileID: 2459583007552320401}
   - component: {fileID: 7355664188460264098}
   - component: {fileID: 8758401916189457439}
+  - component: {fileID: 450145706122675393}
   m_Layer: 0
   m_Name: Crab
   m_TagString: Enemy
@@ -1176,6 +1177,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &450145706122675393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6926224206468418117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1246cfba549a59e459a523c7c7098dc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NpcPos: {x: 0, y: 0, z: 0}
+  NpcID: 7
 --- !u!1 &7143989354675481670
 GameObject:
   m_ObjectHideFlags: 0
