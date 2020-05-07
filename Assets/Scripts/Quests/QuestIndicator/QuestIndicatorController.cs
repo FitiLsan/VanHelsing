@@ -30,7 +30,10 @@
 
         public void Updating()
         {
-            _context.QuestIndicatorModel.Execute();
+            foreach (QuestIndicatorModel questIndicatorModel in _context.QuestIndicatorModelList)
+            {
+                questIndicatorModel.Execute();
+            }
         }
 
         #endregion

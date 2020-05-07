@@ -1,22 +1,23 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace BeastHunter
 {
     public sealed class QuestIndicatorInitializeController : IAwake
     {
-            #region Field
+        #region Field
 
-            GameContext _context;
+        GameContext _context;
 
-            #endregion
+        #endregion
 
 
-            #region ClassLifeCycle
+        #region ClassLifeCycle
 
-            public QuestIndicatorInitializeController(GameContext context)
-            {
-                _context = context;
-            }
+        public QuestIndicatorInitializeController(GameContext context)
+        {
+            _context = context;
+        }
 
         #endregion
 
@@ -27,13 +28,19 @@ namespace BeastHunter
         {
             var QuestIndicatorData = Data.QuestIndicatorData;
             var CharacterTransform = _context.CharacterModel.CharacterTransform.transform;
-            var list = Services.SharedInstance.PhysicsService.GetObjectsInRadius(CharacterTransform.position, 100f, 11);
+            var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(CharacterTransform.position, 10f, "NPC");
 
-            GameObject instance = GameObject.Instantiate(QuestIndicatorData.QuestIndicatorStruct.Prefab);
-            QuestIndicatorModel QuestIndicator = new QuestIndicatorModel(instance, QuestIndicatorData, _context);
-            _context.QuestIndicatorModel = QuestIndicator;
-        }
+            for (int i = 0; i < list.Count; i++)
+            {
+                GameObject instance = GameObject.Instantiate(QuestIndicatorData.QuestIndicatorStruct.Prefab);
+                QuestIndicatorModel QuestIndicator = new QuestIndicatorModel(instance, QuestIndicatorData, list[i].gameObject, _context);
 
-            #endregion
+                _context.QuestIndicatorModelList.Add(QuestIndicator);
+
+                QuestIndicatorData.SetPosition(list[i].transform, instance.transform);
+            }
+
         }
+        #endregion
     }
+}
