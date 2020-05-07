@@ -49,6 +49,11 @@ namespace BeastHunter
             return _agent.GetAllActiveQuests();
         }
 
+        public List<int> GetAllActiveQuestsById()
+        {
+            return _agent.GetAllActiveQuestsById();
+        }
+
         public void SaveGame(string file)
         {
             _agent.SaveGame(file);

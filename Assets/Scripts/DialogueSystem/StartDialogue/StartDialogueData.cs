@@ -8,7 +8,7 @@ namespace BeastHunter
     public sealed class StartDialogueData : ScriptableObject
     {
         #region Fields
-        public const float CANVAS_OFFSET = 2.3f;
+        public const float CANVAS_OFFSET = 2f;
 
         public StartDialogueStruct StartDialogueStruct;
         public StartDialogueModel Model;

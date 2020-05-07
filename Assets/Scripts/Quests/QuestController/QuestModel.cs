@@ -24,7 +24,7 @@ namespace BeastHunter
         #region Properties
 
         public List<int> CompletedQuests { get; }
-    //    public List<int> AllTaskCompletedInQuests { get; }
+        public List<int> ActiveQuests { get; }
 
         #endregion
 
@@ -38,6 +38,7 @@ namespace BeastHunter
             _questStorage = questStorage;
             _questStorage.LoadGame("TestSave.bytes");
             _quests = _questStorage.GetAllActiveQuests();
+            ActiveQuests = _questStorage.GetAllActiveQuestsById();
             CompletedQuests = _questStorage.GetAllCompletedQuests();
             EventManager.StartListening(GameEventTypes.QuestAccepted, OnQuestAccept);
             EventManager.StartListening(GameEventTypes.NpcDie, OnNpcDie);
@@ -86,7 +87,9 @@ namespace BeastHunter
                 return;
             }
             _questStorage.QuestCompleted(t.Id);
+            AllTaskCompletedInQuests.Remove(t.Id);
             _quests.Remove(t);
+            ActiveQuests.Remove(t.Id);
 #if UNITY_EDITOR
             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Reported");
             _questStorage.SaveGame("TestSave.bytes");
@@ -125,6 +128,7 @@ namespace BeastHunter
                     }
                 }
                 _quests.Add(t);
+                ActiveQuests.Add(t.Id);
                 Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Accepted");
 
             }

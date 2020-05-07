@@ -14,9 +14,9 @@ namespace BeastHunter
         private List<int> _completedQuests;
         private List<Quest> _activeQuests;
         private readonly ISaveFileWrapper _saveFileWrapper;
-        
+
         #endregion
-        
+
 
         #region Methods
 
@@ -24,10 +24,10 @@ namespace BeastHunter
         {
             _saveFileWrapper = wrapper;
         }
-        
+
         public void SaveGame(string filename)//= null)
         {
-            _saveFileWrapper.CreateNewSave(filename ?? DateTime.Now.ToString("s").Replace(':','-')+".bytes");
+            _saveFileWrapper.CreateNewSave(filename ?? DateTime.Now.ToString("s").Replace(':', '-') + ".bytes");
             EventManager.TriggerEvent(GameEventTypes.Saving, null);
             SaveInfo();
         }
@@ -44,21 +44,21 @@ namespace BeastHunter
             _completedQuests = _saveFileWrapper.GetCompletedQuests().ToList();
             _activeQuests = LoadQuestLog();
         }
-        
+
         public void SaveQuestLog(List<Quest> quests)
         {
-            _saveFileWrapper.SaveQuestLog(quests, _completedQuests);           
+            _saveFileWrapper.SaveQuestLog(quests, _completedQuests);
         }
 
         public List<Quest> LoadQuestLog()
-        {           
+        {
             var res = new List<Quest>();
             var qd = _saveFileWrapper.GetActiveQuests();
             var od = _saveFileWrapper.GetActiveObjectives();
             foreach (var i in qd)
             {
                 var quest = new Quest(QuestRepository.GetById(i.Key));
-                if (quest.IsTimed) quest.ReduceTime(quest.TimeAllowed-i.Value);
+                if (quest.IsTimed) quest.ReduceTime(quest.TimeAllowed - i.Value);
                 foreach (var task in quest.Tasks)
                 {
                     if (od.ContainsKey(task.Id))
@@ -86,10 +86,16 @@ namespace BeastHunter
         {
             return _completedQuests ?? (_completedQuests = _saveFileWrapper.GetCompletedQuests().ToList());
         }
-       
+
         public List<Quest> GetAllActiveQuests()
         {
             return _activeQuests ?? (_activeQuests = LoadQuestLog());
+        }
+
+        public List<int> GetAllActiveQuestsById()
+        {
+            var IdActiveQuests= _saveFileWrapper.GetActiveQuests();
+            return IdActiveQuests.Keys.ToList();
         }
 
         #endregion
