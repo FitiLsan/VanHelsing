@@ -143,7 +143,7 @@ namespace BeastHunter
                         task.AddAmount(amount);
                     }
 #if UNITY_EDITOR
-                    Debug.Log($"QuestLogController>>> Task ID:[{task.Id}] [{task.CurrentAmount} out of {task.NeededAmount}] from quest ID:[{quest.Id}] updated");
+                    Debug.Log($"QuestLogController>>> Task ID:[{task.Id}]({quest.Tasks.IndexOf(task)+1}out of{quest.Tasks.Count}) [{task.CurrentAmount} out of {task.NeededAmount}] from quest ID:[{quest.Id}] updated");
 #endif
                 }
 
