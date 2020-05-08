@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,11 +9,13 @@ namespace BeastHunter
     public sealed class QuestIndicatorData : ScriptableObject
     {
         #region Fields
+
         public const float CANVAS_OFFSET = 2.4f;
 
         public QuestIndicatorStruct QuestIndicatorStruct;
         public Vector3 NpcPos;
         public int NpcID;
+        public DataTable cache = QuestRepository.GetDialogueCache();
 
         #endregion
 
@@ -21,12 +24,12 @@ namespace BeastHunter
 
         public void QuestionMarkShow(bool isOn, QuestIndicatorModel model)
         {
-            model.QuestIndicatorTransform.GetChild(1).gameObject.SetActive(isOn);
+            model.QuestIndicatorTransform.GetChild(2).gameObject.SetActive(isOn);
         }
 
         public void TaskQuestionMarkShow(bool isOn, QuestIndicatorModel model)
         {
-            model.QuestIndicatorTransform.GetChild(2).gameObject.SetActive(isOn);
+            model.QuestIndicatorTransform.GetChild(1).gameObject.SetActive(isOn);
         }
 
         public void ExclamationMarkShow(bool isOn, QuestIndicatorModel model)
@@ -52,17 +55,21 @@ namespace BeastHunter
 
         public void GetQuestInfo(int npcID, QuestIndicatorModel model)
         {
-            var cache = QuestRepository.GetDialogueCache();
+
             var questModel = model.Context.QuestModel;
+            var completedTasksInQuest = questModel.AllTaskCompletedInQuests;
+            var activeQuests = questModel.ActiveQuests;
+            var completedQuests = questModel.CompletedQuests;
 
             if (cache.Rows.Count != 0)
             {
                 for (int i = 0; i < cache.Rows.Count; i++)
                 {
+                    var currentQuestID = cache.Rows[i].GetInt(8);
+
                     if (cache.Rows[i].GetInt(6) == 1 & cache.Rows[i].GetInt(5) == npcID)
                     {
-                        var currentQuestID = cache.Rows[i].GetInt(8);
-                        if (!questModel.CompletedQuests.Contains(currentQuestID) & !questModel.ActiveQuests.Contains(currentQuestID))
+                        if (!completedQuests.Contains(currentQuestID) & !activeQuests.Contains(currentQuestID))
                         {
                             ExclamationMarkShow(true, model);
                         }
@@ -71,19 +78,10 @@ namespace BeastHunter
                             ExclamationMarkShow(false, model);
                         }
                     }
-                }
-            }
 
-            if (cache.Rows.Count != 0)
-            {
-                for (int i = 0; i < cache.Rows.Count; i++)
-                {
-                    var currentQuestID = cache.Rows[i].GetInt(8);
-                    var test = cache.Rows[i].GetInt(9);
-                    var test2 = cache.Rows[i].GetInt(5);
                     if (cache.Rows[i].GetInt(9) == 1 & cache.Rows[i].GetInt(5) == npcID)
                     {
-                        if (questModel.ActiveQuests.Contains(currentQuestID))
+                        if (activeQuests.Contains(currentQuestID) & !completedTasksInQuest.Contains(currentQuestID))
                         {
                             TaskQuestionMarkShow(true, model);
                         }
@@ -93,33 +91,18 @@ namespace BeastHunter
                         }
                     }
 
-                }
-            }
-
-            var completedTasksInQuest = model.Context.QuestModel.AllTaskCompletedInQuests;
-
-            if (cache.Rows.Count != 0)
-            {
-                for (int i = 0; i < cache.Rows.Count; i++)
-                {
                     if (cache.Rows[i].GetInt(7) == 1 & cache.Rows[i].GetInt(5) == npcID)
                     {
-                        if (completedTasksInQuest.Count != 0)
+                        if (completedTasksInQuest.Contains(currentQuestID))
                         {
-                            for (int j = 0; j < completedTasksInQuest.Count; j++)
-                            {
-                                var currentQuestID = cache.Rows[i].GetInt(8);
-
-                                if (currentQuestID == completedTasksInQuest[j])
-                                {
-                                    QuestionMarkShow(true, model);
-                                    return;
-                                }
-                            }
+                            QuestionMarkShow(true, model);
+                        }
+                        else
+                        {
+                            QuestionMarkShow(false, model);
                         }
                     }
                 }
-                QuestionMarkShow(false, model);
             }
         }
         #endregion

@@ -58,10 +58,9 @@ namespace BeastHunter
 
         #region Methods
 
-        private void OnObjectUse(EventArgs arg0)
+        private void OnProgressSaving(EventArgs arg0)
         {
-            if (!(arg0 is IdArgs itemArgs)) return;
-            QuestUpdate(QuestTaskTypes.UseObject, itemArgs.Id);
+            _questStorage.SaveQuestLog(_quests);
         }
 
         private void OnDialogEnter(EventArgs arg0)
@@ -105,11 +104,6 @@ namespace BeastHunter
                 _quests.Remove(t);
         }
 
-        private void OnProgressSaving(EventArgs arg0)
-        {
-            _questStorage.SaveQuestLog(_quests);
-        }
-
         private void OnQuestAccept(EventArgs args)
         {
             if (!(args is IdArgs idArgs)) return;
@@ -136,22 +130,7 @@ namespace BeastHunter
             
 #endif
         }
-
-        public List<Quest> GetByZone(int zoneId)
-        {
-            return _quests.FindAll(x => x.ZoneId == zoneId);
-        }
-
-        public List<Quest> GetByTaskType(QuestTaskTypes type)
-        {
-            return _quests.FindAll(x => x.Tasks.Any(y => y.Type == type));
-        }
-
-        public List<Quest> GetTracked()
-        {
-            return _quests.FindAll(x => x.IsTracked);
-        }
-
+      
         private void QuestUpdate(QuestTaskTypes eventType, int targetId, int amount = 1)
         {
             foreach (var quest in GetByTaskType(eventType))
@@ -170,7 +149,10 @@ namespace BeastHunter
 
                 if (quest.IsComplete)
                 {
-                    AllTaskCompletedInQuests.Add(quest.Id);
+                    if (!AllTaskCompletedInQuests.Contains(quest.Id))
+                    {
+                        AllTaskCompletedInQuests.Add(quest.Id);
+                    }
                     EventManager.TriggerEvent(GameEventTypes.QuestCompleted, new IdArgs(quest.Id));
                     Debug.Log($"QuestLogController>>> Quest ID:[{quest.Id}] Complete");
                 }
@@ -189,6 +171,27 @@ namespace BeastHunter
         {
             if (!(args is IdArgs idArgs)) return;
             QuestUpdate(QuestTaskTypes.FindLocation, idArgs.Id);
+        }
+
+        private void OnObjectUse(EventArgs arg0)
+        {
+            if (!(arg0 is IdArgs itemArgs)) return;
+            QuestUpdate(QuestTaskTypes.UseObject, itemArgs.Id);
+        }
+
+        public List<Quest> GetByZone(int zoneId)
+        {
+            return _quests.FindAll(x => x.ZoneId == zoneId);
+        }
+
+        public List<Quest> GetByTaskType(QuestTaskTypes type)
+        {
+            return _quests.FindAll(x => x.Tasks.Any(y => y.Type == type));
+        }
+
+        public List<Quest> GetTracked()
+        {
+            return _quests.FindAll(x => x.IsTracked);
         }
 
         //private void OnItemAcquired(EventArgs arg0)

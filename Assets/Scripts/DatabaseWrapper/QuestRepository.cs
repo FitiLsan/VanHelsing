@@ -9,6 +9,7 @@ namespace BeastHunter
     public static class QuestRepository
     {
         #region Fields
+
         private static Dictionary<int, QuestDto> _cache = new Dictionary<int, QuestDto>();
         private static DataTable _dialogueCache = new DataTable();
         private static Locale _locale = Locale.RU;
@@ -88,8 +89,16 @@ namespace BeastHunter
 
         public static DataTable GetDialogueCache()
         {
-            _dialogueCache =  DatabaseWrapper.GetTable($"select * from 'dialogue_answers' where Quest_ID!= 0;");
-            return _dialogueCache;
+            try
+            {
+                _dialogueCache = DatabaseWrapper.GetTable($"select * from 'dialogue_answers' where Quest_ID!= 0;");
+                return _dialogueCache;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{DateTime.Now.ToShortTimeString()}    DB error     {e}\n");
+                throw;
+            }
         }
 
         public static QuestDto GetById(int id)

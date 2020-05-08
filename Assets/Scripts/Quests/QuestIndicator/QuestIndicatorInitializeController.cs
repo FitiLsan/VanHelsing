@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 
 namespace BeastHunter
 {
@@ -34,9 +34,7 @@ namespace BeastHunter
             {
                 GameObject instance = GameObject.Instantiate(QuestIndicatorData.QuestIndicatorStruct.Prefab);
                 QuestIndicatorModel QuestIndicator = new QuestIndicatorModel(instance, QuestIndicatorData, list[i].gameObject, _context);
-
                 _context.QuestIndicatorModelList.Add(QuestIndicator);
-
                 QuestIndicatorData.SetPosition(list[i].transform, instance.transform);
             }
 
