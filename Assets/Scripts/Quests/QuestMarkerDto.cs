@@ -1,14 +1,13 @@
-namespace Quests
+namespace BeastHunter
 {
-    /// <summary>
-    ///     Этот класс используется ТОЛЬКО для передачи данных
-    /// </summary>
-    public class QuestMarkerDto
+    public sealed class QuestMarkerDto
     {
+        #region Properties
+
         public int MapId { get; set; }
-
         public float X { get; set; }
-
         public float Y { get; set; }
+
+        #endregion
     }
 }
