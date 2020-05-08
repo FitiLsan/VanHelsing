@@ -28,7 +28,7 @@ namespace BeastHunter
 
         public void Updating()
         {
-            foreach(var rabbit in _context.RabbitModel)
+            foreach(var rabbit in _context.RabbitModels)
             {
                 rabbit.Execute();
             }

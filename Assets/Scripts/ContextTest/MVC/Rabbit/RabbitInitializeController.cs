@@ -28,7 +28,7 @@ namespace BeastHunter
             var RabbitData = Data.RabbitData;
             GameObject instance = GameObject.Instantiate(RabbitData.RabbitStruct.Prefab);
             RabbitModel Rabbit = new RabbitModel(instance, RabbitData);
-            _context.RabbitModel.Add(Rabbit);
+            _context.RabbitModels.Add(Rabbit);
         }
 
         #endregion

@@ -11,6 +11,7 @@ namespace BeastHunter
 
         public SphereModel SphereModel;
         public CharacterModel CharacterModel;
+        public List<RabbitModel> RabbitModels;
 
         public InputModel InputModel;
         public GiantMudCrabModel GiantMudCrabModel;
@@ -28,7 +29,7 @@ namespace BeastHunter
         {
             _onTriggers = new SortedList<InteractableObjectType, List<IInteractable>>();
             _interactables = new List<IInteractable>();
-            RabbitModel = new List<RabbitModel>(8);
+            RabbitModels = new List<RabbitModel>(8);
         }
 
         #endregion
