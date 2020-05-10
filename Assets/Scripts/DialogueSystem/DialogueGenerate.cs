@@ -47,6 +47,10 @@ namespace BeastHunter
                     {
                         if (activeQuests.Contains(answerQuestId))
                         {
+                            if (answerIsStartQuest == 1)
+                            {
+                                continue;
+                            }
                             if (allTaskCompleted.Count != 0)
                             {
                                 if (!allTaskCompleted.Contains(answerQuestId))
@@ -67,8 +71,7 @@ namespace BeastHunter
 
                     var flag = false;
                     foreach (var quest in context.QuestModel.Quests)
-                    {
-                        
+                    {                       
                         if(quest.Id == answerQuestId)
                         {
                             foreach (var task in quest.Tasks)
