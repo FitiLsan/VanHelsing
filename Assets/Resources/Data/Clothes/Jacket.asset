@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c66b5a7aea9b07418dd89a7d55218da, type: 3}
-  m_Name: NewCloth
+  m_Name: Jacket
   m_EditorClassIdentifier: 
   ItemStruct:
     Name: Jacket
     Discription: jacket
     SlotSize: 1
     ItemType: 3
+    MeshOfObject: {fileID: 0}
   pocketInfos:
   - SlotEnum: 2
     ItemInPocket: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}
