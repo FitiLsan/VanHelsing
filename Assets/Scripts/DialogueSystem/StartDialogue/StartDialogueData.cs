@@ -65,6 +65,7 @@ namespace BeastHunter
 
         private void DialogStatus(bool isShowDialogCanvas)
         {
+            DialogueSystemModel.DialogueNode = DialogueGenerate.DialogueCreate(NpcID, Model.Context);
             ShowCanvasEvent?.Invoke(isShowDialogCanvas);
         }
 
@@ -94,7 +95,6 @@ namespace BeastHunter
             CanvasNpc.transform.position = new Vector3(NpcPos.x, NpcPos.y + CANVAS_OFFSET, NpcPos.z);
             DialogAreaEnterSwitcher(true);
             DialogueSystemModel.NpcID = NpcID;
-            DialogueSystemModel.DialogueNode = DialogueGenerate.DialogueCreate(NpcID, Model.Context);
         }
 
         public void OnTriggerExit(Collider other)

@@ -12,6 +12,7 @@ namespace BeastHunter
 
         private static Dictionary<int, QuestDto> _cache = new Dictionary<int, QuestDto>();
         private static DataTable _dialogueCache = new DataTable();
+        private static DataTable _questTaskCache = new DataTable();
         private static Locale _locale = Locale.RU;
         private static readonly Dictionary<Locale, (string, string)> _localeTables = new Dictionary<Locale, (string, string)>
             {
@@ -91,12 +92,33 @@ namespace BeastHunter
         {
             try
             {
-                _dialogueCache = DatabaseWrapper.GetTable($"select * from 'dialogue_answers' where Quest_ID!= 0;");
+                if (_dialogueCache.Rows.Count == 0)
+                {
+                    _dialogueCache = DatabaseWrapper.GetTable($"select * from 'dialogue_answers' where Quest_ID!= 0;");
+                }
                 return _dialogueCache;
             }
             catch (Exception e)
             {
-                Debug.LogError($"{DateTime.Now.ToShortTimeString()}    DB error     {e}\n");
+                Debug.LogError($"{DateTime.Now.ToShortTimeString()}    dialogueCache error     {e}\n");
+                throw;
+            }
+        }
+
+        public static DataTable GetQuestTaskCache()
+        {
+            try
+            {
+                if (_questTaskCache.Rows.Count == 0)
+                {
+                    _questTaskCache = DatabaseWrapper.GetTable($"select quest_objectives.Id, QuestId, TargetID, dialogue_answers.Npc_id from 'quest_objectives'" +
+                   $" INNER Join 'dialogue_answers' on quest_objectives.TargetId = dialogue_answers.Id where Type = 8;");
+                }
+                return _questTaskCache;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{DateTime.Now.ToShortTimeString()}    questTaskCache error     {e}\n");
                 throw;
             }
         }

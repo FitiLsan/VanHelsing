@@ -10,13 +10,14 @@ namespace BeastHunter
     {
         #region Fields
 
-        public readonly List<Quest> _quests;
+        private readonly List<Quest> _quests;
         private readonly IQuestStorage _questStorage;
 
         public int QuestCount => _quests.Count;
         public IEnumerable<Quest> Quests => _quests.AsReadOnly();
         public GameContext Context;
         public List<int> AllTaskCompletedInQuests = new List<int>();
+        public List<int> CompletedTasks = new List<int>();
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace BeastHunter
 
         public List<int> CompletedQuests { get; }
         public List<int> ActiveQuests { get; }
-
+        
         #endregion
 
 
@@ -138,12 +139,16 @@ namespace BeastHunter
                 foreach (var task in quest.Tasks)
                 {
                     if (task.Type != eventType || task.TargetId != targetId) continue;
-                    if (task.CurrentAmount!=task.NeededAmount)
+                    if (!task.IsCompleted)
                     {
                         task.AddAmount(amount);
                     }
+                    if (task.IsCompleted)
+                    {
+                        CompletedTasks.Add(task.Id);
+                    }
 #if UNITY_EDITOR
-                    Debug.Log($"QuestLogController>>> Task ID:[{task.Id}]({quest.Tasks.IndexOf(task)+1}out of{quest.Tasks.Count}) [{task.CurrentAmount} out of {task.NeededAmount}] from quest ID:[{quest.Id}] updated");
+                    Debug.Log($"QuestLogController>>> Task ID:[{task.Id}] ({quest.Tasks.IndexOf(task) + 1} out of {quest.Tasks.Count}) [{task.CurrentAmount} out of {task.NeededAmount}] from quest ID:[{quest.Id}] updated");
 #endif
                 }
 
@@ -152,6 +157,11 @@ namespace BeastHunter
                     if (!AllTaskCompletedInQuests.Contains(quest.Id))
                     {
                         AllTaskCompletedInQuests.Add(quest.Id);
+                        foreach(var task in quest.Tasks)
+                        {
+                            CompletedTasks.Remove(task.Id);
+                        }
+                        
                     }
                     EventManager.TriggerEvent(GameEventTypes.QuestCompleted, new IdArgs(quest.Id));
                     Debug.Log($"QuestLogController>>> Quest ID:[{quest.Id}] Complete");
