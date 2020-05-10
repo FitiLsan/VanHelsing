@@ -48,7 +48,7 @@ namespace BeastHunter
                     if (Time.time >= NextAttackRate)
                     {
                         Debug.Log("Attacking");
-                        new GiantMudCrabProjectile(giantMudCrabStruct.AttackDamage, Target.transform, Prefab.transform.GetChild(0), giantMudCrabStruct.CrabProjectile);
+                        new GiantMudCrabProjectile(giantMudCrabStruct.AttackDamage, giantMudCrabStruct.Stats, Target.transform, Prefab.transform.GetChild(0), giantMudCrabStruct.CrabProjectile);
                         NextAttackRate = giantMudCrabStruct.AttackSpeed + Time.time;
                     }
                 }

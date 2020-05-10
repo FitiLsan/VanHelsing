@@ -1,5 +1,4 @@
-﻿using BaseScripts;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace BeastHunter

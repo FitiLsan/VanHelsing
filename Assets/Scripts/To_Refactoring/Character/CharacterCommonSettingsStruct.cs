@@ -20,6 +20,9 @@ namespace BeastHunter
         [Tooltip("Character instance tag.")]
         [SerializeField] private string _instanceTag;
 
+        [Tooltip("Character instance layer.")]
+        [SerializeField] private int _instanceLayer;
+
         [Tooltip("Character default movement runtime animator controller.")]
         [SerializeField] private RuntimeAnimatorController _characterAnimator;
 
@@ -137,33 +140,39 @@ namespace BeastHunter
 
         [Header("Character battle settings")]
 
+        [Tooltip("Target mark prefab.")]
+        [SerializeField] private GameObject _targetPrefab;
+
+        [Tooltip("Target mark height above.")]
+        [Range(0.0f, 10.0f)]
+        [SerializeField] private float _targetMarkHeight;
+
+        [Tooltip("Target mark name")]
+        [SerializeField] private string _targetMarkName;
+
         [Tooltip("Battle ignore time between 0 and 1-0.")]
         [Range(0.0f, 100.0f)]
         [SerializeField] private float _battleIgnoreTime;
 
-        [Tooltip("Path of the first hit box object of prefab")]
-        [SerializeField] private string _firstHitBoxObjectPath;
+        [Tooltip("Path of the left hand object of prefab")]
+        [SerializeField] private string _leftHandObjectPath;
 
-        [Tooltip("First hit box radius between 0 and 50.")]
+        [Tooltip("Path of the right hand object of prefab")]
+        [SerializeField] private string _rightHandObjectPath;
+
+        [Tooltip("Path of the left foot object of prefab")]
+        [SerializeField] private string _leftFootObjectPath;
+
+        [Tooltip("Left foot hit box radius between 0 and 50.")]
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float _firstHitBoxRadius;
+        [SerializeField] private float _leftFootHitBoxRadius;
 
-        [Tooltip("Path of the second hit box object of prefab")]
-        [SerializeField] private string _secondHitBoxObjectPath;
+        [Tooltip("Path of the right foot object of prefab")]
+        [SerializeField] private string _rightFootObjectPath;
 
-        [Tooltip("Second hit box radius between 0 and 50.")]
+        [Tooltip("Right foot hit box radius between 0 and 50.")]
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float _secondHitBoxRadius;
-
-        [Tooltip("Path of the third hit box object of prefab")]
-        [SerializeField] private string _thirdHitBoxObjectPath;
-
-        [Tooltip("Third hit box radius between 0 and 50.")]
-        [Range(0.0f, 50.0f)]
-        [SerializeField] private float _thirdHitBoxRadius;
-
-        [Tooltip("Damage structure.")]
-        [SerializeField] private DamageStruct _damageStruct;
+        [SerializeField] private float _rightFootHitBoxRadius;
 
         [Tooltip("Actual rolling time between 0 and 10.")]
         [Range(0.0f, 10.0f)]
@@ -183,6 +192,7 @@ namespace BeastHunter
         #region Properties
 
         public GameObject Prefab => _prefab;
+        public GameObject TargetPrefab => _targetPrefab;
 
         public RuntimeAnimatorController CharacterAnimator => _characterAnimator;
 
@@ -192,6 +202,7 @@ namespace BeastHunter
 
         public string InstanceName => _instanceName;
         public string InstanceTag => _instanceTag;
+        public int InstanceLayer => _instanceLayer;
 
         public float InstantiateDirection => _instantiateDirection;
         public float RigitbodyMass => _rigitbodyMass;
@@ -220,21 +231,47 @@ namespace BeastHunter
         public float DirectionChangeLag => _directionChangeLag;
         public float AnimatorBaseSpeed => _animatorBaseSpeed;
 
+        public float TargetMarkHeight => _targetMarkHeight;
         public float BattleIgnoreTime => _battleIgnoreTime;
+        public string TargetMarkName => _targetMarkName;
 
-        public string FirstHitBoxObjectPath => _firstHitBoxObjectPath;
-        public string SecondHitBoxObjectPath => _secondHitBoxObjectPath;
-        public string ThirdHitBoxObjectPath => _thirdHitBoxObjectPath;
+        public string LeftHandObjectPath => _leftHandObjectPath;
+        public string RightHandObjectPath => _rightHandObjectPath;
+        public string LeftFootObjectPath => _leftFootObjectPath;
+        public string RightFootObjectPath => _rightFootObjectPath;
 
-        public float FirstHitBoxRadius => _firstHitBoxRadius;
-        public float SecondHitBoxRadius => _secondHitBoxRadius;
-        public float ThirdHitBoxRadius => _thirdHitBoxRadius;
+        public float LeftFootHitBoxRadius => _leftFootHitBoxRadius;
+        public float RightFootHitBoxRadius => _rightFootHitBoxRadius;
 
         public float RollTime => _rollTime;
         public float RollFrameDistance => _rollFrameDistance;
         public float RollAnimationSpeed => _rollAnimationSpeed;
 
-        public DamageStruct CharacterDamage => _damageStruct;
+        #endregion
+
+
+        #region Methods
+
+        public GameObject CreateTargetMark(Transform characterTransform, Vector3 basePosition)
+        {
+            GameObject targetMark = GameObject.Instantiate(TargetPrefab);
+            targetMark.name = TargetMarkName;
+
+            targetMark.transform.SetParent(characterTransform);
+            targetMark.transform.localPosition = Vector3.zero;
+            targetMark.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            targetMark.transform.localPosition = Vector3.zero;
+            targetMark.transform.localEulerAngles = new Vector3(90, 0, 0);
+            targetMark.SetActive(false);
+
+            return targetMark;
+        }
+
+        public void SetTargetMarkBasePosition(Transform characterTransform, Transform targetMarkTransform)
+        {
+            targetMarkTransform.localPosition = Vector3.zero;
+            targetMarkTransform.gameObject.SetActive(false);
+        }
 
         #endregion
     }

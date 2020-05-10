@@ -2,7 +2,7 @@
 {
     public interface IDealDamage
     {
-        void DealDamage(InteractableObjectBehavior enemy, DamageStruct damage);
+        void DealDamage(InteractableObjectBehavior enemy, Damage damage);
     }
 }
 

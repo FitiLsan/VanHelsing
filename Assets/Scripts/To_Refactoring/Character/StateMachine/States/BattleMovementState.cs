@@ -59,7 +59,7 @@ namespace BeastHunter
         {
             _characterModel.CharacterSphereCollider.radius *= _characterModel.CharacterCommonSettings.
                 SphereColliderRadiusIncrese;
-            _animationController.PlayBattleMovementAnimation();
+            _animationController.PlayBattleMovementAnimation(_characterModel.LeftHandWeapon, _characterModel.RightHandWeapon);
             _characterModel.CameraCinemachineBrain.m_DefaultBlend.m_Time = 0f;
             _characterModel.CharacterTargetCamera.Priority = 5;
         }
