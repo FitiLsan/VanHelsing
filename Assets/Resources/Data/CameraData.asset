@@ -9,72 +9,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d188b74f1b32ed747b065a91ad8e0d3c, type: 3}
-  m_Name: CharacterData
+  m_Script: {fileID: 11500000, guid: 5b04d53ab9121e54d9f49e5d48d70bf9, type: 3}
+  m_Name: CameraData
   m_EditorClassIdentifier: 
-  _characterCommonSettings:
-    _prefab: {fileID: 1549762263890820, guid: d333e574c78741a478cde0da944a5e59, type: 3}
-    _instanceName: Player
-    _instanceTag: Player
-    _instanceLayer: 8
-    _characterAnimator: {fileID: 9100000, guid: 71768c8e0d54fb34396989829cda6ca1,
-      type: 2}
-    _instantiatePosition: {x: 489, y: 20, z: 480}
-    _instantiateDirection: -40
-    _rigitbodyMass: 1
-    _rigitbodyDrag: 0
-    _rigitbodyAngularDrag: 0.05
-    _capsuleColliderCenter: {x: 0, y: 1, z: 0}
-    _capsuleColliderRadius: 0.63
-    _capsuleColliderHeight: 1.88
-    _sphereColliderCenter: {x: 0, y: 1, z: 0}
-    _sphereColliderRadius: 7.2
-    _sphereColliderRadiusIncrease: 1.365
-    _healthPoints: 100
-    _walkSpeed: 4.6
-    _runSpeed: 7.4
-    _inBattleWalkSpeed: 2
-    _inBattleRunSpeed: 3
-    _jumpHorizontalForce: 4.56
-    _jumpVerticalForce: 4.52
-    _groundCheckHeight: 1.2
-    _groundCheckHeightReduction: 0.872
-    _speedMeasureFrame: 0.14
-    _accelerationLag: 0.028
-    _decelerationLag: 0.034
-    _inBattleAccelerationLag: 0.028
-    _inBattleDecelerationLag: 0.022
-    _directionChangeLag: 0.073
-    _animatorBaseSpeed: 1
-    _targetPrefab: {fileID: 2890280644428487904, guid: 3a80d21ca1e78194c8abdb87e28d79a0,
-      type: 3}
-    _targetMarkHeight: 1
-    _targetMarkName: TargetMark
-    _battleIgnoreTime: 20.3
-    _leftHandObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L
-    _rightHandObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R
-    _leftFootObjectPath: Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L
-    _leftFootHitBoxRadius: 10
-    _rightFootObjectPath: Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R
-    _rightFootHitBoxRadius: 10
-    _rollTime: 0.5
-    _rollFrameDistance: 5.55
-    _rollAnimationSpeed: 1
-  _characterCameraSettings:
+  _cameraSettings:
     _characterCamera: {fileID: 5296010943117555874, guid: 331dcbff4c90e7249a42146bd6820d5b,
       type: 3}
     _characterCameraName: CharacterCamera
     _characterFreelookCamera: {fileID: 1046887095545056062, guid: ffe73034ef64698439bb105d6f12a131,
       type: 3}
-    _characterFreelookCameraName: CharacterCinemachineCamera
+    _characterFreelookCameraName: CharacterFreelookCamera
+    _characterFreelookCameraBlendTime: 0
     _characterTargetCamera: {fileID: 7502929037863473527, guid: 754e3a8556acf0a43814c84409669089,
       type: 3}
     _characterTargetCameraName: CharacterTargetCamera
     _cameraTargetName: Target
+    _characterTargetameraBlendTime: 1
     _cameraTargetHeight: 1.6
     _characterDialogCamera: {fileID: 7502929037863473527, guid: 93d64c43965a1ee4394b13e780d22afa,
       type: 3}
     _characterDialogCameraName: CharacterDialogCamera
+    _characterDialogCameraBlendTime: 2
     _freeLookFieldOfView: 40
     _freeLookNearClipPlane: 0.1
     _freeLookFarClipPlane: 5000
@@ -111,8 +66,8 @@ MonoBehaviour:
     _freeLookTopRigSoftZoneHeight: 0.2
     _freeLookTopRigBiasX: 0
     _freeLookTopRigBiasY: 0
-    _freeLookMiddleRigBodyDampingY: 1
-    _freeLookMiddleRigBodyDampingZ: 1
+    _freeLookMiddleRigBodyDampingY: 0
+    _freeLookMiddleRigBodyDampingZ: 0
     _freeLookMiddleRigOffsetX: 0
     _freeLookMiddleRigOffsetY: 0
     _freeLookMiddleRigOffsetZ: 0
@@ -183,12 +138,12 @@ MonoBehaviour:
     _dialogCameraNearClipPlane: 0.1
     _dialogCameraFarClipPlane: 5000
     _dialogCameraDutch: 0
-    _dialogCameraFollowOffsetX: 0
+    _dialogCameraFollowOffsetX: 1.5
     _dialogCameraFollowOffsetY: 0
-    _dialogCameraFollowOffsetZ: 0
-    _dialogCameraDampingX: 0
-    _dialogCameraDampingY: 0
-    _dialogCameraDampingZ: 0
+    _dialogCameraFollowOffsetZ: -2
+    _dialogCameraDampingX: 1
+    _dialogCameraDampingY: 1
+    _dialogCameraDampingZ: 1
     _dialogCameraPitchDamping: 0
     _dialogCameraYawDamping: 0
     _dialogCameraRollDamping: 0
@@ -196,9 +151,9 @@ MonoBehaviour:
     _dialogCameraTrackedOffsetY: 0
     _dialogCameraTrackedOffsetZ: 0
     _dialogCameraLookaheadTime: 0
-    _dialogCameraLookaheadSmoothing: 0
-    _dialogCameraHorizontalDamping: 0
-    _dialogCameraVerticalDamping: 0
+    _dialogCameraLookaheadSmoothing: 10
+    _dialogCameraHorizontalDamping: 0.5
+    _dialogCameraVerticalDamping: 0.5
     _dialogCameraScreenX: 0.5
     _dialogCameraScreenY: 0.5
     _dialogCameraDeadZoneWidth: 0
@@ -207,7 +162,3 @@ MonoBehaviour:
     _dialogCameraSoftZoneHeight: 0
     _dialogCameraBiasX: 0
     _dialogCameraBiasY: 0
-  _characterStatsSettings:
-    _physicalPower: 2
-    _physicalDamageResistance: 0.25
-    _stunProbabilityResistance: 0.075

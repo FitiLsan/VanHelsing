@@ -9,14 +9,18 @@ namespace BeastHunter
     {
         #region Fields
 
-        public ClothItem Head;
-        public ClothItem Torso;
-        public ClothItem Arms;
-        public ClothItem Legs;
+        public Dictionary<BodyParts, ClothItem> Clothes = new Dictionary<BodyParts, ClothItem>();
         public WeaponItem Feast;
 
-        public Action OnLeftWeaponChange { get; set; }
-        public Action OnRightWeaponChange { get; set; }
+        #endregion
+
+
+        #region Properties
+
+        public Action OnLeftWeaponChangeStart { get; set; } // TO activate
+        public Action OnRightWeaponChangeStart { get; set; } // TO activate
+        public Action OnLeftWeaponChangeEnd { get; set; } // TO activate
+        public Action OnRightWeaponChangeEnd { get; set; } // TO activate
 
         #endregion
 
@@ -25,9 +29,13 @@ namespace BeastHunter
 
         public InventoryService(Contexts contexts) : base(contexts)
         {
-            Feast = Data.Feast;
-            Torso = Data.Jacket;
-            
+            Clothes.Add(BodyParts.Head, null);
+            Clothes.Add(BodyParts.Torso, Data.Jacket);
+            Clothes.Add(BodyParts.Arms, null);
+            Clothes.Add(BodyParts.Hips, null);
+            Clothes.Add(BodyParts.Legs, null);
+            Clothes.Add(BodyParts.Feet, null);
+            Feast = Data.Feast;     
         }
 
         #endregion
@@ -35,39 +43,44 @@ namespace BeastHunter
 
         #region Methods
 
-        public WeaponItem[] GetWeapons()
+        public void SetItemInRandomPocket(BaseItem item)
         {
-            List<WeaponItem> weaponItems = new List<WeaponItem>();
+            foreach (var clothItem in Clothes)
+            {
+                if (clothItem.Value != null && clothItem.Value.SetItemInEmptyPocket(item))
+                {
+                    break;
+                }
+            }
 
-            var weapons = GetWeaponFromColth(Head);
-            if (weapons != null)
-                weaponItems.AddRange(weapons);
-
-            weapons = GetWeaponFromColth(Torso);
-            if (weapons != null)
-                weaponItems.AddRange(weapons);
-
-            weapons = GetWeaponFromColth(Arms);
-            if (weapons != null)
-                weaponItems.AddRange(weapons);
-
-            weapons = GetWeaponFromColth(Legs);
-            if (weapons != null)
-                weaponItems.AddRange(weapons);
-
-            return weaponItems.ToArray();
+            ShowInventoryFull();
         }
 
-        private WeaponItem[] GetWeaponFromColth(ClothItem cloth)
+        public void SetItemInRandomPocket(BodyParts bodyPart, BaseItem item)
+        {
+            if(!Clothes[bodyPart].SetItemInEmptyPocket(item)) ShowInventoryFull();
+        }
+
+        public void SetCloth(BodyParts bodyPart, ClothItem clothItem)
+        {
+            Clothes[bodyPart] = clothItem;
+        }
+
+        private void ShowInventoryFull()
+        {
+            //TODO - shows UI when inventory can not take the item
+        }
+
+        public WeaponItem[] GetAllWeapons()
         {
             List<WeaponItem> weaponItems = new List<WeaponItem>();
 
-            if (cloth != null)
+            foreach (var cloth in Clothes)
             {
-                for (int i = 0; i < cloth.pocketInfos.Length; i++)
+                if (cloth.Value != null)
                 {
-                    if (cloth.pocketInfos[i].ItemInPocket.ItemStruct.ItemType == ItemType.Weapon)
-                        weaponItems.Add(cloth.pocketInfos[i].ItemInPocket as WeaponItem);
+                    var weapons = cloth.Value.GetWeapons();
+                    weaponItems.AddRange(weapons);
                 }
             }
 
@@ -82,7 +95,14 @@ namespace BeastHunter
             {
                 if (characterModel.LeftHandWeaponObject == null)
                 {
-
+                    characterModel.LeftHandWeapon = weapon;
+                    characterModel.RightHandWeapon = weapon;
+                    characterModel.LeftHandWeaponObject = GameObject.Instantiate(weapon.WeaponPrefab);
+                    characterModel.LeftHandWeaponObject.transform.SetParent(characterModel.LeftHand);
+                    characterModel.LeftHandWeaponObject.transform.localPosition = weapon.PrefabPositionInHand;
+                    characterModel.LeftHandWeaponObject.transform.localEulerAngles = weapon.PrefabRotationInHand;
+                    weaponHitBoxBehaviour = characterModel.LeftHandWeaponObject.GetComponent<WeaponHitBoxBehavior>();
+                    weaponHitBoxBehaviour.IsInteractable = false;
                 }
                 else
                 {
@@ -166,22 +186,9 @@ namespace BeastHunter
                 // set in current arm
             }
 
+            
+
             weaponHitBox = weaponHitBoxBehaviour;
-        }
-
-        public void RemoveWeaponFromLeftHand(CharacterModel characterModel)
-        {
-            // TODO
-        }
-
-        public void RemoveWeaponFromRightHand(CharacterModel characterModel)
-        {
-            // TODO
-        }
-
-        public void RemoveAllWeapon(CharacterModel characterModel)
-        {
-            // TODO
         }
 
         public void HideWepons(CharacterModel characterModel)
@@ -211,8 +218,6 @@ namespace BeastHunter
 
             characterModel.IsWeaponInHands = true;
         }
-
-        //TODO make a void methods "SetClothHead" with dictionary etc. and "SetItemInRandomPocket"
 
         #endregion
     }

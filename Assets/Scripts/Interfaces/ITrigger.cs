@@ -12,5 +12,6 @@ namespace BeastHunter
         Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
         GameObject GameObject { get; }
         InteractableObjectType Type { get; }
+        BaseStatsClass Stats { get; set; }
     }
 }
