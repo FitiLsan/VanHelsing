@@ -1,36 +1,43 @@
 ﻿using System;
 
-namespace DialogueSystem
 
+namespace DialogueSystem
 {
     [Serializable]
-    public class PlayerAnswer
+    public sealed class PlayerAnswer
     {
-        public bool _end;
-        public bool _isStartQuest;
-        public bool _isEndQuest;
-        public int _questId;
-        public int _answerId;
+        #region Properties
 
-        public string _text;
-        public int _toNode;
+        public bool IsEnd { get; private set; }
+        public bool IsStartQuest { get; private set; }
+        public bool IsEndQuest { get; private set; }
+        public bool HasTaskQuest { get; private set; }
+        public int QuestId { get; private set; }
+        public int AnswerId { get; private set; }
+        public string Text { get; private set; }
+        public int ToNode { get; private set; }
 
-        public PlayerAnswer(int _answerId,string _text, int _toNode, int _end, int _isStartQuest, int _isEndQuest, int _questId)
+        #endregion
+
+
+        #region ClassLifeCycles
+
+        public PlayerAnswer(int answerId, string text, int toNode, int end, int isStartQuest, int isEndQuest, int questId, int taskQuest)
         {
-            this._answerId = _answerId;
-            this._text = _text;
-            this._toNode = _toNode;
-            if (_end == 0) this._end = false;
-            if (_end == 1) this._end = true;
-            if (_isStartQuest == 0) this._isStartQuest = false;
-            if (_isStartQuest == 1) this._isStartQuest = true;
-            if (_isEndQuest == 0) this._isEndQuest = false;
-            if (_isEndQuest == 1) this._isEndQuest = true;
-            this._questId = _questId;
+            AnswerId = answerId;
+            Text = text;
+            ToNode = toNode;
+            if (end == 0) IsEnd = false;
+            if (end == 1) IsEnd = true;
+            if (isStartQuest == 0) IsStartQuest = false;
+            if (isStartQuest == 1) IsStartQuest = true;
+            if (isEndQuest == 0) IsEndQuest = false;
+            if (isEndQuest == 1) IsEndQuest = true;
+            QuestId = questId;
+            if (taskQuest == 0) HasTaskQuest = false;
+            if (taskQuest == 1) HasTaskQuest = true;
         }
 
-        public PlayerAnswer()
-        {
-        }
+        #endregion
     }
 }

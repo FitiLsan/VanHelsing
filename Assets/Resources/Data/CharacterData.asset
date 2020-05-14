@@ -12,39 +12,170 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d188b74f1b32ed747b065a91ad8e0d3c, type: 3}
   m_Name: CharacterData
   m_EditorClassIdentifier: 
-  _characterStruct:
-    _prefab: {fileID: 1210876326423076, guid: bcdf5c806f4211d4f9d3698be5a0ca9b, type: 3}
-    _characterCamera: {fileID: 5296010943117555874, guid: 331dcbff4c90e7249a42146bd6820d5b,
-      type: 3}
-    _characterCinemachineCamera: {fileID: 1046887095545056062, guid: ffe73034ef64698439bb105d6f12a131,
-      type: 3}
-    _characterAnimator: {fileID: 9100000, guid: a8be910b9daf62b46bbc4d77d12e66a7,
+  _characterCommonSettings:
+    _prefab: {fileID: 1549762263890820, guid: d333e574c78741a478cde0da944a5e59, type: 3}
+    _instanceName: Player
+    _instanceTag: Player
+    _instanceLayer: 8
+    _characterAnimator: {fileID: 9100000, guid: 71768c8e0d54fb34396989829cda6ca1,
       type: 2}
-    _instantiatePosition: {x: 0, y: 1, z: 2.5}
+    _instantiatePosition: {x: 489, y: 20, z: 480}
     _instantiateDirection: -40
     _rigitbodyMass: 1
     _rigitbodyDrag: 0
-    _rigitbodyAngularDrag: 0.5
+    _rigitbodyAngularDrag: 0.05
     _capsuleColliderCenter: {x: 0, y: 1, z: 0}
-    _capsuleColliderRadius: 0.3
-    _capsuleColliderHeight: 1.92
-    _walkSpeed: 2.5
-    _runSpeed: 7.8
-    _inBattleSpeedReduction: 0.6
-    _jumpForce: 4.8
-    _fallingForce: 1
-    _longJumpFallingForce: 2
-    _groundCheckHeight: 1.14
-    _speedMeasureFrame: 0.1
-    _accelerationLag: 0.07
-    _decelerationLag: 0
-    _directionChangeLag: 0.15
-    _maximalHealth: 100
-    _currentlHealth: 100
-    _maximalStamina: 100
-    _currentStamina: 100
-    _cameraHeight: 1.56
-    _cameraLowSideAngle: 45
-    _cameraHalfSideAngle: 90
-    _cameraBackSideAngle: 215
-    _cameraBackAngle: 180
+    _capsuleColliderRadius: 0.63
+    _capsuleColliderHeight: 1.88
+    _sphereColliderCenter: {x: 0, y: 1, z: 0}
+    _sphereColliderRadius: 7.2
+    _sphereColliderRadiusIncrease: 1.365
+    _healthPoints: 100
+    _walkSpeed: 4.6
+    _runSpeed: 7.4
+    _inBattleWalkSpeed: 2
+    _inBattleRunSpeed: 3
+    _jumpHorizontalForce: 4.56
+    _jumpVerticalForce: 4.52
+    _groundCheckHeight: 1.2
+    _groundCheckHeightReduction: 0.872
+    _speedMeasureFrame: 0.14
+    _accelerationLag: 0.028
+    _decelerationLag: 0.034
+    _inBattleAccelerationLag: 0.028
+    _inBattleDecelerationLag: 0.022
+    _directionChangeLag: 0.073
+    _animatorBaseSpeed: 1
+    _targetPrefab: {fileID: 2890280644428487904, guid: 3a80d21ca1e78194c8abdb87e28d79a0,
+      type: 3}
+    _targetMarkHeight: 1
+    _targetMarkName: TargetMark
+    _battleIgnoreTime: 20.3
+    _leftHandObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L
+    _rightHandObjectPath: Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R
+    _leftFootObjectPath: Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L
+    _leftFootHitBoxRadius: 10
+    _rightFootObjectPath: Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R
+    _rightFootHitBoxRadius: 10
+    _rollTime: 0.5
+    _rollFrameDistance: 5.55
+    _rollAnimationSpeed: 1
+  _characterCameraSettings:
+    _characterCamera: {fileID: 5296010943117555874, guid: 331dcbff4c90e7249a42146bd6820d5b,
+      type: 3}
+    _characterCameraName: CharacterCamera
+    _characterFreelookCamera: {fileID: 1046887095545056062, guid: ffe73034ef64698439bb105d6f12a131,
+      type: 3}
+    _characterFreelookCameraName: CharacterCinemachineCamera
+    _characterTargetCamera: {fileID: 7502929037863473527, guid: 754e3a8556acf0a43814c84409669089,
+      type: 3}
+    _characterTargetCameraName: CharacterTargetCamera
+    _cameraTargetName: Target
+    _freeLookFieldOfView: 40
+    _freeLookNearClipPlane: 0.1
+    _freeLookFarClipPlane: 5000
+    _freeLookDutch: 0
+    _freeLookSpeedX: 400
+    _freeLookAccelerationLagX: 0.1
+    _freeLookDecelerationLagX: 0.1
+    _isInvertedAxisX: 0
+    _freeLookSpeedY: 2
+    _freeLookAccelerationLagY: 0.1
+    _freeLookDecelerationLagY: 0.1
+    _isInvertedAxisY: 1
+    _freeLookSplineCurvature: 0.2
+    _freeLookTopRigHeight: 1
+    _freeLookTopRigRadius: 3
+    _freeLookMiddleRigHeight: 3
+    _freeLookMiddleRigRadius: 4
+    _freeLookBottomRigHeight: 5
+    _freeLookBottomRigRadius: 2.51
+    _freeLookTopRigBodyDampingY: 1
+    _freeLookTopRigBodyDampingZ: 1
+    _freeLookTopRigOffsetX: 0
+    _freeLookTopRigOffsetY: 1.6
+    _freeLookTopRigOffsetZ: 0
+    _freeLookTopRigLookaheadTime: 0
+    _freeLookTopRigLookaheadSmoothing: 0
+    _freeLookTopRigHorizontalDamping: 0
+    _freeLookTopRigVerticalDamping: 0
+    _freeLookTopRigScreenX: 0.5
+    _freeLookTopRigScreenY: 0.5
+    _freeLookTopRigDeadZoneWidth: 0
+    _freeLookTopRigDeadZoneHeight: 0.2
+    _freeLookTopRigSoftZoneWidth: 0
+    _freeLookTopRigSoftZoneHeight: 0.2
+    _freeLookTopRigBiasX: 0
+    _freeLookTopRigBiasY: 0
+    _freeLookMiddleRigBodyDampingY: 1
+    _freeLookMiddleRigBodyDampingZ: 1
+    _freeLookMiddleRigOffsetX: 0
+    _freeLookMiddleRigOffsetY: 1.6
+    _freeLookMiddleRigOffsetZ: 0
+    _freeLookMiddleRigLookaheadTime: 0
+    _freeLookMiddleRigLookaheadSmoothing: 0
+    _freeLookMiddleRigHorizontalDamping: 0
+    _freeLookMiddleRigVerticalDamping: 0
+    _freeLookMiddleRigScreenX: 0.5
+    _freeLookMiddleRigScreenY: 0.5
+    _freeLookMiddleRigDeadZoneWidth: 0
+    _freeLookMiddleRigDeadZoneHeight: 0.2
+    _freeLookMiddleRigSoftZoneWidth: 0
+    _freeLookMiddleRigSoftZoneHeight: 0.2
+    _freeLookMiddleRigBiasX: 0
+    _freeLookMiddleRigBiasY: 0
+    _freeLookBottomRigBodyDampingY: 1
+    _freeLookBottomRigBodyDampingZ: 1
+    _freeLookBottomRigOffsetX: 0
+    _freeLookBottomRigOffsetY: 1.6
+    _freeLookBottomRigOffsetZ: 0
+    _freeLookBottomRigLookaheadTime: 0
+    _freeLookBottomRigLookaheadSmoothing: 0
+    _freeLookBottomRigHorizontalDamping: 0
+    _freeLookBottomRigVerticalDamping: 0
+    _freeLookBottomRigScreenX: 0.5
+    _freeLookBottomRigScreenY: 0.5
+    _freeLookBottomRigDeadZoneWidth: 0
+    _freeLookBottomRigDeadZoneHeight: 0.2
+    _freeLookBottomRigSoftZoneWidth: 0
+    _freeLookBottomRigSoftZoneHeight: 0.2
+    _freeLookBottomRigBiasX: 0
+    _freeLookBottomRigBiasY: 0
+    _colliderMinDistanceFromTarget: 0.1
+    _isColliderAvoidingObstacles: 1
+    _colliderDistanceLimit: 0
+    _colliderCameraRadius: 0.1
+    _colliderDamping: 0
+    _colliderOptimalTargetDistance: 0
+    _targetCameraFieldOfView: 40
+    _targetCameraNearClipPlane: 0.1
+    _targetCameraFarClipPlane: 5000
+    _targetCameraDutch: 0
+    _targetCameraFollowOffsetX: 0
+    _targetCameraFollowOffsetY: 3.77
+    _targetCameraFollowOffsetZ: -4.6
+    _targetCameraDampingX: 1
+    _targetCameraDampingY: 1
+    _targetCameraDampingZ: 1
+    _targetCameraPitchDamping: 0
+    _targetCameraYawDamping: 0
+    _targetCameraRollDamping: 0
+    _targetCameraTrackedOffsetX: 0
+    _targetCameraTrackedOffsetY: 1.52
+    _targetCameraTrackedOffsetZ: -0.03
+    _targetCameraLookaheadTime: 0
+    _targetCameraLookaheadSmoothing: 10
+    _targetCameraHorizontalDamping: 0.5
+    _targetCameraVerticalDamping: 0.5
+    _targetCameraScreenX: 0.5
+    _targetCameraScreenY: 0.5
+    _targetCameraDeadZoneWidth: 0.055
+    _targetCameraDeadZoneHeight: 0.055
+    _targetCameraSoftZoneWidth: 0.055
+    _targetCameraSoftZoneHeight: 0.055
+    _targetCameraBiasX: 0
+    _targetCameraBiasY: 0
+  _characterStatsSettings:
+    _physicalPower: 2
+    _physicalDamageResistance: 0.25
+    _stunProbabilityResistance: 0.075

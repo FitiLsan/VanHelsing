@@ -1,4 +1,4 @@
-namespace Quests
+namespace BeastHunter
 {
     public enum QuestRewardTypes
     {
