@@ -51,6 +51,8 @@ namespace BeastHunter
 
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestAccepted, QuestJournalData.LoadQuestInfo);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestButtonClickEvent, QuestJournalData.ShowQuestInfo);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestJournalCreated, QuestJournalData.InitializeQuestJournal);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestJournalOpened, QuestJournalData.ShowQuestInfo);
         }
 
         #endregion

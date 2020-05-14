@@ -61,7 +61,7 @@ namespace BeastHunter
             }
         }
 
-        public IEnumerable<int> GetCompletedQuests()
+        public IEnumerable<int> GetCompletedQuestsId()
         {
             foreach (DataRow row in _saveData.Tables[SaveTables.completed_quests.ToString()].Rows)
             {
@@ -75,6 +75,16 @@ namespace BeastHunter
             foreach (DataRow row in _saveData.Tables[SaveTables.quest.ToString()].Rows)
             {
                 res.Add(row.GetInt("QuestId"),row.GetInt("TimeLeft"));
+            }
+            return res;
+        }
+
+        public Dictionary<int, bool> GetCompletedQuests()
+        {
+            var res = new Dictionary<int, bool>();
+            foreach (DataRow row in _saveData.Tables[SaveTables.completed_quests.ToString()].Rows)
+            {
+                res.Add(row.GetInt("QuestId"), true);
             }
             return res;
         }

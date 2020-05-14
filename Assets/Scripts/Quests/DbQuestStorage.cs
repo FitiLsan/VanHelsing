@@ -39,9 +39,9 @@ namespace BeastHunter
             _agent.QuestCompleted(id);
         }
 
-        public List<int> GetAllCompletedQuests()
+        public List<int> GetAllCompletedQuestsById()
         {
-            return _agent.GetAllCompletedQuests();
+            return _agent.GetAllCompletedQuestsById();
         }
 
         public List<Quest> GetAllActiveQuests()
@@ -49,6 +49,11 @@ namespace BeastHunter
             return _agent.GetAllActiveQuests();
         }
 
+        public List<Quest> GetAllCompletedQuests()
+        {
+            return _agent.GetAllCompletedQuests();
+        }
+        
         public List<int> GetAllActiveQuestsById()
         {
             return _agent.GetAllActiveQuestsById();

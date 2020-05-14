@@ -9,6 +9,7 @@ namespace BeastHunter
     public sealed class QuestJournalData : ScriptableObject
     {
         #region Fields
+        private List<GameObject> _buttonList = new List<GameObject>();
         private List<GameObject> _taskList = new List<GameObject>();
         private List<GameObject> _rewardList = new List<GameObject>();
         private string _description;
@@ -16,54 +17,86 @@ namespace BeastHunter
         public QuestJournalStruct QuestJournalStruct;
         public QuestJournalModel Model;
         public QuestModel questModel;
+        public int lastQuestId = 0;
 
         #endregion
 
 
         #region Methods
 
-        public void LoadQuestInfo(EventArgs args)
+        public void InitializeQuestJournal(EventArgs arg0)
         {
             questModel = Model.Context.QuestModel;
-            var quest = questModel.QuestStorage.GetQuestById((args as IdArgs).Id);
-            var questName = quest.Title;            
-            AddQuestButton(Model.QuestContentField.transform, Model.QuestButton, questName, quest.Id );          
+            var activeQuests = Model.Context.QuestModel.ActiveQuests;
+            var completedQuests = Model.Context.QuestModel.CompletedQuests;
+            foreach (int id in activeQuests)
+            {
+                LoadQuestInfo(new IdArgs(id));
+            }
+            foreach (int id in completedQuests)
+            {
+                LoadQuestInfo(new IdArgs(id));
+            }
+
+        }
+
+        public void LoadQuestInfo(EventArgs args)
+        {
+            var quest = questModel.GetActualQuestById((args as IdArgs).Id);
+            var questName = quest.Title;
+            AddQuestButton(Model.QuestContentField.transform, Model.QuestButton, questName, quest.Id);          
         }
 
         public void ShowQuestInfo(EventArgs args)
         {
+            if (args == null)
+            {
+                args = new IdArgs(lastQuestId);
+            }
+
             ClearQuestInfo();
-            var quest = questModel.QuestStorage.GetQuestById((args as IdArgs).Id);
+            InitializeQuestJournal(null);
 
-            var questDescription = quest.Description;
-            var questTasks = quest.Tasks;
-            var questReward = quest.Rewards;
-
-            AddDescription(Model.DescriptionContentField, questDescription);
-
-            foreach (QuestTask task in questTasks)
+            var quest = questModel.GetActualQuestById((args as IdArgs).Id);
+            if (quest != null)
             {
-                AddQuestTasks(Model.TasksFieldField.transform, Model.Task, task.Description, task.IsCompleted, task.CurrentAmount, task.NeededAmount, task.IsOptional);
-            }
+                var questDescription = quest.Description;
+                var questTasks = quest.Tasks;
+                var questReward = quest.Rewards;
+                lastQuestId = quest.Id;
 
-            foreach (QuestRewardGroup reward in questReward)
-            {
-                AddQuestRewards(Model.RewardContentField.transform, Model.Reward);     //TODO: Rewards
-            }
+                AddDescription(Model.DescriptionContentField, questDescription);
 
-            AddQuestRewards(Model.RewardContentField.transform, Model.Reward);
+                foreach (QuestTask task in questTasks)
+                {
+                    AddQuestTasks(Model.TasksFieldField.transform, Model.Task, task.Description, task.IsCompleted, task.CurrentAmount, task.NeededAmount, task.IsOptional);
+                }
+
+                foreach (QuestRewardGroup reward in questReward)
+                {
+                    AddQuestRewards(Model.RewardContentField.transform, Model.Reward);     //TODO: Rewards
+                }
+
+                AddQuestRewards(Model.RewardContentField.transform, Model.Reward);
+            }
         }
 
         public void AddQuestButton(Transform questContent, GameObject questButton, string questName, int questId)
         {
             var tempQuestButton = Instantiate(questButton, questContent.position, questContent.rotation, questContent);
+            _buttonList.Add(tempQuestButton);
             tempQuestButton.GetComponentInChildren<Text>().text = questName;
             tempQuestButton.name +=$"/{questId}";
+            var isCompleted = false;
+            if(questModel.CompletedQuests.Contains(questId))
+            {
+                isCompleted = true;
+            }
+            tempQuestButton.transform.Find("Image").GetComponent<Image>().enabled = isCompleted;
         }
 
         public void AddDescription(Image description, string text)
         {
-            questModel = Model.Context.QuestModel;
             _description = description.GetComponentInChildren<Text>().text = text;
         }
 
@@ -96,6 +129,10 @@ namespace BeastHunter
 
         public void ClearQuestInfo()
         {
+            foreach (GameObject obj in _buttonList)
+            {
+                Destroy(obj);
+            }
             foreach (GameObject obj in _taskList)
             {
                 Destroy(obj);
@@ -109,8 +146,6 @@ namespace BeastHunter
             _rewardList.Clear();
             _description = "";
         }
-
-
         #endregion
     }
 }

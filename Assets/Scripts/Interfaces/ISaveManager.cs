@@ -9,7 +9,8 @@ namespace BeastHunter
 
         List<Quest> LoadQuestLog();
         List<Quest> GetAllActiveQuests();
-        List<int> GetAllCompletedQuests();
+        List<int> GetAllCompletedQuestsById();
+        List<Quest> GetAllCompletedQuests();
         List<int> GetAllActiveQuestsById();
         void SaveQuestLog(List<Quest> quests);
         void QuestCompleted(int id);

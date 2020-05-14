@@ -17,8 +17,8 @@ namespace BeastHunter
         {
             if(Input.GetButtonDown("QuestJournal"))
             {
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestJournalOpened, null);
                 Switcher();
-
             }
         }
 

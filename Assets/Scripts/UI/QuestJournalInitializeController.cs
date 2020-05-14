@@ -30,6 +30,7 @@ namespace BeastHunter
             GameObject instance = GameObject.Instantiate(questJournalData.QuestJournalStruct.Prefab);
             QuestJournalModel questJournal = new QuestJournalModel(instance, questJournalData, _context);
             _context.QuestJournalModel = questJournal;
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestJournalCreated, null);
         }
         #endregion
     }

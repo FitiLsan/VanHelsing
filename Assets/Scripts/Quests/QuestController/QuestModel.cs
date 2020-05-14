@@ -11,7 +11,7 @@ namespace BeastHunter
         #region Fields
 
         private readonly List<Quest> _quests;
-
+        private readonly List<Quest> _completedQuest;
         public readonly IQuestStorage QuestStorage;
 
         public int QuestCount => _quests.Count;
@@ -27,27 +27,28 @@ namespace BeastHunter
 
         public List<int> CompletedQuests { get; }
         public List<int> ActiveQuests { get; }
-        
+
         #endregion
 
 
         #region ClassLifeCycle
 
         public QuestModel(IQuestStorage questStorage, GameContext context)
-        {   
-            
+        {
+
             Context = context;
             QuestStorage = questStorage;
             QuestStorage.LoadGame("TestSave.bytes");
             _quests = QuestStorage.GetAllActiveQuests();
+            _completedQuest = QuestStorage.GetAllCompletedQuests();
             ActiveQuests = QuestStorage.GetAllActiveQuestsById();
-            CompletedQuests = QuestStorage.GetAllCompletedQuests();
+            CompletedQuests = QuestStorage.GetAllCompletedQuestsById();
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestAccepted, OnQuestAccept);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.NpcDie, OnNpcDie);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.AreaEnter, OnAreaEnter);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.Saving, OnProgressSaving);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestAbandoned, OnQuestAbandon);
-            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestReported, OnQuestReport);          
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestReported, OnQuestReport);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.DialogStarted, OnDialogEnter);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.ObjectUsed, OnObjectUse);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.DialogAnswerSelect, OnDialogAnswerSelect);
@@ -91,6 +92,7 @@ namespace BeastHunter
             AllTaskCompletedInQuests.Remove(t.Id);
             _quests.Remove(t);
             ActiveQuests.Remove(t.Id);
+            _completedQuest.Add(t);
 #if UNITY_EDITOR
             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Reported");
             QuestStorage.SaveGame("TestSave.bytes");
@@ -129,10 +131,10 @@ namespace BeastHunter
 
             }
 #if UNITY_EDITOR
-            
+
 #endif
         }
-      
+
         private void QuestUpdate(QuestTaskTypes eventType, int targetId, int amount = 1)
         {
             foreach (var quest in GetByTaskType(eventType))
@@ -158,11 +160,11 @@ namespace BeastHunter
                     if (!AllTaskCompletedInQuests.Contains(quest.Id))
                     {
                         AllTaskCompletedInQuests.Add(quest.Id);
-                        foreach(var task in quest.Tasks)
+                        foreach (var task in quest.Tasks)
                         {
                             CompletedTasks.Remove(task.Id);
                         }
-                        
+
                     }
                     Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestCompleted, new IdArgs(quest.Id));
                     Debug.Log($"QuestLogController>>> Quest ID:[{quest.Id}] Complete");
@@ -205,6 +207,27 @@ namespace BeastHunter
             return _quests.FindAll(x => x.IsTracked);
         }
 
+        public Quest GetActualQuestById(int id)
+        {
+            Quest curQuest = null;
+            foreach(Quest quest in _quests)
+            {
+                if( quest.Id == id)
+                {
+                    curQuest = quest;
+                    break;
+                }
+            }
+            foreach (Quest quest in _completedQuest)
+            {
+                if (quest.Id == id)
+                {
+                    curQuest = quest;
+                    break;
+                }
+            }
+            return curQuest;
+        }
         //private void OnItemAcquired(EventArgs arg0)
         //{
         //    if (!(arg0 is ItemArgs itemArgs)) return;

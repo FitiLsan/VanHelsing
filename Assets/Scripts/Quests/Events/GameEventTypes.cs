@@ -26,6 +26,8 @@
         MidOfDayTimeComes,
         DialogAnswerSelect,
         StatsRecalculated,
-        QuestButtonClickEvent
+        QuestButtonClickEvent,
+        QuestJournalCreated,
+        QuestJournalOpened
     }
 }
