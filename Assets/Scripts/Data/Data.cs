@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using UnityEngine;
 
+
 namespace BeastHunter {
     [CreateAssetMenu (fileName = "Data", menuName = "DataTest")]
     public sealed class Data : ScriptableObject {
@@ -12,6 +13,7 @@ namespace BeastHunter {
         [SerializeField] private string _dialogueSystemDataPath;
         [SerializeField] private string _giantMudCrabDataPath;
         [SerializeField] private string _questIndicatorDataPath;
+        [SerializeField] private string _questJournalDataPath;
 
         private static Data _instance;
 
@@ -23,6 +25,7 @@ namespace BeastHunter {
         private static QuestIndicatorData _questIndicatorData;
         private static WeaponItem _feast;
         private static ClothItem _jacket;
+        private static QuestJournalData _questJournalData;
 
         #endregion
 
@@ -114,7 +117,20 @@ namespace BeastHunter {
             }
         }
 
+        public static QuestJournalData QuestJournalData
+        {
+            get
+            {
+                if (_questJournalData == null)
+                {
+                    _questJournalData = Load<QuestJournalData>("Data/" + Instance._questJournalDataPath);
+                }
+                return _questJournalData;
+            }
+        }
+
         #endregion
+
 
         #region Methods
 

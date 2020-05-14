@@ -28,7 +28,7 @@ namespace BeastHunter
         public void SaveGame(string filename)//= null)
         {
             _saveFileWrapper.CreateNewSave(filename ?? DateTime.Now.ToString("s").Replace(':', '-') + ".bytes");
-            EventManager.TriggerEvent(GameEventTypes.Saving, null);
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.Saving, null);
             SaveInfo();
         }
 

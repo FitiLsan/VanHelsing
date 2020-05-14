@@ -11,7 +11,8 @@ namespace BeastHunter
         #region Fields
 
         private readonly List<Quest> _quests;
-        private readonly IQuestStorage _questStorage;
+
+        public readonly IQuestStorage QuestStorage;
 
         public int QuestCount => _quests.Count;
         public IEnumerable<Quest> Quests => _quests.AsReadOnly();
@@ -36,20 +37,20 @@ namespace BeastHunter
         {   
             
             Context = context;
-            _questStorage = questStorage;
-            _questStorage.LoadGame("TestSave.bytes");
-            _quests = _questStorage.GetAllActiveQuests();
-            ActiveQuests = _questStorage.GetAllActiveQuestsById();
-            CompletedQuests = _questStorage.GetAllCompletedQuests();
-            EventManager.StartListening(GameEventTypes.QuestAccepted, OnQuestAccept);
-            EventManager.StartListening(GameEventTypes.NpcDie, OnNpcDie);
-            EventManager.StartListening(GameEventTypes.AreaEnter, OnAreaEnter);
-            EventManager.StartListening(GameEventTypes.Saving, OnProgressSaving);
-            EventManager.StartListening(GameEventTypes.QuestAbandoned, OnQuestAbandon);
-            EventManager.StartListening(GameEventTypes.QuestReported, OnQuestReport);          
-            EventManager.StartListening(GameEventTypes.DialogStarted, OnDialogEnter);
-            EventManager.StartListening(GameEventTypes.ObjectUsed, OnObjectUse);
-            EventManager.StartListening(GameEventTypes.DialogAnswerSelect, OnDialogAnswerSelect);
+            QuestStorage = questStorage;
+            QuestStorage.LoadGame("TestSave.bytes");
+            _quests = QuestStorage.GetAllActiveQuests();
+            ActiveQuests = QuestStorage.GetAllActiveQuestsById();
+            CompletedQuests = QuestStorage.GetAllCompletedQuests();
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestAccepted, OnQuestAccept);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.NpcDie, OnNpcDie);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.AreaEnter, OnAreaEnter);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.Saving, OnProgressSaving);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestAbandoned, OnQuestAbandon);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestReported, OnQuestReport);          
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.DialogStarted, OnDialogEnter);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.ObjectUsed, OnObjectUse);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.DialogAnswerSelect, OnDialogAnswerSelect);
             //  EventManager.StartListening(GameEventTypes.ItemAcquired, OnItemAcquired);
             //  EventManager.StartListening(GameEventTypes.ItemUsed, OnItemUse);
         }
@@ -61,7 +62,7 @@ namespace BeastHunter
 
         private void OnProgressSaving(EventArgs arg0)
         {
-            _questStorage.SaveQuestLog(_quests);
+            QuestStorage.SaveQuestLog(_quests);
         }
 
         private void OnDialogEnter(EventArgs arg0)
@@ -86,13 +87,13 @@ namespace BeastHunter
                 Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Can't Reported, Quest is not complete");
                 return;
             }
-            _questStorage.QuestCompleted(t.Id);
+            QuestStorage.QuestCompleted(t.Id);
             AllTaskCompletedInQuests.Remove(t.Id);
             _quests.Remove(t);
             ActiveQuests.Remove(t.Id);
 #if UNITY_EDITOR
             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Reported");
-            _questStorage.SaveGame("TestSave.bytes");
+            QuestStorage.SaveGame("TestSave.bytes");
             Debug.Log("Game saved");
 #endif
         }
@@ -108,7 +109,7 @@ namespace BeastHunter
         private void OnQuestAccept(EventArgs args)
         {
             if (!(args is IdArgs idArgs)) return;
-            var t = _questStorage.GetQuestById(idArgs.Id);
+            var t = QuestStorage.GetQuestById(idArgs.Id);
             if (t != null)
             {
                 if (_quests.Count != 0)
@@ -163,7 +164,7 @@ namespace BeastHunter
                         }
                         
                     }
-                    EventManager.TriggerEvent(GameEventTypes.QuestCompleted, new IdArgs(quest.Id));
+                    Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestCompleted, new IdArgs(quest.Id));
                     Debug.Log($"QuestLogController>>> Quest ID:[{quest.Id}] Complete");
                 }
             }

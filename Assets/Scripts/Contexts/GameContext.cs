@@ -17,6 +17,7 @@ namespace BeastHunter
         public InputModel InputModel;
         public GiantMudCrabModel GiantMudCrabModel;
         public List<QuestIndicatorModel> QuestIndicatorModelList = new List<QuestIndicatorModel>();
+        public QuestJournalModel QuestJournalModel;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;

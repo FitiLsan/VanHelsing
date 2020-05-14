@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewModel", menuName = "CreateModel/DialogueSystem", order = 0)]
+    [CreateAssetMenu(fileName = "NewData", menuName = "CreateData/DialogueSystemData", order = 0)]
     public sealed class DialogueSystemData : ScriptableObject
     {
         #region Fields
@@ -43,18 +43,16 @@ namespace BeastHunter
 
         public void SelectAnswer(int buttonNumber)
         {
-            EventManager.TriggerEvent(GameEventTypes.DialogAnswerSelect, new DialogArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId, Model.NpcID));
-
-           // Debug.Log($"id answer {Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId}, id npc  {Model.NpcID}");
+           Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.DialogAnswerSelect, new DialogArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId, Model.NpcID));
 
             if (Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].IsStartQuest)
             {
-                EventManager.TriggerEvent(GameEventTypes.QuestAccepted, new IdArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].QuestId));
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestAccepted, new IdArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].QuestId));
             }
 
             if (Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].IsEndQuest)
             {
-                EventManager.TriggerEvent(GameEventTypes.QuestReported, new IdArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].QuestId));
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestReported, new IdArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].QuestId));
             }
 
             if (Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].IsEnd)

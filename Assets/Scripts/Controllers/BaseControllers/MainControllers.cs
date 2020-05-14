@@ -13,6 +13,7 @@
             Add(new InitializeInteractableObjectController(context));
             Add(new QuestInitializeController(context));
             Add(new QuestIndicatorInitializeController(context));
+            Add(new QuestJournalInitializeController(context));
             Add(new GiantMudCrabController(context));
             Add(new TargetController(context));
             Add(new InputController(context));
@@ -21,6 +22,7 @@
             Add(new StartDialogueController(context));
             Add(new DialogueTriggerController(context));
             Add(new QuestController(context));
+            Add(new QuestIndicatorController(context));
             Add(new QuestIndicatorController(context));
         }
 

@@ -28,7 +28,7 @@ namespace BeastHunter
         {
             var QuestIndicatorData = Data.QuestIndicatorData;
             var CharacterTransform = _context.CharacterModel.CharacterTransform.transform;
-            var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(CharacterTransform.position, 10f, "NPC");
+            var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(CharacterTransform.position, 100f, "NPC");
 
             for (int i = 0; i < list.Count; i++)
             {

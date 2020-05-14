@@ -101,7 +101,7 @@ namespace BeastHunter
                 Debug.Log("The crab is dead");
                 _context.GiantMudCrabModel.Crab.GetComponent<Renderer>().material.color = Color.red;
                 _context.GiantMudCrabModel.Crab.GetComponent<InteractableObjectBehavior>().enabled = false;
-                EventManager.TriggerEvent(GameEventTypes.NpcDie, new EnemyDieArgs(_context.GiantMudCrabModel.GiantMudCrabTransform.GetComponent<IGetNpcInfo>().GetInfo().Item1,0));
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.NpcDie, new EnemyDieArgs(_context.GiantMudCrabModel.GiantMudCrabTransform.GetComponent<IGetNpcInfo>().GetInfo().Item1,0));
             }
         }
 

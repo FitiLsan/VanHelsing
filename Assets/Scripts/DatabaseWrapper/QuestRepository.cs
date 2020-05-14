@@ -184,7 +184,7 @@ namespace BeastHunter
                 foreach (DataRow row in dtObj.Rows)
                 {
                     var tid = row.GetInt(QUEST_OBJECTIVES_ID);
-                    var tmp = DatabaseWrapper.ExecuteQueryWithAnswer($"select 'Title' from '{GetQuestObjectivesLocaleTable()}' where ObjectiveId={tid} limit 1;");
+                    var tmp = DatabaseWrapper.ExecuteQueryWithAnswer($"select Title from '{GetQuestObjectivesLocaleTable()}' where ObjectiveId={tid} limit 1;");
                     var task = new QuestTaskDto
                     {
                         Id = row.GetInt(QUEST_OBJECTIVES_ID),
@@ -245,7 +245,7 @@ namespace BeastHunter
         public static void Init()
         {
             //TODO: Событие смены языка 
-            EventManager.StartListening(GameEventTypes.QuestReported, OnQuestReported);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestReported, OnQuestReported);
         }
 
         private static void OnQuestReported(EventArgs arg0)

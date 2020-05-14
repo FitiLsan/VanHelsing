@@ -125,7 +125,7 @@ namespace BeastHunter
 
         public List<GameObject> GetObjectsInRadiusByTag(Vector3 position, float radius, string tagName)
         {
-            Collider[] collidedObjectsByTag = new Collider[30];
+            Collider[] collidedObjectsByTag = new Collider[200];
             var layer = LayerManager.DefaultLayer;
             int colliderCount = Physics.OverlapSphereNonAlloc(position, radius, collidedObjectsByTag, layer);
             List <GameObject> colliderListByTag = new List<GameObject>(); 

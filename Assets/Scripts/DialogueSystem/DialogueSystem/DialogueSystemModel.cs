@@ -53,7 +53,7 @@ namespace BeastHunter
 
         #region Metods
 
-        public void Initilize()
+        public void Execute()
         {
         }
 
