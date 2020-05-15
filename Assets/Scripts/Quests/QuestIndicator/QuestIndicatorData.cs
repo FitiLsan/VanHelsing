@@ -69,50 +69,66 @@ namespace BeastHunter
                 {
                     var currentQuestID = DialogueCache.Rows[i].GetInt(8);
 
-                    if (DialogueCache.Rows[i].GetInt(6) == 1 & DialogueCache.Rows[i].GetInt(5) == npcID)
+                    if (DialogueCache.Rows[i].GetInt(5) == npcID)
                     {
-                        if (!completedQuests.Contains(currentQuestID) & !activeQuests.Contains(currentQuestID))
+                        if (DialogueCache.Rows[i].GetInt(6) == 1)
                         {
-                            ExclamationMarkShow(true, model);
-                        }
-                        else
-                        {
-                            ExclamationMarkShow(false, model);
-                        }
-                    }
-
-                    if (DialogueCache.Rows[i].GetInt(9) == 1 & DialogueCache.Rows[i].GetInt(5) == npcID)
-                    {
-                        for (int j = 0; j < QuestTasksCache.Rows.Count; j++)
-                        {
-                            if (QuestTasksCache.Rows[j].GetInt(1) == currentQuestID)
+                            if (!completedQuests.Contains(currentQuestID) & !activeQuests.Contains(currentQuestID))
                             {
-                                var currentTaskID = QuestTasksCache.Rows[j].GetInt(0);
-                                var taskTargetID = QuestTasksCache.Rows[j].GetInt(2);
-                                var dialogueTargetID = DialogueCache.Rows[i].GetInt(0);
-                                if (!completedTasks.Contains(currentTaskID) & activeQuests.Contains(currentQuestID) &
-                                    !questsWithCompletedAllTask.Contains(currentQuestID) & taskTargetID == dialogueTargetID)
+                                ExclamationMarkShow(true, model);
+                            }
+                            else
+                            {
+                                ExclamationMarkShow(false, model);
+                            }
+                        }
+
+                        if (DialogueCache.Rows[i].GetInt(9) == 1)
+                        {
+                            for (int j = 0; j < QuestTasksCache.Rows.Count; j++)
+                            {
+                                if (QuestTasksCache.Rows[j].GetInt(1) == currentQuestID)
                                 {
-                                    TaskQuestionMarkShow(true, model);
-                                }
-                                else
-                                {
-                                    TaskQuestionMarkShow(false, model);
+                                    var currentTaskID = QuestTasksCache.Rows[j].GetInt(0);
+                                    var taskTargetID = QuestTasksCache.Rows[j].GetInt(2);
+                                    var dialogueTargetID = DialogueCache.Rows[i].GetInt(0);
+                                    if (!completedTasks.Contains(currentTaskID) & activeQuests.Contains(currentQuestID) &
+                                        !questsWithCompletedAllTask.Contains(currentQuestID) & taskTargetID == dialogueTargetID)
+                                    {
+                                        TaskQuestionMarkShow(true, model);
+                                    }
+                                    else
+                                    {
+                                        var flag = false;
+                                        for (int k = 0; k < DialogueCache.Rows.Count; k++)
+                                        {
+                                            var tempQuestId = DialogueCache.Rows[k].GetInt(8);
+                                            if (activeQuests.Contains(tempQuestId) & !questsWithCompletedAllTask.Contains(tempQuestId) &
+                                                tempQuestId != currentQuestID & !completedQuests.Contains(currentQuestID))
+                                            {
+                                                flag = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!flag)
+                                        {
+                                            TaskQuestionMarkShow(false, model);
+                                        }
+                                    }
                                 }
                             }
                         }
 
-                    }
-
-                    if (DialogueCache.Rows[i].GetInt(7) == 1 & DialogueCache.Rows[i].GetInt(5) == npcID)
-                    {
-                        if (questsWithCompletedAllTask.Contains(currentQuestID))
+                        if (DialogueCache.Rows[i].GetInt(7) == 1)
                         {
-                            QuestionMarkShow(true, model);
-                        }
-                        else
-                        {
-                            QuestionMarkShow(false, model);
+                            if (questsWithCompletedAllTask.Contains(currentQuestID))
+                            {
+                                QuestionMarkShow(true, model);
+                            }
+                            else
+                            {
+                                QuestionMarkShow(false, model);
+                            }
                         }
                     }
                 }
