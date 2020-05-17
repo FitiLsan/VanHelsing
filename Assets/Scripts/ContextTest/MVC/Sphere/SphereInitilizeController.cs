@@ -27,7 +27,7 @@ namespace BeastHunter
         public void OnAwake()
         {
             var SphereData = Data.SphereData;
-            GameObject instance = GameObject.Instantiate(SphereData.SphereStruct.Prefab);
+            GameObject instance = GameObject.Instantiate(SphereData.SphereStruct.Prefab,SphereData.SphereStruct.Target);
             SphereModel Sphere = new SphereModel(instance, SphereData);
             _context.SphereModel = Sphere;
         }
