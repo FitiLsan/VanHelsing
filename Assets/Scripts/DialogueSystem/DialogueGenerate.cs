@@ -33,7 +33,6 @@ namespace BeastHunter
                     var answerQuestId = answerDt.Rows[i].GetInt(8);
                     var answerTaskQuest = answerDt.Rows[i].GetInt(9);
 
-
                     var completedQuests = context.QuestModel.CompletedQuests;
                     var activeQuests = context.QuestModel.ActiveQuests;
                     var allTaskCompleted = context.QuestModel.AllTaskCompletedInQuests;
@@ -51,17 +50,27 @@ namespace BeastHunter
                             {
                                 continue;
                             }
-                            if (allTaskCompleted.Count != 0)
+                            if (answerTaskQuest == 1)
                             {
-                                if (!allTaskCompleted.Contains(answerQuestId))
+                                if (allTaskCompleted.Count != 0)
+                                {
+                                    if (allTaskCompleted.Contains(answerQuestId))
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                            if (answerIsEndQuest == 1) 
+                            {
+                                if (!allTaskCompleted.Contains(answerQuestId))  
                                 {
                                     continue;
                                 }
                             }
-                            else if (answerIsEndQuest == 1)
-                            {
-                                continue;
-                            }
+                        }
+                        else if (answerIsEndQuest == 1 || answerTaskQuest == 1)
+                        {
+                            continue;
                         }
                     }
                     else if (answerIsEndQuest == 1 || answerTaskQuest == 1)

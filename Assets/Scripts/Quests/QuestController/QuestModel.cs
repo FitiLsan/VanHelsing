@@ -160,10 +160,10 @@ namespace BeastHunter
                     if (!AllTaskCompletedInQuests.Contains(quest.Id))
                     {
                         AllTaskCompletedInQuests.Add(quest.Id);
-                        foreach (var task in quest.Tasks)
-                        {
-                            CompletedTasks.Remove(task.Id);
-                        }
+                        //foreach (var task in quest.Tasks)
+                        //{
+                        //    CompletedTasks.Remove(task.Id);
+                        //}
 
                     }
                     Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestCompleted, new IdArgs(quest.Id));

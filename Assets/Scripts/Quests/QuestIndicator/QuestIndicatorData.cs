@@ -68,6 +68,7 @@ namespace BeastHunter
                 for (int i = 0; i < DialogueCache.Rows.Count; i++)
                 {
                     var currentQuestID = DialogueCache.Rows[i].GetInt(8);
+                    var dialogueTargetID = DialogueCache.Rows[i].GetInt(0);
 
                     if (DialogueCache.Rows[i].GetInt(5) == npcID)
                     {
@@ -91,24 +92,32 @@ namespace BeastHunter
                                 {
                                     var currentTaskID = QuestTasksCache.Rows[j].GetInt(0);
                                     var taskTargetID = QuestTasksCache.Rows[j].GetInt(2);
-                                    var dialogueTargetID = DialogueCache.Rows[i].GetInt(0);
-                                    if (!completedTasks.Contains(currentTaskID) & activeQuests.Contains(currentQuestID) &
-                                        !questsWithCompletedAllTask.Contains(currentQuestID) & taskTargetID == dialogueTargetID)
+                                    
+                                    if (!completedTasks.Contains(currentTaskID) &
+                                        activeQuests.Contains(currentQuestID) &
+                                        !questsWithCompletedAllTask.Contains(currentQuestID) &
+                                        taskTargetID == dialogueTargetID)
                                     {
                                         TaskQuestionMarkShow(true, model);
                                     }
                                     else
                                     {
                                         var flag = false;
-                                        for (int k = 0; k < DialogueCache.Rows.Count; k++)
+                                        for (int k = 0; k < activeQuests.Count; k++)
                                         {
                                             var tempQuestId = DialogueCache.Rows[k].GetInt(8);
-                                            if (activeQuests.Contains(tempQuestId) & !questsWithCompletedAllTask.Contains(tempQuestId) &
-                                                tempQuestId != currentQuestID & !completedQuests.Contains(currentQuestID))
-                                            {
-                                                flag = true;
-                                                break;
-                                            }
+
+                                            if (activeQuests.Contains(tempQuestId) &
+                                                !questsWithCompletedAllTask.Contains(tempQuestId) &
+                                                tempQuestId != currentQuestID &
+                                                !completedQuests.Contains(currentQuestID) &
+                                                DialogueCache.Rows[k].GetInt(5)!=npcID)
+                                                // проверить и убрать лишнее
+                                                if (!questsWithCompletedAllTask.Contains(k) & k != currentQuestID & !completedQuests.Contains(k))
+                                                {
+                                                    flag = true;
+                                                    break;
+                                                }
                                         }
                                         if (!flag)
                                         {
