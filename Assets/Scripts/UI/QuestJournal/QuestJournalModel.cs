@@ -7,7 +7,9 @@ namespace BeastHunter
     public sealed class QuestJournalModel
     {
         #region Fields
+
         public GameContext Context;
+
         #endregion
 
 

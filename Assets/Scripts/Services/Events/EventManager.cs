@@ -11,13 +11,12 @@ namespace BeastHunter
 
         private Dictionary<GameEventTypes, GameEvent> _eventDictionary;
 
-        #endregion
-
-
         public EventManager(Contexts contexts) : base(contexts)
         {
             _eventDictionary = new Dictionary<GameEventTypes, GameEvent>();
         }
+
+        #endregion
 
 
         #region Methods
@@ -51,12 +50,10 @@ namespace BeastHunter
             if (_eventDictionary.TryGetValue(eventName, out var thisEvent)) thisEvent.Invoke(eventArgs);
         }
 
-        //public static void Reset()
-        //{
-        //    foreach (var gameEvent in _eventManager._eventDictionary) gameEvent.Value.RemoveAllListeners();
-        //    _eventManager = new EventManager();
-        //    _eventManager.Init();
-        //}
+        public void Reset()
+        {
+            foreach (var gameEvent in _eventDictionary) gameEvent.Value.RemoveAllListeners();
+        }
 
         #endregion
     }

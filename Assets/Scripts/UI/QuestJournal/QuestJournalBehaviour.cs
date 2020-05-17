@@ -13,6 +13,7 @@ namespace BeastHunter
 
         #endregion
 
+
         #region Methods
 
         public void OnPointerClick(PointerEventData eventData)

@@ -1,5 +1,6 @@
 ﻿namespace BeastHunter
 {
+
     public sealed class QuestJournalController : IUpdate
     {
         #region Fields

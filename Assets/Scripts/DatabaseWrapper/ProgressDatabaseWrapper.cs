@@ -11,21 +11,6 @@ namespace BeastHunter
 {
     public class ProgressDatabaseWrapper : ISaveFileWrapper
     {
-        #region PrivateData
-
-        private enum SaveTables
-        {
-            equipment,
-            inventory,
-            quest,
-            quest_objectives,
-            save_info,
-            completed_quests
-        }
-
-        #endregion
-
-
         #region Fields
 
         private const string SAVE_FILE_TAMPLATE = "progress.bytes";

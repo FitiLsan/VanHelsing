@@ -26,7 +26,7 @@ namespace BeastHunter
             _saveFileWrapper = wrapper;
         }
 
-        public void SaveGame(string filename)//= null)
+        public void SaveGame(string filename)//= null for saving into new file everytime)
         {
             _saveFileWrapper.CreateNewSave(filename ?? DateTime.Now.ToString("s").Replace(':', '-') + ".bytes");
             Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.Saving, null);
@@ -44,7 +44,6 @@ namespace BeastHunter
             _newEntry = _saveFileWrapper.GetNextItemEntry();
             _completedQuestsById = _saveFileWrapper.GetCompletedQuestsId().ToList();
             _activeQuests = LoadQuestLog();
-            //_completedQuests =
         }
 
         public void SaveQuestLog(List<Quest> quests)

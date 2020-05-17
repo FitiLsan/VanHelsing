@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
+
 namespace BeastHunter
 {
     public sealed class ButtonClick : MonoBehaviour

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BeastHunter
 {
-    public class DbQuestStorage : IQuestStorage
+    public sealed class DbQuestStorage : IQuestStorage
     {
         #region Fields
 

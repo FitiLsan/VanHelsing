@@ -54,6 +54,7 @@ namespace BeastHunter
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.DialogAnswerSelect, OnDialogAnswerSelect);
             //  EventManager.StartListening(GameEventTypes.ItemAcquired, OnItemAcquired);
             //  EventManager.StartListening(GameEventTypes.ItemUsed, OnItemUse);
+            // не удалять, события для предметов
         }
 
         #endregion
@@ -160,11 +161,6 @@ namespace BeastHunter
                     if (!AllTaskCompletedInQuests.Contains(quest.Id))
                     {
                         AllTaskCompletedInQuests.Add(quest.Id);
-                        //foreach (var task in quest.Tasks)
-                        //{
-                        //    CompletedTasks.Remove(task.Id);
-                        //}
-
                     }
                     Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestCompleted, new IdArgs(quest.Id));
                     Debug.Log($"QuestLogController>>> Quest ID:[{quest.Id}] Complete");
@@ -239,6 +235,7 @@ namespace BeastHunter
         //    if (!(arg0 is ItemArgs itemArgs)) return;
         //    QuestUpdate(QuestTaskTypes.UseItem, itemArgs.Item.Id);
         //}
+        //не удалять, события для предметов
 
         public void QuestTimeChecking()
         {
@@ -254,6 +251,7 @@ namespace BeastHunter
         {
             QuestTimeChecking();
         }
+
         #endregion
     }
 }

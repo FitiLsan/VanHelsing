@@ -1,7 +1,6 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 namespace BeastHunter
 {
@@ -110,10 +109,7 @@ namespace BeastHunter
                                             if (activeQuests.Contains(tempQuestId) &
                                                 !questsWithCompletedAllTask.Contains(tempQuestId) &
                                                 tempQuestId != currentQuestID &
-                                                !completedQuests.Contains(currentQuestID) &
-                                                DialogueCache.Rows[k].GetInt(5)!=npcID)
-                                                // проверить и убрать лишнее
-                                                if (!questsWithCompletedAllTask.Contains(k) & k != currentQuestID & !completedQuests.Contains(k))
+                                                !completedQuests.Contains(currentQuestID))
                                                 {
                                                     flag = true;
                                                     break;

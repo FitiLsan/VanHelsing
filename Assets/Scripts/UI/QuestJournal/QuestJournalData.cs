@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewData", menuName = "CreateData/QuestJournalData", order = 0)]
     public sealed class QuestJournalData : ScriptableObject
     {
         #region Fields
+
         private List<GameObject> _buttonList = new List<GameObject>();
         private List<GameObject> _taskList = new List<GameObject>();
         private List<GameObject> _rewardList = new List<GameObject>();
         private string _description;
+        private int _lastQuestId = 0;
 
         public QuestJournalStruct QuestJournalStruct;
         public QuestJournalModel Model;
         public QuestModel questModel;
-        public int lastQuestId = 0;
-
+        
         #endregion
 
 
@@ -37,7 +39,6 @@ namespace BeastHunter
             {
                 LoadQuestInfo(new IdArgs(id));
             }
-
         }
 
         public void LoadQuestInfo(EventArgs args)
@@ -51,19 +52,20 @@ namespace BeastHunter
         {
             if (args == null)
             {
-                args = new IdArgs(lastQuestId);
+                args = new IdArgs(_lastQuestId);
             }
 
             ClearQuestInfo();
             InitializeQuestJournal(null);
 
             var quest = questModel.GetActualQuestById((args as IdArgs).Id);
+
             if (quest != null)
             {
                 var questDescription = quest.Description;
                 var questTasks = quest.Tasks;
                 var questReward = quest.Rewards;
-                lastQuestId = quest.Id;
+                _lastQuestId = quest.Id;
 
                 AddDescription(Model.DescriptionContentField, questDescription);
 
