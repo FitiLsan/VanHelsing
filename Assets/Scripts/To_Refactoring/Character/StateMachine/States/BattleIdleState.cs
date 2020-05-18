@@ -17,6 +17,9 @@ namespace BeastHunter
         public BattleIdleState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Battle;
+            IsTargeting = false;
+            IsAttacking = false;
             CanExit = true;
             CanBeOverriden = true;
         }

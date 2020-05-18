@@ -19,8 +19,11 @@
         public TalkingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
-            CanExit = true;
-            CanBeOverriden = true;
+            Type = StateType.NotActive;
+            IsTargeting = false;
+            IsAttacking = false;
+            CanExit = false;
+            CanBeOverriden = false;
         }
 
         #endregion

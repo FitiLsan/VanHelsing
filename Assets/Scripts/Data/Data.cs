@@ -11,6 +11,11 @@ namespace BeastHunter {
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
         [SerializeField] private string _giantMudCrabDataPath;
+        [SerializeField] private string _feastPath;
+        [SerializeField] private string _jacketPath;
+        [SerializeField] private string _cameraDataPath;
+        [SerializeField] private string _rabbitDataPath;
+
 
         private static Data _instance;
 
@@ -21,6 +26,9 @@ namespace BeastHunter {
         private static GiantMudCrabData _giantMudCrabData;
         private static WeaponItem _feast;
         private static ClothItem _jacket;
+        private static CameraData _cameraData;
+        private static RabbitData _rabbitData;
+
 
         #endregion
 
@@ -96,6 +104,30 @@ namespace BeastHunter {
                     _jacket = Resources.Load<ClothItem> ("Data/Clothes/Jacket"); //TODO Сделать по примеру выше через Instance.****DataPath)
                 }
                 return _jacket;
+            }
+        }
+
+        public static CameraData CameraData
+        {
+            get
+            {
+                if (_cameraData == null)
+                {
+                    _cameraData = Resources.Load<CameraData>("Data/" + Instance._cameraDataPath);
+                }
+                return _cameraData;
+            }
+        }
+
+        public static RabbitData RabbitData
+        {
+            get
+            {
+                if (_rabbitData == null)
+                {
+                    _rabbitData = Resources.Load<RabbitData>("Data/" + Instance._rabbitDataPath);
+                }
+                return _rabbitData;
             }
         }
 

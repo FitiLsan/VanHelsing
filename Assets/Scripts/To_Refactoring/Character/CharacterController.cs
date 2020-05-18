@@ -385,7 +385,7 @@ namespace BeastHunter
             {
                 if (_characterModel.IsEnemyNear)
                 {
-                    _stateMachine.SetStateOverride(_stateMachine._battleTargetMovementState);
+                    _stateMachine.SetStateOverride(_stateMachine._gettingWeaponState, _stateMachine._battleTargetMovementState);
                 }
             }
         }
@@ -436,21 +436,29 @@ namespace BeastHunter
 
         private void SetAttackingLeftState()
         {
-            if (_stateMachine.CurrentState != _stateMachine._attackingLeftState &&
-                _stateMachine.CurrentState != _stateMachine._attackingRightState && _characterModel.IsGrounded)
-            {
-                _characterModel.IsInBattleMode = true;
-                _stateMachine.SetStateOverride(_stateMachine._attackingLeftState);
-            }
+            SetAttackingState(_stateMachine._attackingLeftState);
         }
 
         private void SetAttackingRightState()
         {
-            if (_stateMachine.CurrentState != _stateMachine._attackingLeftState &&
-                _stateMachine.CurrentState != _stateMachine._attackingRightState && _characterModel.IsGrounded)
+            SetAttackingState(_stateMachine._attackingRightState);
+        }
+
+        private void SetAttackingState(CharacterBaseState attackState)
+        {
+            if (attackState.IsAttacking)
             {
-                _characterModel.IsInBattleMode = true;
-                _stateMachine.SetStateOverride(_stateMachine._attackingRightState);
+                if (CanAttack())
+                {
+                    if (_characterModel.IsWeaponInHands)
+                    {
+                        _stateMachine.SetStateOverride(attackState);
+                    }
+                    else
+                    {
+                        _stateMachine.SetStateOverride(_stateMachine._gettingWeaponState);
+                    }
+                }
             }
         }
 
@@ -470,36 +478,79 @@ namespace BeastHunter
             _characterModel.IsInBattleMode = false;
         }
 
+        private void SetTalkingState(bool isStartsTalking)
+        {
+            if (isStartsTalking && _stateMachine.CurrentState != _stateMachine._talkingState)
+            {
+                if (_stateMachine.CurrentState.Type == StateType.Default)
+                {
+                    _stateMachine.SetState(_stateMachine._talkingState);
+                }
+                else if (_stateMachine.CurrentState.Type == StateType.Battle)
+                {
+                    _stateMachine.SetState(_stateMachine._removingWeaponState, _stateMachine._talkingState);
+                }
+
+                _services.CameraService.SetActiveCamera(_services.CameraService.CharacterDialogCamera);
+            }
+            else if (_stateMachine.CurrentState == _stateMachine._talkingState)
+            {
+                _stateMachine.SetStateAnyway(_stateMachine._defaultIdleState);
+                _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
+            }
+        }
+
+        private bool CanAttack()
+        {
+            return _characterModel.IsGrounded && !_stateMachine.CurrentState.IsAttacking &&
+                _stateMachine.CurrentState.Type != StateType.NotActive;
+        }
+
+        private void CheckWeaponInHands()
+        {
+
+        }
+
         private void OnStateChange(CharacterBaseState previousState, CharacterBaseState currentState)
         {
-            if(_characterModel.TargetMarkTransform.GetComponentInParent<Transform>().tag == 
-                _characterModel.CharacterCommonSettings.InstanceTag && currentState == _stateMachine._battleTargetMovementState)
+            //if(_characterModel.TargetMarkTransform.GetComponentInParent<Transform>().tag == 
+            //    _characterModel.CharacterCommonSettings.InstanceTag && currentState == _stateMachine._battleTargetMovementState)
+            //{
+            //    _characterModel.TargetMark.transform.SetParent(_characterModel.ClosestEnemy.transform);
+            //    _characterModel.TargetMarkTransform.localPosition = Vector3.zero + Vector3.up * 
+            //        _characterModel.CharacterCommonSettings.TargetMarkHeight;
+            //    _characterModel.TargetMark.SetActive(true);
+            //}
+            //else if ((previousState == _stateMachine._battleTargetMovementState || previousState == _stateMachine._rollingTargetState) &&
+            //        currentState != _stateMachine._battleTargetMovementState && currentState != _stateMachine._rollingTargetState &&
+            //            currentState != _stateMachine._attackingLeftState)
+            //{
+            //    _characterModel.TargetMark.transform.SetParent(_characterModel.CharacterTransform);
+            //    _characterModel.TargetMarkTransform.localPosition = Vector3.zero;
+            //    _characterModel.TargetMark.SetActive(false);
+            //}
+
+            if (currentState.Type == StateType.Battle && !_characterModel.IsWeaponInHands)
             {
-                _characterModel.TargetMark.transform.SetParent(_characterModel.ClosestEnemy.transform);
-                _characterModel.TargetMarkTransform.localPosition = Vector3.zero + Vector3.up * 
-                    _characterModel.CharacterCommonSettings.TargetMarkHeight;
-                _characterModel.TargetMark.SetActive(true);
-            }
-            else if ((previousState == _stateMachine._battleTargetMovementState || previousState == _stateMachine._rollingTargetState) &&
-                    currentState != _stateMachine._battleTargetMovementState && currentState != _stateMachine._rollingTargetState &&
-                        currentState != _stateMachine._attackingLeftState)
-            {
-                _characterModel.TargetMark.transform.SetParent(_characterModel.CharacterTransform);
-                _characterModel.TargetMarkTransform.localPosition = Vector3.zero;
-                _characterModel.TargetMark.SetActive(false);
+                _characterModel.CharacterSphereCollider.radius *= _characterModel.CharacterCommonSettings.SphereColliderRadiusIncrese;
+                _stateMachine.SetStateOverride(_stateMachine._gettingWeaponState);
             }
 
-            if((currentState == _stateMachine._battleIdleState || currentState == _stateMachine._battleMovementState || currentState == 
-                _stateMachine._battleTargetMovementState || currentState == _stateMachine._attackingLeftState ||
-                    currentState == _stateMachine._attackingRightState) && !_characterModel.IsWeaponInHands)
+            if (currentState.Type != StateType.Battle && _characterModel.IsWeaponInHands)
             {
-                _stateMachine.SetStateAnyway(_stateMachine._gettingWeaponState);
+                _characterModel.CharacterSphereCollider.radius = _characterModel.CharacterCommonSettings.SphereColliderRadius;
+                _stateMachine.SetStateOverride(_stateMachine._removingWeaponState);
             }
 
-            if((currentState == _stateMachine._defaultIdleState || currentState == _stateMachine._defaultMovementState) &&
-                _characterModel.IsWeaponInHands)
+            if(!previousState.IsTargeting && currentState.IsTargeting && !_stateMachine.CurrentState.IsAttacking)
             {
-                _stateMachine.SetStateAnyway(_stateMachine._removingWeaponState);
+                _services.CameraService.SetActiveCamera(_services.CameraService.CharacterTargetCamera);
+                //Debug.Log("TO TARGET previous targeting: " + previousState + " " + previousState.IsTargeting + " current targeting: " + currentState + " " + currentState.IsTargeting);
+            }
+            else if(previousState.IsTargeting && !currentState.IsTargeting && !_stateMachine.CurrentState.IsAttacking)
+            {
+                _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
+                //Debug.Log("TO FREE previous targeting: " + previousState + " " + previousState.IsTargeting + " current targeting: " + currentState + " " + currentState.IsTargeting);
             }
         }
 

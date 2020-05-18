@@ -40,6 +40,9 @@ namespace BeastHunter
         public RollingTargetState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Battle;
+            IsTargeting = true;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = false;
         }
@@ -63,9 +66,7 @@ namespace BeastHunter
             }
             else
             {
-                CanExit = true;
-                CanBeOverriden = true;
-                _stateMachine.ReturnState();
+                CheckNextState();
             }
         }
 
@@ -87,9 +88,22 @@ namespace BeastHunter
 
             if (RollTime <= 0)
             {
-                CanExit = true;
-                CanBeOverriden = true;
+                CheckNextState();
+            }
+        }
+
+        private void CheckNextState()
+        {
+            CanExit = true;
+            CanBeOverriden = true;
+
+            if (NextState == null)
+            {
                 _stateMachine.ReturnState();
+            }
+            else
+            {
+                _stateMachine.SetState(NextState);
             }
         }
 

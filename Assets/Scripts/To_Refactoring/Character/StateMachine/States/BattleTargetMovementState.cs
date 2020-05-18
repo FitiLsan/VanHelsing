@@ -44,6 +44,9 @@ namespace BeastHunter
         public BattleTargetMovementState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Battle;
+            IsTargeting = true;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = true;
             SpeedIncreace = _characterModel.CharacterCommonSettings.InBattleRunSpeed /

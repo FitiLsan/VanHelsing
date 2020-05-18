@@ -1,4 +1,6 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 
 namespace BeastHunter
@@ -103,6 +105,7 @@ namespace BeastHunter
 
         public void SetStateOverride(CharacterBaseState newState)
         {
+            Debug.Log(newState);
             if (CurrentState != newState)
             {
                 if (CurrentState.CanBeOverriden)

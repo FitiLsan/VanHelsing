@@ -18,6 +18,9 @@ namespace BeastHunter
         public AttackingFromRightState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Battle;
+            IsTargeting = false;
+            IsAttacking = true;
             CanExit = false;
             CanBeOverriden = false;
             _currentAttackIndex = 0;
