@@ -14,6 +14,10 @@
 
         #region Properties
 
+        public CharacterBaseState NextState { get; set; }
+        public StateType Type { get; protected set; }
+        public bool IsTargeting { get; protected set; }
+        public bool IsAttacking { get; protected set; }
         public bool CanExit { get; protected set; }
         public bool CanBeOverriden { get; protected set; }
 
@@ -41,6 +45,8 @@
         public abstract void Execute();
 
         public abstract void OnExit();
+
+        public abstract void OnTearDown();
 
         #endregion
     }

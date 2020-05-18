@@ -109,7 +109,7 @@ namespace BeastHunter
 
         public Transform GetCharacterCamera()
         {
-           return Model.Context.CharacterModel.CharacterCamera.transform;
+           return Services.SharedInstance.CameraService.CharacterCamera.transform;
         }
         #endregion
     }

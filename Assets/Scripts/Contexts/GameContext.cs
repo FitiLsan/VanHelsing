@@ -9,6 +9,9 @@ namespace BeastHunter
     {
         #region Fields
 
+        public SphereModel _sphereModel;
+        public CharacterModel _characterModel;
+        public List<RabbitModel> RabbitModel;
         public StartDialogueModel StartDialogueModel;
         public DialogueSystemModel DialogueSystemModel;
         public QuestModel QuestModel;
@@ -32,6 +35,7 @@ namespace BeastHunter
         {
             _onTriggers = new SortedList<InteractableObjectType, List<IInteractable>>();
             _interactables = new List<IInteractable>();
+            RabbitModel = new List<RabbitModel>(8);
         }
 
         #endregion
