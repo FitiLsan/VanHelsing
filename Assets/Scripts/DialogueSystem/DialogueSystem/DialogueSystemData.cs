@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 
 namespace BeastHunter
@@ -39,6 +40,11 @@ namespace BeastHunter
             {
                 DialogueAnswerClear();
             }
+        }
+
+        public void SelectAnswerById(EventArgs id)
+        {
+            SelectAnswer((id as IdArgs).Id);
         }
 
         public void SelectAnswer(int buttonNumber)
@@ -91,27 +97,7 @@ namespace BeastHunter
                     {
                         if (buttonNum - 1 < Model.DialogueNode[Model.CurrentNode].PlayerAnswers.Count)
                         {
-                            switch (buttonNum)
-                            {
-                                case 1:
-                                    SelectAnswer(0);
-                                    break;
-
-                                case 2:
-                                    SelectAnswer(1);
-                                    break;
-
-                                case 3:
-                                    SelectAnswer(2);
-                                    break;
-
-                                case 4:
-                                    SelectAnswer(3);
-                                    break;
-
-                                default:
-                                    return;
-                            }
+                            SelectAnswer(buttonNum - 1);
                         }
                     }
                 }

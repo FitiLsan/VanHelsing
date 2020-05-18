@@ -37,7 +37,7 @@ namespace BeastHunter
                 _context.QuestIndicatorModelList.Add(QuestIndicator);
                 QuestIndicatorData.SetPosition(list[i].transform, instance.transform);
             }
-
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
         }
         #endregion
     }

@@ -28,6 +28,8 @@
         StatsRecalculated,
         QuestButtonClickEvent,
         QuestJournalCreated,
-        QuestJournalOpened
+        QuestJournalOpened,
+        QuestUpdated,
+        AnswerButtonClicked
     }
 }

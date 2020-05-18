@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using UnityEngine;
 
 
@@ -16,7 +17,7 @@ namespace BeastHunter
         public int NpcID;
         public DataTable DialogueCache = QuestRepository.GetDialogueCache();
         public DataTable QuestTasksCache = QuestRepository.GetQuestTaskCache();
-
+        public GameContext Context;
         #endregion
 
 
@@ -43,12 +44,10 @@ namespace BeastHunter
             questIndicatorTransform.parent = npcTransform;
         }
 
-        public void QuestIndicatorCheck(GameContext context)
+        public void QuestIndicatorCheck(EventArgs arg0)
         {
-            foreach (QuestIndicatorModel questIndicatorModel in context.QuestIndicatorModelList)
+            foreach (QuestIndicatorModel questIndicatorModel in Context.QuestIndicatorModelList)
             {
-                questIndicatorModel.QuestIndicatorTransform.LookAt(context.CharacterModel.CharacterCamera.transform);
-
                 questIndicatorModel.QuestIndicatorData.GetQuestInfo(questIndicatorModel.NpcTransform.GetComponent<IGetNpcInfo>().GetInfo().Item1, questIndicatorModel);
             }
         }

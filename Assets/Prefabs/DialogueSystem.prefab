@@ -281,8 +281,9 @@ GameObject:
   - component: {fileID: 2781224404062120780}
   - component: {fileID: 2781224404062120781}
   - component: {fileID: 2781224404062120770}
+  - component: {fileID: 6742630249791746917}
   m_Layer: 0
-  m_Name: Answer2
+  m_Name: AnswerButton2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -366,7 +367,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.6726261, g: 0.9433962, b: 0.3960484, a: 1}
+    m_HighlightedColor: {r: 0.6745098, g: 0.94509804, b: 0.39607844, a: 1}
     m_PressedColor: {r: 0.8584906, g: 0.3280082, b: 0.3280082, a: 1}
     m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -388,9 +389,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3693981495564716417}
-        m_MethodName: ButtonClickMouse
-        m_Mode: 3
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -401,6 +402,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &6742630249791746917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2781224404062120768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51a6706e7cb1a2489e41382a42dba63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2781224404350244201
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,8 +426,9 @@ GameObject:
   - component: {fileID: 2781224404350244245}
   - component: {fileID: 2781224404350244202}
   - component: {fileID: 2781224404350244203}
+  - component: {fileID: 2654553093227239935}
   m_Layer: 0
-  m_Name: Answer1
+  m_Name: AnswerButton1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -520,9 +534,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3693981495564716417}
-        m_MethodName: ButtonClickMouse
-        m_Mode: 3
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -533,6 +547,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2654553093227239935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2781224404350244201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51a6706e7cb1a2489e41382a42dba63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2781224404959004059
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,8 +650,9 @@ GameObject:
   - component: {fileID: 2781224405152664232}
   - component: {fileID: 2781224405152664233}
   - component: {fileID: 2781224405152664238}
+  - component: {fileID: 3737002198812224379}
   m_Layer: 0
-  m_Name: Answer4
+  m_Name: AnswerButton4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -731,8 +758,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3693981495564716417}
-        m_MethodName: ButtonClickMouse
+      - m_Target: {fileID: 0}
+        m_MethodName: 
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -744,6 +771,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &3737002198812224379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2781224405152664236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51a6706e7cb1a2489e41382a42dba63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2781224405187927418
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,8 +978,9 @@ GameObject:
   - component: {fileID: 2781224405234019180}
   - component: {fileID: 2781224405234019181}
   - component: {fileID: 2781224405234019170}
+  - component: {fileID: 8946306260293526169}
   m_Layer: 0
-  m_Name: Answer3
+  m_Name: AnswerButton3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1046,9 +1086,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3693981495564716417}
-        m_MethodName: ButtonClickMouse
-        m_Mode: 3
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1059,6 +1099,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &8946306260293526169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2781224405234019168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51a6706e7cb1a2489e41382a42dba63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2781224405420450962
 GameObject:
   m_ObjectHideFlags: 0

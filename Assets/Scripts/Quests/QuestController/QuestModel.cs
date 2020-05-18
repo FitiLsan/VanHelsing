@@ -71,16 +71,19 @@ namespace BeastHunter
         {
             if (!(arg0 is DialogArgs dialogArgs)) return;
             QuestUpdate(QuestTaskTypes.TalkWithNpc, dialogArgs.NpcId);
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
         }
 
         private void OnDialogAnswerSelect(EventArgs arg0)
         {
             if (!(arg0 is DialogArgs dialogArgs)) return;
             QuestUpdate(QuestTaskTypes.AnswerSelect, dialogArgs.Id);
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
         }
 
         private void OnQuestReport(EventArgs arg0)
-        {
+        {       
+
             if (!(arg0 is IdArgs idArgs)) return;
             var t = _quests.Find(x => x.Id == idArgs.Id);
             if (t == null) return;
@@ -96,21 +99,24 @@ namespace BeastHunter
             _completedQuest.Add(t);
 #if UNITY_EDITOR
             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Reported");
-            QuestStorage.SaveGame("TestSave.bytes");
             Debug.Log("Game saved");
 #endif
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
+            QuestStorage.SaveGame("TestSave.bytes");
+
         }
 
         private void OnQuestAbandon(EventArgs arg0)
-        {
+        {           
             if (!(arg0 is IdArgs idArgs)) return;
             var t = _quests.Find(x => x.Id == idArgs.Id);
             if (t != null)
                 _quests.Remove(t);
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
         }
 
         private void OnQuestAccept(EventArgs args)
-        {
+        {         
             if (!(args is IdArgs idArgs)) return;
             var t = QuestStorage.GetQuestById(idArgs.Id);
             if (t != null)
@@ -128,12 +134,11 @@ namespace BeastHunter
                 }
                 _quests.Add(t);
                 ActiveQuests.Add(t.Id);
-                Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Accepted");
-
-            }
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
 #if UNITY_EDITOR
-
+                Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Accepted");
 #endif
+            }
         }
 
         private void QuestUpdate(QuestTaskTypes eventType, int targetId, int amount = 1)
@@ -163,29 +168,38 @@ namespace BeastHunter
                         AllTaskCompletedInQuests.Add(quest.Id);
                     }
                     Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestCompleted, new IdArgs(quest.Id));
+                    Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
+#if UNITY_EDITOR
                     Debug.Log($"QuestLogController>>> Quest ID:[{quest.Id}] Complete");
+#endif
                 }
             }
         }
 
         private void OnNpcDie(EventArgs args)
-        {
+        {           
             if (!(args is EnemyDieArgs dieArgs)) return;
             QuestUpdate(QuestTaskTypes.KillNpc, dieArgs.Id);
             QuestUpdate(QuestTaskTypes.KillEnemyFamily, dieArgs.FamilyId);
+
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
+#if UNITY_EDITOR
             Debug.Log($"NPC with ID:{dieArgs.Id}");
+#endif
         }
 
         private void OnAreaEnter(EventArgs args)
         {
             if (!(args is IdArgs idArgs)) return;
             QuestUpdate(QuestTaskTypes.FindLocation, idArgs.Id);
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
         }
 
         private void OnObjectUse(EventArgs arg0)
         {
             if (!(arg0 is IdArgs itemArgs)) return;
             QuestUpdate(QuestTaskTypes.UseObject, itemArgs.Id);
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
         }
 
         public List<Quest> GetByZone(int zoneId)

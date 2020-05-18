@@ -31,6 +31,8 @@ namespace BeastHunter
             QuestIndicatorStruct = QuestIndicatorData.QuestIndicatorStruct;
             NpcTransform = npc.transform;
             Context = context;
+            QuestIndicatorData.Context = context;
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestUpdated, QuestIndicatorData.QuestIndicatorCheck);
         }
 
         #endregion
@@ -38,10 +40,14 @@ namespace BeastHunter
 
         #region Metods
 
-        
+        public void QuestIndicatorLookingAtCamera()
+        {
+            QuestIndicatorTransform.LookAt(Context.CharacterModel.CharacterCamera.transform);
+        }
+
         public void Execute()
         {
-           QuestIndicatorData.QuestIndicatorCheck(Context);
+            QuestIndicatorLookingAtCamera();
         }
 
         #endregion
