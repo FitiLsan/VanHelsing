@@ -59,7 +59,7 @@ namespace BeastHunter
             return isHit;
         }
 
-        public List<ITrigger> GetObjectsInRadius(Vector2 position, float radius, int layerMask = LayerManager.DEFAULT_LAYER)
+        public List<ITrigger> GetObjectsInRadius(Vector3 position, float radius, int layerMask = LayerManager.DEFAULT_LAYER)
         {
             _triggeredObjects.Clear();
             ITrigger trigger;
@@ -121,6 +121,24 @@ namespace BeastHunter
             }
 
             return result;
+        }
+
+        public List<GameObject> GetObjectsInRadiusByTag(Vector3 position, float radius, string tagName)
+        {
+            Collider[] collidedObjectsByTag = new Collider[200];
+            var layer = LayerManager.DefaultLayer;
+            int colliderCount = Physics.OverlapSphereNonAlloc(position, radius, collidedObjectsByTag, layer);
+            List <GameObject> colliderListByTag = new List<GameObject>(); 
+            for (int i = 0; i < colliderCount; i++)
+            {
+                var obj = collidedObjectsByTag[i].gameObject;
+
+                if (obj != null && obj.tag == tagName)
+                {
+                    colliderListByTag.Add(obj);
+                }
+            }
+            return colliderListByTag;
         }
 
         #endregion

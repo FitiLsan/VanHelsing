@@ -26,6 +26,5 @@ namespace BeastHunter
         public List<QuestRewardDto> Rewards { get; set; } = new List<QuestRewardDto>();
 
         #endregion
-
     }
 }

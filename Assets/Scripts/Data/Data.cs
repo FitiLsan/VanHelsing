@@ -16,6 +16,8 @@ namespace BeastHunter {
         [SerializeField] private string _jacketPath;
         [SerializeField] private string _cameraDataPath;
         [SerializeField] private string _rabbitDataPath;
+        [SerializeField] private string _questIndicatorDataPath;
+        [SerializeField] private string _questJournalDataPath;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -23,12 +25,15 @@ namespace BeastHunter {
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
         private static GiantMudCrabData _giantMudCrabData;
+        private static QuestIndicatorData _questIndicatorData;
         private static WeaponItem _feast;
         private static ClothItem _jacket;
         private static CameraData _cameraData;
         private static RabbitData _rabbitData;
+        private static QuestJournalData _questJournalData;
 
         #endregion
+
 
         #region Properties
 
@@ -86,6 +91,18 @@ namespace BeastHunter {
             }
         }
 
+        public static QuestIndicatorData QuestIndicatorData
+        {
+            get
+            {
+                if (_questIndicatorData == null)
+                {
+                    _questIndicatorData = Load<QuestIndicatorData>("Data/" + Instance._questIndicatorDataPath);
+                }
+                return _questIndicatorData;
+            }
+        }
+
         public static WeaponItem Feast {
             get {
                 if (_feast == null) {
@@ -125,10 +142,21 @@ namespace BeastHunter {
                     _rabbitData = Resources.Load<RabbitData>("Data/" + Instance._rabbitDataPath);
                 }
                 return _rabbitData;
+
+        public static QuestJournalData QuestJournalData
+        {
+            get
+            {
+                if (_questJournalData == null)
+                {
+                    _questJournalData = Load<QuestJournalData>("Data/" + Instance._questJournalDataPath);
+                }
+                return _questJournalData;
             }
         }
 
         #endregion
+
 
         #region Methods
 

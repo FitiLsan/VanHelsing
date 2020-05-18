@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace BeastHunter
 {
-    public class GameEvent : UnityEvent<EventArgs>
+    public sealed class GameEvent : UnityEvent<EventArgs>
     {
     }
 }
