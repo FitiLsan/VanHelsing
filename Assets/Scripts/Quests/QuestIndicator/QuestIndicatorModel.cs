@@ -42,7 +42,7 @@ namespace BeastHunter
 
         public void QuestIndicatorLookingAtCamera()
         {
-            QuestIndicatorTransform.LookAt(Context.CharacterModel.CharacterCamera.transform);
+            QuestIndicatorTransform.LookAt(Services.SharedInstance.CameraService.CharacterCamera.transform);
         }
 
         public void Execute()

@@ -142,7 +142,8 @@ namespace BeastHunter {
                     _rabbitData = Resources.Load<RabbitData>("Data/" + Instance._rabbitDataPath);
                 }
                 return _rabbitData;
-
+            }
+        }
         public static QuestJournalData QuestJournalData
         {
             get

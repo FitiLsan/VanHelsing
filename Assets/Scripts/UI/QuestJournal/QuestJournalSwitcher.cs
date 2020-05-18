@@ -41,7 +41,7 @@ namespace BeastHunter
         #endregion
 
 
-        #region Unity Methods
+        #region UnityMethods
 
         public void Start()
         {
