@@ -41,7 +41,7 @@ namespace BeastHunter
         #endregion
 
 
-        #region Unity Methods
+        #region UnityMethods
 
         public void Start()
         {
@@ -55,6 +55,14 @@ namespace BeastHunter
             {
                 Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestJournalOpened, null);
                 Switcher();
+            }
+
+            if (Input.GetButtonDown("Cancel"))
+            {
+                if (canvas.enabled)
+                {
+                    Off();
+                }
             }
         }
 
