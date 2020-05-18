@@ -63,7 +63,7 @@ namespace BeastHunter
             _inputModel.OnTargetLock += ChangeTargetMode;
             _inputModel.OnAttackLeft += SetAttackingLeftState;
             _inputModel.OnAttackRight += SetAttackingRightState;
-            // _inputModel.OnDance += ChangeDancingState; //TODO изменить кнопку танца!
+            _inputModel.OnDance += ChangeDancingState;
 
             _characterModel.PlayerBehavior.OnFilterHandler += OnFilterHandler;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterHandler;
@@ -71,8 +71,9 @@ namespace BeastHunter
             _characterModel.PlayerBehavior.OnTakeDamageHandler += TakeDamage;
 
             _stateMachine.OnStateChangeHandler += OnStateChange;
+            LockCharAction.LockCharacterMovement += SetTalkingState;
 
-            SetRightWeapon(_services.InventoryService.GetWeapons()[0]);
+            SetRightWeapon(_services.InventoryService.GetAllWeapons()[0]);
             //SetLeftWeapon(_services.InventoryService.Feast);
             //SetRightWeapon(_services.InventoryService.Feast);
             _services.InventoryService.HideWepons(_characterModel);
@@ -95,7 +96,8 @@ namespace BeastHunter
                 GetClosestEnemy();
                 _stateMachine.CurrentState.Execute();
             }
-
+            Debug.Log(_stateMachine.CurrentState + " enemy neaar:" + _characterModel.IsEnemyNear + " battle:" + _characterModel.IsInBattleMode +
+                " weapon hands: " + _characterModel.IsWeaponInHands);
             _animationController.UpdateAnimationParameters(_inputModel.inputStruct._inputTotalAxisX, 
                 _inputModel.inputStruct._inputTotalAxisY, _characterModel.CurrentSpeed, _characterModel.AnimationSpeed);
         }
@@ -106,18 +108,21 @@ namespace BeastHunter
 
         public void TearDown()
         {
-            _characterModel.PlayerBehavior.OnFilterHandler -= OnFilterHandler;
-            _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterHandler;
-            _characterModel.PlayerBehavior.OnTriggerExitHandler -= OnTriggerExitHandler;
-            _characterModel.PlayerBehavior.OnTakeDamageHandler -= TakeDamage;
-
             _inputModel.OnJump -= SetJumpingState;
             _inputModel.OnBattleExit -= ExitBattle;
             _inputModel.OnTargetLock -= ChangeTargetMode;
             _inputModel.OnAttackLeft -= SetAttackingLeftState;
             _inputModel.OnAttackRight -= SetAttackingRightState;
             _inputModel.OnDance -= ChangeDancingState;
+            
+            _characterModel.PlayerBehavior.OnFilterHandler -= OnFilterHandler;
+            _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterHandler;
+            _characterModel.PlayerBehavior.OnTriggerExitHandler -= OnTriggerExitHandler;
+            _characterModel.PlayerBehavior.OnTakeDamageHandler -= TakeDamage;
+
             _stateMachine.OnStateChangeHandler -= OnStateChange;
+            _stateMachine.TearDownStates();
+            LockCharAction.LockCharacterMovement -= SetTalkingState;
         }
 
         #endregion
@@ -127,9 +132,9 @@ namespace BeastHunter
 
         public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
         {
-            if(enemy.GetComponent<InteractableObjectBehavior>() != null)
+            if (enemy != null && damage != null)
             {
-                enemy.GetComponent<InteractableObjectBehavior>().OnTakeDamageHandler(damage);
+                enemy.OnTakeDamageHandler(damage);
             }
         }
 
@@ -479,6 +484,28 @@ namespace BeastHunter
         }
 
         private void SetTalkingState(bool isStartsTalking)
+        {
+            if (isStartsTalking)
+            {
+                if (_stateMachine.CurrentState.Type == StateType.Default)
+                {
+                    _stateMachine.SetState(_stateMachine._talkingState);
+                }
+                else if (_stateMachine.CurrentState.Type == StateType.Battle)
+                {
+                    _stateMachine.SetState(_stateMachine._removingWeaponState, _stateMachine._talkingState);
+                }
+
+                _services.CameraService.SetActiveCamera(_services.CameraService.CharacterDialogCamera);
+            }
+            else
+            {
+                _stateMachine.SetStateAnyway(_stateMachine._defaultIdleState);
+                _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
+            }
+        }
+
+        private void OnStateChange(CharacterBaseState previousState, CharacterBaseState currentState)
         {
             if (isStartsTalking && _stateMachine.CurrentState != _stateMachine._talkingState)
             {

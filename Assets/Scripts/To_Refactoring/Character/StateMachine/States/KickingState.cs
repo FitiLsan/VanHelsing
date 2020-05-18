@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public class KickingState : CharacterBaseState
+    public sealed class KickingState : CharacterBaseState
     {
         #region Fields
 

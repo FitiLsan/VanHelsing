@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class JumpingState : CharacterBaseState
+    public sealed class JumpingState : CharacterBaseState
     {
         #region Constants
 
@@ -72,6 +72,10 @@ namespace BeastHunter
         public override void OnExit()
         {
 
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void ExitCheck()

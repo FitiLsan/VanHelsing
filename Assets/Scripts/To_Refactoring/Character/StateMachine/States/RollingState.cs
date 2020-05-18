@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System;
 
 
 namespace BeastHunter
 {
-    public class RollingState : CharacterBaseState
+    public sealed class RollingState : CharacterBaseState
     {
         #region Constants
 
@@ -30,7 +29,7 @@ namespace BeastHunter
 
         #region Properties
 
-        public Action OnRollEnd { get; set; }
+        private Transform CameraTransform { get; set; }
         private float RollTime { get; set; }
         private float TargetDirection { get; set; }
         private float CurrentDirecton { get; set; }
@@ -50,6 +49,7 @@ namespace BeastHunter
             IsAttacking = false;
             CanExit = false;
             CanBeOverriden = false;
+            CameraTransform = Services.SharedInstance.CameraService.CharacterCamera.transform;
         }
 
         #endregion
@@ -85,6 +85,10 @@ namespace BeastHunter
         public override void OnExit()
         {
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void ExitCheck()
@@ -149,7 +153,7 @@ namespace BeastHunter
                     }
 
                     CurrentDirecton = _characterModel.CharacterTransform.localEulerAngles.y;
-                    TargetDirection = _characterModel.CharacterCamera.transform.localEulerAngles.y + AdditionalDirection;
+                    TargetDirection = CameraTransform.localEulerAngles.y + AdditionalDirection;
 
                     CurrentAngle = Mathf.SmoothDampAngle(CurrentDirecton, TargetDirection, ref _currentAngleVelocity,
                         _characterModel.CharacterCommonSettings.DirectionChangeLag);

@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public class DefaultIdleState : CharacterBaseState
+    public sealed class DefaultIdleState : CharacterBaseState
     {
         #region ClassLifeCycle
 
@@ -21,8 +21,6 @@
         public override void Initialize()
         {
             _animationController.PlayDefaultIdleAnimation();
-            _characterModel.CameraCinemachineBrain.m_DefaultBlend.m_Time = 0f;
-            _characterModel.CharacterTargetCamera.Priority = 5;
         }
 
         public override void Execute()
@@ -33,6 +31,10 @@
         public override void OnExit()
         {
 
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         #endregion

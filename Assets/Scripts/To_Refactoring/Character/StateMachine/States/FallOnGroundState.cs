@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public class FallOnGroundState : CharacterBaseState
+    public sealed class FallOnGroundState : CharacterBaseState
     {
         #region Fields
 
@@ -44,6 +44,10 @@
         public override void OnExit()
         {
 
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         #endregion

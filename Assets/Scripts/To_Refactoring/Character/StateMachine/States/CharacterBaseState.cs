@@ -46,6 +46,8 @@
 
         public abstract void OnExit();
 
+        public abstract void OnTearDown();
+
         #endregion
     }
 }

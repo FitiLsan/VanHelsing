@@ -9,7 +9,6 @@ namespace BeastHunter
         #region PrivateData
 
         public CharacterCommonSettingsStruct _characterCommonSettings;
-        public CharacterCameraStruct _characterCameraSettings;
         public BaseStatsClass _characterStatsSettings;
 
         #endregion

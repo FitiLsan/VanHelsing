@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class AttackingFromRightState : CharacterBaseState
+    public sealed class AttackingFromRightState : CharacterBaseState
     {
         #region Fields
 
@@ -50,6 +50,10 @@ namespace BeastHunter
         public override void OnExit()
         {
             _characterModel.RightWeaponBehavior.IsInteractable = false;
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void ExitCheck()

@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public class DodgingState : CharacterBaseState
+    public sealed class DodgingState : CharacterBaseState
     {
         #region Fields
 
@@ -44,6 +44,10 @@
         public override void OnExit()
         {
 
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         #endregion

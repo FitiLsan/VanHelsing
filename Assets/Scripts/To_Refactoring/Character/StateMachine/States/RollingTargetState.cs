@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System;
 
 
 namespace BeastHunter
 {
-    public class RollingTargetState : CharacterBaseState
+    public sealed class RollingTargetState : CharacterBaseState
     {
         #region Constants
 
@@ -29,7 +28,6 @@ namespace BeastHunter
 
         #region Properties
 
-        public Action OnRollEnd { get; set; }
         private float RollTime { get; set; }
 
         #endregion
@@ -80,6 +78,10 @@ namespace BeastHunter
         public override void OnExit()
         {
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void ExitCheck()

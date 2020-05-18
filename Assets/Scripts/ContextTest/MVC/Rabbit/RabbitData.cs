@@ -37,7 +37,8 @@ namespace BeastHunter
             closestTarget = null;
             var closestTargetDistance = RabbitStruct.ViewRadius * RabbitStruct.ViewRadius + 0.01f;
             var result = false;
-            var targets = Physics.OverlapSphere(transform.position, RabbitStruct.ViewRadius); //change layer!!
+            var targets = Physics.OverlapSphere(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer); //change layer!!
+
             foreach(Collider target in targets)
             {
                 if (!target.CompareTag(TagManager.RABBIT))
@@ -59,7 +60,8 @@ namespace BeastHunter
             closestTarget = null;
             var closestTargetDistance = RabbitStruct.ViewRadius * RabbitStruct.ViewRadius + 0.01f;
             var result = false;
-            var targets = Physics.OverlapSphere(transform.position, RabbitStruct.ViewRadius); //change layer!!
+            var targets = Physics.OverlapSphere(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer); //change layer!!
+
             foreach (Collider target in targets)
             {
                 if (!target.CompareTag(TagManager.RABBIT))
