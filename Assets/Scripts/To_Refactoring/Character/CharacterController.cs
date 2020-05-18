@@ -96,8 +96,7 @@ namespace BeastHunter
                 GetClosestEnemy();
                 _stateMachine.CurrentState.Execute();
             }
-            Debug.Log(_stateMachine.CurrentState + " enemy neaar:" + _characterModel.IsEnemyNear + " battle:" + _characterModel.IsInBattleMode +
-                " weapon hands: " + _characterModel.IsWeaponInHands);
+
             _animationController.UpdateAnimationParameters(_inputModel.inputStruct._inputTotalAxisX, 
                 _inputModel.inputStruct._inputTotalAxisY, _characterModel.CurrentSpeed, _characterModel.AnimationSpeed);
         }
@@ -388,7 +387,7 @@ namespace BeastHunter
             }
             else
             {
-                if (_characterModel.IsEnemyNear)
+                if (_characterModel.IsEnemyNear && _characterModel.ClosestEnemy != null)
                 {
                     _stateMachine.SetStateOverride(_stateMachine._gettingWeaponState, _stateMachine._battleTargetMovementState);
                 }
@@ -485,28 +484,6 @@ namespace BeastHunter
 
         private void SetTalkingState(bool isStartsTalking)
         {
-            if (isStartsTalking)
-            {
-                if (_stateMachine.CurrentState.Type == StateType.Default)
-                {
-                    _stateMachine.SetState(_stateMachine._talkingState);
-                }
-                else if (_stateMachine.CurrentState.Type == StateType.Battle)
-                {
-                    _stateMachine.SetState(_stateMachine._removingWeaponState, _stateMachine._talkingState);
-                }
-
-                _services.CameraService.SetActiveCamera(_services.CameraService.CharacterDialogCamera);
-            }
-            else
-            {
-                _stateMachine.SetStateAnyway(_stateMachine._defaultIdleState);
-                _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
-            }
-        }
-
-        private void OnStateChange(CharacterBaseState previousState, CharacterBaseState currentState)
-        {
             if (isStartsTalking && _stateMachine.CurrentState != _stateMachine._talkingState)
             {
                 if (_stateMachine.CurrentState.Type == StateType.Default)
@@ -533,33 +510,11 @@ namespace BeastHunter
                 _stateMachine.CurrentState.Type != StateType.NotActive;
         }
 
-        private void CheckWeaponInHands()
-        {
-
-        }
-
         private void OnStateChange(CharacterBaseState previousState, CharacterBaseState currentState)
         {
-            //if(_characterModel.TargetMarkTransform.GetComponentInParent<Transform>().tag == 
-            //    _characterModel.CharacterCommonSettings.InstanceTag && currentState == _stateMachine._battleTargetMovementState)
-            //{
-            //    _characterModel.TargetMark.transform.SetParent(_characterModel.ClosestEnemy.transform);
-            //    _characterModel.TargetMarkTransform.localPosition = Vector3.zero + Vector3.up * 
-            //        _characterModel.CharacterCommonSettings.TargetMarkHeight;
-            //    _characterModel.TargetMark.SetActive(true);
-            //}
-            //else if ((previousState == _stateMachine._battleTargetMovementState || previousState == _stateMachine._rollingTargetState) &&
-            //        currentState != _stateMachine._battleTargetMovementState && currentState != _stateMachine._rollingTargetState &&
-            //            currentState != _stateMachine._attackingLeftState)
-            //{
-            //    _characterModel.TargetMark.transform.SetParent(_characterModel.CharacterTransform);
-            //    _characterModel.TargetMarkTransform.localPosition = Vector3.zero;
-            //    _characterModel.TargetMark.SetActive(false);
-            //}
-
             if (currentState.Type == StateType.Battle && !_characterModel.IsWeaponInHands)
             {
-                _characterModel.CharacterSphereCollider.radius *= _characterModel.CharacterCommonSettings.SphereColliderRadiusIncrese;
+                _characterModel.CharacterSphereCollider.radius *= _characterModel.CharacterCommonSettings.SphereColliderRadiusIncrease;
                 _stateMachine.SetStateOverride(_stateMachine._gettingWeaponState);
             }
 
@@ -572,12 +527,10 @@ namespace BeastHunter
             if(!previousState.IsTargeting && currentState.IsTargeting && !_stateMachine.CurrentState.IsAttacking)
             {
                 _services.CameraService.SetActiveCamera(_services.CameraService.CharacterTargetCamera);
-                //Debug.Log("TO TARGET previous targeting: " + previousState + " " + previousState.IsTargeting + " current targeting: " + currentState + " " + currentState.IsTargeting);
             }
             else if(previousState.IsTargeting && !currentState.IsTargeting && !_stateMachine.CurrentState.IsAttacking)
             {
                 _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
-                //Debug.Log("TO FREE previous targeting: " + previousState + " " + previousState.IsTargeting + " current targeting: " + currentState + " " + currentState.IsTargeting);
             }
         }
 
