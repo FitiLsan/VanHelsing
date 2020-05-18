@@ -94,12 +94,15 @@ namespace BeastHunter
             {
                 isCompleted = true;
             }
-            tempQuestButton.transform.Find("Image").GetComponent<Image>().enabled = isCompleted;
+            tempQuestButton.transform.Find("IsCompleted").GetComponent<Text>().enabled = isCompleted;
         }
 
         public void AddDescription(Image description, string text)
         {
-            _description = description.GetComponentInChildren<Text>().text = text;
+           var textGO = description.GetComponentInChildren<Text>();//.text = text;
+            _description = textGO.text = text;
+            var a = textGO.rectTransform.position;
+            var b = description.rectTransform.position.y;
         }
 
         public void AddQuestTasks(Transform tasksContent, GameObject task, string taskText, bool isComplete, int curAmount, int needAmount, bool isOptional)

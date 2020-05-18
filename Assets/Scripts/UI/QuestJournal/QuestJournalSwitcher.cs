@@ -56,6 +56,14 @@ namespace BeastHunter
                 Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestJournalOpened, null);
                 Switcher();
             }
+
+            if (Input.GetButtonDown("Cancel"))
+            {
+                if (canvas.enabled)
+                {
+                    Off();
+                }
+            }
         }
 
         #endregion
