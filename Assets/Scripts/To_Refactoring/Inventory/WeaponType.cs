@@ -2,6 +2,7 @@
 {
     public enum WeaponType
     {
+        None,
         MeleeCutting,
         MeleeSmashing,
         RangeShooting,
