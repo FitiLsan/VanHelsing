@@ -36,7 +36,7 @@ namespace BeastHunter
                     var completedQuests = context.QuestModel.CompletedQuests;
                     var activeQuests = context.QuestModel.ActiveQuests;
                     var allTaskCompleted = context.QuestModel.AllTaskCompletedInQuests;
-
+                    var allTaskCompletedWithOptinal = context.QuestModel.AllTaskCompletedInQuestsWithOptional;
                     if (completedQuests.Contains(answerQuestId))
                     {
                         continue;
@@ -64,6 +64,7 @@ namespace BeastHunter
                             {
                                 if (!allTaskCompleted.Contains(answerQuestId))  
                                 {
+                                    if (!allTaskCompletedWithOptinal.Contains(answerQuestId))//
                                     continue;
                                 }
                             }

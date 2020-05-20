@@ -57,6 +57,7 @@ namespace BeastHunter
 
             var questModel = model.Context.QuestModel;
             var questsWithCompletedAllTask = questModel.AllTaskCompletedInQuests;
+            var questsWithCompletedAllTaskWithOptional = questModel.AllTaskCompletedInQuestsWithOptional;
             var activeQuests = questModel.ActiveQuests;
             var completedQuests = questModel.CompletedQuests;
             var completedTasks = questModel.CompletedTasks;
@@ -109,13 +110,16 @@ namespace BeastHunter
 
                                             if (activeQuests.Contains(tempQuestId) &
                                                 !questsWithCompletedAllTask.Contains(tempQuestId) &
+                                                !questsWithCompletedAllTaskWithOptional.Contains(tempQuestId) &
                                                 tempQuestId != currentQuestID &
-                                                !completedQuests.Contains(currentQuestID))
+                                                !completedTasks.Contains(currentTaskID) &
+                                                !completedQuests.Contains(currentQuestID)) 
                                                 {
                                                     flag = true;
-                                                    break;
+                                                   break;
                                                 }
                                         }
+                                        
                                         if (!flag)
                                         {
                                             TaskQuestionMarkShow(false, model);
@@ -127,7 +131,7 @@ namespace BeastHunter
 
                         if (DialogueCache.Rows[i].GetInt(7) == 1)
                         {
-                            if (questsWithCompletedAllTask.Contains(currentQuestID))
+                            if (questsWithCompletedAllTaskWithOptional.Contains(currentQuestID) || questsWithCompletedAllTask.Contains(currentQuestID))
                             {
                                 QuestionMarkShow(true, model);
                             }

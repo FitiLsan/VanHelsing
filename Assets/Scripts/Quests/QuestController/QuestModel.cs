@@ -18,6 +18,7 @@ namespace BeastHunter
         public IEnumerable<Quest> Quests => _quests.AsReadOnly();
         public GameContext Context;
         public List<int> AllTaskCompletedInQuests = new List<int>();
+        public List<int> AllTaskCompletedInQuestsWithOptional = new List<int>();
         public List<int> CompletedTasks = new List<int>();
         public List<int> IsOptionalTasks = new List<int>();
 
@@ -95,9 +96,22 @@ namespace BeastHunter
             }
             QuestStorage.QuestCompleted(t.Id);
             AllTaskCompletedInQuests.Remove(t.Id);
+            AllTaskCompletedInQuestsWithOptional.Remove(t.Id);
             _quests.Remove(t);
             ActiveQuests.Remove(t.Id);
             _completedQuest.Add(t);
+            if (t.IsRepetable != 0)
+            {
+                SetQuestIsNotComplete(t.Id);
+                _completedQuest.Remove(t);
+                CompletedQuests.Remove(t.Id);
+                foreach(var task in t.Tasks)
+                {
+                    CompletedTasks.Remove(task.Id);
+                }
+                
+
+            }
 #if UNITY_EDITOR
             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Reported");
             Debug.Log("Game saved");
@@ -168,7 +182,11 @@ namespace BeastHunter
 
                 if (quest.IsComplete)
                 {
-                    if (!AllTaskCompletedInQuests.Contains(quest.Id))
+                    if (!AllTaskCompletedInQuestsWithOptional.Contains(quest.Id) & quest.HasOptionalTasks)
+                    {
+                        AllTaskCompletedInQuestsWithOptional.Add(quest.Id);
+                    }
+                    if (!AllTaskCompletedInQuests.Contains(quest.Id) & !quest.HasOptionalTasks)
                     {
                         AllTaskCompletedInQuests.Add(quest.Id);
                     }
@@ -265,6 +283,12 @@ namespace BeastHunter
                 quest.ReduceTime(Time.deltaTime);
             }
         }
+
+        public void SetQuestIsNotComplete(int questId)
+        {
+            
+        }
+           
 
         public void Execute()
         {

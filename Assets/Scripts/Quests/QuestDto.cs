@@ -23,6 +23,7 @@ namespace BeastHunter
         public int RewardMoney { get; set; }
         public int StartDialogId { get; set; }
         public int EndDialogId { get; set; }
+        public int IsRepetable { get; set; }
         public List<QuestRewardDto> Rewards { get; set; } = new List<QuestRewardDto>();
 
         #endregion
