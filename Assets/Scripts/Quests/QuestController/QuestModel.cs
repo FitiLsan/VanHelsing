@@ -19,6 +19,7 @@ namespace BeastHunter
         public GameContext Context;
         public List<int> AllTaskCompletedInQuests = new List<int>();
         public List<int> CompletedTasks = new List<int>();
+        public List<int> IsOptionalTasks = new List<int>();
 
         #endregion
 
@@ -155,6 +156,10 @@ namespace BeastHunter
                     if (task.IsCompleted)
                     {
                         CompletedTasks.Add(task.Id);
+                    }
+                    if(task.IsOptional)
+                    {
+                        IsOptionalTasks.Add(task.Id);
                     }
 #if UNITY_EDITOR
                     Debug.Log($"QuestLogController>>> Task ID:[{task.Id}] ({quest.Tasks.IndexOf(task) + 1} out of {quest.Tasks.Count}) [{task.CurrentAmount} out of {task.NeededAmount}] from quest ID:[{quest.Id}] updated");

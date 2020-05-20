@@ -86,8 +86,9 @@ namespace BeastHunter
                         {
                             for (int j = 0; j < QuestTasksCache.Rows.Count; j++)
                             {
+                                var q = QuestTasksCache.Rows[j].GetInt(1);
                                 if (QuestTasksCache.Rows[j].GetInt(1) == currentQuestID)
-                                {
+                                {  
                                     var currentTaskID = QuestTasksCache.Rows[j].GetInt(0);
                                     var taskTargetID = QuestTasksCache.Rows[j].GetInt(2);
                                     
@@ -97,13 +98,14 @@ namespace BeastHunter
                                         taskTargetID == dialogueTargetID)
                                     {
                                         TaskQuestionMarkShow(true, model);
+                                        break;
                                     }
                                     else
                                     {
                                         var flag = false;
                                         for (int k = 0; k < activeQuests.Count; k++)
                                         {
-                                            var tempQuestId = DialogueCache.Rows[k].GetInt(8);
+                                            var tempQuestId = activeQuests[k];
 
                                             if (activeQuests.Contains(tempQuestId) &
                                                 !questsWithCompletedAllTask.Contains(tempQuestId) &
