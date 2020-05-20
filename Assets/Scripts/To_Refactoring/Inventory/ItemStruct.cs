@@ -7,6 +7,8 @@ namespace BeastHunter
     [Serializable]
     public struct ItemStruct
     {
+        #region Fields
+
         public string Name;
         public string Discription;
 
@@ -15,6 +17,8 @@ namespace BeastHunter
 
         public Mesh MeshOfObject;
         //public Image Icon;
+
+        #endregion
     }
 }
 

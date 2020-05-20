@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class AttackingFromLeftState : CharacterBaseState
+    public sealed class AttackingFromLeftState : CharacterBaseState
     {
         #region Fields
 
@@ -18,6 +18,9 @@ namespace BeastHunter
         public AttackingFromLeftState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Battle;
+            IsTargeting = false;
+            IsAttacking = true;
             CanExit = false;
             CanBeOverriden = false;
             _currentAttackIndex = 0;
@@ -47,6 +50,10 @@ namespace BeastHunter
         public override void OnExit()
         {
             _characterModel.LeftWeaponBehavior.IsInteractable = false;
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void ExitCheck()

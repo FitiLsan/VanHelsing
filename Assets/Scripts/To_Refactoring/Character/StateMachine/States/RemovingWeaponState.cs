@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class RemovingWeaponState : CharacterBaseState
+    public sealed class RemovingWeaponState : CharacterBaseState
     {
         #region Fields
 
@@ -18,6 +18,9 @@ namespace BeastHunter
         public RemovingWeaponState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Default;
+            IsTargeting = false;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = false;
         }
@@ -57,6 +60,10 @@ namespace BeastHunter
 
         }
 
+        public override void OnTearDown()
+        {
+        }
+
         private void ExitCheck()
         {
             if (_removingTime >= 0)
@@ -66,7 +73,15 @@ namespace BeastHunter
             else
             {
                 CanExit = true;
-                _stateMachine.SetState(_stateMachine._defaultIdleState);
+
+                if(NextState == null)
+                {
+                    _stateMachine.SetState(_stateMachine._defaultIdleState);
+                }
+                else
+                {
+                    _stateMachine.SetState(NextState);
+                }
             }
         }
 

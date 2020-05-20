@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class BattleTargetMovementState : CharacterBaseState
+    public sealed class BattleTargetMovementState : CharacterBaseState
     {
         #region Constants
 
@@ -44,6 +44,9 @@ namespace BeastHunter
         public BattleTargetMovementState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Battle;
+            IsTargeting = true;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = true;
             SpeedIncreace = _characterModel.CharacterCommonSettings.InBattleRunSpeed /
@@ -58,11 +61,7 @@ namespace BeastHunter
         public override void Initialize()
         {
             CanExit = false;
-            _characterModel.CharacterSphereCollider.radius *= _characterModel.CharacterCommonSettings.
-                SphereColliderRadiusIncrese;
             _animationController.PlayBattleTargetMovementAnimation(_characterModel.LeftHandWeapon, _characterModel.RightHandWeapon);
-            _characterModel.CameraCinemachineBrain.m_DefaultBlend.m_Time = 1f;
-            _characterModel.CharacterTargetCamera.Priority = 15;
         }
 
         public override void Execute()
@@ -76,6 +75,10 @@ namespace BeastHunter
         public override void OnExit()
         {
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void ExitCheck()
