@@ -16,6 +16,7 @@
         public bool _isInputTargetLock;
         public bool _isInputAttackLeft;
         public bool _isInputAttackRight;
+        public bool _isInputUse;
         public bool _isInputDance;
 
         #endregion
