@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ceb64af4fd66c94396e973252896988, type: 3}
+  m_Script: {fileID: 11500000, guid: 9dea14c6996633c46a662ee466e83b72, type: 3}
   m_Name: RabbitData
   m_EditorClassIdentifier: 
   RabbitStruct:
@@ -20,5 +20,6 @@ MonoBehaviour:
     ViewRadius: 3
     ViewAngle: 100
     CanIdle: 1
+    IsDead: 0
     Prefab: {fileID: 6850293822335465738, guid: 635352c46b7621145938ab221e63e0d1,
       type: 3}

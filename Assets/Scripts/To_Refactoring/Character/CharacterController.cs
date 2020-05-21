@@ -535,7 +535,7 @@ namespace BeastHunter
 
         private bool OnHitBoxFilter(Collider hitedObject)
         {
-            bool isEnemyColliderHit = hitedObject.CompareTag(TagManager.ENEMY);
+            bool isEnemyColliderHit = hitedObject.CompareTag(TagManager.ENEMY) || hitedObject.CompareTag(TagManager.RABBIT);
             
             if (hitedObject.isTrigger || (_stateMachine.CurrentState != _stateMachine._attackingLeftState && 
                 _stateMachine.CurrentState != _stateMachine._attackingRightState))

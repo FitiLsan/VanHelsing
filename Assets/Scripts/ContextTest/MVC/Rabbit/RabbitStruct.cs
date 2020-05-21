@@ -30,6 +30,8 @@ namespace BeastHunter
 
         public bool CanIdle;
 
+        public bool IsDead;
+
         public GameObject Prefab;
 
         #endregion

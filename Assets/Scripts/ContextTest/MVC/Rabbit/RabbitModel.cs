@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BeastHunter
@@ -38,13 +39,14 @@ namespace BeastHunter
         private float _timeElapsedAfterStateChange = 0.0f;
         private float _timeElapsedAfterStartFleeing = 0.0f;
 
-        private float _currentHealth;
         private Vector3 _nextCoord;
-        private GameObject _dangerousObject;
+        public List<Transform> _dangerousObjects;
         private BehaviourState _rabbitState;
         
         private PhysicsService _physicsService;
 
+        public float CurrentHealth;
+        public bool IsDead;
         public RabbitData RabbitData;
         public RabbitStruct RabbitStruct;
 
@@ -53,6 +55,7 @@ namespace BeastHunter
 
         #region Properties
 
+        public GameObject Rabbit { get; }
         public Transform RabbitTransform { get; }
         public Rigidbody RabbitRigidbody { get; }
         public Vector3 RabbitStartPosition { get; }
@@ -68,11 +71,14 @@ namespace BeastHunter
             {
                 RabbitData = rabbitData;
                 RabbitStruct = rabbitData.RabbitStruct;
+                Rabbit = prefab;
                 RabbitTransform = prefab.transform;
                 RabbitRigidbody = prefab.GetComponent<Rigidbody>();
                 RabbitStartPosition = prefab.transform.position;
-                _currentHealth = RabbitStruct.MaxHealth;
-                _nextCoord = rabbitData.RandomNextCoord(prefab.transform, RabbitStartPosition);
+                CurrentHealth = RabbitStruct.MaxHealth;
+                IsDead = false;
+                _dangerousObjects = new List<Transform>();
+                _nextCoord = rabbitData.RandomNextCoord(RabbitTransform, RabbitStartPosition, _dangerousObjects);
                 if (RabbitStruct.CanIdle)
                 {
                     _rabbitState = BehaviourState.Idling;
@@ -97,75 +103,78 @@ namespace BeastHunter
 
         public void Execute()
         {
-            //RabbitData.CheckForEnemiesInFieldOfView(RabbitTransform, out GameObject go); //For debug only
-            if ((_rabbitState != BehaviourState.Fleeing) && (RabbitData.CheckForEnemiesInFieldOfView(RabbitTransform, out _dangerousObject)))
+            if(!RabbitStruct.IsDead)
             {
-                _rabbitState = BehaviourState.Fleeing;
-            }
-            switch (_rabbitState)
-            {
-                case BehaviourState.Idling:
-                    {
-                        Idle();
-                        _timeElapsedAfterStateChange += Time.deltaTime;
-                        if (_timeElapsedAfterStateChange > IDLE_ANIMATION_DURATION && UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f)
+                if ((_rabbitState != BehaviourState.Fleeing) && _dangerousObjects.Count > 0)
+                {
+                    _rabbitState = BehaviourState.Fleeing;
+                }
+                switch (_rabbitState)
+                {
+                    case BehaviourState.Idling:
                         {
-                            _rabbitState = BehaviourState.Roaming; // On idle animation end
-                            _timeElapsedAfterStateChange = 0.0f;
-                        }
-
-                        break;
-                    }
-                case BehaviourState.Roaming:
-                    {
-                        Roam();
-                        _timeElapsedAfterStateChange += Time.deltaTime;
-                        var distanceFromStart = new Vector2((RabbitTransform.position - RabbitStartPosition).x, (RabbitTransform.position - RabbitStartPosition).z);
-                        if (distanceFromStart.sqrMagnitude > RabbitStruct.RunningRadius * RabbitStruct.RunningRadius)
-                        {
-                            _rabbitState = BehaviourState.Returning;
-                        }
-                        else if (RabbitStruct.CanIdle && _timeElapsedAfterStateChange > TIME_UNTIL_CAN_CHANGE_STATE && UnityEngine.Random.Range(0.0f, 1.0f) > 0.95f)
-                        {
-                            _timeElapsedAfterStateChange = 0.0f;
-                            _rabbitState = BehaviourState.Idling;
-                        }
-                        break;
-                    }
-                case BehaviourState.Returning:
-                    {
-                        Return();
-                        var moveDistance = RabbitStruct.RunningRadius / RabbitData.STOP_RETURNING_DISTANCE_FACTOR;
-                        if ((RabbitTransform.position - RabbitStartPosition).sqrMagnitude < moveDistance * moveDistance)
-                        {
-                            _rabbitState = BehaviourState.Roaming;
-                        }
-                        break;
-                    }
-                case BehaviourState.Fleeing:
-                    {
-                        _timeElapsedAfterStartFleeing += Time.deltaTime;
-                        if (_dangerousObject != null)
-                            Flee();
-                        if (_timeElapsedAfterStartFleeing > STOP_FLEEING_TIME)
-                        {
-                            if (_dangerousObject != null &&
-                                ((RabbitTransform.position - _dangerousObject.transform.position).sqrMagnitude < RabbitStruct.ViewRadius * RabbitStruct.ViewRadius))
+                            Idle();
+                            RabbitData.CheckForEnemiesInFieldOfView(RabbitTransform, _dangerousObjects);
+                            _timeElapsedAfterStateChange += Time.deltaTime;
+                            if (_timeElapsedAfterStateChange > IDLE_ANIMATION_DURATION && UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f)
                             {
-                                _timeElapsedAfterStartFleeing = 0;
+                                _rabbitState = BehaviourState.Roaming; // On idle animation end
+                                _timeElapsedAfterStateChange = 0.0f;
                             }
-                            else if (!RabbitData.CheckForEnemiesInRadius(RabbitTransform, out _dangerousObject))
+
+                            break;
+                        }
+                    case BehaviourState.Roaming:
+                        {
+                            Roam();
+                            _timeElapsedAfterStateChange += Time.deltaTime;
+                            var distanceFromStart = new Vector2((RabbitTransform.position - RabbitStartPosition).x, (RabbitTransform.position - RabbitStartPosition).z);
+                            if (distanceFromStart.sqrMagnitude > RabbitStruct.RunningRadius * RabbitStruct.RunningRadius)
+                            {
+                                _rabbitState = BehaviourState.Returning;
+                            }
+                            else if (RabbitStruct.CanIdle && _timeElapsedAfterStateChange > TIME_UNTIL_CAN_CHANGE_STATE && UnityEngine.Random.Range(0.0f, 1.0f) > 0.95f)
+                            {
+                                _timeElapsedAfterStateChange = 0.0f;
+                                _rabbitState = BehaviourState.Idling;
+                            }
+                            break;
+                        }
+                    case BehaviourState.Returning:
+                        {
+                            Return();
+                            var moveDistance = RabbitStruct.RunningRadius / RabbitData.STOP_RETURNING_DISTANCE_FACTOR;
+                            if ((RabbitTransform.position - RabbitStartPosition).sqrMagnitude < moveDistance * moveDistance)
                             {
                                 _rabbitState = BehaviourState.Roaming;
-                                _dangerousObject = null;
                             }
+                            break;
                         }
+                    case BehaviourState.Fleeing:
+                        {
+                            _timeElapsedAfterStartFleeing += Time.deltaTime;
+                            if (_dangerousObjects.Count >= 0)
+                            {
+                                Flee();
+                            }
+                            if (_timeElapsedAfterStartFleeing > STOP_FLEEING_TIME)
+                            {
+                                if (_dangerousObjects.Count > 0)
+                                {
+                                    _timeElapsedAfterStartFleeing = 0;
+                                }
+                                else
+                                {
+                                    _rabbitState = BehaviourState.Roaming;
+                                }
+                            }
+                            break;
+                        }
+                    default:
                         break;
-                    }
-                default:
-                    break;
+                }
+                Debug.Log(_rabbitState);
             }
-            Debug.Log(_rabbitState);
         }
 
         private void Idle()
@@ -183,7 +192,7 @@ namespace BeastHunter
             Move(RabbitData.ReturningNextCoord);
         }
 
-        private void Move(Func<Transform, Vector3, Vector3> nextCoordFunc)
+        private void Move(Func<Transform, Vector3, List<Transform>, Vector3> nextCoordFunc)
         {
             _timeLeft -= Time.deltaTime;
             _timeElapsed += Time.deltaTime;
@@ -198,7 +207,7 @@ namespace BeastHunter
                 {
                     RabbitData.Hop(RabbitRigidbody, _nextCoord, 1.0f);
                     _timeLeft = HOP_FREQUENCY;
-                    _nextCoord = nextCoordFunc(RabbitTransform, RabbitStartPosition);
+                    _nextCoord = RabbitData.NextCoord(RabbitTransform, RabbitStartPosition, _dangerousObjects, nextCoordFunc);
                     _timeElapsed = 0.0f;
                 }
             }
@@ -209,9 +218,11 @@ namespace BeastHunter
             RabbitData.RotateTo(RabbitTransform, RabbitTransform.forward, _nextCoord, out bool canHop);
             _timeLeft -= Time.deltaTime;
             if (_timeLeft < 0.0f && _physicsService.CheckGround(RabbitTransform.position, 1.0f, out Vector3 hitPoint))
-            { 
-                var next = (RabbitTransform.position - _dangerousObject.transform.position).normalized;
-                _nextCoord = new Vector3(next.x, 0.0f, next.z);
+            {
+                if (_dangerousObjects.Count > 0)
+                {
+                    _nextCoord = RabbitData.NextCoord(RabbitTransform, RabbitStartPosition, _dangerousObjects, RabbitData.FleeingNextCoord);
+                }
                 RabbitData.Hop(RabbitRigidbody, _nextCoord, FLEE_ACCELERATION_FACTOR);
                 _timeLeft = HOP_FREQUENCY;
             }
