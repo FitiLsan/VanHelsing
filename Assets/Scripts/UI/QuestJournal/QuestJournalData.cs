@@ -99,10 +99,8 @@ namespace BeastHunter
 
         public void AddDescription(Image description, string text)
         {
-           var textGO = description.GetComponentInChildren<Text>();//.text = text;
-            _description = textGO.text = text;
-            var a = textGO.rectTransform.position;
-            var b = description.rectTransform.position.y;
+           var textField = description.GetComponentInChildren<Text>();
+            _description = textField.text = text;
         }
 
         public void AddQuestTasks(Transform tasksContent, GameObject task, string taskText, bool isComplete, int curAmount, int needAmount, bool isOptional)
