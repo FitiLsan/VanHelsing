@@ -12,6 +12,7 @@ namespace BeastHunter
 
         private readonly List<Quest> _quests;
         private readonly List<Quest> _completedQuest;
+        private readonly List<QuestTask> _completedTasks;
         public readonly IQuestStorage QuestStorage;
 
         public int QuestCount => _quests.Count;
@@ -19,7 +20,7 @@ namespace BeastHunter
         public GameContext Context;
         public List<int> AllTaskCompletedInQuests = new List<int>();
         public List<int> AllTaskCompletedInQuestsWithOptional = new List<int>();
-        public List<int> CompletedTasks = new List<int>();
+        public List<int> CompletedTasksById = new List<int>();
         public List<int> IsOptionalTasks = new List<int>();
 
         #endregion
@@ -43,6 +44,7 @@ namespace BeastHunter
             QuestStorage.LoadGame("TestSave.bytes");
             _quests = QuestStorage.GetAllActiveQuests();
             _completedQuest = QuestStorage.GetAllCompletedQuests();
+            _completedTasks = GetCompleteTasks(_completedQuest,_quests);
             ActiveQuests = QuestStorage.GetAllActiveQuestsById();
             CompletedQuests = QuestStorage.GetAllCompletedQuestsById();
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestAccepted, OnQuestAccept);
@@ -107,7 +109,8 @@ namespace BeastHunter
                 CompletedQuests.Remove(t.Id);
                 foreach(var task in t.Tasks)
                 {
-                    CompletedTasks.Remove(task.Id);
+                    CompletedTasksById.Remove(task.Id);
+                    _completedTasks.Remove(task);
                 }
                 
 
@@ -169,7 +172,8 @@ namespace BeastHunter
                     }
                     if (task.IsCompleted)
                     {
-                        CompletedTasks.Add(task.Id);
+                        CompletedTasksById.Add(task.Id);
+                        _completedTasks.Add(task);
                     }
                     if(task.IsOptional)
                     {
@@ -282,6 +286,36 @@ namespace BeastHunter
                 //TODO: Time.deltaTime -> deltaTime from StartScript
                 quest.ReduceTime(Time.deltaTime);
             }
+        }
+
+        public List<QuestTask> GetCompleteTasks(List<Quest> completedQuests, List<Quest> quests)
+        {
+            var completedTasks = new List<QuestTask>();
+
+            foreach (var quest in completedQuests)
+            {
+                foreach (var task in quest.Tasks)
+                {
+                    completedTasks.Add(task);
+                    CompletedTasksById.Add(task.Id);
+                }
+            }
+            foreach (var quest in quests)
+            {
+                foreach (var task in quest.Tasks)
+                {
+                    if (!completedTasks.Contains(task) & task.NeededAmount==task.CurrentAmount)
+                    {                       
+                        completedTasks.Add(task);
+                        if (!CompletedTasksById.Contains(task.Id))
+                        {
+                            CompletedTasksById.Add(task.Id);
+                        }
+                    }
+                }
+            }
+            
+            return completedTasks;
         }
 
         public void SetQuestIsNotComplete(int questId)

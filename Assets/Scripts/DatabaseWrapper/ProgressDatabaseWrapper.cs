@@ -84,7 +84,17 @@ namespace BeastHunter
             return res;
         }
 
-        public void SaveQuestLog(IEnumerable<Quest> quests, List<int> completeQuests)
+        public Dictionary<int, int> GetCompletedObjectives()
+        {
+            var res = new Dictionary<int, int>();
+            foreach (DataRow row in _saveData.Tables[SaveTables.completed_quests_objectives.ToString()].Rows)
+            {
+                res.Add(row.GetInt("ObjectiveId"), row.GetInt("Value"));
+            }
+            return res;
+        }
+
+        public void SaveQuestLog(IEnumerable<Quest> quests, List<Quest> completeQuests)
         {
             var strBuilder = new StringBuilder();
             strBuilder.Append("BEGIN TRANSACTION; ");
@@ -97,11 +107,14 @@ namespace BeastHunter
                 }
             }
 
-            foreach (var id in completeQuests)
+            foreach (var quest in completeQuests)
             {
-                strBuilder.Append($"insert into 'completed_quests' (QuestId) values ({id}); ");
+                strBuilder.Append($"insert into 'completed_quests' (QuestId) values ({quest.Id}); ");
+                foreach (var task in quest.Tasks)
+                {
+                    strBuilder.Append($"insert into 'completed_quests_objectives' (ObjectiveId, Value) values ({task.Id}, {task.CurrentAmount});");
+                }
             }
-
             strBuilder.Append("COMMIT;");
             ExecuteQueryWithoutAnswer(strBuilder.ToString());
         }

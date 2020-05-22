@@ -60,7 +60,7 @@ namespace BeastHunter
             var questsWithCompletedAllTaskWithOptional = questModel.AllTaskCompletedInQuestsWithOptional;
             var activeQuests = questModel.ActiveQuests;
             var completedQuests = questModel.CompletedQuests;
-            var completedTasks = questModel.CompletedTasks;
+            var completedTasks = questModel.CompletedTasksById;
 
             if (DialogueCache.Rows.Count != 0)
             {
@@ -88,11 +88,11 @@ namespace BeastHunter
                             for (int j = 0; j < QuestTasksCache.Rows.Count; j++)
                             {
                                 var q = QuestTasksCache.Rows[j].GetInt(1);
-                                if (QuestTasksCache.Rows[j].GetInt(1) == currentQuestID)
-                                {  
+                                if (QuestTasksCache.Rows[j].GetInt(1) == currentQuestID & QuestTasksCache.Rows[j].GetInt(3) == npcID)
+                                {
                                     var currentTaskID = QuestTasksCache.Rows[j].GetInt(0);
                                     var taskTargetID = QuestTasksCache.Rows[j].GetInt(2);
-                                    
+
                                     if (!completedTasks.Contains(currentTaskID) &
                                         activeQuests.Contains(currentQuestID) &
                                         !questsWithCompletedAllTask.Contains(currentQuestID) &
@@ -112,14 +112,13 @@ namespace BeastHunter
                                                 !questsWithCompletedAllTask.Contains(tempQuestId) &
                                                 !questsWithCompletedAllTaskWithOptional.Contains(tempQuestId) &
                                                 tempQuestId != currentQuestID &
-                                                !completedTasks.Contains(currentTaskID) &
-                                                !completedQuests.Contains(currentQuestID)) 
-                                                {
-                                                    flag = true;
-                                                   break;
-                                                }
+                                                !completedQuests.Contains(currentQuestID))
+                                            {
+                                                flag = true;
+                                                break;
+                                            }
                                         }
-                                        
+
                                         if (!flag)
                                         {
                                             TaskQuestionMarkShow(false, model);

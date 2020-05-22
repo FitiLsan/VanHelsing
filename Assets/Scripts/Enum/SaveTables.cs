@@ -7,6 +7,8 @@
         quest,
         quest_objectives,
         save_info,
-        completed_quests
+        completed_quests,
+        completed_quests_objectives
+            
     }
 }

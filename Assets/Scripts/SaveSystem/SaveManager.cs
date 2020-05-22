@@ -14,6 +14,7 @@ namespace BeastHunter
         private List<int> _completedQuestsById;
         private List<Quest> _activeQuests;
         private List<Quest> _completedQuests;
+     //   private List<QuestTask> _completedTasks;
         private readonly ISaveFileWrapper _saveFileWrapper;
 
         #endregion
@@ -48,7 +49,7 @@ namespace BeastHunter
 
         public void SaveQuestLog(List<Quest> quests)
         {
-            _saveFileWrapper.SaveQuestLog(quests, _completedQuestsById);
+            _saveFileWrapper.SaveQuestLog(quests, _completedQuests);
         }
 
         public List<Quest> LoadQuestLog()
@@ -76,14 +77,17 @@ namespace BeastHunter
         public List<Quest> LoadCompletedQuestLog()
         {
             var res = new List<Quest>();
-            var od = _saveFileWrapper.GetActiveObjectives();
+            var cod = _saveFileWrapper.GetCompletedObjectives();
             var cqd = _saveFileWrapper.GetCompletedQuests();
             foreach (var i in cqd)
             {
                 var quest = new Quest(QuestRepository.GetById(i.Key));
                 foreach (var task in quest.Tasks)
                 {
-                    task.AddAmount(task.NeededAmount);
+                    if (cod.ContainsKey(task.Id))
+                    {
+                        task.AddAmount(task.NeededAmount);
+                    }
                 }
                 res.Add(quest);
             }
@@ -115,7 +119,7 @@ namespace BeastHunter
         {
             return _completedQuests ?? (_completedQuests = LoadCompletedQuestLog());
         }
-        
+
         public List<int> GetAllActiveQuestsById()
         {
             var IdActiveQuests= _saveFileWrapper.GetActiveQuests();
