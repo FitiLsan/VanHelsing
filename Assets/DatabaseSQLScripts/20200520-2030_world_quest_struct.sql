@@ -13,7 +13,7 @@ INSERT INTO quest (Id, MinLevel, QuestLevel, TimeAllowed, ZoneId, RewardExp, Rew
 INSERT INTO quest (Id, MinLevel, QuestLevel, TimeAllowed, ZoneId, RewardExp, RewardMoney, StartDialogId, EndDialogId, StartQuestEventType, EndQuestEventType, Repeatable) VALUES (2, 1, 1, -1, 1, 0, 0, 11, 17, 1, 1, 0);
 INSERT INTO quest (Id, MinLevel, QuestLevel, TimeAllowed, ZoneId, RewardExp, RewardMoney, StartDialogId, EndDialogId, StartQuestEventType, EndQuestEventType, Repeatable) VALUES (3, 1, 1, -1, 1, 0, 0, 19, 21, 1, 1, 0);
 INSERT INTO quest (Id, MinLevel, QuestLevel, TimeAllowed, ZoneId, RewardExp, RewardMoney, StartDialogId, EndDialogId, StartQuestEventType, EndQuestEventType, Repeatable) VALUES (4, 1, 1, -1, 1, 0, 0, 24, 26, 1, 1, 0);
-INSERT INTO quest (Id, MinLevel, QuestLevel, TimeAllowed, ZoneId, RewardExp, RewardMoney, StartDialogId, EndDialogId, StartQuestEventType, EndQuestEventType, Repeatable) VALUES (6, 1, 1, -1, 1, 0, 0, 32, 30, 1, 1, 0);
+INSERT INTO quest (Id, MinLevel, QuestLevel, TimeAllowed, ZoneId, RewardExp, RewardMoney, StartDialogId, EndDialogId, StartQuestEventType, EndQuestEventType, Repeatable) VALUES (6, 1, 1, -1, 1, 0, 0, 32, 30, 1, 1, 1);
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;
