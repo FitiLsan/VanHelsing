@@ -1,13 +1,23 @@
-using Events;
-using Events.Args;
-
-namespace Quests
+namespace BeastHunter
 {
-    /// <summary>
-    ///     Задача квеста
-    /// </summary>
-    public class QuestTask
+    public sealed class QuestTask
     {
+        #region Properties
+
+        public int Id { get; }
+        public QuestTaskTypes Type { get; }
+        public int TargetId { get; }
+        public int NeededAmount { get; }
+        public int CurrentAmount { get; private set; }
+        public bool IsCompleted => CurrentAmount >= NeededAmount;
+        public string Description { get; }
+        public bool IsOptional { get; }
+
+        #endregion
+
+
+        #region ClassLifeCycle
+
         public QuestTask(QuestTaskDto dto)
         {
             Type = dto.Type;
@@ -18,49 +28,17 @@ namespace Quests
             IsOptional = dto.IsOptional;
         }
 
-        public int Id { get; }
+        #endregion
 
-        /// <summary>
-        ///     Type of this objective
-        /// </summary>
-        public QuestTaskTypes Type { get; }
 
-        /// <summary>
-        ///     Target's id (enemy, item, zone etc)
-        /// </summary>
-        public int TargetId { get; }
+        #region Methods
 
-        /// <summary>
-        ///     Amount of targets needed for completing this objective
-        /// </summary>
-        public int NeededAmount { get; }
-
-        /// <summary>
-        ///     Current amount of targets
-        /// </summary>
-        public int CurrentAmount { get; private set; }
-
-        public bool IsCompleted => CurrentAmount >= NeededAmount;
-
-        /// <summary>
-        ///     Description of this objective for quest log and tracking ui
-        /// </summary>
-        public string Description { get; }
-
-        /// <summary>
-        ///     Flag for optional tasks in quest
-        /// </summary>
-        public bool IsOptional { get; }
-
-        /// <summary>
-        ///     Updates objective status
-        /// </summary>
-        /// <param name="amount"></param>
         public void AddAmount(int amount)
         {
             CurrentAmount += amount;
-            EventManager.TriggerEvent(GameEventTypes.QuestTaskUpdated,
-                new TaskUpdatedArgs(Id, Description, CurrentAmount, NeededAmount));
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestTaskUpdated, new TaskUpdatedArgs(Id, Description, CurrentAmount, NeededAmount));
         }
+
+        #endregion
     }
 }

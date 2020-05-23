@@ -1,24 +1,23 @@
-namespace Quests
+namespace BeastHunter
 {
-    /// <summary>
-    ///     Класс награды
-    /// </summary>
-    public class QuestReward
+    public sealed class QuestReward
     {
+        #region Properties
+
+        public int ObjectId { get; }
+        public int ObjectCount { get; }
+
+        #endregion
+
+
+        #region ClassLifeCycle
+
         public QuestReward(QuestRewardDto dto)
         {
             ObjectId = dto.ObjectId;
             ObjectCount = dto.ObjectCount;
         }
 
-        /// <summary>
-        ///     ИД предмета награды
-        /// </summary>
-        public int ObjectId { get; }
-
-        /// <summary>
-        ///     Сколько предметов
-        /// </summary>
-        public int ObjectCount { get; }
+        #endregion
     }
 }

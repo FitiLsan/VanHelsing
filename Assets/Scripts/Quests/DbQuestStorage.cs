@@ -1,65 +1,74 @@
-using System;
 using System.Collections.Generic;
-using DatabaseWrapper;
-using Interfaces;
-using UnityEngine;
 
-namespace Quests
+
+namespace BeastHunter
 {
-    /// <summary>
-    ///     Обертка для работы с источниками данных о квестах
-    /// </summary>
-    public class DbQuestStorage : IQuestStorage
+    public sealed class DbQuestStorage : IQuestStorage
     {
-        /// <summary>
-        ///     Возвращает квест по его ИД
-        /// </summary>
-        /// <param name="id">ИД квеста</param>
-        /// <returns></returns>
+        #region Fields
+
+        private readonly ISaveManager _agent;
+
+        #endregion
+
+
+        #region Methods
+
+        public DbQuestStorage(ISaveManager agent)
+        {
+            _agent = agent;
+        }
+        
         public Quest GetQuestById(int id)
         {
             return new Quest(QuestRepository.GetById(id));
         }
 
-        /// <summary>
-        ///     Сохраняет данные о текущих квестах
-        /// </summary>
-        /// <param name="quests">Лист квестов из квестлога</param>
-        /// <exception cref="NotImplementedException"></exception>
         public void SaveQuestLog(List<Quest> quests)
         {
-            throw new NotImplementedException();
+            _agent.SaveQuestLog(quests);
         }
 
-        /// <summary>
-        ///     Загружаем квестлог из сейва
-        /// </summary>
-        /// <returns></returns>
         public List<Quest> LoadQuestLog()
         {
-            Debug.LogError("DbQuestStorage::LoadQuestLog() not implemented yet. Returning empty List<Quest>...");
-            return new List<Quest>();
+            return _agent.LoadQuestLog();
         }
 
-        /// <summary>
-        ///     Фиксируем сдачу квеста в сейве
-        /// </summary>
-        /// <param name="id"></param>
-        /// <exception cref="NotImplementedException"></exception>
         public void QuestCompleted(int id)
         {
-            throw new NotImplementedException();
+            _agent.QuestCompleted(id);
         }
 
-        /// <summary>
-        ///     Получаем список выполненых квестов из сейва
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public List<int> GetAllCompletedQuests()
+        public List<int> GetAllCompletedQuestsById()
         {
-            Debug.LogError("DbQuestStorage::GetAllCompletedQuests() not implemented yet. Returning empty List<int>...");
-            return new List<int>();
+            return _agent.GetAllCompletedQuestsById();
         }
+
+        public List<Quest> GetAllActiveQuests()
+        {
+            return _agent.GetAllActiveQuests();
+        }
+
+        public List<Quest> GetAllCompletedQuests()
+        {
+            return _agent.GetAllCompletedQuests();
+        }
+        
+        public List<int> GetAllActiveQuestsById()
+        {
+            return _agent.GetAllActiveQuestsById();
+        }
+
+        public void SaveGame(string file)
+        {
+            _agent.SaveGame(file);
+        }
+
+        public void LoadGame(string file)
+        {
+            _agent.LoadGame(file);
+        }
+
+        #endregion
     }
 }

@@ -1,19 +1,42 @@
 ﻿using UnityEngine;
+using System;
+using UnityEngine.EventSystems;
 
-namespace DialogueSystem
 
+namespace BeastHunter
 {
     public class ButtonClick : MonoBehaviour
     {
-        private int _toNode;
-        private DialogueSystem dialogueSystem;
+
+        #region Events
+
+        public static event Action<string> KeyBoardButtonDownEvent;
+
+        #endregion
 
 
-        public void OnButtonClick(int buttonNumber)
+        #region Methods
+
+        public void ButtonClickKeyBoard()
         {
-            dialogueSystem = FindObjectOfType<DialogueSystem>();
-            dialogueSystem._currentNode = _toNode;
-            dialogueSystem.DialogueAnswerClear();
+            if(Input.anyKeyDown)
+            {
+                KeyBoardButtonDownEvent?.Invoke(Input.inputString);
+            }
         }
+
+        #endregion
+
+
+        #region UnityMethods
+
+        private void Update()
+        {
+            ButtonClickKeyBoard();
+        }
+
+        #endregion
+
     }
 }
+                                     

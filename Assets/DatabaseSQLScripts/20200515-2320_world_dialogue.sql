@@ -1,0 +1,17 @@
+update 'dialogue_node' SET Npc_text ='Привет хочешь квест?' where Npc_id = 1 and Node_id = 0; 
+update 'dialogue_answers' SET Answer_text='да', To_node ='1', Quest_ID='1', End_dialogue='0', Start_quest='0', End_quest='0', Task_quest = '0'   where Id = '1'; 
+update 'dialogue_answers' SET Answer_text='нет', To_node ='0', Quest_ID='0', End_dialogue='1', Start_quest='0', End_quest='0', Task_quest = '0'   where Id = '2'; 
+update 'dialogue_answers' SET Answer_text='Я вобщето насчет задания 2.', To_node ='2', Quest_ID='2', End_dialogue='0', Start_quest='0', End_quest='0', Task_quest = '0'   where Id = '16'; 
+update 'dialogue_node' SET Npc_text ='квест 1, сходи к челу у колодца' where Npc_id = 1 and Node_id = 1; 
+update 'dialogue_answers' SET Answer_text='хорошо', To_node ='0', Quest_ID='1', End_dialogue='1', Start_quest='1', End_quest='0', Task_quest = '0'   where Id = '3'; 
+update 'dialogue_node' SET Npc_text ='Ааа, вот оно что, держи награду' where Npc_id = 1 and Node_id = 2; 
+update 'dialogue_answers' SET Answer_text='спасибо', To_node ='0', Quest_ID='2', End_dialogue='1', Start_quest='0', End_quest='1', Task_quest = '0'   where Id = '17'; 
+update 'dialogue_node' SET Npc_text ='Ты чего пришел?' where Npc_id = 4 and Node_id = 0; 
+update 'dialogue_answers' SET Answer_text='я по заданию 2', To_node ='1', Quest_ID='2', End_dialogue='0', Start_quest='0', End_quest='0', Task_quest = '1'   where Id = '13'; 
+update 'dialogue_answers' SET Answer_text='Просто так, забей', To_node ='0', Quest_ID='0', End_dialogue='1', Start_quest='0', End_quest='0', Task_quest = '0'   where Id = '14'; 
+update 'dialogue_answers' SET Answer_text='дай мне секретное задание 3', To_node ='2', Quest_ID='3', End_dialogue='0', Start_quest='0', End_quest='0', Task_quest = '0'   where Id = '18'; 
+update 'dialogue_answers' SET Answer_text='я выполнил секретное задание 3', To_node ='0', Quest_ID='3', End_dialogue='1', Start_quest='0', End_quest='1', Task_quest = '0'   where Id = '21'; 
+update 'dialogue_node' SET Npc_text ='О отлично! Иди в самое начало и там тебя наградят' where Npc_id = 4 and Node_id = 1; 
+update 'dialogue_answers' SET Answer_text='ок', To_node ='0', Quest_ID='0', End_dialogue='1', Start_quest='0', End_quest='0', Task_quest = '0'   where Id = '15'; 
+update 'dialogue_node' SET Npc_text ='Откуда ты про него знаешь? Ну ладно, держи задание 3. Сходи и скажи " куку" 3 раза чуваку у колодца, а потом возвращайся ко мне.' where Npc_id = 4 and Node_id = 2; 
+update 'dialogue_answers' SET Answer_text='хорошо я это сделаю', To_node ='0', Quest_ID='3', End_dialogue='1', Start_quest='1', End_quest='0', Task_quest = '0'   where Id = '19'; 

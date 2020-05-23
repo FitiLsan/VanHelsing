@@ -1,12 +1,20 @@
 using UnityEngine;
 
-namespace Quests
+
+namespace BeastHunter
 {
-    /// <summary>
-    ///     информация об отметках на карте
-    /// </summary>
-    public class QuestMarker
+    public sealed class QuestMarker
     {
+        #region Properties
+
+        public int MapId { get; }
+        public Vector2 Position { get; }
+
+        #endregion
+
+
+        #region ClassLifeCycle
+
         public QuestMarker(int mapId, float x, float y)
         {
             MapId = mapId;
@@ -19,14 +27,6 @@ namespace Quests
             Position = new Vector2(dto.X, dto.Y);
         }
 
-        /// <summary>
-        ///     ИД карты
-        /// </summary>
-        public int MapId { get; }
-
-        /// <summary>
-        ///     Позиция метки
-        /// </summary>
-        public Vector2 Position { get; }
+        #endregion
     }
 }

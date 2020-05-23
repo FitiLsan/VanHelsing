@@ -1,15 +1,15 @@
 using System;
-using Events;
-using Events.Args;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace Quests
+
+namespace BeastHunter
 {
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(ParticleSystem))]
-    public class QuestAreaBehaviour : MonoBehaviour
+    public sealed class QuestAreaBehaviour : MonoBehaviour
     {
+        #region Fields
+
         [SerializeField] private int _questId;
         [SerializeField] private int _areaId;
         [SerializeField] private float _cooldown;
@@ -22,14 +22,19 @@ namespace Quests
         private float _npcLastTrigger;
         private float _enemyLastTrigger;
 
+        #endregion
+
+
+        #region Methods
+
         private void Start()
         {
             _collider = GetComponent<Collider>();
             _particleSystem = GetComponent<ParticleSystem>();
-            EventManager.StartListening(GameEventTypes.QuestAccepted, OnQuestAccept);
-            EventManager.StartListening(GameEventTypes.QuestReported, OnQuestRemove);
-            EventManager.StartListening(GameEventTypes.QuestAbandoned, OnQuestRemove);
-            EventManager.StartListening(GameEventTypes.QuestTaskUpdated, OnTaskComplete);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestAccepted, OnQuestAccept);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestReported, OnQuestRemove);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestAbandoned, OnQuestRemove);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestTaskUpdated, OnTaskComplete);
         }
 
         private void OnTaskComplete(EventArgs arg0)
@@ -63,7 +68,7 @@ namespace Quests
             {
                 if (!other.gameObject.CompareTag("Player")) return;
                 _lastTrigger = t;
-                EventManager.TriggerEvent(GameEventTypes.AreaEnter, new IdArgs(_areaId));
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.AreaEnter, new IdArgs(_areaId));
 
 #if UNITY_EDITOR
                 Debug.Log($"Event[Enter] fired for area [{_areaId}] at {t}");
@@ -75,7 +80,7 @@ namespace Quests
                 if (!other.gameObject.CompareTag("NPC")) return;
                 _npcLastTrigger = t;
                 //TODO: Get Npc Id from GO
-                EventManager.TriggerEvent(GameEventTypes.NpcAreaEnter, new NpcAreaEnterArgs{AreaId = _areaId});
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.NpcAreaEnter, new NpcAreaEnterArgs{AreaId = _areaId});
 
 #if UNITY_EDITOR
                 Debug.Log($"Event[Enter] fired for area [{_areaId}] at {t} with npc [TODO: GET NPC ID]");
@@ -87,7 +92,7 @@ namespace Quests
                 if (!other.gameObject.CompareTag("Enemy")) return;
                 _enemyLastTrigger = t;
                 //TODO: Get Enemy Npc Id from GO
-                EventManager.TriggerEvent(GameEventTypes.NpcAreaEnter, new NpcAreaEnterArgs{AreaId = _areaId});
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.NpcAreaEnter, new NpcAreaEnterArgs{AreaId = _areaId});
 
 #if UNITY_EDITOR
                 Debug.Log($"Event[Enter] fired for area [{_areaId}] at {t} with enemy [TODO: GET NPC ID]");
@@ -103,11 +108,11 @@ namespace Quests
             {
                 if (!other.gameObject.CompareTag("Player")) return;
                 _lastTrigger = t;
-                EventManager.TriggerEvent(GameEventTypes.AreaEnter, new IdArgs(_areaId));
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.AreaEnter, new IdArgs(_areaId));
 
 #if UNITY_EDITOR
                 Debug.Log($"Event[Enter/Stay] fired for area [{_areaId}] at {t}");
-            
+
 #endif
             }
             if (_npcTrack && !(t - _npcLastTrigger < _cooldown))
@@ -115,11 +120,11 @@ namespace Quests
                 if (!other.gameObject.CompareTag("NPC")) return;
                 _npcLastTrigger = t;
                 //TODO: Get Npc Id from GO
-                EventManager.TriggerEvent(GameEventTypes.NpcAreaEnter, new NpcAreaEnterArgs{AreaId = _areaId});
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.NpcAreaEnter, new NpcAreaEnterArgs { AreaId = _areaId });
 
 #if UNITY_EDITOR
                 Debug.Log($"Event[Enter/Stay] fired for area [{_areaId}] at {t} with npc [TODO: GET NPC ID]");
-            
+
 #endif
             }
             if (_enemyTrack && !(t - _enemyLastTrigger < _cooldown))
@@ -127,13 +132,15 @@ namespace Quests
                 if (!other.gameObject.CompareTag("Enemy")) return;
                 _enemyLastTrigger = t;
                 //TODO: Get Enemy Npc Id from GO
-                EventManager.TriggerEvent(GameEventTypes.NpcAreaEnter, new NpcAreaEnterArgs{AreaId = _areaId});
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.NpcAreaEnter, new NpcAreaEnterArgs { AreaId = _areaId });
 
 #if UNITY_EDITOR
                 Debug.Log($"Event[Enter/Stay] fired for area [{_areaId}] at {t} with enemy [TODO: GET NPC ID]");
-            
+
 #endif
             }
         }
+
+        #endregion
     }
 }

@@ -1,24 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using DialogueSystem;
 
-namespace DialogueSystem
+
+namespace BeastHunter
 {
     [Serializable]
-    public class Dialogue
+    public sealed class Dialogue
     {
-        public string _npcText;
+        #region Properties
 
-        public List<PlayerAnswer> playerAnswers;
+        public string npcText { get; private set; }        
+        public List<PlayerAnswer> PlayerAnswers { get; private set; }
+
+        #endregion
 
 
-        public Dialogue(string _npcText, List<PlayerAnswer> playerAnswers)
+        #region ClassLifeCycles
+
+        public Dialogue(string npcText, List<PlayerAnswer> playerAnswers)
         {
-            this._npcText = _npcText;
-            this.playerAnswers = playerAnswers;
+            this.npcText = npcText;
+            PlayerAnswers = playerAnswers;
         }
 
-        public Dialogue()
-        {
-        }
+        #endregion
     }
 }
