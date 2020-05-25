@@ -11,7 +11,8 @@ namespace BeastHunter
         #region Fields
 
         private static Dictionary<int, QuestDto> _cache = new Dictionary<int, QuestDto>();
-        private static DataTable _dialogueCache = new DataTable();
+        private static DataTable _dialogueAnswersCache = new DataTable();
+        private static DataTable _dialogueNodesCache = new DataTable();
         private static DataTable _questTaskCache = new DataTable();
         private static Locale _locale = Locale.RU;
         private static readonly Dictionary<Locale, (string, string)> _localeTables = new Dictionary<Locale, (string, string)>
@@ -91,15 +92,34 @@ namespace BeastHunter
 
         #region Methods
 
-        public static DataTable GetDialogueCache()
+        public static DataTable GetDialogueAnswersCache()
         {
             try
             {
-                if (_dialogueCache.Rows.Count == 0)
+                if (_dialogueAnswersCache.Rows.Count == 0)
                 {
-                    _dialogueCache = DatabaseWrapper.GetTable($"select * from 'dialogue_answers' where Quest_ID!= 0;");
+                    _dialogueAnswersCache = DatabaseWrapper.GetTable($"select * from 'dialogue_answers';");
                 }
-                return _dialogueCache;
+                GetDialogueNodesCache();
+                return _dialogueAnswersCache;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{DateTime.Now.ToShortTimeString()}    dialogueCache error     {e}\n");
+                throw;
+            }
+            
+        }
+
+        public static DataTable GetDialogueNodesCache()
+        {
+            try
+            {
+                if (_dialogueNodesCache.Rows.Count == 0)
+                {
+                    _dialogueNodesCache = DatabaseWrapper.GetTable($"select * from 'dialogue_node';");
+                }
+                return _dialogueNodesCache;
             }
             catch (Exception e)
             {
@@ -107,6 +127,7 @@ namespace BeastHunter
                 throw;
             }
         }
+
 
         public static DataTable GetQuestTaskCache()
         {
@@ -257,6 +278,48 @@ namespace BeastHunter
             if (!(arg0 is IdArgs idArgs)) return;
             if (_cache.ContainsKey(idArgs.Id))
                 _cache.Remove(idArgs.Id);
+        }
+
+        public static void AddRowToDialogueCaches(QuestDto newQuest)
+        {
+            _cache.Add(newQuest.Id, newQuest);
+            var newNodeRow = _dialogueNodesCache.NewRow();
+            newNodeRow[0] = 55;
+            newNodeRow[1] = 666;
+            newNodeRow[2] = 0;
+            newNodeRow[3] = "Test Generation NPC text";
+            _dialogueNodesCache.Rows.Add(newNodeRow);
+
+            for (int i=0;i<2;i++)
+            {
+                var newRow = _dialogueAnswersCache.NewRow();
+                newRow[0] = i == 0 ? newQuest.StartDialogId : newQuest.EndDialogId;
+                newRow[1] = 0;
+                newRow[2] = i == 0 ? "start gen quest" : "end gen quest";
+                newRow[3] = 0;
+                newRow[4] = 1;
+                newRow[5] = 666;
+                newRow[6] = i == 0 ? 1 : 0;
+                newRow[7] = i == 0 ? 0 : 1;
+                newRow[8] = newQuest.Id;
+                newRow[9] = 0;
+                _dialogueAnswersCache.Rows.Add(newRow);
+            }
+           for(int i=0;i<newQuest.Tasks.Count;i++)
+            {
+                var newRow = _dialogueAnswersCache.NewRow();
+                newRow[0] = newQuest.Tasks[i].TargetId;
+                newRow[1] = 0;
+                newRow[2] = $"gen quest task - {newQuest.Tasks[i].Id}";
+                newRow[3] = 0;
+                newRow[4] = 1;
+                newRow[5] = 666;
+                newRow[6] = 0;
+                newRow[7] = 0;
+                newRow[8] = newQuest.Id;
+                newRow[9] = 1;
+                _dialogueAnswersCache.Rows.Add(newRow);
+            }
         }
 
         public static Locale GetCurrentLocale()

@@ -43,6 +43,8 @@ namespace BeastHunter
 
         public void LoadQuestInfo(EventArgs args)
         {
+            if (!(args is IdArgs idArgs)) return;
+          //  var quest = idArgs.Id.Equals(666) ? Model.Context.QuestModel.TempQuest : questModel.GetActualQuestById(idArgs.Id);
             var quest = questModel.GetActualQuestById((args as IdArgs).Id);
             var questName = quest.Title;
             AddQuestButton(Model.QuestContentField.transform, Model.QuestButton, questName, quest.Id);          

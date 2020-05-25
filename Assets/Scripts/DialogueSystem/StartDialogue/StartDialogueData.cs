@@ -39,12 +39,12 @@ namespace BeastHunter
                     CanvasNpc.SetActive(true);
                     CanvasNpc.transform.LookAt(GetCharacterCamera());
                 }
-                if (Input.GetButton("Use"))
+                if (Input.GetButtonDown("Use"))
                 {
                     DialogStatus(true);
                     CanvasNpc.SetActive(false);
                 }
-                if (Input.GetButton("Cancel"))
+                if (Input.GetButtonDown("Cancel"))
                 {
                     DialogStatus(false);
                     CanvasNpc.SetActive(true);

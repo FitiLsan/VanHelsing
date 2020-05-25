@@ -13,6 +13,7 @@ namespace BeastHunter
         private readonly List<Quest> _quests;
         private readonly List<Quest> _completedQuest;
         private readonly List<QuestTask> _completedTasks;
+        
         public readonly IQuestStorage QuestStorage;
 
         public int QuestCount => _quests.Count;
@@ -22,6 +23,7 @@ namespace BeastHunter
         public List<int> AllTaskCompletedInQuestsWithOptional = new List<int>();
         public List<int> CompletedTasksById = new List<int>();
         public List<int> IsOptionalTasks = new List<int>();
+        public Quest TempQuest;
 
         #endregion
 
@@ -136,22 +138,23 @@ namespace BeastHunter
         private void OnQuestAccept(EventArgs args)
         {         
             if (!(args is IdArgs idArgs)) return;
-            var t = QuestStorage.GetQuestById(idArgs.Id);
-            if (t != null)
+             TempQuest = idArgs.Id.Equals(666)? QuestGeneration.GetTempQuest() : QuestStorage.GetQuestById(idArgs.Id);
+            if (TempQuest != null)
             {
                 if (_quests.Count != 0)
                 {
                     foreach (Quest quest in _quests)
                     {
-                        if (quest.Id == t.Id)
+                        if (quest.Id == TempQuest.Id)
                         {
                             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Already Accepted");
                             return;
                         }
                     }
                 }
-                _quests.Add(t);
-                ActiveQuests.Add(t.Id);
+                _quests.Add(TempQuest);
+                ActiveQuests.Add(TempQuest.Id);
+                
                 Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
 #if UNITY_EDITOR
                 Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Accepted");
@@ -313,16 +316,14 @@ namespace BeastHunter
                         }
                     }
                 }
-            }
-            
+            }           
             return completedTasks;
         }
 
         public void SetQuestIsNotComplete(int questId)
         {
             
-        }
-           
+        }         
 
         public void Execute()
         {
