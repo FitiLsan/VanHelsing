@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: RabbitData
   m_EditorClassIdentifier: 
   RabbitStruct:
+    Stats:
+      _physicalPower: 0
+      _physicalDamageResistance: 0
+      _stunProbabilityResistance: 0
     MaxHealth: 10
     RunningRadius: 10
     MoveSpeed: 0.5

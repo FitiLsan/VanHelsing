@@ -9,6 +9,8 @@ namespace BeastHunter
     {
         #region Properties
 
+        public BaseStatsClass Stats;
+
         [Tooltip("Default: 10")]
         public float MaxHealth;
 

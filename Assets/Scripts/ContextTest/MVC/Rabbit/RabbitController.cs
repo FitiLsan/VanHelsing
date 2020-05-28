@@ -47,6 +47,7 @@ namespace BeastHunter
             {
                 var rabbitBehaviour = trigger as RabbitBehaviour;
                 rabbitBehaviour.OnTakeDamageHandler += OnTakeDamage;
+                rabbitBehaviour.Stats = _context.RabbitModel.RabbitData.RabbitStruct.Stats;
                 Debug.Log("ActivateRabbit");
             }
         }

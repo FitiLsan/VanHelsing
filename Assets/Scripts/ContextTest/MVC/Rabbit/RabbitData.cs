@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-
+using Random = UnityEngine.Random;
 
 namespace BeastHunter
 {
@@ -8,35 +9,197 @@ namespace BeastHunter
     [CreateAssetMenu(fileName = "NewModel", menuName = "CreateData/Rabbit", order = 2)]
     public sealed class RabbitData : ScriptableObject
     {
+        #region PrivateData
+
+        public enum BehaviourState
+        {
+            None = 0,
+            Idling = 1,
+            Roaming = 2,
+            Fleeing = 3,
+            Returning = 4
+        }
+
+        #endregion
+
+
         #region Constants
 
+        private const float TIME_UNTIL_CAN_CHANGE_STATE = 10.0f;
+        private const float IDLE_ANIMATION_DURATION = 3.0f;
+        private const float STOP_FLEEING_TIME = 2.0f;
         private const float DANGEROUS_OBJECTS_MAX_COUNT = 4.0f;
-        private const float FRONT_RAYCAST_DISTANCE = 2.0f;
+        private const float STOP_RETURNING_DISTANCE_FACTOR = 3.0f;
+
+        private const float HOP_FREQUENCY = 1.0f;
+        private const float MAX_HOP_FREQUENCY = 2.0f;
+        private const float FLEE_ACCELERATION_FACTOR = 1.3f;
         private const float ROTATION_SPEED = 5.0f;
         private const float HOP_FORCE_MULTIPLIER = 100.0f;
         private const float MAX_ANGLE_DEVIATION = 40.0f;
+
+        private const float FRONT_RAYCAST_DISTANCE = 2.0f;
+        private const float DOWN_RAYCAST_DISTANCE = 1.0f;
+
         private const float TURN_FORWARD = 0.0f;
         private const float TURN_BACK = 180.0f;
         private const float TURN_RIGHT = 270.0f;
         private const float TURN_LEFT = 90.0f;
 
-        public const float STOP_RETURNING_DISTANCE_FACTOR = 3.0f;
 
         #endregion
 
 
         #region Fields
 
-        private PhysicsService _physicsService = Services.SharedInstance.PhysicsService;
+        private PhysicsService _physicsService;
 
         public RabbitStruct RabbitStruct;
 
         #endregion
 
 
+        #region ClassLifeCycles
+
+        public void OnEnable()
+        {
+            _physicsService = Services.SharedInstance.PhysicsService;
+        }
+
+        #endregion
+
+
         #region Metods
 
-        public bool CheckForEnemiesInFieldOfView(Transform transform, List<Transform> targets)
+        public void Act(RabbitModel rabbit)
+        {
+            if (_physicsService == null)
+            {
+                _physicsService = Services.SharedInstance.PhysicsService;
+            }
+            if ((rabbit.RabbitState != BehaviourState.Fleeing) && rabbit.DangerousObjects.Count > 0)
+            {
+                rabbit.RabbitState = BehaviourState.Fleeing;
+            }
+            switch (rabbit.RabbitState)
+            {
+                case BehaviourState.Idling:
+                    {
+                        Idle();
+                        CheckForEnemiesInFieldOfView(rabbit.RabbitTransform, rabbit.DangerousObjects);
+                        rabbit.TimeElapsedAfterStateChange += Time.deltaTime;
+                        if (rabbit.TimeElapsedAfterStateChange > IDLE_ANIMATION_DURATION && Random.Range(0.0f, 1.0f) > 0.5f)
+                        {
+                            rabbit.RabbitState = BehaviourState.Roaming; // On idle animation end
+                            rabbit.TimeElapsedAfterStateChange = 0.0f;
+                        }
+
+                        break;
+                    }
+                case BehaviourState.Roaming:
+                    {
+                        Roam(rabbit);
+                        rabbit.TimeElapsedAfterStateChange += Time.deltaTime;
+                        var distanceFromStart = new Vector2((rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).x, (rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).z);
+                        if (distanceFromStart.sqrMagnitude > RabbitStruct.RunningRadius * RabbitStruct.RunningRadius)
+                        {
+                            rabbit.RabbitState = BehaviourState.Returning;
+                        }
+                        else if (RabbitStruct.CanIdle && rabbit.TimeElapsedAfterStateChange > TIME_UNTIL_CAN_CHANGE_STATE && Random.Range(0.0f, 1.0f) > 0.95f)
+                        {
+                            rabbit.TimeElapsedAfterStateChange = 0.0f;
+                            rabbit.RabbitState = BehaviourState.Idling;
+                        }
+                        break;
+                    }
+                case BehaviourState.Returning:
+                    {
+                        Return(rabbit);
+                        var moveDistance = RabbitStruct.RunningRadius / RabbitData.STOP_RETURNING_DISTANCE_FACTOR;
+                        if ((rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).sqrMagnitude < moveDistance * moveDistance)
+                        {
+                            rabbit.RabbitState = BehaviourState.Roaming;
+                        }
+                        break;
+                    }
+                case BehaviourState.Fleeing:
+                    {
+                        rabbit.TimeElapsedAfterStartFleeing += Time.deltaTime;
+                        if (rabbit.DangerousObjects.Count >= 0)
+                        {
+                            Flee(rabbit);
+                        }
+                        if (rabbit.TimeElapsedAfterStartFleeing > STOP_FLEEING_TIME)
+                        {
+                            if (rabbit.DangerousObjects.Count > 0)
+                            {
+                                rabbit.TimeElapsedAfterStartFleeing = 0;
+                            }
+                            else
+                            {
+                                rabbit.RabbitState = BehaviourState.Roaming;
+                            }
+                        }
+                        break;
+                    }
+                default:
+                    break;
+            }
+            Debug.Log(rabbit.RabbitState);
+        }
+
+        private void Idle()
+        {
+            Debug.Log("Idle animation");
+        }
+
+        private void Roam(RabbitModel rabbit)
+        {
+            Move(RandomNextCoord, rabbit);
+        }
+
+        private void Return(RabbitModel rabbit)
+        {
+            Move(ReturningNextCoord, rabbit);
+        }
+
+        private void Move(Func<Transform, Vector3, List<Transform>, Vector3> nextCoordFunc, RabbitModel rabbit)
+        {
+            rabbit.TimeLeft -= Time.deltaTime;
+            rabbit.TimeElapsed += Time.deltaTime;
+            if (rabbit.TimeLeft < 0.0f && _physicsService.CheckGround(rabbit.RabbitTransform.position, DOWN_RAYCAST_DISTANCE, out Vector3 hitPoint))
+            {
+                RotateTo(rabbit.RabbitTransform, rabbit.RabbitTransform.forward, rabbit.NextCoord, out bool canHop);
+                if (rabbit.TimeElapsed >= MAX_HOP_FREQUENCY)
+                {
+                    canHop = true;
+                }
+                if (canHop)
+                {
+                    Hop(rabbit.RabbitRigidbody, rabbit.NextCoord, 1.0f);
+                    rabbit.TimeLeft = HOP_FREQUENCY;
+                    rabbit.NextCoord = NextCoord(rabbit.RabbitTransform, rabbit.RabbitStartPosition, rabbit.DangerousObjects, nextCoordFunc);
+                    rabbit.TimeElapsed = 0.0f;
+                }
+            }
+        }
+
+        private void Flee(RabbitModel rabbit)
+        {
+            RotateTo(rabbit.RabbitTransform, rabbit.RabbitTransform.forward, rabbit.NextCoord, out bool canHop);
+            rabbit.TimeLeft -= Time.deltaTime;
+            if (rabbit.TimeLeft < 0.0f && _physicsService.CheckGround(rabbit.RabbitTransform.position, DOWN_RAYCAST_DISTANCE, out Vector3 hitPoint))
+            {
+                if (rabbit.DangerousObjects.Count > 0)
+                {
+                    rabbit.NextCoord = NextCoord(rabbit.RabbitTransform, rabbit.RabbitStartPosition, rabbit.DangerousObjects, FleeingNextCoord);
+                }
+                Hop(rabbit.RabbitRigidbody, rabbit.NextCoord, FLEE_ACCELERATION_FACTOR);
+                rabbit.TimeLeft = HOP_FREQUENCY;
+            }
+        }
+
+        private bool CheckForEnemiesInFieldOfView(Transform transform, List<Transform> targets)
         {
             for (int i = 0; i < targets.Count; i++)
             {
@@ -72,21 +235,21 @@ namespace BeastHunter
             return result;
         }
 
-        public void RotateTo(Transform transform, Vector3 from, Vector3 to, out bool rotationFinished)
+        private void RotateTo(Transform transform, Vector3 from, Vector3 to, out bool rotationFinished)
         {
             float singleStep = ROTATION_SPEED * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(from, to, singleStep, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDirection);
             float dot = Vector3.Dot(from.normalized, to.normalized);
-            rotationFinished = dot >= 1.0f;
+            rotationFinished = Mathf.Approximately(dot, 1.0f);
         }
 
-        public void Hop(Rigidbody rigidbody, Vector3 direction, float acceleration)
+        private void Hop(Rigidbody rigidbody, Vector3 direction, float acceleration)
         {
             rigidbody.AddForce((direction * RabbitStruct.MoveSpeed * acceleration + Vector3.up * RabbitStruct.JumpHeight) * HOP_FORCE_MULTIPLIER);
         }
 
-        public Vector3 NextCoord(Transform transform, Vector3 startPosition, List<Transform> targets, System.Func<Transform, Vector3, List<Transform>, Vector3> nextCoordFunc)
+        private Vector3 NextCoord(Transform transform, Vector3 startPosition, List<Transform> targets, Func<Transform, Vector3, List<Transform>, Vector3> nextCoordFunc)
         {
             var nextCoord = nextCoordFunc(transform, startPosition, targets);
             if (Physics.Raycast(transform.position, nextCoord, FRONT_RAYCAST_DISTANCE, LayerManager.EnvironmentLayer))
@@ -132,7 +295,7 @@ namespace BeastHunter
             return new Vector3(RotateByAngle(forward, angle).x, transform.forward.y, RotateByAngle(forward, angle).y);
         }
 
-        public Vector3 ReturningNextCoord(Transform transform, Vector3 startPosition, List<Transform> targets)
+        private Vector3 ReturningNextCoord(Transform transform, Vector3 startPosition, List<Transform> targets)
         {
             var next = (startPosition - transform.position).normalized;
             //var distance = Mathf.Min((transform.position - startPosition).magnitude, RabbitStruct.RunningRadius);
@@ -149,7 +312,7 @@ namespace BeastHunter
             return new Vector3(RotateByAngle(forward, angle).x, transform.forward.y, RotateByAngle(forward, angle).y);
         }
 
-        public Vector3 FleeingNextCoord(Transform transform, Vector3 startPosition, List<Transform> targets)
+        private Vector3 FleeingNextCoord(Transform transform, Vector3 startPosition, List<Transform> targets)
         {
             var sum = Vector3.zero;
             foreach (var obj in targets)
@@ -168,14 +331,14 @@ namespace BeastHunter
             return new Vector3(result.x, transform.forward.y, result.y);
         }
 
-        public float AngleDeviation(float distance) // linear, use with distance magnitude
+        private float AngleDeviation(float distance) // linear, use with distance magnitude
         {
             var r = RabbitStruct.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
             return (MAX_ANGLE_DEVIATION * f) / (f - 1.0f) * (-(distance / r) + 1);
         }
 
-        public float AngleDeviationSqr(float distance) // parabolic, use with distance magnitude (variant 1, point on runningRadius/returnFactor)
+        private float AngleDeviationSqr(float distance) // parabolic, use with distance magnitude (variant 1, point on runningRadius/returnFactor)
         {
             var r = RabbitStruct.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
@@ -185,7 +348,7 @@ namespace BeastHunter
             return a * distance * distance + b * distance + c;
         }
 
-        public float AngleDeviationSqrPlain(float distance) // parabolic, use with distance sqrMagnitude (variant 2, point on startPos)
+        private float AngleDeviationSqrPlain(float distance) // parabolic, use with distance sqrMagnitude (variant 2, point on startPos)
         {
             var r = RabbitStruct.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;

@@ -104,6 +104,7 @@ namespace BeastHunter
 
         #endregion
 
+
         #region ITearDownController
 
         public void TearDown()
