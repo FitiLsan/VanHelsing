@@ -11,6 +11,7 @@
         public AttackService AttackService { get; private set; }
         public CameraService CameraService { get; private set; }
         public EventManager EventManager { get; private set; }
+        public BuffService BuffService { get; private set; }
 
         #endregion
 
@@ -24,6 +25,7 @@
             AttackService = new AttackService(contexts);
             CameraService = new CameraService(contexts);
             EventManager = new EventManager(contexts);
+            BuffService = new BuffService(contexts);
         }
 
         #endregion
