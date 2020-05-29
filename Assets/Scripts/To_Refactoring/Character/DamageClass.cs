@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BeastHunter
 {
     [Serializable]
-    public class Damage
+    public sealed class Damage
     {
         #region Fields
 
@@ -18,10 +18,6 @@ namespace BeastHunter
         [Tooltip("Stun probability between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         public float StunProbability;
-
-
-
-
 
         #endregion
     }

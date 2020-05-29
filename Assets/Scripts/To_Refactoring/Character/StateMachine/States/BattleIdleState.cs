@@ -1,22 +1,16 @@
-﻿using UnityEngine;
-
+﻿
 
 namespace BeastHunter
 {
-    public class BattleIdleState : CharacterBaseState
+    public sealed class BattleIdleState : CharacterBaseState
     {
-        #region Properties
-
-        public Collider ClosestEnemy { get; private set; }
-
-        #endregion
-
-
         #region ClassLifeCycle
 
         public BattleIdleState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Battle;
+            IsTargeting = false;
             CanExit = true;
             CanBeOverriden = true;
         }
@@ -39,6 +33,10 @@ namespace BeastHunter
         public override void OnExit()
         {
 
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void StayInBattle()

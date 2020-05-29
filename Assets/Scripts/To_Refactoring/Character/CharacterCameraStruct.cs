@@ -16,13 +16,17 @@ namespace BeastHunter
         [Tooltip("Character camera name.")]
         [SerializeField] private string _characterCameraName;
 
-        [Tooltip("Character cinemachine camera.")]
+        [Tooltip("Character free look camera.")]
         [SerializeField] private CinemachineFreeLook _characterFreelookCamera;
 
-        [Tooltip("Character cinemachine camera name.")]
+        [Tooltip("Character free look camera name.")]
         [SerializeField] private string _characterFreelookCameraName;
 
-        [Tooltip("Character cinemachine target camera.")]
+        [Range(0.0f, 10.0f)]
+        [Tooltip("Freelook camera blend time between 0 and 10.")]
+        [SerializeField] private float _characterFreelookCameraBlendTime;
+
+        [Tooltip("Character target camera.")]
         [SerializeField] private CinemachineVirtualCamera _characterTargetCamera;
 
         [Tooltip("Character target camera name.")]
@@ -30,6 +34,24 @@ namespace BeastHunter
 
         [Tooltip("Camera target name.")]
         [SerializeField] private string _cameraTargetName;
+
+        [Range(0.0f, 10.0f)]
+        [Tooltip("Target camera blend time between 0 and 10.")]
+        [SerializeField] private float _characterTargetameraBlendTime;
+
+        [Range(0.0f, 5.0f)]
+        [Tooltip("Camera target height between 0 and 5.")]
+        [SerializeField] private float _cameraTargetHeight;
+
+        [Tooltip("Character dialog camera.")]
+        [SerializeField] private CinemachineVirtualCamera _characterDialogCamera;
+
+        [Tooltip("Character dialog camera name.")]
+        [SerializeField] private string _characterDialogCameraName;
+
+        [Range(0.0f, 10.0f)]
+        [Tooltip("Dialog camera blend time between 0 and 10.")]
+        [SerializeField] private float _characterDialogCameraBlendTime;
 
         [Header("Lens Settings")]
 
@@ -89,24 +111,24 @@ namespace BeastHunter
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _freeLookSplineCurvature;
 
-        [Tooltip("Height of freelook camera top rig between 0 and 10.")]
-        [Range(0.0f, 10.0f)]
+        [Tooltip("Height of freelook camera top rig between -10 and 10.")]
+        [Range(-10.0f, 10.0f)]
         [SerializeField] private float _freeLookTopRigHeight;
 
         [Tooltip("Radius of freelook camera top rig between 0 and 10.")]
         [Range(0.0f, 10.0f)]
         [SerializeField] private float _freeLookTopRigRadius;
 
-        [Tooltip("Height of freelook camera middle rig between 0 and 10.")]
-        [Range(0.0f, 10.0f)]
+        [Tooltip("Height of freelook camera middle rig between -10 and 10.")]
+        [Range(-10.0f, 10.0f)]
         [SerializeField] private float _freeLookMiddleRigHeight;
 
         [Tooltip("Radius of freelook camera middle rig between 0 and 10.")]
         [Range(0.0f, 10.0f)]
         [SerializeField] private float _freeLookMiddleRigRadius;
 
-        [Tooltip("Height of freelook camera bottom rig between 0 and 10.")]
-        [Range(0.0f, 10.0f)]
+        [Tooltip("Height of freelook camera bottom rig between -10 and 10.")]
+        [Range(-10.0f, 10.0f)]
         [SerializeField] private float _freeLookBottomRigHeight;
 
         [Tooltip("Radius of freelook camera low rig between 0 and 10.")]
@@ -468,6 +490,126 @@ namespace BeastHunter
         [Range(-0.5f, 0.5f)]
         [SerializeField] private float _targetCameraBiasY;
 
+        [Header("Lens Settings")]
+
+        [Header("Dialog camera Settings")]
+
+        [Tooltip("Dialog camera field of view between 1 and 179.")]
+        [Range(0.0f, 179.0f)]
+        [SerializeField] private float _dialogCameraFieldOfView;
+
+        [Tooltip("Dialog camera near clip plane between 0 and 10 000.")]
+        [Range(0.0f, 10000.0f)]
+        [SerializeField] private float _dialogCameraNearClipPlane;
+
+        [Tooltip("Dialog camera far clip plane between 0 and 10 000.")]
+        [Range(0.0f, 10000.0f)]
+        [SerializeField] private float _dialogCameraFarClipPlane;
+
+        [Tooltip("Dialog camera dutch between -180 and 180.")]
+        [Range(-180.0f, 180.0f)]
+        [SerializeField] private float _dialogCameraDutch;
+
+        [Header("Transposer/composer settings")]
+
+        [Tooltip("Dialog camera follow offset X between -10 and 10.")]
+        [Range(-10.0f, 10.0f)]
+        [SerializeField] private float _dialogCameraFollowOffsetX;
+
+        [Tooltip("Dialog camera follow offset Y between -10 and 10.")]
+        [Range(-10.0f, 10.0f)]
+        [SerializeField] private float _dialogCameraFollowOffsetY;
+
+        [Tooltip("Dialog camera follow offset Z between -10 and 10.")]
+        [Range(-10.0f, 10.0f)]
+        [SerializeField] private float _dialogCameraFollowOffsetZ;
+
+        [Tooltip("Dialog camera X damping between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _dialogCameraDampingX;
+
+        [Tooltip("Dialog camera Y damping between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _dialogCameraDampingY;
+
+        [Tooltip("Dialog camera Z damping between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _dialogCameraDampingZ;
+
+        [Tooltip("Dialog camera pitch damping between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _dialogCameraPitchDamping;
+
+        [Tooltip("Dialog camera yaw damping between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _dialogCameraYawDamping;
+
+        [Tooltip("Dialog camera roll damping between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _dialogCameraRollDamping;
+
+        [Space(10)]
+
+        [Tooltip("Dialog camera tracked object offset X between -10 and 10.")]
+        [Range(-10.0f, 10.0f)]
+        [SerializeField] private float _dialogCameraTrackedOffsetX;
+
+        [Tooltip("Dialog camera tracked object offset Y between -10 and 10.")]
+        [Range(-10.0f, 10.0f)]
+        [SerializeField] private float _dialogCameraTrackedOffsetY;
+
+        [Tooltip("Dialog camera tracked object offset Z between -10 and 10.")]
+        [Range(-10.0f, 10.0f)]
+        [SerializeField] private float _dialogCameraTrackedOffsetZ;
+
+        [Tooltip("Dialog camera look ahead time between 0 and 10.")]
+        [Range(0.0f, 10.0f)]
+        [SerializeField] private float _dialogCameraLookaheadTime;
+
+        [Tooltip("Dialog camera lookahead smoothing between 0 and 10.")]
+        [Range(3.0f, 30.0f)]
+        [SerializeField] private float _dialogCameraLookaheadSmoothing;
+
+        [Tooltip("Dialog camera horizontal damping between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _dialogCameraHorizontalDamping;
+
+        [Tooltip("Dialog camera vertical damping between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _dialogCameraVerticalDamping;
+
+        [Tooltip("Dialog camera screen X between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _dialogCameraScreenX;
+
+        [Tooltip("Dialog camera screen Y between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _dialogCameraScreenY;
+
+        [Tooltip("Dialog camera danger zone width between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _dialogCameraDeadZoneWidth;
+
+        [Tooltip("Dialog camera danger zone height between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _dialogCameraDeadZoneHeight;
+
+        [Tooltip("Dialog camera soft zone width between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _dialogCameraSoftZoneWidth;
+
+        [Tooltip("Dialog camera soft zone height between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _dialogCameraSoftZoneHeight;
+
+        [Tooltip("Dialog camera bias X between 0 and 1.")]
+        [Range(-0.5f, 0.5f)]
+        [SerializeField] private float _dialogCameraBiasX;
+
+        [Tooltip("Dialog camera bias Y between 0 and 1.")]
+        [Range(-0.5f, 0.5f)]
+        [SerializeField] private float _dialogCameraBiasY;
+
         #endregion
 
 
@@ -476,11 +618,18 @@ namespace BeastHunter
         public Camera CharacterCamera => _characterCamera;
         public CinemachineFreeLook CharacterFreelookCamera => _characterFreelookCamera;
         public CinemachineVirtualCamera CharacterTargetCamera => _characterTargetCamera;
+        public CinemachineVirtualCamera CharacterDialogCamera => _characterDialogCamera;
 
         public string CharacterCameraName => _characterCameraName;
         public string CharacterFreelookCameraName => _characterFreelookCameraName;
         public string CharacterTargetCameraName => _characterTargetCameraName;
         public string CameraTargetName => _cameraTargetName;
+        public string CharacterDialogCameraName => _characterDialogCameraName;
+
+        public float CharacterFreelookCameraBlendTime => _characterFreelookCameraBlendTime;
+        public float CHaracterTargetCameraBlendTime => _characterTargetameraBlendTime;
+        public float CHaracterDialogCameraBlendTIme => _characterDialogCameraBlendTime;
+        public float CameraTargetHeight => _cameraTargetHeight;
 
         public float FreeLookFieldOfView => _freeLookFieldOfView;
         public float FreeLookNearClipPlane => _freeLookNearClipPlane;
@@ -595,12 +744,41 @@ namespace BeastHunter
         public float TargetCameraBiasX => _targetCameraBiasX;
         public float TargetCameraBiasY => _targetCameraBiasY;
 
+        public float DialogCameraFieldOfView => _dialogCameraFieldOfView;
+        public float DialogCameraNearClipPlane => _dialogCameraNearClipPlane;
+        public float DialogCameraFarClipPlane => _dialogCameraFarClipPlane;
+        public float DialogCameraDutch => _dialogCameraDutch;
+        public float DialogCameraFollowOffsetX => _dialogCameraFollowOffsetX;
+        public float DialogCameraFollowOffsetY => _dialogCameraFollowOffsetY;
+        public float DialogCameraFollowOffsetZ => _dialogCameraFollowOffsetZ;
+        public float DialogCameraDampingX => _dialogCameraDampingX;
+        public float DialogCameraDampingY => _dialogCameraDampingY;
+        public float DialogCameraDampingZ => _dialogCameraDampingZ;
+        public float DialogCameraPitchDamping => _dialogCameraPitchDamping;
+        public float DialogCameraYawDamping => _dialogCameraYawDamping;
+        public float DialogCameraRollDamping => _dialogCameraRollDamping;
+        public float DialogCameraTrackedOffsetX => _dialogCameraTrackedOffsetX;
+        public float DialogCameraTrackedOffsetY => _dialogCameraTrackedOffsetY;
+        public float DialogCameraTrackedOffsetZ => _dialogCameraTrackedOffsetZ;
+        public float DialogCameraLookaheadTime => _dialogCameraLookaheadTime;
+        public float DialogCameraLookaheadSmoothing => _dialogCameraLookaheadSmoothing;
+        public float DialogCameraHorizontalDamping => _dialogCameraHorizontalDamping;
+        public float DialogCameraVerticalDamping => _dialogCameraVerticalDamping;
+        public float DialogCameraScreenX => _dialogCameraScreenX;
+        public float DialogCameraScreenY => _dialogCameraScreenY;
+        public float DialogCameraDeadZoneWidth => _dialogCameraDeadZoneWidth;
+        public float DialogCameraDeadZoneHeight => _dialogCameraDeadZoneHeight;
+        public float DialogCameraSoftZoneWidth => _dialogCameraSoftZoneWidth;
+        public float DialogCameraSoftZoneHeight => _dialogCameraSoftZoneHeight;
+        public float DialogCameraBiasX => _dialogCameraBiasX;
+        public float DialogCameraBiasY => _dialogCameraBiasY;
+
         #endregion
 
 
         #region Methods
 
-        public CinemachineFreeLook.Orbit GetOrbit(int orbitNumber)
+        public CinemachineFreeLook.Orbit GetFreeCameraOrbit(int orbitNumber)
         {
             CinemachineFreeLook.Orbit orbit = new CinemachineFreeLook.Orbit();
 
@@ -628,7 +806,7 @@ namespace BeastHunter
             return orbit;
         }
 
-        public CinemachineOrbitalTransposer GetOrbitalTransposer(int rigNumber)
+        public CinemachineOrbitalTransposer GetFreeCameraOrbitalTransposer(int rigNumber)
         {
             CinemachineOrbitalTransposer orbitalTransposer = new CinemachineOrbitalTransposer();
 
@@ -656,7 +834,7 @@ namespace BeastHunter
             return orbitalTransposer;
         }
 
-        public CinemachineComposer GetComposer(int rigNumber)
+        public CinemachineComposer GetFreeCameraComposer(int rigNumber)
         {
             CinemachineComposer composer = new CinemachineComposer();
 
@@ -723,9 +901,10 @@ namespace BeastHunter
             return composer;
         }
 
-        public void SaveCameraSettings(CinemachineFreeLook freeLookCamera, CinemachineVirtualCamera targetCamera)
+        public void SaveCameraSettings(CinemachineFreeLook freeLookCamera, CinemachineVirtualCamera targetCamera, 
+            CinemachineVirtualCamera dialogCamera)
         {
-            if (freeLookCamera == null || targetCamera == null)
+            if (freeLookCamera == null || targetCamera == null || dialogCamera == null)
             {
                 throw new NullReferenceException("Can't save camera settings, some cameras are null!");
             }
@@ -741,6 +920,8 @@ namespace BeastHunter
 
             CinemachineTransposer targetTransposer = targetCamera.GetCinemachineComponent<CinemachineTransposer>();
             CinemachineComposer targetComposer = targetCamera.GetCinemachineComponent<CinemachineComposer>();
+            CinemachineTransposer dialogTransposer = dialogCamera.GetCinemachineComponent<CinemachineTransposer>();
+            CinemachineComposer dialogComposer = dialogCamera.GetCinemachineComponent<CinemachineComposer>();
 
             _isInvertedAxisX = freeLookCamera.m_XAxis.m_InvertAxis;
             _isInvertedAxisY = freeLookCamera.m_YAxis.m_InvertAxis;
@@ -813,17 +994,35 @@ namespace BeastHunter
             _targetCameraSoftZoneHeight = targetComposer.m_SoftZoneHeight;
             _targetCameraBiasX = targetComposer.m_BiasX;
             _targetCameraBiasY = targetComposer.m_BiasY;
-        }
 
-        public GameObject CreateCameraTarget(Transform characterTransform)
-        {
-            GameObject target = new GameObject { name = CameraTargetName };
-
-            target.transform.SetParent(characterTransform);
-            target.transform.localPosition = Vector3.zero;
-            target.transform.localRotation = Quaternion.Euler(0, 0, 0);
-
-            return target;
+            _dialogCameraFieldOfView = dialogCamera.m_Lens.FieldOfView;
+            _dialogCameraNearClipPlane = dialogCamera.m_Lens.NearClipPlane;
+            _dialogCameraFarClipPlane = dialogCamera.m_Lens.FarClipPlane;
+            _dialogCameraDutch = dialogCamera.m_Lens.Dutch;
+            _dialogCameraFollowOffsetX = dialogTransposer.m_FollowOffset.x;
+            _dialogCameraFollowOffsetY = dialogTransposer.m_FollowOffset.y;
+            _dialogCameraFollowOffsetZ = dialogTransposer.m_FollowOffset.z;
+            _dialogCameraDampingX = dialogTransposer.m_XDamping;
+            _dialogCameraDampingY = dialogTransposer.m_YDamping;
+            _dialogCameraDampingZ = dialogTransposer.m_ZDamping;
+            _dialogCameraPitchDamping = dialogTransposer.m_PitchDamping;
+            _dialogCameraYawDamping = dialogTransposer.m_YawDamping;
+            _dialogCameraRollDamping = dialogTransposer.m_RollDamping;
+            _dialogCameraTrackedOffsetX = dialogComposer.m_TrackedObjectOffset.x;
+            _dialogCameraTrackedOffsetY = dialogComposer.m_TrackedObjectOffset.y;
+            _dialogCameraTrackedOffsetZ = dialogComposer.m_TrackedObjectOffset.z;
+            _dialogCameraLookaheadTime = dialogComposer.m_LookaheadTime;
+            _dialogCameraLookaheadSmoothing = dialogComposer.m_LookaheadSmoothing;
+            _dialogCameraHorizontalDamping = dialogComposer.m_HorizontalDamping;
+            _dialogCameraVerticalDamping = dialogComposer.m_VerticalDamping;
+            _dialogCameraScreenX = dialogComposer.m_ScreenX;
+            _dialogCameraScreenY = dialogComposer.m_ScreenY;
+            _dialogCameraDeadZoneWidth = dialogComposer.m_DeadZoneWidth;
+            _dialogCameraDeadZoneHeight = dialogComposer.m_DeadZoneHeight;
+            _dialogCameraSoftZoneWidth = dialogComposer.m_SoftZoneWidth;
+            _dialogCameraSoftZoneHeight = dialogComposer.m_SoftZoneHeight;
+            _dialogCameraBiasX = dialogComposer.m_BiasX;
+            _dialogCameraBiasY = dialogComposer.m_BiasY;
         }
 
         public Camera CreateCharacterCamera()
@@ -863,14 +1062,14 @@ namespace BeastHunter
                 CinemachineVirtualCamera cinemachineRig = characterFreelookCamera.GetRig(rig);
                 cinemachineRig.LookAt = targetTransform;
 
-                CinemachineOrbitalTransposer transposerFromData = GetOrbitalTransposer(rig);
+                CinemachineOrbitalTransposer transposerFromData = GetFreeCameraOrbitalTransposer(rig);
                 CinemachineOrbitalTransposer transposerFromCamera = cinemachineRig.
                     GetCinemachineComponent<CinemachineOrbitalTransposer>();
 
                 transposerFromCamera.m_YDamping = transposerFromData.m_YDamping;
                 transposerFromCamera.m_ZDamping = transposerFromData.m_ZDamping;
 
-                CinemachineComposer composerFromData = GetComposer(rig);
+                CinemachineComposer composerFromData = GetFreeCameraComposer(rig);
                 CinemachineComposer composerFromCamera = cinemachineRig.GetCinemachineComponent<CinemachineComposer>();
 
                 composerFromCamera.m_TrackedObjectOffset.x = composerFromData.m_TrackedObjectOffset.x;
@@ -889,7 +1088,7 @@ namespace BeastHunter
                 composerFromCamera.m_BiasX = composerFromData.m_BiasX;
                 composerFromCamera.m_BiasY = composerFromData.m_BiasY;
 
-                CinemachineFreeLook.Orbit currentOrbit = GetOrbit(rig);
+                CinemachineFreeLook.Orbit currentOrbit = GetFreeCameraOrbit(rig);
                 characterFreelookCamera.m_Orbits[rig] = currentOrbit;
             }
 
@@ -953,9 +1152,53 @@ namespace BeastHunter
             return characterTargetCamera;
         }
 
-        public void SetBlendTime(float time)
+        public CinemachineVirtualCamera CreateCharacterDialogCamera(Transform targetTransform)
         {
-            CharacterCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = time;
+            CinemachineVirtualCamera characterDialogCamera = GameObject.Instantiate(CharacterDialogCamera);
+            characterDialogCamera.name = CharacterDialogCameraName;
+
+            characterDialogCamera.Follow = targetTransform;
+            characterDialogCamera.LookAt = targetTransform;
+
+            characterDialogCamera.m_Lens.FieldOfView = DialogCameraFieldOfView;
+            characterDialogCamera.m_Lens.NearClipPlane = DialogCameraNearClipPlane;
+            characterDialogCamera.m_Lens.FarClipPlane = DialogCameraFarClipPlane;
+            characterDialogCamera.m_Lens.Dutch = DialogCameraDutch;
+
+            CinemachineTransposer dialogTransposer = characterDialogCamera.
+                GetCinemachineComponent<CinemachineTransposer>();
+
+            dialogTransposer.m_FollowOffset.x = DialogCameraFollowOffsetX;
+            dialogTransposer.m_FollowOffset.y = DialogCameraFollowOffsetY;
+            dialogTransposer.m_FollowOffset.z = DialogCameraFollowOffsetZ;
+
+            dialogTransposer.m_XDamping = DialogCameraDampingX;
+            dialogTransposer.m_YDamping = DialogCameraDampingY;
+            dialogTransposer.m_ZDamping = DialogCameraDampingZ;
+            dialogTransposer.m_PitchDamping = DialogCameraPitchDamping;
+            dialogTransposer.m_YawDamping = DialogCameraYawDamping;
+            dialogTransposer.m_RollDamping = DialogCameraRollDamping;
+
+            CinemachineComposer dialogComposer = characterDialogCamera.
+                GetCinemachineComponent<CinemachineComposer>();
+
+            dialogComposer.m_TrackedObjectOffset.x = DialogCameraTrackedOffsetX;
+            dialogComposer.m_TrackedObjectOffset.y = DialogCameraTrackedOffsetY;
+            dialogComposer.m_TrackedObjectOffset.z = DialogCameraTrackedOffsetZ;
+            dialogComposer.m_LookaheadTime = DialogCameraLookaheadTime;
+            dialogComposer.m_LookaheadSmoothing = DialogCameraLookaheadSmoothing;
+            dialogComposer.m_HorizontalDamping = DialogCameraHorizontalDamping;
+            dialogComposer.m_VerticalDamping = DialogCameraVerticalDamping;
+            dialogComposer.m_ScreenX = DialogCameraScreenX;
+            dialogComposer.m_ScreenY = DialogCameraScreenY;
+            dialogComposer.m_DeadZoneWidth = DialogCameraDeadZoneWidth;
+            dialogComposer.m_DeadZoneHeight = DialogCameraDeadZoneHeight;
+            dialogComposer.m_SoftZoneWidth = DialogCameraSoftZoneWidth;
+            dialogComposer.m_SoftZoneHeight = DialogCameraSoftZoneHeight;
+            dialogComposer.m_BiasX = DialogCameraBiasX;
+            dialogComposer.m_BiasY = DialogCameraBiasY;
+
+            return characterDialogCamera;
         }
 
         #endregion

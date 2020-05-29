@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public class LandingState : CharacterBaseState
+    public sealed class LandingState : CharacterBaseState
     {
         #region Fields
 
@@ -19,6 +19,8 @@
         public LandingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.NotActive;
+            IsTargeting = false;
             CanExit = false;
             CanBeOverriden = true;
         }
@@ -41,6 +43,10 @@
         public override void OnExit()
         {
 
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         #endregion

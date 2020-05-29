@@ -9,6 +9,8 @@ namespace BeastHunter
     {
         #region Properties
 
+        public BaseStatsClass Stats;
+
         [Tooltip("Default: 10")]
         public float MaxHealth;
 
@@ -29,6 +31,8 @@ namespace BeastHunter
         public float ViewAngle;
 
         public bool CanIdle;
+
+        public bool IsDead;
 
         public GameObject Prefab;
 

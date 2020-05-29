@@ -1,15 +1,23 @@
-﻿namespace BeastHunter
+﻿using UnityEngine;
+
+
+namespace BeastHunter
 {
-    public class TalkingState : CharacterBaseState
+    public sealed class TalkingState : CharacterBaseState
     {
+        #region Constants
+
+        #endregion
+
+
         #region Fields
 
+        private Collider _npcTargetCollider;
 
         #endregion
 
 
         #region Properties
-
 
         #endregion
 
@@ -19,8 +27,10 @@
         public TalkingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
-            CanExit = true;
-            CanBeOverriden = true;
+            Type = StateType.NotActive;
+            IsTargeting = false;
+            CanExit = false;
+            CanBeOverriden = false;
         }
 
         #endregion
@@ -30,17 +40,19 @@
 
         public override void Initialize()
         {
-
+            _animationController.PlayDefaultIdleAnimation();
         }
 
         public override void Execute()
         {
-
         }
 
         public override void OnExit()
         {
+        }
 
+        public override void OnTearDown()
+        {
         }
 
         #endregion
