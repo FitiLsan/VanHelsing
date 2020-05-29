@@ -1,18 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ButterflyModel : MonoBehaviour
+
+namespace BeastHunter
 {
-    // Start is called before the first frame update
-    void Start()
+    public class ButterflyModel
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public BoxCollider ButterflyCollider { get; }
+        public Transform ButterflyTransform;
+        public ButterflyData ButterflyData;
+        public ButterflyStruct ButterflyStruct;
     }
 }
