@@ -52,6 +52,11 @@ namespace BeastHunter
             _saveFileWrapper.SaveQuestLog(quests, _completedQuests);
         }
 
+        public void SaveGeneratedQuest(QuestDto quest)
+        {
+            _saveFileWrapper.SaveGeneratedQuest(quest);
+        }
+
         public List<Quest> LoadQuestLog()
         {
             var res = new List<Quest>();

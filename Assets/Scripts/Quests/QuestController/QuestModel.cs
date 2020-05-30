@@ -58,6 +58,7 @@ namespace BeastHunter
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.DialogStarted, OnDialogEnter);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.ObjectUsed, OnObjectUse);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.DialogAnswerSelect, OnDialogAnswerSelect);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.SaveGeneratedQuest, OnSaveGeneratedQuest);
             //  EventManager.StartListening(GameEventTypes.ItemAcquired, OnItemAcquired);
             //  EventManager.StartListening(GameEventTypes.ItemUsed, OnItemUse);
             // не удалять, события для предметов
@@ -71,6 +72,7 @@ namespace BeastHunter
         private void OnProgressSaving(EventArgs arg0)
         {
             QuestStorage.SaveQuestLog(_quests);
+            QuestStorage.SaveGeneratedQuest(QuestRepository.GetById(QuestGeneration.GetTempQuest().Id));
         }
 
         private void OnDialogEnter(EventArgs arg0)
@@ -323,7 +325,13 @@ namespace BeastHunter
         public void SetQuestIsNotComplete(int questId)
         {
             
-        }         
+        }    
+        
+        public void OnSaveGeneratedQuest(EventArgs args)
+        {
+            if (!(args is QuestArgs questArgs)) return;
+            QuestStorage.SaveGeneratedQuest(questArgs.Quest);
+        }
 
         public void Execute()
         {

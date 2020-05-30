@@ -14,6 +14,7 @@ namespace BeastHunter
         Dictionary<int, int> GetActiveObjectives();
         Dictionary<int, int> GetCompletedObjectives();
         void SaveQuestLog(IEnumerable<Quest> quests, List<Quest> completeQuests);
+        void SaveGeneratedQuest(QuestDto quest);
         int GetNextItemEntry();
         void AddSaveData(string key, string value);
         void AddSaveData(KeyValuePair<string, string> param);

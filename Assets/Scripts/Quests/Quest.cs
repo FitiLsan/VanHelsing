@@ -13,6 +13,8 @@ namespace BeastHunter
         public int RewardExp { get; }
         public int StartDialogId { get; }
         public int EndDialogId { get; }
+        public int StartQuestEventType { get; }
+        public int EndQuestEventType { get; }
         public int IsRepetable { get; }
         public int RewardMoney { get; }
         public int QuestLevel { get; }
@@ -81,6 +83,8 @@ namespace BeastHunter
             RewardMoney = dto.RewardMoney;
             StartDialogId = dto.StartDialogId;
             EndDialogId = dto.EndDialogId;
+            StartQuestEventType = dto.StartQuestEventType;
+            EndQuestEventType = dto.EndQuestEventType;
             IsRepetable = dto.IsRepetable;
             foreach (var reward in dto.Rewards)
             {

@@ -12,7 +12,7 @@ namespace BeastHunter
             {
                 var newQuest = new QuestDto
                 {
-                    Id = 667,
+                    Id = 667, //need use last generate ID +1
                     Title = "test Generate Quest",
                     Description = "generating bla bla bla",
                     ZoneId = 1,
@@ -23,13 +23,16 @@ namespace BeastHunter
                     RewardMoney = 0,
                     StartDialogId = 668,
                     EndDialogId = 669,
-                    IsRepetable = 0,
-                    Tasks = QuestTasksGenerate(1)
+                    IsRepetable = 1,
+                    Tasks = QuestTasksGenerate(3)
 
                 };
-
-                QuestRepository.AddRowToDialogueCaches(newQuest);
-                TempGenerationQuest = new Quest(newQuest);
+                if (QuestRepository.GetById(newQuest.Id) == null)
+                {
+                    QuestRepository.AddRowToDialogueCaches(newQuest);
+                    Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.SaveGeneratedQuest, new QuestArgs(newQuest));
+                    TempGenerationQuest = new Quest(newQuest);
+                }
             }
             return TempGenerationQuest;
         }
@@ -41,11 +44,11 @@ namespace BeastHunter
             {
                 var newTask = new QuestTaskDto
                 {
-                    Id = 510 + count,
+                    Id = 510 + i, //need use last generate ID +1
                     Description = $"new task #{i + 1}",
                     NeededAmount = 1,
                     IsOptional = false,
-                    TargetId = 45,
+                    TargetId = i, // need unic
                     Type = QuestTaskTypes.AnswerSelect
                 };
                 taskList.Add(newTask);

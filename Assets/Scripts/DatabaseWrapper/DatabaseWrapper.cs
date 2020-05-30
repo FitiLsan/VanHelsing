@@ -55,6 +55,7 @@ namespace BeastHunter
             _connection?.Open();
         }
 
+
         private static void Init()
         {
             _dbPath = GetDatabasePath();
@@ -70,10 +71,12 @@ namespace BeastHunter
         private static string GetDatabasePath()
         {
 #if UNITY_EDITOR
-            return Path.Combine(Application.streamingAssetsPath, FILE_NAME);
+            var dbPath = Path.Combine(Application.streamingAssetsPath, FILE_NAME);
+            return dbPath;
 #elif UNITY_STANDALONE
                 var filePath = Path.Combine(Application.dataPath, FileName);
                 if(!File.Exists(filePath)) UnpackDatabase(filePath);
+
                 return filePath;
 #endif
         }

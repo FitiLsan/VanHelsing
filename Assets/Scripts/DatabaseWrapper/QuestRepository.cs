@@ -152,18 +152,42 @@ namespace BeastHunter
             try
             {
                 if (_cache.ContainsKey(id)) return _cache[id];
-                var dtQ = DatabaseWrapper.GetTable($"select * from 'quest' where Id={id};");
-                var dtLoc = DatabaseWrapper.GetTable($"select * from '{GetQuestLocaleTable()}' where QuestId={id} limit 1;");
-                var dtObj = DatabaseWrapper.GetTable($"select * from 'quest_objectives' where QuestId={id};");
-                var dtPoi = DatabaseWrapper.GetTable($"select * from 'quest_poi' where QuestId={id};");
-                var dtReq = DatabaseWrapper.GetTable($"select * from 'quest_requirements' where TargetQuestId={id};");
-                var dtRew = DatabaseWrapper.GetTable($"select * from 'quest_rewards' where QuestId={id};");
+                var worlddtQ = DatabaseWrapper.GetTable($"select * from 'quest' where Id={id};");
+                var worlddtLoc = DatabaseWrapper.GetTable($"select * from '{GetQuestLocaleTable()}' where QuestId={id} limit 1;");
+                var worlddtObj = DatabaseWrapper.GetTable($"select * from 'quest_objectives' where QuestId={id};");
+                var worlddtPoi = DatabaseWrapper.GetTable($"select * from 'quest_poi' where QuestId={id};");
+                var worlddtReq = DatabaseWrapper.GetTable($"select * from 'quest_requirements' where TargetQuestId={id};");
+                var worlddtRew = DatabaseWrapper.GetTable($"select * from 'quest_rewards' where QuestId={id};");
 
-                if (dtQ.Rows.Count == 0)
+                var dtQ = worlddtQ;
+                var dtLoc = worlddtLoc;
+                var dtObj = worlddtObj;
+                var dtPoi = worlddtPoi;
+                var dtReq = worlddtReq;
+                var dtRew = worlddtRew;
+
+                if (worlddtQ.Rows.Count == 0)
                 {
-                    throw new Exception($"Quest with Id[{id}] not found!");
+                    var generateddtQ = ProgressDatabaseWrapper.GetTable($"select * from 'quest' where Id={id};");
+                    var generateddtLoc = ProgressDatabaseWrapper.GetTable($"select * from '{GetQuestLocaleTable()}' where QuestId={id} limit 1;");
+                    var generateddtObj = ProgressDatabaseWrapper.GetTable($"select * from 'quest_objectives' where QuestId={id};");
+                    var generateddtPoi = ProgressDatabaseWrapper.GetTable($"select * from 'quest_poi' where QuestId={id};");
+                    var generateddtReq = ProgressDatabaseWrapper.GetTable($"select * from 'quest_requirements' where TargetQuestId={id};");
+                    var generateddtRew = ProgressDatabaseWrapper.GetTable($"select * from 'quest_rewards' where QuestId={id};");
+
+                    if (generateddtQ.Rows.Count == 0)
+                    {
+                        throw new Exception($"Quest with Id[{id}] not found!");
+                    }
+
+                     dtQ = generateddtQ;
+                     dtLoc = generateddtLoc;
+                     dtObj = generateddtObj;
+                     dtPoi = generateddtPoi;
+                     dtReq = generateddtReq;
+                     dtRew = generateddtRew;
                 }
-                
+              
                 var questDto = new QuestDto
                 {
                     Id = id,
@@ -284,7 +308,7 @@ namespace BeastHunter
         {
             _cache.Add(newQuest.Id, newQuest);
             var newNodeRow = _dialogueNodesCache.NewRow();
-            newNodeRow[0] = 55;
+            newNodeRow[0] = 2; // unic?
             newNodeRow[1] = 666;
             newNodeRow[2] = 0;
             newNodeRow[3] = "Test Generation NPC text";
@@ -298,7 +322,7 @@ namespace BeastHunter
                 newRow[2] = i == 0 ? "start gen quest" : "end gen quest";
                 newRow[3] = 0;
                 newRow[4] = 1;
-                newRow[5] = 666;
+                newRow[5] = 666; //npc id
                 newRow[6] = i == 0 ? 1 : 0;
                 newRow[7] = i == 0 ? 0 : 1;
                 newRow[8] = newQuest.Id;
@@ -313,13 +337,21 @@ namespace BeastHunter
                 newRow[2] = $"gen quest task - {newQuest.Tasks[i].Id}";
                 newRow[3] = 0;
                 newRow[4] = 1;
-                newRow[5] = 666;
+                newRow[5] = 666;//npc id
                 newRow[6] = 0;
                 newRow[7] = 0;
                 newRow[8] = newQuest.Id;
                 newRow[9] = 1;
                 _dialogueAnswersCache.Rows.Add(newRow);
+
+                var newTaskRow = _questTaskCache.NewRow();
+                newTaskRow[0] = newQuest.Tasks[i].Id;
+                newTaskRow[1] = newQuest.Id;
+                newTaskRow[2] = newQuest.Tasks[i].TargetId;
+                newTaskRow[3] = 666;//npc id
+                _questTaskCache.Rows.Add(newTaskRow);
             }
+           
         }
 
         public static Locale GetCurrentLocale()

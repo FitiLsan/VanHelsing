@@ -29,6 +29,11 @@ namespace BeastHunter
             _agent.SaveQuestLog(quests);
         }
 
+        public void SaveGeneratedQuest(QuestDto quest)
+        {
+            _agent.SaveGeneratedQuest(quest); 
+        }
+
         public List<Quest> LoadQuestLog()
         {
             return _agent.LoadQuestLog();

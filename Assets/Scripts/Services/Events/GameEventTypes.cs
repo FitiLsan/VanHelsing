@@ -30,6 +30,7 @@
         QuestJournalCreated,
         QuestJournalOpened,
         QuestUpdated,
-        AnswerButtonClicked
+        AnswerButtonClicked,
+        SaveGeneratedQuest
     }
 }

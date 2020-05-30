@@ -13,6 +13,7 @@ namespace BeastHunter
         List<Quest> GetAllCompletedQuests();
         List<int> GetAllActiveQuestsById();
         void SaveQuestLog(List<Quest> quests);
+        void SaveGeneratedQuest(QuestDto quest);
         void QuestCompleted(int id);
         void SaveGame(string file);
         void LoadGame(string file);

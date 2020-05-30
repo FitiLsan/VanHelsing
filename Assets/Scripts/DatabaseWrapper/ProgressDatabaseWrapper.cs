@@ -14,8 +14,9 @@ namespace BeastHunter
         #region Fields
 
         private const string SAVE_FILE_TAMPLATE = "progress.bytes";
+        private static string _dbPath;
 
-        private SQLiteConnection _connection;
+        private static SQLiteConnection _connection;
         private readonly DataSet _saveData = new DataSet();
 
         #endregion
@@ -57,7 +58,7 @@ namespace BeastHunter
         public Dictionary<int, int> GetActiveQuests()
         {
             var res = new Dictionary<int,int>();
-            foreach (DataRow row in _saveData.Tables[SaveTables.quest.ToString()].Rows)
+            foreach (DataRow row in _saveData.Tables[SaveTables.active_quest.ToString()].Rows)
             {
                 res.Add(row.GetInt("QuestId"),row.GetInt("TimeLeft"));
             }
@@ -77,7 +78,7 @@ namespace BeastHunter
         public Dictionary<int, int> GetActiveObjectives()
         {
             var res = new Dictionary<int,int>();
-            foreach (DataRow row in _saveData.Tables[SaveTables.quest_objectives.ToString()].Rows)
+            foreach (DataRow row in _saveData.Tables[SaveTables.active_quest_objectives.ToString()].Rows)
             {
                 res.Add(row.GetInt("ObjectiveId"),row.GetInt("Value"));
             }
@@ -100,10 +101,10 @@ namespace BeastHunter
             strBuilder.Append("BEGIN TRANSACTION; ");
             foreach (var quest in quests)
             {
-                strBuilder.Append($"insert into 'quest' (QuestId, TimeLeft) values ({quest.Id}, {(int) quest.RemainingTime}); ");
+                strBuilder.Append($"insert into 'active_quest' (QuestId, TimeLeft) values ({quest.Id}, {(int) quest.RemainingTime}); ");
                 foreach (var task in quest.Tasks)
                 {
-                    strBuilder.Append($"insert into 'quest_objectives' (ObjectiveId, Value) values ({task.Id}, {task.CurrentAmount}); ");
+                    strBuilder.Append($"insert into 'active_quest_objectives' (ObjectiveId, Value) values ({task.Id}, {task.CurrentAmount}); ");
                 }
             }
 
@@ -115,6 +116,32 @@ namespace BeastHunter
                     strBuilder.Append($"insert into 'completed_quests_objectives' (ObjectiveId, Value) values ({task.Id}, {task.CurrentAmount});");
                 }
             }
+
+
+            strBuilder.Append("COMMIT;");
+            ExecuteQueryWithoutAnswer(strBuilder.ToString());
+        }
+
+        public void SaveGeneratedQuest(QuestDto quest)
+        {
+            var strBuilder = new StringBuilder();
+            strBuilder.Append("BEGIN TRANSACTION; ");
+
+            strBuilder.Append($"insert into 'quest' (Id, MinLevel, QuestLevel, TimeAllowed, ZoneId, RewardExp," +
+                   $" RewardMoney, StartDialogId, EndDialogId, StartQuestEventType, EndQuestEventType, Repeatable) " +
+                   $"values ({quest.Id}, {quest.MinLevel}, {quest.QuestLevel}, {quest.TimeAllowed}, {quest.ZoneId}, {quest.RewardExp}, " +
+                   $"{quest.RewardMoney}, {quest.StartDialogId}, {quest.EndDialogId}, \"{quest.StartQuestEventType}\", \"{quest.EndQuestEventType}\", {quest.IsRepetable}); ");
+
+            strBuilder.Append($"insert into 'quest_locale_ru' (QuestId, Title, Description) values ({quest.Id}, \"{quest.Title}\", \"{quest.Description}\"); ");
+
+            foreach (var task in quest.Tasks)
+            {
+                var taskIsOptional = task.IsOptional ? 1 : 0;
+                strBuilder.Append($"insert into 'quest_objectives' (Id, QuestId, Type, TargetId, Amount, IsOptional) " +
+                    $"values ({task.Id}, {quest.Id}, \"{task.Type}\", {task.TargetId}, {task.NeededAmount}, {taskIsOptional}); ");
+                strBuilder.Append($"insert into 'quest_objectives_locale_ru' (ObjectiveId, Title) values ({task.Id}, \"{task.Description}\"); ");
+            }
+
             strBuilder.Append("COMMIT;");
             ExecuteQueryWithoutAnswer(strBuilder.ToString());
         }
@@ -171,7 +198,49 @@ namespace BeastHunter
                 return null;
             }
         }
-        
+
+        public static DataTable GetTable(string query)
+        {
+            OpenConnection();
+            var adapter = new SQLiteDataAdapter(query, _connection);
+            var ds = new DataSet();
+            adapter.Fill(ds);
+            adapter.Dispose();
+            CloseConnection();
+            return ds.Tables[0];
+        }
+
+        private static void OpenConnection()
+        {
+            if (_connection == null) Init();
+            _connection?.Open();
+        }
+
+        private static void CloseConnection(EventArgs eventArgs = null)
+        {
+            _connection?.Close();
+        }
+
+        private static void Init()
+        {
+            _dbPath = GetDatabasePath();
+            _connection = new SQLiteConnection("Data Source=" + _dbPath);
+            //   Services.SharedInstance.EventManager.StartListening(GameEventTypes.GameExit, CloseConnection); TODO: triggerEvent GameExit;
+        }
+
+        private static string GetDatabasePath()
+        {
+#if UNITY_EDITOR
+            var dbPath = Path.Combine(Application.streamingAssetsPath, SAVE_FILE_TAMPLATE);;
+            return dbPath;
+#elif UNITY_STANDALONE
+                var filePath = Path.Combine(Application.dataPath, FileName);
+                if(!File.Exists(filePath)) UnpackDatabase(filePath);
+
+                return filePath;
+#endif
+        }
+
         private void ExecuteQueryWithoutAnswer(string query)
         {
             _connection.Open();

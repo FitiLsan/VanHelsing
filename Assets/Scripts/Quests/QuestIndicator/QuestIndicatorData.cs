@@ -114,6 +114,7 @@ namespace BeastHunter
                                                     !questsWithCompletedAllTask.Contains(tempQuestId) &
                                                     !questsWithCompletedAllTaskWithOptional.Contains(tempQuestId) &
                                                     tempQuestId != currentQuestID &
+                                                    !completedTasks.Contains(currentTaskID) &
                                                     !completedQuests.Contains(currentQuestID))
                                                 {
                                                     flag = true;
