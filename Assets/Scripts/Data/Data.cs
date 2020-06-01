@@ -11,6 +11,7 @@ namespace BeastHunter {
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
         [SerializeField] private string _giantMudCrabDataPath;
+        [SerializeField] private string _butterflyDataPath;
 
         private static Data _instance;
 
@@ -18,6 +19,7 @@ namespace BeastHunter {
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
+        private static ButterflyData _butterflyData;
         private static GiantMudCrabData _giantMudCrabData;
         private static WeaponItem _feast;
         private static ClothItem _jacket;
@@ -78,6 +80,18 @@ namespace BeastHunter {
                     _giantMudCrabData = Load<GiantMudCrabData> ("Data/" + Instance._giantMudCrabDataPath);
                 }
                 return _giantMudCrabData;
+            }
+        }
+
+        public static ButterflyData ButterflyData
+        {
+            get
+            {
+                if (_butterflyData == null)
+                {
+                    _butterflyData = Load<ButterflyData>("Data/" + Instance._butterflyDataPath);
+                }
+                return _butterflyData;
             }
         }
 

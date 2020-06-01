@@ -6,10 +6,9 @@
 
         public MainControllers(GameContext context)
         {
-            Add(new SphereInitilizeController(context));
+            Add(new ButterflyInitilizeController(context));
             Add(new InitializeInteractableObjectController(context));
-            Add(new SphereController(context));
-            Add(new TargetController(context));
+            Add(new ButterflyController(context));
         }
 
         #endregion

@@ -1,18 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ButterflyController : MonoBehaviour
+
+namespace BeastHunter
 {
-    // Start is called before the first frame update
-    void Start()
+    public class ButterflyController : IAwake, IUpdate
     {
-        
-    }
+        #region Fields
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private readonly GameContext _context;
+
+        #endregion
+
+
+        #region Methods
+
+        public ButterflyController(GameContext context)
+        {
+            _context = context;
+        }
+
+        #endregion
+
+
+        #region IUpdate
+
+        public void Updating()
+        {
+            _context.ButterflyModel.Initilize();
+        }
+
+        #endregion
+
+
+        #region IAwake
+
+        public void OnAwake()
+        {
+            
+        }
+
+        #endregion
     }
 }
