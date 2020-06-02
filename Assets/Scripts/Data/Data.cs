@@ -7,6 +7,7 @@ namespace BeastHunter {
         #region Fields
 
         [SerializeField] private string _sphereDataPath;
+        [SerializeField] private string _butterflyDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
@@ -15,6 +16,7 @@ namespace BeastHunter {
         private static Data _instance;
 
         private static SphereData _sphereData;
+        private static ButterFlyData _butterflyData;
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
@@ -42,6 +44,18 @@ namespace BeastHunter {
                     _sphereData = Load<SphereData> ("Data/" + Instance._sphereDataPath);
                 }
                 return _sphereData;
+            }
+        }
+
+        public static ButterFlyData ButterFlyData
+        {
+            get
+            {
+                if (_butterflyData == null)
+                {
+                    _butterflyData = Load<ButterFlyData>("Data/" + Instance._butterflyDataPath);
+                }
+                return _butterflyData;
             }
         }
 

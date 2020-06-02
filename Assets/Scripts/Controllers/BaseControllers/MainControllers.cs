@@ -6,6 +6,7 @@
 
         public MainControllers(GameContext context)
         {
+            Add(new ButterFlyController(context));
             Add(new CharacterInitilizeController(context));
             Add(new GiantMudCrabInitilizeController(context));
             Add(new DialogueSystemInitializeController(context));
