@@ -12,7 +12,7 @@ namespace BeastHunter
         public bool IsCompleted => CurrentAmount >= NeededAmount;
         public string Description { get; }
         public bool IsOptional { get; }
-
+        public int QuestId { get; }
         #endregion
 
 
@@ -26,6 +26,7 @@ namespace BeastHunter
             Description = dto.Description;
             Id = dto.Id;
             IsOptional = dto.IsOptional;
+            QuestId = dto.QuestId;
         }
 
         #endregion

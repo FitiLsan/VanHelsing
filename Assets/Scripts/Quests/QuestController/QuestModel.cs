@@ -13,7 +13,7 @@ namespace BeastHunter
         private readonly List<Quest> _quests;
         private readonly List<Quest> _completedQuest;
         private readonly List<QuestTask> _completedTasks;
-        
+        private readonly List<Quest> _generatedQuest;
         public readonly IQuestStorage QuestStorage;
 
         public int QuestCount => _quests.Count;
@@ -45,6 +45,7 @@ namespace BeastHunter
             QuestStorage = questStorage;
             QuestStorage.LoadGame("TestSave.bytes");
             _quests = QuestStorage.GetAllActiveQuests();
+            _generatedQuest = QuestStorage.GetAllGeneratedQuest();
             _completedQuest = QuestStorage.GetAllCompletedQuests();
             _completedTasks = GetCompleteTasks(_completedQuest,_quests);
             ActiveQuests = QuestStorage.GetAllActiveQuestsById();
@@ -70,9 +71,9 @@ namespace BeastHunter
         #region Methods
 
         private void OnProgressSaving(EventArgs arg0)
-        {
+        {   
             QuestStorage.SaveQuestLog(_quests);
-            QuestStorage.SaveGeneratedQuest(QuestRepository.GetById(QuestGeneration.GetTempQuest().Id));
+           //QuestStorage.SaveGeneratedQuest(QuestRepository.GetById(QuestGeneration.GetTempQuest().Id));
         }
 
         private void OnDialogEnter(EventArgs arg0)
@@ -330,7 +331,8 @@ namespace BeastHunter
         public void OnSaveGeneratedQuest(EventArgs args)
         {
             if (!(args is QuestArgs questArgs)) return;
-            QuestStorage.SaveGeneratedQuest(questArgs.Quest);
+           // QuestStorage.SaveGeneratedQuest(questArgs.Quest);
+            _generatedQuest.Add(questArgs.Quest);
         }
 
         public void Execute()

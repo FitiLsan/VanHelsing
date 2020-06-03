@@ -65,6 +65,59 @@ namespace BeastHunter
             return res;
         }
 
+        public Dictionary<int, Quest> GetGeneratedQuests() //
+        {
+            var res = new Dictionary<int, Quest>();
+            var questRows = _saveData.Tables[SaveTables.quest.ToString()].Rows;
+            for (int i=0;i< questRows.Count;i++)
+            {
+                res.Add(questRows[i].GetInt("Id"), new Quest(new QuestDto
+                {
+                    Id = questRows[i].GetInt("Id"),
+                    Title = _saveData.Tables[SaveTables.quest_locale_ru.ToString()].Rows[i].GetString("Title"),
+                    Description = _saveData.Tables[SaveTables.quest_locale_ru.ToString()].Rows[i].GetString("Description"),
+                    ZoneId = questRows[i].GetInt("ZoneId"),
+                    MinLevel = questRows[i].GetInt("MinLevel"),
+                    QuestLevel = questRows[i].GetInt("QuestLevel"),
+                    TimeAllowed = questRows[i].GetInt("TimeAllowed"),
+                    RewardExp = questRows[i].GetInt("RewardExp"),
+                    RewardMoney = questRows[i].GetInt("RewardMoney"),
+                    StartDialogId = questRows[i].GetInt("StartDialogId"),
+                    EndDialogId = questRows[i].GetInt("EndDialogId"),
+                    StartQuestEventType = questRows[i].GetInt("StartQuestEventType"),
+                    EndQuestEventType = questRows[i].GetInt("EndQuestEventType"),
+                    IsRepetable = questRows[i].GetInt("Repeatable") 
+                }));
+            }
+            return res;
+        }
+
+        public Dictionary<int, QuestTask> GetGeneratedObjectives()//
+        {
+            var res = new Dictionary<int, QuestTask>();
+            var objectivesRow = _saveData.Tables[SaveTables.quest_objectives.ToString()].Rows;
+            for (int i=0; i<objectivesRow.Count;i++)
+            {
+
+                bool tempBool = objectivesRow[i].GetInt("IsOptional") == 1 ? true : false;
+                int tempTypeNum = objectivesRow[i].GetInt("Type");
+
+                res.Add(objectivesRow[i].GetInt("Id"), new QuestTask(new QuestTaskDto
+                {
+                    Id = objectivesRow[i].GetInt("Id"),
+                    TargetId = objectivesRow[i].GetInt("TargetId"),
+                    NeededAmount = objectivesRow[i].GetInt("Amount"),
+                    IsOptional = tempBool,
+                    QuestId = objectivesRow[i].GetInt("QuestId"),
+                    Description = _saveData.Tables[SaveTables.quest_objectives_locale_ru.ToString()].Rows[i].GetString("Title")
+                   // Type = objectivesRow[i].GetInt("Type")
+                }
+                    
+                    ));
+            }
+            return res;
+        }
+
         public Dictionary<int, bool> GetCompletedQuests()
         {
             var res = new Dictionary<int, bool>();
@@ -95,7 +148,7 @@ namespace BeastHunter
             return res;
         }
 
-        public void SaveQuestLog(IEnumerable<Quest> quests, List<Quest> completeQuests)
+        public void SaveQuestLog(IEnumerable<Quest> quests, List<Quest> completeQuests, List<Quest> generatedQuest)
         {
             var strBuilder = new StringBuilder();
             strBuilder.Append("BEGIN TRANSACTION; ");
@@ -117,12 +170,16 @@ namespace BeastHunter
                 }
             }
 
+            foreach (var quest in generatedQuest)
+            {
+                SaveGeneratedQuest(quest);
+            }
 
             strBuilder.Append("COMMIT;");
             ExecuteQueryWithoutAnswer(strBuilder.ToString());
         }
 
-        public void SaveGeneratedQuest(QuestDto quest)
+        public void SaveGeneratedQuest(Quest quest)
         {
             var strBuilder = new StringBuilder();
             strBuilder.Append("BEGIN TRANSACTION; ");
@@ -133,6 +190,7 @@ namespace BeastHunter
                    $"{quest.RewardMoney}, {quest.StartDialogId}, {quest.EndDialogId}, \"{quest.StartQuestEventType}\", \"{quest.EndQuestEventType}\", {quest.IsRepetable}); ");
 
             strBuilder.Append($"insert into 'quest_locale_ru' (QuestId, Title, Description) values ({quest.Id}, \"{quest.Title}\", \"{quest.Description}\"); ");
+            strBuilder.Append($"update 'last_generated_Id' set questId={quest.Id}; " );
 
             foreach (var task in quest.Tasks)
             {
@@ -140,6 +198,7 @@ namespace BeastHunter
                 strBuilder.Append($"insert into 'quest_objectives' (Id, QuestId, Type, TargetId, Amount, IsOptional) " +
                     $"values ({task.Id}, {quest.Id}, \"{task.Type}\", {task.TargetId}, {task.NeededAmount}, {taskIsOptional}); ");
                 strBuilder.Append($"insert into 'quest_objectives_locale_ru' (ObjectiveId, Title) values ({task.Id}, \"{task.Description}\"); ");
+                strBuilder.Append($"update 'last_generated_Id' set objectiveId={task.Id}; ");
             }
 
             strBuilder.Append("COMMIT;");
@@ -153,6 +212,15 @@ namespace BeastHunter
                 if (row.GetString("ParamName") == "NextEntry") return row.GetInt("ParamValue");
             }
             return 1;
+        }
+
+        public static (int,int) GetLastGeneratedID()
+        {
+            var lastGeneratedId = GetTable($"select * from 'last_generated_Id'");
+
+            var lastQuestId = lastGeneratedId.Rows[0].GetInt(0);
+            var lastObjectiveId = lastGeneratedId.Rows[0].GetInt(1);
+            return (lastQuestId, lastObjectiveId);
         }
 
         public void AddSaveData(string key, string value)
@@ -241,7 +309,7 @@ namespace BeastHunter
 #endif
         }
 
-        private void ExecuteQueryWithoutAnswer(string query)
+        public static void ExecuteQueryWithoutAnswer(string query)
         {
             _connection.Open();
             var command = new SQLiteCommand(_connection) {CommandText = query};
@@ -249,12 +317,21 @@ namespace BeastHunter
             _connection.Close();
         }
 
-        private void ExecuteQueryWithoutAnswer(SQLiteCommand cmd)
+        public static void ExecuteQueryWithoutAnswer(SQLiteCommand cmd)
         {
             _connection.Open();
             cmd.Connection = _connection;
             cmd.ExecuteNonQuery();
             _connection.Close();
+        }
+
+        public static string ExecuteQueryWithAnswer(string query)
+        {
+            OpenConnection();
+            var command = new SQLiteCommand(_connection) { CommandText = query };
+            var answer = command.ExecuteScalar();
+            CloseConnection();
+            return answer?.ToString();
         }
 
         private object ExecuteScalar(string query)

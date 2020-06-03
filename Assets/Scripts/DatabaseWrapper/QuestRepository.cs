@@ -177,7 +177,7 @@ namespace BeastHunter
 
                     if (generateddtQ.Rows.Count == 0)
                     {
-                        throw new Exception($"Quest with Id[{id}] not found!");
+                        return null; // throw new Exception($"Quest with Id[{id}] not found!");
                     }
 
                      dtQ = generateddtQ;
@@ -233,7 +233,12 @@ namespace BeastHunter
                 foreach (DataRow row in dtObj.Rows)
                 {
                     var tid = row.GetInt(QUEST_OBJECTIVES_ID);
-                    var tmp = DatabaseWrapper.ExecuteQueryWithAnswer($"select Title from '{GetQuestObjectivesLocaleTable()}' where ObjectiveId={tid} limit 1;");
+                    var taskTitleQuery = $"select Title from '{GetQuestObjectivesLocaleTable()}' where ObjectiveId={tid} limit 1;";
+                    var tmp = DatabaseWrapper.ExecuteQueryWithAnswer(taskTitleQuery);
+                    if(tmp == null)
+                    {
+                        tmp = ProgressDatabaseWrapper.ExecuteQueryWithAnswer(taskTitleQuery);
+                    }
                     var task = new QuestTaskDto
                     {
                         Id = row.GetInt(QUEST_OBJECTIVES_ID),
@@ -306,10 +311,14 @@ namespace BeastHunter
 
         public static void AddRowToDialogueCaches(QuestDto newQuest)
         {
-            _cache.Add(newQuest.Id, newQuest);
+            if (!_cache.ContainsKey(newQuest.Id))
+            {
+                _cache.Add(newQuest.Id, newQuest);
+
+            }
             var newNodeRow = _dialogueNodesCache.NewRow();
-            newNodeRow[0] = 2; // unic?
-            newNodeRow[1] = 666;
+            newNodeRow[0] = 2; // unic last gen id for node
+            newNodeRow[1] = 666; //npc id
             newNodeRow[2] = 0;
             newNodeRow[3] = "Test Generation NPC text";
             _dialogueNodesCache.Rows.Add(newNodeRow);
@@ -317,7 +326,7 @@ namespace BeastHunter
             for (int i=0;i<2;i++)
             {
                 var newRow = _dialogueAnswersCache.NewRow();
-                newRow[0] = i == 0 ? newQuest.StartDialogId : newQuest.EndDialogId;
+                newRow[0] = i == 0 ? newQuest.StartDialogId : newQuest.EndDialogId; 
                 newRow[1] = 0;
                 newRow[2] = i == 0 ? "start gen quest" : "end gen quest";
                 newRow[3] = 0;
