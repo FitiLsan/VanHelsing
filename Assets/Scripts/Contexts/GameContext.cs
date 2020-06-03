@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using UnityEngine;
 
 namespace BeastHunter
 {
@@ -16,8 +16,10 @@ namespace BeastHunter
         public CharacterModel CharacterModel;
         public InputModel InputModel;
         public GiantMudCrabModel GiantMudCrabModel;
-        //public List<RabbitModel> RabbitModels;
         public RabbitModel RabbitModel;
+
+        public Dictionary<int, NpcModel> NpcModels;
+
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;
@@ -32,7 +34,8 @@ namespace BeastHunter
         {
             _onTriggers = new SortedList<InteractableObjectType, List<IInteractable>>();
             _interactables = new List<IInteractable>();
-            //RabbitModels = new List<RabbitModel>(8);
+
+            NpcModels = new Dictionary<int, NpcModel>();
         }
 
         #endregion

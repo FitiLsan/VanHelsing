@@ -136,6 +136,7 @@ namespace BeastHunter
             if (enemy != null && damage != null)
             {
                 enemy.OnTakeDamageHandler(damage);
+                //enemy.TakeDamage(damage);
             }
         }
 

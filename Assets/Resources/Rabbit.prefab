@@ -199,7 +199,6 @@ GameObject:
   - component: {fileID: 6850293822335465736}
   - component: {fileID: 6850293822335465740}
   - component: {fileID: 6617356163059557074}
-  - component: {fileID: 2897616843028160248}
   m_Layer: 0
   m_Name: Rabbit
   m_TagString: Rabbit
@@ -309,19 +308,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 8
---- !u!135 &2897616843028160248
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6850293822335465738}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.65
-  m_Center: {x: 0, y: 0.15, z: 0.1}
 --- !u!1 &6850293822786565282
 GameObject:
   m_ObjectHideFlags: 0

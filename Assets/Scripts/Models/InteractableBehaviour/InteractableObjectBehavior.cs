@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public abstract class InteractableObjectBehavior : MonoBehaviour, ITrigger, ITakeDamage
+    public class InteractableObjectBehavior : MonoBehaviour, ITrigger, ITakeDamage
     {
         #region Fields
 
         [SerializeField] private InteractableObjectType _type;
+        private Action<int, string> _onDoSmthHandler;
 
         #endregion
 
@@ -59,6 +60,35 @@ namespace BeastHunter
             if (OnTakeDamageHandler != null)
             {
                 OnTakeDamageHandler.Invoke(damage);
+            }
+        }
+
+        #endregion
+
+
+        #region DoSmth
+
+        public void SetDoSmthEvent(Action<int, string> action)
+        {
+            if (action != null)
+            {
+                _onDoSmthHandler += action;
+            }
+        }
+
+        public void DoSmthEvent(string how)
+        {
+            if (_onDoSmthHandler != null)
+            {
+                _onDoSmthHandler.Invoke(GameObject.GetInstanceID(), how);
+            }
+        }
+
+        public void DeleteDoSmthEvent(Action<int, string> action)
+        {
+            if (action != null)
+            {
+                _onDoSmthHandler -= action;
             }
         }
 

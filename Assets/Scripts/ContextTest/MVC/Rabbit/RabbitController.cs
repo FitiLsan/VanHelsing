@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace BeastHunter
 {
-    public sealed class RabbitController : IAwake, IUpdate, ITearDown
+    public sealed class RabbitController : IAwake, IUpdate, ITearDown, ITakeDamage
     {
         #region Fields
 
@@ -46,7 +44,7 @@ namespace BeastHunter
             foreach (var trigger in Rabbits)
             {
                 var rabbitBehaviour = trigger as RabbitBehaviour;
-                rabbitBehaviour.OnTakeDamageHandler += OnTakeDamage;
+                rabbitBehaviour.OnTakeDamageHandler += TakeDamage;
                 rabbitBehaviour.Stats = _context.RabbitModel.RabbitData.RabbitStruct.Stats;
                 Debug.Log("ActivateRabbit");
             }
@@ -63,16 +61,16 @@ namespace BeastHunter
             foreach (var trigger in Rabbits)
             {
                 var rabbitBehaviour = trigger as RabbitBehaviour;
-                rabbitBehaviour.OnTakeDamageHandler -= OnTakeDamage;
+                rabbitBehaviour.OnTakeDamageHandler -= TakeDamage;
             }
         }
 
         #endregion
 
 
-        #region Methods
+        #region ITakeDamage
 
-        private void OnTakeDamage(Damage damage)
+        public void TakeDamage(Damage damage)
         {
             //_context.RabbitModels.CurrentHealth -= damage.damage;
             _context.RabbitModel.CurrentHealth -= damage.PhysicalDamage;
