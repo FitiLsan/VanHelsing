@@ -8,7 +8,9 @@ namespace BeastHunter
     {
         #region Fields
 
-        public float RotateAngle;
+
+        public float Angle = 0;
+        public float Radius = 10f;
         public ButterflyStruct ButterflyStruct;
 
         #endregion
@@ -18,8 +20,11 @@ namespace BeastHunter
 
         public void Move(Transform transform, float speed)
         {
-            RotateAngle = Random.Range(-1, 1);
-            transform.Translate(RotateAngle, 0, speed * Time.deltaTime);
+            Angle += Time.deltaTime;
+
+            var x = Mathf.Cos(Angle * speed) * Radius;
+            var y = Mathf.Sin(Angle * speed) * Radius;
+            transform.position = new Vector3(y, 0, x);
         }
 
         public void Run(Transform transform, GameObject player)
