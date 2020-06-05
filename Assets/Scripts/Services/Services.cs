@@ -10,6 +10,7 @@
         public InventoryService InventoryService { get; private set; }
         public AttackService AttackService { get; private set; }
         public CameraService CameraService { get; private set; }
+        public UnityTimeService UnityTimeService { get; private set; }
         public EventManager EventManager { get; private set; }
 
         #endregion
@@ -24,6 +25,7 @@
             AttackService = new AttackService(contexts);
             CameraService = new CameraService(contexts);
             EventManager = new EventManager(contexts);
+            UnityTimeService = new UnityTimeService(contexts);
         }
 
         #endregion

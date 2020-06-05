@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace BottomlessCloset
+namespace BeastHunter
 {
     public sealed class CustomDebug
     {
