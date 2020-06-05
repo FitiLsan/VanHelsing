@@ -71,8 +71,10 @@ namespace BeastHunter
             _characterModel.PlayerBehavior.OnTakeDamageHandler += TakeDamage;
 
             _stateMachine.OnStateChangeHandler += OnStateChange;
+
             LockCharAction.LockCharacterMovement += ExitTalkingState;
             StartDialogueData.StartDialog += SetTalkingState;
+
             SetRightWeapon(_services.InventoryService.GetAllWeapons()[0]);
             //SetLeftWeapon(_services.InventoryService.Feast);
             //SetRightWeapon(_services.InventoryService.Feast);
@@ -121,6 +123,7 @@ namespace BeastHunter
 
             _stateMachine.OnStateChangeHandler -= OnStateChange;
             _stateMachine.TearDownStates();
+
             LockCharAction.LockCharacterMovement -= ExitTalkingState;
             StartDialogueData.StartDialog -= SetTalkingState;
         }
@@ -506,15 +509,18 @@ namespace BeastHunter
 
             _characterModel.PlayerBehavior.SetLookAtTarget(npcPosition);
             _services.CameraService.SetActiveCamera(_services.CameraService.CharacterDialogCamera);
+            Debug.Log("started talking");
         }
 
         private void ExitTalkingState(bool isStartsTalking)
         {
+            Debug.Log(isStartsTalking + " " + _stateMachine.CurrentState);
             if (!isStartsTalking && _stateMachine.CurrentState == _stateMachine._talkingState)
             {
                 _stateMachine.SetStateAnyway(_stateMachine._defaultIdleState);
                 _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
                 _characterModel.PlayerBehavior.SetLookAtTarget(Vector3.zero);
+                Debug.Log("got here");
             }
         }
 

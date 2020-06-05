@@ -68,7 +68,7 @@ namespace BeastHunter
         {
             DialogueSystemModel.DialogueNode = DialogueGenerate.DialogueCreate(NpcID, Model.Context);
             ShowCanvasEvent?.Invoke(isShowDialogCanvas);
-            StartDialog?.Invoke(NpcPos);
+            if(isShowDialogCanvas) StartDialog?.Invoke(NpcPos);
         }
 
         public void DialogAreaEnterSwitcher(bool isOn)

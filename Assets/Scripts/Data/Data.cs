@@ -18,6 +18,7 @@ namespace BeastHunter {
         [SerializeField] private string _rabbitDataPath;
         [SerializeField] private string _questIndicatorDataPath;
         [SerializeField] private string _questJournalDataPath;
+        [SerializeField] private string _healthBuffDataPath;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -31,6 +32,7 @@ namespace BeastHunter {
         private static CameraData _cameraData;
         private static RabbitData _rabbitData;
         private static QuestJournalData _questJournalData;
+        private static PermanentBuffClass _healthBuffData;
 
         #endregion
 
@@ -144,6 +146,7 @@ namespace BeastHunter {
                 return _rabbitData;
             }
         }
+
         public static QuestJournalData QuestJournalData
         {
             get
@@ -153,6 +156,18 @@ namespace BeastHunter {
                     _questJournalData = Load<QuestJournalData>("Data/" + Instance._questJournalDataPath);
                 }
                 return _questJournalData;
+            }
+        }
+
+        public static PermanentBuffClass HealthBuffData
+        {
+            get
+            {
+                if (_healthBuffData == null)
+                {
+                    _healthBuffData = Load<PermanentBuffClass>("Data/" + Instance._healthBuffDataPath);
+                }
+                return _healthBuffData;
             }
         }
 

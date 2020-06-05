@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 
 namespace BeastHunter
@@ -7,7 +8,11 @@ namespace BeastHunter
     {
         #region Fields
 
-        private StatsClass firstStats;
+        private delegate void TemporaryBuffDelegate(StatsClass stats, float parameter, float time);
+        private delegate void PermanentBuffDelegate(StatsClass stats, float parameter);
+
+        private Dictionary<Buff, TemporaryBuffDelegate> TemporaryBuffDictionary;
+        private Dictionary<Buff, PermanentBuffDelegate> PermanentBuffDictionary;
 
         #endregion
 
@@ -16,11 +21,11 @@ namespace BeastHunter
 
         public BuffService(Contexts contexts) : base(contexts)
         {
-            firstStats = new StatsClass();
-            firstStats._healthRegenPerSecond = 0.5f;
-            firstStats._maximalHealthPoints = 100f;
+            TemporaryBuffDictionary = new Dictionary<Buff, TemporaryBuffDelegate>();
+            PermanentBuffDictionary = new Dictionary<Buff, PermanentBuffDelegate>();
 
-            firstStats = HealthRegen(HealthMax(firstStats, 10), 12);
+            PermanentBuffDictionary.Add(Buff.HealthRegenSpeed, HealthRegenBuff);
+            PermanentBuffDictionary.Add(Buff.HealthMaximalAmount, HealthMaximumBuff);
         }
 
         #endregion
@@ -28,16 +33,54 @@ namespace BeastHunter
 
         #region Methods
 
-        public StatsClass HealthRegen(StatsClass stats, float healtRegenChange)
+        public void AddPermanentBuff(StatsClass stats, PermanentBuffClass buff)
         {
-            stats._healthRegenPerSecond += healtRegenChange;
-            return stats;
+            foreach (var effect in buff.Effects)
+            {
+                PermanentBuffDictionary[effect.Buff](stats, effect.Value);
+            }
+
+            stats.PermantnsBuffList.Add(buff);
         }
 
-        public StatsClass HealthMax(StatsClass stats, float healthMax)
+        public void RemovePermanentBuff(StatsClass stats, PermanentBuffClass buff)
         {
-            stats._maximalHealthPoints += healthMax;
-            return stats;
+            if (stats.PermantnsBuffList.Contains(buff))
+            {
+                foreach (var effect in buff.Effects)
+                {
+                    PermanentBuffDictionary[effect.Buff](stats, -effect.Value);
+                }
+
+                stats.PermantnsBuffList.Remove(buff);
+            }
+            else
+            {
+                throw new System.Exception("There is no such buff at that stats list!");
+            }         
+        }
+
+        public void AddTemporaryBuff(StatsClass stats, TemporaryBuffClass buff)
+        {
+
+        }
+
+        private void HealthRegenBuff(StatsClass stats, float value)
+        {
+            stats._healthRegenPerSecond += value;
+            Debug.Log("changed hp regen to " + stats._healthRegenPerSecond);
+        }
+
+        private void HealthMaximumBuff(StatsClass stats, float value)
+        {
+            stats._maximalHealthPoints += value;
+
+            if(stats._currentHealthPoints > stats._maximalHealthPoints)
+            {
+                stats._currentHealthPoints = stats._maximalHealthPoints;
+            }
+
+            Debug.Log("changed maximum health to " + stats._maximalHealthPoints);
         }
 
         #endregion

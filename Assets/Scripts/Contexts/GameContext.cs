@@ -9,8 +9,6 @@ namespace BeastHunter
     {
         #region Fields
 
-        public SphereModel _sphereModel;
-        public CharacterModel _characterModel;
         public List<RabbitModel> RabbitModel;
         public StartDialogueModel StartDialogueModel;
         public DialogueSystemModel DialogueSystemModel;

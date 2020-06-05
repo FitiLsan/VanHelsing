@@ -8,6 +8,8 @@ namespace BeastHunter
     {
         #region Properties
 
+        public StatsClass Stats;
+
         public GameObject CameraTarget { get; }
         public GameObject TargetMark { get; }
         public GameObject LeftHandWeaponObject { get; set; }
@@ -63,6 +65,9 @@ namespace BeastHunter
 
         public CharacterModel(GameObject prefab, CharacterData characterData, Vector3 groundPosition)
         {
+            Stats = new StatsClass();
+            Services.SharedInstance.BuffService.AddPermanentBuff(Stats, Data.HealthBuffData);
+
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData._characterCommonSettings;
             CharacterStatsSettings = CharacterData._characterStatsSettings;
