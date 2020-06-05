@@ -16,7 +16,8 @@
         quest_objectives_locale_ru,
         quest_poi,
         quest_requirements,
-        quest_rewards
+        quest_rewards,
+        quest_task_types
             
     }
 }

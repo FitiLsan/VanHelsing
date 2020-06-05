@@ -65,7 +65,7 @@ namespace BeastHunter
             return res;
         }
 
-        public Dictionary<int, Quest> GetGeneratedQuests() //
+        public Dictionary<int, Quest> GetGeneratedQuests()
         {
             var res = new Dictionary<int, Quest>();
             var questRows = _saveData.Tables[SaveTables.quest.ToString()].Rows;
@@ -92,7 +92,7 @@ namespace BeastHunter
             return res;
         }
 
-        public Dictionary<int, QuestTask> GetGeneratedObjectives()//
+        public Dictionary<int, QuestTask> GetGeneratedObjectives()
         {
             var res = new Dictionary<int, QuestTask>();
             var objectivesRow = _saveData.Tables[SaveTables.quest_objectives.ToString()].Rows;
@@ -100,8 +100,8 @@ namespace BeastHunter
             {
 
                 bool tempBool = objectivesRow[i].GetInt("IsOptional") == 1 ? true : false;
-                int tempTypeNum = objectivesRow[i].GetInt("Type");
-
+                var tempTypeNum = objectivesRow[i].GetString("Type");//=========================================
+                var type = _saveData.Tables[SaveTables.quest_task_types.ToString()].Rows[objectivesRow[i].GetInt("Type")].GetString("type");//
                 res.Add(objectivesRow[i].GetInt("Id"), new QuestTask(new QuestTaskDto
                 {
                     Id = objectivesRow[i].GetInt("Id"),
@@ -109,8 +109,8 @@ namespace BeastHunter
                     NeededAmount = objectivesRow[i].GetInt("Amount"),
                     IsOptional = tempBool,
                     QuestId = objectivesRow[i].GetInt("QuestId"),
-                    Description = _saveData.Tables[SaveTables.quest_objectives_locale_ru.ToString()].Rows[i].GetString("Title")
-                   // Type = objectivesRow[i].GetInt("Type")
+                    Description = _saveData.Tables[SaveTables.quest_objectives_locale_ru.ToString()].Rows[i].GetString("Title"),
+                    //Type?
                 }
                     
                     ));
@@ -184,10 +184,11 @@ namespace BeastHunter
             var strBuilder = new StringBuilder();
             strBuilder.Append("BEGIN TRANSACTION; ");
 
+            //var questStartType = (int)quest.StartQuestEventType;
             strBuilder.Append($"insert into 'quest' (Id, MinLevel, QuestLevel, TimeAllowed, ZoneId, RewardExp," +
                    $" RewardMoney, StartDialogId, EndDialogId, StartQuestEventType, EndQuestEventType, Repeatable) " +
                    $"values ({quest.Id}, {quest.MinLevel}, {quest.QuestLevel}, {quest.TimeAllowed}, {quest.ZoneId}, {quest.RewardExp}, " +
-                   $"{quest.RewardMoney}, {quest.StartDialogId}, {quest.EndDialogId}, \"{quest.StartQuestEventType}\", \"{quest.EndQuestEventType}\", {quest.IsRepetable}); ");
+                   $"{quest.RewardMoney}, {quest.StartDialogId}, {quest.EndDialogId}, {quest.StartQuestEventType}, {quest.EndQuestEventType}, {quest.IsRepetable}); ");
 
             strBuilder.Append($"insert into 'quest_locale_ru' (QuestId, Title, Description) values ({quest.Id}, \"{quest.Title}\", \"{quest.Description}\"); ");
             strBuilder.Append($"update 'last_generated_Id' set questId={quest.Id}; " );
@@ -195,10 +196,12 @@ namespace BeastHunter
             foreach (var task in quest.Tasks)
             {
                 var taskIsOptional = task.IsOptional ? 1 : 0;
+                var taskType =(int) task.Type;
                 strBuilder.Append($"insert into 'quest_objectives' (Id, QuestId, Type, TargetId, Amount, IsOptional) " +
-                    $"values ({task.Id}, {quest.Id}, \"{task.Type}\", {task.TargetId}, {task.NeededAmount}, {taskIsOptional}); ");
+                    $"values ({task.Id}, {quest.Id}, {taskType}, {task.TargetId}, {task.NeededAmount}, {taskIsOptional}); ");
                 strBuilder.Append($"insert into 'quest_objectives_locale_ru' (ObjectiveId, Title) values ({task.Id}, \"{task.Description}\"); ");
                 strBuilder.Append($"update 'last_generated_Id' set objectiveId={task.Id}; ");
+                strBuilder.Append($"update 'last_generated_Id' set answerId={task.TargetId}; ");
             }
 
             strBuilder.Append("COMMIT;");
@@ -214,13 +217,15 @@ namespace BeastHunter
             return 1;
         }
 
-        public static (int,int) GetLastGeneratedID()
+        public static (int,int, int, int) GetLastGeneratedID()
         {
             var lastGeneratedId = GetTable($"select * from 'last_generated_Id'");
 
             var lastQuestId = lastGeneratedId.Rows[0].GetInt(0);
             var lastObjectiveId = lastGeneratedId.Rows[0].GetInt(1);
-            return (lastQuestId, lastObjectiveId);
+            var lastAnswerId = lastGeneratedId.Rows[0].GetInt(2);
+            var lastNodeId = lastGeneratedId.Rows[0].GetInt(3);
+            return (lastQuestId, lastObjectiveId, lastAnswerId, lastNodeId);
         }
 
         public void AddSaveData(string key, string value)

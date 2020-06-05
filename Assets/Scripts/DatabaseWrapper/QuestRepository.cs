@@ -167,7 +167,7 @@ namespace BeastHunter
                 var dtRew = worlddtRew;
 
                 if (worlddtQ.Rows.Count == 0)
-                {
+                { // заменить на _generatedQuest list?
                     var generateddtQ = ProgressDatabaseWrapper.GetTable($"select * from 'quest' where Id={id};");
                     var generateddtLoc = ProgressDatabaseWrapper.GetTable($"select * from '{GetQuestLocaleTable()}' where QuestId={id} limit 1;");
                     var generateddtObj = ProgressDatabaseWrapper.GetTable($"select * from 'quest_objectives' where QuestId={id};");
@@ -200,6 +200,8 @@ namespace BeastHunter
                     ZoneId = dtQ.Rows[0].GetInt(QUEST_ZONEID),
                     TimeAllowed = dtQ.Rows[0].GetInt(QUEST_TIMEALLOWED),
                     StartDialogId = dtQ.Rows[0].GetInt(QUEST_STARTDIALOGID),
+                    StartQuestEventType = dtQ.Rows[0].GetInt(QUEST_STARTQUESTEVENTTYPE),
+                    EndQuestEventType = dtQ.Rows[0].GetInt(QUEST_ENDQUESTEVENTTYPE),
                     EndDialogId = dtQ.Rows[0].GetInt(QUEST_ENDDIALOGID),
                     IsRepetable = dtQ.Rows[0].GetInt(QUEST_ISREPETABLE)
                 };
@@ -321,7 +323,15 @@ namespace BeastHunter
             newNodeRow[1] = 666; //npc id
             newNodeRow[2] = 0;
             newNodeRow[3] = "Test Generation NPC text";
-            _dialogueNodesCache.Rows.Add(newNodeRow);
+            //for (int j = 0; j < _dialogueNodesCache.Rows.Count; j++)
+            //{
+            //    if (_dialogueNodesCache.Rows[j].GetInt(0) == Convert.ToInt32(newNodeRow[0]))
+            //    {
+            //        break;
+            //    }
+                _dialogueNodesCache.Rows.Add(newNodeRow);
+            //}
+            
 
             for (int i=0;i<2;i++)
             {
@@ -336,7 +346,21 @@ namespace BeastHunter
                 newRow[7] = i == 0 ? 0 : 1;
                 newRow[8] = newQuest.Id;
                 newRow[9] = 0;
-                _dialogueAnswersCache.Rows.Add(newRow);
+
+                var flag = true;
+                for (int j = 0; j < _dialogueAnswersCache.Rows.Count; j++)
+                {
+                    if (_dialogueAnswersCache.Rows[j].GetInt(0) == Convert.ToInt32(newRow[0]))
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    _dialogueAnswersCache.Rows.Add(newRow);
+                }
+
             }
            for(int i=0;i<newQuest.Tasks.Count;i++)
             {
@@ -351,14 +375,43 @@ namespace BeastHunter
                 newRow[7] = 0;
                 newRow[8] = newQuest.Id;
                 newRow[9] = 1;
-                _dialogueAnswersCache.Rows.Add(newRow);
+
+                var flag = true;
+                for (int j = 0; j < _dialogueAnswersCache.Rows.Count; j++)
+                {
+                    if (_dialogueAnswersCache.Rows[j].GetInt(0) == Convert.ToInt32(newRow[0]))
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    _dialogueAnswersCache.Rows.Add(newRow);
+                }
+
 
                 var newTaskRow = _questTaskCache.NewRow();
                 newTaskRow[0] = newQuest.Tasks[i].Id;
                 newTaskRow[1] = newQuest.Id;
                 newTaskRow[2] = newQuest.Tasks[i].TargetId;
                 newTaskRow[3] = 666;//npc id
-                _questTaskCache.Rows.Add(newTaskRow);
+
+                var taskFlag = true;
+                for (int j=0;j<_questTaskCache.Rows.Count;j++)
+                {
+                    var a = _questTaskCache.Rows[j].GetInt(0);
+                    var b = newTaskRow[0];
+                    if (_questTaskCache.Rows[j].GetInt(0)== Convert.ToInt32(newTaskRow[0]))
+                    {
+                        taskFlag = false;
+                        break;
+                    }
+                }
+                if (taskFlag)
+                {
+                    _questTaskCache.Rows.Add(newTaskRow);
+                }
             }
            
         }

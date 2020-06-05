@@ -18,12 +18,14 @@ namespace BeastHunter
 
         public int QuestCount => _quests.Count;
         public IEnumerable<Quest> Quests => _quests.AsReadOnly();
+        public List<Quest> QuestsList => _quests;
         public GameContext Context;
         public List<int> AllTaskCompletedInQuests = new List<int>();
         public List<int> AllTaskCompletedInQuestsWithOptional = new List<int>();
         public List<int> CompletedTasksById = new List<int>();
         public List<int> IsOptionalTasks = new List<int>();
         public Quest TempQuest;
+        public int lastGeneratedQuestId;
 
         #endregion
 
@@ -50,6 +52,7 @@ namespace BeastHunter
             _completedTasks = GetCompleteTasks(_completedQuest,_quests);
             ActiveQuests = QuestStorage.GetAllActiveQuestsById();
             CompletedQuests = QuestStorage.GetAllCompletedQuestsById();
+            CheckLastGeneratedQuestId();
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestAccepted, OnQuestAccept);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.NpcDie, OnNpcDie);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.AreaEnter, OnAreaEnter);
@@ -63,6 +66,7 @@ namespace BeastHunter
             //  EventManager.StartListening(GameEventTypes.ItemAcquired, OnItemAcquired);
             //  EventManager.StartListening(GameEventTypes.ItemUsed, OnItemUse);
             // не удалять, события для предметов
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
         }
 
         #endregion
@@ -123,10 +127,17 @@ namespace BeastHunter
 #if UNITY_EDITOR
             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Reported");
             Debug.Log("Game saved");
-#endif
-            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
+#endif            
             QuestStorage.SaveGame("TestSave.bytes");
-
+            if (QuestGeneration.GetTempQuest() != null)
+            {
+                if (QuestGeneration.GetTempQuest().Id.Equals(idArgs.Id))
+                {
+                    QuestGeneration.ClearTempQuest();
+                    TempQuest = null;
+                }
+            }
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
         }
 
         private void OnQuestAbandon(EventArgs arg0)
@@ -141,7 +152,7 @@ namespace BeastHunter
         private void OnQuestAccept(EventArgs args)
         {         
             if (!(args is IdArgs idArgs)) return;
-             TempQuest = idArgs.Id.Equals(666)? QuestGeneration.GetTempQuest() : QuestStorage.GetQuestById(idArgs.Id);
+             TempQuest = idArgs.Id.Equals(666)?new Quest(QuestGeneration.GetTempQuest()) : QuestStorage.GetQuestById(idArgs.Id);
             if (TempQuest != null)
             {
                 if (_quests.Count != 0)
@@ -332,7 +343,15 @@ namespace BeastHunter
         {
             if (!(args is QuestArgs questArgs)) return;
            // QuestStorage.SaveGeneratedQuest(questArgs.Quest);
-            _generatedQuest.Add(questArgs.Quest);
+            _generatedQuest.Add(new Quest(questArgs.Quest));
+        }
+        public void CheckLastGeneratedQuestId()
+        {
+            QuestGeneration.LoadLastGeneratedId();
+            if(!CompletedQuests.Contains(QuestGeneration.lastGeneratedQuestId))
+            {
+                QuestGeneration.SetTempLastGeneratedQuest();
+            }
         }
 
         public void Execute()

@@ -14,6 +14,7 @@ namespace BeastHunter
             if (npcID.Equals(666))
             {
                 QuestGeneration.QuestGenerate();
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
             }
 
             List<Dialogue> dialogueNode = new List<Dialogue>();

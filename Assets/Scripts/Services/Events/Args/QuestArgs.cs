@@ -7,14 +7,14 @@ namespace BeastHunter
     {
         #region Properties
 
-        public Quest Quest { get; }
+        public QuestDto Quest { get; }
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public QuestArgs(Quest quest)
+        public QuestArgs(QuestDto quest)
         {
             Quest = quest;
         }

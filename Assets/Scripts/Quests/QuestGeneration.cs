@@ -2,18 +2,23 @@
 
 namespace BeastHunter
 {
-    public  class QuestGeneration
+    public class QuestGeneration
     {
-        public static Quest TempGenerationQuest;
-        public static (int,int) lastGeneratedId = ProgressDatabaseWrapper.GetLastGeneratedID();
-        public static Quest QuestGenerate()
+        //public static (int, int) lastGeneratedId;
+        public static int lastGeneratedQuestId;//= lastGeneratedId.Item1;
+        private static int lastGeneratedObjectiveId;// = lastGeneratedId.Item2;
+        public static int lastGeneratedAnswerId;
+        public static int lastGeneratedNodeId;
+        public static QuestDto TempGenerationQuest;
+
+        public static QuestDto QuestGenerate()
         {
             if (TempGenerationQuest == null)
             {
                 var newQuest = new QuestDto
                 {
-                    Id = lastGeneratedId.Item1 + 1, //
-                    Title = $"test Generate Quest {lastGeneratedId.Item1+1}",
+                    Id = ++lastGeneratedQuestId, //
+                    Title = $"test Generate Quest {lastGeneratedQuestId}",
                     Description = "generating bla bla bla",
                     ZoneId = 1,
                     MinLevel = 1,
@@ -21,20 +26,20 @@ namespace BeastHunter
                     TimeAllowed = -1,
                     RewardExp = 0,
                     RewardMoney = 0,
-                    StartDialogId = 668, //?
-                    EndDialogId = 669, //?
+                    StartDialogId = ++lastGeneratedAnswerId, //?
+                    EndDialogId = ++lastGeneratedAnswerId, //?
                     IsRepetable = 0,
                     Tasks = QuestTasksGenerate(3)
 
                 };
                 if (QuestRepository.GetById(newQuest.Id) == null)
-                {
-                    QuestRepository.AddRowToDialogueCaches(newQuest);
-                    TempGenerationQuest = new Quest(newQuest);
+                {     
+                    TempGenerationQuest = newQuest;
+                   // QuestRepository.AddRowToDialogueCaches(newQuest);
                     Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.SaveGeneratedQuest, new QuestArgs(TempGenerationQuest));
-                    
-                }               
+                }
             }
+            QuestRepository.AddRowToDialogueCaches(TempGenerationQuest);
             return TempGenerationQuest;
         }
 
@@ -45,20 +50,40 @@ namespace BeastHunter
             {
                 var newTask = new QuestTaskDto
                 {
-                    Id = lastGeneratedId.Item2+i, //need use last generate ID +1
-                    Description = $"new task #{lastGeneratedId.Item2+i}",
+                    Id = ++lastGeneratedObjectiveId, //need use last generate ID +1
+                    Description = $"new task #{lastGeneratedObjectiveId}",
                     NeededAmount = 1,
                     IsOptional = false,
-                    TargetId = 888+i, // need unic
+                    TargetId = ++lastGeneratedAnswerId, // need unic
                     Type = QuestTaskTypes.AnswerSelect
                 };
                 taskList.Add(newTask);
             }
             return taskList;
         }
-        public static Quest GetTempQuest()
+        public static QuestDto GetTempQuest()
         {
-            return TempGenerationQuest; //?? QuestGenerate();
+                return TempGenerationQuest; //?? QuestGenerate();
+        }
+        public static void ClearTempQuest()
+        {
+            TempGenerationQuest = null;
+        }
+        public static void SetTempLastGeneratedQuest()
+        {
+            var quest = QuestRepository.GetById(lastGeneratedQuestId);
+            if (quest != null)
+            {
+                TempGenerationQuest = quest;
+            }
+        }
+        public static void LoadLastGeneratedId()
+        {
+            var id = ProgressDatabaseWrapper.GetLastGeneratedID();
+            lastGeneratedQuestId = id.Item1;
+            lastGeneratedObjectiveId = id.Item2;
+            lastGeneratedAnswerId = id.Item3;
+            lastGeneratedNodeId = id.Item4;
         }
     }
 }

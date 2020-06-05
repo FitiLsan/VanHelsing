@@ -58,9 +58,10 @@ namespace BeastHunter
             var questModel = model.Context.QuestModel;
             var questsWithCompletedAllTask = questModel.AllTaskCompletedInQuests;
             var questsWithCompletedAllTaskWithOptional = questModel.AllTaskCompletedInQuestsWithOptional;
-            var activeQuests = questModel.ActiveQuests;
+            var activeQuestsById = questModel.ActiveQuests;
             var completedQuests = questModel.CompletedQuests;
             var completedTasks = questModel.CompletedTasksById;
+            var activeQuests = questModel.QuestsList;
 
             if (DialogueCache.Rows.Count != 0)
             {
@@ -75,7 +76,7 @@ namespace BeastHunter
                         {
                             if (DialogueCache.Rows[i].GetInt(6) == 1)
                             {
-                                if (!completedQuests.Contains(currentQuestID) & !activeQuests.Contains(currentQuestID))
+                                if (!completedQuests.Contains(currentQuestID) & !activeQuestsById.Contains(currentQuestID))
                                 {
                                     ExclamationMarkShow(true, model);
                                 }
@@ -96,7 +97,7 @@ namespace BeastHunter
                                         var taskTargetID = QuestTasksCache.Rows[j].GetInt(2);
 
                                         if (!completedTasks.Contains(currentTaskID) &
-                                            activeQuests.Contains(currentQuestID) &
+                                            activeQuestsById.Contains(currentQuestID) &
                                             !questsWithCompletedAllTask.Contains(currentQuestID) &
                                             taskTargetID == dialogueTargetID)
                                         {
@@ -108,19 +109,26 @@ namespace BeastHunter
                                             var flag = false;
                                             for (int k = 0; k < activeQuests.Count; k++)
                                             {
-                                                var tempQuestId = activeQuests[k];
-
-                                                if (activeQuests.Contains(tempQuestId) &
-                                                    !questsWithCompletedAllTask.Contains(tempQuestId) &
-                                                    !questsWithCompletedAllTaskWithOptional.Contains(tempQuestId) &
-                                                    tempQuestId != currentQuestID &
-                                                    !completedTasks.Contains(currentTaskID) &
-                                                    !completedQuests.Contains(currentQuestID))
+                                                var tempQuestId = activeQuests[k].Id;
+                                                foreach (var task in activeQuests[k].Tasks)
                                                 {
-                                                    flag = true;
-                                                    break;
+
+                                                    if (activeQuestsById.Contains(tempQuestId) &
+                                                        !questsWithCompletedAllTask.Contains(tempQuestId) &
+                                                        !questsWithCompletedAllTaskWithOptional.Contains(tempQuestId) &
+                                                        tempQuestId != currentQuestID &
+                                                        !completedTasks.Contains(task.Id) & 
+                                                        dialogueTargetID == task.TargetId &
+                                                        !completedQuests.Contains(currentQuestID))
+                                                    {
+                                                        flag = true;
+                                                        break;
+                                                    }
                                                 }
+                                                if(flag)
+                                                { break; }
                                             }
+                                        
 
                                             if (!flag)
                                             {
