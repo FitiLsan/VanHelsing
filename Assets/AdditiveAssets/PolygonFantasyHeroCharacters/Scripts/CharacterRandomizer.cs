@@ -1,18 +1,600 @@
-﻿// character randomizer version 1.30
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using UnityEditor.PackageManager;
+using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
+using Assets.AdditiveAssets.PolygonFantasyHeroCharacters.Scripts;
 
 namespace PsychoticLab
 {
+    [Serializable]
     public enum Gender { Male, Female }
+    [Serializable]
     public enum Race { Human, Elf }
     public enum SkinColor { White, Brown, Black, Elf }
-    public enum Elements {  Yes, No }
+    public enum Elements { Yes, No }
     public enum HeadCovering { HeadCoverings_Base_Hair, HeadCoverings_No_FacialHair, HeadCoverings_No_Hair }
     public enum FacialHair { Yes, No }
+    public enum ActForItem { Add, Remove, None }
+    [Serializable]
+    public enum BodyItems
+    {
+        HeadAllElements, HeadNoElements, Ear, EyeBrow, Hair, FacialHair, Torso, ArmUpper_Right, ArmUpper_Left, ArmLower_Right, ArmLower_Left, Hand_Right, Hand_Left, Hips, Leg_Right, Leg_Left,
+        Extra, Head_Attachment, Back_Attachment, Chest_Attachment, Elbow_Attachment_Left, Elbow_Attachment_Right, HeadCoverings_Base_Hair, HeadCoverings_No_FacialHair,
+        HeadCoverings_No_Hair, Hips_Attachment, Knee_Attachement_Left, Knee_Attachement_Right, Shoulder_Attachment_Left, Shoulder_Attachment_Right,
+    }
+
+    [Serializable]
+    public class Item
+    {
+        public GameObject Object;
+        public int Position;
+        public bool Visible;
+
+        public Item() { }
+
+        public Item(GameObject _obj, int _position, bool _visible)
+        {
+            Object = _obj;
+            Position = _position;
+            Visible = _visible;
+        }
+
+        public void Clear()
+        {
+            Object = null;
+            Position = 0;
+        }
+    }
+
+    [Serializable]
+    public class SaveItem
+    {
+        public BodyItems Body;
+        public int Position;
+        public bool Visible;
+
+        public SaveItem()
+        {
+
+        }
+
+        public SaveItem(BodyItems _body, Item _item)
+        {
+            Body = _body;
+            Position = _item.Position;
+            Visible = _item.Visible;
+        }
+    }
+
+    [Serializable]
+    public class SaveCharacter
+    {
+        public Race Race;
+        public Gender Gender;
+        public List<bool> Toggle = new List<bool>();
+        public List<SaveItem> Items = new List<SaveItem>();
+
+        public SaveCharacter()
+        {
+
+        }
+
+        public SaveCharacter(List<bool> _toggle, List<SaveItem> _item, Gender _gender, Race _race)
+        {
+            Toggle = _toggle;
+            Items = _item;
+            Gender = _gender;
+            Race = _race;
+        }
+    }
+
+
+    public class Character
+    {
+        public Race Race;
+        public Gender Gander;
+        public Dictionary<BodyItems, Item> Body = new Dictionary<BodyItems, Item>();
+        private readonly CharacterObjectGroups _male;
+        private readonly CharacterObjectGroups _female;
+        private readonly CharacterObjectListsAllGender _allGender;
+        public readonly Dictionary<Gender, Dictionary<BodyItems, List<GameObject>>> GenderDict;
+        public readonly Dictionary<BodyItems, List<GameObject>> NoGenderDict;
+
+        public bool HairToggle = true;
+        public bool FacialHairToggle = true;
+        public bool HeadAllElementsToggle = true;
+        public bool HeadCov1Toggle = false;
+        public bool HeadCov2Toggle = false;
+        public bool HeadCov3Toggle = false;
+        public bool ChestToggle = false;
+        public bool SholderRToggle = false;
+        public bool SholderLToggle = false;
+        public bool ElbowRToggle = false;
+        public bool ElbowLToggle = false;
+        public bool KneeRToggle = false;
+        public bool KneeLToggle = false;
+        public bool HipsAToggle = false;
+
+        public readonly HashSet<BodyItems> GenderHash;
+
+        public Character(CharacterObjectGroups male, CharacterObjectGroups female, CharacterObjectListsAllGender allGender)
+        {
+            _male = male;
+            _female = female;
+            _allGender = allGender;
+
+            GenderHash = new HashSet<BodyItems> 
+            { 
+                BodyItems.HeadAllElements, BodyItems.HeadNoElements, BodyItems.EyeBrow, BodyItems.FacialHair, BodyItems.Torso,
+                BodyItems.ArmUpper_Right, BodyItems.ArmUpper_Left, BodyItems.ArmLower_Right, BodyItems.ArmLower_Left,
+                BodyItems.Hand_Right, BodyItems.Hand_Left, BodyItems.Hips, BodyItems.Leg_Right, BodyItems.Leg_Left 
+            };
+
+            Race = Race.Human;
+            GenderDict = new Dictionary<Gender, Dictionary<BodyItems, List<GameObject>>>
+            {
+                {Gender.Male,  new Dictionary<BodyItems, List<GameObject>>
+                {
+                    { BodyItems.ArmLower_Left, male.arm_Lower_Left },
+                    { BodyItems.ArmLower_Right, male.arm_Lower_Right },
+                    { BodyItems.ArmUpper_Left, male.arm_Upper_Left },
+                    { BodyItems.ArmUpper_Right, male.arm_Upper_Right },
+                    { BodyItems.EyeBrow, male.eyebrow },
+                    { BodyItems.FacialHair, male.facialHair },
+                    { BodyItems.Hand_Left, male.hand_Left },
+                    { BodyItems.Hand_Right, male.hand_Right },
+                    { BodyItems.HeadAllElements, male.headAllElements },
+                    { BodyItems.HeadNoElements, male.headNoElements },
+                    { BodyItems.Hips, male.hips },
+                    { BodyItems.Leg_Left, male.leg_Left },
+                    { BodyItems.Leg_Right, male.leg_Right },
+                    { BodyItems.Torso, male.torso },
+                }},
+                
+                {Gender.Female,  new Dictionary<BodyItems, List<GameObject>>
+                {
+                    { BodyItems.ArmLower_Left, female.arm_Lower_Left },
+                    { BodyItems.ArmLower_Right, female.arm_Lower_Right },
+                    { BodyItems.ArmUpper_Left, female.arm_Upper_Left },
+                    { BodyItems.ArmUpper_Right, female.arm_Upper_Right },
+                    { BodyItems.EyeBrow, female.eyebrow },
+                    { BodyItems.FacialHair, female.facialHair },
+                    { BodyItems.Hand_Left, female.hand_Left },
+                    { BodyItems.Hand_Right, female.hand_Right },
+                    { BodyItems.HeadAllElements, female.headAllElements },
+                    { BodyItems.HeadNoElements, female.headNoElements },
+                    { BodyItems.Hips, female.hips },
+                    { BodyItems.Leg_Left, female.leg_Left },
+                    { BodyItems.Leg_Right, female.leg_Right },
+                    { BodyItems.Torso, female.torso },
+                }},
+            };
+
+            NoGenderDict = new Dictionary<BodyItems, List<GameObject>>
+            {
+                {BodyItems.Extra,  _allGender.all_12_Extra},
+                {BodyItems.Hair,  _allGender.all_Hair},
+                {BodyItems.Head_Attachment,  _allGender.all_Head_Attachment},
+                {BodyItems.Back_Attachment,  _allGender.back_Attachment},
+                {BodyItems.Chest_Attachment,  _allGender.chest_Attachment},
+                {BodyItems.Elbow_Attachment_Left,  _allGender.elbow_Attachment_Left},
+                {BodyItems.Elbow_Attachment_Right,  _allGender.elbow_Attachment_Right},
+                {BodyItems.Ear,  _allGender.elf_Ear},
+                {BodyItems.HeadCoverings_Base_Hair,  _allGender.headCoverings_Base_Hair},
+                {BodyItems.HeadCoverings_No_FacialHair,  _allGender.headCoverings_No_FacialHair},
+                {BodyItems.HeadCoverings_No_Hair,  _allGender.headCoverings_No_Hair},
+                {BodyItems.Hips_Attachment,  _allGender.hips_Attachment},
+                {BodyItems.Knee_Attachement_Left,  _allGender.knee_Attachement_Left},
+                {BodyItems.Knee_Attachement_Right,  _allGender.knee_Attachement_Right},
+                {BodyItems.Shoulder_Attachment_Left,  _allGender.shoulder_Attachment_Left},
+                {BodyItems.Shoulder_Attachment_Right,  _allGender.shoulder_Attachment_Right},
+            };
+
+            Body.Add(BodyItems.HeadAllElements, new Item(_male.headAllElements.First(), 0, true));
+            Body.Add(BodyItems.HeadNoElements, new Item(_male.headNoElements.First(), 0, false));
+            Body.Add(BodyItems.FacialHair, new Item(_male.facialHair.First(), 0, true));
+            Body.Add(BodyItems.Hair, new Item(_allGender.all_Hair.First(), 0, true));
+            Body.Add(BodyItems.Ear, new Item(_allGender.elf_Ear.First(), 0, false));
+            Body.Add(BodyItems.EyeBrow, new Item(_male.eyebrow.First(), 0, true));
+            Body.Add(BodyItems.Torso, new Item(_male.torso.First(), 0, true));
+            Body.Add(BodyItems.ArmUpper_Right, new Item(_male.arm_Upper_Right.First(), 0, true));
+            Body.Add(BodyItems.ArmUpper_Left, new Item(_male.arm_Upper_Left.First(), 0, true));
+            Body.Add(BodyItems.ArmLower_Right, new Item(_male.arm_Lower_Right.First(), 0, true));
+            Body.Add(BodyItems.ArmLower_Left, new Item(_male.arm_Lower_Left.First(), 0, true));
+            Body.Add(BodyItems.Hand_Right, new Item(_male.hand_Right.First(), 0, true));
+            Body.Add(BodyItems.Hand_Left, new Item(_male.hand_Left.First(), 0, true));
+            Body.Add(BodyItems.Hips, new Item(_male.hips.First(), 0, true));
+            Body.Add(BodyItems.Leg_Right, new Item(_male.leg_Right.First(), 0, true));
+            Body.Add(BodyItems.Leg_Left, new Item(_male.leg_Left.First(), 0, true));
+                
+            Body.Add(BodyItems.Head_Attachment, new Item(NoGenderDict[BodyItems.Head_Attachment].First(), 0, false));
+            Body.Add(BodyItems.Back_Attachment, new Item(NoGenderDict[BodyItems.Back_Attachment].First(), 0, false));
+            //Body.Add(BodyItems.Chest_Attachment, new Item(_noGenderDict[BodyItems.Chest_Attachment].First(), 0));
+            Body.Add(BodyItems.Elbow_Attachment_Left, new Item(NoGenderDict[BodyItems.Elbow_Attachment_Left].First(), 0, false));
+            Body.Add(BodyItems.Elbow_Attachment_Right, new Item(NoGenderDict[BodyItems.Elbow_Attachment_Right].First(), 0, false));
+            Body.Add(BodyItems.HeadCoverings_Base_Hair, new Item(NoGenderDict[BodyItems.HeadCoverings_Base_Hair].First(), 0, false));
+            Body.Add(BodyItems.HeadCoverings_No_FacialHair, new Item(NoGenderDict[BodyItems.HeadCoverings_No_FacialHair].First(), 0, false));
+            Body.Add(BodyItems.HeadCoverings_No_Hair, new Item(NoGenderDict[BodyItems.HeadCoverings_No_Hair].First(), 0, false));
+            Body.Add(BodyItems.Hips_Attachment, new Item(NoGenderDict[BodyItems.Hips_Attachment].First(), 0, false));
+            Body.Add(BodyItems.Knee_Attachement_Left, new Item(NoGenderDict[BodyItems.Knee_Attachement_Left].First(), 0, false));
+            Body.Add(BodyItems.Knee_Attachement_Right, new Item(NoGenderDict[BodyItems.Knee_Attachement_Right].First(), 0, false));
+            Body.Add(BodyItems.Shoulder_Attachment_Left, new Item(NoGenderDict[BodyItems.Shoulder_Attachment_Left].First(), 0, false));
+            Body.Add(BodyItems.Shoulder_Attachment_Right, new Item(NoGenderDict[BodyItems.Shoulder_Attachment_Right].First(), 0, false));
+        }
+
+        public List<Tuple<ActForItem, List<Item>>> ReadAllCharacter()
+        {
+            var list = Body.Select((x, y) => x.Value).ToList();
+            var listrRemove = new List<Item>();
+            if (!HairToggle)
+            {
+                list.Remove(Body[BodyItems.Hair]);
+                listrRemove.Add(Body[BodyItems.Hair]);
+            }
+
+            if(!FacialHairToggle)
+            {
+                list.Remove(Body[BodyItems.FacialHair]);
+                listrRemove.Add(Body[BodyItems.FacialHair]);
+            }
+
+            if (!HeadAllElementsToggle)
+            {
+                list.Remove(Body[BodyItems.HeadNoElements]);
+            }
+            else
+            {
+                list.Remove(Body[BodyItems.HeadAllElements]);
+            }
+
+            if (!HeadCov1Toggle)
+            {
+                list.Remove(Body[BodyItems.HeadCoverings_Base_Hair]);
+                list.Remove(Body[BodyItems.HeadCoverings_No_Hair]);
+                list.Remove(Body[BodyItems.HeadCoverings_No_FacialHair]);
+            }
+
+            if (!HeadCov2Toggle)
+            {
+                list.Remove(Body[BodyItems.HeadCoverings_Base_Hair]);
+                list.Remove(Body[BodyItems.HeadCoverings_No_Hair]);
+                list.Remove(Body[BodyItems.HeadCoverings_No_FacialHair]);
+            }
+
+            if (!HeadCov3Toggle)
+            {
+                list.Remove(Body[BodyItems.HeadCoverings_Base_Hair]);
+                list.Remove(Body[BodyItems.HeadCoverings_No_Hair]);
+                list.Remove(Body[BodyItems.HeadCoverings_No_FacialHair]);
+            }
+
+            list.Remove(Body[BodyItems.HeadCoverings_Base_Hair]);
+            list.Remove(Body[BodyItems.HeadCoverings_No_Hair]);
+            list.Remove(Body[BodyItems.HeadCoverings_No_FacialHair]);
+
+            //if (!ChestToggle)
+            //{
+            //    list.Remove(Body[BodyItems.Chest_Attachment]);
+            //}
+
+            if (!SholderRToggle)
+            {
+                list.Remove(Body[BodyItems.Shoulder_Attachment_Right]);
+            }
+
+            if (!SholderLToggle)
+            {
+                list.Remove(Body[BodyItems.Shoulder_Attachment_Left]);
+            }
+
+            if (!ElbowRToggle)
+            {
+                list.Remove(Body[BodyItems.Elbow_Attachment_Right]);
+            }
+
+            if (!ElbowLToggle)
+            {
+                list.Remove(Body[BodyItems.Elbow_Attachment_Left]);
+            }
+
+            if (!KneeRToggle)
+            {
+                list.Remove(Body[BodyItems.Knee_Attachement_Right]);
+            }
+
+            if (!KneeLToggle)
+            {
+                list.Remove(Body[BodyItems.Knee_Attachement_Left]);
+            }
+
+            if (!HipsAToggle)
+            {
+                list.Remove(Body[BodyItems.Hips_Attachment]);
+            }
+
+            return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.Add, Body.Select((x, y) => x.Value).ToList()),
+            Tuple.Create(ActForItem.Remove, listrRemove )};
+        }
+
+        public List<Tuple<ActForItem, List<Item>>> ClearAllCharacter()
+        {
+            var list = Body.Select((x, y) => x.Value).ToList();
+            list.ForEach(x => new Item( x.Object, x.Position, false));
+            return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.Remove, list) };
+        }
+
+        public int GetPosition(BodyItems body)
+        {
+            return Body[body].Position;
+        }
+
+        public List<Tuple<ActForItem, List<Item>>> ChangeRace(Race _race)
+        {
+            Race = _race;
+            if (_race == Race.Elf)
+            {
+                Body[BodyItems.Ear].Object = _allGender.elf_Ear[Body[BodyItems.Ear].Position];
+                Body[BodyItems.Ear].Visible = true;
+                return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.Add, new List<Item> { Body[BodyItems.Ear] }) };
+            }
+            else if (_race == Race.Human)
+            {
+                var ear = Body[BodyItems.Ear].Object;
+                Body[BodyItems.Ear].Object = _allGender.elf_Ear[Body[BodyItems.Ear].Position];
+                Body[BodyItems.Ear].Visible = false;
+                return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.Remove, new List<Item> { new Item(ear, Body[BodyItems.Ear].Position, false) }) };
+            }
+            else
+            {
+                return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.None, new List<Item> { }) };
+            }
+        }
+
+        public List<Tuple<ActForItem, List<Item>>> ChangeGender(Gender _gender)
+        {
+            if (_gender == Gander)
+            {
+                return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.None, new List<Item> { }) };
+            }
+
+            Gander = _gender;
+
+            var list = new List<Tuple<ActForItem, List<Item>>> { };
+
+            list.Add(Tuple.Create(ActForItem.Remove, new List<Item>
+                    {
+                        Body[BodyItems.HeadAllElements],
+                        Body[BodyItems.EyeBrow],
+                        Body[BodyItems.FacialHair],
+                        Body[BodyItems.Torso],
+                        Body[BodyItems.ArmUpper_Right],
+                        Body[BodyItems.ArmUpper_Left],
+                        Body[BodyItems.ArmLower_Right],
+                        Body[BodyItems.ArmLower_Left],
+                        Body[BodyItems.Hand_Right],
+                        Body[BodyItems.Hand_Left],
+                        Body[BodyItems.Hips],
+                        Body[BodyItems.Leg_Right],
+                        Body[BodyItems.Leg_Left],
+                    }));
+
+            Body[BodyItems.HeadAllElements] = ItemGenderChange(Body[BodyItems.HeadAllElements], _gender, _male.headAllElements, _female.headAllElements);
+            Body[BodyItems.EyeBrow] = ItemGenderChange(Body[BodyItems.EyeBrow], _gender, _male.eyebrow, _female.eyebrow);
+            Body[BodyItems.FacialHair] = ItemGenderChange(Body[BodyItems.Hair], _gender, _male.facialHair, _female.facialHair);
+            Body[BodyItems.Torso] = ItemGenderChange(Body[BodyItems.Torso], _gender, _male.torso, _female.torso);
+            Body[BodyItems.ArmUpper_Right] = ItemGenderChange(Body[BodyItems.ArmUpper_Right], _gender, _male.arm_Upper_Right, _female.arm_Upper_Right);
+            Body[BodyItems.ArmUpper_Left] = ItemGenderChange(Body[BodyItems.ArmUpper_Left], _gender, _male.arm_Upper_Left, _female.arm_Upper_Left);
+            Body[BodyItems.ArmLower_Right] = ItemGenderChange(Body[BodyItems.ArmLower_Right], _gender, _male.arm_Lower_Right, _female.arm_Lower_Right);
+            Body[BodyItems.ArmLower_Left] = ItemGenderChange(Body[BodyItems.ArmLower_Left], _gender, _male.arm_Lower_Left, _female.arm_Lower_Left);
+            Body[BodyItems.Hand_Right] = ItemGenderChange(Body[BodyItems.Hand_Right], _gender, _male.hand_Right, _female.hand_Right);
+            Body[BodyItems.Hand_Left] = ItemGenderChange(Body[BodyItems.Hand_Left], _gender, _male.hand_Left, _female.hand_Left);
+            Body[BodyItems.Hips] = ItemGenderChange(Body[BodyItems.Hips], _gender, _male.hips, _female.hips);
+            Body[BodyItems.Leg_Right] = ItemGenderChange(Body[BodyItems.Leg_Right], _gender, _male.leg_Right, _female.leg_Right);
+            Body[BodyItems.Leg_Left] = ItemGenderChange(Body[BodyItems.Leg_Left], _gender, _male.leg_Left, _female.leg_Left);
+
+            list.Add(Tuple.Create(ActForItem.Add, new List<Item>
+                    {
+                        Body[BodyItems.HeadAllElements],
+                        Body[BodyItems.EyeBrow],
+                        Body[BodyItems.FacialHair],
+                        Body[BodyItems.Torso],
+                        Body[BodyItems.ArmUpper_Right],
+                        Body[BodyItems.ArmUpper_Left],
+                        Body[BodyItems.ArmLower_Right],
+                        Body[BodyItems.ArmLower_Left],
+                        Body[BodyItems.Hand_Right],
+                        Body[BodyItems.Hand_Left],
+                        Body[BodyItems.Hips],
+                        Body[BodyItems.Leg_Right],
+                        Body[BodyItems.Leg_Left],
+                    }));
+
+            return list;
+        }
+
+        public Item ItemGenderChange(Item _item, Gender _gender, List<GameObject> _list_male, List<GameObject> _list_female)
+        {
+            if ((_gender is Gender.Male
+                ? _list_male.Count
+                : _list_female.Count) <= _item.Position || _item.Position < 0)
+            {
+                _item.Position = (_gender is Gender.Male
+                    ? _list_male.Count
+                    : _list_female.Count) - 1;
+            }
+
+            return new Item (_item.Position < 0 
+                ? null 
+                    : _gender is Gender.Male
+                ? _list_male[_item.Position]
+                    : _list_female[_item.Position], _item.Position,
+                    _item.Visible);
+        }
+
+        public List<Tuple<ActForItem, List<Item>>> ChangeForIndex(BodyItems body, int index)
+        {
+            //if (!Body.TryGetValue(body, out var _item) || _item.Position == index)
+            //{
+            //    return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.None, new List<Item> { }) };
+            //}
+
+            var list = new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.Remove, new List<Item> { new Item(Body[body].Object, Body[body].Position, false) }) };
+
+            if (GenderHash.Contains(body))
+            {
+                if (GenderDict[Gander][body].Count <= index)
+                {
+                    index = GenderDict[Gander][body].Count - 1;
+                }
+
+                Body[body].Object = GenderDict[Gander][body][index];
+            }
+            else
+            {
+                if (NoGenderDict[body].Count <= index)
+                {
+                    index = NoGenderDict[body].Count - 1;
+                }
+
+                Body[body].Object = NoGenderDict[body][index];
+            }
+            Body[body].Position = index;
+            Body[body].Visible = true;
+
+            list.Add(Tuple.Create(ActForItem.Add, new List<Item> { Body[body] })); 
+            return list;
+        }
+
+        public List<Tuple<ActForItem, List<Item>>> ChangeNext(BodyItems body)
+        {
+            if (!Body.TryGetValue(body, out var _))
+            {
+                return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.None, new List<Item> { }) };
+            }
+
+            var list = new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.Remove, new List<Item> { new Item(Body[body].Object, Body[body].Position, false) }) };
+
+            if (GenderHash.Contains(body))
+            {
+                Body[body].Position++;
+                Body[body].Position = GenderDict[Gander][body].Count <= Body[body].Position ? 0 : Body[body].Position;
+                Body[body].Object = GenderDict[Gander][body][Body[body].Position];
+                Body[body].Visible = true;
+            }
+            else
+            {
+                Body[body].Position++;
+                Body[body].Position = NoGenderDict[body].Count <= Body[body].Position ? 0 : Body[body].Position;
+                Body[body].Object = NoGenderDict[body][Body[body].Position];
+                Body[body].Visible = true;
+            }
+
+            list.Add(Tuple.Create(ActForItem.Add, new List<Item> { Body[body] }));
+            return list;
+        }
+
+        public List<Tuple<ActForItem, List<Item>>> ChangePrevious(BodyItems body)
+        {
+            if (!Body.TryGetValue(body, out var _item))
+            {
+                return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.None, new List<Item> { }) };
+            }
+
+            var list = new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.Remove, new List<Item> { new Item(Body[body].Object, Body[body].Position, false) }) };
+
+            if (GenderHash.Contains(body))
+            {
+                Body[body].Position--;
+                Body[body].Position = 0 > Body[body].Position ? GenderDict[Gander][body].Count - 1 : Body[body].Position;
+                Body[body].Object = GenderDict[Gander][body][Body[body].Position];
+                Body[body].Visible = true;
+            }
+            else
+            {
+                Body[body].Position--;
+                Body[body].Position = 0 > Body[body].Position ? NoGenderDict[body].Count - 1 : Body[body].Position;
+                Body[body].Object = NoGenderDict[body][Body[body].Position];
+                Body[body].Visible = true;
+            }
+
+            list.Add(Tuple.Create(ActForItem.Add, new List<Item> { Body[body] }));
+            return list;
+        }
+
+        public List<Tuple<ActForItem, List<Item>>> ChangeDisable(BodyItems body)
+        {
+            if (!Body.TryGetValue(body, out var _))
+            {
+                return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.None, new List<Item> { }) };
+            }
+
+            return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.Remove, new List<Item> { new Item(Body[body].Object, Body[body].Position, false) }) };
+        }
+
+        public List<Tuple<ActForItem, List<Item>>> ChangeEnable(BodyItems body)
+        {
+            if (!Body.TryGetValue(body, out var _))
+            {
+                return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.None, new List<Item> { }) };
+            }
+
+            return new List<Tuple<ActForItem, List<Item>>> { Tuple.Create(ActForItem.Add, new List<Item> { new Item(Body[body].Object, Body[body].Position, true) }) };
+        }
+
+        internal void Load(SaveCharacter date)
+        {
+            if (date.Toggle.Count >= 14)
+            {
+                HairToggle = date.Toggle[0];
+                FacialHairToggle = date.Toggle[1];
+                HeadAllElementsToggle = date.Toggle[2];
+                HeadCov1Toggle = date.Toggle[3];
+                HeadCov2Toggle = date.Toggle[4];
+                HeadCov3Toggle = date.Toggle[5];
+                ChestToggle = date.Toggle[6];
+                SholderRToggle = date.Toggle[7];
+                SholderLToggle = date.Toggle[8];
+                ElbowRToggle = date.Toggle[9];
+                ElbowLToggle = date.Toggle[10];
+                KneeRToggle = date.Toggle[11];
+                KneeLToggle = date.Toggle[12];
+                HipsAToggle = date.Toggle[13];
+            }
+
+            Gander = date.Gender;
+            Race = date.Race;
+
+            foreach(var item in date.Items)
+            {
+                if ((GenderHash.Contains(item.Body) ? GenderDict[date.Gender][item.Body].Count : NoGenderDict[item.Body].Count) > item.Position)
+                {
+                    Body[item.Body].Object = GenderHash.Contains(item.Body) ? GenderDict[date.Gender][item.Body][item.Position] : NoGenderDict[item.Body][item.Position];
+                    Body[item.Body].Position = item.Position;
+                    Body[item.Body].Visible = item.Visible;
+                }
+            }
+        }
+    }
+
 
     public class CharacterRandomizer : MonoBehaviour
     {
+        private bool Randomizer = false;
+        public Stack<Character> MemoryCharacters = new Stack<Character>();
+        public Stack<Character> PrevCharacters = new Stack<Character>();
+        public Stack<Character> NextCharacters = new Stack<Character>();
+        public Character Character;
+
+        public string NameFile;
+
+
         [Header("Demo Settings")]
         public bool repeatOnPlay = false;
         public float shuffleSpeed = 0.7f;
@@ -77,11 +659,630 @@ namespace PsychoticLab
         // reference to camera transform, used for rotation around the model during or after a randomization (this is sourced from Camera.main, so the main camera must be in the scene for this to work)
         Transform camHolder;
 
-		// cam rotation x
-		float x = 16;
+        // cam rotation x
+        float x = 16;
 
-		// cam rotation y
-		float y = -30;
+        // cam rotation y
+        float y = -30;
+
+
+        public void SaveFile()
+        {
+            SaveLoadDialog.SaveCharacter(
+                new SaveCharacter(
+                    new List<bool> { Character.HairToggle, Character.FacialHairToggle, Character.HeadAllElementsToggle, Character.HeadCov1Toggle, Character.HeadCov2Toggle, Character.HeadCov3Toggle, Character.ChestToggle, Character.SholderRToggle, Character.SholderLToggle, Character.ElbowRToggle, Character.ElbowLToggle, Character.KneeRToggle, Character.KneeLToggle, Character.HipsAToggle },
+                    Character.Body.Select((x, y) => new SaveItem(x.Key, new Item(null, x.Value.Position, x.Value.Visible))).ToList(),
+                    Character.Gander,
+                    Character.Race),
+                NameFile);            
+        }
+
+        public void NewFileName(string _fileName)
+        {
+            NameFile = _fileName;
+        }
+
+        public void LoadFile()
+        {
+            var _date = SaveLoadDialog.LoadCharacter(NameFile);
+            if (_date is null) return;
+            PrevCharacters.Push(Character);
+            ActivateItem(Character.ClearAllCharacter());
+            Character = new Character(male, female, allGender);
+            Character.Load(_date);
+            ActivateItem(Character.ReadAllCharacter());
+        }
+
+        public void RandomazerToggle(bool value)
+        {
+            Randomizer = value;
+        }
+
+        public void ElfChange()
+        {            
+            ElfToggle(Character.Race == Race.Human ? true : false);
+        }
+
+        public void ElfToggle(bool value)
+        {
+            if (!Character.HeadAllElementsToggle)
+            {
+                ActivateItem(Character.ChangeRace(value ? Race.Elf : Race.Human));
+            }
+            else
+            {
+                if (Character.Body[BodyItems.HeadNoElements].Position == 0)
+                {
+                    ActivateItem(Character.ChangeRace(value ? Race.Elf : Race.Human));
+                }
+                else
+                {
+                    Character.Race = value ? Race.Elf : Race.Human;
+                }
+
+            }
+        }
+
+        public void GenderChange(int pos)
+        {
+            ActivateItem(Character.ChangeGender(pos == 0 ? Gender.Male : Gender.Female));            
+        }
+
+        public void HairNext()
+        {
+            if (Character.HairToggle && (!Character.HeadAllElementsToggle || Character.Body[BodyItems.HeadAllElements].Position == 0))
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.Hair));
+            }
+        }
+
+        public void HairPrevios()
+        {
+            if (Character.HairToggle && !Character.HeadAllElementsToggle || Character.Body[BodyItems.HeadAllElements].Position == 0)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.Hair));
+            }
+        }
+
+        public void HairToggle(bool value)
+        {
+            Character.HairToggle = value;
+
+            if (!Character.HeadAllElementsToggle)
+            {
+                ActivateItem(value ? Character.ChangeEnable(BodyItems.Hair) : Character.ChangeDisable(BodyItems.Hair));
+            }
+        }
+
+        public void FacialHairNext()
+        {
+            if (Character.FacialHairToggle && !Character.HeadAllElementsToggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.FacialHair));
+            }
+        }
+
+        public void FacialHairPrevios()
+        {
+            if (Character.FacialHairToggle && !Character.HeadAllElementsToggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.FacialHair));
+            }
+        }
+
+        public void FacialHairToggle(bool value)
+        {
+            Character.FacialHairToggle = value;
+            ActivateItem(value ? Character.ChangeEnable(BodyItems.FacialHair) : Character.ChangeDisable(BodyItems.FacialHair));
+        }
+
+        public void TorsoNext()
+        {
+            ActivateItem(Character.ChangeNext(BodyItems.Torso));            
+        }
+
+        public void TorsoPrevios()
+        {
+            ActivateItem(Character.ChangePrevious(BodyItems.Torso));
+        }
+
+        public void Leg_LeftNext()
+        {
+            ActivateItem(Character.ChangeNext(BodyItems.Leg_Left));
+        }
+
+        public void Leg_LeftPrevios()
+        {
+            ActivateItem(Character.ChangePrevious(BodyItems.Leg_Left));
+        }
+
+        public void Leg_RightNext()
+        {
+            ActivateItem(Character.ChangeNext(BodyItems.Leg_Right));
+        }
+
+        public void Leg_RightPrevios()
+        {
+            ActivateItem(Character.ChangePrevious(BodyItems.Leg_Right));
+        }
+
+        public void ArmUpper_LeftNext()
+        {
+            ActivateItem(Character.ChangeNext(BodyItems.ArmUpper_Left));
+        }
+
+        public void ArmUpper_LeftPrevios()
+        {
+            ActivateItem(Character.ChangePrevious(BodyItems.ArmUpper_Left));
+        }
+
+        public void ArmUpper_RightNext()
+        {
+            ActivateItem(Character.ChangeNext(BodyItems.ArmUpper_Right));
+        }
+
+        public void ArmUpper_RightPrevios()
+        {
+            ActivateItem(Character.ChangePrevious(BodyItems.ArmUpper_Right));
+        }
+
+        public void ArmLower_LeftNext()
+        {
+            ActivateItem(Character.ChangeNext(BodyItems.ArmLower_Left));
+        }
+
+        public void ArmLower_LeftPrevios()
+        {
+            ActivateItem(Character.ChangePrevious(BodyItems.ArmLower_Left));
+        }
+
+        public void ArmLower_RightNext()
+        {
+            ActivateItem(Character.ChangeNext(BodyItems.ArmLower_Right));
+        }
+
+        public void ArmLower_RightPrevios()
+        {
+            ActivateItem(Character.ChangePrevious(BodyItems.ArmLower_Right));
+        }
+
+        public void Hand_LeftNext()
+        {
+            ActivateItem(Character.ChangeNext(BodyItems.Hand_Left));
+        }
+
+        public void Hand_LeftPrevios()
+        {
+            ActivateItem(Character.ChangePrevious(BodyItems.Hand_Left));
+        }
+
+        public void Hand_RightNext()
+        {
+            ActivateItem(Character.ChangeNext(BodyItems.Hand_Right));
+        }
+
+        public void Hand_RightPrevios()
+        {
+            ActivateItem(Character.ChangePrevious(BodyItems.Hand_Right));
+        }
+
+        public void HipsNext()
+        {
+            ActivateItem(Character.ChangeNext(BodyItems.Hips));
+        }
+
+        public void HipsPrevios()
+        {
+            ActivateItem(Character.ChangePrevious(BodyItems.Hips));
+        }
+
+        public void EyeBrowNext()
+        {
+            if (!Character.HeadAllElementsToggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.EyeBrow));
+            }
+        }
+
+        public void EyeBrowPrevios()
+        {
+            if (!Character.HeadAllElementsToggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.EyeBrow));
+            }
+        }
+
+        public void EarNext()
+        {
+
+            if (Character.Race == Race.Elf 
+                && (!Character.HeadAllElementsToggle 
+                || Character.Body[BodyItems.HeadAllElements].Position == 0))
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.Ear));
+            }
+        }
+
+        public void EarPrevios()
+        {
+            if (Character.Race == Race.Elf 
+                && (!Character.HeadAllElementsToggle 
+                || Character.Body[BodyItems.HeadAllElements].Position == 0))
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.Ear));
+            }
+        }
+
+        public void HeadNext()
+        {
+            if (Character.HeadAllElementsToggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.HeadNoElements));
+
+                if (Character.Body.TryGetValue(BodyItems.HeadNoElements, out var _item)
+                    && _item.Position == 0)
+                {
+                    ActivateItem(Character.ChangeEnable(BodyItems.Hair));
+
+                    if (Character.Race == Race.Elf)
+                    {
+                        ActivateItem(Character.ChangeEnable(BodyItems.Ear));
+                    }
+                }
+                else
+                {
+                    ActivateItem(Character.ChangeDisable(BodyItems.Hair));
+
+                    if (Character.Race == Race.Elf)
+                    {
+                        ActivateItem(Character.ChangeDisable(BodyItems.Ear));
+                    }
+                }
+            }
+            else
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.HeadAllElements));
+            }
+        }
+
+        public void HeadPrevios()
+        {
+            if (Character.HeadAllElementsToggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.HeadNoElements));
+
+
+                if (Character.Body.TryGetValue(BodyItems.HeadNoElements, out var _item) 
+                    && _item.Position == 0)
+                {
+                    ActivateItem(Character.ChangeEnable(BodyItems.Hair));
+
+                    if (Character.Race == Race.Elf)
+                    {
+                        ActivateItem(Character.ChangeEnable(BodyItems.Ear));
+                    }
+                }
+                else
+                {
+                    ActivateItem(Character.ChangeDisable(BodyItems.Hair));
+
+                    if (Character.Race == Race.Elf)
+                    {
+                        ActivateItem(Character.ChangeDisable(BodyItems.Ear));
+                    }
+                }
+            }
+            else
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.HeadAllElements));
+            }
+        }
+
+        public void HeadToggle(bool value)
+        {
+            if (!Character.HeadCov1Toggle || !Character.HeadCov2Toggle || !Character.HeadCov3Toggle)
+            {
+                Character.HeadAllElementsToggle = value;
+                ActivateItem(value ? Character.ChangeDisable(BodyItems.HeadAllElements) : Character.ChangeDisable(BodyItems.HeadNoElements));
+                ActivateItem(value ? Character.ChangeEnable(BodyItems.HeadNoElements) : Character.ChangeEnable(BodyItems.HeadAllElements));
+         
+                if (Character.Body[BodyItems.HeadAllElements].Position == 0)
+                {
+                    ActivateItem(Character.ChangeEnable(BodyItems.Hair));
+                    ActivateItem(Character.ChangeEnable(BodyItems.Ear));
+                }
+                else
+                {
+                    ActivateItem(value ? Character.ChangeDisable(BodyItems.Hair) : Character.ChangeEnable(BodyItems.Hair));
+                    ActivateItem(value ? Character.ChangeDisable(BodyItems.Ear) : Character.ChangeEnable(BodyItems.Ear));
+                }
+
+                ActivateItem(value ? Character.ChangeDisable(BodyItems.EyeBrow) : Character.ChangeEnable(BodyItems.EyeBrow));
+                ActivateItem(value ? Character.ChangeDisable(BodyItems.FacialHair) : Character.ChangeEnable(BodyItems.FacialHair));
+            }
+        }
+
+        public void HeadCov1Next()
+        {
+            if (Character.HeadCov1Toggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.HeadCoverings_No_FacialHair));
+            }
+        }
+
+        public void HeadCov1Previos()
+        {
+            if (Character.HeadCov1Toggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.HeadCoverings_No_FacialHair));
+            }
+        }
+
+        public void HeadCov1Toggle(bool value)
+        {
+            if (!Character.HeadAllElementsToggle)
+            {
+                Character.HeadCov1Toggle = value;
+                ActivateItem(value ? Character.ChangeEnable(BodyItems.HeadCoverings_No_FacialHair) : Character.ChangeDisable(BodyItems.HeadCoverings_No_FacialHair));
+            }
+        }
+
+        public void HeadCov2Next()
+        {
+
+            if (Character.HeadCov2Toggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.HeadCoverings_Base_Hair));
+            }
+        }
+
+        public void HeadCov2Previos()
+        {
+            if (Character.HeadCov2Toggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.HeadCoverings_Base_Hair));
+            }
+        }
+
+        public void HeadCov2Toggle(bool value)
+        {
+            if (!Character.HeadAllElementsToggle)
+            {
+                Character.HeadCov2Toggle = value;
+                ActivateItem(value ? Character.ChangeEnable(BodyItems.HeadCoverings_Base_Hair) : Character.ChangeDisable(BodyItems.HeadCoverings_Base_Hair));
+            }
+        }
+
+        public void HeadCov3Next()
+        {
+            if (Character.HeadCov3Toggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.HeadCoverings_No_Hair));
+            }
+        }
+
+        public void HeadCov3Previos()
+        {
+            if (Character.HeadCov3Toggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.HeadCoverings_No_Hair));
+            }
+        }
+
+        public void HeadCov3Toggle(bool value)
+        {
+            if (!Character.HeadAllElementsToggle)
+            {
+                Character.HeadCov3Toggle = value;
+                ActivateItem(value ? Character.ChangeEnable(BodyItems.HeadCoverings_No_Hair) : Character.ChangeDisable(BodyItems.HeadCoverings_No_Hair));
+            }
+        }
+
+        public void ChestNext()
+        {
+            if (Character.ChestToggle)
+            {
+                //ActivateItem(Character.ChangeNext(BodyItems.Chest_Attachment));
+            }
+        }
+
+        public void ChestPrevios()
+        {
+            if (Character.ChestToggle)
+            {
+                //ActivateItem(Character.ChangePrevious(BodyItems.Chest_Attachment));
+            }
+        }
+
+        public void ChestToggle(bool value)
+        {
+            Character.ChestToggle = value;
+            //ActivateItem(value ? Character.ChangeEnable(BodyItems.Chest_Attachment) : Character.ChangeDisable(BodyItems.Chest_Attachment));
+        }
+
+        public void SholderRNext()
+        {
+            if (Character.SholderRToggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.Shoulder_Attachment_Right));
+            }
+        }
+
+        public void SholderRPrevios()
+        {
+            if (Character.SholderRToggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.Shoulder_Attachment_Right));
+            }
+        }
+
+        public void SholderRToggle(bool value)
+        {
+            Character.SholderRToggle = value;
+            ActivateItem(value ? Character.ChangeEnable(BodyItems.Shoulder_Attachment_Right) : Character.ChangeDisable(BodyItems.Shoulder_Attachment_Right));
+        }
+
+        public void SholderLNext()
+        {
+            if (Character.SholderLToggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.Shoulder_Attachment_Left));
+            }
+        }
+
+        public void SholderLPrevios()
+        {
+            if (Character.SholderLToggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.Shoulder_Attachment_Left));
+            }
+        }
+
+        public void SholderLToggle(bool value)
+        {
+            Character.SholderLToggle = value;
+            ActivateItem(value ? Character.ChangeEnable(BodyItems.Shoulder_Attachment_Left) : Character.ChangeDisable(BodyItems.Shoulder_Attachment_Left));
+        }
+
+        public void ElbowRNext()
+        {
+            if (Character.ElbowRToggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.Elbow_Attachment_Right));
+            }
+        }
+
+        public void ElbowRPrevios()
+        {
+            if (Character.ElbowRToggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.Elbow_Attachment_Right));
+            }
+        }
+
+        public void ElbowRToggle(bool value)
+        {
+            Character.ElbowRToggle = value;
+            ActivateItem(value ? Character.ChangeEnable(BodyItems.Elbow_Attachment_Right) : Character.ChangeDisable(BodyItems.Elbow_Attachment_Right));
+        }
+
+        public void ElbowLNext()
+        {
+            if (Character.ElbowLToggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.Elbow_Attachment_Left));
+            }
+        }
+
+        public void ElbowLPrevios()
+        {
+            if (Character.ElbowLToggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.Elbow_Attachment_Left));
+            }
+        }
+
+        public void ElbowLToggle(bool value)
+        {
+            Character.ElbowLToggle = value;
+            ActivateItem(value ? Character.ChangeEnable(BodyItems.Elbow_Attachment_Left) : Character.ChangeDisable(BodyItems.Elbow_Attachment_Left));
+        }
+
+        public void KneeRNext()
+        {
+            if (Character.KneeRToggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.Knee_Attachement_Right));
+            }
+        }
+
+        public void KneeRPrevios()
+        {
+            if (Character.KneeRToggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.Knee_Attachement_Right));
+            }
+        }
+
+        public void KneeRToggle(bool value)
+        {
+            Character.KneeRToggle = value;
+            ActivateItem(value ? Character.ChangeEnable(BodyItems.Knee_Attachement_Right) : Character.ChangeDisable(BodyItems.Knee_Attachement_Right));
+        }
+
+        public void KneeLNext()
+        {
+            if (Character.KneeLToggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.Knee_Attachement_Left));
+            }
+        }
+
+        public void KneeLPrevios()
+        {
+            if (Character.KneeLToggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.Knee_Attachement_Left));
+            }
+        }
+
+        public void KneeLToggle(bool value)
+        {
+            Character.KneeLToggle = value;
+            ActivateItem(value ? Character.ChangeEnable(BodyItems.Knee_Attachement_Left) : Character.ChangeDisable(BodyItems.Knee_Attachement_Left));
+        }
+
+        public void HipsANext()
+        {
+            if (Character.HipsAToggle)
+            {
+                ActivateItem(Character.ChangeNext(BodyItems.Hips_Attachment));
+            }
+        }
+
+        public void HipsAPrevios()
+        {
+            if (Character.HipsAToggle)
+            {
+                ActivateItem(Character.ChangePrevious(BodyItems.Hips_Attachment));
+            }
+        }
+
+        public void HipsAToggle(bool value)
+        {
+            Character.HipsAToggle = value;
+            ActivateItem(value ? Character.ChangeEnable(BodyItems.Hips_Attachment) : Character.ChangeDisable(BodyItems.Hips_Attachment));
+        }
+
+        public void Previos()
+        {
+            if (PrevCharacters.Count > 0)
+            {
+                ActivateItem(Character.ClearAllCharacter());
+
+                NextCharacters.Push(Character);
+
+                Character = PrevCharacters.Pop();
+
+                ActivateItem(Character.ReadAllCharacter());
+            }
+        }
+
+        public void Next()
+        {
+            if (NextCharacters.Count > 0)
+            {
+                ActivateItem(Character.ClearAllCharacter());
+
+                PrevCharacters.Push(Character);
+
+                Character = NextCharacters.Pop();
+
+                ActivateItem(Character.ReadAllCharacter());
+            }
+        }
+
+
 
         // randomize character creating button
         void OnGUI()
@@ -119,23 +1320,13 @@ namespace PsychoticLab
             enabledObjects.Clear();
 
             // set default male character
-            ActivateItem(male.headAllElements[0]);
-            ActivateItem(male.eyebrow[0]);
-            ActivateItem(male.facialHair[0]);
-            ActivateItem(male.torso[0]);
-            ActivateItem(male.arm_Upper_Right[0]);
-            ActivateItem(male.arm_Upper_Left[0]);
-            ActivateItem(male.arm_Lower_Right[0]);
-            ActivateItem(male.arm_Lower_Left[0]);
-            ActivateItem(male.hand_Right[0]);
-            ActivateItem(male.hand_Left[0]);
-            ActivateItem(male.hips[0]);
-            ActivateItem(male.leg_Right[0]);
-            ActivateItem(male.leg_Left[0]);
-
+            //ActivateItem(Character.ClearAllCharacter());
+            Character = new Character(male, female, allGender);
+            ActivateItem(Character.ReadAllCharacter());
+                        
             // setting up the camera position, rotation, and reference for use
             Transform cam = Camera.main.transform;
-            if(cam)
+            if (cam)
             {
                 cam.position = transform.position + new Vector3(0, 0.3f, 2);
                 cam.rotation = Quaternion.Euler(0, -180, 0);
@@ -158,15 +1349,15 @@ namespace PsychoticLab
                 {
                     x += 1 * Input.GetAxis("Mouse X");
                     y -= 1 * Input.GetAxis("Mouse Y");
-                    Cursor.lockState = CursorLockMode.Locked;
-                    Cursor.visible = false;
+                    UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+                    UnityEngine.Cursor.visible = false;
                 }
                 else
                 {
                     x -= 1 * Input.GetAxis("Horizontal");
                     y -= 1 * Input.GetAxis("Vertical");
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
+                    UnityEngine.Cursor.lockState = CursorLockMode.None;
+                    UnityEngine.Cursor.visible = true;
                 }
             }
         }
@@ -184,33 +1375,44 @@ namespace PsychoticLab
         // character randomization method
         void Randomize()
         {
+            if (Randomizer)
+            {
+                RandomCharacter();
+            }
+        }
+
+
+        public void RandomCharacter()
+        {
+            PrevCharacters.Push(Character);
+            // disable any enabled objects before clear
+            ActivateItem(Character.ClearAllCharacter());
+
+            Character = new Character(male, female, allGender);
             // initialize settings
-            Gender gender = Gender.Male;
-            Race race = Race.Human;
+            ActivateItem(Character.ChangeGender(Gender.Male));
+            ActivateItem(Character.ChangeRace(Race.Human));
+            //ElfToggle(false);
             SkinColor skinColor = SkinColor.White;
             Elements elements = Elements.Yes;
-            HeadCovering headCovering = HeadCovering.HeadCoverings_Base_Hair;
+            BodyItems headCovering = BodyItems.HeadCoverings_Base_Hair;
             FacialHair facialHair = FacialHair.Yes;
 
-            // disable any enabled objects before clear
-            if (enabledObjects.Count != 0)
-            {
-                foreach (GameObject g in enabledObjects)
-                {
-                    g.SetActive(false);
-                }
-            }
-
-            // clear enabled objects list (all objects now disabled)
-            enabledObjects.Clear();
 
             // roll for gender
             if (!GetPercent(50))
-                gender = Gender.Female;
+                ActivateItem(Character.ChangeGender(Gender.Female));
 
             // roll for human (70% chance, 30% chance for elf)
             if (!GetPercent(70))
-                race = Race.Elf;
+            {
+                ElfToggle(true);
+                ActivateItem(Character.ChangeRace(Race.Elf));
+            }
+            else
+            {
+                ElfToggle(false);
+            }
 
             // roll for facial elements (beard, eyebrows)
             if (!GetPercent(50))
@@ -220,16 +1422,16 @@ namespace PsychoticLab
             int headCoveringRoll = Random.Range(0, 100);
             // HeadCoverings_Base_Hair
             if (headCoveringRoll <= 33)
-                headCovering = HeadCovering.HeadCoverings_Base_Hair;
+                headCovering = BodyItems.HeadCoverings_Base_Hair;
             // HeadCoverings_No_FacialHair
             if (headCoveringRoll > 33 && headCoveringRoll < 66)
-                headCovering = HeadCovering.HeadCoverings_No_FacialHair;
+                headCovering = BodyItems.HeadCoverings_No_FacialHair;
             // HeadCoverings_No_Hair
             if (headCoveringRoll >= 66)
-                headCovering = HeadCovering.HeadCoverings_No_Hair;
+                headCovering = BodyItems.HeadCoverings_No_Hair;
 
             // select skin color if human, otherwise set skin color to elf
-            switch (race)
+            switch (Character.Race)
             {
                 case Race.Human:
                     // select human skin 33% chance for each
@@ -251,7 +1453,7 @@ namespace PsychoticLab
             }
 
             //roll for gender
-            switch (gender)
+            switch (Character.Gander)
             {
                 case Gender.Male:
                     // roll for facial hair if male
@@ -259,7 +1461,7 @@ namespace PsychoticLab
                         facialHair = FacialHair.No;
 
                     // initialize randomization
-                    RandomizeByVariable(male, gender, elements, race, facialHair, skinColor, headCovering);
+                    RandomizeByVariable(male, Character.Gander, elements, Character.Race, facialHair, skinColor, headCovering);
                     break;
 
                 case Gender.Female:
@@ -268,57 +1470,70 @@ namespace PsychoticLab
                     facialHair = FacialHair.No;
 
                     // initialize randomization
-                    RandomizeByVariable(female, gender, elements, race, facialHair, skinColor, headCovering);
+                    RandomizeByVariable(female, Character.Gander, elements, Character.Race, facialHair, skinColor, headCovering);
                     break;
             }
+
         }
 
         // randomization method based on previously selected variables
-        void RandomizeByVariable(CharacterObjectGroups cog, Gender gender, Elements elements, Race race, FacialHair facialHair, SkinColor skinColor, HeadCovering headCovering)
+        void RandomizeByVariable(CharacterObjectGroups cog, Gender gender, Elements elements, Race race, FacialHair facialHair, SkinColor skinColor, BodyItems headCovering)
         {
+            Character.HairToggle = false;
+            Character.FacialHairToggle = false;
+            
             // if facial elements are enabled
             switch (elements)
             {
                 case Elements.Yes:
                     //select head with all elements
-                    if (cog.headAllElements.Count != 0)
-                        ActivateItem(cog.headAllElements[Random.Range(0, cog.headAllElements.Count)]);
+                    if (Character.GenderDict[Character.Gander][BodyItems.HeadAllElements].Count != 0)
+                    {
+                        ActivateItem(Character.ChangeForIndex(BodyItems.HeadAllElements, Random.Range(0, Character.GenderDict[Character.Gander][BodyItems.HeadAllElements].Count)));
+
+                    }
 
                     //select eyebrows
-                    if (cog.eyebrow.Count != 0)
-                        ActivateItem(cog.eyebrow[Random.Range(0, cog.eyebrow.Count)]);
+                    if (Character.GenderDict[Character.Gander][BodyItems.EyeBrow].Count != 0)
+                        ActivateItem(Character.ChangeForIndex(BodyItems.EyeBrow, Random.Range(0, Character.GenderDict[Character.Gander][BodyItems.EyeBrow].Count)));
 
                     //select facial hair (conditional)
-                    if (cog.facialHair.Count != 0 && facialHair == FacialHair.Yes && gender == Gender.Male && headCovering != HeadCovering.HeadCoverings_No_FacialHair)
-                        ActivateItem(cog.facialHair[Random.Range(0, cog.facialHair.Count)]);
+                    if (Character.GenderDict[Character.Gander][BodyItems.FacialHair].Count != 0 && facialHair == FacialHair.Yes && gender == Gender.Male && headCovering != BodyItems.HeadCoverings_No_FacialHair)
+                    {
+                        ActivateItem(Character.ChangeForIndex(BodyItems.FacialHair, Random.Range(0, Character.GenderDict[Character.Gander][BodyItems.FacialHair].Count)));
+                        Character.FacialHairToggle = true;
+                    }
+                        
 
                     // select hair attachment
                     switch (headCovering)
                     {
-                        case HeadCovering.HeadCoverings_Base_Hair:
+                        case BodyItems.HeadCoverings_Base_Hair:
                             // set hair attachment to index 1
-                            if (allGender.all_Hair.Count != 0)
-                                ActivateItem(allGender.all_Hair[1]);
-                            if (allGender.headCoverings_Base_Hair.Count != 0)
-                                ActivateItem(allGender.headCoverings_Base_Hair[Random.Range(0, allGender.headCoverings_Base_Hair.Count)]);
+                            if (Character.NoGenderDict[BodyItems.Hair].Count != 0)
+                                ActivateItem(Character.ChangeForIndex(BodyItems.Hair, Random.Range(0, Character.NoGenderDict[BodyItems.Hair].Count)));
+                            if (Character.NoGenderDict[BodyItems.HeadCoverings_Base_Hair].Count != 0)
+                                ActivateItem(Character.ChangeForIndex(BodyItems.HeadCoverings_Base_Hair, Random.Range(0, Character.NoGenderDict[BodyItems.HeadCoverings_Base_Hair].Count)));
+                            Character.HairToggle = true;
                             break;
-                        case HeadCovering.HeadCoverings_No_FacialHair:
+                        case BodyItems.HeadCoverings_No_FacialHair:
                             // no facial hair attachment
-                            if (allGender.all_Hair.Count != 0)
-                                ActivateItem(allGender.all_Hair[Random.Range(0, allGender.all_Hair.Count)]);
-                            if (allGender.headCoverings_No_FacialHair.Count != 0)
-                                ActivateItem(allGender.headCoverings_No_FacialHair[Random.Range(0, allGender.headCoverings_No_FacialHair.Count)]);
+                            if (Character.NoGenderDict[BodyItems.Hair].Count != 0)
+                                ActivateItem(Character.ChangeForIndex(BodyItems.Hair, Random.Range(0, Character.NoGenderDict[BodyItems.Hair].Count)));
+                            if (Character.NoGenderDict[BodyItems.HeadCoverings_No_FacialHair].Count != 0)
+                                ActivateItem(Character.ChangeForIndex(BodyItems.HeadCoverings_No_FacialHair, Random.Range(0, Character.NoGenderDict[BodyItems.HeadCoverings_No_FacialHair].Count)));
+                            Character.HairToggle = true;
                             break;
-                        case HeadCovering.HeadCoverings_No_Hair:
+                        case BodyItems.HeadCoverings_No_Hair:
                             // select hair attachment
-                            if (allGender.headCoverings_No_Hair.Count != 0)
-                                ActivateItem(allGender.all_Hair[Random.Range(0, allGender.all_Hair.Count)]);
+                            if (Character.NoGenderDict[BodyItems.HeadCoverings_No_Hair].Count != 0)
+                                ActivateItem(Character.ChangeForIndex(BodyItems.HeadCoverings_No_Hair, Random.Range(0, Character.NoGenderDict[BodyItems.HeadCoverings_No_Hair].Count)));
                             // if not human
                             if (race != Race.Human)
                             {
                                 // select elf ear attachment
-                                if (allGender.elf_Ear.Count != 0)
-                                    ActivateItem(allGender.elf_Ear[Random.Range(0, allGender.elf_Ear.Count)]);
+                                if (Character.NoGenderDict[BodyItems.Ear].Count != 0)
+                                    ActivateItem(Character.ChangeForIndex(BodyItems.Ear, Random.Range(0, Character.NoGenderDict[BodyItems.Ear].Count)));
                             }
                             break;
                     }
@@ -326,58 +1541,58 @@ namespace PsychoticLab
 
                 case Elements.No:
                     //select head with no elements
-                    if (cog.headNoElements.Count != 0)
-                        ActivateItem(cog.headNoElements[Random.Range(0, cog.headNoElements.Count)]);
+                    if (Character.GenderDict[Character.Gander][BodyItems.HeadNoElements].Count != 0)
+                        ActivateItem(Character.ChangeForIndex(BodyItems.HeadNoElements, Random.Range(0, Character.GenderDict[Character.Gander][BodyItems.HeadNoElements].Count)));
                     break;
             }
 
             // select torso starting at index 1
-            if (cog.torso.Count != 0)
-                ActivateItem(cog.torso[Random.Range(1, cog.torso.Count)]);
+            if (Character.GenderDict[Character.Gander][BodyItems.Torso].Count != 0)
+                ActivateItem(Character.ChangeForIndex(BodyItems.Torso, Random.Range(1, Character.GenderDict[Character.Gander][BodyItems.Torso].Count)));
 
             // determine chance for upper arms to be different and activate
-            if (cog.arm_Upper_Right.Count != 0)
-                RandomizeLeftRight(cog.arm_Upper_Right, cog.arm_Upper_Left, 15);
+            if (Character.GenderDict[Character.Gander][BodyItems.ArmUpper_Right].Count != 0)
+                RandomizeLeftRight(BodyItems.ArmUpper_Right, BodyItems.ArmUpper_Left, 15);
 
             // determine chance for lower arms to be different and activate
-            if (cog.arm_Lower_Right.Count != 0)
-                RandomizeLeftRight(cog.arm_Lower_Right, cog.arm_Lower_Left, 15);
+            if (Character.GenderDict[Character.Gander][BodyItems.ArmLower_Right].Count != 0)
+                RandomizeLeftRight(BodyItems.ArmLower_Right, BodyItems.ArmLower_Left, 15);
 
             // determine chance for hands to be different and activate
-            if (cog.hand_Right.Count != 0)
-                RandomizeLeftRight(cog.hand_Right, cog.hand_Left, 15);
+            if (Character.GenderDict[Character.Gander][BodyItems.Hand_Right].Count != 0)
+                RandomizeLeftRight(BodyItems.Hand_Right, BodyItems.Hand_Left, 15);
 
             // select hips starting at index 1
-            if (cog.hips.Count != 0)
-                ActivateItem(cog.hips[Random.Range(1, cog.hips.Count)]);
+            if (Character.GenderDict[Character.Gander][BodyItems.Hips].Count != 0)
+                ActivateItem(Character.ChangeForIndex(BodyItems.Hips, Random.Range(1, Character.GenderDict[Character.Gander][BodyItems.Hips].Count)));
 
             // determine chance for legs to be different and activate
-            if (cog.leg_Right.Count != 0)
-                RandomizeLeftRight(cog.leg_Right, cog.leg_Left, 15);
+            if (Character.GenderDict[Character.Gander][BodyItems.Leg_Right].Count != 0)
+                RandomizeLeftRight(BodyItems.Leg_Right, BodyItems.Leg_Left, 15);
 
             // select chest attachment
-            if (allGender.chest_Attachment.Count != 0)
-                ActivateItem(allGender.chest_Attachment[Random.Range(0, allGender.chest_Attachment.Count)]);
+            if (Character.NoGenderDict[BodyItems.Chest_Attachment].Count != 0)
+                ActivateItem(Character.ChangeForIndex(BodyItems.Chest_Attachment, Random.Range(0, Character.NoGenderDict[BodyItems.Chest_Attachment].Count)));
 
             // select back attachment
-            if (allGender.back_Attachment.Count != 0)
-                ActivateItem(allGender.back_Attachment[Random.Range(0, allGender.back_Attachment.Count)]);
+            if (Character.NoGenderDict[BodyItems.Back_Attachment].Count != 0)
+                ActivateItem(Character.ChangeForIndex(BodyItems.Back_Attachment, Random.Range(0, Character.NoGenderDict[BodyItems.Back_Attachment].Count)));
 
             // determine chance for shoulder attachments to be different and activate
-            if (allGender.shoulder_Attachment_Right.Count != 0)
-                RandomizeLeftRight(allGender.shoulder_Attachment_Right, allGender.shoulder_Attachment_Left, 10);
+            if (Character.NoGenderDict[BodyItems.Shoulder_Attachment_Right].Count != 0)
+                RandomizeLeftRight(BodyItems.Shoulder_Attachment_Right, BodyItems.Shoulder_Attachment_Left, 10);
 
             // determine chance for elbow attachments to be different and activate
-            if (allGender.elbow_Attachment_Right.Count != 0)
-                RandomizeLeftRight(allGender.elbow_Attachment_Right, allGender.elbow_Attachment_Left, 10);
+            if (Character.NoGenderDict[BodyItems.Elbow_Attachment_Right].Count != 0)
+                RandomizeLeftRight(BodyItems.Elbow_Attachment_Right, BodyItems.Elbow_Attachment_Left, 10);
 
             // select hip attachment
-            if (allGender.hips_Attachment.Count != 0)
-                ActivateItem(allGender.hips_Attachment[Random.Range(0, allGender.hips_Attachment.Count)]);
+            if (Character.NoGenderDict[BodyItems.Hips_Attachment].Count != 0)
+                ActivateItem(Character.ChangeForIndex(BodyItems.Hips_Attachment, Random.Range(0, Character.NoGenderDict[BodyItems.Hips_Attachment].Count)));
 
             // determine chance for knee attachments to be different and activate
-            if (allGender.knee_Attachement_Right.Count != 0)
-                RandomizeLeftRight(allGender.knee_Attachement_Right, allGender.knee_Attachement_Left, 10);
+            if (Character.NoGenderDict[BodyItems.Knee_Attachement_Right].Count != 0)
+                RandomizeLeftRight(BodyItems.Knee_Attachement_Right, BodyItems.Knee_Attachement_Left, 10);
 
             // start randomization of the random characters colors
             RandomizeColors(skinColor);
@@ -486,32 +1701,72 @@ namespace PsychoticLab
         }
 
         // method for handling the chance of left/right items to be differnt (such as shoulders, hands, legs, arms)
-        void RandomizeLeftRight(List<GameObject> objectListRight, List<GameObject> objectListLeft, int rndPercent)
+        void RandomizeLeftRight(BodyItems objectRight, BodyItems objectLeft, int rndPercent)
         {
             // rndPercent = chance for left item to be different
 
             // stored right index
-            int index = Random.Range(0, objectListRight.Count);
+            
+            int index = Random.Range(0, Character.GenderHash.Contains(objectRight) 
+                        ? Character.GenderDict[Character.Gander][objectRight].Count
+                        : Character.NoGenderDict[objectRight].Count);
 
             // enable item from list using index
-            ActivateItem(objectListRight[index]);
+            ActivateItem(Character.ChangeForIndex(objectRight, index));
 
             // roll for left item mismatch, if true randomize index based on left item list
             if (GetPercent(rndPercent))
-                index = Random.Range(0, objectListLeft.Count);
+                index = Random.Range(0, Character.GenderHash.Contains(objectLeft)
+                                ? Character.GenderDict[Character.Gander][objectLeft].Count
+                                : Character.NoGenderDict[objectLeft].Count);
 
             // enable left item from list using index
-            ActivateItem(objectListLeft[index]);
+            ActivateItem(Character.ChangeForIndex(objectLeft, index));
         }
 
         // enable game object and add it to the enabled objects list
-        void ActivateItem(GameObject go)
+        void ActivateItem(GameObject firstObj)
         {
             // enable item
-            go.SetActive(true);
+            firstObj.SetActive(true);
 
             // add item to the enabled items list
-            enabledObjects.Add(go);
+            enabledObjects.Add(firstObj);
+        }
+
+        void ActivateItem(List<Tuple<ActForItem, List<Item>>> _objList)
+        {
+            foreach(var _act in _objList)
+            {
+                if(_act.Item1 == ActForItem.Add)
+                {
+                    foreach(Item _item in _act.Item2)
+                    {
+                        // enable item
+                        if (_item.Object != null)
+                        {
+                            while (_item.Object.activeSelf == !_item.Visible)
+                            {
+                                _item.Object.SetActive(_item.Visible);
+                            }
+                        }
+                    }
+                }
+                if (_act.Item1 == ActForItem.Remove)
+                {
+                    foreach(Item _item in _act.Item2)
+                    {
+                        // disable item
+                        if (_item.Object != null)
+                        {
+                            while (_item.Object.activeSelf)
+                            {
+                                _item.Object.SetActive(false);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         Color ConvertColor(int r, int g, int b)
