@@ -108,7 +108,7 @@ namespace BeastHunter
                 Debug.LogError($"{DateTime.Now.ToShortTimeString()}    dialogueCache error     {e}\n");
                 throw;
             }
-            
+
         }
 
         public static DataTable GetDialogueNodesCache()
@@ -180,14 +180,14 @@ namespace BeastHunter
                         return null; // throw new Exception($"Quest with Id[{id}] not found!");
                     }
 
-                     dtQ = generateddtQ;
-                     dtLoc = generateddtLoc;
-                     dtObj = generateddtObj;
-                     dtPoi = generateddtPoi;
-                     dtReq = generateddtReq;
-                     dtRew = generateddtRew;
+                    dtQ = generateddtQ;
+                    dtLoc = generateddtLoc;
+                    dtObj = generateddtObj;
+                    dtPoi = generateddtPoi;
+                    dtReq = generateddtReq;
+                    dtRew = generateddtRew;
                 }
-              
+
                 var questDto = new QuestDto
                 {
                     Id = id,
@@ -237,7 +237,7 @@ namespace BeastHunter
                     var tid = row.GetInt(QUEST_OBJECTIVES_ID);
                     var taskTitleQuery = $"select Title from '{GetQuestObjectivesLocaleTable()}' where ObjectiveId={tid} limit 1;";
                     var tmp = DatabaseWrapper.ExecuteQueryWithAnswer(taskTitleQuery);
-                    if(tmp == null)
+                    if (tmp == null)
                     {
                         tmp = ProgressDatabaseWrapper.ExecuteQueryWithAnswer(taskTitleQuery);
                     }
@@ -246,11 +246,11 @@ namespace BeastHunter
                         Id = row.GetInt(QUEST_OBJECTIVES_ID),
                         TargetId = row.GetInt(QUEST_OBJECTIVES_TARGETID),
                         NeededAmount = row.GetInt(QUEST_OBJECTIVES_AMOUNT),
-                        Type = (QuestTaskTypes) row.GetInt(QUEST_OBJECTIVES_TYPE),
+                        Type = (QuestTaskTypes)row.GetInt(QUEST_OBJECTIVES_TYPE),
                         Description = tmp,
                         IsOptional = row.GetInt(QUEST_OBJECTIVES_ISOPTIONAL) == 1
                     };
-					questDto.Tasks.Add(task);
+                    questDto.Tasks.Add(task);
                 }
 
                 foreach (DataRow row in dtRew.Rows)
@@ -258,8 +258,8 @@ namespace BeastHunter
                     {
                         ObjectId = row.GetInt(QUEST_REWARDS_REWARDOBJECTID),
                         ObjectCount = row.GetInt(QUEST_REWARDS_REWARDOBJECTCOUNT),
-                        ObjectType = (QuestRewardObjectTypes) row.GetInt(QUEST_REWARDS_REWARDOBJECTTYPE),
-                        Type = (QuestRewardTypes) row.GetInt(QUEST_REWARDS_REWARDTYPE)
+                        ObjectType = (QuestRewardObjectTypes)row.GetInt(QUEST_REWARDS_REWARDOBJECTTYPE),
+                        Type = (QuestRewardTypes)row.GetInt(QUEST_REWARDS_REWARDTYPE)
                     });
 
                 _cache.Add(id, questDto);
@@ -329,14 +329,14 @@ namespace BeastHunter
             //    {
             //        break;
             //    }
-                _dialogueNodesCache.Rows.Add(newNodeRow);
+            _dialogueNodesCache.Rows.Add(newNodeRow);
             //}
-            
 
-            for (int i=0;i<2;i++)
+
+            for (int i = 0; i < 2; i++)
             {
                 var newRow = _dialogueAnswersCache.NewRow();
-                newRow[0] = i == 0 ? newQuest.StartDialogId : newQuest.EndDialogId; 
+                newRow[0] = i == 0 ? newQuest.StartDialogId : newQuest.EndDialogId;
                 newRow[1] = 0;
                 newRow[2] = i == 0 ? "start gen quest" : "end gen quest";
                 newRow[3] = 0;
@@ -362,15 +362,17 @@ namespace BeastHunter
                 }
 
             }
-           for(int i=0;i<newQuest.Tasks.Count;i++)
+            for (int i = 0; i < newQuest.Tasks.Count; i++)
             {
+                System.Random rnd = new System.Random();
+                var randomeNpc = rnd.Next(1, 7);
                 var newRow = _dialogueAnswersCache.NewRow();
                 newRow[0] = newQuest.Tasks[i].TargetId;
                 newRow[1] = 0;
                 newRow[2] = $"gen quest task - {newQuest.Tasks[i].Id}";
                 newRow[3] = 0;
                 newRow[4] = 1;
-                newRow[5] = 666;//npc id
+                newRow[5] = randomeNpc;//666;//npc id
                 newRow[6] = 0;
                 newRow[7] = 0;
                 newRow[8] = newQuest.Id;
@@ -395,14 +397,14 @@ namespace BeastHunter
                 newTaskRow[0] = newQuest.Tasks[i].Id;
                 newTaskRow[1] = newQuest.Id;
                 newTaskRow[2] = newQuest.Tasks[i].TargetId;
-                newTaskRow[3] = 666;//npc id
+                newTaskRow[3] = randomeNpc;//666;//npc id
 
                 var taskFlag = true;
-                for (int j=0;j<_questTaskCache.Rows.Count;j++)
+                for (int j = 0; j < _questTaskCache.Rows.Count; j++)
                 {
                     var a = _questTaskCache.Rows[j].GetInt(0);
                     var b = newTaskRow[0];
-                    if (_questTaskCache.Rows[j].GetInt(0)== Convert.ToInt32(newTaskRow[0]))
+                    if (_questTaskCache.Rows[j].GetInt(0) == Convert.ToInt32(newTaskRow[0]))
                     {
                         taskFlag = false;
                         break;
@@ -413,7 +415,7 @@ namespace BeastHunter
                     _questTaskCache.Rows.Add(newTaskRow);
                 }
             }
-           
+
         }
 
         public static Locale GetCurrentLocale()

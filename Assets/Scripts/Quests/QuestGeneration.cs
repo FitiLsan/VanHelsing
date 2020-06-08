@@ -1,23 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+
 
 namespace BeastHunter
 {
-    public class QuestGeneration
+    public sealed class QuestGeneration
     {
-        //public static (int, int) lastGeneratedId;
-        public static int lastGeneratedQuestId;//= lastGeneratedId.Item1;
-        private static int lastGeneratedObjectiveId;// = lastGeneratedId.Item2;
+        public static int lastGeneratedQuestId;
+        private static int lastGeneratedObjectiveId;
         public static int lastGeneratedAnswerId;
         public static int lastGeneratedNodeId;
         public static QuestDto TempGenerationQuest;
 
         public static QuestDto QuestGenerate()
         {
+            Random rnd = new Random();
+            
             if (TempGenerationQuest == null)
             {
                 var newQuest = new QuestDto
                 {
-                    Id = ++lastGeneratedQuestId, //
+                    Id = ++lastGeneratedQuestId,
                     Title = $"test Generate Quest {lastGeneratedQuestId}",
                     Description = "generating bla bla bla",
                     ZoneId = 1,
@@ -26,16 +29,15 @@ namespace BeastHunter
                     TimeAllowed = -1,
                     RewardExp = 0,
                     RewardMoney = 0,
-                    StartDialogId = ++lastGeneratedAnswerId, //?
-                    EndDialogId = ++lastGeneratedAnswerId, //?
+                    StartDialogId = ++lastGeneratedAnswerId, 
+                    EndDialogId = ++lastGeneratedAnswerId, 
                     IsRepetable = 0,
-                    Tasks = QuestTasksGenerate(3)
+                    Tasks = QuestTasksGenerate(rnd.Next(1, 4))
 
                 };
                 if (QuestRepository.GetById(newQuest.Id) == null)
                 {     
                     TempGenerationQuest = newQuest;
-                   // QuestRepository.AddRowToDialogueCaches(newQuest);
                     Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.SaveGeneratedQuest, new QuestArgs(TempGenerationQuest));
                 }
             }
@@ -50,11 +52,11 @@ namespace BeastHunter
             {
                 var newTask = new QuestTaskDto
                 {
-                    Id = ++lastGeneratedObjectiveId, //need use last generate ID +1
+                    Id = ++lastGeneratedObjectiveId,
                     Description = $"new task #{lastGeneratedObjectiveId}",
                     NeededAmount = 1,
                     IsOptional = false,
-                    TargetId = ++lastGeneratedAnswerId, // need unic
+                    TargetId = ++lastGeneratedAnswerId,
                     Type = QuestTaskTypes.AnswerSelect
                 };
                 taskList.Add(newTask);
@@ -63,7 +65,7 @@ namespace BeastHunter
         }
         public static QuestDto GetTempQuest()
         {
-                return TempGenerationQuest; //?? QuestGenerate();
+                return TempGenerationQuest;
         }
         public static void ClearTempQuest()
         {

@@ -100,8 +100,8 @@ namespace BeastHunter
             {
 
                 bool tempBool = objectivesRow[i].GetInt("IsOptional") == 1 ? true : false;
-                var tempTypeNum = objectivesRow[i].GetString("Type");//=========================================
-                var type = _saveData.Tables[SaveTables.quest_task_types.ToString()].Rows[objectivesRow[i].GetInt("Type")].GetString("type");//
+                var tempTypeNum = objectivesRow[i].GetString("Type");
+                var type = _saveData.Tables[SaveTables.quest_task_types.ToString()].Rows[objectivesRow[i].GetInt("Type")].GetString("type");
                 res.Add(objectivesRow[i].GetInt("Id"), new QuestTask(new QuestTaskDto
                 {
                     Id = objectivesRow[i].GetInt("Id"),
@@ -184,7 +184,6 @@ namespace BeastHunter
             var strBuilder = new StringBuilder();
             strBuilder.Append("BEGIN TRANSACTION; ");
 
-            //var questStartType = (int)quest.StartQuestEventType;
             strBuilder.Append($"insert into 'quest' (Id, MinLevel, QuestLevel, TimeAllowed, ZoneId, RewardExp," +
                    $" RewardMoney, StartDialogId, EndDialogId, StartQuestEventType, EndQuestEventType, Repeatable) " +
                    $"values ({quest.Id}, {quest.MinLevel}, {quest.QuestLevel}, {quest.TimeAllowed}, {quest.ZoneId}, {quest.RewardExp}, " +
