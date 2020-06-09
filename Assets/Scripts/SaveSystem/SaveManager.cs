@@ -122,6 +122,10 @@ namespace BeastHunter
             return IdActiveQuests.Keys.ToList();
         }
 
+        public void SetQuestIsNotComplete(int id)
+        {
+            
+        }
         #endregion
     }
 }
