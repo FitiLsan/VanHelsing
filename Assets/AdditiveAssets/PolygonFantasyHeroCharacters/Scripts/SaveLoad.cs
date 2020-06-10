@@ -1,5 +1,4 @@
-﻿using PsychoticLab;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,39 +7,46 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace Assets.AdditiveAssets.PolygonFantasyHeroCharacters.Scripts
+
+namespace BeastHunter
 {
     public static class SaveLoadDialog
     {
-        public static void SaveCharacter(SaveCharacter _character, string namefile)
+        #region Methods
+        public static void SaveCharacter(CharacterSave _character, string namefile)
         {
             Save_Load.SaveAsXmlFormat(_character, Environment.CurrentDirectory + "\\" + namefile);            
         }
 
-        public static SaveCharacter LoadCharacter(string namefile)
+        public static CharacterSave LoadCharacter(string namefile)
         {
             return Save_Load.LoadFromXmlFormat(Environment.CurrentDirectory + "\\" + namefile);
         }
+        #endregion
     }
 
     class Save_Load
     {
-        public static void SaveAsXmlFormat(SaveCharacter obj, string fileName)
+        #region Methods
+
+        public static void SaveAsXmlFormat(CharacterSave obj, string fileName)
         {
-            XmlSerializer xmlFormat = new XmlSerializer(typeof(SaveCharacter));
+            XmlSerializer xmlFormat = new XmlSerializer(typeof(CharacterSave));
             Debug.Log(fileName);
             Stream fStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
             xmlFormat.Serialize(fStream, obj);
             fStream.Close();
         }
 
-        public static SaveCharacter LoadFromXmlFormat(string fileName)
+        public static CharacterSave LoadFromXmlFormat(string fileName)
         {
-            XmlSerializer xmlFormat = new XmlSerializer(typeof(SaveCharacter));
+            XmlSerializer xmlFormat = new XmlSerializer(typeof(CharacterSave));
             Stream fStream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Read);
-            var obj = (xmlFormat.Deserialize(fStream) as SaveCharacter);
+            var obj = (xmlFormat.Deserialize(fStream) as CharacterSave);
             fStream.Close();
             return obj;
         }
+
+        #endregion
     }
 }
