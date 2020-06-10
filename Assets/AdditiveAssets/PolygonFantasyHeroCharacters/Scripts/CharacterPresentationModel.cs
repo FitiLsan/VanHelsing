@@ -438,7 +438,7 @@ namespace BeastHunter
             Body[BodyItems.Hand_Left] = ItemGenderChange(Body[BodyItems.Hand_Left], _gender, GenderDict[Gender.Male][BodyItems.Hand_Left], GenderDict[Gender.Female][BodyItems.Hand_Left]);
             Body[BodyItems.Hips] = ItemGenderChange(Body[BodyItems.Hips], _gender, GenderDict[Gender.Male][BodyItems.Hips], GenderDict[Gender.Female][BodyItems.Hips]);
             Body[BodyItems.Leg_Right] = ItemGenderChange(Body[BodyItems.Leg_Right], _gender, GenderDict[Gender.Male][BodyItems.Leg_Right], GenderDict[Gender.Female][BodyItems.Leg_Right]);
-            Body[BodyItems.Leg_Left] = ItemGenderChange(Body[BodyItems.Leg_Left], _gender, GenderDict[Gender.Male][BodyItems.Hand_Left], GenderDict[Gender.Female][BodyItems.Hand_Left]);
+            Body[BodyItems.Leg_Left] = ItemGenderChange(Body[BodyItems.Leg_Left], _gender, GenderDict[Gender.Male][BodyItems.Leg_Left], GenderDict[Gender.Female][BodyItems.Leg_Left]);
 
             list.Add(Tuple.Create(ActForItem.Add, new List<ItemBody>
                     {
