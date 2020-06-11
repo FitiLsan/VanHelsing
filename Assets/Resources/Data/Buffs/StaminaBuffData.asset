@@ -10,11 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ed80e7e67b6fac44938b9de902b200e, type: 3}
-  m_Name: NewTemporaryBuff
+  m_Name: StaminaBuffData
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
-  Time: 0
+  Name: Temporary stamina buff
+  Description: temporary increaces stamina regen and maximal amount
+  Time: 10
   Type: 0
   Sprite: {fileID: 0}
-  Effects: []
+  Effects:
+  - Buff: 2
+    Value: 10
+  - Buff: 3
+    Value: 0.5

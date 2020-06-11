@@ -509,18 +509,15 @@ namespace BeastHunter
 
             _characterModel.PlayerBehavior.SetLookAtTarget(npcPosition);
             _services.CameraService.SetActiveCamera(_services.CameraService.CharacterDialogCamera);
-            Debug.Log("started talking");
         }
 
         private void ExitTalkingState(bool isStartsTalking)
         {
-            Debug.Log(isStartsTalking + " " + _stateMachine.CurrentState);
             if (!isStartsTalking && _stateMachine.CurrentState == _stateMachine._talkingState)
             {
                 _stateMachine.SetStateAnyway(_stateMachine._defaultIdleState);
                 _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
                 _characterModel.PlayerBehavior.SetLookAtTarget(Vector3.zero);
-                Debug.Log("got here");
             }
         }
 
