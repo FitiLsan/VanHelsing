@@ -7,7 +7,7 @@ public class LocationData : ScriptableObject
 {
     #region Fields
 
-    public List<GameObject> SpawnPoints = new List<GameObject>();
+    public Spawner SpawnPoint;
 
     #endregion
 
