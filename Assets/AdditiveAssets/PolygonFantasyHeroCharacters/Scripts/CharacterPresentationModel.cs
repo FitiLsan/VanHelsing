@@ -240,6 +240,7 @@ namespace BeastHunter
                     break;
                 }
             }
+
             targetList.Clear();
             for (int i = 0; i < targetRoot.childCount; i++)
             {
@@ -249,96 +250,125 @@ namespace BeastHunter
             }
         }
 
-
-
         public List<Tuple<ActForItem, List<ItemBody>>> ReadAllCharacter()
         {
             var list = Body.Select((x, y) => x.Value).ToList();
             var listrRemove = new List<ItemBody>();
-            if (!HairToggle)
+            if (!Body[BodyItems.Hair].Visible)
             {
                 list.Remove(Body[BodyItems.Hair]);
                 listrRemove.Add(Body[BodyItems.Hair]);
             }
 
-            if (!FacialHairToggle)
+            if (!Body[BodyItems.FacialHair].Visible)
             {
                 list.Remove(Body[BodyItems.FacialHair]);
                 listrRemove.Add(Body[BodyItems.FacialHair]);
             }
 
-            if (!HeadAllElementsToggle)
+            if(!Body[BodyItems.HeadAllElements].Visible)
+            {
+                list.Remove(Body[BodyItems.HeadAllElements]);
+                listrRemove.Add(Body[BodyItems.HeadAllElements]);
+            }
+
+            if(!Body[BodyItems.HeadNoElements].Visible)
             {
                 list.Remove(Body[BodyItems.HeadNoElements]);
+                listrRemove.Add(Body[BodyItems.HeadNoElements]);
             }
             else
             {
-                list.Remove(Body[BodyItems.HeadAllElements]);
+                if (Body[BodyItems.HeadNoElements].Position != 0)
+                {
+                    list.Remove(Body[BodyItems.HeadAllElements]);
+                    listrRemove.Add(Body[BodyItems.HeadAllElements]);
+                    list.Remove(Body[BodyItems.FacialHair]);
+                    listrRemove.Add(Body[BodyItems.FacialHair]);
+                    list.Remove(Body[BodyItems.Hair]);
+                    listrRemove.Add(Body[BodyItems.Hair]);
+                    list.Remove(Body[BodyItems.Ear]);
+                    listrRemove.Add(Body[BodyItems.Ear]);
+                    list.Remove(Body[BodyItems.EyeBrow]);
+                    listrRemove.Add(Body[BodyItems.EyeBrow]);
+                }
+                else
+                {
+                    list.Remove(Body[BodyItems.FacialHair]);
+                    listrRemove.Add(Body[BodyItems.FacialHair]);
+                    list.Remove(Body[BodyItems.EyeBrow]);
+                    listrRemove.Add(Body[BodyItems.EyeBrow]);
+                }
             }
 
-            if (!HeadCov1Toggle)
+            if (!Body[BodyItems.HeadCoverings_No_Hair].Visible)
+            {
+                list.Remove(Body[BodyItems.HeadCoverings_No_Hair]);
+                listrRemove.Add(Body[BodyItems.HeadCoverings_No_Hair]);
+            }
+            else
+            {
+                list.Remove(Body[BodyItems.Hair]);
+                listrRemove.Add(Body[BodyItems.Hair]);
+            }
+
+            if (!Body[BodyItems.HeadCoverings_Base_Hair].Visible)
             {
                 list.Remove(Body[BodyItems.HeadCoverings_Base_Hair]);
-                list.Remove(Body[BodyItems.HeadCoverings_No_Hair]);
-                list.Remove(Body[BodyItems.HeadCoverings_No_FacialHair]);
+                listrRemove.Add(Body[BodyItems.HeadCoverings_Base_Hair]);
             }
 
-            if (!HeadCov2Toggle)
+            if (!Body[BodyItems.HeadCoverings_No_FacialHair].Visible)
             {
-                list.Remove(Body[BodyItems.HeadCoverings_Base_Hair]);
-                list.Remove(Body[BodyItems.HeadCoverings_No_Hair]);
                 list.Remove(Body[BodyItems.HeadCoverings_No_FacialHair]);
+                listrRemove.Add(Body[BodyItems.HeadCoverings_No_FacialHair]);
             }
-
-            if (!HeadCov3Toggle)
+            else
             {
-                list.Remove(Body[BodyItems.HeadCoverings_Base_Hair]);
-                list.Remove(Body[BodyItems.HeadCoverings_No_Hair]);
-                list.Remove(Body[BodyItems.HeadCoverings_No_FacialHair]);
+                list.Remove(Body[BodyItems.FacialHair]);
+                listrRemove.Add(Body[BodyItems.FacialHair]);
             }
 
-            list.Remove(Body[BodyItems.HeadCoverings_Base_Hair]);
-            list.Remove(Body[BodyItems.HeadCoverings_No_Hair]);
-            list.Remove(Body[BodyItems.HeadCoverings_No_FacialHair]);
-
-            //if (!ChestToggle)
-            //{
-            //    list.Remove(Body[BodyItems.Chest_Attachment]);
-            //}
-
-            if (!SholderRToggle)
+            if (!Body[BodyItems.Shoulder_Attachment_Right].Visible)
             {
                 list.Remove(Body[BodyItems.Shoulder_Attachment_Right]);
+                listrRemove.Add(Body[BodyItems.Shoulder_Attachment_Right]);
             }
 
-            if (!SholderLToggle)
+            if (!Body[BodyItems.Shoulder_Attachment_Left].Visible)
             {
                 list.Remove(Body[BodyItems.Shoulder_Attachment_Left]);
+                listrRemove.Add(Body[BodyItems.Shoulder_Attachment_Left]);
             }
 
-            if (!ElbowRToggle)
+            if (!Body[BodyItems.Elbow_Attachment_Right].Visible)
             {
                 list.Remove(Body[BodyItems.Elbow_Attachment_Right]);
+                listrRemove.Add(Body[BodyItems.Elbow_Attachment_Right]);
             }
 
-            if (!ElbowLToggle)
+            if (!Body[BodyItems.Elbow_Attachment_Left].Visible)
             {
                 list.Remove(Body[BodyItems.Elbow_Attachment_Left]);
+                listrRemove.Add(Body[BodyItems.Elbow_Attachment_Left]);
             }
 
-            if (!KneeRToggle)
+            if (!Body[BodyItems.Knee_Attachement_Right].Visible)
             {
                 list.Remove(Body[BodyItems.Knee_Attachement_Right]);
+                listrRemove.Add(Body[BodyItems.Knee_Attachement_Right]);
             }
 
-            if (!KneeLToggle)
+            if (!Body[BodyItems.Knee_Attachement_Left].Visible)
             {
                 list.Remove(Body[BodyItems.Knee_Attachement_Left]);
+                listrRemove.Add(Body[BodyItems.Knee_Attachement_Left]);
             }
 
-            if (!HipsAToggle)
+            if (!Body[BodyItems.Hips_Attachment].Visible)
             {
                 list.Remove(Body[BodyItems.Hips_Attachment]);
+                listrRemove.Add(Body[BodyItems.Hips_Attachment]);
             }
 
             LoadColor();
@@ -491,21 +521,18 @@ namespace BeastHunter
             if (GenderHash.Contains(body))
             {
                 if (GenderDict[Gander][body].Count <= index)
-                {
                     index = GenderDict[Gander][body].Count - 1;
-                }
 
                 Body[body].Object = GenderDict[Gander][body][index];
             }
             else
             {
                 if (NoGenderDict[body].Count <= index)
-                {
                     index = NoGenderDict[body].Count - 1;
-                }
-
+                
                 Body[body].Object = NoGenderDict[body][index];
             }
+
             Body[body].Position = index;
             Body[body].Visible = true;
 
@@ -591,11 +618,12 @@ namespace BeastHunter
 
         internal void Load(CharacterSave _loadDate)
         {
-            if (_loadDate.Toggle.Count >= 14)
+            if (_loadDate.Toggle.Count >= 13)
             {
                 HairToggle = _loadDate.Toggle[0];
                 FacialHairToggle = _loadDate.Toggle[1];
                 HeadAllElementsToggle = _loadDate.Toggle[2];
+                Debug.Log(HeadAllElementsToggle);
                 HeadCov1Toggle = _loadDate.Toggle[3];
                 HeadCov2Toggle = _loadDate.Toggle[4];
                 HeadCov3Toggle = _loadDate.Toggle[5];
@@ -615,9 +643,17 @@ namespace BeastHunter
 
             foreach (var item in _loadDate.Items)
             {
-                if ((GenderHash.Contains(item.Body) ? GenderDict[_loadDate.Gender][item.Body].Count : NoGenderDict[item.Body].Count) > item.Position)
+                if ((GenderHash.Contains(item.Body) 
+                    ? GenderDict[_loadDate.Gender][item.Body].Count 
+                    : NoGenderDict[item.Body].Count) > item.Position && item.Position > -1)
                 {
-                    Body[item.Body].Object = GenderHash.Contains(item.Body) ? GenderDict[_loadDate.Gender][item.Body][item.Position] : NoGenderDict[item.Body][item.Position];
+                    if (item.Body == BodyItems.HeadAllElements || item.Body == BodyItems.HeadNoElements)
+                        Debug.Log("Vis " + item.Visible);
+
+                    Body[item.Body].Object = GenderHash.Contains(item.Body) 
+                        ? GenderDict[_loadDate.Gender][item.Body][item.Position] 
+                        : NoGenderDict[item.Body][item.Position];
+
                     Body[item.Body].Position = item.Position;
                     Body[item.Body].Visible = item.Visible;
                 }

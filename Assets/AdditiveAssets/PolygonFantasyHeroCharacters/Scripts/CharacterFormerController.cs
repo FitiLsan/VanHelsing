@@ -164,9 +164,9 @@ namespace BeastHunter
             PrevCharacters.Push(Character);
             ActivateItem(Character.ClearAllCharacter());
             Character = new CharacterPresentationModel(new ColorationSkin(
-            whiteSkin.FirstOrDefault(), whiteHair.FirstOrDefault(), whiteStubble, whiteScar,
-            primary.FirstOrDefault(), secondary.FirstOrDefault(), metalPrimary.FirstOrDefault(), metalSecondary.FirstOrDefault(),
-            leatherPrimary.FirstOrDefault(), leatherSecondary.FirstOrDefault(), bodyArt.FirstOrDefault(), 0), mat);
+                        whiteSkin.FirstOrDefault(), whiteHair.FirstOrDefault(), whiteStubble, whiteScar,
+                        primary.FirstOrDefault(), secondary.FirstOrDefault(), metalPrimary.FirstOrDefault(), metalSecondary.FirstOrDefault(),
+                        leatherPrimary.FirstOrDefault(), leatherSecondary.FirstOrDefault(), bodyArt.FirstOrDefault(), 0), mat);
 
             if (!Rand(50))
                 ActivateItem(Character.ChangeGender(Gender.Female));
