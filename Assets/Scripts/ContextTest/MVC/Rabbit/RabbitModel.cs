@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public sealed class RabbitModel
+    public sealed class RabbitModel : NpcModel
     {
 
         #region Fields
@@ -13,9 +13,6 @@ namespace BeastHunter
         public float TimeElapsed = 0.0f;
         public float TimeElapsedAfterStateChange = 0.0f;
         public float TimeElapsedAfterStartFleeing = 0.0f;
-
-        public float CurrentHealth;
-        public bool IsDead;
 
         public List<Transform> DangerousObjects;
         public Vector3 NextCoord;
@@ -47,12 +44,12 @@ namespace BeastHunter
                 RabbitRigidbody = prefab.GetComponent<Rigidbody>();
                 RabbitStartPosition = prefab.transform.position;
 
-                CurrentHealth = rabbitData.RabbitStruct.MaxHealth;
-                IsDead = rabbitData.RabbitStruct.IsDead;
+                CurrentHealth = rabbitData.BaseStats.MaxHealth;
+                IsDead = false;
 
                 DangerousObjects = new List<Transform>();
                 NextCoord = rabbitData.RandomNextCoord(RabbitTransform, RabbitStartPosition, DangerousObjects);
-                if (rabbitData.RabbitStruct.CanIdle)
+                if (rabbitData.RabbitStats.CanIdle)
                 {
                     RabbitState = RabbitData.BehaviourState.Idling;
                 }
@@ -70,13 +67,32 @@ namespace BeastHunter
         #endregion
 
 
-        #region Metods
+        #region NpcModel
 
-        public void Execute()
+        public override void Execute()
         {
             if (!IsDead)
             {
                 RabbitData.Act(this);
+            }
+        }
+
+        public override NpcStats GetStats()
+        {
+            return RabbitData.BaseStats;
+        }
+
+
+        public override void DoSmth(string how)
+        {
+            //RabbitData.Do(how);
+        }
+
+        public override void TakeDamage(Damage damage)
+        {
+            if (!IsDead)
+            {
+                RabbitData.TakeDamage(this, damage);
             }
         }
 

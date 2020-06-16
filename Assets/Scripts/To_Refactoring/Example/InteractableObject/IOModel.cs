@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public class IOModel : NpcModel
+    public sealed class IOModel : NpcModel
     {
         #region Fields
 
@@ -45,9 +45,19 @@ namespace BeastHunter
             }
         }
 
+        public override NpcStats GetStats()
+        {
+            return IOData.BaseStats;
+        }
+
         public override void DoSmth(string how)
         {
             IOData.Do(how);
+        }
+
+        public override void TakeDamage(Damage damage)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

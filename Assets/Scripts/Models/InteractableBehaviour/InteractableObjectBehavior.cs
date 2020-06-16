@@ -4,12 +4,15 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public class InteractableObjectBehavior : MonoBehaviour, ITrigger, ITakeDamage
+    public class InteractableObjectBehavior : MonoBehaviour, ITrigger
     {
         #region Fields
 
         [SerializeField] private InteractableObjectType _type;
         private Action<int, string> _onDoSmthHandler;
+        private Action<int, Damage> _onTakeDamageHandler;
+        private Action<int, InteractableObjectBehavior, Damage> _onDealDamageHandler;
+        //private _onGenerateInventryHandler;
 
         #endregion
 
@@ -17,13 +20,12 @@ namespace BeastHunter
         #region Properties
 
         public Predicate<Collider> OnFilterHandler { get; set; }
-        public Action<Damage> OnTakeDamageHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerEnterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerExitHandler { get; set; }
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
         public GameObject GameObject => gameObject;
         public InteractableObjectType Type { get => _type; }
-        public BaseStatsClass Stats { get; set; }
+        //public BaseStatsClass Stats { get; set; }
         public bool IsInteractable { get; set; }
 
         #endregion
@@ -55,15 +57,15 @@ namespace BeastHunter
             }
         }
 
-        public void TakeDamage(Damage damage)
-        {
-            if (OnTakeDamageHandler != null)
-            {
-                OnTakeDamageHandler.Invoke(damage);
-            }
-        }
-
         #endregion
+
+
+        #region Methods
+
+        public void SetType(InteractableObjectType type)
+        {
+            _type = type;
+        }
 
 
         #region DoSmth
@@ -95,12 +97,62 @@ namespace BeastHunter
         #endregion
 
 
-        #region Methods
+        #region TakeDamage
 
-        public void SetType(InteractableObjectType type)
+        public void SetTakeDamageEvent(Action<int, Damage> action)
         {
-            _type = type;
+            if (action != null)
+            {
+                _onTakeDamageHandler += action;
+            }
         }
+
+        public void TakeDamageEvent(Damage damage)
+        {
+            if (_onTakeDamageHandler != null)
+            {
+                _onTakeDamageHandler.Invoke(GameObject.GetInstanceID(), damage);
+            }
+        }
+
+        public void DeleteTakeDamageEvent(Action<int, Damage> action)
+        {
+            if (action != null)
+            {
+                _onTakeDamageHandler -= action;
+            }
+        }
+
+        #endregion
+
+
+        #region DealDamage
+
+        public void SetDealDamageEvent(Action<int, InteractableObjectBehavior, Damage> action)
+        {
+            if (action != null)
+            {
+                _onDealDamageHandler += action;
+            }
+        }
+
+        public void DealDamageEvent(InteractableObjectBehavior enemy, Damage damage)
+        {
+            if (_onDealDamageHandler != null)
+            {
+                _onDealDamageHandler.Invoke(GameObject.GetInstanceID(), enemy, damage);
+            }
+        }
+
+        public void DeleteDealDamageEvent(Action<int, InteractableObjectBehavior, Damage> action)
+        {
+            if (action != null)
+            {
+                _onDealDamageHandler -= action;
+            }
+        }
+
+        #endregion
 
         #endregion
     }

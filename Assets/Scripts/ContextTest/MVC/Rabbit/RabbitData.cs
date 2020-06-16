@@ -7,7 +7,7 @@ namespace BeastHunter
 {
 
     [CreateAssetMenu(fileName = "NewModel", menuName = "CreateData/Rabbit", order = 2)]
-    public sealed class RabbitData : ScriptableObject
+    public sealed class RabbitData : NpcData
     {
         #region PrivateData
 
@@ -46,7 +46,6 @@ namespace BeastHunter
         private const float TURN_RIGHT = 270.0f;
         private const float TURN_LEFT = 90.0f;
 
-
         #endregion
 
 
@@ -54,7 +53,7 @@ namespace BeastHunter
 
         private PhysicsService _physicsService;
 
-        public RabbitStruct RabbitStruct;
+        public RabbitStats RabbitStats;
 
         #endregion
 
@@ -101,11 +100,11 @@ namespace BeastHunter
                         Roam(rabbit);
                         rabbit.TimeElapsedAfterStateChange += Time.deltaTime;
                         var distanceFromStart = new Vector2((rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).x, (rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).z);
-                        if (distanceFromStart.sqrMagnitude > RabbitStruct.RunningRadius * RabbitStruct.RunningRadius)
+                        if (distanceFromStart.sqrMagnitude > RabbitStats.RunningRadius * RabbitStats.RunningRadius)
                         {
                             rabbit.RabbitState = BehaviourState.Returning;
                         }
-                        else if (RabbitStruct.CanIdle && rabbit.TimeElapsedAfterStateChange > TIME_UNTIL_CAN_CHANGE_STATE && Random.Range(0.0f, 1.0f) > 0.95f)
+                        else if (RabbitStats.CanIdle && rabbit.TimeElapsedAfterStateChange > TIME_UNTIL_CAN_CHANGE_STATE && Random.Range(0.0f, 1.0f) > 0.95f)
                         {
                             rabbit.TimeElapsedAfterStateChange = 0.0f;
                             rabbit.RabbitState = BehaviourState.Idling;
@@ -115,7 +114,7 @@ namespace BeastHunter
                 case BehaviourState.Returning:
                     {
                         Return(rabbit);
-                        var moveDistance = RabbitStruct.RunningRadius / RabbitData.STOP_RETURNING_DISTANCE_FACTOR;
+                        var moveDistance = RabbitStats.RunningRadius / RabbitData.STOP_RETURNING_DISTANCE_FACTOR;
                         if ((rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).sqrMagnitude < moveDistance * moveDistance)
                         {
                             rabbit.RabbitState = BehaviourState.Roaming;
@@ -145,12 +144,12 @@ namespace BeastHunter
                 default:
                     break;
             }
-            Debug.Log(rabbit.RabbitState);
+            //Debug.Log(rabbit.RabbitState);
         }
 
         private void Idle()
         {
-            Debug.Log("Idle animation");
+            //Debug.Log("Idle animation");
         }
 
         private void Roam(RabbitModel rabbit)
@@ -204,21 +203,21 @@ namespace BeastHunter
             for (int i = 0; i < targets.Count; i++)
             {
                 var distToTarget = targets[i].position - transform.position;
-                if (distToTarget.sqrMagnitude > RabbitStruct.ViewRadius)
+                if (distToTarget.sqrMagnitude > RabbitStats.ViewRadius)
                 {
                     targets.RemoveAt(i);
                 }
             }
 
             //var triggers = _physicsService.GetObjectsInRadius(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer);
-            var triggers = Physics.OverlapSphere(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer);//change layer!!
+            var triggers = Physics.OverlapSphere(transform.position, RabbitStats.ViewRadius, LayerManager.DefaultLayer);//change layer!!
             var result = false;
             foreach (Collider target in triggers)
             {
                 if (!target.CompareTag(TagManager.RABBIT))
                 {
                     var dirToTarget = target.bounds.center - transform.position;
-                    if (Vector3.Angle(transform.forward, dirToTarget.normalized) < RabbitStruct.ViewAngle)
+                    if (Vector3.Angle(transform.forward, dirToTarget.normalized) < RabbitStats.ViewAngle)
                     {
                         if (!Physics.Raycast(transform.position, dirToTarget.normalized, dirToTarget.magnitude, LayerManager.EnvironmentLayer))
                         {
@@ -246,7 +245,7 @@ namespace BeastHunter
 
         private void Hop(Rigidbody rigidbody, Vector3 direction, float acceleration)
         {
-            rigidbody.AddForce((direction * RabbitStruct.MoveSpeed * acceleration + Vector3.up * RabbitStruct.JumpHeight) * HOP_FORCE_MULTIPLIER);
+            rigidbody.AddForce((direction * RabbitStats.MoveSpeed * acceleration + Vector3.up * RabbitStats.JumpHeight) * HOP_FORCE_MULTIPLIER);
         }
 
         private Vector3 NextCoord(Transform transform, Vector3 startPosition, List<Transform> targets, Func<Transform, Vector3, List<Transform>, Vector3> nextCoordFunc)
@@ -304,7 +303,7 @@ namespace BeastHunter
             //var distance = Mathf.Min((transform.position - startPosition).magnitude, RabbitStruct.RunningRadius);
             //var angle = AngleDeviationSqr(distance);
 
-            var distance = Mathf.Min((transform.position - startPosition).sqrMagnitude, RabbitStruct.RunningRadius * RabbitStruct.RunningRadius);
+            var distance = Mathf.Min((transform.position - startPosition).sqrMagnitude, RabbitStats.RunningRadius * RabbitStats.RunningRadius);
             var angle = AngleDeviationSqrPlain(distance);
             angle = Random.Range(-angle, angle);
             angle *= Mathf.Deg2Rad;
@@ -318,7 +317,7 @@ namespace BeastHunter
             foreach (var obj in targets)
             {
                 var dir = transform.position - obj.position;
-                dir = dir.normalized * RabbitStruct.ViewRadius * RabbitStruct.ViewRadius / dir.sqrMagnitude;
+                dir = dir.normalized * RabbitStats.ViewRadius * RabbitStats.ViewRadius / dir.sqrMagnitude;
                 sum += dir;
             }
             var result = new Vector2(sum.x, sum.z);
@@ -333,14 +332,14 @@ namespace BeastHunter
 
         private float AngleDeviation(float distance) // linear, use with distance magnitude
         {
-            var r = RabbitStruct.RunningRadius;
+            var r = RabbitStats.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
             return (MAX_ANGLE_DEVIATION * f) / (f - 1.0f) * (-(distance / r) + 1);
         }
 
         private float AngleDeviationSqr(float distance) // parabolic, use with distance magnitude (variant 1, point on runningRadius/returnFactor)
         {
-            var r = RabbitStruct.RunningRadius;
+            var r = RabbitStats.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
             var a = (MAX_ANGLE_DEVIATION * f * f) / (r * r * (2.0f * f - f * f - 1.0f));
             var b = -(2.0f * a * r) / f;
@@ -350,7 +349,7 @@ namespace BeastHunter
 
         private float AngleDeviationSqrPlain(float distance) // parabolic, use with distance sqrMagnitude (variant 2, point on startPos)
         {
-            var r = RabbitStruct.RunningRadius;
+            var r = RabbitStats.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
             var a = -((MAX_ANGLE_DEVIATION * f * f) / (r * r * (f * f - 1.0f)));
             var c = -a * r * r;
@@ -360,6 +359,24 @@ namespace BeastHunter
         private Vector2 RotateByAngle(Vector2 vector, float angle)
         {
             return new Vector2(vector.x * Mathf.Cos(angle) - vector.y * Mathf.Sin(angle), vector.x * Mathf.Sin(angle) + vector.y * Mathf.Cos(angle));
+        }
+
+        #endregion
+
+
+        #region NpcData
+
+        public override void TakeDamage(NpcModel instance, Damage damage)
+        {
+            base.TakeDamage(instance, damage);
+            //Debug.Log("Rabbit got " + damage.PhysicalDamage + " damage");
+
+            if (instance.IsDead)
+            {
+                //Debug.Log("You killed a bunny! You monster!");
+                var rabbit = instance as RabbitModel;
+                rabbit.Rabbit.GetComponent<Renderer>().material.color = Color.red;
+            }
         }
 
         #endregion

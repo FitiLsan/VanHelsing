@@ -3,13 +3,11 @@
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewModel", menuName = "CreateData/Example/InteractableObject", order = 1)]
-    public class IOData : NpcData
+    public sealed class IOData : NpcData
     {
         #region Fields
 
         private PhysicsService _physicsService;
-
-        //public IOStats IoStats;
 
         #endregion
 

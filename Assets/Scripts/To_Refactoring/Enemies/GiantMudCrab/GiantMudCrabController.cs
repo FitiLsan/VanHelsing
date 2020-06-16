@@ -46,8 +46,8 @@ namespace BeastHunter
                 giantMudCrabBehaviour.OnFilterHandler += OnFilterHandler;
                 giantMudCrabBehaviour.OnTriggerEnterHandler += OnTriggerEnterHandler;
                 giantMudCrabBehaviour.OnTriggerExitHandler += OnTriggerExitHandler;
-                giantMudCrabBehaviour.OnTakeDamageHandler += OnTakeDamage;
-                giantMudCrabBehaviour.Stats = _context.GiantMudCrabModel.GiantMudCrabStruct.Stats;
+                giantMudCrabBehaviour.SetTakeDamageEvent(OnTakeDamage);
+                //giantMudCrabBehaviour.Stats = _context.GiantMudCrabModel.GiantMudCrabStruct.Stats;
                 Debug.Log("Activate");
             }
         }
@@ -66,7 +66,7 @@ namespace BeastHunter
                 giantMudCrabBehaviour.OnFilterHandler -= OnFilterHandler;
                 giantMudCrabBehaviour.OnTriggerEnterHandler -= OnTriggerEnterHandler;
                 giantMudCrabBehaviour.OnTriggerExitHandler -= OnTriggerExitHandler;
-                giantMudCrabBehaviour.OnTakeDamageHandler -= OnTakeDamage;
+                giantMudCrabBehaviour.DeleteTakeDamageEvent(OnTakeDamage);
             }
         }
 
@@ -75,7 +75,7 @@ namespace BeastHunter
 
         #region Methods
 
-        private void OnTakeDamage(Damage damage)
+        private void OnTakeDamage(int id, Damage damage)
         {
             if (_context.GiantMudCrabModel.GiantMudCrabStruct.IsDigIn)
             {

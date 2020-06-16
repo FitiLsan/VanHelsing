@@ -68,7 +68,7 @@ namespace BeastHunter
             _characterModel.PlayerBehavior.OnFilterHandler += OnFilterHandler;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterHandler;
             _characterModel.PlayerBehavior.OnTriggerExitHandler += OnTriggerExitHandler;
-            _characterModel.PlayerBehavior.OnTakeDamageHandler += TakeDamage;
+            _characterModel.PlayerBehavior.SetTakeDamageEvent(TakeDamage);
 
             _stateMachine.OnStateChangeHandler += OnStateChange;
             LockCharAction.LockCharacterMovement += SetTalkingState;
@@ -119,7 +119,7 @@ namespace BeastHunter
             _characterModel.PlayerBehavior.OnFilterHandler -= OnFilterHandler;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterHandler;
             _characterModel.PlayerBehavior.OnTriggerExitHandler -= OnTriggerExitHandler;
-            _characterModel.PlayerBehavior.OnTakeDamageHandler -= TakeDamage;
+            _characterModel.PlayerBehavior.DeleteTakeDamageEvent(TakeDamage);
 
             _stateMachine.OnStateChangeHandler -= OnStateChange;
             _stateMachine.TearDownStates();
@@ -135,8 +135,7 @@ namespace BeastHunter
         {
             if (enemy != null && damage != null)
             {
-                enemy.OnTakeDamageHandler(damage);
-                //enemy.TakeDamage(damage);
+                enemy.TakeDamageEvent(damage);
             }
         }
 
@@ -145,7 +144,7 @@ namespace BeastHunter
 
         #region ITakeDamage
 
-        private void TakeDamage(Damage damage)
+        private void TakeDamage(int id, Damage damage)
         {
             if (_stateMachine.CurrentState != _stateMachine._deadState)
             {
@@ -594,7 +593,7 @@ namespace BeastHunter
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
                 DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.LeftHandWeapon, 
-                    _characterModel.CharacterStatsSettings, enemyBehavior.Stats));
+                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().BaseStats));
                 hitBox.IsInteractable = false;
             }
         }
@@ -606,7 +605,7 @@ namespace BeastHunter
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
                 DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.RightHandWeapon,
-                    _characterModel.CharacterStatsSettings, enemyBehavior.Stats));
+                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().BaseStats));
                 hitBox.IsInteractable = false;
             }
         }
