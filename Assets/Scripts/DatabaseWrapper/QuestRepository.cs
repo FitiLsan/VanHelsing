@@ -35,7 +35,7 @@ namespace BeastHunter
         private const byte QUEST_ENDDIALOGID = 8;
         private const byte QUEST_STARTQUESTEVENTTYPE = 9;
         private const byte QUEST_ENDQUESTEVENTTYPE = 10;
-        private const byte QUEST_ISREPETABLE = 11;
+       // private const byte QUEST_ISREPETABLE = 11;
 
         //table : Quest_locale_xx
         private const byte QUEST_LOCALE_ID = 0;
@@ -203,7 +203,7 @@ namespace BeastHunter
                     StartQuestEventType = dtQ.Rows[0].GetInt(QUEST_STARTQUESTEVENTTYPE),
                     EndQuestEventType = dtQ.Rows[0].GetInt(QUEST_ENDQUESTEVENTTYPE),
                     EndDialogId = dtQ.Rows[0].GetInt(QUEST_ENDDIALOGID),
-                    IsRepetable = dtQ.Rows[0].GetInt(QUEST_ISREPETABLE)
+                  //  IsRepetable = dtQ.Rows[0].GetInt(QUEST_ISREPETABLE)
                 };
 
                 foreach (DataRow row in dtReq.Rows)

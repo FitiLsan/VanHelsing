@@ -32,7 +32,7 @@ namespace BeastHunter
             StartDialogueModel StartDialogue = new StartDialogueModel(instance, canvasNpc, StartDialogueData, _context);
             _context.StartDialogueModel = StartDialogue;
 
-            StartDialogueData.SetPerent(instance.transform, StartDialogueData.GetParent());
+        //    StartDialogueData.SetPerent(instance.transform, StartDialogueData.GetParent());
             StartDialogueData.GetDialogueSystemModel(_context.DialogueSystemModel);
 
         }

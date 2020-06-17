@@ -9,6 +9,7 @@ namespace BeastHunter
     public class PlaceButtonClick : MonoBehaviour, IPointerClickHandler
     {
         public static event Action<Place> ClickEvent;
+        public static event Action<int> CanvasClickEvent;
         private static List<Image> _lineList = new List<Image>();
         private Place _currentPlace;
         private Image _currentline;
@@ -29,6 +30,7 @@ namespace BeastHunter
             _currentPlace = parent.GetComponent<Place>();
             
             ClickEvent?.Invoke(GetPlace());
+            CanvasClickEvent?.Invoke(0);
         }
         
         private Place GetPlace()

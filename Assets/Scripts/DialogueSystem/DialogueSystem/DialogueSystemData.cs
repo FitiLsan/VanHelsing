@@ -82,7 +82,7 @@ namespace BeastHunter
             }
 
             Model.DialogueCanvas.enabled = isActive;
-            LockCharAction.LockAction(isActive);
+          //  LockCharAction.LockAction(isActive);
         }
 
         public void ButtonClickNumber(string buttonName)

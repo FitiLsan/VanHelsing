@@ -13,6 +13,7 @@ namespace BeastHunter
         public GameObject Npc;
 
         public Text NpcName;
+        public int NpcId;
         public Image NpcAvatar;
         public Image StartQuest;
         public Image Task;
@@ -21,7 +22,7 @@ namespace BeastHunter
         public GameObject toTolk;
         public Text ToSearch;
 
-        public GameObject SelectedNpc;
+        public int SelectedNpcId;
 
         public void Awake()
         {
@@ -43,6 +44,8 @@ namespace BeastHunter
 
         private void OnClick(Place place)
         {
+            NpcId = 0;
+            SelectedNpcId = 0;
             foreach (var npc in NpcList)
             {
                 Destroy(npc);
@@ -62,13 +65,14 @@ namespace BeastHunter
             {
                 NpcName.text = place.npcList[0].NpcName;
                 NpcAvatar.sprite = place.npcList[0].NpcImage;
+                NpcId = place.npcList[0].NpcId;
                 var tempNpc = Instantiate(Npc, NpcObjectList.transform.position, NpcObjectList.transform.rotation, NpcObjectList.transform);
                 NpcList.Add(tempNpc);
             }
         }
         private void OnNpcSelect(GameObject npc)
         {
-            SelectedNpc = npc;
+            SelectedNpcId = NpcId;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BeastHunter
         #region Field
 
         GameContext _context;
-
+        GameObject instance;
         #endregion
 
 
@@ -27,9 +27,16 @@ namespace BeastHunter
         public void OnAwake()
         {
             var dialogueSystemData = Data.DialogueSystemData;
-            GameObject instance = GameObject.Instantiate(dialogueSystemData.DialogueSystemStruct.Prefab);
-            DialogueSystemModel dialogueSystem = new DialogueSystemModel(instance, dialogueSystemData);
-            _context.DialogueSystemModel = dialogueSystem;
+            var inst = GameObject.Find("MapDialogueSystem");
+            if (inst == null)
+                
+            {
+                instance = GameObject.Instantiate(dialogueSystemData.DialogueSystemStruct.Prefab);
+            }
+            instance = inst;
+                DialogueSystemModel dialogueSystem = new DialogueSystemModel(instance, dialogueSystemData);
+                _context.DialogueSystemModel = dialogueSystem;
+            
         }
 
         #endregion

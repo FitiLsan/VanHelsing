@@ -10,7 +10,7 @@ namespace BeastHunter
         public GameContext Context;
         public DialogueSystemModel DialogueSystemModel;
         public bool IsStartDialogueFlagOn;
-        public bool IsDialogueAreaEnter;
+        public bool IsDialogueAreaEnter = true;
 
         #endregion
 
@@ -34,6 +34,8 @@ namespace BeastHunter
             Context = context;
             startDialogueData.Model = this;
             startDialogueData.CanvasNpc = canvasNpc;
+            ToTolkNpc.ToTalkClickEvent += startDialogueData.OnDialogueStart;
+            PlaceButtonClick.CanvasClickEvent += startDialogueData.OnDialogueStart;
         }
 
         #endregion
