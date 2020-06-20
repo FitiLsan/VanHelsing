@@ -1,11 +1,13 @@
 ﻿public enum Nutrition 
 {
     None,
-    EatsFreshlySlaughtered,
+    FreshlyKilled,
     Scavenger,
     StoresCorpsesInTheNest,
     StoresCorpsesInASeparatePlace,
     HangingCorpsesAround,
     NotEating,
-    SucksLifeOutOfVictims
+    SucksLifeOutOfVictims,
+    Rubbish,
+    Grass
 }

@@ -14,4 +14,5 @@
     LivePrey,
     HumanBlood,
     OdorousHerbs,
+    Alcohol
 }

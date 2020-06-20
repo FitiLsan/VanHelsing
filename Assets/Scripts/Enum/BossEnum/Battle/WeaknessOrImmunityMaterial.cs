@@ -6,5 +6,6 @@
     Gold,
     Wood,
     Steel,
-    Butter
+    Oil,
+    Powder
 }

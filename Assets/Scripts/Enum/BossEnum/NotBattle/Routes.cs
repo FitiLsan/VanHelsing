@@ -5,5 +5,6 @@
     CirclesAroundDen,
     RandomWalks,
     AlongPonds,
-    PatrolFromLandmarkToLandmark
+    PatrolFromLandmarkToLandmark,
+    PatrolsFoodSourceZones
 }

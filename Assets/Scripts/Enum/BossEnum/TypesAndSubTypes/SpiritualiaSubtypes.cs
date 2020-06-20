@@ -1,4 +1,4 @@
-﻿public enum SpiritualiaSubtype
+﻿public enum SpiritualiaSubtypes
 {
     None,
     Golem,

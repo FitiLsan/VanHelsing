@@ -4,5 +4,5 @@
     Paws,
     Tails,
     Bite,
-    weapon
+    Weapon
 }

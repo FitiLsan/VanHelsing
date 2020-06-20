@@ -3,5 +3,6 @@
     None,
     JumpToTheSide,
     Counterattack,
-    UseAbility
+    UseAbility,
+    ContinuesToDoWhatHeDid
 }
