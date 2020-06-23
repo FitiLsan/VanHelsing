@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class BattleMovementState : CharacterBaseState
+    public sealed class BattleMovementState : CharacterBaseState
     {
         #region Constants
 
@@ -29,12 +29,13 @@ namespace BeastHunter
 
         #region Properties
 
+        private Transform CameraTransform { get; set; }
         private float TargetDirection { get; set; }
         private float CurrentDirecton { get; set; }
         private float AdditionalDirection { get; set; }
         private float CurrentAngle { get; set; }
-        public float MovementSpeed { get; private set; }
-        public float SpeedIncreace { get; private set; }
+        private float MovementSpeed { get; set; }
+        private float SpeedIncreace { get; set; }
 
         #endregion
 
@@ -44,8 +45,12 @@ namespace BeastHunter
         public BattleMovementState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Battle;
+            IsTargeting = false;
+            IsAttacking = false;
             CanExit = true;
             CanBeOverriden = true;
+            CameraTransform = Services.SharedInstance.CameraService.CharacterCamera.transform;
             SpeedIncreace = _characterModel.CharacterCommonSettings.InBattleRunSpeed / 
                 _characterModel.CharacterCommonSettings.InBattleWalkSpeed;
         }
@@ -57,11 +62,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            _characterModel.CharacterSphereCollider.radius *= _characterModel.CharacterCommonSettings.
-                SphereColliderRadiusIncrese;
             _animationController.PlayBattleMovementAnimation(_characterModel.LeftHandWeapon, _characterModel.RightHandWeapon);
-            _characterModel.CameraCinemachineBrain.m_DefaultBlend.m_Time = 0f;
-            _characterModel.CharacterTargetCamera.Priority = 5;
         }
 
         public override void Execute()
@@ -74,6 +75,10 @@ namespace BeastHunter
         public override void OnExit()
         {
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void StayInBattle()
@@ -112,7 +117,7 @@ namespace BeastHunter
                 }
 
                 CurrentDirecton = _characterModel.CharacterTransform.localEulerAngles.y;
-                TargetDirection = _characterModel.CharacterCamera.transform.localEulerAngles.y + AdditionalDirection;
+                TargetDirection = CameraTransform.localEulerAngles.y + AdditionalDirection;
 
                 CurrentAngle = Mathf.SmoothDampAngle(CurrentDirecton, TargetDirection, ref _currentAngleVelocity,
                     _characterModel.CharacterCommonSettings.DirectionChangeLag);
