@@ -10,6 +10,7 @@
         {
             Type = StateType.NotActive;
             IsTargeting = false;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = false;
         }

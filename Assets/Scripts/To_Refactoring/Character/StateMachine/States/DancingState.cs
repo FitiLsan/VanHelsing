@@ -21,6 +21,7 @@
         {
             Type = StateType.Default;
             IsTargeting = false;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = true;
         }

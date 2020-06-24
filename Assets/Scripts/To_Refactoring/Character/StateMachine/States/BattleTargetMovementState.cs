@@ -46,6 +46,7 @@ namespace BeastHunter
         {
             Type = StateType.Battle;
             IsTargeting = true;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = true;
             SpeedIncreace = _characterModel.CharacterCommonSettings.InBattleRunSpeed /

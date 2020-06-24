@@ -46,6 +46,7 @@ namespace BeastHunter
         {
             Type = StateType.Default;
             IsTargeting = false;
+            IsAttacking = false;
             CanExit = true;
             CanBeOverriden = true;
             CameraTransform = Services.SharedInstance.CameraService.CharacterCamera.transform;

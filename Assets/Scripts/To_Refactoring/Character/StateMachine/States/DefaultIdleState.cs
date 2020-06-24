@@ -9,6 +9,7 @@
         {
             Type = StateType.Default;
             IsTargeting = false;
+            IsAttacking = false;
             CanExit = true;
             CanBeOverriden = true;
         }

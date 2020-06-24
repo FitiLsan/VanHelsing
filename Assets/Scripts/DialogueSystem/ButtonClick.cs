@@ -1,25 +1,21 @@
 ﻿using UnityEngine;
 using System;
+using UnityEngine.EventSystems;
+
 
 namespace BeastHunter
 {
-    public sealed class ButtonClick : MonoBehaviour
+    public class ButtonClick : MonoBehaviour
     {
 
         #region Events
 
-        public static event Action<int>  MouseClickEvent;
         public static event Action<string> KeyBoardButtonDownEvent;
 
         #endregion
 
 
         #region Methods
-
-        public void ButtonClickMouse(int buttonNumber)
-        {
-            MouseClickEvent?.Invoke(buttonNumber);
-        }
 
         public void ButtonClickKeyBoard()
         {

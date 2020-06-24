@@ -41,6 +41,7 @@ namespace BeastHunter
         {
             Type = StateType.Default;
             IsTargeting = false;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = true;
             JumpVerticalForce = _characterModel.CharacterCommonSettings.JumpVerticalForce;

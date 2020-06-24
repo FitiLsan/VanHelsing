@@ -17,8 +17,11 @@ namespace BeastHunter
         public InputModel InputModel;
         public GiantMudCrabModel GiantMudCrabModel;
         public RabbitModel RabbitModel;
-
+		public List<QuestIndicatorModel> QuestIndicatorModelList = new List<QuestIndicatorModel>();
+        public QuestJournalModel QuestJournalModel;
+        
         public Dictionary<int, NpcModel> NpcModels;
+
 
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };

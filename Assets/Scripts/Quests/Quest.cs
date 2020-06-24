@@ -13,6 +13,7 @@ namespace BeastHunter
         public int RewardExp { get; }
         public int StartDialogId { get; }
         public int EndDialogId { get; }
+        public int IsRepetable { get; }
         public int RewardMoney { get; }
         public int QuestLevel { get; }
         public List<int> RequiredQuests { get; }
@@ -27,8 +28,16 @@ namespace BeastHunter
                     return false;
 
                 foreach (var task in Tasks)
+                {
                     if (!task.IsCompleted)
-                        return false;
+                    {
+                        if (!task.IsOptional)
+                        {
+                            return false;
+                        }
+                    }//test
+                        
+                }
 
                 return true;
             }
@@ -72,6 +81,7 @@ namespace BeastHunter
             RewardMoney = dto.RewardMoney;
             StartDialogId = dto.StartDialogId;
             EndDialogId = dto.EndDialogId;
+            IsRepetable = dto.IsRepetable;
             foreach (var reward in dto.Rewards)
             {
                 var tmp = Rewards.Find(x => x.Type == reward.Type && x.ObjectType == reward.ObjectType);

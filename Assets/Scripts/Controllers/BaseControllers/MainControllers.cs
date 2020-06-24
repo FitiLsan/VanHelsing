@@ -9,6 +9,11 @@
             AddInitializeControllers(context);
             Add(new InitializeInteractableObjectController(context));
             AddControllers(context);
+
+            Add(new QuestIndicatorInitializeController(context));
+			Add(new QuestJournalInitializeController(context));
+            Add(new QuestIndicatorController(context));
+            Add(new QuestIndicatorController(context));
         }
 
         #endregion
@@ -42,7 +47,7 @@
             //Add(new DialogueSystemController(context));
             //Add(new StartDialogueController(context));
             //Add(new DialogueTriggerController(context));
-            //Add(new QuestController(context));
+            //Add(new QuestController(context));            
         }
 
         #endregion

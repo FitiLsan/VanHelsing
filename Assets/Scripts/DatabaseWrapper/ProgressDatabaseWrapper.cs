@@ -11,21 +11,6 @@ namespace BeastHunter
 {
     public class ProgressDatabaseWrapper : ISaveFileWrapper
     {
-        #region PrivateData
-
-        private enum SaveTables
-        {
-            equipment,
-            inventory,
-            quest,
-            quest_objectives,
-            save_info,
-            completed_quests
-        }
-
-        #endregion
-
-
         #region Fields
 
         private const string SAVE_FILE_TAMPLATE = "progress.bytes";
@@ -61,7 +46,7 @@ namespace BeastHunter
             }
         }
 
-        public IEnumerable<int> GetCompletedQuests()
+        public IEnumerable<int> GetCompletedQuestsId()
         {
             foreach (DataRow row in _saveData.Tables[SaveTables.completed_quests.ToString()].Rows)
             {
@@ -75,6 +60,16 @@ namespace BeastHunter
             foreach (DataRow row in _saveData.Tables[SaveTables.quest.ToString()].Rows)
             {
                 res.Add(row.GetInt("QuestId"),row.GetInt("TimeLeft"));
+            }
+            return res;
+        }
+
+        public Dictionary<int, bool> GetCompletedQuests()
+        {
+            var res = new Dictionary<int, bool>();
+            foreach (DataRow row in _saveData.Tables[SaveTables.completed_quests.ToString()].Rows)
+            {
+                res.Add(row.GetInt("QuestId"), true);
             }
             return res;
         }

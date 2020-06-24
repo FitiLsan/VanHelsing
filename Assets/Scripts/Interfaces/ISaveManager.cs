@@ -8,8 +8,10 @@ namespace BeastHunter
         #region Methods
 
         List<Quest> LoadQuestLog();
-        List<int> GetAllCompletedQuests();
         List<Quest> GetAllActiveQuests();
+        List<int> GetAllCompletedQuestsById();
+        List<Quest> GetAllCompletedQuests();
+        List<int> GetAllActiveQuestsById();
         void SaveQuestLog(List<Quest> quests);
         void QuestCompleted(int id);
         void SaveGame(string file);

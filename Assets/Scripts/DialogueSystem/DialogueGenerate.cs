@@ -33,41 +33,73 @@ namespace BeastHunter
                     var answerQuestId = answerDt.Rows[i].GetInt(8);
                     var answerTaskQuest = answerDt.Rows[i].GetInt(9);
 
-                    if (context.QuestModel.CompletedQuests.Contains(answerQuestId))
+                    var completedQuests = context.QuestModel.CompletedQuests;
+                    var activeQuests = context.QuestModel.ActiveQuests;
+                    var allTaskCompleted = context.QuestModel.AllTaskCompletedInQuests;
+                    var allTaskCompletedWithOptinal = context.QuestModel.AllTaskCompletedInQuestsWithOptional;
+                    if (completedQuests.Contains(answerQuestId))
                     {
                         continue;
                     }
 
-                    if (context.QuestModel._quests.Count != 0)
+                    if (activeQuests.Count != 0)
                     {
-                        var flag =false;
-                        foreach (Quest quest in context.QuestModel._quests)
+                        if (activeQuests.Contains(answerQuestId))
                         {
-                            if (context.QuestModel.AllTaskCompletedInQuests.Count != 0)
+                            if (answerIsStartQuest == 1)
                             {
-                                if (!context.QuestModel.AllTaskCompletedInQuests.Contains(answerQuestId))
+                                continue;
+                            }
+                            if (answerTaskQuest == 1)
+                            {
+                                if (allTaskCompleted.Count != 0)
                                 {
-                                    break;
+                                    if (allTaskCompleted.Contains(answerQuestId))
+                                    {
+                                        continue;
+                                    }
                                 }
                             }
-                            else if (answerIsEndQuest == 1)
+                            if (answerIsEndQuest == 1) 
                             {
-                                flag = true;
-                                break;
+                                if (!allTaskCompleted.Contains(answerQuestId))  
+                                {
+                                    if (!allTaskCompletedWithOptinal.Contains(answerQuestId))//
+                                    continue;
+                                }
                             }
                         }
-                        if(flag)
+                        else if (answerIsEndQuest == 1 || answerTaskQuest == 1)
                         {
                             continue;
                         }
                     }
-                    else if(answerIsEndQuest == 1 || answerTaskQuest == 1)
+                    else if (answerIsEndQuest == 1 || answerTaskQuest == 1)
                     {
                         continue;
                     }
-                  
-                        dialogueNode[j].PlayerAnswers.Add(new PlayerAnswer(answerId, answerText, answerToNode, answerEndDialogue, answerIsStartQuest, answerIsEndQuest, answerQuestId, answerTaskQuest));
-                    
+
+                    var flag = false;
+                    foreach (var quest in context.QuestModel.Quests)
+                    {                       
+                        if(quest.Id == answerQuestId)
+                        {
+                            foreach (var task in quest.Tasks)
+                            {
+                                if(task.TargetId==answerId & task.IsCompleted)
+                                {
+                                    flag = true;
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                    if (flag)
+                    {
+                        continue;
+                    }
+                    dialogueNode[j].PlayerAnswers.Add(new PlayerAnswer(answerId, answerText, answerToNode, answerEndDialogue, answerIsStartQuest, answerIsEndQuest, answerQuestId, answerTaskQuest));
+
                 }
             }
             return dialogueNode;

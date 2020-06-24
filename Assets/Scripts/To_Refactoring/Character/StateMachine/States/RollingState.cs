@@ -46,6 +46,7 @@ namespace BeastHunter
         {
             Type = StateType.Battle;
             IsTargeting = false;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = false;
             CameraTransform = Services.SharedInstance.CameraService.CharacterCamera.transform;
@@ -70,8 +71,7 @@ namespace BeastHunter
             }
             else
             {
-                CanExit = true;
-                CanBeOverriden = true;
+                CheckNextState();
             }
         }
 
@@ -97,8 +97,29 @@ namespace BeastHunter
 
             if (RollTime <= 0)
             {
-                CanExit = true;
-                CanBeOverriden = true;
+                CheckNextState();
+            }
+        }
+
+        private void CheckNextState()
+        {
+            CanExit = true;
+            CanBeOverriden = true;
+
+            if (NextState == null)
+            {
+                if (_characterModel.IsMoving)
+                {
+                    _stateMachine.SetState(_stateMachine._battleMovementState);
+                }
+                else
+                {
+                    _stateMachine.SetState(_stateMachine._battleIdleState);
+                }             
+            }
+            else
+            {
+                _stateMachine.SetState(NextState);
             }
         }
 

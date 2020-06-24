@@ -1,6 +1,4 @@
-﻿
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public sealed class BattleIdleState : CharacterBaseState
     {
@@ -11,6 +9,7 @@ namespace BeastHunter
         {
             Type = StateType.Battle;
             IsTargeting = false;
+            IsAttacking = false;
             CanExit = true;
             CanBeOverriden = true;
         }

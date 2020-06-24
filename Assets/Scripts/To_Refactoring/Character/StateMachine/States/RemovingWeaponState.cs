@@ -20,6 +20,7 @@ namespace BeastHunter
         {
             Type = StateType.Default;
             IsTargeting = false;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = false;
         }
