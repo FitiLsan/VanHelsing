@@ -11,7 +11,7 @@
             AddControllers(context);
 
             Add(new QuestIndicatorInitializeController(context));
-			Add(new QuestJournalInitializeController(context));
+			      Add(new QuestJournalInitializeController(context));
             Add(new QuestIndicatorController(context));
             Add(new QuestIndicatorController(context));
         }

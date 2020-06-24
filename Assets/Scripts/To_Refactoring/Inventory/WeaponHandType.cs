@@ -2,6 +2,7 @@
 {
     public enum WeaponHandType
     {
+        None,
         OneHanded,
         TwoHanded
     }
