@@ -6,10 +6,6 @@
 
         public MainControllers(GameContext context)
         {
-            Add(new CharacterInitilizeController(context));
-            Add(new GiantMudCrabInitilizeController(context));
-            Add(new DialogueSystemInitializeController(context));
-            Add(new StartDialogueInitializeController(context));
             Add(new InitializeInteractableObjectController(context));
             Add(new QuestInitializeController(context));
             Add(new QuestIndicatorInitializeController(context));

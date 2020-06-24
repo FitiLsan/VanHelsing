@@ -26,7 +26,7 @@ namespace BeastHunter
 
         public void OnAwake()
         {
-            var sphers = _context.GetTriggers(InteractableObjectType.Cube);
+            var sphers = _context.GetTriggers(InteractableObjectType.Sphere);
             foreach (var trigger in sphers)
             {
                 var targetBehaviour = trigger as TargetBehaviour;
