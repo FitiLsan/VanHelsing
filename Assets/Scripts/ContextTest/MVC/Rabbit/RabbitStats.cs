@@ -5,12 +5,9 @@ using UnityEngine;
 namespace BeastHunter
 {
     [Serializable]
-    public struct RabbitStruct
+    public struct RabbitStats
     {
         #region Properties
-
-        [Tooltip("Default: 10")]
-        public float MaxHealth;
 
         [Tooltip("Default: 10")]
         public float RunningRadius;
@@ -29,8 +26,6 @@ namespace BeastHunter
         public float ViewAngle;
 
         public bool CanIdle;
-
-        public GameObject Prefab;
 
         #endregion
     }
