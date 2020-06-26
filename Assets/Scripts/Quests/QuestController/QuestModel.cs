@@ -26,6 +26,7 @@ namespace BeastHunter
         public List<int> IsOptionalTasks = new List<int>();
         public Quest TempQuest;
         public int lastGeneratedQuestId;
+        public List<QuestChain> questChainList = new List<QuestChain>();
 
         #endregion
 
@@ -120,9 +121,7 @@ namespace BeastHunter
                 {
                     CompletedTasksById.Remove(task.Id);
                     _completedTasks.Remove(task);
-                }
-                
-
+                }              
             }
 #if UNITY_EDITOR
             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Reported");
@@ -163,12 +162,46 @@ namespace BeastHunter
                         {
                             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Already Accepted");
                             return;
-                        }
+                        }              
                     }
                 }
+                foreach (var requiredQuest in TempQuest.RequiredQuests)
+                {
+                    if (!CompletedQuests.Contains(requiredQuest))
+                    {
+                        Debug.Log($"QuestLogController>>> to accept Quest [{idArgs.Id}] need to Complete Quest [{requiredQuest}]");
+                        return;
+                    }
+                }
+                foreach (var forbiddenQuest in TempQuest.ForbiddenQuests)
+                {
+                    if (CompletedQuests.Contains(forbiddenQuest))
+                    {
+                        Debug.Log($"QuestLogController>>> can't accept Quest [{idArgs.Id}] forbidden by Quest [{forbiddenQuest}]");
+                        return;
+                    }
+                }
+
+
                 _quests.Add(TempQuest);
                 ActiveQuests.Add(TempQuest.Id);
-                
+                var hasChain = false;
+                foreach(var questChain in questChainList)
+                {
+                    if (questChain.ChainId == TempQuest.ChainId)
+                    {
+                        questChain.QuestListId.Add(TempQuest.Id);
+                        hasChain = true;
+                        break;
+                    }
+                }
+                if (!hasChain)
+                {
+                    var tempChain = new QuestChain(TempQuest.ChainId);
+                    tempChain.QuestListId.Add(TempQuest.Id);
+                    questChainList.Add(tempChain);
+                }
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestJournalUpdated, args);
                 Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
 #if UNITY_EDITOR
                 Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Accepted");

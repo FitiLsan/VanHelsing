@@ -8,7 +8,9 @@ namespace BeastHunter
         #region Properties
 
         public int Id { get; set; }
+        public int ChainId { get; set; }
         public List<int> RequiredQuests { get; set; } = new List<int>();
+        public List<int> ForbiddenQuests { get; set; } = new List<int>();
         public string Title { get; set; }
         public string Description { get; set; }
         public int ZoneId { get; set; }

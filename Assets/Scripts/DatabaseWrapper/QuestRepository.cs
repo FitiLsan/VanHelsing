@@ -35,7 +35,8 @@ namespace BeastHunter
         private const byte QUEST_ENDDIALOGID = 8;
         private const byte QUEST_STARTQUESTEVENTTYPE = 9;
         private const byte QUEST_ENDQUESTEVENTTYPE = 10;
-       // private const byte QUEST_ISREPETABLE = 11;
+        private const byte QUEST_ISREPETABLE = 11;
+        private const byte QUEST_CHAINID = 12;
 
         //table : Quest_locale_xx
         private const byte QUEST_LOCALE_ID = 0;
@@ -68,6 +69,7 @@ namespace BeastHunter
         private const byte QUEST_REQUIREMENTS_ID = 0;
         private const byte QUEST_REQUIREMENTS_TARGETQUESTID = 1;
         private const byte QUEST_REQUIREMENTS_REQUIREDQUEST = 2;
+        private const byte QUEST_REQUIREMENTS_FORBIDDENQUEST = 3;
 
         //table : quest_rewards
         private const byte QUEST_REWARDS_ID = 0;
@@ -191,6 +193,7 @@ namespace BeastHunter
                 var questDto = new QuestDto
                 {
                     Id = id,
+                    ChainId = dtQ.Rows[0].GetInt(QUEST_CHAINID),
                     Title = dtLoc.Rows[0].GetString(QUEST_LOCALE_TITLE),
                     Description = dtLoc.Rows[0].GetString(QUEST_LOCALE_DESCRIPTION),
                     RewardExp = dtQ.Rows[0].GetInt(QUEST_REWARDEXP),
@@ -203,11 +206,14 @@ namespace BeastHunter
                     StartQuestEventType = dtQ.Rows[0].GetInt(QUEST_STARTQUESTEVENTTYPE),
                     EndQuestEventType = dtQ.Rows[0].GetInt(QUEST_ENDQUESTEVENTTYPE),
                     EndDialogId = dtQ.Rows[0].GetInt(QUEST_ENDDIALOGID),
-                  //  IsRepetable = dtQ.Rows[0].GetInt(QUEST_ISREPETABLE)
+                    IsRepetable = dtQ.Rows[0].GetInt(QUEST_ISREPETABLE)
                 };
 
                 foreach (DataRow row in dtReq.Rows)
+                {
                     questDto.RequiredQuests.Add(row.GetInt(QUEST_REQUIREMENTS_REQUIREDQUEST));
+                    questDto.ForbiddenQuests.Add(row.GetInt(QUEST_REQUIREMENTS_FORBIDDENQUEST));
+                }
 
                 foreach (DataRow row in dtPoi.Rows)
                 {

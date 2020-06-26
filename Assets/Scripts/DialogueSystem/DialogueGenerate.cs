@@ -57,7 +57,31 @@ namespace BeastHunter
                         {
                             continue;
                         }
+                        if (answerQuestId != 0)
+                        {
+                            var tempQuest = QuestRepository.GetById(answerQuestId);
+                            var hasRequiredQuest = false;
+                            var hasForbiddenQuest = false;
 
+                            foreach (var questId in tempQuest.RequiredQuests)
+                            {
+                                if (!completedQuests.Contains(questId))
+                                {
+                                    hasRequiredQuest = true;
+                                }
+                            }
+                            foreach (var questId in tempQuest.ForbiddenQuests)
+                            {
+                                if (completedQuests.Contains(questId))
+                                {
+                                    hasForbiddenQuest = true;
+                                }
+                            }
+                            if (hasRequiredQuest || hasForbiddenQuest)
+                            {
+                                continue;
+                            }
+                        }
                         if (activeQuests.Count != 0)
                         {
                             if (activeQuests.Contains(answerQuestId))

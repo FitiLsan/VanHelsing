@@ -29,6 +29,7 @@
         QuestButtonClickEvent,
         QuestJournalCreated,
         QuestJournalOpened,
+        QuestJournalUpdated,
         QuestUpdated,
         AnswerButtonClicked,
         SaveGeneratedQuest
