@@ -20,6 +20,7 @@ namespace BeastHunter
         public Action OnAttackRight { get; set; }
         public Action OnTargetLock { get; set; }
         public Action OnBattleExit { get; set; }
+        public Action OnUse { get; set; }
         public Action OnDance { get; set; }
 
         #endregion

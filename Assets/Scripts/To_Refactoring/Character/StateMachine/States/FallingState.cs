@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
-    public class FallingState : CharacterBaseState
+    public sealed class FallingState : CharacterBaseState
     {
 
         #region ClassLifeCycle
@@ -11,6 +8,9 @@ namespace BeastHunter
         public FallingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.NotActive;
+            IsTargeting = false;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = false;
         }
@@ -33,6 +33,10 @@ namespace BeastHunter
         public override void OnExit()
         {
 
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void ExitCheck()

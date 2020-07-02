@@ -46,8 +46,8 @@ namespace BeastHunter
                 giantMudCrabBehaviour.OnFilterHandler += OnFilterHandler;
                 giantMudCrabBehaviour.OnTriggerEnterHandler += OnTriggerEnterHandler;
                 giantMudCrabBehaviour.OnTriggerExitHandler += OnTriggerExitHandler;
-                giantMudCrabBehaviour.OnTakeDamageHandler += OnTakeDamage;
-                giantMudCrabBehaviour.Stats = _context.GiantMudCrabModel.GiantMudCrabStruct.Stats;
+                giantMudCrabBehaviour.SetTakeDamageEvent(OnTakeDamage);
+                //giantMudCrabBehaviour.Stats = _context.GiantMudCrabModel.GiantMudCrabStruct.Stats;
                 Debug.Log("Activate");
             }
         }
@@ -66,7 +66,7 @@ namespace BeastHunter
                 giantMudCrabBehaviour.OnFilterHandler -= OnFilterHandler;
                 giantMudCrabBehaviour.OnTriggerEnterHandler -= OnTriggerEnterHandler;
                 giantMudCrabBehaviour.OnTriggerExitHandler -= OnTriggerExitHandler;
-                giantMudCrabBehaviour.OnTakeDamageHandler -= OnTakeDamage;
+                giantMudCrabBehaviour.DeleteTakeDamageEvent(OnTakeDamage);
             }
         }
 
@@ -75,7 +75,7 @@ namespace BeastHunter
 
         #region Methods
 
-        private void OnTakeDamage(Damage damage)
+        private void OnTakeDamage(int id, Damage damage)
         {
             if (_context.GiantMudCrabModel.GiantMudCrabStruct.IsDigIn)
             {
@@ -101,7 +101,7 @@ namespace BeastHunter
                 Debug.Log("The crab is dead");
                 _context.GiantMudCrabModel.Crab.GetComponent<Renderer>().material.color = Color.red;
                 _context.GiantMudCrabModel.Crab.GetComponent<InteractableObjectBehavior>().enabled = false;
-                EventManager.TriggerEvent(GameEventTypes.NpcDie, new EnemyDieArgs(_context.GiantMudCrabModel.GiantMudCrabTransform.GetComponent<IGetNpcInfo>().GetInfo().Item1,0));
+                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.NpcDie, new EnemyDieArgs(_context.GiantMudCrabModel.GiantMudCrabTransform.GetComponent<IGetNpcInfo>().GetInfo().Item1,0));
             }
         }
 

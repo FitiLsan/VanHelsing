@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public class DeadState : CharacterBaseState
+    public sealed class DeadState : CharacterBaseState
     {
         #region Fields
 
@@ -19,6 +19,9 @@
         public DeadState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.NotActive;
+            IsTargeting = false;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = false;
         }
@@ -41,6 +44,10 @@
         public override void OnExit()
         {
 
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         #endregion

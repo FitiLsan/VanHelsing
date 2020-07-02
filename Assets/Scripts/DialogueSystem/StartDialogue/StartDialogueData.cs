@@ -8,7 +8,7 @@ namespace BeastHunter
     public sealed class StartDialogueData : ScriptableObject
     {
         #region Fields
-        public const float CANVAS_OFFSET = 2.3f;
+        public const float CANVAS_OFFSET = 2f;
 
         public StartDialogueStruct StartDialogueStruct;
         public StartDialogueModel Model;
@@ -65,6 +65,7 @@ namespace BeastHunter
 
         private void DialogStatus(bool isShowDialogCanvas)
         {
+            DialogueSystemModel.DialogueNode = DialogueGenerate.DialogueCreate(NpcID, Model.Context);
             ShowCanvasEvent?.Invoke(isShowDialogCanvas);
         }
 
@@ -94,7 +95,6 @@ namespace BeastHunter
             CanvasNpc.transform.position = new Vector3(NpcPos.x, NpcPos.y + CANVAS_OFFSET, NpcPos.z);
             DialogAreaEnterSwitcher(true);
             DialogueSystemModel.NpcID = NpcID;
-            DialogueSystemModel.DialogueNode = DialogueGenerate.DialogueCreate(NpcID, Model.Context);
         }
 
         public void OnTriggerExit(Collider other)
@@ -109,7 +109,7 @@ namespace BeastHunter
 
         public Transform GetCharacterCamera()
         {
-           return Model.Context.CharacterModel.CharacterCamera.transform;
+           return Services.SharedInstance.CameraService.CharacterCamera.transform;
         }
         #endregion
     }

@@ -17,7 +17,7 @@ namespace BeastHunter
 
         #region Properties
 
-        public Transform StartDialogueTransform { get; }
+        //public Transform StartDialogueTransform { get; }
         public StartDialogueData StartDialogueData { get; }
         public StartDialogueStruct StartDialogueStruct { get; }
 
@@ -28,7 +28,7 @@ namespace BeastHunter
 
         public StartDialogueModel(GameObject prefab, GameObject canvasNpc, StartDialogueData startDialogueData, GameContext context)
         {
-            StartDialogueTransform = prefab.transform;
+            //StartDialogueTransform = prefab.transform;
             StartDialogueData = startDialogueData;
             StartDialogueStruct = startDialogueData.StartDialogueStruct;
             Context = context;
