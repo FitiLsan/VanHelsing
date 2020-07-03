@@ -48,7 +48,7 @@ namespace BeastHunter
 
         #region Methods
 
-        public void Initialise(CharacterModel characterModel)
+        public void Initialize(CharacterModel characterModel)
         {
             CharacterCamera.transform.rotation = Quaternion.Euler(0, characterModel.CharacterCommonSettings.InstantiateDirection, 0);
             CharacterFreelookCamera = _cameraData._cameraSettings.CreateCharacterFreelookCamera(characterModel.CameraTargetTransform);

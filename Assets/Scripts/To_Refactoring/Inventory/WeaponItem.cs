@@ -12,6 +12,7 @@ namespace BeastHunter
         public WeaponType WeaponType;
 
         public GameObject WeaponPrefab;
+        public GameObject WeaponObject;
 
         public Vector3 PrefabPositionInHand;
         public Vector3 PrefabRotationInHand;

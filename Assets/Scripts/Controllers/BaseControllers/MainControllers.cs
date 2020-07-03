@@ -43,6 +43,7 @@
             //Add(new RabbitController(context));
             Add(new TargetController(context));
             Add(new InputController(context));
+            Add(new TimeRemainingController(context));
             Add(new CharacterController(context));
             //Add(new DialogueSystemController(context));
             //Add(new StartDialogueController(context));

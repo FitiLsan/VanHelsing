@@ -18,6 +18,8 @@ namespace BeastHunter {
         [SerializeField] private string _cameraDataPath;
         [SerializeField] private string _questIndicatorDataPath;
         [SerializeField] private string _questJournalDataPath;
+        [SerializeField] private string _healthBuffDataPath;
+        [SerializeField] private string _staminaBuffDataPath;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -31,6 +33,8 @@ namespace BeastHunter {
         private static ClothItem _jacket;
         private static CameraData _cameraData;
         private static QuestJournalData _questJournalData;
+        private static TemporaryBuffClass _healthBuffData;
+        private static TemporaryBuffClass _staminaBuffData;
 
         #endregion
 
@@ -154,6 +158,30 @@ namespace BeastHunter {
                     _questJournalData = Load<QuestJournalData>("Data/" + Instance._questJournalDataPath);
                 }
                 return _questJournalData;
+            }
+        }
+
+        public static TemporaryBuffClass HealthBuffData
+        {
+            get
+            {
+                if (_healthBuffData == null)
+                {
+                    _healthBuffData = Load<TemporaryBuffClass>("Data/" + Instance._healthBuffDataPath);
+                }
+                return _healthBuffData;
+            }
+        }
+
+        public static TemporaryBuffClass StaminaBuffData
+        {
+            get
+            {
+                if (_staminaBuffData == null)
+                {
+                    _staminaBuffData = Load<TemporaryBuffClass>("Data/" + Instance._staminaBuffDataPath);
+                }
+                return _staminaBuffData;
             }
         }
 
