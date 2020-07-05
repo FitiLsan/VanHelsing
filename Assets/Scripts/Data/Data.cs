@@ -16,6 +16,7 @@ namespace BeastHunter {
         [SerializeField] private string _jacketPath;
         [SerializeField] private string _cameraDataPath;
         [SerializeField] private string _rabbitDataPath;
+        [SerializeField] private string _bossDataPath;
         [SerializeField] private string _questIndicatorDataPath;
         [SerializeField] private string _questJournalDataPath;
 
@@ -29,6 +30,7 @@ namespace BeastHunter {
         private static WeaponItem _feast;
         private static ClothItem _jacket;
         private static CameraData _cameraData;
+        private static BossData _bossData;
         private static RabbitData _rabbitData;
         private static QuestJournalData _questJournalData;
 
@@ -130,6 +132,18 @@ namespace BeastHunter {
                     _cameraData = Resources.Load<CameraData>("Data/" + Instance._cameraDataPath);
                 }
                 return _cameraData;
+            }
+        }
+
+        public static BossData BossData
+        {
+            get
+            {
+                if (_bossData == null)
+                {
+                    _bossData = Resources.Load<BossData>("Data/" + Instance._bossDataPath);
+                }
+                return _bossData;
             }
         }
 
