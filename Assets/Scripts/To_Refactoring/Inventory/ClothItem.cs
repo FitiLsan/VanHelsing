@@ -3,11 +3,12 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewCloth", menuName = "CreateCloth/New", order = 0)]
+    [CreateAssetMenu(fileName = "NewCloth", menuName = "CreateItem/CreateCloth", order = 0)]
     public class ClothItem : BaseItem
     {
         #region Fields
 
+        public BodyParts BodyParts = BodyParts.None;
         public PocketInfo[] PocketInfos;
 
         #endregion
