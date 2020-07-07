@@ -12,6 +12,7 @@ namespace BeastHunter {
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
         [SerializeField] private string _giantMudCrabDataPath;
+        [SerializeField] private string _rabbitDataPath;
         [SerializeField] private string _feastPath;
         [SerializeField] private string _jacketPath;
         [SerializeField] private string _cameraDataPath;
@@ -27,6 +28,7 @@ namespace BeastHunter {
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
         private static GiantMudCrabData _giantMudCrabData;
+        private static RabbitData _rabbitData;
         private static QuestIndicatorData _questIndicatorData;
         private static WeaponItem _feast;
         private static ClothItem _jacket;
@@ -93,6 +95,18 @@ namespace BeastHunter {
                 }
                 return _giantMudCrabData;
             }
+        }
+
+        public static RabbitData RabbitData
+        {
+            get
+            {
+                if (_rabbitData == null)
+                {
+                    _rabbitData = Load<RabbitData>("Data/" + Instance._rabbitDataPath);
+                }
+                return _rabbitData;
+			}
         }
 
         public static QuestIndicatorData QuestIndicatorData

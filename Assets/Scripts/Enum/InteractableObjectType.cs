@@ -10,6 +10,6 @@
         Enemy  = 5,
         HitBox = 6,
         Npc    = 7,
-        Trap   = 8
+        Rabbit = 8
     }
 }
