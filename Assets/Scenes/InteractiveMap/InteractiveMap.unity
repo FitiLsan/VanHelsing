@@ -4560,7 +4560,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Movement Points
+  m_Text: Current Time
 --- !u!222 &1215901914
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4968,6 +4968,7 @@ GameObject:
   - component: {fileID: 1303938789}
   - component: {fileID: 1303938788}
   - component: {fileID: 1303938787}
+  - component: {fileID: 1303938790}
   m_Layer: 5
   m_Name: toSearch
   m_TagString: Untagged
@@ -5077,6 +5078,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1303938785}
   m_CullTransparentMesh: 0
+--- !u!114 &1303938790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303938785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b774b31686bc7034e876339a4134a66a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1321176667
 GameObject:
   m_ObjectHideFlags: 0
@@ -5513,6 +5526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InteractiveField: {fileID: 0}
   PlaceName: {fileID: 0}
+  PlaceId: 0
   NpcObjectList: {fileID: 0}
   NpcList: []
   Npc: {fileID: 3973176543036756638, guid: 53c40602a47a6df40bada01dce4cfc04, type: 3}

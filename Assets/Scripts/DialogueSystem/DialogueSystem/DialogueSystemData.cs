@@ -50,6 +50,7 @@ namespace BeastHunter
         public void SelectAnswer(int buttonNumber)
         {
            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.DialogAnswerSelect, new DialogArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId, Model.NpcID));
+           
 
             if (Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].IsStartQuest)
             {

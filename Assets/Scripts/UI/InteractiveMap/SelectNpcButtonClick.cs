@@ -13,7 +13,7 @@ namespace BeastHunter
             SelectNpcClickEvent?.Invoke(GetNpc());
         }
 
-        private GameObject GetNpc()
+        public GameObject GetNpc()
         {
             return gameObject;
         }

@@ -26,14 +26,16 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public StartDialogueModel(GameObject prefab, GameObject canvasNpc, StartDialogueData startDialogueData, GameContext context)
+       // public StartDialogueModel(GameObject prefab, GameObject canvasNpc, StartDialogueData startDialogueData, GameContext context)
+        public StartDialogueModel(GameObject prefab, StartDialogueData startDialogueData, GameContext context)
+
         {
             //StartDialogueTransform = prefab.transform;
             StartDialogueData = startDialogueData;
             StartDialogueStruct = startDialogueData.StartDialogueStruct;
             Context = context;
             startDialogueData.Model = this;
-            startDialogueData.CanvasNpc = canvasNpc;
+            //startDialogueData.CanvasNpc = canvasNpc;
             ToTolkNpc.ToTalkClickEvent += startDialogueData.OnDialogueStart;
             PlaceButtonClick.CanvasClickEvent += startDialogueData.OnDialogueStart;
         }
