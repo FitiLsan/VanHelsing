@@ -28,8 +28,7 @@ namespace BeastHunter
         {
             var dialogueSystemData = Data.DialogueSystemData;
             var inst = GameObject.Find("MapDialogueSystem");
-            if (inst == null)
-                
+            if (inst == null)               
             {
                 instance = GameObject.Instantiate(dialogueSystemData.DialogueSystemStruct.Prefab);
             }

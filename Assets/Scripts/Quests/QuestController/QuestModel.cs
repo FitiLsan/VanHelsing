@@ -64,7 +64,7 @@ namespace BeastHunter
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.ObjectUsed, OnObjectUse);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.DialogAnswerSelect, OnDialogAnswerSelect);
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.SaveGeneratedQuest, OnSaveGeneratedQuest);
-            //  EventManager.StartListening(GameEventTypes.ItemAcquired, OnItemAcquired);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.ItemAcquired, OnItemAcquired);
             //  EventManager.StartListening(GameEventTypes.ItemUsed, OnItemUse);
             // не удалять, события для предметов
             Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
@@ -315,11 +315,11 @@ namespace BeastHunter
             }
             return curQuest;
         }
-        //private void OnItemAcquired(EventArgs arg0)
-        //{
-        //    if (!(arg0 is ItemArgs itemArgs)) return;
-        //    QuestUpdate(QuestTaskTypes.CollectItem, itemArgs.Item.Id);
-        //}
+        private void OnItemAcquired(EventArgs arg0)
+        {
+            if (!(arg0 is ItemArgs itemArgs)) return;
+            QuestUpdate(QuestTaskTypes.CollectItem, itemArgs.ItemId);
+        }
 
         //private void OnItemUse(EventArgs arg0)
         //{

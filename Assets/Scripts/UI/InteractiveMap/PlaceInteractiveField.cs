@@ -12,6 +12,8 @@ namespace BeastHunter
         public int PlaceId;
         public GameObject NpcObjectList;
         public static List<GameObject> NpcList = new List<GameObject>();
+        public List<ItemInfo> ItemList = new List<ItemInfo>();
+
         public GameObject Npc;
 
         public Text NpcName;
@@ -54,6 +56,7 @@ namespace BeastHunter
                 Destroy(npc);
             }
             NpcList.Clear();
+            ItemList.Clear();
             InteractiveField.SetActive(true);
             PlaceName.text = place.PlaceInfo.PlaceName;
             PlaceId = place.PlaceInfo.PlaceId;
@@ -73,6 +76,10 @@ namespace BeastHunter
                 var tempNpc = Instantiate(Npc, NpcObjectList.transform.position, NpcObjectList.transform.rotation, NpcObjectList.transform);
                 NpcList.Add(tempNpc);
                 
+            }
+            if (place.itemList.Count != 0)
+            {
+                ItemList.AddRange(place.itemList);
             }
         }
         private void OnNpcSelect(GameObject npc)

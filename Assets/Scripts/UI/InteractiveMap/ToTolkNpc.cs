@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
 namespace BeastHunter
 {
     public class ToTolkNpc : MonoBehaviour, IPointerClickHandler
@@ -11,7 +12,6 @@ namespace BeastHunter
         public void OnPointerClick(PointerEventData eventData)
         {
             ToTalkClickEvent?.Invoke(GetNpcId());
-
         }
 
         public int GetNpcId()

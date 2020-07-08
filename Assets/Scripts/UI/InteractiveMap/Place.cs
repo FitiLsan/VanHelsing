@@ -10,6 +10,7 @@ namespace BeastHunter
         public Image Line;
         public PlaceInfo PlaceInfo;
         public List<NpcInfo> npcList = new List<NpcInfo>();
+        public List<ItemInfo> itemList = new List<ItemInfo>();
 
     }
 }

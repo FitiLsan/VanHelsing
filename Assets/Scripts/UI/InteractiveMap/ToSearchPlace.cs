@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,18 +8,19 @@ namespace BeastHunter
 {
     public class ToSearchPlace : MonoBehaviour, IPointerClickHandler
     {
-        public static event Action<int> ToSearchPlaceEvent;
+        public static event Action<List<ItemInfo>> ToSearchPlaceEvent;
 
         public void OnPointerClick(PointerEventData eventData)
         {
             ToSearchPlaceEvent?.Invoke(GetPlaceId());
         }
 
-        public int GetPlaceId()
+        public List<ItemInfo> GetPlaceId()
         {
             var parent = gameObject.transform.parent.transform.parent;
-            var placeId = parent.GetComponent<PlaceInteractiveField>().PlaceId;
-            return placeId;
+            var items = parent.GetComponent<PlaceInteractiveField>().ItemList;
+            
+            return items;
         }
     }
 }
