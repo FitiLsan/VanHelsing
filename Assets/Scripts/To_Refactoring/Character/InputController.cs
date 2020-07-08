@@ -77,7 +77,16 @@ namespace BeastHunter
             _inputStruct._isInputAttackRight = Input.GetButtonDown("AttackRight");
             _inputStruct._isInputUse = Input.GetButtonDown("Use");
             _inputStruct._isInputDance = Input.GetButtonDown("Dance");
-
+            // Down
+            if (Input.GetButtonDown("SummonTrap"))
+            {
+                new InitializeTrapController(_context, Data.TrapData);
+            }
+            if (Input.GetButtonDown("SummonTrap2"))
+            {
+                new InitializeTrapController(_context, Data.TrapData2);
+            }
+            // Up
             CheckAxisTotal();
             CheckEvents();
         }
