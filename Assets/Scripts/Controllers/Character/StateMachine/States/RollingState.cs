@@ -68,6 +68,7 @@ namespace BeastHunter
                 _currentHorizontalInput = _inputModel.InputTotalAxisX;
                 _currentVerticalInput = _inputModel.InputTotalAxisY;
                 _animationController.PlayRollForwardAnimation();
+                _characterModel.IsDodging = true;
             }
             else
             {
@@ -85,6 +86,7 @@ namespace BeastHunter
         public override void OnExit()
         {
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
+            _characterModel.IsDodging = false;
         }
 
         public override void OnTearDown()

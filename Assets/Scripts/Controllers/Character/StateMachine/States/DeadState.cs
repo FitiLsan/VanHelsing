@@ -2,18 +2,6 @@
 {
     public sealed class DeadState : CharacterBaseState
     {
-        #region Fields
-
-
-        #endregion
-
-
-        #region Properties
-
-
-        #endregion
-
-
         #region ClassLifeCycle
 
         public DeadState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
@@ -33,17 +21,18 @@
 
         public override void Initialize()
         {
+            _characterModel.IsDead = true;
             _animationController.PlayDeadAnimation();
+            _characterModel.CharacterTransform.tag = TagManager.NPC;
+            GlobalEventsModel.OnPlayerDie?.Invoke();
         }
 
         public override void Execute()
         {
-
         }
 
         public override void OnExit()
         {
-
         }
 
         public override void OnTearDown()

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
 
 namespace BeastHunter
 {
@@ -21,8 +21,6 @@ namespace BeastHunter
         public QuestJournalModel QuestJournalModel;
         
         public Dictionary<int, NpcModel> NpcModels;
-
-
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;

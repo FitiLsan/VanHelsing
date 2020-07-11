@@ -11,6 +11,10 @@ namespace BeastHunter
 
         [Header("Basic stats")]
 
+        [Tooltip("Health points")]
+        [Range(0.0f, 100.0f)]
+        [SerializeField] private float _healthPoints;
+
         [Tooltip("Physical power between 0 and 10.")]
         [Range(0.0f, 10.0f)]
         [SerializeField] private float _physicalPower;
@@ -28,6 +32,7 @@ namespace BeastHunter
 
         #region Properties
 
+        public float HealthPoints => _healthPoints;
         public float PhysicalPower => _physicalPower;
         public float PhysicalResistance => _physicalDamageResistance;
         public float StunResistance => _stunProbabilityResistance;

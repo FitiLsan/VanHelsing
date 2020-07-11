@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class CharacterInitilizeController : IAwake
+    public sealed class CharacterInitializeController : IAwake
     {
         #region Field
 
@@ -14,7 +14,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public CharacterInitilizeController(GameContext context)
+        public CharacterInitializeController(GameContext context)
         {
             _context = context;
         }

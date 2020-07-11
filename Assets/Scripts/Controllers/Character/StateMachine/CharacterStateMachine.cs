@@ -8,6 +8,7 @@ namespace BeastHunter
     {
         #region Fields
 
+        public GameContext Context;
         private List<CharacterBaseState> _allStates;
 
         #endregion
@@ -38,7 +39,10 @@ namespace BeastHunter
 
         public CharacterBaseState PreviousState { get; private set; }
         public CharacterBaseState CurrentState { get; private set; }
+
         public Action<CharacterBaseState, CharacterBaseState> OnStateChangeHandler { get; set; }
+        public Action<CharacterBaseState> OnAfterStateChangeHandler { get; set; }
+
         private InputModel _inputModel { get; set; }
         private CharacterModel _characterModel { get; set; }
         private CharacterAnimationController _animationController { get; set; }
@@ -48,8 +52,10 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public CharacterStateMachine(InputModel inputModel, CharacterModel characterModel, CharacterAnimationController animationController)
+        public CharacterStateMachine(InputModel inputModel, CharacterModel characterModel,
+            CharacterAnimationController animationController, GameContext context)
         {
+            Context = context;
             _inputModel = inputModel;
             _characterModel = characterModel;
             _animationController = animationController;
@@ -108,6 +114,7 @@ namespace BeastHunter
                     CurrentState.NextState = null;
                     OnStateChange(PreviousState, CurrentState);
                     CurrentState.Initialize();
+                    OnAfterStateChange(CurrentState);
                 }
             }
         }
@@ -124,6 +131,7 @@ namespace BeastHunter
                     CurrentState.NextState = nextState;
                     OnStateChange(PreviousState, CurrentState);
                     CurrentState.Initialize();
+                    OnAfterStateChange(CurrentState);
                 }
             }
         }
@@ -140,6 +148,7 @@ namespace BeastHunter
                     CurrentState.NextState = null;
                     OnStateChange(PreviousState, CurrentState);
                     CurrentState.Initialize();
+                    OnAfterStateChange(CurrentState);
                 }
             }
         }
@@ -156,6 +165,7 @@ namespace BeastHunter
                     CurrentState.NextState = nextState;
                     OnStateChange(PreviousState, CurrentState);
                     CurrentState.Initialize();
+                    OnAfterStateChange(CurrentState);
                 }
             }
         }
@@ -170,6 +180,7 @@ namespace BeastHunter
                 CurrentState.NextState = null;
                 OnStateChange(PreviousState, CurrentState);
                 CurrentState.Initialize();
+                OnAfterStateChange(CurrentState);
             }
         }
 
@@ -183,6 +194,7 @@ namespace BeastHunter
                 CurrentState.NextState = nextState;
                 OnStateChange(PreviousState, CurrentState);
                 CurrentState.Initialize();
+                OnAfterStateChange(CurrentState);
             }
         }
 
@@ -197,6 +209,7 @@ namespace BeastHunter
                 CurrentState.NextState = null;
                 OnStateChange(PreviousState, CurrentState);
                 CurrentState.Initialize();
+                OnAfterStateChange(CurrentState);
             }
         }
 
@@ -211,6 +224,7 @@ namespace BeastHunter
                 CurrentState.NextState = nextState;
                 OnStateChange(PreviousState, CurrentState);
                 CurrentState.Initialize();
+                OnAfterStateChange(CurrentState);
             }
         }
 
@@ -225,6 +239,7 @@ namespace BeastHunter
                 CurrentState.NextState = null;
                 OnStateChange(PreviousState, CurrentState);
                 CurrentState.Initialize();
+                OnAfterStateChange(CurrentState);
             }
         }
 
@@ -239,6 +254,7 @@ namespace BeastHunter
                 CurrentState.NextState = nextState;
                 OnStateChange(PreviousState, CurrentState);
                 CurrentState.Initialize();
+                OnAfterStateChange(CurrentState);
             }
         }
 
@@ -251,6 +267,7 @@ namespace BeastHunter
             CurrentState.NextState = null;
             OnStateChange(PreviousState, CurrentState);
             CurrentState.Initialize();
+            OnAfterStateChange(CurrentState);
         }
 
         public void ReturnStateAnyway(CharacterBaseState nextState)
@@ -262,14 +279,17 @@ namespace BeastHunter
             CurrentState.NextState = nextState;
             OnStateChange(PreviousState, CurrentState);
             CurrentState.Initialize();
+            OnAfterStateChange(CurrentState);
         }
 
         private void OnStateChange(CharacterBaseState previousState, CharacterBaseState newState)
         {
-            if(OnStateChangeHandler != null)
-            {
-                OnStateChangeHandler.Invoke(previousState, newState);
-            }
+            OnStateChangeHandler?.Invoke(previousState, newState);
+        }
+
+        private void OnAfterStateChange(CharacterBaseState currentState)
+        {
+            OnAfterStateChangeHandler?.Invoke(currentState);
         }
 
         public void TearDownStates()

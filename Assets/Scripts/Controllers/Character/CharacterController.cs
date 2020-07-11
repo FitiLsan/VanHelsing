@@ -55,7 +55,7 @@ namespace BeastHunter
             _currentHealth = _characterModel.CharacterCommonSettings.HealthPoints;
             _currentBattleIgnoreTime = 0;
 
-            _stateMachine = new CharacterStateMachine(_inputModel, _characterModel, _animationController);
+            _stateMachine = new CharacterStateMachine(_inputModel, _characterModel, _animationController, _context);
             _stateMachine.SetStartState(_stateMachine._defaultIdleState);
 
             _services.EventManager.StartListening(InputEventTypes.Jump, SetJumpingState);
@@ -71,6 +71,7 @@ namespace BeastHunter
             _characterModel.PlayerBehavior.SetTakeDamageEvent(TakeDamage);
 
             _stateMachine.OnStateChangeHandler += OnStateChange;
+            _stateMachine.OnAfterStateChangeHandler += OnAfterStateChange;
 
             LockCharAction.LockCharacterMovement += ExitTalkingState;
             StartDialogueData.StartDialog += SetTalkingState;
@@ -123,6 +124,7 @@ namespace BeastHunter
             _characterModel.PlayerBehavior.DeleteTakeDamageEvent(TakeDamage);
 
             _stateMachine.OnStateChangeHandler -= OnStateChange;
+            _stateMachine.OnAfterStateChangeHandler -= OnAfterStateChange;
             _stateMachine.TearDownStates();
 
             LockCharAction.LockCharacterMovement -= ExitTalkingState;
@@ -138,7 +140,8 @@ namespace BeastHunter
         {
             if (enemy != null && damage != null)
             {
-                enemy.TakeDamageEvent(damage);
+                //enemy.TakeDamageEvent(damage);
+                _context.NpcModels[enemy.GameObject.GetInstanceID()].TakeDamage(damage);
             }
         }
 
@@ -149,10 +152,10 @@ namespace BeastHunter
 
         private void TakeDamage(int id, Damage damage)
         {
-            if (_stateMachine.CurrentState != _stateMachine._deadState)
+            if (!_characterModel.IsDead && !_characterModel.IsDodging)
             {
                 _currentHealth -= damage.PhysicalDamage;
-                Debug.Log("player got " + damage.PhysicalDamage + " physical damage");
+                
                 float stunProbability = Random.Range(0f, 1f);
 
                 if (_currentHealth <= 0)
@@ -164,7 +167,9 @@ namespace BeastHunter
                     _stateMachine.SetStateAnyway(_stateMachine._stunnedState);
                 }
 
-                _characterModel.IsInBattleMode = true; 
+                _characterModel.IsInBattleMode = true;
+
+                Debug.Log("Player has: " + _currentHealth +" of HP");
             }
         }
 
@@ -397,6 +402,7 @@ namespace BeastHunter
                     if (_characterModel.IsEnemyNear)
                     {
                         _stateMachine.SetStateOverride(_stateMachine._battleTargetMovementState);
+                        
                     }
                 }
             }
@@ -541,14 +547,20 @@ namespace BeastHunter
                 _characterModel.CharacterSphereCollider.radius = _characterModel.CharacterCommonSettings.SphereColliderRadius;
                 _stateMachine.SetStateOverride(_stateMachine._removingWeaponState);
             }
+        }
 
-            if(!previousState.IsTargeting && currentState.IsTargeting && !_stateMachine.CurrentState.IsAttacking)
+        private void OnAfterStateChange(CharacterBaseState currentState)
+        {
+            if(currentState != _stateMachine._attackingLeftState && currentState != _stateMachine._attackingRightState)
             {
-                _services.CameraService.SetActiveCamera(_services.CameraService.CharacterTargetCamera);
-            }
-            else if(previousState.IsTargeting && !currentState.IsTargeting && !_stateMachine.CurrentState.IsAttacking)
-            {
-                _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
+                if (currentState.IsTargeting)
+                {
+                    _services.CameraService.SetActiveCamera(_services.CameraService.CharacterTargetCamera);
+                }
+                else if (currentState != _stateMachine._talkingState)
+                {
+                    _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
+                }
             }
         }
 

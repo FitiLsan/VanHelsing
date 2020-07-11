@@ -51,10 +51,12 @@ namespace BeastHunter
         public float AnimationSpeed { get; set; }
 
         public bool IsMoving { get; set; }
+        public bool IsDodging { get; set; }
         public bool IsGrounded { get; set; }
         public bool IsInBattleMode { get; set; }
         public bool IsEnemyNear { get; set; }
         public bool IsWeaponInHands { get; set; }
+        public bool IsDead { get; set; }
 
         #endregion
 
@@ -163,6 +165,7 @@ namespace BeastHunter
             IsEnemyNear = false;
             IsInBattleMode = false;
             IsWeaponInHands = false;
+            IsDead = false;
             CurrentSpeed = 0;
             AnimationSpeed = CharacterData._characterCommonSettings.AnimatorBaseSpeed;
 

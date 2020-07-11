@@ -61,6 +61,7 @@ namespace BeastHunter
                 PrepareRoll(_currentHorizontalInput, _currentVerticalInput);
                 CanExit = false;
                 CanBeOverriden = false;
+                _characterModel.IsDodging = true;
             }
             else
             {
@@ -78,6 +79,7 @@ namespace BeastHunter
         public override void OnExit()
         {
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
+            _characterModel.IsDodging = false;
         }
 
         public override void OnTearDown()
