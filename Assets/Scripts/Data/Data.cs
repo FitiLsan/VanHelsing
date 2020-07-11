@@ -22,6 +22,8 @@ namespace BeastHunter {
         [SerializeField] private string _healthBuffDataPath;
         [SerializeField] private string _staminaBuffDataPath;
         [SerializeField] private string _bossDataPath;
+        [SerializeField] private string _trapDataPath;
+        [SerializeField] private string _trapDataPath2;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -39,6 +41,9 @@ namespace BeastHunter {
         private static TemporaryBuffClass _healthBuffData;
         private static TemporaryBuffClass _staminaBuffData;
         private static BossData _bossData;
+        private static TrapData _trapData;
+        private static TrapData _trapData2;
+
 
         #endregion
 
@@ -210,6 +215,30 @@ namespace BeastHunter {
                     _bossData = Load<BossData>("Data/" + Instance._bossDataPath);
                 }
                 return _bossData;
+            }
+        }
+
+        public static TrapData TrapData
+        {
+            get
+            {
+                if (_trapData == null)
+                {
+                    _trapData = Load<TrapData>("Data/" + Instance._trapDataPath);
+                }
+                return _trapData;
+            }
+        }
+
+        public static TrapData TrapData2
+        {
+            get
+            {
+                if (_trapData2 == null)
+                {
+                    _trapData2 = Load<TrapData>("Data/" + Instance._trapDataPath2);
+                }
+                return _trapData2;
             }
         }
 
