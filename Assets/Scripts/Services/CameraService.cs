@@ -48,12 +48,15 @@ namespace BeastHunter
 
         #region Methods
 
-        public void Initialise(CharacterModel characterModel)
+        public void Initialize(CharacterModel characterModel)
         {
             CharacterCamera.transform.rotation = Quaternion.Euler(0, characterModel.CharacterCommonSettings.InstantiateDirection, 0);
             CharacterFreelookCamera = _cameraData._cameraSettings.CreateCharacterFreelookCamera(characterModel.CameraTargetTransform);
             CharacterTargetCamera = _cameraData._cameraSettings.CreateCharacterTargetCamera(characterModel.CameraTargetTransform);
             CharacterDialogCamera = _cameraData._cameraSettings.CreateCharacterDialogCamera(characterModel.CameraTargetTransform);
+
+            CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
+            CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenterWaitTime = 0;
 
             PreviousActiveCamera = CharacterFreelookCamera;
             SetActiveCamera(CharacterFreelookCamera);
@@ -72,13 +75,22 @@ namespace BeastHunter
 
         public void SetActiveCamera(CinemachineVirtualCameraBase newCamera)
         {
-            if(newCamera != CurrentActiveCamera)
+            if(_context.CharacterModel != null && newCamera != CurrentActiveCamera)
             {
+                if(newCamera != CharacterFreelookCamera)
+                {
+                    CharacterFreelookCamera.m_RecenterToTargetHeading.m_enabled = true;                  
+                }
+                else
+                {
+                    CharacterFreelookCamera.m_RecenterToTargetHeading.m_enabled = false;
+                }
+                
                 PreviousActiveCamera = CurrentActiveCamera;
                 CurrentActiveCamera = newCamera;
 
                 SetAllCamerasEqual();
-                newCamera.Priority++;
+                CurrentActiveCamera.Priority++;
 
                 float blendTime = 0f;
 

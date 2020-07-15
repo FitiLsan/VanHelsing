@@ -1,53 +1,120 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace BeastHunter
 {
-    public class TrapBehaviour : MonoBehaviour
+    public sealed class TrapBehaviour : MonoBehaviour
     {
-        public TrapStruct TrapStruct;
-        public int Type;
+        #region Fields
+        
         public GameObject Projectile;
-        private GameObject Curr;
         public Transform ProjectilePlace;
-        private int Charge = 1;
+        public int Type;
 
-        private void Awake()
+        private GameContext _context;
+        private Animator _animator;
+        private int _charge = 1;
+        private bool _isTargeting = false;
+        private Transform _target;
+
+        #endregion
+
+
+        #region UnityMethods
+
+        private void OnTriggerEnter(Collider other)
         {
-            if(transform.childCount != 0)
+            if(!other.isTrigger)
+            {
+                if (other.transform.CompareTag(TagManager.ENEMY) && Type == 0)
+                {
+                    if (_charge > 0)
+                    {
+                        _context.NpcModels[other.gameObject.GetInstanceID()].TakeDamage(
+                            Services.SharedInstance.AttackService.CountDamage(
+                            _context.TrapModels[this.gameObject.GetInstanceID()].TrapStruct.Damage,
+                            _context.NpcModels[other.gameObject.GetInstanceID()].GetStats().
+                            BaseStats));
+
+                        _animator.Play("BearTrapLock");
+                        _charge -= 1;
+
+                        other.transform.position = this.transform.position;
+
+                        _context.TrapModels.Remove(this.gameObject.GetInstanceID());
+                        Destroy(gameObject, 2f);
+                    }
+                    else
+                    {
+                        _context.TrapModels.Remove(this.gameObject.GetInstanceID());
+                        Destroy(gameObject, 2f);
+                    }
+                }
+                if (other.transform.CompareTag(TagManager.ENEMY) && Type == 1)
+                {
+                    if (_charge > 0)
+                    {
+                        _target = other.transform;
+                        _isTargeting = true;
+                        gameObject.GetComponent<Animation>().Play();
+                        TimeRemaining launch = new TimeRemaining(LaunchAcid, 0.7f);
+                        launch.AddTimeRemaining(0.7f);
+
+                        _charge -= 1;
+                        _context.TrapModels.Remove(this.gameObject.GetInstanceID());
+                        Destroy(gameObject, 2f);
+                    }
+                    else
+                    {
+                        _context.TrapModels.Remove(this.gameObject.GetInstanceID());
+                        Destroy(gameObject, 2f);
+                    }
+                }
+            }           
+        }
+
+        private void Update()
+        {
+            if (_isTargeting)
+            {
+                transform.LookAt(_target);
+            }
+        }
+
+        #endregion
+
+
+        #region Methods
+
+        public void Init(TrapModel model, GameContext context)
+        {
+            _context = context;
+            _animator = gameObject.GetComponent<Animator>();
+
+            if (model.TrapData.TrapType == TrapsEnum.AcidCatapult)
+            {
+                foreach (Transform place in transform.GetComponentsInChildren<Transform>())
+                {
+                    if (place.name == "Acid") ProjectilePlace = place;
+                }
+            }
+
+            else if (transform.childCount != 0)
             {
                 ProjectilePlace = transform.GetChild(0);
             }
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void LaunchAcid()
         {
-            if (other.transform.CompareTag(TagManager.PLAYER) && Type == 0)
-            {
-                if (Charge > 0)
-                {
-                    //TrapStruct Damage
-                    Charge -= 1;
-                }
-                else
-                {
-                    Destroy(gameObject, 5);
-                }
-            }
-            if (other.transform.CompareTag(TagManager.PLAYER) && Type == 1)
-            {
-                if(Charge > 0)
-                {
-                    Instantiate(Projectile, ProjectilePlace);
-                    Charge -= 1;
-                }
-                else
-                {
-                    Destroy(gameObject, 5);
-                }
-            }
+            GameObject _acid = Instantiate(Projectile, ProjectilePlace.position, Quaternion.identity);
+
+            _acid.GetComponent<Rigidbody>().AddForce((_target.position - _acid.transform.position + Vector3.up * 3f) * 2f, 
+                ForceMode.Impulse);
+            _acid.GetComponent<ProjectileScript>().Context = _context;
+            Destroy(ProjectilePlace.gameObject);
         }
+
+        #endregion
     }
 }

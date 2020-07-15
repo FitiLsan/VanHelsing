@@ -35,13 +35,38 @@ namespace BeastHunter
             Clothes.Add(BodyParts.Hips, null);
             Clothes.Add(BodyParts.Legs, null);
             Clothes.Add(BodyParts.Feet, null);
-            Feast = Data.Feast;     
+            Feast = Data.Feast;
         }
 
         #endregion
 
 
         #region Methods
+
+        public void Initialize(CharacterModel characterModel)
+        {
+            foreach (var cloth in Clothes)
+            {
+                if (cloth.Value != null)
+                {
+                    foreach (var pocket in cloth.Value.PocketInfos)
+                    {
+                        if (pocket.ItemTypeInPocket == ItemType.Weapon)
+                        {
+                            var newPocket = GameObject.Instantiate(pocket.Prefab, 
+                                characterModel.CharacterAnimator.GetBoneTransform(pocket.Attachment), true);
+                            newPocket.transform.localPosition = pocket.LocalPosition;
+                            newPocket.transform.localEulerAngles = pocket.LocalRotation;
+
+                            var newWeapon = pocket.ItemInPocket as WeaponItem;
+                            (pocket.ItemInPocket as WeaponItem).WeaponObject = GameObject.Instantiate(newWeapon.WeaponPrefab, newPocket.transform);
+                            (pocket.ItemInPocket as WeaponItem).WeaponObject.transform.localPosition = Vector3.zero;
+                            (pocket.ItemInPocket as WeaponItem).WeaponObject.transform.localEulerAngles = Vector3.zero;
+                        }
+                    }
+                }
+            }
+        }
 
         public void SetItemInRandomPocket(BaseItem item)
         {
@@ -186,9 +211,8 @@ namespace BeastHunter
                 // set in current arm
             }
 
-            
-
             weaponHitBox = weaponHitBoxBehaviour;
+            weapon.WeaponObject.SetActive(false);
         }
 
         public void HideWepons(CharacterModel characterModel)
@@ -202,6 +226,7 @@ namespace BeastHunter
                 characterModel.RightHandWeaponObject.SetActive(false);
             }
 
+            (Clothes[BodyParts.Torso].PocketInfos[0].ItemInPocket as WeaponItem).WeaponObject.SetActive(true);
             characterModel.IsWeaponInHands = false;
         }
 
@@ -216,6 +241,7 @@ namespace BeastHunter
                 characterModel.RightHandWeaponObject.SetActive(true);
             }
 
+            (Clothes[BodyParts.Torso].PocketInfos[0].ItemInPocket as WeaponItem).WeaponObject.SetActive(false);
             characterModel.IsWeaponInHands = true;
         }
 

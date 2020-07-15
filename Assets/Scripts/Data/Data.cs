@@ -14,11 +14,14 @@ namespace BeastHunter {
         [SerializeField] private string _giantMudCrabDataPath;
         [SerializeField] private string _rabbitDataPath;
         [SerializeField] private string _feastPath;
+        [SerializeField] private string _bossFeastPath;
         [SerializeField] private string _jacketPath;
         [SerializeField] private string _cameraDataPath;
-        [SerializeField] private string _rabbitDataPath;
         [SerializeField] private string _questIndicatorDataPath;
         [SerializeField] private string _questJournalDataPath;
+        [SerializeField] private string _healthBuffDataPath;
+        [SerializeField] private string _staminaBuffDataPath;
+        [SerializeField] private string _bossDataPath;
         [SerializeField] private string _trapDataPath;
         [SerializeField] private string _trapDataPath2;
 
@@ -31,12 +34,16 @@ namespace BeastHunter {
         private static RabbitData _rabbitData;
         private static QuestIndicatorData _questIndicatorData;
         private static WeaponItem _feast;
+        private static WeaponItem _bossFeast;
         private static ClothItem _jacket;
         private static CameraData _cameraData;
-        private static RabbitData _rabbitData;
         private static QuestJournalData _questJournalData;
+        private static TemporaryBuffClass _healthBuffData;
+        private static TemporaryBuffClass _staminaBuffData;
+        private static BossData _bossData;
         private static TrapData _trapData;
         private static TrapData _trapData2;
+
 
         #endregion
 
@@ -130,6 +137,18 @@ namespace BeastHunter {
             }
         }
 
+        public static WeaponItem BossFeast
+        {
+            get
+            {
+                if (_bossFeast == null)
+                {
+                    _bossFeast = Resources.Load<WeaponItem>("Data/" + Instance._bossFeastPath);
+                }
+                return _bossFeast;
+            }
+        }
+
         public static ClothItem Jacket {
             get {
                 if (_jacket == null) {
@@ -151,18 +170,6 @@ namespace BeastHunter {
             }
         }
 
-        public static RabbitData RabbitData
-        {
-            get
-            {
-                if (_rabbitData == null)
-                {
-                    _rabbitData = Resources.Load<RabbitData>("Data/" + Instance._rabbitDataPath);
-                }
-                return _rabbitData;
-            }
-        }
-
         public static QuestJournalData QuestJournalData
         {
             get
@@ -172,6 +179,42 @@ namespace BeastHunter {
                     _questJournalData = Load<QuestJournalData>("Data/" + Instance._questJournalDataPath);
                 }
                 return _questJournalData;
+            }
+        }
+
+        public static TemporaryBuffClass HealthBuffData
+        {
+            get
+            {
+                if (_healthBuffData == null)
+                {
+                    _healthBuffData = Load<TemporaryBuffClass>("Data/" + Instance._healthBuffDataPath);
+                }
+                return _healthBuffData;
+            }
+        }
+
+        public static TemporaryBuffClass StaminaBuffData
+        {
+            get
+            {
+                if (_staminaBuffData == null)
+                {
+                    _staminaBuffData = Load<TemporaryBuffClass>("Data/" + Instance._staminaBuffDataPath);
+                }
+                return _staminaBuffData;
+            }
+        }
+
+        public static BossData BossData
+        {
+            get
+            {
+                if (_bossData == null)
+                {
+                    _bossData = Load<BossData>("Data/" + Instance._bossDataPath);
+                }
+                return _bossData;
             }
         }
 

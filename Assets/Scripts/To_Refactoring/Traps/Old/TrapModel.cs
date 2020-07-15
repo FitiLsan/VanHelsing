@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace BeastHunter
 {
-    public class TrapModel
+    public sealed class TrapModel
     {
         #region Fields
 
@@ -33,7 +31,6 @@ namespace BeastHunter
 
         public void Execute()
         {
-            Debug.Log(Trap.transform.position);
         }
 
         #endregion
