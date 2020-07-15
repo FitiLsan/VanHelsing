@@ -5,6 +5,13 @@ namespace BeastHunter
 {
     public sealed class AttackingFromLeftState : CharacterBaseState
     {
+        #region Constants
+
+        private const float TIME_PART_TO_ENABLE_WEAPON = 0.3f;
+
+        #endregion
+
+
         #region Fields
 
         private float _currentAttackTime;
@@ -37,7 +44,8 @@ namespace BeastHunter
             _characterModel.LeftHandWeapon.CurrentAttack = _characterModel.LeftHandWeapon.AttacksLeft[_currentAttackIndex];
             _currentAttackTime = _characterModel.LeftHandWeapon.CurrentAttack.Time;
             _animationController.PlayAttackAnimation(_characterModel.LeftHandWeapon.SimpleAttackFromLeftkAnimationHash, _currentAttackIndex);
-            _characterModel.LeftWeaponBehavior.IsInteractable = true;
+            TimeRemaining enableWeapon = new TimeRemaining(EnableWeapon, TIME_PART_TO_ENABLE_WEAPON * _currentAttackTime);
+            enableWeapon.AddTimeRemaining(TIME_PART_TO_ENABLE_WEAPON * _currentAttackTime);
             CanExit = false;
         }
 
@@ -76,6 +84,11 @@ namespace BeastHunter
         private void StayInBattle()
         {
             _characterModel.IsInBattleMode = true;
+        }
+
+        private void EnableWeapon()
+        {
+            _characterModel.LeftWeaponBehavior.IsInteractable = true;
         }
 
         #endregion

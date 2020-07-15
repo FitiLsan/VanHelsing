@@ -64,6 +64,8 @@ namespace BeastHunter
             _services.EventManager.StartListening(InputEventTypes.AttackLeft, SetAttackingLeftState);
             _services.EventManager.StartListening(InputEventTypes.AttackRight, SetAttackingRightState);
             _services.EventManager.StartListening(InputEventTypes.Dance, ChangeDancingState);
+            _services.EventManager.StartListening(InputEventTypes.PlaceTrap1, PlaceTrap1);
+            _services.EventManager.StartListening(InputEventTypes.PlaceTrap2, PlaceTrap2);
 
             _characterModel.PlayerBehavior.OnFilterHandler += OnFilterHandler;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterHandler;
@@ -117,6 +119,8 @@ namespace BeastHunter
             _services.EventManager.StopListening(InputEventTypes.AttackLeft, SetAttackingLeftState);
             _services.EventManager.StopListening(InputEventTypes.AttackRight, SetAttackingRightState);
             _services.EventManager.StopListening(InputEventTypes.Dance, ChangeDancingState);
+            _services.EventManager.StopListening(InputEventTypes.PlaceTrap1, PlaceTrap1);
+            _services.EventManager.StopListening(InputEventTypes.PlaceTrap2, PlaceTrap2);
 
             _characterModel.PlayerBehavior.OnFilterHandler -= OnFilterHandler;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterHandler;
@@ -342,6 +346,16 @@ namespace BeastHunter
                 _characterModel.LeftWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
                 _characterModel.LeftWeaponBehavior.OnTriggerEnterHandler += OnLeftHitBoxHit;
             }
+        }
+
+        private void PlaceTrap1()
+        {
+            new InitializeTrapController(_context, Data.TrapData);
+        }
+
+        private void PlaceTrap2()
+        {
+            new InitializeTrapController(_context, Data.TrapData2);
         }
 
         #endregion
@@ -614,7 +628,8 @@ namespace BeastHunter
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
                 DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.LeftHandWeapon, 
-                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().BaseStats));
+                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().
+                    BaseStats));
                 hitBox.IsInteractable = false;
             }
         }
@@ -626,7 +641,8 @@ namespace BeastHunter
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
                 DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.RightHandWeapon,
-                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().BaseStats));
+                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().
+                    BaseStats));
                 hitBox.IsInteractable = false;
             }
         }

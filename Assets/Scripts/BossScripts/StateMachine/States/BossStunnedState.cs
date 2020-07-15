@@ -11,6 +11,7 @@
 
         #region Fields
 
+        private float _bossAcceleration;
 
         #endregion
 
@@ -34,7 +35,7 @@
         {
             CanExit = false;
             CanBeOverriden = false;
-            _stateMachine._model.BossNavAgent.speed = 0f;
+            _stateMachine._model.BossNavAgent.enabled = false;
             _stateMachine._model.BossAnimator.Play("StunnedState");
             TimeRemaining stopStun = new TimeRemaining(StopStun, STUN_TIME);
             stopStun.AddTimeRemaining(STUN_TIME);
@@ -46,7 +47,7 @@
 
         public override void OnExit()
         {
-
+            _stateMachine._model.BossNavAgent.enabled = true;
         }
 
         public override void OnTearDown()

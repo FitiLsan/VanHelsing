@@ -18,7 +18,9 @@ namespace BeastHunter
         NumberThree,
         NumberFour,
         Inventory,
-        QuestJournal
+        QuestJournal,
+        PlaceTrap1,
+        PlaceTrap2
     }
 }
 

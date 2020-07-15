@@ -138,15 +138,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TrapStruct:
     Prefab: {fileID: 0}
-    Damage: 0
-    Duration: 0
+    Damage:
+      PhysicalDamage: 10
+      StunProbability: 0
+    Duration: 5
     NotPhysicalTypesOfDamage: 0
     PhysicalTypesOfDamage: 0
   Type: 1
   Projectile: {fileID: 4008908970314849511, guid: 94bd2ae2f3b8e2a479092fd4e18db29a,
     type: 3}
   ProjectilePlace: {fileID: 0}
-  charges: 2
 --- !u!135 &4412275322922283059
 SphereCollider:
   m_ObjectHideFlags: 0

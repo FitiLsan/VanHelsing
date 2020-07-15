@@ -9,7 +9,8 @@ namespace BeastHunter
 
         private const float DISTANCE_TO_START_ATTACK = 2.5f;
         private const float LOOK_TO_TARGET_SPEED = 1f;
-        private const float PART_OF_NONE_ATTACK_TIME = 3f;
+        private const float PART_OF_NONE_ATTACK_TIME_LEFT = 0.15f;
+        private const float PART_OF_NONE_ATTACK_TIME_RIGHT = 0.3f;
 
         #endregion
 
@@ -60,29 +61,29 @@ namespace BeastHunter
 
             _stateMachine._model.BossNavAgent.SetDestination(_stateMachine._model.BossTransform.position);
             _stateMachine._model.BossNavAgent.speed = 0f;
-            _isCurrentAttackRight = UnityEngine.Random.Range(0, 2) == 1? true : false;
+            _isCurrentAttackRight = Random.Range(0, 2) == 1? true : false;
 
             if (_isCurrentAttackRight)
             {
-                _attackNumber = UnityEngine.Random.Range(0, _rightWeapon.AttacksRight.Length);
+                _attackNumber = Random.Range(0, _rightWeapon.AttacksRight.Length);
                 _currentAttackTime = _rightWeapon.AttacksRight[_attackNumber].Time;
                 _stateMachine._model.BossAnimator.Play(_rightWeapon.SimpleAttackAnimationName + "Right_" + _attackNumber, 0, 0f);
                 _rightWeapon.CurrentAttack = _rightWeapon.AttacksRight[_attackNumber];
 
-                TimeRemaining enableWeapon = new TimeRemaining(SetRightWeaponInteractable, _currentAttackTime / 
-                    PART_OF_NONE_ATTACK_TIME);
-                enableWeapon.AddTimeRemaining(_currentAttackTime / PART_OF_NONE_ATTACK_TIME);
+                TimeRemaining enableWeapon = new TimeRemaining(SetRightWeaponInteractable, _currentAttackTime * 
+                    PART_OF_NONE_ATTACK_TIME_RIGHT);
+                enableWeapon.AddTimeRemaining(_currentAttackTime * PART_OF_NONE_ATTACK_TIME_RIGHT);
             }
             else
             {
-                _attackNumber = UnityEngine.Random.Range(0, _leftWeapon.AttacksLeft.Length);
+                _attackNumber = Random.Range(0, _leftWeapon.AttacksLeft.Length);
                 _currentAttackTime = _leftWeapon.AttacksRight[_attackNumber].Time;
                 _stateMachine._model.BossAnimator.Play(_leftWeapon.SimpleAttackAnimationName + "Left_" + _attackNumber, 0, 0f);
                 _leftWeapon.CurrentAttack = _leftWeapon.AttacksLeft[_attackNumber];
 
-                TimeRemaining enableWeapon = new TimeRemaining(SetLeftWeaponInteractable, _currentAttackTime / 
-                    PART_OF_NONE_ATTACK_TIME);
-                enableWeapon.AddTimeRemaining(_currentAttackTime / PART_OF_NONE_ATTACK_TIME);
+                TimeRemaining enableWeapon = new TimeRemaining(SetLeftWeaponInteractable, _currentAttackTime * 
+                    PART_OF_NONE_ATTACK_TIME_LEFT);
+                enableWeapon.AddTimeRemaining(_currentAttackTime * PART_OF_NONE_ATTACK_TIME_LEFT);
             }           
         }
 

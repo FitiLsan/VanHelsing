@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e165be1ebf5c64d896f7a0ad8d5292, type: 3}
   m_Name: Trap2
   m_EditorClassIdentifier: 
+  TrapType: 2
   TrapStruct:
-    Prefab: {fileID: 7368306272674117102, guid: 990572120a75e694397dde2fbcb6567a,
+    Prefab: {fileID: 1724260475813912619, guid: 7d1df51bf41637b4c92386518c2a6322,
       type: 3}
-    Damage: 5
-    Duration: 2
+    Damage:
+      PhysicalDamage: 50
+      StunProbability: 0
+    Duration: 40
+    HeightPlacing: 0.2
     NotPhysicalTypesOfDamage: 4
     PhysicalTypesOfDamage: 0

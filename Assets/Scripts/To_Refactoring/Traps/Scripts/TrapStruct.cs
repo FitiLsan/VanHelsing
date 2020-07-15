@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -9,11 +7,16 @@ namespace BeastHunter
     [Serializable]
     public struct TrapStruct
     {
+        #region Fields
+
         public GameObject Prefab;
-        public float Damage;
+        public Damage Damage;
         public float Duration;
+        public float HeightPlacing;
         public NotPhysicalTypesOfDamage NotPhysicalTypesOfDamage;
         public PhysicalTypesOfDamage PhysicalTypesOfDamage;
+        
+        #endregion
     }
 }
 

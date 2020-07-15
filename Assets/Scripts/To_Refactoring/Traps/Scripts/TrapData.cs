@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewData", menuName = "CreateData/TrapData", order = 0)]
-    public class TrapData : ScriptableObject
+    public sealed class TrapData : ScriptableObject
     {
         #region Fields
 
+        public TrapsEnum TrapType;
         public TrapStruct TrapStruct;
 
         #endregion
