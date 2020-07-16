@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 
 namespace BeastHunter
 {
-    public class InitializeTrapController
+    public sealed class InitializeTrapController
     {
         #region Field
 
@@ -12,6 +11,7 @@ namespace BeastHunter
         private Transform _camera;
         RaycastHit hit;
         private Vector3 SpawnTrapPosition;
+        private TrapData _trapData;
 
         #endregion
 
@@ -29,16 +29,18 @@ namespace BeastHunter
 
         #region IAwake
 
-        public void OnAwake(TrapData _trapData)
+        public void OnAwake(TrapData trapData)
         {
+            _trapData = trapData;
             _camera = Services.SharedInstance.CameraService.CharacterCamera.transform;
             Physics.Raycast(_camera.position, _camera.TransformDirection(Vector3.forward), 100, 9);
             Debug.DrawRay(_camera.position, _camera.TransformDirection(Vector3.forward), Color.yellow, 5);
-            if (Physics.Raycast(_camera.position, _camera.TransformDirection(Vector3.forward),out hit, 150, 9))
+
+            if (Physics.Raycast(_camera.position, _camera.TransformDirection(Vector3.forward), out hit, 150, 9))
             {
-                if(hit.transform.tag == "Ground")
+                if (hit.transform.tag == "Ground")
                 {
-                    SpawnTrapPosition = hit.point;
+                    SpawnTrapPosition = Services.SharedInstance.PhysicsService.GetGroundedPosition(hit.point);
                     Debug.Log(SpawnTrapPosition);
                 }
                 else
@@ -52,14 +54,39 @@ namespace BeastHunter
                 Debug.Log(hit + " Not found any target");
                 return;
             }
-                var TrapData = _trapData;
-            //Vector3 spawnPoint = Vector3.zero;
-            //Services.SharedInstance.PhysicsService.FindGround(SpawnTrapPosition, out spawnPoint);
-            GameObject instance = GameObject.Instantiate(TrapData.TrapStruct.Prefab, SpawnTrapPosition, Quaternion.identity);
-            TrapModel TrapModel = new TrapModel(instance, TrapData);
-            _context.TrapModel = TrapModel;
-            instance.GetComponent<TrapBehaviour>().TrapStruct = TrapData.TrapStruct;
-            //_context.AddTriggers(instance.GetComponent<InteractableObjectBehavior>().Type, instance.GetComponent<InteractableObjectBehavior>());
+
+            GameObject instance = GameObject.Instantiate(_trapData.TrapStruct.Prefab, SpawnTrapPosition, Quaternion.identity);
+
+            Vector3 cameraRotation = _camera.transform.eulerAngles;
+            instance.transform.eulerAngles = new Vector3(0f, cameraRotation.y, 0f);
+            instance.transform.position = new Vector3(instance.transform.position.x, instance.transform.position.y +
+                _trapData.TrapStruct.HeightPlacing, instance.transform.position.z);
+
+            TrapModel TrapModel = new TrapModel(instance, _trapData);
+            _context.TrapModels.Add(instance.GetInstanceID(), TrapModel);
+            instance.GetComponent<TrapBehaviour>().Init(TrapModel, _context);
+
+            Collider[] instanceColliders = instance.GetComponents<Collider>();
+
+            foreach (Collider collider in instanceColliders)
+            {
+                if(collider.isTrigger)
+                {
+                    if(collider.GetType() == typeof(CapsuleCollider))
+                    {
+                        (collider as CapsuleCollider).radius = _trapData.TrapStruct.Duration;
+                    }
+                    else if (collider.GetType() == typeof(SphereCollider))
+                    {
+                        (collider as SphereCollider).radius = _trapData.TrapStruct.Duration;
+                    }
+                    else if (collider.GetType() == typeof(BoxCollider))
+                    {
+                        (collider as BoxCollider).size = new Vector3(_trapData.TrapStruct.Duration,
+                            _trapData.TrapStruct.Duration, _trapData.TrapStruct.Duration);
+                    }
+                }
+            }
         }
 
         #endregion

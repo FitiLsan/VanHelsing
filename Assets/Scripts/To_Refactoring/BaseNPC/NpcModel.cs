@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public abstract class NpcModel : IDoSmth, ITakeDamage
     {
         #region Fields
 
+
         public float CurrentHealth;
+
         public bool IsDead;
 
         #endregion
@@ -16,9 +14,13 @@ namespace BeastHunter
 
         #region Metods
 
+        public abstract void OnAwake();
+
         public abstract void Execute();
 
-        public abstract NpcStats GetStats(); 
+        public abstract NpcStats GetStats();
+
+        public abstract void OnTearDown();
 
         #endregion
 
