@@ -37,8 +37,10 @@ namespace BeastHunter
 
         public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
         {
-            InteractableObjectBehavior enemyBehavior = enemy.GetComponent<PlayerBehavior>();
-            enemyBehavior.OnTakeDamageHandler(Services.SharedInstance.AttackService.CountDamage(damage, Stats, enemyBehavior.Stats));
+            PlayerBehavior enemyBehavior = enemy.GetComponent<PlayerBehavior>();
+            //BaseStatsClass enemyStats = _context.PlayerModel.GetStats().BaseStats;
+            enemyBehavior.TakeDamageEvent(Services.SharedInstance.AttackService.CountDamage(damage, Stats, enemyBehavior.Stats));
+            //enemyBehavior.TakeDamageEvent(Services.SharedInstance.AttackService.CountDamage(damage, Stats, enemyStats));
         }
 
         #endregion

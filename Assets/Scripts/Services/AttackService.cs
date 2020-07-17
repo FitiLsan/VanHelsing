@@ -41,6 +41,14 @@
             return _damage;
         }
 
+        public Damage CountDamage(Damage weaponDamage, BaseStatsClass recieverStats)
+        {
+            _damage.PhysicalDamage = weaponDamage.PhysicalDamage * (1 - recieverStats.PhysicalResistance);
+            _damage.StunProbability = weaponDamage.StunProbability * (1 - recieverStats.StunResistance);
+
+            return _damage;
+        }
+
         #endregion
     }
 }

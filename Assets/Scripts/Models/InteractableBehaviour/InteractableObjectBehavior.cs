@@ -4,11 +4,15 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public abstract class InteractableObjectBehavior : MonoBehaviour, ITrigger, ITakeDamage
+    public class InteractableObjectBehavior : MonoBehaviour, ITrigger
     {
         #region Fields
 
         [SerializeField] private InteractableObjectType _type;
+        private Action<int, string> _onDoSmthHandler;
+        private Action<int, Damage> _onTakeDamageHandler;
+        private Action<int, InteractableObjectBehavior, Damage> _onDealDamageHandler;
+        //private _onGenerateInventryHandler;
 
         #endregion
 
@@ -16,7 +20,6 @@ namespace BeastHunter
         #region Properties
 
         public Predicate<Collider> OnFilterHandler { get; set; }
-        public Action<Damage> OnTakeDamageHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerEnterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerExitHandler { get; set; }
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
@@ -32,34 +35,23 @@ namespace BeastHunter
 
         private void OnTriggerEnter(Collider other)
         {
-            if (OnFilterHandler != null && OnFilterHandler.Invoke(other) && OnTriggerEnterHandler != null)
+            if (OnFilterHandler != null && OnFilterHandler.Invoke(other))
             {
-                OnTriggerEnterHandler.Invoke(this, other);
+                OnTriggerEnterHandler?.Invoke(this, other);
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (OnFilterHandler != null && OnFilterHandler.Invoke(other) && OnTriggerExitHandler != null)
+            if (OnFilterHandler != null && OnFilterHandler.Invoke(other))
             {
-                OnTriggerExitHandler.Invoke(this, other);
+                OnTriggerExitHandler?.Invoke(this, other);
             }
         }
 
         private void OnDisable()
         {
-            if(DestroyHandler != null)
-            {
-                DestroyHandler.Invoke(this, _type);
-            }
-        }
-
-        public void TakeDamage(Damage damage)
-        {
-            if (OnTakeDamageHandler != null)
-            {
-                OnTakeDamageHandler.Invoke(damage);
-            }
+            DestroyHandler?.Invoke(this, _type);
         }
 
         #endregion
@@ -71,6 +63,84 @@ namespace BeastHunter
         {
             _type = type;
         }
+
+
+        #region DoSmth
+
+        public void SetDoSmthEvent(Action<int, string> action)
+        {
+            if (action != null)
+            {
+                _onDoSmthHandler += action;
+            }
+        }
+
+        public void DoSmthEvent(string how)
+        {
+            _onDoSmthHandler?.Invoke(GameObject.GetInstanceID(), how);
+        }
+
+        public void DeleteDoSmthEvent(Action<int, string> action)
+        {
+            if (action != null)
+            {
+                _onDoSmthHandler -= action;
+            }
+        }
+
+        #endregion
+
+
+        #region TakeDamage
+
+        public void SetTakeDamageEvent(Action<int, Damage> action)
+        {
+            if (action != null)
+            {
+                _onTakeDamageHandler += action;
+            }
+        }
+
+        public void TakeDamageEvent(Damage damage)
+        {
+            _onTakeDamageHandler?.Invoke(GameObject.GetInstanceID(), damage);
+        }
+
+        public void DeleteTakeDamageEvent(Action<int, Damage> action)
+        {
+            if (action != null)
+            {
+                _onTakeDamageHandler -= action;
+            }
+        }
+
+        #endregion
+
+
+        #region DealDamage
+
+        public void SetDealDamageEvent(Action<int, InteractableObjectBehavior, Damage> action)
+        {
+            if (action != null)
+            {
+                _onDealDamageHandler += action;
+            }
+        }
+
+        public void DealDamageEvent(InteractableObjectBehavior enemy, Damage damage)
+        {
+            _onDealDamageHandler?.Invoke(GameObject.GetInstanceID(), enemy, damage);
+        }
+
+        public void DeleteDealDamageEvent(Action<int, InteractableObjectBehavior, Damage> action)
+        {
+            if (action != null)
+            {
+                _onDealDamageHandler -= action;
+            }
+        }
+
+        #endregion
 
         #endregion
     }

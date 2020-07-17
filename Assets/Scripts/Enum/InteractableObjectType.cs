@@ -9,6 +9,7 @@
         Player = 4,
         Enemy  = 5,
         HitBox = 6,
-        Npc    = 7
+        Npc    = 7,
+        Rabbit = 8
     }
 }
