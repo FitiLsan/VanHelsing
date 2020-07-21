@@ -2,9 +2,11 @@
 using UnityEngine;
 
 
-namespace BeastHunter {
+namespace BeastHunter 
+{
     [CreateAssetMenu (fileName = "Data", menuName = "DataTest")]
-    public sealed class Data : ScriptableObject {
+    public sealed class Data : ScriptableObject 
+    {
         #region Fields
 
         [SerializeField] private string _sphereDataPath;
@@ -62,7 +64,7 @@ namespace BeastHunter {
         public static SphereData SphereData {
             get {
                 if (_sphereData == null) {
-                    _sphereData = Load<SphereData> ("Data/" + Instance._sphereDataPath);
+                    _sphereData = Resources.Load<SphereData> ("Data/" + Instance._sphereDataPath);
                 }
                 return _sphereData;
             }
@@ -71,7 +73,7 @@ namespace BeastHunter {
         public static StartDialogueData StartDialogueData {
             get {
                 if (_startDialogueData == null) {
-                    _startDialogueData = Load<StartDialogueData> ("Data/" + Instance._startDialogueDataPath);
+                    _startDialogueData = Resources.Load<StartDialogueData> ("Data/" + Instance._startDialogueDataPath);
                 }
                 return _startDialogueData;
             }
@@ -80,7 +82,7 @@ namespace BeastHunter {
         public static DialogueSystemData DialogueSystemData {
             get {
                 if (_dialogueSystemData == null) {
-                    _dialogueSystemData = Load<DialogueSystemData> ("Data/" + Instance._dialogueSystemDataPath);
+                    _dialogueSystemData = Resources.Load<DialogueSystemData> ("Data/" + Instance._dialogueSystemDataPath);
                 }
                 return _dialogueSystemData;
             }
@@ -89,7 +91,7 @@ namespace BeastHunter {
         public static CharacterData CharacterData {
             get {
                 if (_characterData == null) {
-                    _characterData = Load<CharacterData> ("Data/" + Instance._characterDataPath);
+                    _characterData = Resources.Load<CharacterData> ("Data/" + Instance._characterDataPath);
                 }
                 return _characterData;
             }
@@ -98,7 +100,7 @@ namespace BeastHunter {
         public static GiantMudCrabData GiantMudCrabData {
             get {
                 if (_giantMudCrabData == null) {
-                    _giantMudCrabData = Load<GiantMudCrabData> ("Data/" + Instance._giantMudCrabDataPath);
+                    _giantMudCrabData = Resources.Load<GiantMudCrabData> ("Data/" + Instance._giantMudCrabDataPath);
                 }
                 return _giantMudCrabData;
             }
@@ -110,7 +112,7 @@ namespace BeastHunter {
             {
                 if (_rabbitData == null)
                 {
-                    _rabbitData = Load<RabbitData>("Data/" + Instance._rabbitDataPath);
+                    _rabbitData = Resources.Load<RabbitData>("Data/" + Instance._rabbitDataPath);
                 }
                 return _rabbitData;
 			}
@@ -122,7 +124,7 @@ namespace BeastHunter {
             {
                 if (_questIndicatorData == null)
                 {
-                    _questIndicatorData = Load<QuestIndicatorData>("Data/" + Instance._questIndicatorDataPath);
+                    _questIndicatorData = Resources.Load<QuestIndicatorData>("Data/" + Instance._questIndicatorDataPath);
                 }
                 return _questIndicatorData;
             }
@@ -170,6 +172,7 @@ namespace BeastHunter {
             }
         }
 
+        public static QuestJournalData QuestJournalData
         {
             get
             {
