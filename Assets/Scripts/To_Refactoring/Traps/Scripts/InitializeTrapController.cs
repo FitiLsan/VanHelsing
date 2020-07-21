@@ -21,7 +21,10 @@ namespace BeastHunter
         public InitializeTrapController(GameContext context, TrapData _trapData)
         {
             _context = context;
-            this.OnAwake(_trapData);
+            if(_context.TrapModels.Count < 5)
+            {
+                this.OnAwake(_trapData);
+            }
         }
 
         #endregion
