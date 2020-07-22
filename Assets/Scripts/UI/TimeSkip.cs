@@ -10,9 +10,9 @@ public sealed class TimeSkip : MonoBehaviour
     private const int maxHours = 24;
     private const int devider = 2;
     private const int halfDay = 12;
-    private const string Rain = "Rain";
-    private const string Sun = "Sunny";
-    private const string Fog = "Fog";
+    private const string RainWeather = "Rain";
+    private const string SunWeather = "Sunny";
+    private const string FogWeather = "Fog";
 
     #endregion
 
@@ -44,14 +44,17 @@ public sealed class TimeSkip : MonoBehaviour
     {
         if (time < firstHour)
         {
+            weatherTxt.text = FogWeather;
             return weather[0];
         }
         else if (time < secondHour)
         {
+            weatherTxt.text = SunWeather;
             return weather[1];
         }
         else
         {
+            weatherTxt.text = RainWeather;
             return weather[2];
         }
     }
@@ -71,18 +74,19 @@ public sealed class TimeSkip : MonoBehaviour
     public void WeatherHours()
     {
         firstHour = Random.Range(devider, maxHours - devider);
-        Debug.Log(firstHour);
+        Debug.Log($"Первый час: {firstHour}");
 
         if (firstHour <= halfDay)
         {
             secondHour = Random.Range(firstHour + devider, maxHours - devider);
-            Debug.Log(secondHour);
+            Debug.Log($"Второй час: {secondHour}");
         }
         else
         {
-            tempHour = Random.Range(devider, secondHour - devider);
+            tempHour = Random.Range(devider, firstHour - devider);
             Debug.Log(tempHour);
             secondHour = firstHour;
+            Debug.Log($"Второй час: {secondHour}");
             firstHour = tempHour;
         }
     }
