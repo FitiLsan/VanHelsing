@@ -32,6 +32,7 @@
         QuestJournalUpdated,
         QuestUpdated,
         AnswerButtonClicked,
-        SaveGeneratedQuest
+        SaveGeneratedQuest,
+        DialogueUpdateByQuest
     }
 }

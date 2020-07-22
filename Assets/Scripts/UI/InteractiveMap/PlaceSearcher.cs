@@ -24,7 +24,10 @@ namespace BeastHunter
                     {
                         Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.ItemAcquired, new ItemArgs(item.ItemId));
                     }
+
+                    
                 }
+                // добавить обработку других типов найденных предметов
             }
         }
     }

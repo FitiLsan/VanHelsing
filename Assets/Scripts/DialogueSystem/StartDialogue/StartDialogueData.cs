@@ -88,6 +88,11 @@ namespace BeastHunter
             }
         }
 
+        public void OnUpdateDialogueByQuest(EventArgs args)// test updating in dialog
+        {
+            DialogStatus(true);
+        }
+
         private void DialogStatus(bool isShowDialogCanvas)
         {
             DialogueSystemModel.DialogueNode = DialogueGenerate.DialogueCreate(NpcID, Model.Context);

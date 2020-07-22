@@ -12,10 +12,10 @@ namespace BeastHunter
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            ToSearchPlaceEvent?.Invoke(GetPlaceId());
+            ToSearchPlaceEvent?.Invoke(GetPlaceItemList());
         }
 
-        public List<ItemInfo> GetPlaceId()
+        public List<ItemInfo> GetPlaceItemList()
         {
             var parent = gameObject.transform.parent.transform.parent;
             var items = parent.GetComponent<PlaceInteractiveField>().ItemList;

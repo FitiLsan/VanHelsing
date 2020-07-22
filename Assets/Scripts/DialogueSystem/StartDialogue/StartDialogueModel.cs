@@ -38,6 +38,7 @@ namespace BeastHunter
             //startDialogueData.CanvasNpc = canvasNpc;
             ToTolkNpc.ToTalkClickEvent += startDialogueData.OnDialogueStart;
             PlaceButtonClick.CanvasClickEvent += startDialogueData.OnDialogueStart;
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.DialogueUpdateByQuest, startDialogueData.OnUpdateDialogueByQuest);
         }
 
         #endregion
