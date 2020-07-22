@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 namespace BeastHunter
 {
@@ -15,27 +16,31 @@ namespace BeastHunter
         public QuestIndicatorStruct QuestIndicatorStruct;
         public Vector3 NpcPos;
         public int NpcID;
-        public DataTable DialogueCache = QuestRepository.GetDialogueCache();
+        public DataTable DialogueCache = QuestRepository.GetDialogueAnswersCache();
         public DataTable QuestTasksCache = QuestRepository.GetQuestTaskCache();
         public GameContext Context;
+        public Dictionary<int, GameObject> NpcList = new Dictionary<int,GameObject>();
         #endregion
 
 
         #region Methods
 
-        public void QuestionMarkShow(bool isOn, QuestIndicatorModel model)
+        public void QuestionMarkShow(bool isOn, GameObject npc)//, QuestIndicatorModel model)
         {
-            model.QuestIndicatorTransform.GetChild(2).gameObject.SetActive(isOn);
+            // model.QuestIndicatorTransform.GetChild(2).gameObject.SetActive(isOn);
+            npc.transform.Find("FinishQuest").GetChild(0).GetComponent<Image>().enabled = isOn;
         }
 
-        public void TaskQuestionMarkShow(bool isOn, QuestIndicatorModel model)
+        public void TaskQuestionMarkShow(bool isOn, GameObject npc)//, QuestIndicatorModel model)
         {
-            model.QuestIndicatorTransform.GetChild(1).gameObject.SetActive(isOn);
+            // model.QuestIndicatorTransform.GetChild(1).gameObject.SetActive(isOn);
+            npc.transform.Find("TaskQuest").GetChild(0).GetComponent<Image>().enabled = isOn;
         }
 
-        public void ExclamationMarkShow(bool isOn, QuestIndicatorModel model)
+        public void ExclamationMarkShow(bool isOn, GameObject npc)//, QuestIndicatorModel model)
         {
-            model.QuestIndicatorTransform.GetChild(0).gameObject.SetActive(isOn);
+            //    model.QuestIndicatorTransform.GetChild(0).gameObject.SetActive(isOn);
+            npc.transform.Find("StartQuest").GetChild(0).GetComponent<Image>().enabled = isOn;
         }
 
         public void SetPosition(Transform npcTransform, Transform questIndicatorTransform)
@@ -46,98 +51,151 @@ namespace BeastHunter
 
         public void QuestIndicatorCheck(EventArgs arg0)
         {
-            foreach (QuestIndicatorModel questIndicatorModel in Context.QuestIndicatorModelList)
+            //foreach (QuestIndicatorModel questIndicatorModel in Context.QuestIndicatorModelList)
+            //{
+            //    questIndicatorModel.QuestIndicatorData.GetQuestInfo(questIndicatorModel.NpcTransform.GetComponent<IGetNpcInfo>().GetInfo().Item1, questIndicatorModel);
+            //}
+            foreach(var npc in NpcList)
             {
-                questIndicatorModel.QuestIndicatorData.GetQuestInfo(questIndicatorModel.NpcTransform.GetComponent<IGetNpcInfo>().GetInfo().Item1, questIndicatorModel);
+                GetQuestInfo(npc.Key, npc.Value.gameObject);
             }
         }
 
-        public void GetQuestInfo(int npcID, QuestIndicatorModel model)
+        public void OnClickPlace(Place currentPlace)
+        {
+            NpcList.Clear();
+            for(int i=0;i<currentPlace.npcList.Count;i++)
+            {
+                NpcList.Add(currentPlace.npcList[i].NpcId, PlaceInteractiveField.GetNpcList()[i]);
+            }
+            QuestIndicatorCheck(null);
+        }
+
+        public void GetQuestInfo(int npcID, GameObject npc)//QuestIndicatorModel model)
         {
 
-            var questModel = model.Context.QuestModel;
+            var questModel = Context.QuestModel; //model.Context.QuestModel;
             var questsWithCompletedAllTask = questModel.AllTaskCompletedInQuests;
             var questsWithCompletedAllTaskWithOptional = questModel.AllTaskCompletedInQuestsWithOptional;
-            var activeQuests = questModel.ActiveQuests;
+            var activeQuestsById = questModel.ActiveQuests;
             var completedQuests = questModel.CompletedQuests;
-            var completedTasks = questModel.CompletedTasks;
+            var completedTasks = questModel.CompletedTasksById;
+            var activeQuests = questModel.QuestsList;
+            var hasRequiredQuest = false;
+            var hasForbiddenQuest = false;
 
             if (DialogueCache.Rows.Count != 0)
             {
                 for (int i = 0; i < DialogueCache.Rows.Count; i++)
                 {
-                    var currentQuestID = DialogueCache.Rows[i].GetInt(8);
-                    var dialogueTargetID = DialogueCache.Rows[i].GetInt(0);
-
-                    if (DialogueCache.Rows[i].GetInt(5) == npcID)
+                    if (DialogueCache.Rows[i].GetInt(8) != 0) 
                     {
-                        if (DialogueCache.Rows[i].GetInt(6) == 1)
+                        var currentQuestID = DialogueCache.Rows[i].GetInt(8);
+                        var dialogueTargetID = DialogueCache.Rows[i].GetInt(0);
+                        // RequiredCheck
+                        if (currentQuestID != 0)
                         {
-                            if (!completedQuests.Contains(currentQuestID) & !activeQuests.Contains(currentQuestID))
+                            var tempQuest = QuestRepository.GetById(currentQuestID);
+                             hasRequiredQuest = false;
+                             hasForbiddenQuest = false;
+
+                            foreach (var questId in tempQuest.RequiredQuests)
                             {
-                                ExclamationMarkShow(true, model);
+                                if (!completedQuests.Contains(questId))
+                                {
+                                    hasRequiredQuest = true;
+                                }
                             }
-                            else
+                            foreach (var questId in tempQuest.ForbiddenQuests)
                             {
-                                ExclamationMarkShow(false, model);
+                                if (completedQuests.Contains(questId))
+                                {
+                                    hasForbiddenQuest = true;
+                                }
                             }
                         }
-
-                        if (DialogueCache.Rows[i].GetInt(9) == 1)
+                        //
+                        if (DialogueCache.Rows[i].GetInt(5) == npcID)
                         {
-                            for (int j = 0; j < QuestTasksCache.Rows.Count; j++)
+                            if (DialogueCache.Rows[i].GetInt(6) == 1)
                             {
-                                var q = QuestTasksCache.Rows[j].GetInt(1);
-                                if (QuestTasksCache.Rows[j].GetInt(1) == currentQuestID)
-                                {  
-                                    var currentTaskID = QuestTasksCache.Rows[j].GetInt(0);
-                                    var taskTargetID = QuestTasksCache.Rows[j].GetInt(2);
-                                    
-                                    if (!completedTasks.Contains(currentTaskID) &
-                                        activeQuests.Contains(currentQuestID) &
-                                        !questsWithCompletedAllTask.Contains(currentQuestID) &
-                                        taskTargetID == dialogueTargetID)
-                                    {
-                                        TaskQuestionMarkShow(true, model);
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        var flag = false;
-                                        for (int k = 0; k < activeQuests.Count; k++)
-                                        {
-                                            var tempQuestId = activeQuests[k];
+                                if (!completedQuests.Contains(currentQuestID) & !activeQuestsById.Contains(currentQuestID) & !hasRequiredQuest & !hasForbiddenQuest)
+                                {
+                                    ExclamationMarkShow(true, npc);
+                                }
+                                else
+                                {
+                                    ExclamationMarkShow(false, npc);
+                                }
+                            }
 
-                                            if (activeQuests.Contains(tempQuestId) &
-                                                !questsWithCompletedAllTask.Contains(tempQuestId) &
-                                                !questsWithCompletedAllTaskWithOptional.Contains(tempQuestId) &
-                                                tempQuestId != currentQuestID &
-                                                !completedTasks.Contains(currentTaskID) &
-                                                !completedQuests.Contains(currentQuestID)) 
-                                                {
-                                                    flag = true;
-                                                   break;
-                                                }
-                                        }
-                                        
-                                        if (!flag)
+                            if (DialogueCache.Rows[i].GetInt(9) == 1)
+                            {
+                                for (int j = 0; j < QuestTasksCache.Rows.Count; j++)
+                                {
+                                    var q = QuestTasksCache.Rows[j].GetInt(1);
+                                    if (QuestTasksCache.Rows[j].GetInt(1) == currentQuestID & QuestTasksCache.Rows[j].GetInt(3) == npcID)
+                                    {
+                                        var currentTaskID = QuestTasksCache.Rows[j].GetInt(0);
+                                        var taskTargetID = QuestTasksCache.Rows[j].GetInt(2);
+
+                                        if (!completedTasks.Contains(currentTaskID) &
+                                            activeQuestsById.Contains(currentQuestID) &
+                                            !questsWithCompletedAllTask.Contains(currentQuestID) &
+                                            taskTargetID == dialogueTargetID &
+                                            !hasRequiredQuest &
+                                            !hasForbiddenQuest)
                                         {
-                                            TaskQuestionMarkShow(false, model);
+                                            TaskQuestionMarkShow(true, npc);
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            var flag = false;
+                                            for (int k = 0; k < activeQuests.Count; k++)
+                                            {
+                                                var tempQuestId = activeQuests[k].Id;
+                                                foreach (var task in activeQuests[k].Tasks)
+                                                {
+
+                                                    if (activeQuestsById.Contains(tempQuestId) &
+                                                        !questsWithCompletedAllTask.Contains(tempQuestId) &
+                                                        !questsWithCompletedAllTaskWithOptional.Contains(tempQuestId) &
+                                                        tempQuestId != currentQuestID &
+                                                        !completedTasks.Contains(task.Id) & 
+                                                        dialogueTargetID == task.TargetId &
+                                                        !completedQuests.Contains(currentQuestID) &
+                                                        !hasRequiredQuest &
+                                                        !hasForbiddenQuest)
+                                                    {
+                                                        flag = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if(flag)
+                                                { break; }
+                                            }
+                                        
+
+                                            if (!flag)
+                                            {
+                                                TaskQuestionMarkShow(false, npc);
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        if (DialogueCache.Rows[i].GetInt(7) == 1)
-                        {
-                            if (questsWithCompletedAllTaskWithOptional.Contains(currentQuestID) || questsWithCompletedAllTask.Contains(currentQuestID))
+                            if (DialogueCache.Rows[i].GetInt(7) == 1)
                             {
-                                QuestionMarkShow(true, model);
-                            }
-                            else
-                            {
-                                QuestionMarkShow(false, model);
+                                if (questsWithCompletedAllTaskWithOptional.Contains(currentQuestID) || questsWithCompletedAllTask.Contains(currentQuestID))
+                                {
+                                    QuestionMarkShow(true, npc);
+                                }
+                                else
+                                {
+                                    QuestionMarkShow(false, npc);
+                                }
                             }
                         }
                     }

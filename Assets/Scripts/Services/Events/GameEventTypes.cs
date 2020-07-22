@@ -29,7 +29,10 @@
         QuestButtonClickEvent,
         QuestJournalCreated,
         QuestJournalOpened,
+        QuestJournalUpdated,
         QuestUpdated,
-        AnswerButtonClicked
+        AnswerButtonClicked,
+        SaveGeneratedQuest,
+        DialogueUpdateByQuest
     }
 }

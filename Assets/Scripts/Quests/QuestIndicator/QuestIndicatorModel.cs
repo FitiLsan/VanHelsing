@@ -24,12 +24,14 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public QuestIndicatorModel(GameObject prefab, QuestIndicatorData questIndicatorData, GameObject npc, GameContext context)
+        //public QuestIndicatorModel(GameObject prefab, QuestIndicatorData questIndicatorData, GameObject npc, GameContext context) //For 3D mode
+        public QuestIndicatorModel(QuestIndicatorData questIndicatorData, GameContext context)
         {
-            QuestIndicatorTransform = prefab.transform;
+            //For 3D mode  QuestIndicatorTransform = prefab.transform;
+            PlaceButtonClick.ClickEvent += questIndicatorData.OnClickPlace;
             QuestIndicatorData = questIndicatorData;
             QuestIndicatorStruct = QuestIndicatorData.QuestIndicatorStruct;
-            NpcTransform = npc.transform;
+            //For 3D mode   NpcTransform = npc.transform;
             Context = context;
             QuestIndicatorData.Context = context;
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestUpdated, QuestIndicatorData.QuestIndicatorCheck);

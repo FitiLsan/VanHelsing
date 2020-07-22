@@ -10,6 +10,7 @@ namespace BeastHunter
         public int NeededAmount { get; set; }
         public string Description { get; set; }
         public bool IsOptional { get; set; }
+        public int QuestId { get; set; }
 
         #endregion
     }

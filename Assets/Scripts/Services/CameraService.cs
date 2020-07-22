@@ -33,14 +33,14 @@ namespace BeastHunter
         public CameraService(Contexts contexts) : base(contexts)
         {
             _context = contexts as GameContext;
-            _cameraData = Data.CameraData;
+//            _cameraData = Data.CameraData;
 
-            CharacterCamera = _cameraData._cameraSettings.CreateCharacterCamera();
-            CameraCinemachineBrain = CharacterCamera.GetComponent<CinemachineBrain>() ?? null;
+//            CharacterCamera = _cameraData._cameraSettings.CreateCharacterCamera();
+//            CameraCinemachineBrain = CharacterCamera.GetComponent<CinemachineBrain>() ?? null;
 
-#if (UNITY_EDITOR)
-            EditorApplication.playModeStateChanged += SaveCameraSettings;
-#endif
+//#if (UNITY_EDITOR)
+//            EditorApplication.playModeStateChanged += SaveCameraSettings;
+//#endif
         }
 
         #endregion

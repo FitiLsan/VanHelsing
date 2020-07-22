@@ -14,6 +14,8 @@ namespace BeastHunter
         private List<int> _completedQuestsById;
         private List<Quest> _activeQuests;
         private List<Quest> _completedQuests;
+        private List<Quest> _generatedQuests;
+     //   private List<QuestTask> _completedTasks;
         private readonly ISaveFileWrapper _saveFileWrapper;
 
         #endregion
@@ -44,11 +46,17 @@ namespace BeastHunter
             _newEntry = _saveFileWrapper.GetNextItemEntry();
             _completedQuestsById = _saveFileWrapper.GetCompletedQuestsId().ToList();
             _activeQuests = LoadQuestLog();
+            _generatedQuests = LoadGeneratedQuestLog();
         }
 
         public void SaveQuestLog(List<Quest> quests)
         {
-            _saveFileWrapper.SaveQuestLog(quests, _completedQuestsById);
+            _saveFileWrapper.SaveQuestLog(quests, _completedQuests, _generatedQuests);
+        }
+
+        public void SaveGeneratedQuest(Quest quest)
+        {
+            _saveFileWrapper.SaveGeneratedQuest(quest);
         }
 
         public List<Quest> LoadQuestLog()
@@ -69,21 +77,43 @@ namespace BeastHunter
                 }
                 res.Add(quest);
             }
+            return res;
+        }
 
+        public List<Quest> LoadGeneratedQuestLog()
+        {
+            var res = new List<Quest>();
+            var qd = _saveFileWrapper.GetGeneratedQuests();
+            var od = _saveFileWrapper.GetGeneratedObjectives();
+            foreach (var i in qd)
+            {
+                var quest = i.Value;
+                foreach (var task in od)
+                {
+                    if (task.Value.QuestId == i.Value.Id)
+                    {
+                        quest.Tasks.Add(task.Value);
+                    }
+                }
+                res.Add(quest);
+            }
             return res;
         }
 
         public List<Quest> LoadCompletedQuestLog()
         {
             var res = new List<Quest>();
-            var od = _saveFileWrapper.GetActiveObjectives();
+            var cod = _saveFileWrapper.GetCompletedObjectives();
             var cqd = _saveFileWrapper.GetCompletedQuests();
             foreach (var i in cqd)
             {
                 var quest = new Quest(QuestRepository.GetById(i.Key));
                 foreach (var task in quest.Tasks)
                 {
-                    task.AddAmount(task.NeededAmount);
+                    if (cod.ContainsKey(task.Id))
+                    {
+                        task.AddAmount(task.NeededAmount);
+                    }
                 }
                 res.Add(quest);
             }
@@ -115,7 +145,13 @@ namespace BeastHunter
         {
             return _completedQuests ?? (_completedQuests = LoadCompletedQuestLog());
         }
+
+        public List<Quest> GetAllGeneratedQuest()
+        {
+            return _generatedQuests ?? (_generatedQuests = LoadGeneratedQuestLog());
+        }
         
+
         public List<int> GetAllActiveQuestsById()
         {
             var IdActiveQuests= _saveFileWrapper.GetActiveQuests();

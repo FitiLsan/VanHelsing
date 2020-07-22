@@ -9,14 +9,18 @@ namespace BeastHunter
         #region Properties
 
         public int Id { get; }
+        public int ChainId { get; }
         public int MinLevel { get; }
         public int RewardExp { get; }
         public int StartDialogId { get; }
         public int EndDialogId { get; }
+        public int StartQuestEventType { get; }
+        public int EndQuestEventType { get; }
         public int IsRepetable { get; }
         public int RewardMoney { get; }
         public int QuestLevel { get; }
         public List<int> RequiredQuests { get; }
+        public List<int> ForbiddenQuests { get; }
         public string Title { get; }
         public int TimeAllowed { get; }
         public bool IsTimed => TimeAllowed > 0;
@@ -63,6 +67,7 @@ namespace BeastHunter
         public Quest(QuestDto dto)
         {
             Id = dto.Id;
+            ChainId = dto.ChainId;
             Title = dto.Title;
             Description = dto.Description;
             ZoneId = dto.ZoneId;
@@ -72,6 +77,7 @@ namespace BeastHunter
             StartMarker = new QuestMarker(dto.QuestStart ?? new QuestMarkerDto { MapId = 0, X = 0f, Y = 0f });
             EndMarker = new QuestMarker(dto.QuestEnd ?? new QuestMarkerDto { MapId = 0, X = 0f, Y = 0f });
             RequiredQuests = dto.RequiredQuests;
+            ForbiddenQuests = dto.ForbiddenQuests;
             foreach (var task in dto.Tasks) Tasks.Add(new QuestTask(task));
             MinLevel = dto.MinLevel;
             QuestLevel = dto.QuestLevel;
@@ -81,6 +87,8 @@ namespace BeastHunter
             RewardMoney = dto.RewardMoney;
             StartDialogId = dto.StartDialogId;
             EndDialogId = dto.EndDialogId;
+            StartQuestEventType = dto.StartQuestEventType;
+            EndQuestEventType = dto.EndQuestEventType;
             IsRepetable = dto.IsRepetable;
             foreach (var reward in dto.Rewards)
             {

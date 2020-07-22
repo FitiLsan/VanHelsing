@@ -29,10 +29,20 @@ namespace BeastHunter
             _agent.SaveQuestLog(quests);
         }
 
+        public void SaveGeneratedQuest(Quest quest)
+        {
+            _agent.SaveGeneratedQuest(quest); 
+        }
+
         public List<Quest> LoadQuestLog()
         {
             return _agent.LoadQuestLog();
         }
+        public List<Quest> LoadGeneratedQuestLog()
+        {
+            return _agent.LoadGeneratedQuestLog();
+        }
+        
 
         public void QuestCompleted(int id)
         {
@@ -52,6 +62,11 @@ namespace BeastHunter
         public List<Quest> GetAllCompletedQuests()
         {
             return _agent.GetAllCompletedQuests();
+        }
+
+        public List<Quest> GetAllGeneratedQuest()
+        {
+            return _agent.GetAllGeneratedQuest();
         }
         
         public List<int> GetAllActiveQuestsById()

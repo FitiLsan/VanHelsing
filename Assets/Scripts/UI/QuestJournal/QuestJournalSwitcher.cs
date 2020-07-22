@@ -17,16 +17,16 @@ namespace BeastHunter
         public void On()
         {
             canvas.enabled = true;
-            LockCharAction.LockAction(true);
+          //  LockCharAction.LockAction(true);
         }
 
         public void Off()
         {
             canvas.enabled = false;
-            LockCharAction.LockAction(false);
+          //  LockCharAction.LockAction(false);
         }
 
-        public void Switcher()
+        public void Switcher(bool isActive)
         {
             if (!canvas.enabled)
             {
@@ -47,6 +47,7 @@ namespace BeastHunter
         {
             canvas = gameObject.GetComponent<Canvas>();
             canvas.enabled = false;
+            QuestJournalButtonClick.ClickQuestJournalButton += Switcher;
         }
 
         public void Update()
@@ -54,7 +55,7 @@ namespace BeastHunter
             if (Input.GetButtonDown("QuestJournal"))
             {
                 Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestJournalOpened, null);
-                Switcher();
+                Switcher(true);
             }
 
             if (Input.GetButtonDown("Cancel"))

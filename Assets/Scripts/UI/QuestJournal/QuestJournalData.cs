@@ -43,6 +43,8 @@ namespace BeastHunter
 
         public void LoadQuestInfo(EventArgs args)
         {
+            if (!(args is IdArgs idArgs)) return;
+          //  var quest = idArgs.Id.Equals(666) ? Model.Context.QuestModel.TempQuest : questModel.GetActualQuestById(idArgs.Id);
             var quest = questModel.GetActualQuestById((args as IdArgs).Id);
             var questName = quest.Title;
             AddQuestButton(Model.QuestContentField.transform, Model.QuestButton, questName, quest.Id);          
@@ -99,10 +101,8 @@ namespace BeastHunter
 
         public void AddDescription(Image description, string text)
         {
-           var textGO = description.GetComponentInChildren<Text>();//.text = text;
-            _description = textGO.text = text;
-            var a = textGO.rectTransform.position;
-            var b = description.rectTransform.position.y;
+           var textField = description.GetComponentInChildren<Text>();
+            _description = textField.text = text;
         }
 
         public void AddQuestTasks(Transform tasksContent, GameObject task, string taskText, bool isComplete, int curAmount, int needAmount, bool isOptional)

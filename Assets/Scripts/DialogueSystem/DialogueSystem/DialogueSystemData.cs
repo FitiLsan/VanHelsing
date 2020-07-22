@@ -49,7 +49,7 @@ namespace BeastHunter
 
         public void SelectAnswer(int buttonNumber)
         {
-           Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.DialogAnswerSelect, new DialogArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId, Model.NpcID));
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.DialogAnswerSelect, new DialogArgs(Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].AnswerId, Model.NpcID));
 
             if (Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].IsStartQuest)
             {
@@ -68,6 +68,7 @@ namespace BeastHunter
             }
             Model.CurrentNode = Model.DialogueNode[Model.CurrentNode].PlayerAnswers[buttonNumber].ToNode;
             DialogueUpdate();
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.DialogueUpdateByQuest, null); // test dualogue update
         }
 
         public void CanvasSwitcher(bool isActive)
@@ -82,7 +83,7 @@ namespace BeastHunter
             }
 
             Model.DialogueCanvas.enabled = isActive;
-            LockCharAction.LockAction(isActive);
+          //  LockCharAction.LockAction(isActive);
         }
 
         public void ButtonClickNumber(string buttonName)
