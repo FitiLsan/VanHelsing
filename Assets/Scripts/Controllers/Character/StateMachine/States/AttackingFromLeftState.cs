@@ -7,7 +7,7 @@ namespace BeastHunter
     {
         #region Constants
 
-        private const float TIME_PART_TO_ENABLE_WEAPON = 0.3f;
+        private const float TIME_PART_TO_ENABLE_WEAPON = 0f;
 
         #endregion
 
@@ -22,8 +22,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public AttackingFromLeftState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public AttackingFromLeftState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Battle;
             IsTargeting = false;
@@ -43,7 +42,8 @@ namespace BeastHunter
             _currentAttackIndex = Random.Range(0, _characterModel.LeftHandWeapon.AttacksLeft.Length);
             _characterModel.LeftHandWeapon.CurrentAttack = _characterModel.LeftHandWeapon.AttacksLeft[_currentAttackIndex];
             _currentAttackTime = _characterModel.LeftHandWeapon.CurrentAttack.Time;
-            _animationController.PlayAttackAnimation(_characterModel.LeftHandWeapon.SimpleAttackFromLeftkAnimationHash, _currentAttackIndex);
+            _animationController.PlayAttackAnimation(_characterModel.LeftHandWeapon.SimpleAttackFromLeftkAnimationHash, 
+                _currentAttackIndex);
             TimeRemaining enableWeapon = new TimeRemaining(EnableWeapon, TIME_PART_TO_ENABLE_WEAPON * _currentAttackTime);
             enableWeapon.AddTimeRemaining(TIME_PART_TO_ENABLE_WEAPON * _currentAttackTime);
             CanExit = false;
@@ -52,6 +52,7 @@ namespace BeastHunter
         public override void Execute()
         {       
             ExitCheck();
+            LookAtEnemy();
             StayInBattle();
         }
 
@@ -74,10 +75,18 @@ namespace BeastHunter
             {
                 CanExit = true;
 
-                if(_stateMachine.PreviousState == _stateMachine._battleTargetMovementState)
+                if(_stateMachine.PreviousState == _stateMachine.CharacterStates[CharacterStatesEnum.BattleTargetMovement])
                 {
                     _stateMachine.ReturnState();
                 }
+            }
+        }
+
+        private void LookAtEnemy()
+        {
+            if (_characterModel.ClosestEnemy != null && _stateMachine.PreviousState.IsTargeting)
+            {
+                _characterModel.CharacterTransform.LookAt(_characterModel.ClosestEnemy.transform);
             }
         }
 

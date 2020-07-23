@@ -56,6 +56,7 @@ namespace BeastHunter
             _inputModel.inputOnButtonDown.Add("QuestJournal", InputEventTypes.QuestJournal);
             _inputModel.inputOnButtonDown.Add("PlaceTrap1", InputEventTypes.PlaceTrap1);
             _inputModel.inputOnButtonDown.Add("PlaceTrap2", InputEventTypes.PlaceTrap2);
+            _inputModel.inputOnButtonDown.Add("Crouch", InputEventTypes.Crouch);
         }
 
         #endregion

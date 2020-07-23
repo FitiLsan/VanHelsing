@@ -4,8 +4,7 @@
     {
         #region ClassLifeCycle
 
-        public DeadState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public DeadState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.NotActive;
             IsTargeting = false;

@@ -21,8 +21,6 @@ namespace BeastHunter
         public QuestJournalModel QuestJournalModel;
         public Dictionary<int, NpcModel> NpcModels;
         public Dictionary<int, TrapModel> TrapModels;
-        //public TrapModel TrapModel;
-        //public TrapsList TrapsList;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;

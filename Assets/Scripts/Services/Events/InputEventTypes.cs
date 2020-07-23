@@ -20,7 +20,8 @@ namespace BeastHunter
         Inventory,
         QuestJournal,
         PlaceTrap1,
-        PlaceTrap2
+        PlaceTrap2,
+        Crouch,
     }
 }
 

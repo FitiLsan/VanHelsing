@@ -24,6 +24,9 @@ namespace BeastHunter {
         [SerializeField] private string _bossDataPath;
         [SerializeField] private string _trapDataPath;
         [SerializeField] private string _trapDataPath2;
+        [SerializeField] private string _bossFirstWeakPointPath;
+        [SerializeField] private string _bossSecondWeakPointPath;
+        [SerializeField] private string _bossThirdWeakPointPath;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -43,7 +46,9 @@ namespace BeastHunter {
         private static BossData _bossData;
         private static TrapData _trapData;
         private static TrapData _trapData2;
-
+        private static WeakPointData _bossFirstWeakPoint;
+        private static WeakPointData _bossSecondWeakPoint;
+        private static WeakPointData _bossThirdWeakPoint;
 
         #endregion
 
@@ -239,6 +244,42 @@ namespace BeastHunter {
                     _trapData2 = Load<TrapData>("Data/" + Instance._trapDataPath2);
                 }
                 return _trapData2;
+            }
+        }
+
+        public static WeakPointData BossFirstWeakPoint
+        {
+            get
+            {
+                if (_bossFirstWeakPoint == null)
+                {
+                    _bossFirstWeakPoint = Load<WeakPointData>("Data/" + Instance._bossFirstWeakPointPath);
+                }
+                return _bossFirstWeakPoint;
+            }
+        }
+
+        public static WeakPointData BossSecondWeakPoint
+        {
+            get
+            {
+                if (_bossSecondWeakPoint == null)
+                {
+                    _bossSecondWeakPoint = Load<WeakPointData>("Data/" + Instance._bossSecondWeakPointPath);
+                }
+                return _bossSecondWeakPoint;
+            }
+        }
+
+        public static WeakPointData BossThirdWeakPoint
+        {
+            get
+            {
+                if (_bossThirdWeakPoint == null)
+                {
+                    _bossThirdWeakPoint = Load<WeakPointData>("Data/" + Instance._bossThirdWeakPointPath);
+                }
+                return _bossThirdWeakPoint;
             }
         }
 

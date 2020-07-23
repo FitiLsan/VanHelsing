@@ -1,14 +1,10 @@
-﻿using UnityEngine;
-
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public sealed class BattleIdleState : CharacterBaseState
     {
         #region ClassLifeCycle
 
-        public BattleIdleState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public BattleIdleState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Battle;
             IsTargeting = false;

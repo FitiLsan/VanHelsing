@@ -15,8 +15,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public GettingWeaponState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public GettingWeaponState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Battle;
             IsTargeting = false;
@@ -76,7 +75,7 @@ namespace BeastHunter
 
                 if(NextState == null)
                 {
-                    _stateMachine.SetState(_stateMachine._battleIdleState);
+                    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.BattleIdle]);
                 }
                 else
                 {

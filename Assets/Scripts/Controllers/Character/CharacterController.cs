@@ -55,8 +55,9 @@ namespace BeastHunter
             _currentHealth = _characterModel.CharacterCommonSettings.HealthPoints;
             _currentBattleIgnoreTime = 0;
 
-            _stateMachine = new CharacterStateMachine(_inputModel, _characterModel, _animationController, _context);
-            _stateMachine.SetStartState(_stateMachine._defaultIdleState);
+            _stateMachine = new CharacterStateMachine(_context, _animationController);
+            _stateMachine.OnAwake();
+            _stateMachine.SetStartState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle]);
 
             _services.EventManager.StartListening(InputEventTypes.Jump, SetJumpingState);
             _services.EventManager.StartListening(InputEventTypes.BattleExit, ExitBattle);
@@ -66,6 +67,7 @@ namespace BeastHunter
             _services.EventManager.StartListening(InputEventTypes.Dance, ChangeDancingState);
             _services.EventManager.StartListening(InputEventTypes.PlaceTrap1, PlaceTrap1);
             _services.EventManager.StartListening(InputEventTypes.PlaceTrap2, PlaceTrap2);
+            _services.EventManager.StartListening(InputEventTypes.Crouch, ChangeSneakingMode);
 
             _characterModel.PlayerBehavior.OnFilterHandler += OnFilterHandler;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterHandler;
@@ -77,6 +79,7 @@ namespace BeastHunter
 
             LockCharAction.LockCharacterMovement += ExitTalkingState;
             StartDialogueData.StartDialog += SetTalkingState;
+            GlobalEventsModel.OnBossDie += StopTarget;
 
             SetRightWeapon(_services.InventoryService.GetAllWeapons()[0]);
             //SetLeftWeapon(_services.InventoryService.Feast);
@@ -91,7 +94,7 @@ namespace BeastHunter
 
         public void Updating()
         {
-            if (_stateMachine.CurrentState != _stateMachine._deadState)
+            if (!_characterModel.IsDead)
             {
                 BattleIgnoreCheck();
                 GroundCheck();
@@ -121,6 +124,7 @@ namespace BeastHunter
             _services.EventManager.StopListening(InputEventTypes.Dance, ChangeDancingState);
             _services.EventManager.StopListening(InputEventTypes.PlaceTrap1, PlaceTrap1);
             _services.EventManager.StopListening(InputEventTypes.PlaceTrap2, PlaceTrap2);
+            _services.EventManager.StopListening(InputEventTypes.Crouch, ChangeSneakingMode);
 
             _characterModel.PlayerBehavior.OnFilterHandler -= OnFilterHandler;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterHandler;
@@ -129,10 +133,11 @@ namespace BeastHunter
 
             _stateMachine.OnStateChangeHandler -= OnStateChange;
             _stateMachine.OnAfterStateChangeHandler -= OnAfterStateChange;
-            _stateMachine.TearDownStates();
+            _stateMachine.OnTearDown();
 
             LockCharAction.LockCharacterMovement -= ExitTalkingState;
             StartDialogueData.StartDialog -= SetTalkingState;
+            GlobalEventsModel.OnBossDie -= StopTarget;
         }
 
         #endregion
@@ -145,9 +150,19 @@ namespace BeastHunter
             if (enemy != null && damage != null)
             {
                 //enemy.TakeDamageEvent(damage);
-                _context.NpcModels[enemy.GameObject.GetInstanceID()].TakeDamage(damage);
+                _context.NpcModels[GetParent(enemy.transform).GetInstanceID()].TakeDamage(damage);
             }
         }
+
+        private GameObject GetParent(Transform instance)
+        {
+            while(instance.parent != null)
+            {
+                instance = instance.parent;
+            }
+
+            return instance.gameObject;
+        } 
 
         #endregion
 
@@ -164,11 +179,11 @@ namespace BeastHunter
 
                 if (_currentHealth <= 0)
                 {
-                    _stateMachine.SetStateAnyway(_stateMachine._deadState);
+                    _stateMachine.SetStateAnyway(_stateMachine.CharacterStates[CharacterStatesEnum.Dead]);
                 }
                 else if (damage.StunProbability > stunProbability)
                 {
-                    _stateMachine.SetStateAnyway(_stateMachine._stunnedState);
+                    _stateMachine.SetStateAnyway(_stateMachine.CharacterStates[CharacterStatesEnum.Stunned]);
                 }
 
                 _characterModel.IsInBattleMode = true;
@@ -192,7 +207,7 @@ namespace BeastHunter
 
         private void GroundCheck()
         {
-            if (_stateMachine.CurrentState != _stateMachine._jumpingState)
+            if (_stateMachine.CurrentState != _stateMachine.CharacterStates[CharacterStatesEnum.Jumping])
             {
                 _characterModel.IsGrounded = _services.PhysicsService.CheckGround(_characterModel.CharacterCapsuleCollider.
                     transform.position + Vector3.up, _characterModel.CharacterCommonSettings.GroundCheckHeight, out _groundHit);
@@ -207,7 +222,7 @@ namespace BeastHunter
 
         private void FeetCheckIK()
         {
-            if (_stateMachine.CurrentState == _stateMachine._defaultIdleState)
+            if (_stateMachine.CurrentState == _stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle])
             {
 
             }
@@ -247,21 +262,24 @@ namespace BeastHunter
         {
             _characterModel.IsEnemyNear = _characterModel.EnemiesInTrigger.Count > 0;
 
-            if (_characterModel.IsEnemyNear && _currentBattleIgnoreTime <= 0)
+            if(_stateMachine.CurrentState.Type != StateType.Sneaking)
             {
-                _characterModel.IsInBattleMode = true;
-            }
-            else
-            {
-                _characterModel.IsInBattleMode = false;
-                _characterModel.ClosestEnemy = null;
+                if (_characterModel.IsEnemyNear && _currentBattleIgnoreTime <= 0)
+                {
+                    _characterModel.IsInBattleMode = true;
+                }
+                else
+                {
+                    _characterModel.IsInBattleMode = false;
+                    _characterModel.ClosestEnemy = null;
+                }
             }
         }
 
         private void GetClosestEnemy()
         {
-            if(_characterModel.IsEnemyNear && _stateMachine.CurrentState != _stateMachine._battleTargetMovementState &&
-                _stateMachine.CurrentState != _stateMachine._rollingTargetState)
+            if(_characterModel.IsEnemyNear &&
+                    _stateMachine.CurrentState != _stateMachine.CharacterStates[CharacterStatesEnum.RollingTarget])
             {
                 Collider enemy = null;
 
@@ -350,12 +368,22 @@ namespace BeastHunter
 
         private void PlaceTrap1()
         {
-            new InitializeTrapController(_context, Data.TrapData);
+            InitializeTrapController newTrap = new InitializeTrapController(_context, Data.TrapData);
+
+            if(newTrap != null)
+            {
+                _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.TrapPlace]);
+            }          
         }
 
         private void PlaceTrap2()
         {
-            new InitializeTrapController(_context, Data.TrapData2);
+            InitializeTrapController newTrap = new InitializeTrapController(_context, Data.TrapData2);
+
+            if (newTrap != null)
+            {
+                _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.TrapPlace]);
+            }
         }
 
         #endregion
@@ -369,30 +397,53 @@ namespace BeastHunter
             {
                 if (!_characterModel.IsGrounded)
                 {
-                    _stateMachine.SetState(_stateMachine._fallingState);
+                    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Falling]);
                 }
                 else if (_characterModel.IsInBattleMode)
                 {
                     if (_characterModel.IsMoving)
                     {
-                        _stateMachine.SetState(_stateMachine._battleMovementState);
+                        _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.BattleMovement]);
                     }
                     else
                     {
-                        _stateMachine.SetState(_stateMachine._battleIdleState);
+                        _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.BattleIdle]);
+                    }
+                }
+                else if (_characterModel.IsSneaking)
+                {
+                    if (_characterModel.IsMoving)
+                    {
+                        _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.SneakingMovement]);
+                    }
+                    else
+                    {
+                        _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.SneakingIdle]);
                     }
                 }
                 else
                 {
                     if (_characterModel.IsMoving)
                     {
-                        _stateMachine.SetState(_stateMachine._defaultMovementState);
+                        _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultMovement]);
                     }
                     else
                     {
-                        _stateMachine.SetState(_stateMachine._defaultIdleState);
+                        _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle]);
                     }
                 }        
+            }
+        }
+
+        private void ChangeSneakingMode()
+        {
+            if (_characterModel.IsSneaking)
+            {
+                _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.CrouchToDefault]);                
+            }
+            else
+            {
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultToCrouch]);
             }
         }
 
@@ -400,23 +451,22 @@ namespace BeastHunter
         {
             if (_characterModel.IsInBattleMode)
             {
-                if (_stateMachine.CurrentState == _stateMachine._battleTargetMovementState)
+                if (_stateMachine.CurrentState == _stateMachine.CharacterStates[CharacterStatesEnum.BattleTargetMovement])
                 {
                     if (_characterModel.IsMoving)
                     {
-                        _stateMachine.SetStateOverride(_stateMachine._battleMovementState);
+                        _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.BattleMovement]);
                     }
                     else
                     {
-                        _stateMachine.SetStateOverride(_stateMachine._battleIdleState);
+                        _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.BattleIdle]);
                     }
                 }
                 else
                 {
                     if (_characterModel.IsEnemyNear)
                     {
-                        _stateMachine.SetStateOverride(_stateMachine._battleTargetMovementState);
-                        
+                        _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.BattleTargetMovement]);                     
                     }
                 }
             }
@@ -424,9 +474,16 @@ namespace BeastHunter
             {
                 if (_characterModel.IsEnemyNear && _characterModel.ClosestEnemy != null)
                 {
-                    _stateMachine.SetStateOverride(_stateMachine._gettingWeaponState, _stateMachine._battleTargetMovementState);
+                    _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.GettingWeapon], 
+                        _stateMachine.CharacterStates[CharacterStatesEnum.BattleTargetMovement]);
                 }
             }
+        }
+
+        private void StopTarget()
+        {
+            _characterModel.ClosestEnemy = null;
+            _characterModel.IsEnemyNear = false;
         }
 
         private void SetJumpingState()
@@ -435,17 +492,17 @@ namespace BeastHunter
             {
                 if (!_characterModel.IsInBattleMode)
                 {
-                    _stateMachine.SetStateOverride(_stateMachine._jumpingState);
+                    _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.Jumping]);
                 }
                 else
                 {
-                    if(_stateMachine.CurrentState == _stateMachine._battleTargetMovementState)
+                    if(_stateMachine.CurrentState == _stateMachine.CharacterStates[CharacterStatesEnum.BattleTargetMovement])
                     {
-                        _stateMachine.SetStateOverride(_stateMachine._rollingTargetState);
+                        _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.RollingTarget]);
                     }
                     else
                     {
-                        _stateMachine.SetStateOverride(_stateMachine._rollingState);
+                        _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.Rolling]);
                     }
                 }
             }
@@ -453,21 +510,21 @@ namespace BeastHunter
 
         private void SetDodgingState()
         {
-            _stateMachine.SetState(_stateMachine._dodgingState);
+            _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Dodging]);
         }
 
         private void SetFallingState()
         {
-            _stateMachine.SetState(_stateMachine._fallingState);
+            _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Falling]);
         }
 
         private void ChangeDancingState()
         {
-            if(_stateMachine.CurrentState == _stateMachine._defaultIdleState)
+            if(_stateMachine.CurrentState == _stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle])
             {
-                _stateMachine.SetStateOverride(_stateMachine._dancingState);
+                _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.Dancing]);
             }
-            else if (_stateMachine.CurrentState == _stateMachine._dancingState)
+            else if (_stateMachine.CurrentState == _stateMachine.CharacterStates[CharacterStatesEnum.Dancing])
             {
                 _stateMachine.ReturnStateOverride();
             }
@@ -475,12 +532,12 @@ namespace BeastHunter
 
         private void SetAttackingLeftState()
         {
-            SetAttackingState(_stateMachine._attackingLeftState);
+            SetAttackingState(_stateMachine.CharacterStates[CharacterStatesEnum.AttackingFromLeft]);
         }
 
         private void SetAttackingRightState()
         {
-            SetAttackingState(_stateMachine._attackingRightState);
+            SetAttackingState(_stateMachine.CharacterStates[CharacterStatesEnum.AttackingFromRight]);
         }
 
         private void SetAttackingState(CharacterBaseState attackState)
@@ -495,7 +552,7 @@ namespace BeastHunter
                     }
                     else
                     {
-                        _stateMachine.SetStateOverride(_stateMachine._gettingWeaponState);
+                        _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.GettingWeapon]);
                     }
                 }
             }
@@ -507,11 +564,11 @@ namespace BeastHunter
 
             if (_characterModel.IsMoving)
             {
-                _stateMachine.SetStateOverride(_stateMachine._defaultMovementState);
+                _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultMovement]);
             }
             else
             {
-                _stateMachine.SetStateOverride(_stateMachine._defaultIdleState);
+                _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle]);
             }
 
             _characterModel.IsInBattleMode = false;
@@ -521,11 +578,12 @@ namespace BeastHunter
         {
             if (_stateMachine.CurrentState.Type == StateType.Default)
             {
-                _stateMachine.SetState(_stateMachine._talkingState);
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Talking]);
             }
             else if (_stateMachine.CurrentState.Type == StateType.Battle)
             {
-                _stateMachine.SetState(_stateMachine._removingWeaponState, _stateMachine._talkingState);
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.RemovingWeapon], 
+                    _stateMachine.CharacterStates[CharacterStatesEnum.Talking]);
             }
 
             _characterModel.PlayerBehavior.SetLookAtTarget(npcPosition);
@@ -534,9 +592,9 @@ namespace BeastHunter
 
         private void ExitTalkingState(bool isStartsTalking)
         {
-            if (!isStartsTalking && _stateMachine.CurrentState == _stateMachine._talkingState)
+            if (!isStartsTalking && _stateMachine.CurrentState == _stateMachine.CharacterStates[CharacterStatesEnum.Talking])
             {
-                _stateMachine.SetStateAnyway(_stateMachine._defaultIdleState);
+                _stateMachine.SetStateAnyway(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle]);
                 _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
                 _characterModel.PlayerBehavior.SetLookAtTarget(Vector3.zero);
             }
@@ -553,27 +611,40 @@ namespace BeastHunter
             if (currentState.Type == StateType.Battle && !_characterModel.IsWeaponInHands)
             {
                 _characterModel.CharacterSphereCollider.radius *= _characterModel.CharacterCommonSettings.SphereColliderRadiusIncrease;
-                _stateMachine.SetStateOverride(_stateMachine._gettingWeaponState);
+                _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.GettingWeapon]);
             }
 
             if (currentState.Type != StateType.Battle && _characterModel.IsWeaponInHands)
             {
                 _characterModel.CharacterSphereCollider.radius = _characterModel.CharacterCommonSettings.SphereColliderRadius;
-                _stateMachine.SetStateOverride(_stateMachine._removingWeaponState);
+                _stateMachine.SetStateOverride(_stateMachine.CharacterStates[CharacterStatesEnum.RemovingWeapon]);
+            }
+
+            if(previousState.Type == StateType.Sneaking && currentState.Type != StateType.Sneaking)
+            {
+                _characterModel.IsSneaking = false;
+                GlobalEventsModel.OnPlayerSneaking?.Invoke(_characterModel.IsSneaking);
+            }
+            else if(previousState.Type != StateType.Sneaking && currentState.Type == StateType.Sneaking)
+            {
+                _characterModel.IsSneaking = true;
+                GlobalEventsModel.OnPlayerSneaking?.Invoke(_characterModel.IsSneaking);
             }
         }
 
         private void OnAfterStateChange(CharacterBaseState currentState)
         {
-            if(currentState != _stateMachine._attackingLeftState && currentState != _stateMachine._attackingRightState)
+            if(!currentState.IsAttacking)
             {
-                if (currentState.IsTargeting)
+                if (currentState.IsTargeting && _characterModel.ClosestEnemy != null)
                 {
-                    _services.CameraService.SetActiveCamera(_services.CameraService.CharacterTargetCamera);
+                    _services.CameraService.SetActiveCamera(_services.CameraService.CharacterTargetCamera);                  
+                    _services.CameraService.CharacterTargetCamera.LookAt = _characterModel.ClosestEnemy.transform;                                                   
                 }
-                else if (currentState != _stateMachine._talkingState)
+                else if (currentState != _stateMachine.CharacterStates[CharacterStatesEnum.Talking])
                 {
                     _services.CameraService.SetActiveCamera(_services.CameraService.CharacterFreelookCamera);
+                    _services.CameraService.CharacterTargetCamera.LookAt = _characterModel.CharacterTransform;
                 }
             }
         }
@@ -610,10 +681,9 @@ namespace BeastHunter
 
         private bool OnHitBoxFilter(Collider hitedObject)
         {
-            bool isEnemyColliderHit = hitedObject.CompareTag(TagManager.ENEMY) || hitedObject.CompareTag(TagManager.RABBIT);
+            bool isEnemyColliderHit = hitedObject.CompareTag(TagManager.ENEMY) || hitedObject.CompareTag(TagManager.HITBOX);
             
-            if (hitedObject.isTrigger || (_stateMachine.CurrentState != _stateMachine._attackingLeftState && 
-                _stateMachine.CurrentState != _stateMachine._attackingRightState))
+            if (hitedObject.isTrigger || !_stateMachine.CurrentState.IsAttacking)
             {
                 isEnemyColliderHit = false;
             }
@@ -627,9 +697,14 @@ namespace BeastHunter
             {
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
-                DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.LeftHandWeapon, 
-                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().
-                    BaseStats));
+                if (enemyBehavior.Type == InteractableObjectType.WeakHitBox)
+                {
+                    GlobalEventsModel.OnBossWeakPointHitted?.Invoke(enemy);
+                }
+
+                DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.LeftHandWeapon,
+                    _characterModel.CharacterStatsSettings, _context.NpcModels[GetParent(enemyBehavior.transform).
+                        GetInstanceID()].GetStats().BaseStats));
                 hitBox.IsInteractable = false;
             }
         }
@@ -640,9 +715,14 @@ namespace BeastHunter
             {
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
+                if (enemyBehavior.Type == InteractableObjectType.WeakHitBox)
+                {
+                    GlobalEventsModel.OnBossWeakPointHitted?.Invoke(enemy);
+                }
+
                 DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.RightHandWeapon,
-                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().
-                    BaseStats));
+                    _characterModel.CharacterStatsSettings, _context.NpcModels[GetParent(enemyBehavior.transform).
+                        GetInstanceID()].GetStats(). BaseStats));
                 hitBox.IsInteractable = false;
             }
         }

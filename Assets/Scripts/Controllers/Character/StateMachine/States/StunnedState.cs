@@ -21,8 +21,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public StunnedState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public StunnedState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Battle;
             IsTargeting = false;
@@ -67,7 +66,7 @@ namespace BeastHunter
             {
                 CanExit = true;
 
-                if (_stateMachine.PreviousState == _stateMachine._battleTargetMovementState)
+                if (_stateMachine.PreviousState == _stateMachine.CharacterStates[CharacterStatesEnum.BattleTargetMovement])
                 {
                     _stateMachine.ReturnState();
                 }

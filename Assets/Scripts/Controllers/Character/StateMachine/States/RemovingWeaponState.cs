@@ -15,8 +15,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public RemovingWeaponState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public RemovingWeaponState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Default;
             IsTargeting = false;
@@ -76,7 +75,7 @@ namespace BeastHunter
 
                 if(NextState == null)
                 {
-                    _stateMachine.SetState(_stateMachine._defaultIdleState);
+                    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle]);
                 }
                 else
                 {

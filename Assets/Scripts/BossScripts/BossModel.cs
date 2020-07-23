@@ -19,6 +19,13 @@ namespace BeastHunter
         public WeaponItem LeftHandWeapon { get; set; }
         public WeaponItem RightHandWeapon { get; set; }
 
+        public WeakPointData FirstWeakPointData { get; set; }
+        public WeakPointData SecondWeakPointData { get; set; }
+        public WeakPointData ThirdWeakPointData { get; set; }
+        public HitBoxBehavior FirstWeakPointBehavior { get; set; }
+        public HitBoxBehavior SecondWeakPointBehavior { get; set; }
+        public HitBoxBehavior ThirdWeakPointBehavior { get; set; }
+
         public CapsuleCollider BossCapsuleCollider { get; }
         public SphereCollider BossSphereCollider { get; }
         public Rigidbody BossRigitbody { get; }
@@ -173,6 +180,30 @@ namespace BeastHunter
             RightWeaponBehavior.SetType(InteractableObjectType.HitBox);
             RightWeaponBehavior.IsInteractable = false;
 
+            FirstWeakPointData = Data.BossFirstWeakPoint;
+            GameObject firstWeakPoint = GameObject.Instantiate(FirstWeakPointData.InstancePrefab,
+                BossAnimator.GetBoneTransform(HumanBodyBones.Chest));
+            firstWeakPoint.tag = TagManager.HITBOX;
+            firstWeakPoint.transform.localPosition = FirstWeakPointData.PrefabLocalPosition;
+            FirstWeakPointBehavior = firstWeakPoint.GetComponent<HitBoxBehavior>();
+            FirstWeakPointBehavior.AdditionalDamage = FirstWeakPointData.AdditionalDamage;
+
+            SecondWeakPointData = Data.BossSecondWeakPoint;
+            GameObject secondWeakPoint = GameObject.Instantiate(SecondWeakPointData.InstancePrefab,
+                BossAnimator.GetBoneTransform(HumanBodyBones.Hips));
+            secondWeakPoint.tag = TagManager.HITBOX;
+            secondWeakPoint.transform.localPosition = SecondWeakPointData.PrefabLocalPosition;
+            SecondWeakPointBehavior = secondWeakPoint.GetComponent<HitBoxBehavior>();
+            SecondWeakPointBehavior.AdditionalDamage = SecondWeakPointData.AdditionalDamage;
+
+            ThirdWeakPointData = Data.BossThirdWeakPoint;
+            GameObject thirdWeakPoint = GameObject.Instantiate(ThirdWeakPointData.InstancePrefab,
+                BossAnimator.GetBoneTransform(HumanBodyBones.RightLowerLeg));
+            thirdWeakPoint.tag = TagManager.HITBOX;
+            thirdWeakPoint.transform.localPosition = ThirdWeakPointData.PrefabLocalPosition;
+            ThirdWeakPointBehavior = thirdWeakPoint.GetComponent<HitBoxBehavior>();
+            ThirdWeakPointBehavior.AdditionalDamage = ThirdWeakPointData.AdditionalDamage;
+
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
             CurrentHealth = BossStats.BaseStats.HealthPoints;
         }
@@ -210,6 +241,10 @@ namespace BeastHunter
             if (damage.StunProbability > BossData._bossStats.BaseStats.StunResistance)
             {
                 GlobalEventsModel.OnBossStunned?.Invoke();
+            }
+            else
+            {
+                GlobalEventsModel.OnBossHitted?.Invoke();
             }
         }
 

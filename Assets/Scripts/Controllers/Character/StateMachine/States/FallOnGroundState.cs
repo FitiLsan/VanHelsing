@@ -16,8 +16,7 @@
 
         #region ClassLifeCycle
 
-        public FallOnGroundState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public FallOnGroundState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.NotActive;
             IsTargeting = false;

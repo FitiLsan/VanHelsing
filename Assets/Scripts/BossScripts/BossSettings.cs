@@ -75,6 +75,10 @@ namespace BeastHunter
         [Range(1f, 2f)]
         [SerializeField] private float _sphereColliderRadiusIncrease;
 
+        [Tooltip("Sphere trigger radius decreace when player sneaking between 1 and 2.")]
+        [Range(1f, 2f)]
+        [SerializeField] private float _sphereColliderRadiusDecrease;
+
         [Header("Prefab nav mesh settings")]
 
         [Tooltip("Acceleration between 0 and 20.")]
@@ -150,6 +154,7 @@ namespace BeastHunter
         public float CapsuleColliderHeight => _capsuleColliderHeight;
         public float SphereColliderRadius => _sphereColliderRadius;
         public float SphereColliderRadiusIncrease => _sphereColliderRadiusIncrease;
+        public float SphereColliderRadiusDecreace => _sphereColliderRadiusDecrease;
 
         public float NavMeshAcceleration => _navMeshAcceleration;
 

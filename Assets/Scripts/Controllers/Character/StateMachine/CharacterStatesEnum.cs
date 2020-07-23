@@ -1,0 +1,35 @@
+﻿namespace BeastHunter
+{
+    public enum CharacterStatesEnum
+    {
+        None,
+        AttackingFromLeft,
+        AttackingFromRight,
+        BattleIdle,
+        BattleMovement,
+        BattleTargetMovement,
+        Dancing,
+        Dead,
+        DefaultIdle,
+        DefaultMovement,
+        Dodging,
+        Falling,
+        FallOnGround,
+        GettingWeapon,
+        Jumping,
+        Kicking,
+        Landing,
+        RemovingWeapon,
+        Rolling,
+        RollingTarget,
+        Stunned,
+        Talking,
+        SneakingIdle,
+        SneakingMovement,
+        DefaultToCrouch,
+        CrouchToDefault,
+        TrapPlace,
+    }
+}
+
+

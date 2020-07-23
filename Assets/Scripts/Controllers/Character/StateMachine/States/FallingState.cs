@@ -5,8 +5,7 @@
 
         #region ClassLifeCycle
 
-        public FallingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public FallingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.NotActive;
             IsTargeting = false;

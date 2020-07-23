@@ -12,7 +12,7 @@ namespace BeastHunter
         [Header("Basic stats")]
 
         [Tooltip("Health points")]
-        [Range(0.0f, 100.0f)]
+        [Range(0.0f, 1000.0f)]
         [SerializeField] private float _healthPoints;
 
         [Tooltip("Physical power between 0 and 10.")]

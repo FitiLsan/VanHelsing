@@ -35,6 +35,8 @@ MonoBehaviour:
     _runSpeed: 7.4
     _inBattleWalkSpeed: 2
     _inBattleRunSpeed: 3
+    _sneakWalkSpeed: 1.6
+    _sneakRunSpeed: 2.1
     _jumpHorizontalForce: 4.56
     _jumpVerticalForce: 4.52
     _groundCheckHeight: 1.2
@@ -44,6 +46,8 @@ MonoBehaviour:
     _decelerationLag: 0.034
     _inBattleAccelerationLag: 0.028
     _inBattleDecelerationLag: 0.022
+    _sneakAccelerationLag: 0.022
+    _sneakDecelerationLag: 0
     _directionChangeLag: 0.073
     _animatorBaseSpeed: 1
     _targetPrefab: {fileID: 2890280644428487904, guid: 3a80d21ca1e78194c8abdb87e28d79a0,
@@ -57,6 +61,7 @@ MonoBehaviour:
     _rollFrameDistance: 5.55
     _rollAnimationSpeed: 1
   _characterStatsSettings:
+    _healthPoints: 0
     _physicalPower: 2
     _physicalDamageResistance: 0.25
     _stunProbabilityResistance: 0.075

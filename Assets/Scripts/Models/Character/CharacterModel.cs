@@ -52,6 +52,7 @@ namespace BeastHunter
 
         public bool IsMoving { get; set; }
         public bool IsDodging { get; set; }
+        public bool IsSneaking { get; set; }
         public bool IsGrounded { get; set; }
         public bool IsInBattleMode { get; set; }
         public bool IsEnemyNear { get; set; }
@@ -162,6 +163,7 @@ namespace BeastHunter
             ClosestEnemy = null;
             IsMoving = false;
             IsGrounded = false;
+            IsSneaking = false;
             IsEnemyNear = false;
             IsInBattleMode = false;
             IsWeaponInHands = false;
