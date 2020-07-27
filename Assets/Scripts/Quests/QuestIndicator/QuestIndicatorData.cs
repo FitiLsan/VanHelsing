@@ -20,6 +20,7 @@ namespace BeastHunter
         public DataTable QuestTasksCache = QuestRepository.GetQuestTaskCache();
         public GameContext Context;
         public Dictionary<int, GameObject> NpcList = new Dictionary<int,GameObject>();
+        public Dictionary<int, GameObject> newNpcList = new Dictionary<int, GameObject>(); //test placeindicator
         #endregion
 
 
@@ -28,19 +29,40 @@ namespace BeastHunter
         public void QuestionMarkShow(bool isOn, GameObject npc)//, QuestIndicatorModel model)
         {
             // model.QuestIndicatorTransform.GetChild(2).gameObject.SetActive(isOn);
-            npc.transform.Find("FinishQuest").GetChild(0).GetComponent<Image>().enabled = isOn;
+            if (npc.tag != "Place")
+            {
+                npc.transform.Find("FinishQuest").GetChild(0).GetComponent<Image>().enabled = isOn;
+            }
+            else
+            {
+                npc.transform.Find("QuestIndicatorFinish").GetComponent<Image>().enabled = isOn;
+            }
         }
 
         public void TaskQuestionMarkShow(bool isOn, GameObject npc)//, QuestIndicatorModel model)
         {
             // model.QuestIndicatorTransform.GetChild(1).gameObject.SetActive(isOn);
-            npc.transform.Find("TaskQuest").GetChild(0).GetComponent<Image>().enabled = isOn;
+            if (npc.tag != "Place")
+            {
+                npc.transform.Find("TaskQuest").GetChild(0).GetComponent<Image>().enabled = isOn;
+            }
+            else
+            {
+                npc.transform.Find("QuestIndicatorTask").GetComponent<Image>().enabled = isOn;
+            }
         }
 
         public void ExclamationMarkShow(bool isOn, GameObject npc)//, QuestIndicatorModel model)
         {
             //    model.QuestIndicatorTransform.GetChild(0).gameObject.SetActive(isOn);
-            npc.transform.Find("StartQuest").GetChild(0).GetComponent<Image>().enabled = isOn;
+            if (npc.tag != "Place")
+            {
+                npc.transform.Find("StartQuest").GetChild(0).GetComponent<Image>().enabled = isOn;
+            }
+            else
+            {
+                npc.transform.Find("QuestIndicatorStart").GetComponent<Image>().enabled = isOn;
+            }
         }
 
         public void SetPosition(Transform npcTransform, Transform questIndicatorTransform)
@@ -58,6 +80,11 @@ namespace BeastHunter
             foreach(var npc in NpcList)
             {
                 GetQuestInfo(npc.Key, npc.Value.gameObject);
+                var placeName = npc.Value.transform.parent.parent.transform.Find("TitleImage/TitleText").GetComponent<Text>().text;              
+            }
+            foreach (var npc in newNpcList)
+            {
+                GetQuestInfo(npc.Key, npc.Value.gameObject);
             }
         }
 
@@ -69,6 +96,22 @@ namespace BeastHunter
                 NpcList.Add(currentPlace.npcList[i].NpcId, PlaceInteractiveField.GetNpcList()[i]);
             }
             QuestIndicatorCheck(null);
+        }
+
+        public void OnPlaceChecker(List<Place> placeList)
+        {
+            foreach (var place in placeList)
+            {
+                for (int i = 0; i < place.npcList.Count; i++)
+                {
+                    newNpcList.Add(place.npcList[i].NpcId, place.gameObject);
+                }
+            }
+            QuestIndicatorCheck(null);
+            //foreach (var npc in newNpcList)
+            //{
+            //    GetQuestInfo(npc.Key, npc.Value.gameObject);
+            //}
         }
 
         public void GetQuestInfo(int npcID, GameObject npc)//QuestIndicatorModel model)
