@@ -14,6 +14,7 @@ namespace BeastHunter
         private static DataTable _dialogueAnswersCache = new DataTable();
         private static DataTable _dialogueNodesCache = new DataTable();
         private static DataTable _questTaskCache = new DataTable();
+        private static DataTable _questItemTaskCache = new DataTable();
         private static Locale _locale = Locale.RU;
         private static readonly Dictionary<Locale, (string, string)> _localeTables = new Dictionary<Locale, (string, string)>
             {
@@ -141,6 +142,24 @@ namespace BeastHunter
                    $" INNER Join 'dialogue_answers' on quest_objectives.TargetId = dialogue_answers.Id where Type = 8;");
                 }
                 return _questTaskCache;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{DateTime.Now.ToShortTimeString()}    questTaskCache error     {e}\n");
+                throw;
+            }
+        }
+
+        public static DataTable GetQuestItemTaskCache()
+        {
+            try
+            {
+                if (_questItemTaskCache.Rows.Count == 0)
+                {
+                    _questItemTaskCache = DatabaseWrapper.GetTable($"select quest_objectives.Id, QuestId, TargetID, dialogue_answers.Npc_id from 'quest_objectives'" +
+                   $" INNER Join 'dialogue_answers' on quest_objectives.TargetId = dialogue_answers.Id where Type = 2;");
+                }
+                return _questItemTaskCache;
             }
             catch (Exception e)
             {
