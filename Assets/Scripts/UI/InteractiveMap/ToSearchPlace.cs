@@ -17,7 +17,7 @@ namespace BeastHunter
 
         public List<ItemInfo> GetPlaceItemList()
         {
-            var parent = gameObject.transform.parent.transform.parent;
+            var parent = gameObject.transform.parent.transform.parent.parent;
             var items = parent.GetComponent<PlaceInteractiveField>().ItemList;
             
             return items;

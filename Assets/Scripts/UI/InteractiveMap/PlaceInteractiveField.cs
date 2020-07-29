@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,21 +13,23 @@ namespace BeastHunter
         public GameObject PlaceEntrance;
         public GameObject PlaceInside;
         public GameObject PlaceFoundItems;
-        public GameObject PlaceExit;
+        public GameObject PlaceExitButton;
+        public GameObject CurrentPositon;
+        public Place CurrentPlace;
 
         public Text PlaceName;
         public int PlaceId;
-        public GameObject NpcObjectList;
-        public GameObject ItemObjectList;
+        public GameObject NpcObjectPrototype;
+        public GameObject ItemObjectPrototype;
         public static List<GameObject> NpcList = new List<GameObject>();
         public List<ItemInfo> ItemList = new List<ItemInfo>();
         public List<GameObject> ItemListObj = new List<GameObject>();
-
+        public Image PlaceImg;
         public GameObject Npc;
         public GameObject Item;
 
         public Text NpcName;
-        public int NpcId;
+        public NpcIdInfo NpcId;
         public Image NpcAvatar;
         public Image StartQuest;
         public Image Task;
@@ -46,17 +49,18 @@ namespace BeastHunter
         {
             InteractiveField = gameObject.transform.GetChild(0).gameObject;
             PlaceName = gameObject.transform.Find("Background/TitleImage/TitleText").GetComponent<Text>();
-            NpcObjectList = gameObject.transform.Find("Background/PlaceInside/npcList").gameObject;
-            ItemObjectList = gameObject.transform.Find("Background/FoundItems/itemList").gameObject;
+            NpcObjectPrototype = gameObject.transform.Find("Background/PlaceInside/npcList").gameObject;
+            ItemObjectPrototype = gameObject.transform.Find("Background/FoundItems/itemList").gameObject;
             //  toTolk = gameObject.transform.Find("Background/toTalk").gameObject;
             //  ToSearch = gameObject.transform.Find("Background/toSearch").GetComponentInChildren<Text>();
             PlaceEntrance = gameObject.transform.Find("Background/PlaceEntrance").gameObject;
             PlaceInside = gameObject.transform.Find("Background/PlaceInside").gameObject;
             PlaceFoundItems = gameObject.transform.Find("Background/FoundItems").gameObject;
-            PlaceExit = gameObject.transform.Find("Background/toExit").gameObject;
+            PlaceExitButton = gameObject.transform.Find("Background/toExit").gameObject;
+            CurrentPositon = GameObject.Find("currentPosition");
+            PlaceImg = gameObject.transform.Find("Background/PlaceEntrance/image").GetComponent<Image>();
 
-
-
+            NpcId = Npc.transform.GetComponent<NpcIdInfo>();
             NpcName = Npc.transform.Find("currentNpcName/Text").GetComponent<Text>();
             NpcAvatar = Npc.transform.Find("avatar").GetComponent<Image>();
             StartQuest = Npc.transform.Find("StartQuest").GetComponent<Image>();
@@ -68,29 +72,62 @@ namespace BeastHunter
 
 
             PlaceButtonClick.ClickEvent += OnClick;
-            SelectNpcButtonClick.SelectNpcClickEvent += OnNpcSelect;
             ToComeInPlace.ToComeInPlaceObjEvent += OnComeIn;
+            PlaceExit.PlaceExitEvent += OnExit;
+            ToSearchPlace.ToSearchPlaceEvent += OnSearch;
+            ConfirmItems.ConfirmItemsEvent += OnConfirmItems;
+        }
+
+        public void MovePosition()
+        {
+            CurrentPositon.transform.SetPositionAndRotation(CurrentPlace.transform.position, CurrentPlace.transform.rotation);
         }
 
         public void Start()
         {
             InteractiveField.SetActive(false);
-            // PlaceEntrance.SetActive(false);
             PlaceInside.SetActive(false);
             PlaceFoundItems.SetActive(false);
-            PlaceExit.SetActive(false);
+            PlaceExitButton.SetActive(true);
         }
 
-        private void OnComeIn(Place place)
+        private void OnComeIn()
         {
             PlaceInside.SetActive(true);
+            PlaceEntrance.SetActive(false);
+            PlaceExitButton.SetActive(true);
+            MovePosition();
+            
+        }
+
+        public void OnExit()
+        {
+            InteractiveField.SetActive(false);
+            PlaceEntrance.SetActive(true);
+            PlaceInside.SetActive(false);
+            PlaceFoundItems.SetActive(false);
+            PlaceExitButton.SetActive(false);
+        }
+
+        private void OnSearch(List<ItemInfo> itemList)
+        {
+            PlaceFoundItems.SetActive(true);
+        }
+
+        private void OnConfirmItems()
+        {
+            PlaceFoundItems.SetActive(false);
         }
 
         private void OnClick(Place place)
         {
             InteractiveField.SetActive(true);
-            NpcId = 0;
+            PlaceEntrance.SetActive(true);
+            PlaceInside.SetActive(false);
+            NpcId.NpcID = 0;
             SelectedNpcId = 0;
+            CurrentPlace = place;
+            PlaceImg.sprite = place.PlaceInfo.PlaceImage;
             foreach (var npc in NpcList)
             {
                 Destroy(npc);
@@ -105,36 +142,30 @@ namespace BeastHunter
 
             PlaceName.text = place.PlaceInfo.PlaceName;
             PlaceId = place.PlaceInfo.PlaceId;
-            //if (place.PlaceInfo.PlaceId == 1)
-            //{
-            //    ToSearch.text = "To come in";
-            //}
-            //else
-            //{
-            //    ToSearch.text = "To search";
-            //}
+
             if (place.npcList.Count != 0)
             {
-                NpcName.text = place.npcList[0].NpcName;
-                NpcAvatar.sprite = place.npcList[0].NpcImage;
-                NpcId = place.npcList[0].NpcId;
-                var tempNpc = Instantiate(Npc, NpcObjectList.transform.position, NpcObjectList.transform.rotation, NpcObjectList.transform);
-                NpcList.Add(tempNpc);
+                for (int i = 0; i < place.npcList.Count; i++)
+                {
+                    NpcName.text = place.npcList[i].NpcName;
+                    NpcAvatar.sprite = place.npcList[i].NpcImage;
+                    NpcId.NpcID = place.npcList[i].NpcId;
+                    var tempNpc = Instantiate(Npc, NpcObjectPrototype.transform.position, NpcObjectPrototype.transform.rotation, NpcObjectPrototype.transform);
+                    NpcList.Add(tempNpc);
+                }
 
             }
             if (place.itemList.Count != 0)
             {
-                ItemName.text = place.itemList[0].ItemName;
-                ItemAvatar.sprite = place.itemList[0].ItemImage;
-                var tempItem = Instantiate(Item, ItemObjectList.transform.position, ItemObjectList.transform.rotation, ItemObjectList.transform);
-                ItemListObj.Add(tempItem);
-                ItemList.AddRange(place.itemList);
-
+                for (int i = 0; i < place.itemList.Count; i++)
+                {
+                    ItemName.text = place.itemList[i].ItemName;
+                    ItemAvatar.sprite = place.itemList[i].ItemImage;
+                    var tempItem = Instantiate(Item, ItemObjectPrototype.transform.position, ItemObjectPrototype.transform.rotation, ItemObjectPrototype.transform);
+                    ItemListObj.Add(tempItem);
+                    ItemList.AddRange(place.itemList);
+                }
             }
-        }
-        private void OnNpcSelect(GameObject npc)
-        {
-            SelectedNpcId = NpcId;
         }
 
         public static List<GameObject> GetNpcList()

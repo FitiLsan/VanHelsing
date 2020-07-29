@@ -8,16 +8,17 @@ namespace BeastHunter
     public class ToTolkNpc : MonoBehaviour, IPointerClickHandler
     {
         public static event Action<int> ToTalkClickEvent;
-
+        public GameObject SelectedNpc;
         public void OnPointerClick(PointerEventData eventData)
         {
+
+            SelectedNpc = eventData.pointerEnter.transform.parent.parent.gameObject;
             ToTalkClickEvent?.Invoke(GetNpcId());
         }
 
         public int GetNpcId()
         {
-            var parent = gameObject.transform.parent.transform.parent;
-            var npcId = parent.GetComponent<PlaceInteractiveField>().SelectedNpcId;
+            var npcId = SelectedNpc.GetComponent<NpcIdInfo>().NpcID;
             return npcId;
         }
     }

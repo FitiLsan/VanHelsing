@@ -213,6 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741a8b58c8fd9ea46be1a89d68d00f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectedNpc: {fileID: 0}
 --- !u!1 &3973176541604870263
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,7 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -577,7 +578,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 6b5cf6d3d96067b43b7d624cde7dbf50, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9d3d73af5c2a510439700b79876679b5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -745,6 +746,7 @@ GameObject:
   - component: {fileID: 3973176543036756639}
   - component: {fileID: 3973176543036756641}
   - component: {fileID: -3859193251775452576}
+  - component: {fileID: 3973176543036756640}
   m_Layer: 5
   m_Name: Npc
   m_TagString: NPC
@@ -799,6 +801,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fae0d2f82426b0849b37ff5b89f567e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3973176543036756640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3973176543036756638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3040e7ead449bd548b652c2786de14e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NpcID: 7
 --- !u!1 &3973176543311313032
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,7 +873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -952,7 +967,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Aliya
+  m_Text: Claus
 --- !u!1 &7803723820446626760
 GameObject:
   m_ObjectHideFlags: 0

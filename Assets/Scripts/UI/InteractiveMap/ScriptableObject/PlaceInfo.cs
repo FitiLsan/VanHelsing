@@ -9,7 +9,7 @@ namespace BeastHunter
     {
         public int PlaceId;
         public string PlaceName;
-        public Image PlaceImage;
+        public Sprite PlaceImage;
         [TextArea(3,30)]
         public string PlaceDescription;
         public (int, int) PlaceCoordinates; 
