@@ -8,6 +8,12 @@ namespace BeastHunter
     public class PlaceInteractiveField : MonoBehaviour
     {
         public GameObject InteractiveField;
+
+        public GameObject PlaceEntrance;
+        public GameObject PlaceInside;
+        public GameObject PlaceFoundItems;
+        public GameObject PlaceExit;
+
         public Text PlaceName;
         public int PlaceId;
         public GameObject NpcObjectList;
@@ -34,16 +40,22 @@ namespace BeastHunter
         public Text ToSearch;
 
         public int SelectedNpcId;
-        
+
 
         public void Awake()
         {
             InteractiveField = gameObject.transform.GetChild(0).gameObject;
             PlaceName = gameObject.transform.Find("Background/TitleImage/TitleText").GetComponent<Text>();
-            NpcObjectList = gameObject.transform.Find("Background/npcList").gameObject;
-            ItemObjectList = gameObject.transform.Find("Background/itemList").gameObject;
-            toTolk = gameObject.transform.Find("Background/toTalk").gameObject;
-            ToSearch = gameObject.transform.Find("Background/toSearch").GetComponentInChildren<Text>();
+            NpcObjectList = gameObject.transform.Find("Background/PlaceInside/npcList").gameObject;
+            ItemObjectList = gameObject.transform.Find("Background/FoundItems/itemList").gameObject;
+            //  toTolk = gameObject.transform.Find("Background/toTalk").gameObject;
+            //  ToSearch = gameObject.transform.Find("Background/toSearch").GetComponentInChildren<Text>();
+            PlaceEntrance = gameObject.transform.Find("Background/PlaceEntrance").gameObject;
+            PlaceInside = gameObject.transform.Find("Background/PlaceInside").gameObject;
+            PlaceFoundItems = gameObject.transform.Find("Background/FoundItems").gameObject;
+            PlaceExit = gameObject.transform.Find("Background/toExit").gameObject;
+
+
 
             NpcName = Npc.transform.Find("currentNpcName/Text").GetComponent<Text>();
             NpcAvatar = Npc.transform.Find("avatar").GetComponent<Image>();
@@ -54,12 +66,29 @@ namespace BeastHunter
             ItemName = Item.transform.Find("currentItemName/Text").GetComponent<Text>();
             ItemAvatar = Item.transform.Find("itemAvatar").GetComponent<Image>();
 
+
             PlaceButtonClick.ClickEvent += OnClick;
             SelectNpcButtonClick.SelectNpcClickEvent += OnNpcSelect;
+            ToComeInPlace.ToComeInPlaceObjEvent += OnComeIn;
+        }
+
+        public void Start()
+        {
+            InteractiveField.SetActive(false);
+            // PlaceEntrance.SetActive(false);
+            PlaceInside.SetActive(false);
+            PlaceFoundItems.SetActive(false);
+            PlaceExit.SetActive(false);
+        }
+
+        private void OnComeIn(Place place)
+        {
+            PlaceInside.SetActive(true);
         }
 
         private void OnClick(Place place)
         {
+            InteractiveField.SetActive(true);
             NpcId = 0;
             SelectedNpcId = 0;
             foreach (var npc in NpcList)
@@ -72,7 +101,8 @@ namespace BeastHunter
             }
             NpcList.Clear();
             ItemList.Clear();
-            InteractiveField.SetActive(true);
+
+
             PlaceName.text = place.PlaceInfo.PlaceName;
             PlaceId = place.PlaceInfo.PlaceId;
             //if (place.PlaceInfo.PlaceId == 1)
@@ -90,7 +120,7 @@ namespace BeastHunter
                 NpcId = place.npcList[0].NpcId;
                 var tempNpc = Instantiate(Npc, NpcObjectList.transform.position, NpcObjectList.transform.rotation, NpcObjectList.transform);
                 NpcList.Add(tempNpc);
-                
+
             }
             if (place.itemList.Count != 0)
             {
@@ -106,7 +136,7 @@ namespace BeastHunter
         {
             SelectedNpcId = NpcId;
         }
-        
+
         public static List<GameObject> GetNpcList()
         {
             return NpcList;

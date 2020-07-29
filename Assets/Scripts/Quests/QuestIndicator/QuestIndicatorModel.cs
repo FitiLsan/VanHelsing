@@ -28,7 +28,7 @@ namespace BeastHunter
         public QuestIndicatorModel(QuestIndicatorData questIndicatorData, GameContext context)
         {
             //For 3D mode  QuestIndicatorTransform = prefab.transform;
-            PlaceButtonClick.ClickEvent += questIndicatorData.OnClickPlace;
+         //   PlaceButtonClick.ClickEvent += questIndicatorData.OnClickPlace;
             PlaceQuestIndicator.PlacesScanEvent += questIndicatorData.OnPlaceChecker;
             QuestIndicatorData = questIndicatorData;
             QuestIndicatorStruct = QuestIndicatorData.QuestIndicatorStruct;

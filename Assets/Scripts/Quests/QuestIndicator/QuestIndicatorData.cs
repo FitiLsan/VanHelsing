@@ -82,7 +82,7 @@ namespace BeastHunter
             foreach(var npc in NpcList)
             {
                 GetQuestInfo(npc.Key, npc.Value.gameObject, 0);
-                var placeName = npc.Value.transform.parent.parent.transform.Find("TitleImage/TitleText").GetComponent<Text>().text;              
+              //  var placeName = npc.Value.transform.parent.parent.transform.Find("TitleImage/TitleText").GetComponent<Text>().text;              
             }
             foreach (var npc in newNpcList)
             {

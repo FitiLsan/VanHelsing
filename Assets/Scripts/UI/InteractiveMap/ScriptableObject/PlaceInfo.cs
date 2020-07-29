@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace BeastHunter
@@ -8,5 +9,9 @@ namespace BeastHunter
     {
         public int PlaceId;
         public string PlaceName;
+        public Image PlaceImage;
+        [TextArea(3,30)]
+        public string PlaceDescription;
+        public (int, int) PlaceCoordinates; 
     }
 }
