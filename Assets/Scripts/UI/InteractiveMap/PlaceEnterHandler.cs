@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,7 @@ namespace BeastHunter
         {
             // Только для входа в Хаб.
             Debug.Log($"entered to hub {placeId}");
-            if(placeId.Equals(1))
+            if (placeId.Equals(1))
             {
                 Hub.SetActive(true);
                 HubButton.SetActive(true);

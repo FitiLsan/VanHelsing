@@ -10,29 +10,25 @@ namespace BeastHunter
     {
         public static event Action<Place> ClickEvent;
         public static event Action<int> CanvasClickEvent;
-        private static List<Image> _lineList = new List<Image>();
         private Place _currentPlace;
-        private Image _currentline;
-        private static GameObject _curretPositon;
+
+        private static GameObject _currentPositon;
 
         public void OnPointerClick(PointerEventData eventData)
         {
             var parent = eventData.pointerEnter.transform.parent;
-            _curretPositon = GameObject.Find("currentPosition");
-            _currentline = parent.Find("Line").GetComponent<Image>();
-            _lineList.Add(_currentline);
-            _curretPositon.transform.SetPositionAndRotation(parent.position, parent.rotation);
-            foreach(var line in _lineList)
-            {
-                line.enabled = false;
-            }
-            _currentline.enabled = true;
             _currentPlace = parent.GetComponent<Place>();
-            
+
+            //_currentPositon = GameObject.Find("currentPosition");
+
+            //_currentPositon.transform.SetPositionAndRotation(parent.position, parent.rotation);
+
+
+
             ClickEvent?.Invoke(GetPlace());
             CanvasClickEvent?.Invoke(0);
         }
-        
+
         private Place GetPlace()
         {
             return _currentPlace;
