@@ -33,6 +33,7 @@
         QuestUpdated,
         AnswerButtonClicked,
         SaveGeneratedQuest,
-        DialogueUpdateByQuest
+        DialogueUpdateByQuest,
+        ReceivingNewCard
     }
 }

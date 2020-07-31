@@ -68,6 +68,8 @@ namespace BeastHunter
             //  EventManager.StartListening(GameEventTypes.ItemUsed, OnItemUse);
             // не удалять, события для предметов
             Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
+            //test cardindicator
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.ReceivingNewCard, CardReceiveIndication.GetCard);
         }
 
         #endregion
@@ -127,6 +129,7 @@ namespace BeastHunter
             Debug.Log($"QuestLogController>>> Quest [{idArgs.Id}] Reported");
             Debug.Log("Game saved");
 #endif            
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.ReceivingNewCard, new CardArgs(1));
             QuestStorage.SaveGame("TestSave.bytes");
             if (QuestGeneration.GetTempQuest() != null)
             {
@@ -369,7 +372,7 @@ namespace BeastHunter
 
         public void SetQuestIsNotComplete(int questId)
         {
-            
+            //need del?
         }    
         
         public void OnSaveGeneratedQuest(EventArgs args)
