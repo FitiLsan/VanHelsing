@@ -28,7 +28,6 @@ namespace BeastHunter
             {
                 return;
             }
-            Debug.Log($"Get new Card ID :{cardArgs.CardId}");
             StartIndication();
         }
 

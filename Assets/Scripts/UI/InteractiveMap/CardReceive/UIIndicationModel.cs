@@ -28,7 +28,6 @@ namespace BeastHunter
             UIIndicationData = uiIndicationData;
             UIIndicationData.CardIndicationUI = model.GetComponent<RectTransform>();
             Services.SharedInstance.EventManager.StartListening(GameEventTypes.ReceivingNewCard, UIIndicationData.GetCard);
-           //QuestModel.ReceiveCardEvent += UIIndicationData.GetCard;
         }
 
         #endregion
@@ -38,10 +37,7 @@ namespace BeastHunter
 
         public void Execute()
         {
-            if (Input.GetButtonDown("Jump"))
-            {
-               UIIndicationData.StartIndication();
-            }
+
         }
 
         #endregion
