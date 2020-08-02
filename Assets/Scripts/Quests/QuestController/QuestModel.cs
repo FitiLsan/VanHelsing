@@ -10,6 +10,8 @@ namespace BeastHunter
     {
         #region Fields
 
+        public static event Action<EventArgs> ReceiveCardEvent;
+
         private readonly List<Quest> _quests;
         private readonly List<Quest> _completedQuest;
         private readonly List<QuestTask> _completedTasks;
@@ -69,7 +71,7 @@ namespace BeastHunter
             // не удалять, события для предметов
             Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.QuestUpdated, null);
             //test cardindicator
-            Services.SharedInstance.EventManager.StartListening(GameEventTypes.ReceivingNewCard, CardReceiveIndication.GetCard);
+          //  Services.SharedInstance.EventManager.StartListening(GameEventTypes.ReceivingNewCard, CardReceiveIndication.GetCard);
         }
 
         #endregion
@@ -130,6 +132,7 @@ namespace BeastHunter
             Debug.Log("Game saved");
 #endif            
             Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.ReceivingNewCard, new CardArgs(1));
+           // ReceiveCardEvent?.Invoke(new CardArgs(1));
             QuestStorage.SaveGame("TestSave.bytes");
             if (QuestGeneration.GetTempQuest() != null)
             {

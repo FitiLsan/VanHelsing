@@ -14,6 +14,7 @@
                    Add(new QuestInitializeController(context));
                  Add(new QuestIndicatorInitializeController(context));
                  Add(new QuestJournalInitializeController(context));
+            Add(new UIIndicationInitializeController(context));
             Add(new PlaceSearcherController(context));
             //     Add(new GiantMudCrabController(context));
             //     Add(new TargetController(context));
@@ -27,6 +28,7 @@
             //Add(new RabbitController(context, Services.SharedInstance));
               Add(new QuestIndicatorController(context));
             Add(new QuestJournalController(context));
+            Add(new UIIndicationController(context));
         }
 
         #endregion
