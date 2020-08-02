@@ -9,31 +9,17 @@
             Type = StateType.Default;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = true;
-            CanBeOverriden = true;
         }
 
         #endregion
+
 
         #region Methods
 
         public override void Initialize()
         {
+            base.Initialize();
             _animationController.PlayDefaultIdleAnimation();
-        }
-
-        public override void Execute()
-        {
-
-        }
-
-        public override void OnExit()
-        {
-
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         #endregion

@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class CrouchMovementState : CharacterBaseState
+    public sealed class CrouchMovementState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -47,8 +47,6 @@ namespace BeastHunter
             Type = StateType.Sneaking;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = true;
-            CanBeOverriden = true;
             CameraTransform = Services.SharedInstance.CameraService.CharacterCamera.transform;
             SpeedIncreace = _characterModel.CharacterCommonSettings.SneakRunSpeed /
                 _characterModel.CharacterCommonSettings.SneakWalkSpeed;
@@ -61,10 +59,11 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             _animationController.PlayCrouchMovementAnimation();
         }
 
-        public override void Execute()
+        public void Updating()
         {
             CountSpeed();
             MovementControl();
@@ -72,11 +71,8 @@ namespace BeastHunter
 
         public override void OnExit()
         {
+            base.OnExit();
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void MovementControl()

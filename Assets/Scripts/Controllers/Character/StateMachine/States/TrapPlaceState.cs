@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class TrapPlaceState : CharacterBaseState
+    public sealed class TrapPlaceState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -26,8 +26,6 @@ namespace BeastHunter
             Type = StateType.Default;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = true;
         }
 
         #endregion
@@ -38,22 +36,12 @@ namespace BeastHunter
         public override void Initialize()
         {
             ExitTime = EXIT_TIME;
-            CanExit = false;
             _animationController.PlayTrapPlaceAnimation();
         }
 
-        public override void Execute()
+        public void Updating()
         {
             ExitCheck();
-        }
-
-        public override void OnExit()
-        {
-
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
@@ -64,8 +52,6 @@ namespace BeastHunter
             }
             else
             {
-                CanExit = true;
-
                 if (_stateMachine.PreviousState == _stateMachine.CharacterStates[CharacterStatesEnum.BattleTargetMovement])
                 {
                     _stateMachine.ReturnState();

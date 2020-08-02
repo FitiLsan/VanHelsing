@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class RollingState : CharacterBaseState
+    public sealed class RollingState : CharacterBaseState, IUpdate
     {
         #region Properties
 
@@ -19,8 +19,6 @@ namespace BeastHunter
             Type = StateType.Battle;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
         }
 
         #endregion
@@ -30,12 +28,11 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             if (_characterModel.IsMoving)
             {
                 RollTime = _characterModel.CharacterCommonSettings.RollTime;
                 _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.RollAnimationSpeed;
-                CanExit = false;
-                CanBeOverriden = false;
                 _animationController.PlayRollForwardAnimation();
                 _characterModel.IsDodging = true;
             }
@@ -45,7 +42,7 @@ namespace BeastHunter
             }
         }
 
-        public override void Execute()
+        public void Updating()
         {
             ExitCheck();
             Roll();
@@ -54,12 +51,9 @@ namespace BeastHunter
 
         public override void OnExit()
         {
+            base.OnExit();
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
             _characterModel.IsDodging = false;
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
@@ -74,9 +68,6 @@ namespace BeastHunter
 
         private void CheckNextState()
         {
-            CanExit = true;
-            CanBeOverriden = true;
-
             if (NextState == null)
             {
                 if (_characterModel.IsMoving)

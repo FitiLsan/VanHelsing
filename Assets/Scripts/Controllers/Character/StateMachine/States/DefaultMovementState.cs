@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class DefaultMovementState : CharacterBaseState
+    public sealed class DefaultMovementState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -46,8 +46,6 @@ namespace BeastHunter
             Type = StateType.Default;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = true;
-            CanBeOverriden = true;
             CameraTransform = Services.SharedInstance.CameraService.CharacterCamera.transform;
         }
 
@@ -58,22 +56,14 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             _animationController.PlayDefaultMovementAnimation();
         }
 
-        public override void Execute()
+        public void Updating()
         {
             CountSpeed();
             MovementControl();
-        }
-
-        public override void OnExit()
-        {
-            
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void MovementControl()

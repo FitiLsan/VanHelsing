@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class BattleMovementState : CharacterBaseState
+    public sealed class BattleMovementState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -47,8 +47,6 @@ namespace BeastHunter
             Type = StateType.Battle;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = true;
-            CanBeOverriden = true;
             CameraTransform = Services.SharedInstance.CameraService.CharacterCamera.transform;
             SpeedIncreace = _characterModel.CharacterCommonSettings.InBattleRunSpeed / 
                 _characterModel.CharacterCommonSettings.InBattleWalkSpeed;
@@ -61,10 +59,11 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             _animationController.PlayBattleMovementAnimation(_characterModel.LeftHandWeapon, _characterModel.RightHandWeapon);
         }
 
-        public override void Execute()
+        public void Updating()
         {
             CountSpeed();   
             MovementControl();
@@ -73,11 +72,8 @@ namespace BeastHunter
 
         public override void OnExit()
         {
+            base.OnExit();
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void StayInBattle()

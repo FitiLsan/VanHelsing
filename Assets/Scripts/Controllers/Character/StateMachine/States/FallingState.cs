@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public sealed class FallingState : CharacterBaseState
+    public sealed class FallingState : CharacterBaseState, IUpdate
     {
 
         #region ClassLifeCycle
@@ -10,8 +10,6 @@
             Type = StateType.NotActive;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
         }
 
         #endregion
@@ -24,25 +22,15 @@
             _animationController.PlayFallAnimation();
         }
 
-        public override void Execute()
+        public void Updating()
         {
             ExitCheck();
-        }
-
-        public override void OnExit()
-        {
-
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
         {
             if (_characterModel.IsGrounded)
             {
-                CanExit = true;
             }
         }
 

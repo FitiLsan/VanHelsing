@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class RemovingWeaponState : CharacterBaseState
+    public sealed class RemovingWeaponState : CharacterBaseState, IUpdate
     {
         #region Fields
 
@@ -20,8 +20,6 @@ namespace BeastHunter
             Type = StateType.Default;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
         }
 
         #endregion
@@ -31,6 +29,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             if (_characterModel.LeftHandWeapon.WeaponHandType == WeaponHandType.TwoHanded)
             {
                 _removingTime = _characterModel.LeftHandWeapon.TimeToRemove;
@@ -43,24 +42,13 @@ namespace BeastHunter
                 _removingTime = 0;
                 _disappearingTime = 0;
             }
-
-            CanExit = false;
         }
 
-        public override void Execute()
+        public void Updating()
         {
             AppearanceCheck();
             ExitCheck();
             StayOutBattle();
-        }
-
-        public override void OnExit()
-        {
-
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
@@ -71,8 +59,6 @@ namespace BeastHunter
             }
             else
             {
-                CanExit = true;
-
                 if(NextState == null)
                 {
                     _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle]);

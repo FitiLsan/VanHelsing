@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public sealed class BattleIdleState : CharacterBaseState
+    public sealed class BattleIdleState : CharacterBaseState, IUpdate
     {
         #region ClassLifeCycle
 
@@ -9,8 +9,6 @@
             Type = StateType.Battle;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = true;
-            CanBeOverriden = true;
         }
 
         #endregion
@@ -20,20 +18,13 @@
 
         public override void Initialize()
         {
+            base.Initialize();
             _animationController.PlayBattleIdleAnimation(_characterModel.LeftHandWeapon, _characterModel.RightHandWeapon);
         }
 
-        public override void Execute()
+        public void Updating()
         {
             StayInBattle();
-        }
-
-        public override void OnExit()
-        {
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void StayInBattle()

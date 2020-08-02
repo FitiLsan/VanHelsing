@@ -59,6 +59,7 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.DefaultToCrouch, new DefaultToCrouchState(context, this));
             CharacterStates.Add(CharacterStatesEnum.CrouchToDefault, new CrouchToDefaultState(context, this));
             CharacterStates.Add(CharacterStatesEnum.TrapPlace, new TrapPlaceState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.SettingTimeSkip, new SettingTimeSkipState(context, this));
         }
 
         #endregion
@@ -74,11 +75,11 @@ namespace BeastHunter
 
         public void OnAwake()
         {
-            // BackState.OnAwake();
+            BackState.OnAwake();
 
             foreach (var state in CharacterStates)
             {
-               // On Awake state
+                if(state.Value is IAwake) (state.Value as IAwake).OnAwake();
             }
         }
 
@@ -86,10 +87,7 @@ namespace BeastHunter
         {
             BackState.Execute();
 
-            foreach (var state in CharacterStates)
-            {
-                state.Value.Execute();
-            }
+            if (CurrentState is IUpdate) (CurrentState as IUpdate).Updating();
         }
 
         public void OnTearDown()
@@ -98,177 +96,35 @@ namespace BeastHunter
 
             foreach (var state in CharacterStates)
             {
-                state.Value.OnTearDown();
+                if (state.Value is ITearDown) (state.Value as ITearDown).TearDown();
             }
         }
 
         public void SetState(CharacterBaseState newState)
         {
-            if (CurrentState != newState)
-            {
-                if (CurrentState.CanExit)
-                {
-                    OnBeforeStateChange(CurrentState, newState);
-                    CurrentState.OnExit();
-                    PreviousState = CurrentState;
-                    CurrentState = newState;
-                    CurrentState.NextState = null;
-                    OnStateChange(PreviousState, CurrentState);
-                    CurrentState.Initialize();
-                    OnAfterStateChange(CurrentState);
-                }
-            }
+            OnBeforeStateChange(CurrentState, newState);
+            CurrentState.OnExit();
+            PreviousState = CurrentState;
+            CurrentState = newState;
+            CurrentState.NextState = null;
+            OnStateChange(PreviousState, CurrentState);
+            CurrentState.Initialize();
+            OnAfterStateChange(CurrentState);
         }
 
         public void SetState(CharacterBaseState newState, CharacterBaseState nextState)
         {
-            if (CurrentState != newState)
-            {
-                if (CurrentState.CanExit)
-                {
-                    OnBeforeStateChange(CurrentState, newState);
-                    CurrentState.OnExit();
-                    PreviousState = CurrentState;
-                    CurrentState = newState;
-                    CurrentState.NextState = nextState;
-                    OnStateChange(PreviousState, CurrentState);
-                    CurrentState.Initialize();
-                    OnAfterStateChange(CurrentState);
-                }
-            }
-        }
-
-        public void SetStateOverride(CharacterBaseState newState)
-        {
-            if (CurrentState != newState)
-            {
-                if (CurrentState.CanBeOverriden)
-                {
-                    OnBeforeStateChange(CurrentState, newState);
-                    CurrentState.OnExit();
-                    PreviousState = CurrentState;
-                    CurrentState = newState;
-                    CurrentState.NextState = null;
-                    OnStateChange(PreviousState, CurrentState);
-                    CurrentState.Initialize();
-                    OnAfterStateChange(CurrentState);
-                }
-            }
-        }
-
-        public void SetStateOverride(CharacterBaseState newState, CharacterBaseState nextState)
-        {
-            if (CurrentState != newState)
-            {
-                if (CurrentState.CanBeOverriden)
-                {
-                    OnBeforeStateChange(CurrentState, newState);
-                    CurrentState.OnExit();
-                    PreviousState = CurrentState;
-                    CurrentState = newState;
-                    CurrentState.NextState = nextState;
-                    OnStateChange(PreviousState, CurrentState);
-                    CurrentState.Initialize();
-                    OnAfterStateChange(CurrentState);
-                }
-            }
-        }
-
-        public void SetStateAnyway(CharacterBaseState newState)
-        {
-            if (CurrentState != newState)
-            {
-                OnBeforeStateChange(CurrentState, newState);
-                CurrentState.OnExit();
-                PreviousState = CurrentState;
-                CurrentState = newState;
-                CurrentState.NextState = null;
-                OnStateChange(PreviousState, CurrentState);
-                CurrentState.Initialize();
-                OnAfterStateChange(CurrentState);
-            }
-        }
-
-        public void SetStateAnyway(CharacterBaseState newState, CharacterBaseState nextState)
-        {
-            if (CurrentState != newState)
-            {
-                OnBeforeStateChange(CurrentState, newState);
-                CurrentState.OnExit();
-                PreviousState = CurrentState;
-                CurrentState = newState;
-                CurrentState.NextState = nextState;
-                OnStateChange(PreviousState, CurrentState);
-                CurrentState.Initialize();
-                OnAfterStateChange(CurrentState);
-            }
+            OnBeforeStateChange(CurrentState, newState);
+            CurrentState.OnExit();
+            PreviousState = CurrentState;
+            CurrentState = newState;
+            CurrentState.NextState = nextState;
+            OnStateChange(PreviousState, CurrentState);
+            CurrentState.Initialize();
+            OnAfterStateChange(CurrentState);
         }
 
         public void ReturnState()
-        {
-            if (CurrentState.CanExit)
-            {
-                OnBeforeStateChange(CurrentState, PreviousState);
-                CurrentState.OnExit();
-                CharacterBaseState tempState = PreviousState;
-                PreviousState = CurrentState;
-                CurrentState = tempState;
-                CurrentState.NextState = null;
-                OnStateChange(PreviousState, CurrentState);
-                CurrentState.Initialize();
-                OnAfterStateChange(CurrentState);
-            }
-        }
-
-        public void ReturnState(CharacterBaseState nextState)
-        {
-            if (CurrentState.CanExit)
-            {
-                OnBeforeStateChange(CurrentState, PreviousState);
-                CurrentState.OnExit();
-                CharacterBaseState tempState = PreviousState;
-                PreviousState = CurrentState;
-                CurrentState = tempState;
-                CurrentState.NextState = nextState;
-                OnStateChange(PreviousState, CurrentState);
-                CurrentState.Initialize();
-                OnAfterStateChange(CurrentState);
-            }
-        }
-
-        public void ReturnStateOverride()
-        {
-            if (CurrentState.CanBeOverriden)
-            {
-                OnBeforeStateChange(CurrentState, PreviousState);
-                CurrentState.OnExit();
-                CharacterBaseState tempState = PreviousState;
-                PreviousState = CurrentState;
-                CurrentState = tempState;
-                CurrentState.NextState = null;
-                OnStateChange(PreviousState, CurrentState);
-                CurrentState.Initialize();
-                OnAfterStateChange(CurrentState);
-            }
-        }
-
-        public void ReturnStateOverride(CharacterBaseState nextState)
-        {
-            if (CurrentState.CanBeOverriden)
-            {
-                OnBeforeStateChange(CurrentState, PreviousState);
-                CurrentState.OnExit();
-                CharacterBaseState tempState = PreviousState;
-                PreviousState = CurrentState;
-                CurrentState = tempState;
-                CurrentState.NextState = nextState;
-                OnStateChange(PreviousState, CurrentState);
-                CurrentState.Initialize();
-                OnAfterStateChange(CurrentState);
-            }
-        }
-
-        public void ReturnStateAnyway()
         {
             OnBeforeStateChange(CurrentState, PreviousState);
             CurrentState.OnExit();
@@ -281,7 +137,7 @@ namespace BeastHunter
             OnAfterStateChange(CurrentState);
         }
 
-        public void ReturnStateAnyway(CharacterBaseState nextState)
+        public void ReturnState(CharacterBaseState nextState)
         {
             OnBeforeStateChange(CurrentState, PreviousState);
             CurrentState.OnExit();

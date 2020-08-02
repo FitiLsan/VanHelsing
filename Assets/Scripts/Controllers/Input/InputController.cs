@@ -37,8 +37,13 @@ namespace BeastHunter
             _inputModel.InputAxisY = 0;
             _inputModel.InputTotalAxisX = 0;
             _inputModel.InputTotalAxisY = 0;
+            _inputModel.IsInputMove = false;
             _inputModel.IsInputRun = false;
 
+            _inputModel.inputOnButtonDown.Add("NO_BUTTON_1", InputEventTypes.MoveStart);
+            _inputModel.inputOnButtonDown.Add("NO_BUTTON_2", InputEventTypes.MoveStop);
+            _inputModel.inputOnButtonDown.Add("NO_BUTTON_3", InputEventTypes.RunStart);
+            _inputModel.inputOnButtonDown.Add("NO_BUTTON_4", InputEventTypes.RunStop);
             _inputModel.inputOnButtonDown.Add("Jump", InputEventTypes.Jump);
             _inputModel.inputOnButtonDown.Add("Battle Exit", InputEventTypes.BattleExit);
             _inputModel.inputOnButtonDown.Add("Dodge", InputEventTypes.Dodge);
@@ -57,6 +62,7 @@ namespace BeastHunter
             _inputModel.inputOnButtonDown.Add("PlaceTrap1", InputEventTypes.PlaceTrap1);
             _inputModel.inputOnButtonDown.Add("PlaceTrap2", InputEventTypes.PlaceTrap2);
             _inputModel.inputOnButtonDown.Add("Crouch", InputEventTypes.Crouch);
+            _inputModel.inputOnButtonDown.Add("TimeSkip", InputEventTypes.TimeSkipMenu);
         }
 
         #endregion
@@ -78,6 +84,7 @@ namespace BeastHunter
         {
             _inputModel.InputAxisX = Input.GetAxis("Horizontal");
             _inputModel.InputAxisY = Input.GetAxis("Vertical");
+            _inputModel.IsInputMove = (_inputModel.InputAxisX != 0 || _inputModel.InputAxisY != 0) ? true : false;
             _inputModel.IsInputRun = Input.GetButton("Sprint");
 
             CheckAxisTotal();
@@ -94,7 +101,10 @@ namespace BeastHunter
         {
             foreach (var onButtonDownInput in _inputModel.inputOnButtonDown)
             {
-                if (Input.GetButtonDown(onButtonDownInput.Key)) _eventManager.TriggerEvent(onButtonDownInput.Value);
+                if (!onButtonDownInput.Key.Contains("NO_BUTTON") && Input.GetButtonDown(onButtonDownInput.Key))
+                {
+                    _eventManager.TriggerEvent(onButtonDownInput.Value);
+                }                 
             }
         }
 

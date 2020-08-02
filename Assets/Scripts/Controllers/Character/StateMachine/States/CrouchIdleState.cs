@@ -9,8 +9,6 @@
             Type = StateType.Sneaking;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = true;
-            CanBeOverriden = true;
         }
 
         #endregion
@@ -20,19 +18,8 @@
 
         public override void Initialize()
         {
+            base.Initialize();
             _animationController.PlayCrouchIdleAnimation();
-        }
-
-        public override void Execute()
-        {
-        }
-
-        public override void OnExit()
-        {
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         #endregion

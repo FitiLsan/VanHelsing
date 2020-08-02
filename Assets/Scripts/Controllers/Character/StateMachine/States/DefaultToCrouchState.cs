@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class DefaultToCrouchState : CharacterBaseState
+    public sealed class DefaultToCrouchState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -26,8 +26,6 @@ namespace BeastHunter
             Type = StateType.Sneaking;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
         }
 
         #endregion
@@ -37,23 +35,15 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             ExitTime = EXIT_TIME;
-            CanExit = false;
             _animationController.PlayDefaultToCrouchAnimation();
         }
 
-        public override void Execute()
+        public void Updating()
         {
             ExitCheck();
             SetCrouchLevel();
-        }
-
-        public override void OnExit()
-        {
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void SetCrouchLevel()
@@ -69,7 +59,6 @@ namespace BeastHunter
             }
             else
             {
-                CanExit = true;
                 _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.SneakingIdle]);
             }
         }

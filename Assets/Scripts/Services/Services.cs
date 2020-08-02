@@ -13,6 +13,8 @@
         public UnityTimeService UnityTimeService { get; private set; }
         public EventManager EventManager { get; private set; }
         public BuffService BuffService { get; private set; }
+        public TimeSkipService TimeSkipService { get; private set; }
+        public TrapService TrapService { get; private set; }
 
         #endregion
 
@@ -28,6 +30,8 @@
             EventManager = new EventManager(contexts);
             BuffService = new BuffService(contexts);
             UnityTimeService = new UnityTimeService(contexts);
+            TimeSkipService = new TimeSkipService(contexts);
+            TrapService = new TrapService(contexts);
         }
 
         #endregion

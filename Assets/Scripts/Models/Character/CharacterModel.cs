@@ -49,6 +49,7 @@ namespace BeastHunter
         public float CurrentSpeed { get; set; }
         public float VerticalSpeed { get; set; }
         public float AnimationSpeed { get; set; }
+        public float Health { get; set; }
 
         public bool IsMoving { get; set; }
         public bool IsDodging { get; set; }

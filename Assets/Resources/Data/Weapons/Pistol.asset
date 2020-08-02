@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6b6e6a3a4733e4bb82f476c7e2cba8, type: 3}
+  m_Name: Pistol
+  m_EditorClassIdentifier: 
+  ItemStruct:
+    Name: Pistol
+    Discription: One handed pistol
+    SlotSize: 1
+    ItemType: 2
+    MeshOfObject: {fileID: -8149201022226245535, guid: 2c5bd6b349b803346a63ff3f0d0c5baa,
+      type: 3}
+  WeaponHandType: 1
+  WeaponType: 3
+  WeaponPrefab: {fileID: 3914180607145406449, guid: a2909347abd503b45a4437a5ce95eb2e,
+    type: 3}
+  WeaponObject: {fileID: 0}
+  PrefabPositionInHand: {x: 0, y: 0, z: 0}
+  PrefabRotationInHand: {x: 0, y: 0, z: 0}
+  Weight: 2
+  TimeToGet: 1
+  TimeToAppear: 0.5
+  TimeToRemove: 1
+  TimeToDisappear: 0.5
+  CurrentAttack:
+    Time: 0
+    AttackDamage:
+      PhysicalDamage: 0
+      StunProbability: 0
+  AttacksLeft:
+  - Time: 0.5
+    AttackDamage:
+      PhysicalDamage: 5
+      StunProbability: 0.17
+  AttacksRight:
+  - Time: 0.5
+    AttackDamage:
+      PhysicalDamage: 5
+      StunProbability: 0.17
+  SpecialAttackLeft:
+    Time: 0
+    AttackDamage:
+      PhysicalDamage: 0
+      StunProbability: 0
+  SpecialAttackRight:
+    Time: 0
+    AttackDamage:
+      PhysicalDamage: 0
+      StunProbability: 0
+  SimpleAttackAnimationName: 
+  SpecialAttackAnimationName: 

@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class RollingTargetState : CharacterBaseState
+    public sealed class RollingTargetState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -40,8 +40,6 @@ namespace BeastHunter
             Type = StateType.Battle;
             IsTargeting = true;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
         }
 
         #endregion
@@ -51,6 +49,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             if (CanRoll())
             {
                 _currentHorizontalInput = _inputModel.InputTotalAxisX;
@@ -58,8 +57,6 @@ namespace BeastHunter
                 RollTime = _characterModel.CharacterCommonSettings.RollTime;
                 _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.RollAnimationSpeed;
                 PrepareRoll(_currentHorizontalInput, _currentVerticalInput);
-                CanExit = false;
-                CanBeOverriden = false;
                 _characterModel.IsDodging = true;
             }
             else
@@ -68,7 +65,7 @@ namespace BeastHunter
             }
         }
 
-        public override void Execute()
+        public void Updating()
         {
             ExitCheck();
             Roll();
@@ -77,12 +74,9 @@ namespace BeastHunter
 
         public override void OnExit()
         {
+            base.OnExit();
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
             _characterModel.IsDodging = false;
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
@@ -97,9 +91,6 @@ namespace BeastHunter
 
         private void CheckNextState()
         {
-            CanExit = true;
-            CanBeOverriden = true;
-
             if (NextState == null)
             {
                 _stateMachine.ReturnState();

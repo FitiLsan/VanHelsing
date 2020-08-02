@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class JumpingState : CharacterBaseState
+    public sealed class JumpingState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -41,8 +41,6 @@ namespace BeastHunter
             Type = StateType.Default;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = true;
             JumpVerticalForce = _characterModel.CharacterCommonSettings.JumpVerticalForce;
             JumpHorizontalForce = _characterModel.CharacterCommonSettings.JumpHorizontalForce;
         }
@@ -54,7 +52,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            CanExit = false;
+            base.Initialize();
             _speedBeforeJump = _characterModel.CurrentSpeed;
             _currentGroundCheckTime = NOT_CHECK_GROUND_TIME;
             _currentExitTime = EXIT_TIME;
@@ -62,19 +60,10 @@ namespace BeastHunter
             UpdatePosition();
         }
 
-        public override void Execute()
+        public void Updating()
         {
             ExitCheck();
             Jumping();
-        }
-
-        public override void OnExit()
-        {
-
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
@@ -84,7 +73,6 @@ namespace BeastHunter
 
             if (_currentGroundCheckTime < 0 && (_characterModel.IsGrounded || _currentExitTime <= 0))
             {
-                CanExit = true;
             }
         }
 

@@ -29,6 +29,7 @@
         DefaultToCrouch,
         CrouchToDefault,
         TrapPlace,
+        SettingTimeSkip,
     }
 }
 
