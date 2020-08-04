@@ -8,6 +8,7 @@
         protected readonly CharacterModel _characterModel;
         protected readonly CharacterAnimationController _animationController;
         protected readonly CharacterStateMachine _stateMachine;
+        protected readonly EventManager _eventManager;
 
         #endregion
 
@@ -32,6 +33,7 @@
             _characterModel = context.CharacterModel;
             _inputModel = context.InputModel;
             _animationController = _stateMachine.AnimationController;
+            _eventManager = Services.SharedInstance.EventManager;
         }
 
         #endregion

@@ -30,9 +30,9 @@ namespace BeastHunter
             CharacterStates = new Dictionary<CharacterStatesEnum, CharacterBaseState>();
             PreviousState = null;
             CurrentState = null;
-            BackState = new BackState(context, this);
 
             AnimationController = animationController;
+            BackState = new BackState(context, this);
 
             CharacterStates.Add(CharacterStatesEnum.AttackingFromLeft, new AttackingFromLeftState(context, this));
             CharacterStates.Add(CharacterStatesEnum.AttackingFromRight, new AttackingFromRightState(context, this));
@@ -71,6 +71,7 @@ namespace BeastHunter
         {
             PreviousState = startState;
             CurrentState = startState;
+            CurrentState.Initialize();
         }
 
         public void OnAwake()

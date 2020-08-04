@@ -84,7 +84,7 @@ namespace BeastHunter
             {
                 _currentHorizontalInput = _inputModel.InputTotalAxisX;
                 _currentVerticalInput = _inputModel.InputTotalAxisY;
-                _angleSpeedIncrease = _characterModel.IsMoving ? ANGLE_SPEED_INCREASE : 1;
+                _angleSpeedIncrease = _inputModel.IsInputMove ? ANGLE_SPEED_INCREASE : 1;
 
                 MoveDirection = (Vector3.forward * _currentVerticalInput + Vector3.right * _currentHorizontalInput) /
                     (Mathf.Abs(_currentVerticalInput) + Mathf.Abs(_currentHorizontalInput)) * _angleSpeedIncrease;
@@ -96,7 +96,7 @@ namespace BeastHunter
                     Quaternion rotation = Quaternion.LookRotation(lookPos);
                     _characterModel.CharacterTransform.rotation = rotation;
                 }
-                if (_characterModel.IsMoving)
+                if (_inputModel.IsInputMove)
                 {
                     _characterModel.CharacterData.Move(_characterModel.CharacterTransform, MovementSpeed, MoveDirection);
                 }
@@ -105,7 +105,7 @@ namespace BeastHunter
 
         private void CountSpeed()
         {
-            if (_characterModel.IsMoving)
+            if (_inputModel.IsInputMove)
             {
                 if (_inputModel.IsInputRun)
                 {

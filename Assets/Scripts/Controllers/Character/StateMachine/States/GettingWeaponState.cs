@@ -62,7 +62,7 @@ namespace BeastHunter
             {
                 if(NextState == null)
                 {
-                    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.BattleIdle]);
+                    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle]);
                 }
                 else
                 {

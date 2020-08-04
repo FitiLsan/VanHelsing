@@ -29,7 +29,7 @@ namespace BeastHunter
         public override void Initialize()
         {
             base.Initialize();
-            if (_characterModel.IsMoving)
+            if (_inputModel.IsInputMove)
             {
                 RollTime = _characterModel.CharacterCommonSettings.RollTime;
                 _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.RollAnimationSpeed;
@@ -70,7 +70,7 @@ namespace BeastHunter
         {
             if (NextState == null)
             {
-                if (_characterModel.IsMoving)
+                if (_inputModel.IsInputMove)
                 {
                     _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.BattleMovement]);
                 }

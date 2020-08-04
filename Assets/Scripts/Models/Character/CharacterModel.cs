@@ -22,12 +22,12 @@ namespace BeastHunter
         public Transform CharacterTransform { get; }
 
         public Vector3 LeftFootPosition { get; set; }
-        public Vector3 RightFoorPosition { get; set; }
+        public Vector3 RightFootPosition { get; set; }
         public Vector3 LeftFootRotation { get; set; }
         public Vector3 RightFootRotation { get; set; }
 
-        public WeaponHitBoxBehavior LeftFootBehavior { get; }
-        public WeaponHitBoxBehavior RightFootBehavior { get; }
+        public WeaponHitBoxBehavior LeftHandBehavior { get; }
+        public WeaponHitBoxBehavior RightHandBehavior { get; }
         public WeaponHitBoxBehavior LeftWeaponBehavior { get; set; }
         public WeaponHitBoxBehavior RightWeaponBehavior { get; set; } 
 
@@ -43,6 +43,9 @@ namespace BeastHunter
         public Animator CharacterAnimator { get; set; }
         public List<Collider> EnemiesInTrigger { get; set; }
         public Collider ClosestEnemy { get; set; }
+
+        public WeaponItem LeftHandFeast { get; set; }
+        public WeaponItem RigheHandWeapon { get; set; }
         public WeaponItem LeftHandWeapon { get; set; }
         public WeaponItem RightHandWeapon { get; set; }
 
@@ -51,7 +54,6 @@ namespace BeastHunter
         public float AnimationSpeed { get; set; }
         public float Health { get; set; }
 
-        public bool IsMoving { get; set; }
         public bool IsDodging { get; set; }
         public bool IsSneaking { get; set; }
         public bool IsGrounded { get; set; }
@@ -162,13 +164,13 @@ namespace BeastHunter
 
             EnemiesInTrigger = new List<Collider>();
             ClosestEnemy = null;
-            IsMoving = false;
             IsGrounded = false;
             IsSneaking = false;
             IsEnemyNear = false;
             IsInBattleMode = false;
             IsWeaponInHands = false;
             IsDead = false;
+
             CurrentSpeed = 0;
             AnimationSpeed = CharacterData._characterCommonSettings.AnimatorBaseSpeed;
 

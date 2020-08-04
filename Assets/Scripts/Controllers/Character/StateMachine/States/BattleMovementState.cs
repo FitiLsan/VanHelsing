@@ -124,7 +124,7 @@ namespace BeastHunter
 
         private void CountSpeed()
         {
-            if (_characterModel.IsMoving)
+            if (_inputModel.IsInputMove)
             {
                 if (_inputModel.IsInputRun)
                 {
