@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public sealed class TimeSkip : MonoBehaviour
 {
-    #region Constance
+    #region Constant
 
     private const int maxHours = 24;
     private const int devider = 2;
@@ -64,12 +64,6 @@ public sealed class TimeSkip : MonoBehaviour
         WeatherHours();
         TimeChanged();
     }
-
-    
-    //public string GetWeather()
-    //{
-    //    return;
-    //}
 
     public void WeatherHours()
     {
