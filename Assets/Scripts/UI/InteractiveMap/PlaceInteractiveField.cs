@@ -8,6 +8,8 @@ namespace BeastHunter
 {
     public class PlaceInteractiveField : MonoBehaviour
     {
+        public static event Action<int> PositionCheckEvent;
+
         public GameObject InteractiveField;
 
         public GameObject PlaceEntrance;
@@ -80,6 +82,9 @@ namespace BeastHunter
 
         public void MovePosition()
         {
+            var heading = CurrentPositon.transform.position - CurrentPlace.transform.position;
+            var distance = (int)heading.magnitude;
+            PositionCheckEvent?.Invoke(distance);
             CurrentPositon.transform.SetPositionAndRotation(CurrentPlace.transform.position, CurrentPlace.transform.rotation);
         }
 
@@ -106,7 +111,6 @@ namespace BeastHunter
             PlaceEntrance.SetActive(true);
             PlaceInside.SetActive(false);
             PlaceFoundItems.SetActive(false);
-            PlaceExitButton.SetActive(false);
         }
 
         private void OnSearch(List<ItemInfo> itemList)
