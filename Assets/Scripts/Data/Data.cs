@@ -30,6 +30,7 @@ namespace BeastHunter
         [SerializeField] private string _bossSecondWeakPointPath;
         [SerializeField] private string _bossThirdWeakPointPath;
         [SerializeField] private string _timeSkipDataPath;
+        [SerializeField] private string _puppetPrefabPath;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -53,6 +54,7 @@ namespace BeastHunter
         private static WeakPointData _bossSecondWeakPoint;
         private static WeakPointData _bossThirdWeakPoint;
         private static TimeSkipData _timeSkipData;
+        private static Transform _puppetPrefabData;
 
         #endregion
 
@@ -296,6 +298,18 @@ namespace BeastHunter
                     _timeSkipData = Load<TimeSkipData>("Data/" + Instance._timeSkipDataPath);
                 }
                 return _timeSkipData;
+            }
+        }
+
+        public static Transform PuppetPrefabData
+        {
+            get
+            {
+                if (_puppetPrefabData == null)
+                {
+                    _puppetPrefabData = Load<Transform>("Data/" + Instance._puppetPrefabPath);
+                }
+                return _puppetPrefabData;
             }
         }
 

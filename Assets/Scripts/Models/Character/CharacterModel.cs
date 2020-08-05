@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using RootMotion.FinalIK;
 
 
 namespace BeastHunter
@@ -73,7 +74,7 @@ namespace BeastHunter
             CharacterCommonSettings = CharacterData._characterCommonSettings;
             CharacterStatsSettings = CharacterData._characterStatsSettings;
             CharacterTransform = prefab.transform;
-            CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
+            //CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
             CharacterTransform.name = CharacterCommonSettings.InstanceName;
             CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
             CharacterTransform.gameObject.layer = CharacterCommonSettings.InstanceLayer;
@@ -178,6 +179,9 @@ namespace BeastHunter
             RightHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightHand);
             LeftFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftFoot);
             RightFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightFoot);
+
+            //CharacterTransform.gameObject.AddComponent<FullBodyBipedIK>();
+            //CharacterTransform.gameObject.AddComponent<GrounderFBBIK>();
 
             //SphereCollider LeftFootTrigger = LeftFoot.gameObject.AddComponent<SphereCollider>();
             //LeftFootTrigger.radius = CharacterCommonSettings.LeftFootHitBoxRadius;

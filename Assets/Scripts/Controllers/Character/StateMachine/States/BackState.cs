@@ -294,8 +294,19 @@ namespace BeastHunter
             {
                 _speedCountTime = _speedCountFrame;
                 _currentPosition = _characterModel.CharacterTransform.position;
-                _characterModel.CurrentSpeed = Mathf.Sqrt((_currentPosition - _lastPosition).sqrMagnitude) /
-                    _speedCountFrame;
+
+                if (_currentPosition == _lastPosition)
+                {
+                    _characterModel.CurrentSpeed = 0;
+                }
+                else
+                {
+                    _speedCountTime = _speedCountFrame;
+                    _currentPosition = _characterModel.CharacterTransform.position;
+                    _characterModel.CurrentSpeed = Mathf.Sqrt((_currentPosition - _lastPosition).sqrMagnitude) /
+                        _speedCountFrame;                   
+                }
+
                 _lastPosition = _currentPosition;
             }
 

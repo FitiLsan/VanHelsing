@@ -36,7 +36,7 @@ namespace RootMotion.Dynamics {
 			}
 
 			if (targetRoot.position != transform.position) {
-				if (log) Debug.LogError("The position of the animated character (Target) must match with the position of the PuppetMaster when initiating PuppetMaster. If you are creating the Puppet in runtime, make sure you don't move the Target to another position immediatelly after instantiation. Move the Root Transform instead.");
+                if (log) Debug.LogError("The position of the animated character (Target) must match with the position of the PuppetMaster when initiating PuppetMaster. If you are creating the Puppet in runtime, make sure you don't move the Target to another position immediatelly after instantiation. Move the Root Transform instead.");
 				return false;
 			}
 

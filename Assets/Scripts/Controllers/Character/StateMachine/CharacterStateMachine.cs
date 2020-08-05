@@ -71,6 +71,7 @@ namespace BeastHunter
         {
             PreviousState = startState;
             CurrentState = startState;
+            BackState.Initialize();
             CurrentState.Initialize();
         }
 

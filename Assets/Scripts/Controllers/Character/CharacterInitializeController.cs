@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using RootMotion.Dynamics;
 
 
 namespace BeastHunter
@@ -35,6 +36,16 @@ namespace BeastHunter
 
             CharacterModel character = new CharacterModel(instance, characterData, groundedInstancePosition);
             _context.CharacterModel = character;
+
+            //Transform ragdoll = GameObject.Instantiate(Data.PuppetPrefabData, groundedInstancePosition,
+            //    Quaternion.identity) as Transform;
+            //ragdoll.name = "Player";
+
+            //// This will duplicate the ragdoll character, remove the ragdoll components from the original and use it as the animated target.
+            //PuppetMaster.SetUp(ragdoll, 8, 9);
+
+            //CharacterModel character = new CharacterModel(ragdoll.gameObject, characterData, groundedInstancePosition);
+            //_context.CharacterModel = character;
         }
 
         #endregion
