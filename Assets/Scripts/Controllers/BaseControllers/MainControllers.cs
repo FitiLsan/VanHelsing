@@ -6,10 +6,11 @@
 
         public MainControllers(GameContext context)
         {
-            Add(new SphereInitilizeController(context));
+            Add(new SurvivorInitializeController(context));
+            Add(new ZombieInitializeController(context));
             Add(new InitializeInteractableObjectController(context));
-            Add(new SphereController(context));
-            Add(new TargetController(context));
+            Add(new SurvivorController(context));
+            Add(new ZombieController(context));
         }
 
         #endregion
