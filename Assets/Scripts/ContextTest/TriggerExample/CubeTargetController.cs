@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class TargetController : IAwake, ITearDown
+    public sealed class CubeTargetController : IAwake, ITearDown
     {
         #region Fields
 
@@ -14,7 +14,7 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public TargetController(GameContext context)
+        public CubeTargetController(GameContext context)
         {
             _context = context;
         }
@@ -26,10 +26,10 @@ namespace BeastHunter
 
         public void OnAwake()
         {
-            var sphers = _context.GetTriggers(InteractableObjectType.Sphere);
-            foreach (var trigger in sphers)
+            var cubes = _context.GetTriggers(InteractableObjectType.Cube);
+            foreach (var trigger in cubes)
             {
-                var targetBehaviour = trigger as TargetBehaviour;
+                var targetBehaviour = trigger as CubeTargetBehaviour;
                 targetBehaviour.OnFilterHandler += OnFilterHandler;
                 targetBehaviour.OnTriggerEnterHandler += OnTriggerEnterHandler;
                 targetBehaviour.OnTriggerExitHandler += OnTriggerExitHandler;
@@ -43,10 +43,10 @@ namespace BeastHunter
 
         public void TearDown()
         {
-            var sphers = _context.GetTriggers(InteractableObjectType.Sphere);
-            foreach (var trigger in sphers)
+            var cubes = _context.GetTriggers(InteractableObjectType.Cube);
+            foreach (var trigger in cubes)
             {
-                var targetBehaviour = trigger as TargetBehaviour;
+                var targetBehaviour = trigger as CubeTargetBehaviour;
                 targetBehaviour.OnFilterHandler -= OnFilterHandler;
                 targetBehaviour.OnTriggerEnterHandler -= OnTriggerEnterHandler;
                 targetBehaviour.OnTriggerExitHandler -= OnTriggerExitHandler;
@@ -60,6 +60,7 @@ namespace BeastHunter
 
         private bool OnFilterHandler(Collider tagObject)
         {
+            Debug.Log(tagObject.tag);
             return tagObject.CompareTag(TagManager.SPHERE);
         }
 
