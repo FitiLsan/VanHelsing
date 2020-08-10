@@ -66,7 +66,8 @@ namespace BeastHunter
         private void OnTriggerEnterHandler(ITrigger enteredObject, Collider other)
         {
             enteredObject.IsInteractable = true;
-            Debug.Log("Enter");
+            Debug.Log("Object collapsed");
+            other.gameObject.SetActive(false);
         }
 
         private void OnTriggerExitHandler(ITrigger exitedObject, Collider other)
