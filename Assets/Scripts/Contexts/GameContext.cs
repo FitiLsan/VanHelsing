@@ -13,6 +13,7 @@ namespace BeastHunter
         public DialogueSystemModel DialogueSystemModel;
         public QuestModel QuestModel;
         public SphereModel SphereModel;
+        public CubeModel CubeModel;
         public CharacterModel CharacterModel;
         public InputModel InputModel;
         public GiantMudCrabModel GiantMudCrabModel;

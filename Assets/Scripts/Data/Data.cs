@@ -11,6 +11,7 @@ namespace BeastHunter {
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
         [SerializeField] private string _giantMudCrabDataPath;
+        [SerializeField] private string _cubeDataPath;
 
         private static Data _instance;
 
@@ -21,6 +22,7 @@ namespace BeastHunter {
         private static GiantMudCrabData _giantMudCrabData;
         private static WeaponItem _feast;
         private static ClothItem _jacket;
+        private static CubeData _cubeData;
 
         #endregion
 
@@ -98,6 +100,18 @@ namespace BeastHunter {
                 return _jacket;
             }
         }
+
+        public static CubeData CubeData {
+            get
+            {
+                if (_cubeData == null)
+                {
+                    _cubeData = Load<CubeData>("Data/" + Instance._cubeDataPath);
+                }
+                return _cubeData;
+            }
+        }
+
 
         #endregion
 
