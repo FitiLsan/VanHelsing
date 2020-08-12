@@ -9,13 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39206102e2d38334e9e2e92c0876e136, type: 3}
-  m_Name: SphereData
+  m_Script: {fileID: 11500000, guid: 3594c16de157d5546b5c37322eeaaea7, type: 3}
+  m_Name: CubeData
   m_EditorClassIdentifier: 
-  SphereStruct:
-    MoveSpeed: 0.12
-    SphereRadius: 0.5
-    Prefab: {fileID: 6953022481052749130, guid: 5486b6c5985f0a74dab7aa0548b222f6,
+  CubeStruct:
+    MoveSpeed: 0.1
+    CubeX: 1
+    CubeY: 1
+    CubeZ: 1
+    Prefab: {fileID: 2582259739583959656, guid: af4361cf94432b3469df69458ea0d76c,
       type: 3}
     Target: {fileID: 8946489080760387140, guid: ad328408c8cfe1c4e8ec1b92ff795e48,
       type: 3}
