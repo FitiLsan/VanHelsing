@@ -16,6 +16,8 @@ namespace BeastHunter
         public CharacterModel CharacterModel;
         public InputModel InputModel;
         public GiantMudCrabModel GiantMudCrabModel;
+        public ZombieModel ZombieModel;
+        public SurvivorModel SurvivorModel;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;

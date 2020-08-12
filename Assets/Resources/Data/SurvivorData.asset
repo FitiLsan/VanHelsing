@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: SurvivorData
+  m_EditorClassIdentifier: Assembly-CSharp:BeastHunter:TestCharacterData
+  _testCharacterStruct:
+    StartPosition: {x: 1, y: 0, z: 10}
+    MoveSpeed: 2
+    TargetDistance: 0
+    Material: {fileID: 2100000, guid: 21c523da74de5e640b1b068246fd96e1, type: 2}
+    Prefab: {fileID: 5271955126631812010, guid: fc2353cd29033da4ea7b42df7826455e,
+      type: 3}

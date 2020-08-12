@@ -11,6 +11,8 @@ namespace BeastHunter {
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
         [SerializeField] private string _giantMudCrabDataPath;
+        [SerializeField] private string _survivorDataPath;
+        [SerializeField] private string _zombieDataPath;
 
         private static Data _instance;
 
@@ -19,6 +21,8 @@ namespace BeastHunter {
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
         private static GiantMudCrabData _giantMudCrabData;
+        private static TestCharacterData _survivorData;
+        private static TestCharacterData _zombieData;
         private static WeaponItem _feast;
         private static ClothItem _jacket;
 
@@ -78,6 +82,26 @@ namespace BeastHunter {
                     _giantMudCrabData = Load<GiantMudCrabData> ("Data/" + Instance._giantMudCrabDataPath);
                 }
                 return _giantMudCrabData;
+            }
+        }
+        
+        public static TestCharacterData SurvivorData {
+            get {
+                if (_survivorData == null) {
+                    _survivorData = Load<TestCharacterData> ("Data/" + Instance._survivorDataPath);
+                }
+                
+                return _survivorData;
+            }
+        }
+        
+        public static TestCharacterData ZombieData {
+            get {
+                if (_zombieData == null) {
+                    _zombieData = Load<TestCharacterData> ("Data/" + Instance._zombieDataPath);
+                }
+                
+                return _zombieData;
             }
         }
 
