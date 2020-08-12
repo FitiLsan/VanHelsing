@@ -6,6 +6,10 @@ namespace BeastHunter
     public sealed class GameController : MonoBehaviour
     {
         #region Fields
+        [SerializeField]
+        private string NameofController;
+        [SerializeField]
+        private string NameofContext;
 
         private GameStateController _activeController;
 
@@ -22,6 +26,8 @@ namespace BeastHunter
 
             _activeController = new GameSystemsController(context);
             _activeController.Initialize();
+            NameofController = _activeController.ToString();
+            NameofContext = context.ToString();
         }
 
         private void Update()

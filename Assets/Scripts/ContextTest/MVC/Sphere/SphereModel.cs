@@ -5,6 +5,7 @@ public sealed class SphereModel
 {
     #region Properties
 
+   
     public SphereCollider SphereCollider { get; }
     public Transform SphereTransform { get; }
     public SphereData SphereData;
@@ -30,7 +31,7 @@ public sealed class SphereModel
 
     public void Initilize()
     {
-        SphereData.ChangeSphereCollider(SphereCollider, SphereStruct.SphereRadius);
+        //SphereData.ChangeSphereCollider(SphereCollider, SphereStruct.SphereRadius);
         SphereData.Move(SphereTransform, SphereStruct.Target, SphereStruct.MoveSpeed);
     }
 
