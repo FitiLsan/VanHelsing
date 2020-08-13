@@ -2,7 +2,7 @@
 
 namespace BeastHunter
 {
-    public abstract class NpcInitializeController : IAwake
+    public abstract class EnemyInitializeController : IAwake
     {
         #region Fields
 
@@ -13,7 +13,7 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public NpcInitializeController(GameContext context)
+        public EnemyInitializeController(GameContext context)
         {
             _context = context;
         }

@@ -9,6 +9,16 @@ namespace BeastHunter
     {
         #region Fields
 
+        [Tooltip("Maximum Hp value")]
+        [SerializeField] private float _maxHealth;
+        [SerializeField] private EnemyType _enemyType;
+        //_enemySubtype
+
+        //_moveSpeed
+        //_jumpHeight
+        //etc.
+
+        //OBSOLETE
         [Header("Basic stats")]
 
         [Tooltip("Health points")]
@@ -26,16 +36,25 @@ namespace BeastHunter
         [Tooltip("Stun resistance between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _stunProbabilityResistance;
+        //OBSOLETE
 
         #endregion
 
 
         #region Properties
 
+<<<<<<< HEAD:Assets/Scripts/To_Refactoring/Character/BaseStatsClass.cs
         public float HealthPoints => _healthPoints;
+=======
+        public float MaxHealth => _maxHealth;
+        public EnemyType EnemyType => _enemyType;
+
+        //OBSOLETE
+>>>>>>> Started refactoring enemy stats:Assets/Scripts/To_Refactoring/Stats/BaseStatsClass.cs
         public float PhysicalPower => _physicalPower;
         public float PhysicalResistance => _physicalDamageResistance;
         public float StunResistance => _stunProbabilityResistance;
+        //OBSOLETE
 
         #endregion
     }
