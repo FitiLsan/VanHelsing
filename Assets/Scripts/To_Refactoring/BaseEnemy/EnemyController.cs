@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public class NpcController : IAwake, IUpdate, ITearDown
+    public class EnemyController : IAwake, IUpdate, ITearDown
     {
         #region Fields
 
@@ -15,7 +15,7 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public NpcController(GameContext context)
+        public EnemyController(GameContext context)
         {
             _context = context;
         }

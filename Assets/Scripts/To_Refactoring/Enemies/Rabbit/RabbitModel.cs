@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public sealed class RabbitModel : NpcModel
+    public sealed class RabbitModel : EnemyModel
     {
 
         #region Fields
@@ -44,7 +44,7 @@ namespace BeastHunter
                 RabbitRigidbody = prefab.GetComponent<Rigidbody>();
                 RabbitStartPosition = prefab.transform.position;
 
-                CurrentHealth = rabbitData.BaseStats.MaxHealth;
+                CurrentHealth = rabbitData.BaseStats.MainStats.MaxHealth;
                 IsDead = false;
 
                 DangerousObjects = new List<Transform>();
@@ -77,7 +77,7 @@ namespace BeastHunter
             }
         }
 
-        public override NpcStats GetStats()
+        public override EnemyStats GetStats()
         {
             return RabbitData.BaseStats;
         }

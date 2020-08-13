@@ -2,11 +2,11 @@
 
 namespace BeastHunter
 {
-    public abstract class NpcData : ScriptableObject
+    public abstract class EnemyData : ScriptableObject
     {
         #region Fields
 
-        public NpcStats BaseStats;
+        public EnemyStats BaseStats;
 
         #endregion
 
@@ -18,7 +18,7 @@ namespace BeastHunter
             Debug.Log("I did something " + how);
         }
 
-        public virtual void TakeDamage(NpcModel instance, Damage damage)
+        public virtual void TakeDamage(EnemyModel instance, Damage damage)
         {
             instance.CurrentHealth -= damage.PhysicalDamage;
             if (instance.CurrentHealth <= 0)

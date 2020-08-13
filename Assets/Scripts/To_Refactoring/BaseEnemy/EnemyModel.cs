@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public abstract class NpcModel : IDoSmth, ITakeDamage
+    public abstract class EnemyModel : IDoSmth, ITakeDamage
     {
         #region Fields
 
@@ -18,7 +18,7 @@ namespace BeastHunter
 
         public abstract void Execute();
 
-        public abstract NpcStats GetStats(); 
+        public abstract EnemyStats GetStats(); 
 
         #endregion
 
