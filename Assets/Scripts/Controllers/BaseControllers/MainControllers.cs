@@ -11,7 +11,7 @@
             AddControllers(context);
 
             Add(new QuestIndicatorInitializeController(context));
-			      Add(new QuestJournalInitializeController(context));
+			Add(new QuestJournalInitializeController(context));
             Add(new QuestIndicatorController(context));
             Add(new QuestIndicatorController(context));
         }
@@ -37,10 +37,9 @@
 
         private void AddControllers(GameContext context)
         {
-            Add(new NpcController(context));
+            Add(new EnemyController(context));
 
             //Add(new GiantMudCrabController(context));
-            //Add(new RabbitController(context));
             Add(new TargetController(context));
             Add(new InputController(context));
             Add(new CharacterController(context));

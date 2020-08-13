@@ -585,7 +585,7 @@ namespace BeastHunter
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
                 DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.LeftHandWeapon, 
-                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().BaseStats));
+                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().MainStats));
                 hitBox.IsInteractable = false;
             }
         }
@@ -597,7 +597,7 @@ namespace BeastHunter
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
                 DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.RightHandWeapon,
-                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().BaseStats));
+                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.GameObject.GetInstanceID()].GetStats().MainStats));
                 hitBox.IsInteractable = false;
             }
         }
