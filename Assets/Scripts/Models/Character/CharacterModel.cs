@@ -75,78 +75,70 @@ namespace BeastHunter
             CharacterStatsSettings = CharacterData._characterStatsSettings;
             CharacterTransform = prefab.transform;
             //CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
-            CharacterTransform.name = CharacterCommonSettings.InstanceName;
-            CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
-            CharacterTransform.gameObject.layer = CharacterCommonSettings.InstanceLayer;
+            //CharacterTransform.name = CharacterCommonSettings.InstanceName;
+            //CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
+            //CharacterTransform.gameObject.layer = CharacterCommonSettings.InstanceLayer;
 
-            Transform[] children = CharacterTransform.GetComponentsInChildren<Transform>();
+            //Transform[] children = CharacterTransform.GetComponentsInChildren<Transform>();
 
-            foreach (var child in children)
-            {
-                child.gameObject.layer = CharacterCommonSettings.InstanceLayer;
-            }
+            //foreach (var child in children)
+            //{
+            //    child.gameObject.layer = CharacterCommonSettings.InstanceLayer;
+            //}
 
-            if (prefab.GetComponent<Rigidbody>() != null)
-            {
-                CharacterRigitbody = prefab.GetComponent<Rigidbody>();
-            }
-            else
-            {
-                CharacterRigitbody = prefab.AddComponent<Rigidbody>();
-                CharacterRigitbody.freezeRotation = true;
-                CharacterRigitbody.mass = CharacterCommonSettings.RigitbodyMass;
-                CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
-                CharacterRigitbody.angularDrag = CharacterCommonSettings.RigitbodyAngularDrag;
-            }
+            //if (prefab.GetComponent<Rigidbody>() != null)
+            //{
+            //    CharacterRigitbody = prefab.GetComponent<Rigidbody>();
+            //}
+            //else
+            //{
+            //    CharacterRigitbody = prefab.AddComponent<Rigidbody>();
+            //    CharacterRigitbody.freezeRotation = true;
+            //    CharacterRigitbody.mass = CharacterCommonSettings.RigitbodyMass;
+            //    CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
+            //    CharacterRigitbody.angularDrag = CharacterCommonSettings.RigitbodyAngularDrag;
+            //}
 
-            CharacterRigitbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            //CharacterRigitbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
-            if (prefab.GetComponent<CapsuleCollider>() != null)
-            {
-                CharacterCapsuleCollider = prefab.GetComponent<CapsuleCollider>();
-            }
-            else
-            {
-                CharacterCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
-                CharacterCapsuleCollider.center = CharacterCommonSettings.CapsuleColliderCenter;
-                CharacterCapsuleCollider.radius = CharacterCommonSettings.CapsuleColliderRadius;
-                CharacterCapsuleCollider.height = CharacterCommonSettings.CapsuleColliderHeight;
-            }
+            //if (prefab.GetComponent<CapsuleCollider>() != null)
+            //{
+            //    CharacterCapsuleCollider = prefab.GetComponent<CapsuleCollider>();
+            //}
+            //else
+            //{
+            //    CharacterCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
+            //    CharacterCapsuleCollider.center = CharacterCommonSettings.CapsuleColliderCenter;
+            //    CharacterCapsuleCollider.radius = CharacterCommonSettings.CapsuleColliderRadius;
+            //    CharacterCapsuleCollider.height = CharacterCommonSettings.CapsuleColliderHeight;
+            //}
 
-            CharacterCapsuleCollider.transform.position = groundPosition;
+            //CharacterCapsuleCollider.transform.position = groundPosition;
 
-            if (prefab.GetComponent<SphereCollider>() != null)
-            {
-                CharacterSphereCollider = prefab.GetComponent<SphereCollider>();
-                CharacterSphereCollider.isTrigger = true;
-            }
-            else
-            {
-                CharacterSphereCollider = prefab.AddComponent<SphereCollider>();
-                CharacterSphereCollider.center = CharacterCommonSettings.SphereColliderCenter;
-                CharacterSphereCollider.radius = CharacterCommonSettings.SphereColliderRadius;
-                CharacterSphereCollider.isTrigger = true;
-            }
+            //if (prefab.GetComponent<SphereCollider>() != null)
+            //{
+            //    CharacterSphereCollider = prefab.GetComponent<SphereCollider>();
+            //    CharacterSphereCollider.isTrigger = true;
+            //}
+            //else
+            //{
+            //    CharacterSphereCollider = prefab.AddComponent<SphereCollider>();
+            //    CharacterSphereCollider.center = CharacterCommonSettings.SphereColliderCenter;
+            //    CharacterSphereCollider.radius = CharacterCommonSettings.SphereColliderRadius;
+            //    CharacterSphereCollider.isTrigger = true;
+            //}
 
             CameraTarget = Services.SharedInstance.CameraService.CreateCameraTarget(CharacterTransform);
             CameraTargetTransform = CameraTarget.transform;
 
-            TargetMarkBasePosition = new Vector3(CharacterTransform.localPosition.x,
-                CharacterTransform.localPosition.y + CharacterCapsuleCollider.height +
-                    CharacterCommonSettings.TargetMarkHeight, CharacterTransform.localPosition.z);
+            //TargetMarkBasePosition = new Vector3(CharacterTransform.localPosition.x,
+            //    CharacterTransform.localPosition.y + CharacterCapsuleCollider.height +
+            //        CharacterCommonSettings.TargetMarkHeight, CharacterTransform.localPosition.z);
 
-            TargetMark = CharacterCommonSettings.CreateTargetMark(CharacterTransform, TargetMarkBasePosition);
-            TargetMarkTransform = TargetMark.transform;
+            //TargetMark = CharacterCommonSettings.CreateTargetMark(CharacterTransform, TargetMarkBasePosition);
+            //TargetMarkTransform = TargetMark.transform;
 
-
-            if (prefab.GetComponent<Animator>() != null)
-            {
-                CharacterAnimator = prefab.GetComponent<Animator>();
-            }
-            else
-            {
-                CharacterAnimator = prefab.AddComponent<Animator>();
-            }
+            CharacterAnimator = prefab.GetComponent<Animator>();
 
             CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterAnimator;
             CharacterAnimator.applyRootMotion = false;
@@ -175,10 +167,10 @@ namespace BeastHunter
             CurrentSpeed = 0;
             AnimationSpeed = CharacterData._characterCommonSettings.AnimatorBaseSpeed;
 
-            LeftHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
-            RightHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightHand);
-            LeftFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftFoot);
-            RightFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightFoot);
+            //LeftHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
+            //RightHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightHand);
+            //LeftFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftFoot);
+            //RightFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightFoot);
 
             //CharacterTransform.gameObject.AddComponent<FullBodyBipedIK>();
             //CharacterTransform.gameObject.AddComponent<GrounderFBBIK>();

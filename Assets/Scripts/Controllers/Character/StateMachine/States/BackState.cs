@@ -68,6 +68,9 @@ namespace BeastHunter
             //SetRightWeapon(_services.InventoryService.Feast);
             _services.InventoryService.HideWepons(_characterModel);
             _services.TrapService.LoadTraps();
+
+            Services.SharedInstance.EventManager.StartListening(InputEventTypes.MoveStart, SetDefaultMovementState);
+            Services.SharedInstance.EventManager.StartListening(InputEventTypes.MoveStop, SetDefaultIdleState);
         }
 
         public void Initialize()
@@ -111,6 +114,9 @@ namespace BeastHunter
             LockCharAction.LockCharacterMovement -= ExitTalkingState;
             StartDialogueData.StartDialog -= SetTalkingState;
             GlobalEventsModel.OnBossDie -= StopTarget;
+
+            Services.SharedInstance.EventManager.StopListening(InputEventTypes.MoveStart, SetDefaultMovementState);
+            Services.SharedInstance.EventManager.StopListening(InputEventTypes.MoveStop, SetDefaultIdleState);
         }
 
 

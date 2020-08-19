@@ -57,14 +57,14 @@ namespace BeastHunter
         public override void Initialize()
         {
             base.Initialize();
-            Services.SharedInstance.EventManager.StartListening(InputEventTypes.MoveStop, _stateMachine.BackState.SetDefaultIdleState);
+            //Services.SharedInstance.EventManager.StartListening(InputEventTypes.MoveStop, _stateMachine.BackState.SetDefaultIdleState);
             _animationController.PlayDefaultMovementAnimation();
         }
 
         public override void OnExit()
         {
             base.OnExit();
-            Services.SharedInstance.EventManager.StopListening(InputEventTypes.MoveStop, _stateMachine.BackState.SetDefaultIdleState);
+            //Services.SharedInstance.EventManager.StopListening(InputEventTypes.MoveStop, _stateMachine.BackState.SetDefaultIdleState);
         }
 
         public void Updating()
