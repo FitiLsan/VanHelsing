@@ -7,7 +7,7 @@ namespace BeastHunter
 {
 
     [CreateAssetMenu(fileName = "NewModel", menuName = "CreateData/Rabbit", order = 2)]
-    public sealed class RabbitData : NpcData
+    public sealed class RabbitData : EnemyData
     {
         #region PrivateData
 
@@ -367,7 +367,7 @@ namespace BeastHunter
 
         #region NpcData
 
-        public override void TakeDamage(NpcModel instance, Damage damage)
+        public override void TakeDamage(EnemyModel instance, Damage damage)
         {
             base.TakeDamage(instance, damage);
             //Debug.Log("Rabbit got " + damage.PhysicalDamage + " damage");

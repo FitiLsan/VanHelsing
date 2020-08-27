@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public sealed class IOModel : NpcModel
+    public sealed class IOModel : EnemyModel
     {
         #region Fields
 
@@ -50,7 +50,7 @@ namespace BeastHunter
             }
         }
 
-        public override NpcStats GetStats()
+        public override EnemyStats GetStats()
         {
             return IOData.BaseStats;
         }
