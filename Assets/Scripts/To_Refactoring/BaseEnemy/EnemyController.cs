@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public class EnemyController : IAwake, IUpdate, ITearDown
     {
@@ -28,6 +24,7 @@ namespace BeastHunter
         public void OnAwake()
         {
             var npc = _context.GetListInteractable();
+
             foreach (var trigger in npc)
             {
                 var npcBehaviour = trigger as InteractableObjectBehavior;
@@ -35,6 +32,11 @@ namespace BeastHunter
                 npcBehaviour.SetDoSmthEvent(DoSmth);
                 npcBehaviour.SetTakeDamageEvent(TakeDamage);
                 npcBehaviour.SetDealDamageEvent(DealDamage);
+            }
+
+            foreach(var model in _context.NpcModels)
+            {
+                model.Value.OnAwake();
             }
         }
 
@@ -59,14 +61,19 @@ namespace BeastHunter
         public void TearDown()
         {
             var npc = _context.GetListInteractable();
+
             foreach (var trigger in npc)
             {
                 var npcBehavior = trigger as InteractableObjectBehavior;
                 
-
                 npcBehavior.DeleteDoSmthEvent(DoSmth);
                 npcBehavior.DeleteTakeDamageEvent(TakeDamage);
                 npcBehavior.DeleteDealDamageEvent(DealDamage);
+            }
+
+            foreach (var model in _context.NpcModels)
+            {
+                model.Value.OnTearDown();
             }
         }
 

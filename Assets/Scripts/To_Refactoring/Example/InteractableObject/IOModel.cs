@@ -37,6 +37,11 @@ namespace BeastHunter
 
         #region NpcModel
 
+        public override void OnAwake()
+        {
+            
+        }
+
         public override void Execute()
         {
             if (!IsDead)
@@ -58,6 +63,11 @@ namespace BeastHunter
         public override void TakeDamage(Damage damage)
         {
             throw new System.NotImplementedException();
+        }
+
+        public override void OnTearDown()
+        {
+
         }
 
         #endregion

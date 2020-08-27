@@ -69,6 +69,11 @@ namespace BeastHunter
 
         #region NpcModel
 
+        public override void OnAwake()
+        {
+           
+        }
+
         public override void Execute()
         {
             if (!IsDead)
@@ -94,6 +99,10 @@ namespace BeastHunter
             {
                 RabbitData.TakeDamage(this, damage);
             }
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         #endregion

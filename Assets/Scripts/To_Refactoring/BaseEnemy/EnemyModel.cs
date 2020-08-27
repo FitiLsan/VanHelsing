@@ -8,7 +8,9 @@ namespace BeastHunter
     {
         #region Fields
 
+
         public float CurrentHealth;
+
         public bool IsDead;
 
         #endregion
@@ -16,9 +18,13 @@ namespace BeastHunter
 
         #region Metods
 
+        public abstract void OnAwake();
+
         public abstract void Execute();
 
-        public abstract EnemyStats GetStats(); 
+        public abstract EnemyStats GetStats();
+
+        public abstract void OnTearDown();
 
         #endregion
 

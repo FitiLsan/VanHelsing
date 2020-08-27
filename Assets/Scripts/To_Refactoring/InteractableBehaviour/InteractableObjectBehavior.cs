@@ -25,7 +25,7 @@ namespace BeastHunter
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
         public GameObject GameObject => gameObject;
         public InteractableObjectType Type { get => _type; }
-        //public BaseStatsClass Stats { get; set; }
+        public BaseStatsClass Stats { get; set; }
         public bool IsInteractable { get; set; }
 
         #endregion
@@ -35,26 +35,23 @@ namespace BeastHunter
 
         private void OnTriggerEnter(Collider other)
         {
-            if (OnFilterHandler != null && OnFilterHandler.Invoke(other) && OnTriggerEnterHandler != null)
+            if (OnFilterHandler != null && OnFilterHandler.Invoke(other))
             {
-                OnTriggerEnterHandler.Invoke(this, other);
+                OnTriggerEnterHandler?.Invoke(this, other);
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (OnFilterHandler != null && OnFilterHandler.Invoke(other) && OnTriggerExitHandler != null)
+            if (OnFilterHandler != null && OnFilterHandler.Invoke(other))
             {
-                OnTriggerExitHandler.Invoke(this, other);
+                OnTriggerExitHandler?.Invoke(this, other);
             }
         }
 
         private void OnDisable()
         {
-            if(DestroyHandler != null)
-            {
-                DestroyHandler.Invoke(this, _type);
-            }
+            DestroyHandler?.Invoke(this, _type);
         }
 
         #endregion
@@ -80,10 +77,7 @@ namespace BeastHunter
 
         public void DoSmthEvent(string how)
         {
-            if (_onDoSmthHandler != null)
-            {
-                _onDoSmthHandler.Invoke(GameObject.GetInstanceID(), how);
-            }
+            _onDoSmthHandler?.Invoke(GameObject.GetInstanceID(), how);
         }
 
         public void DeleteDoSmthEvent(Action<int, string> action)
@@ -109,10 +103,7 @@ namespace BeastHunter
 
         public void TakeDamageEvent(Damage damage)
         {
-            if (_onTakeDamageHandler != null)
-            {
-                _onTakeDamageHandler.Invoke(GameObject.GetInstanceID(), damage);
-            }
+            _onTakeDamageHandler?.Invoke(GameObject.GetInstanceID(), damage);
         }
 
         public void DeleteTakeDamageEvent(Action<int, Damage> action)
@@ -138,10 +129,7 @@ namespace BeastHunter
 
         public void DealDamageEvent(InteractableObjectBehavior enemy, Damage damage)
         {
-            if (_onDealDamageHandler != null)
-            {
-                _onDealDamageHandler.Invoke(GameObject.GetInstanceID(), enemy, damage);
-            }
+            _onDealDamageHandler?.Invoke(GameObject.GetInstanceID(), enemy, damage);
         }
 
         public void DeleteDealDamageEvent(Action<int, InteractableObjectBehavior, Damage> action)
