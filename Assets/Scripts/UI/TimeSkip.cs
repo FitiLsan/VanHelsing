@@ -86,4 +86,3 @@ public sealed class TimeSkip : MonoBehaviour
     }
 
     #endregion
-}
