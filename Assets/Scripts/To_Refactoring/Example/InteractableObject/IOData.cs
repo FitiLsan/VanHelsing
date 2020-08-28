@@ -3,7 +3,7 @@
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewModel", menuName = "CreateData/Example/InteractableObject", order = 1)]
-    public sealed class IOData : NpcData
+    public sealed class IOData : EnemyData
     {
         #region Fields
 

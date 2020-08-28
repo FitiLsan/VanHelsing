@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public class IOInitializeController : NpcInitializeController
+    public class IOInitializeController : EnemyInitializeController
     {
         #region ClassLifeCycles
 

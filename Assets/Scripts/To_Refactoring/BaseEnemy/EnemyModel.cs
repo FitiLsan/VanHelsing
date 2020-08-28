@@ -1,6 +1,10 @@
-﻿namespace BeastHunter
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace BeastHunter
 {
-    public abstract class NpcModel : IDoSmth, ITakeDamage
+    public abstract class EnemyModel : IDoSmth, ITakeDamage
     {
         #region Fields
 
@@ -18,7 +22,7 @@
 
         public abstract void Execute();
 
-        public abstract NpcStats GetStats();
+        public abstract EnemyStats GetStats();
 
         public abstract void OnTearDown();
 
