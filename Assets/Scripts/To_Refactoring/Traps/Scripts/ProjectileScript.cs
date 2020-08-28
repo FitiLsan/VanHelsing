@@ -31,9 +31,8 @@ namespace BeastHunter
 
                 Context.NpcModels[GetParent(collision.transform).GetInstanceID()].TakeDamage(
                 Services.SharedInstance.AttackService.CountDamage(
-                ProjectileDamage,
-                Context.NpcModels[GetParent(collision.transform).GetInstanceID()].GetStats().
-                BaseStats));
+                    ProjectileDamage,
+                        Context.NpcModels[GetParent(collision.transform).GetInstanceID()].GetStats().MainStats));
                 Destroy(this.gameObject);
             }
         }

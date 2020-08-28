@@ -10,7 +10,7 @@ namespace BeastHunter
         #region PrivateData
 
         public BossSettings _bossSettings;
-        public NpcStats _bossStats;
+        public EnemyStats _bossStats;
 
         #endregion
 

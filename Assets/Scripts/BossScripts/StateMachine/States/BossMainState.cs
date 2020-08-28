@@ -162,7 +162,7 @@ namespace BeastHunter
         {
             collider.gameObject.GetComponent<ParticleSystem>().Play();
             _stateMachine._model.TakeDamage(Services.SharedInstance.AttackService.CountDamage(
-                collider.GetComponent<HitBoxBehavior>().AdditionalDamage, _stateMachine._model.GetStats().BaseStats));
+                collider.GetComponent<HitBoxBehavior>().AdditionalDamage, _stateMachine._model.GetStats().MainStats));
             collider.GetComponent<Light>().color = Color.red;
             collider.enabled = false;
 
