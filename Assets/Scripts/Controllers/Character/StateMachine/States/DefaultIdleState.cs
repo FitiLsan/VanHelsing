@@ -4,37 +4,35 @@
     {
         #region ClassLifeCycle
 
-        public DefaultIdleState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public DefaultIdleState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Default;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = true;
-            CanBeOverriden = true;
         }
 
         #endregion
+
 
         #region Methods
 
         public override void Initialize()
         {
-            _animationController.PlayDefaultIdleAnimation();
-        }
+            base.Initialize();
+            _stateMachine.BackState.OnMove = () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultMovement]);
+            _stateMachine.BackState.OnSneak = () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Sneaking]);
 
-        public override void Execute()
-        {
-
+            _stateMachine.BackState.StopCharacter();
+            _animationController.PlayDefaultMovementAnimation(); 
         }
 
         public override void OnExit()
         {
-
-        }
-
-        public override void OnTearDown()
-        {
+            base.OnExit();
+            _stateMachine.BackState.OnMove = null;
+            _stateMachine.BackState.OnSneak = null;
         }
 
         #endregion

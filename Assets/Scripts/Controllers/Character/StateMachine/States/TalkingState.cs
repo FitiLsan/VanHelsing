@@ -5,11 +5,6 @@ namespace BeastHunter
 {
     public sealed class TalkingState : CharacterBaseState
     {
-        #region Constants
-
-        #endregion
-
-
         #region Fields
 
         private Collider _npcTargetCollider;
@@ -17,21 +12,13 @@ namespace BeastHunter
         #endregion
 
 
-        #region Properties
-
-        #endregion
-
-
         #region ClassLifeCycle
 
-        public TalkingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public TalkingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.NotActive;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
         }
 
         #endregion
@@ -41,19 +28,8 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             _animationController.PlayDefaultIdleAnimation();
-        }
-
-        public override void Execute()
-        {
-        }
-
-        public override void OnExit()
-        {
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         #endregion

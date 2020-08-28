@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class RemovingWeaponState : CharacterBaseState
+    public sealed class RemovingWeaponState : CharacterBaseState, IUpdate
     {
         #region Fields
 
@@ -15,14 +15,11 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public RemovingWeaponState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public RemovingWeaponState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Default;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
         }
 
         #endregion
@@ -32,6 +29,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             if (_characterModel.LeftHandWeapon.WeaponHandType == WeaponHandType.TwoHanded)
             {
                 _removingTime = _characterModel.LeftHandWeapon.TimeToRemove;
@@ -44,24 +42,13 @@ namespace BeastHunter
                 _removingTime = 0;
                 _disappearingTime = 0;
             }
-
-            CanExit = false;
         }
 
-        public override void Execute()
+        public void Updating()
         {
             AppearanceCheck();
             ExitCheck();
             StayOutBattle();
-        }
-
-        public override void OnExit()
-        {
-
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
@@ -72,11 +59,9 @@ namespace BeastHunter
             }
             else
             {
-                CanExit = true;
-
                 if(NextState == null)
                 {
-                    _stateMachine.SetState(_stateMachine._defaultIdleState);
+                    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle]);
                 }
                 else
                 {

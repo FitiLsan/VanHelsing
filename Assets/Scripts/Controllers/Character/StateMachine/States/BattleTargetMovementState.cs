@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class BattleTargetMovementState : CharacterBaseState
+    public sealed class BattleTargetMovementState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -41,14 +41,11 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public BattleTargetMovementState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public BattleTargetMovementState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Battle;
             IsTargeting = true;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = true;
             SpeedIncreace = _characterModel.CharacterCommonSettings.InBattleRunSpeed /
                 _characterModel.CharacterCommonSettings.InBattleWalkSpeed;
         }
@@ -60,13 +57,11 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            CanExit = false;
             _animationController.PlayBattleTargetMovementAnimation(_characterModel.LeftHandWeapon, _characterModel.RightHandWeapon);
         }
 
-        public override void Execute()
+        public void Updating()
         {
-            ExitCheck();
             CountSpeed();
             MovementControl();
             StayInBattle();
@@ -74,19 +69,8 @@ namespace BeastHunter
 
         public override void OnExit()
         {
+            base.OnExit();
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
-        }
-
-        public override void OnTearDown()
-        {
-        }
-
-        private void ExitCheck()
-        {
-            if(_characterModel.ClosestEnemy == null)
-            {
-                CanExit = true;
-            }
         }
 
         private void StayInBattle()
@@ -100,7 +84,7 @@ namespace BeastHunter
             {
                 _currentHorizontalInput = _inputModel.InputTotalAxisX;
                 _currentVerticalInput = _inputModel.InputTotalAxisY;
-                _angleSpeedIncrease = _characterModel.IsMoving ? ANGLE_SPEED_INCREASE : 1;
+                _angleSpeedIncrease = _inputModel.IsInputMove ? ANGLE_SPEED_INCREASE : 1;
 
                 MoveDirection = (Vector3.forward * _currentVerticalInput + Vector3.right * _currentHorizontalInput) /
                     (Mathf.Abs(_currentVerticalInput) + Mathf.Abs(_currentHorizontalInput)) * _angleSpeedIncrease;
@@ -112,7 +96,7 @@ namespace BeastHunter
                     Quaternion rotation = Quaternion.LookRotation(lookPos);
                     _characterModel.CharacterTransform.rotation = rotation;
                 }
-                if (_characterModel.IsMoving)
+                if (_inputModel.IsInputMove)
                 {
                     _characterModel.CharacterData.Move(_characterModel.CharacterTransform, MovementSpeed, MoveDirection);
                 }
@@ -121,7 +105,7 @@ namespace BeastHunter
 
         private void CountSpeed()
         {
-            if (_characterModel.IsMoving)
+            if (_inputModel.IsInputMove)
             {
                 if (_inputModel.IsInputRun)
                 {

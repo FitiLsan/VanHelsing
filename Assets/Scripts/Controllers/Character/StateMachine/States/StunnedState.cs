@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class StunnedState : CharacterBaseState
+    public sealed class StunnedState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -21,14 +21,11 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public StunnedState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public StunnedState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Battle;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
         }
 
         #endregion
@@ -39,22 +36,12 @@ namespace BeastHunter
         public override void Initialize()
         {
             ExitTime = EXIT_TIME;
-            CanExit = false;
             _animationController.PlayStunnedAnimation();
         }
 
-        public override void Execute()
+        public void Updating()
         {
             ExitCheck();
-        }
-
-        public override void OnExit()
-        {
-
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
@@ -65,9 +52,7 @@ namespace BeastHunter
             }
             else
             {
-                CanExit = true;
-
-                if (_stateMachine.PreviousState == _stateMachine._battleTargetMovementState)
+                if (_stateMachine.PreviousState == _stateMachine.CharacterStates[CharacterStatesEnum.BattleTargetMovement])
                 {
                     _stateMachine.ReturnState();
                 }

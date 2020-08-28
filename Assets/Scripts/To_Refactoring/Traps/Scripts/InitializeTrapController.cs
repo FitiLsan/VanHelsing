@@ -18,12 +18,22 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public InitializeTrapController(GameContext context, TrapData _trapData)
+        public InitializeTrapController(GameContext context, TrapData trapData, bool isActive = false)
         {
             _context = context;
             if(_context.TrapModels.Count < 5)
             {
-                this.OnAwake(_trapData);
+                SpawnAtLookPoint(trapData, isActive);
+            }
+        }
+
+        public InitializeTrapController(GameContext context, TrapData trapData, Vector3 spawnPoint, Vector3 spawnEulers, 
+            bool isActive = false)
+        {
+            _context = context;
+            if (_context.TrapModels.Count < 5)
+            {
+                SpawnAtGivenPoint(trapData, spawnPoint, spawnEulers, isActive);
             }
         }
 
@@ -32,7 +42,26 @@ namespace BeastHunter
 
         #region IAwake
 
-        public void OnAwake(TrapData trapData)
+        private void SpawnAtGivenPoint(TrapData trapData, Vector3 spawnPoint, Vector3 spawnEulers, bool isActive)
+        {
+            _trapData = trapData;
+            
+            GameObject instance = GameObject.Instantiate(_trapData.TrapStruct.Prefab);
+
+            instance.transform.eulerAngles = spawnEulers;
+            instance.transform.position = spawnPoint;
+
+            TrapModel trapModel = new TrapModel(instance, _trapData);
+            _context.TrapModels.Add(instance.GetInstanceID(), trapModel);
+
+            TrapBehaviour behavior = instance.GetComponent<TrapBehaviour>();
+            behavior.Init(trapModel, _context);
+            behavior.IsActive = isActive;
+
+            InitColliders(instance);
+        }
+
+        private void SpawnAtLookPoint(TrapData trapData, bool isActive)
         {
             _trapData = trapData;
             _camera = Services.SharedInstance.CameraService.CharacterCamera.transform;
@@ -65,17 +94,25 @@ namespace BeastHunter
             instance.transform.position = new Vector3(instance.transform.position.x, instance.transform.position.y +
                 _trapData.TrapStruct.HeightPlacing, instance.transform.position.z);
 
-            TrapModel TrapModel = new TrapModel(instance, _trapData);
-            _context.TrapModels.Add(instance.GetInstanceID(), TrapModel);
-            instance.GetComponent<TrapBehaviour>().Init(TrapModel, _context);
+            TrapModel trapModel = new TrapModel(instance, _trapData);
+            _context.TrapModels.Add(instance.GetInstanceID(), trapModel);
 
+            TrapBehaviour behavior = instance.GetComponent<TrapBehaviour>();
+            behavior.Init(trapModel, _context);
+            behavior.IsActive = isActive;
+
+            InitColliders(instance);
+        }
+
+        private void InitColliders(GameObject instance)
+        {
             Collider[] instanceColliders = instance.GetComponents<Collider>();
 
             foreach (Collider collider in instanceColliders)
             {
-                if(collider.isTrigger)
+                if (collider.isTrigger)
                 {
-                    if(collider.GetType() == typeof(CapsuleCollider))
+                    if (collider.GetType() == typeof(CapsuleCollider))
                     {
                         (collider as CapsuleCollider).radius = _trapData.TrapStruct.Duration;
                     }

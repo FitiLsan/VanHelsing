@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 2537000707630346082}
   - component: {fileID: 2526898562855143234}
   - component: {fileID: 4207912918665612835}
-  - component: {fileID: 1046825020882779500}
   - component: {fileID: 8165741429768086734}
-  m_Layer: 0
+  - component: {fileID: 916251537632571027}
+  m_Layer: 12
   m_Name: TwoHandedSword
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,20 +96,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &1046825020882779500
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2541537832628782672}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.111328125
-  m_Height: 1.2425413
-  m_Direction: 1
-  m_Center: {x: 0.000016774982, y: 0.42087948, z: -0.00004446879}
 --- !u!114 &8165741429768086734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,3 +109,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 6
+  AdditionalDamage:
+    PhysicalDamage: 0
+    StunProbability: 0
+--- !u!65 &916251537632571027
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2541537832628782672}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.063964844, y: 0.9, z: 0.22265625}
+  m_Center: {x: 0.000016774982, y: 0.6, z: -0.00004446879}

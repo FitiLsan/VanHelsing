@@ -25,11 +25,12 @@ MonoBehaviour:
     _rigitbodyAngularDrag: 0.5
     _isRigitbodyKinematic: 1
     _capsuleColliderCenter: {x: 0, y: 1, z: 0}
-    _capsuleColliderRadius: 0.5
+    _capsuleColliderRadius: 0.3
     _capsuleColliderHeight: 2
     _sphereColliderCenter: {x: 0, y: 1, z: 0}
     _sphereColliderRadius: 7
     _sphereColliderRadiusIncrease: 1
+    _sphereColliderRadiusDecrease: 2
     _navMeshAcceleration: 1.5
     _walkSpeed: 1.6
     _runSpeed: 3.4
@@ -41,10 +42,14 @@ MonoBehaviour:
     _rightHandHitBoxRadius: 0.25
     _rightHandHitBoxCenter: {x: 0, y: 0, z: 0}
   _bossStats:
-    MaxHealth: 0
-    BaseStats:
+    MainStats:
+      _maxHealth: 100
+      _enemyType: 5
       _healthPoints: 100
-      _physicalPower: 10
-      _physicalDamageResistance: 0.5
+      _physicalPower: 0
+      _physicalDamageResistance: 0
       _stunProbabilityResistance: 0
+    AttackList: []
+    DefenceStats:
+      _baseDefense: 0
     Prefab: {fileID: 0}

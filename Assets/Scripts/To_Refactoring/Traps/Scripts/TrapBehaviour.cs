@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace BeastHunter
@@ -35,9 +34,8 @@ namespace BeastHunter
                     {
                         _context.NpcModels[other.gameObject.GetInstanceID()].TakeDamage(
                             Services.SharedInstance.AttackService.CountDamage(
-                            _context.TrapModels[this.gameObject.GetInstanceID()].TrapStruct.Damage,
-                            _context.NpcModels[other.gameObject.GetInstanceID()].GetStats().
-                            BaseStats));
+                                _context.TrapModels[this.gameObject.GetInstanceID()].TrapStruct.Damage,
+                                    _context.NpcModels[other.gameObject.GetInstanceID()].GetStats().MainStats));
 
                         _animator.Play("BearTrapLock");
                         _charge -= 1;

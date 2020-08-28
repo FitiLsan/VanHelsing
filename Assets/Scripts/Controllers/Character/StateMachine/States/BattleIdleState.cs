@@ -1,20 +1,14 @@
-﻿using UnityEngine;
-
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
-    public sealed class BattleIdleState : CharacterBaseState
+    public sealed class BattleIdleState : CharacterBaseState, IUpdate
     {
         #region ClassLifeCycle
 
-        public BattleIdleState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public BattleIdleState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Battle;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = true;
-            CanBeOverriden = true;
         }
 
         #endregion
@@ -24,20 +18,13 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             _animationController.PlayBattleIdleAnimation(_characterModel.LeftHandWeapon, _characterModel.RightHandWeapon);
         }
 
-        public override void Execute()
+        public void Updating()
         {
             StayInBattle();
-        }
-
-        public override void OnExit()
-        {
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void StayInBattle()

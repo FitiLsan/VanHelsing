@@ -3,53 +3,42 @@
 
 namespace BeastHunter
 {
-    public sealed class DefaultMovementState : CharacterBaseState
+    public sealed class DefaultMovementState : CharacterBaseState, IUpdate
     {
         #region Constants
 
-        private const float CAMERA_LOW_SIDE_ANGLE = 45f;
-        private const float CAMERA_HALF_SIDE_ANGLE = 90f;
-        private const float CAMERA_BACK_SIDE_ANGLE = 225f;
-        private const float CAMERA_BACK_ANGLE = 180f;
-
-        #endregion
-
-
-        #region Fields
-
-        private float _currentHorizontalInput;
-        private float _currentVerticalInput;
-        private float _currentAngleVelocity;
-        private float _targetSpeed;
-        private float _speedChangeLag;
-        private float _currentVelocity;
+        private const float EXIT_TIME = 1f;
 
         #endregion
 
 
         #region Properties
 
-        private Transform CameraTransform { get; set; }
-        private float TargetDirection { get; set; }
-        private float CurrentDirecton { get; set; }
-        private float AdditionalDirection { get; set; }
-        private float CurrentAngle { get; set; }
-        private float MovementSpeed { get; set; }
+        private bool IsStopping { get; set; }
+        private float ExitTime { get; set; }
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public DefaultMovementState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public DefaultMovementState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Default;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = true;
-            CanBeOverriden = true;
-            CameraTransform = Services.SharedInstance.CameraService.CharacterCamera.transform;
+        }
+
+        #endregion
+
+
+        #region IUpdate
+
+        public void Updating()
+        {
+            _stateMachine.BackState.CountSpeedDefault();
+            ControlMovement();
+            CountExitTime();
         }
 
         #endregion
@@ -59,93 +48,52 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            _animationController.PlayDefaultMovementAnimation();
-        }
+            base.Initialize();
+            StopCountExitTime();
 
-        public override void Execute()
-        {
-            CountSpeed();
-            MovementControl();
+            _stateMachine.BackState.OnStop = StartCountExitTime;
+            _stateMachine.BackState.OnMove = StopCountExitTime;
+            _stateMachine.BackState.OnSneak = () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Sneaking]);
+            _animationController.PlayDefaultMovementAnimation();
         }
 
         public override void OnExit()
         {
-            
+            base.OnExit();
+            _stateMachine.BackState.OnStop = null;
+            _stateMachine.BackState.OnMove = null;
+            _stateMachine.BackState.OnSneak = null;
         }
 
-        public override void OnTearDown()
+        private void ControlMovement()
         {
+            _stateMachine.BackState.RotateCharacter(!IsStopping);
+            _stateMachine.BackState.MoveCharacter();
         }
 
-        private void MovementControl()
+        private void CountExitTime()
         {
-            if (_characterModel.IsGrounded)
+            if (IsStopping)
             {
-                _currentHorizontalInput = _inputModel.InputTotalAxisX;
-                _currentVerticalInput = _inputModel.InputTotalAxisY;
+                ExitTime -= ExitTime > 0 ? Time.deltaTime : 0;
 
-                switch (_currentVerticalInput)
+                if (ExitTime <= 0)
                 {
-                    case 1:
-                        AdditionalDirection = CAMERA_LOW_SIDE_ANGLE * _currentHorizontalInput;
-                        break;
-                    case -1:
-                        switch (_currentHorizontalInput)
-                        {
-                            case 0:
-                                AdditionalDirection = CAMERA_BACK_ANGLE;
-                                break;
-                            default:
-                                AdditionalDirection = -CAMERA_BACK_SIDE_ANGLE * _currentHorizontalInput;
-                                break;
-                        }
-                        break;
-                    case 0:
-                        AdditionalDirection = CAMERA_HALF_SIDE_ANGLE * _currentHorizontalInput;
-                        break;
-                    default:
-                        break;
+                    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle]);
                 }
-
-                CurrentDirecton = _characterModel.CharacterTransform.localEulerAngles.y;
-                TargetDirection = CameraTransform.localEulerAngles.y + AdditionalDirection;           
-                CurrentAngle = Mathf.SmoothDampAngle(CurrentDirecton, TargetDirection, ref _currentAngleVelocity,
-                    _characterModel.CharacterCommonSettings.DirectionChangeLag);
-
-                _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle, 0);
-                _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, MovementSpeed);
             }
+        }           
+
+        private void StartCountExitTime()
+        {
+            IsStopping = true;
         }
 
-        private void CountSpeed()
+        private void StopCountExitTime()
         {
-            if (_characterModel.IsMoving)
-            {
-                if (_inputModel.IsInputRun)
-                {
-                    _targetSpeed = _characterModel.CharacterCommonSettings.RunSpeed;
-                }
-                else
-                {
-                    _targetSpeed = _characterModel.CharacterCommonSettings.WalkSpeed;
-                }
-            }
-            else
-            {
-                _targetSpeed = 0;
-            }
-
-            if (_characterModel.CurrentSpeed < _targetSpeed)
-            {
-               _speedChangeLag = _characterModel.CharacterCommonSettings.AccelerationLag;            
-            }
-            else
-            {
-                _speedChangeLag = _characterModel.CharacterCommonSettings.DecelerationLag;
-            }
-
-            MovementSpeed = Mathf.SmoothDamp(_characterModel.CurrentSpeed, _targetSpeed, ref _currentVelocity, 
-                _speedChangeLag);
+            IsStopping = false;
+            ExitTime = EXIT_TIME;
         }
 
         #endregion

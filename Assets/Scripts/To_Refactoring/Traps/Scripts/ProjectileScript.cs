@@ -22,15 +22,29 @@ namespace BeastHunter
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.transform.CompareTag(TagManager.ENEMY))
+            if (collision.transform.CompareTag(TagManager.ENEMY) || collision.transform.CompareTag(TagManager.HITBOX))
             {
-                Context.NpcModels[collision.gameObject.GetInstanceID()].TakeDamage(
+                if(collision.gameObject.GetComponent<InteractableObjectBehavior>().Type == InteractableObjectType.WeakHitBox)
+                {
+                    GlobalEventsModel.OnBossWeakPointHitted?.Invoke(collision.collider);
+                }
+
+                Context.NpcModels[GetParent(collision.transform).GetInstanceID()].TakeDamage(
                 Services.SharedInstance.AttackService.CountDamage(
-                ProjectileDamage,
-                Context.NpcModels[collision.gameObject.GetInstanceID()].GetStats().
-                BaseStats));
+                    ProjectileDamage,
+                        Context.NpcModels[GetParent(collision.transform).GetInstanceID()].GetStats().MainStats));
                 Destroy(this.gameObject);
             }
+        }
+
+        private GameObject GetParent(Transform instance)
+        {
+            while (instance.parent != null)
+            {
+                instance = instance.parent;
+            }
+
+            return instance.gameObject;
         }
 
         #endregion

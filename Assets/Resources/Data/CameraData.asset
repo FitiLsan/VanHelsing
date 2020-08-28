@@ -60,10 +60,10 @@ MonoBehaviour:
     _freeLookTopRigVerticalDamping: 0
     _freeLookTopRigScreenX: 0.5
     _freeLookTopRigScreenY: 0.5
-    _freeLookTopRigDeadZoneWidth: 0
+    _freeLookTopRigDeadZoneWidth: 0.2
     _freeLookTopRigDeadZoneHeight: 0.2
-    _freeLookTopRigSoftZoneWidth: 0
-    _freeLookTopRigSoftZoneHeight: 0.2
+    _freeLookTopRigSoftZoneWidth: 0.299
+    _freeLookTopRigSoftZoneHeight: 0.301
     _freeLookTopRigBiasX: 0
     _freeLookTopRigBiasY: 0
     _freeLookMiddleRigBodyDampingY: 0
@@ -77,10 +77,10 @@ MonoBehaviour:
     _freeLookMiddleRigVerticalDamping: 0
     _freeLookMiddleRigScreenX: 0.5
     _freeLookMiddleRigScreenY: 0.5
-    _freeLookMiddleRigDeadZoneWidth: 0
+    _freeLookMiddleRigDeadZoneWidth: 0.2
     _freeLookMiddleRigDeadZoneHeight: 0.2
-    _freeLookMiddleRigSoftZoneWidth: 0
-    _freeLookMiddleRigSoftZoneHeight: 0.2
+    _freeLookMiddleRigSoftZoneWidth: 0.3
+    _freeLookMiddleRigSoftZoneHeight: 0.3
     _freeLookMiddleRigBiasX: 0
     _freeLookMiddleRigBiasY: 0
     _freeLookBottomRigBodyDampingY: 1
@@ -94,10 +94,10 @@ MonoBehaviour:
     _freeLookBottomRigVerticalDamping: 0
     _freeLookBottomRigScreenX: 0.5
     _freeLookBottomRigScreenY: 0.5
-    _freeLookBottomRigDeadZoneWidth: 0
+    _freeLookBottomRigDeadZoneWidth: 0.2
     _freeLookBottomRigDeadZoneHeight: 0.2
-    _freeLookBottomRigSoftZoneWidth: 0
-    _freeLookBottomRigSoftZoneHeight: 0.2
+    _freeLookBottomRigSoftZoneWidth: 0.3
+    _freeLookBottomRigSoftZoneHeight: 0.3
     _freeLookBottomRigBiasX: 0
     _freeLookBottomRigBiasY: 0
     _colliderMinDistanceFromTarget: 0.1
@@ -120,7 +120,7 @@ MonoBehaviour:
     _targetCameraYawDamping: 0
     _targetCameraRollDamping: 0
     _targetCameraTrackedOffsetX: 0
-    _targetCameraTrackedOffsetY: 0
+    _targetCameraTrackedOffsetY: 1.2
     _targetCameraTrackedOffsetZ: 0
     _targetCameraLookaheadTime: 0
     _targetCameraLookaheadSmoothing: 10

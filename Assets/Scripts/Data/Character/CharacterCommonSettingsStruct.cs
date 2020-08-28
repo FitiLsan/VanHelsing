@@ -94,6 +94,14 @@ namespace BeastHunter
         [Range(0.0f, 20.0f)]
         [SerializeField] private float _inBattleRunSpeed;
 
+        [Tooltip("Walk speed while sneaking value between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _sneakWalkSpeed;
+
+        [Tooltip("Run speed while sneaking value between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _sneakRunSpeed;
+
         [Tooltip("Jump horizontal force between 0 and 10.")]
         [Range(0.0f, 10.0f)]
         [SerializeField] private float _jumpHorizontalForce;
@@ -110,10 +118,6 @@ namespace BeastHunter
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _groundCheckHeightReduction;
 
-        [Tooltip("Character speed measuring time frame between 0 and 1.")]
-        [Range(0.0f, 1.0f)]
-        [SerializeField] private float _speedMeasureFrame;
-
         [Tooltip("Character acceleration lag between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _accelerationLag;
@@ -122,13 +126,21 @@ namespace BeastHunter
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _decelerationLag;
 
-        [Tooltip("Character acceleration lag between 0 and 1.")]
+        [Tooltip("Character acceleration lag in battle between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _inBattleAccelerationLag;
 
-        [Tooltip("Character deceleraton lag between 0 and 1.")]
+        [Tooltip("Character deceleraton lag in battle between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _inBattleDecelerationLag;
+
+        [Tooltip("Character acceleration lag while sneaking between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _sneakAccelerationLag;
+
+        [Tooltip("Character deceleraton lag while sneaking between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _sneakDecelerationLag;
 
         [Tooltip("Character direction change lag between 0 and 1.")]
         [Range(0.0f, 1.0f)]
@@ -207,15 +219,18 @@ namespace BeastHunter
         public float RunSpeed => _runSpeed;
         public float InBattleWalkSpeed => _inBattleWalkSpeed;
         public float InBattleRunSpeed => _inBattleRunSpeed;
+        public float SneakWalkSpeed => _sneakWalkSpeed;
+        public float SneakRunSpeed => _sneakRunSpeed;
         public float JumpHorizontalForce => _jumpHorizontalForce;
         public float JumpVerticalForce => _jumpVerticalForce;
         public float GroundCheckHeight => _groundCheckHeight;
         public float GroundCHeckHeightReduction => _groundCheckHeightReduction;
-        public float SpeedMeasureFrame => _speedMeasureFrame;
         public float AccelerationLag => _accelerationLag;
         public float DecelerationLag => _decelerationLag;
         public float InBattleAccelerationLag => _inBattleAccelerationLag;
         public float InBattleDecelerationLag => _inBattleDecelerationLag;
+        public float SneakAccelerationLag => _sneakAccelerationLag;
+        public float SneakDecelerationLag => _sneakDecelerationLag;
         public float DirectionChangeLag => _directionChangeLag;
         public float AnimatorBaseSpeed => _animatorBaseSpeed;
 

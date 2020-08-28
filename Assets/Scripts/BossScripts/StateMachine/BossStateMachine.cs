@@ -10,7 +10,6 @@ namespace BeastHunter
 
         public readonly GameContext _context;
         public BossModel _model;
-        private BossMainState _mainState;
 
         #endregion
 
@@ -22,6 +21,8 @@ namespace BeastHunter
 
         public Action OnStateChange { get; private set; }
         public Action OnAfterStateChange { get; private set; }
+
+        public BossMainState _mainState { get; private set; }
 
         #endregion
 
@@ -43,6 +44,8 @@ namespace BeastHunter
             States.Add(BossStatesEnum.Chasing, new BossChasingState(this));
             States.Add(BossStatesEnum.Attacking, new BossAttackingState(this));
             States.Add(BossStatesEnum.Stunned, new BossStunnedState(this));
+            States.Add(BossStatesEnum.Targeting, new BossTargetingState(this));
+            States.Add(BossStatesEnum.Hitted, new BossHittedState(this));
         }
 
         #endregion

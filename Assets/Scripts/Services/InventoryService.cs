@@ -59,7 +59,8 @@ namespace BeastHunter
                             newPocket.transform.localEulerAngles = pocket.LocalRotation;
 
                             var newWeapon = pocket.ItemInPocket as WeaponItem;
-                            (pocket.ItemInPocket as WeaponItem).WeaponObject = GameObject.Instantiate(newWeapon.WeaponPrefab, newPocket.transform);
+                            (pocket.ItemInPocket as WeaponItem).WeaponObject = GameObject.Instantiate(newWeapon.WeaponPrefab, 
+                                newPocket.transform);
                             (pocket.ItemInPocket as WeaponItem).WeaponObject.transform.localPosition = Vector3.zero;
                             (pocket.ItemInPocket as WeaponItem).WeaponObject.transform.localEulerAngles = Vector3.zero;
                         }

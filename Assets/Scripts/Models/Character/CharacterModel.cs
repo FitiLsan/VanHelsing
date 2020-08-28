@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using RootMotion.Dynamics;
 
 
 namespace BeastHunter
@@ -18,20 +19,18 @@ namespace BeastHunter
         public Transform LeftFoot { get; }
         public Transform RightFoot { get; }
         public Transform CameraTargetTransform { get; }
-        public Transform TargetMarkTransform { get; }
         public Transform CharacterTransform { get; }
 
         public Vector3 LeftFootPosition { get; set; }
-        public Vector3 RightFoorPosition { get; set; }
+        public Vector3 RightFootPosition { get; set; }
         public Vector3 LeftFootRotation { get; set; }
         public Vector3 RightFootRotation { get; set; }
 
-        public WeaponHitBoxBehavior LeftFootBehavior { get; }
-        public WeaponHitBoxBehavior RightFootBehavior { get; }
+        public WeaponHitBoxBehavior LeftHandBehavior { get; }
+        public WeaponHitBoxBehavior RightHandBehavior { get; }
         public WeaponHitBoxBehavior LeftWeaponBehavior { get; set; }
         public WeaponHitBoxBehavior RightWeaponBehavior { get; set; } 
 
-        public Vector3 TargetMarkBasePosition { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
         public SphereCollider CharacterSphereCollider { get; }
         public Rigidbody CharacterRigitbody { get; }
@@ -39,19 +38,25 @@ namespace BeastHunter
         public CharacterData CharacterData { get; }
         public CharacterCommonSettingsStruct CharacterCommonSettings { get; }
         public BaseStatsClass CharacterStatsSettings { get; }
+        public PuppetMaster PuppetMaster { get; }
+        public BehaviourPuppet BehaviorPuppet { get; }
+        public BehaviourFall BehaviorFall { get; }
 
         public Animator CharacterAnimator { get; set; }
         public List<Collider> EnemiesInTrigger { get; set; }
         public Collider ClosestEnemy { get; set; }
+
+        public WeaponItem LeftHandFeast { get; set; }
+        public WeaponItem RigheHandWeapon { get; set; }
         public WeaponItem LeftHandWeapon { get; set; }
         public WeaponItem RightHandWeapon { get; set; }
 
         public float CurrentSpeed { get; set; }
-        public float VerticalSpeed { get; set; }
         public float AnimationSpeed { get; set; }
+        public float Health { get; set; }
 
-        public bool IsMoving { get; set; }
         public bool IsDodging { get; set; }
+        public bool IsSneaking { get; set; }
         public bool IsGrounded { get; set; }
         public bool IsInBattleMode { get; set; }
         public bool IsEnemyNear { get; set; }
@@ -68,26 +73,18 @@ namespace BeastHunter
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData._characterCommonSettings;
             CharacterStatsSettings = CharacterData._characterStatsSettings;
-            CharacterTransform = prefab.transform;
+            CharacterTransform = prefab.transform.GetChild(2).transform;
             CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
             CharacterTransform.name = CharacterCommonSettings.InstanceName;
             CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
-            CharacterTransform.gameObject.layer = CharacterCommonSettings.InstanceLayer;
 
-            Transform[] children = CharacterTransform.GetComponentsInChildren<Transform>();
-
-            foreach (var child in children)
+            if (CharacterTransform.GetComponent<Rigidbody>() != null)
             {
-                child.gameObject.layer = CharacterCommonSettings.InstanceLayer;
-            }
-
-            if (prefab.GetComponent<Rigidbody>() != null)
-            {
-                CharacterRigitbody = prefab.GetComponent<Rigidbody>();
+                CharacterRigitbody = CharacterTransform.GetComponent<Rigidbody>();
             }
             else
             {
-                CharacterRigitbody = prefab.AddComponent<Rigidbody>();
+                CharacterRigitbody = CharacterTransform.gameObject.AddComponent<Rigidbody>();
                 CharacterRigitbody.freezeRotation = true;
                 CharacterRigitbody.mass = CharacterCommonSettings.RigitbodyMass;
                 CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
@@ -96,13 +93,13 @@ namespace BeastHunter
 
             CharacterRigitbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
-            if (prefab.GetComponent<CapsuleCollider>() != null)
+            if (CharacterTransform.GetComponent<CapsuleCollider>() != null)
             {
-                CharacterCapsuleCollider = prefab.GetComponent<CapsuleCollider>();
+                CharacterCapsuleCollider = CharacterTransform.GetComponent<CapsuleCollider>();
             }
             else
             {
-                CharacterCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
+                CharacterCapsuleCollider = CharacterTransform.gameObject.AddComponent<CapsuleCollider>();
                 CharacterCapsuleCollider.center = CharacterCommonSettings.CapsuleColliderCenter;
                 CharacterCapsuleCollider.radius = CharacterCommonSettings.CapsuleColliderRadius;
                 CharacterCapsuleCollider.height = CharacterCommonSettings.CapsuleColliderHeight;
@@ -110,14 +107,14 @@ namespace BeastHunter
 
             CharacterCapsuleCollider.transform.position = groundPosition;
 
-            if (prefab.GetComponent<SphereCollider>() != null)
+            if (CharacterTransform.GetComponent<SphereCollider>() != null)
             {
-                CharacterSphereCollider = prefab.GetComponent<SphereCollider>();
+                CharacterSphereCollider = CharacterTransform.GetComponent<SphereCollider>();
                 CharacterSphereCollider.isTrigger = true;
             }
             else
             {
-                CharacterSphereCollider = prefab.AddComponent<SphereCollider>();
+                CharacterSphereCollider = CharacterTransform.gameObject.AddComponent<SphereCollider>();
                 CharacterSphereCollider.center = CharacterCommonSettings.SphereColliderCenter;
                 CharacterSphereCollider.radius = CharacterCommonSettings.SphereColliderRadius;
                 CharacterSphereCollider.isTrigger = true;
@@ -126,22 +123,10 @@ namespace BeastHunter
             CameraTarget = Services.SharedInstance.CameraService.CreateCameraTarget(CharacterTransform);
             CameraTargetTransform = CameraTarget.transform;
 
-            TargetMarkBasePosition = new Vector3(CharacterTransform.localPosition.x,
-                CharacterTransform.localPosition.y + CharacterCapsuleCollider.height +
-                    CharacterCommonSettings.TargetMarkHeight, CharacterTransform.localPosition.z);
-
-            TargetMark = CharacterCommonSettings.CreateTargetMark(CharacterTransform, TargetMarkBasePosition);
-            TargetMarkTransform = TargetMark.transform;
-
-
-            if (prefab.GetComponent<Animator>() != null)
-            {
-                CharacterAnimator = prefab.GetComponent<Animator>();
-            }
-            else
-            {
-                CharacterAnimator = prefab.AddComponent<Animator>();
-            }
+            CharacterAnimator = prefab.transform.GetChild(2).GetComponent<Animator>();
+            PuppetMaster = prefab.transform.GetChild(1).gameObject.GetComponent<PuppetMaster>();
+            BehaviorPuppet = prefab.transform.GetChild(0).GetChild(0).gameObject.GetComponent<BehaviourPuppet>();
+            BehaviorFall = prefab.transform.GetChild(0).GetChild(1).gameObject.GetComponent<BehaviourFall>();
 
             CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterAnimator;
             CharacterAnimator.applyRootMotion = false;
@@ -160,12 +145,13 @@ namespace BeastHunter
 
             EnemiesInTrigger = new List<Collider>();
             ClosestEnemy = null;
-            IsMoving = false;
             IsGrounded = false;
+            IsSneaking = false;
             IsEnemyNear = false;
             IsInBattleMode = false;
             IsWeaponInHands = false;
             IsDead = false;
+
             CurrentSpeed = 0;
             AnimationSpeed = CharacterData._characterCommonSettings.AnimatorBaseSpeed;
 
@@ -173,22 +159,6 @@ namespace BeastHunter
             RightHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightHand);
             LeftFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftFoot);
             RightFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightFoot);
-
-            //SphereCollider LeftFootTrigger = LeftFoot.gameObject.AddComponent<SphereCollider>();
-            //LeftFootTrigger.radius = CharacterCommonSettings.LeftFootHitBoxRadius;
-            //LeftFootTrigger.isTrigger = true;
-            //LeftFoot.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            //LeftFootBehavior = LeftFoot.gameObject.AddComponent<WeaponHitBoxBehavior>();
-            //LeftFootBehavior.SetType(InteractableObjectType.HitBox);
-            //LeftFootBehavior.IsInteractable = false;
-
-            //SphereCollider RightFootTrigger = RightFoot.gameObject.AddComponent<SphereCollider>();
-            //RightFootTrigger.radius = CharacterCommonSettings.RightFootHitBoxRadius;
-            //RightFootTrigger.isTrigger = true;
-            //RightFoot.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            //RightFootBehavior = RightFoot.gameObject.AddComponent<WeaponHitBoxBehavior>();
-            //RightFootBehavior.SetType(InteractableObjectType.HitBox);
-            //RightFootBehavior.IsInteractable = false;
 
             LeftHandWeapon = null;
             RightHandWeapon = null;

@@ -3,53 +3,22 @@
 
 namespace BeastHunter
 {
-    public sealed class RollingState : CharacterBaseState
+    public sealed class RollingState : CharacterBaseState, IUpdate
     {
-        #region Constants
-
-        private const float ROLL_LOW_SIDE_ANGLE = 45f;
-        private const float ROLL_HALF_SIDE_ANGLE = 90f;
-        private const float ROLL_BACK_SIDE_ANGLE = 225f;
-        private const float ROLL_BACK_ANGLE = 180f;
-        private const float ANGLE_SPEED_INCREASE = 1.225f;
-
-        #endregion
-
-
-        #region Fields
-
-        private Vector3 MoveDirection;
-        private Collider ClosestEnemy;
-        private float _currentHorizontalInput;
-        private float _currentVerticalInput;
-        private float _currentAngleVelocity;
-
-        #endregion
-
-
         #region Properties
 
-        private Transform CameraTransform { get; set; }
         private float RollTime { get; set; }
-        private float TargetDirection { get; set; }
-        private float CurrentDirecton { get; set; }
-        private float AdditionalDirection { get; set; }
-        private float CurrentAngle { get; set; }
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public RollingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public RollingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Battle;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
-            CameraTransform = Services.SharedInstance.CameraService.CharacterCamera.transform;
         }
 
         #endregion
@@ -59,14 +28,11 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            if (_characterModel.IsMoving)
+            base.Initialize();
+            if (_inputModel.IsInputMove)
             {
                 RollTime = _characterModel.CharacterCommonSettings.RollTime;
                 _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.RollAnimationSpeed;
-                CanExit = false;
-                CanBeOverriden = false;
-                _currentHorizontalInput = _inputModel.InputTotalAxisX;
-                _currentVerticalInput = _inputModel.InputTotalAxisY;
                 _animationController.PlayRollForwardAnimation();
                 _characterModel.IsDodging = true;
             }
@@ -76,7 +42,7 @@ namespace BeastHunter
             }
         }
 
-        public override void Execute()
+        public void Updating()
         {
             ExitCheck();
             Roll();
@@ -85,12 +51,9 @@ namespace BeastHunter
 
         public override void OnExit()
         {
+            base.OnExit();
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
             _characterModel.IsDodging = false;
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
@@ -105,18 +68,15 @@ namespace BeastHunter
 
         private void CheckNextState()
         {
-            CanExit = true;
-            CanBeOverriden = true;
-
             if (NextState == null)
             {
-                if (_characterModel.IsMoving)
+                if (_inputModel.IsInputMove)
                 {
-                    _stateMachine.SetState(_stateMachine._battleMovementState);
+                    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.BattleMovement]);
                 }
                 else
                 {
-                    _stateMachine.SetState(_stateMachine._battleIdleState);
+                    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.BattleIdle]);
                 }             
             }
             else
@@ -127,46 +87,12 @@ namespace BeastHunter
 
         private void Roll()
         {
-            if (RollTime > 0)
+            if (RollTime > 0 && _characterModel.IsGrounded)
             {
-                if (_characterModel.IsGrounded)
-                {
-                    switch (_currentVerticalInput)
-                    {
-                        case 1:
-                            AdditionalDirection = ROLL_LOW_SIDE_ANGLE * _currentHorizontalInput;
-                            break;
-                        case -1:
-                            switch (_currentHorizontalInput)
-                            {
-                                case 0:
-                                    AdditionalDirection = ROLL_BACK_ANGLE;
-                                    break;
-                                default:
-                                    AdditionalDirection = -ROLL_BACK_SIDE_ANGLE * _currentHorizontalInput;
-                                    break;
-                            }
-                            break;
-                        case 0:
-                            AdditionalDirection = ROLL_HALF_SIDE_ANGLE * _currentHorizontalInput;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    CurrentDirecton = _characterModel.CharacterTransform.localEulerAngles.y;
-                    TargetDirection = CameraTransform.localEulerAngles.y + AdditionalDirection;
-
-                    CurrentAngle = Mathf.SmoothDampAngle(CurrentDirecton, TargetDirection, ref _currentAngleVelocity,
-                        _characterModel.CharacterCommonSettings.DirectionChangeLag);
-
-                    _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle, 0);
-                    _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, _characterModel.CharacterData.
-                        _characterCommonSettings.RollFrameDistance);
-                }
+                _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, _characterModel.CharacterData.
+                    _characterCommonSettings.RollFrameDistance);
             }
         }
-
 
         private void StayInBattle()
         {

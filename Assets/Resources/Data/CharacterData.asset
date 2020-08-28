@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: CharacterData
   m_EditorClassIdentifier: 
   _characterCommonSettings:
-    _prefab: {fileID: 1713508950806912, guid: 5e91ea75b82393c4f80d8bc436ee1f52, type: 3}
+    _prefab: {fileID: 4136213756536918307, guid: fc962beb14b75584ab5fd77a6cdbab10,
+      type: 3}
     _instanceName: Player
     _instanceTag: Player
     _instanceLayer: 8
@@ -25,26 +26,29 @@ MonoBehaviour:
     _rigitbodyDrag: 0
     _rigitbodyAngularDrag: 0.05
     _capsuleColliderCenter: {x: 0, y: 1, z: 0}
-    _capsuleColliderRadius: 0.63
-    _capsuleColliderHeight: 1.88
+    _capsuleColliderRadius: 0.1
+    _capsuleColliderHeight: 1.9
     _sphereColliderCenter: {x: 0, y: 1, z: 0}
     _sphereColliderRadius: 7.2
     _sphereColliderRadiusIncrease: 1.365
     _healthPoints: 100
-    _walkSpeed: 4.6
-    _runSpeed: 7.4
+    _walkSpeed: 4
+    _runSpeed: 6
     _inBattleWalkSpeed: 2
     _inBattleRunSpeed: 3
+    _sneakWalkSpeed: 1
+    _sneakRunSpeed: 2
     _jumpHorizontalForce: 4.56
     _jumpVerticalForce: 4.52
     _groundCheckHeight: 1.2
     _groundCheckHeightReduction: 0.872
-    _speedMeasureFrame: 0.14
-    _accelerationLag: 0.028
-    _decelerationLag: 0.034
+    _accelerationLag: 0.1
+    _decelerationLag: 0.098
     _inBattleAccelerationLag: 0.028
     _inBattleDecelerationLag: 0.022
-    _directionChangeLag: 0.073
+    _sneakAccelerationLag: 0.022
+    _sneakDecelerationLag: 0
+    _directionChangeLag: 0.194
     _animatorBaseSpeed: 1
     _targetPrefab: {fileID: 2890280644428487904, guid: 3a80d21ca1e78194c8abdb87e28d79a0,
       type: 3}
@@ -57,6 +61,7 @@ MonoBehaviour:
     _rollFrameDistance: 5.55
     _rollAnimationSpeed: 1
   _characterStatsSettings:
+    _healthPoints: 0
     _physicalPower: 2
     _physicalDamageResistance: 0.25
     _stunProbabilityResistance: 0.075

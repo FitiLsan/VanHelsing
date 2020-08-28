@@ -3,11 +3,11 @@
 
 namespace BeastHunter
 {
-    public sealed class AttackingFromLeftState : CharacterBaseState
+    public sealed class AttackingFromLeftState : CharacterBaseState, IUpdate
     {
         #region Constants
 
-        private const float TIME_PART_TO_ENABLE_WEAPON = 0.3f;
+        private const float TIME_PART_TO_ENABLE_WEAPON = 0f;
 
         #endregion
 
@@ -22,14 +22,11 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public AttackingFromLeftState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public AttackingFromLeftState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Battle;
             IsTargeting = false;
             IsAttacking = true;
-            CanExit = false;
-            CanBeOverriden = false;
             _currentAttackIndex = 0;
         }
 
@@ -40,28 +37,27 @@ namespace BeastHunter
 
         public override void Initialize()
         {
+            base.Initialize();
             _currentAttackIndex = Random.Range(0, _characterModel.LeftHandWeapon.AttacksLeft.Length);
             _characterModel.LeftHandWeapon.CurrentAttack = _characterModel.LeftHandWeapon.AttacksLeft[_currentAttackIndex];
             _currentAttackTime = _characterModel.LeftHandWeapon.CurrentAttack.Time;
-            _animationController.PlayAttackAnimation(_characterModel.LeftHandWeapon.SimpleAttackFromLeftkAnimationHash, _currentAttackIndex);
+            _animationController.PlayAttackAnimation(_characterModel.LeftHandWeapon.SimpleAttackFromLeftkAnimationHash, 
+                _currentAttackIndex);
             TimeRemaining enableWeapon = new TimeRemaining(EnableWeapon, TIME_PART_TO_ENABLE_WEAPON * _currentAttackTime);
             enableWeapon.AddTimeRemaining(TIME_PART_TO_ENABLE_WEAPON * _currentAttackTime);
-            CanExit = false;
         }
 
-        public override void Execute()
+        public void Updating()
         {       
             ExitCheck();
+            LookAtEnemy();
             StayInBattle();
         }
 
         public override void OnExit()
         {
+            base.OnExit();
             _characterModel.LeftWeaponBehavior.IsInteractable = false;
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
@@ -72,12 +68,18 @@ namespace BeastHunter
             }
             else
             {
-                CanExit = true;
-
-                if(_stateMachine.PreviousState == _stateMachine._battleTargetMovementState)
+                if(_stateMachine.PreviousState == _stateMachine.CharacterStates[CharacterStatesEnum.BattleTargetMovement])
                 {
                     _stateMachine.ReturnState();
                 }
+            }
+        }
+
+        private void LookAtEnemy()
+        {
+            if (_characterModel.ClosestEnemy != null && _stateMachine.PreviousState.IsTargeting)
+            {
+                _characterModel.CharacterTransform.LookAt(_characterModel.ClosestEnemy.transform);
             }
         }
 

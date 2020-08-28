@@ -6,6 +6,7 @@
         Default,
         Battle,
         NotActive,
+        Sneaking,
     }
 }
 

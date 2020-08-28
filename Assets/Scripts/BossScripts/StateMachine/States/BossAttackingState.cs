@@ -7,7 +7,6 @@ namespace BeastHunter
     {
         #region Constants
 
-        private const float DISTANCE_TO_START_ATTACK = 2.5f;
         private const float LOOK_TO_TARGET_SPEED = 1f;
         private const float PART_OF_NONE_ATTACK_TIME_LEFT = 0.15f;
         private const float PART_OF_NONE_ATTACK_TIME_RIGHT = 0.3f;
@@ -58,7 +57,7 @@ namespace BeastHunter
         {
             CanExit = false;
             CanBeOverriden = true;
-
+            
             _stateMachine._model.BossNavAgent.SetDestination(_stateMachine._model.BossTransform.position);
             _stateMachine._model.BossNavAgent.speed = 0f;
             _isCurrentAttackRight = Random.Range(0, 2) == 1? true : false;
@@ -90,7 +89,6 @@ namespace BeastHunter
         public override void Execute()
         {
             CheckNextMove();
-            CheckDirection();
         }
 
         public override void OnExit()
@@ -128,9 +126,30 @@ namespace BeastHunter
             }
         }
 
-        private void CheckDirection()
+        private bool CheckDirection()
         {
-            _stateMachine._model.BossTransform.LookAt(_stateMachine._context.CharacterModel.CharacterTransform);
+            bool isNear = Quaternion.Angle(_stateMachine._model.BossTransform.rotation,
+                _stateMachine._mainState.TargetRotation) <= BossMainState.ANGLE_TARGET_RANGE;
+
+            if (!isNear)
+            {
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Targeting);
+            }
+
+            return isNear;
+        }
+
+        private bool CheckDistance()
+        {
+            bool isNear = Mathf.Sqrt((_stateMachine._model.BossTransform.position - _stateMachine.
+                _context.CharacterModel.CharacterTransform.position).sqrMagnitude) <= BossMainState.DISTANCE_TO_START_ATTACK;
+
+            if (!isNear)
+            {
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
+            }
+
+            return isNear;
         }
 
         private void DecideNextMove()
@@ -138,17 +157,9 @@ namespace BeastHunter
             _stateMachine._model.LeftWeaponBehavior.IsInteractable = false;
             _stateMachine._model.RightWeaponBehavior.IsInteractable = false;
 
-            if (!_stateMachine._model.IsDead)
+            if (!_stateMachine._model.IsDead && CheckDirection() && CheckDistance())
             {
-                if (Mathf.Sqrt((_stateMachine._model.BossTransform.position - _stateMachine.
-                    _context.CharacterModel.CharacterTransform.position).sqrMagnitude) <= DISTANCE_TO_START_ATTACK)
-                {
-                    Initialise();
-                }
-                else
-                {
-                    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
-                }
+                Initialise();
             }
         }
 
@@ -171,7 +182,7 @@ namespace BeastHunter
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
                 DealDamage(enemyBehavior, Services.SharedInstance.AttackService.CountDamage(_stateMachine._model.LeftHandWeapon,
-                    _stateMachine._model.BossStats.BaseStats, _stateMachine._context.CharacterModel.PlayerBehavior.Stats));
+                    _stateMachine._model.BossStats.MainStats, _stateMachine._context.CharacterModel.PlayerBehavior.Stats));
                 hitBox.IsInteractable = false;
             }
         }
@@ -183,7 +194,7 @@ namespace BeastHunter
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
                 DealDamage(enemyBehavior, Services.SharedInstance.AttackService.CountDamage(_stateMachine._model.RightHandWeapon,
-                     _stateMachine._model.BossStats.BaseStats, _stateMachine._context.CharacterModel.PlayerBehavior.Stats));
+                     _stateMachine._model.BossStats.MainStats, _stateMachine._context.CharacterModel.PlayerBehavior.Stats));
                 hitBox.IsInteractable = false;
             }
         }

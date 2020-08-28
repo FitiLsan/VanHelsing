@@ -1,9 +1,12 @@
-﻿
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public enum InputEventTypes
     {
         None = 0,
+        MoveStart,
+        MoveStop,
+        RunStart,
+        RunStop,
         Jump,
         BattleExit,
         Dodge,
@@ -20,7 +23,11 @@ namespace BeastHunter
         Inventory,
         QuestJournal,
         PlaceTrap1,
-        PlaceTrap2
+        PlaceTrap2,
+        Sneak,
+        TimeSkipMenu,
+        WeaponWheelOpen,
+        WeaponWheelClose,
     }
 }
 

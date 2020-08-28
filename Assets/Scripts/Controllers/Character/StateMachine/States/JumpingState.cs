@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class JumpingState : CharacterBaseState
+    public sealed class JumpingState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -36,14 +36,11 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public JumpingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public JumpingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Default;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = true;
             JumpVerticalForce = _characterModel.CharacterCommonSettings.JumpVerticalForce;
             JumpHorizontalForce = _characterModel.CharacterCommonSettings.JumpHorizontalForce;
         }
@@ -55,7 +52,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            CanExit = false;
+            base.Initialize();
             _speedBeforeJump = _characterModel.CurrentSpeed;
             _currentGroundCheckTime = NOT_CHECK_GROUND_TIME;
             _currentExitTime = EXIT_TIME;
@@ -63,19 +60,10 @@ namespace BeastHunter
             UpdatePosition();
         }
 
-        public override void Execute()
+        public void Updating()
         {
             ExitCheck();
             Jumping();
-        }
-
-        public override void OnExit()
-        {
-
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         private void ExitCheck()
@@ -85,7 +73,7 @@ namespace BeastHunter
 
             if (_currentGroundCheckTime < 0 && (_characterModel.IsGrounded || _currentExitTime <= 0))
             {
-                CanExit = true;
+                _stateMachine.ReturnState();
             }
         }
 
@@ -104,7 +92,6 @@ namespace BeastHunter
                 _jumpVector = _characterModel.CharacterTransform.position + (Vector3.up * 
                     JumpVerticalForce * _currentExitTime / EXIT_TIME + _characterModel.CharacterTransform.forward *
                         (JumpHorizontalForce + _speedBeforeJump * SPEED_FORCE_COMPENSATOR)) * Time.smoothDeltaTime;
-                _characterModel.VerticalSpeed = 1;
             }
             else
             {

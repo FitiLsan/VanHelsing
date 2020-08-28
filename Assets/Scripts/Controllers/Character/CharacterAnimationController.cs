@@ -23,6 +23,7 @@ namespace BeastHunter
         private int _dancingHash;
         private int _stunnedHash;
         private int _deadHash;
+        private int _trapPlaceHash;
 
         #endregion
 
@@ -65,6 +66,7 @@ namespace BeastHunter
             _battleTargetMovementTwoHandedSliceHash = Animator.StringToHash("BattleTargetMovementTwoHandedSlice");
             _stunnedHash = Animator.StringToHash("Stunned");
             _deadHash = Animator.StringToHash("Dead");
+            _trapPlaceHash = Animator.StringToHash("PlaceTrap");
         }
 
         public void UpdateAnimationParameters(float axisX, float axisY, float moveSpeed, float animationSpeed)
@@ -202,6 +204,16 @@ namespace BeastHunter
         public void SetLookAtWeight(float weight, float bodyWeight, float headWeight, float eyesWeight, float clampWeight)
         {
             CharacterAnimator.SetLookAtWeight(weight, bodyWeight, headWeight, eyesWeight, clampWeight);
+        }
+
+        public void SetCrouchLevel(float level)
+        {
+            CharacterAnimator.SetFloat("CrouchLevel", level);
+        }
+
+        public void PlayTrapPlaceAnimation()
+        {
+            CharacterAnimator.Play(_trapPlaceHash);
         }
 
         #endregion
