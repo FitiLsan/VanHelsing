@@ -34,32 +34,10 @@ namespace BeastHunter
             AnimationController = animationController;
             BackState = new BackState(context, this);
 
-            CharacterStates.Add(CharacterStatesEnum.AttackingFromLeft, new AttackingFromLeftState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.AttackingFromRight, new AttackingFromRightState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.BattleIdle, new BattleIdleState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.BattleMovement, new BattleMovementState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.BattleTargetMovement, new BattleTargetMovementState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Dancing, new DancingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Dead, new DeadState(context, this));
             CharacterStates.Add(CharacterStatesEnum.DefaultIdle, new DefaultIdleState(context, this));
             CharacterStates.Add(CharacterStatesEnum.DefaultMovement, new DefaultMovementState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Falling, new DodgingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.FallOnGround, new FallOnGroundState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.GettingWeapon, new GettingWeaponState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.Sneaking, new SneakingState(context, this));
             CharacterStates.Add(CharacterStatesEnum.Jumping, new JumpingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Kicking, new KickingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Landing, new LandingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.RemovingWeapon, new RemovingWeaponState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Rolling, new RollingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.RollingTarget, new RollingTargetState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Stunned, new StunnedState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Talking, new TalkingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.SneakingIdle, new CrouchIdleState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.SneakingMovement, new CrouchMovementState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.DefaultToCrouch, new DefaultToCrouchState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.CrouchToDefault, new CrouchToDefaultState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.TrapPlace, new TrapPlaceState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.SettingTimeSkip, new SettingTimeSkipState(context, this));
         }
 
         #endregion
@@ -87,14 +65,14 @@ namespace BeastHunter
 
         public void Execute()
         {
-            BackState.Execute();
+            BackState.Updating();
 
             if (CurrentState is IUpdate) (CurrentState as IUpdate).Updating();
         }
 
         public void OnTearDown()
         {
-            BackState.OnTearDown();
+            BackState.TearDown();
 
             foreach (var state in CharacterStates)
             {

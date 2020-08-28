@@ -123,6 +123,20 @@ namespace BeastHunter
             CameraCinemachineBrain.m_DefaultBlend.m_Time = time;
         }
 
+        public void LockFreeLookCamera()
+        {
+            CharacterFreelookCamera.m_XAxis.m_MaxSpeed = 0f;
+            CharacterFreelookCamera.m_YAxis.m_MaxSpeed = 0f;
+        }
+
+        public void UnlockFreeLookCamera()
+        {
+            CharacterFreelookCamera.m_XAxis.m_MaxSpeed = _cameraData._cameraSettings.CharacterFreelookCamera.
+                m_XAxis.m_MaxSpeed;
+            CharacterFreelookCamera.m_YAxis.m_MaxSpeed = _cameraData._cameraSettings.CharacterFreelookCamera.
+                m_YAxis.m_MaxSpeed;
+        }
+
 #if (UNITY_EDITOR)
         private void SaveCameraSettings(PlayModeStateChange state)
         {

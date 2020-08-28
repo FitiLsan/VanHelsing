@@ -23,10 +23,6 @@ namespace BeastHunter
         private int _dancingHash;
         private int _stunnedHash;
         private int _deadHash;
-        private int _crouchIdleHash;
-        private int _crouchMovementHash;
-        private int _defaultToCrouchHash;
-        private int _crouchToDefaultHash;
         private int _trapPlaceHash;
 
         #endregion
@@ -70,10 +66,6 @@ namespace BeastHunter
             _battleTargetMovementTwoHandedSliceHash = Animator.StringToHash("BattleTargetMovementTwoHandedSlice");
             _stunnedHash = Animator.StringToHash("Stunned");
             _deadHash = Animator.StringToHash("Dead");
-            _crouchIdleHash = Animator.StringToHash("CrouchIdle");
-            _crouchMovementHash = Animator.StringToHash("CrouchMovement");
-            _defaultToCrouchHash = Animator.StringToHash("DefaultToCrouch");
-            _crouchToDefaultHash = Animator.StringToHash("CrouchToDefault");
             _trapPlaceHash = Animator.StringToHash("PlaceTrap");
         }
 
@@ -214,29 +206,9 @@ namespace BeastHunter
             CharacterAnimator.SetLookAtWeight(weight, bodyWeight, headWeight, eyesWeight, clampWeight);
         }
 
-        public void PlayCrouchIdleAnimation()
-        {
-            CharacterAnimator.Play(_crouchIdleHash);
-        }
-
-        public void PlayCrouchMovementAnimation()
-        {
-            CharacterAnimator.Play(_crouchMovementHash);
-        }
-
         public void SetCrouchLevel(float level)
         {
             CharacterAnimator.SetFloat("CrouchLevel", level);
-        }
-
-        public void PlayDefaultToCrouchAnimation()
-        {
-            CharacterAnimator.Play(_defaultToCrouchHash);
-        }
-
-        public void PlayCrouchToDefaultAnimation()
-        {
-            CharacterAnimator.Play(_crouchToDefaultHash);
         }
 
         public void PlayTrapPlaceAnimation()

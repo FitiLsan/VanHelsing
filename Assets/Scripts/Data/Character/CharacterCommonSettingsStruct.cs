@@ -118,10 +118,6 @@ namespace BeastHunter
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _groundCheckHeightReduction;
 
-        [Tooltip("Character speed measuring time frame between 0 and 1.")]
-        [Range(0.0f, 1.0f)]
-        [SerializeField] private float _speedMeasureFrame;
-
         [Tooltip("Character acceleration lag between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _accelerationLag;
@@ -229,7 +225,6 @@ namespace BeastHunter
         public float JumpVerticalForce => _jumpVerticalForce;
         public float GroundCheckHeight => _groundCheckHeight;
         public float GroundCHeckHeightReduction => _groundCheckHeightReduction;
-        public float SpeedMeasureFrame => _speedMeasureFrame;
         public float AccelerationLag => _accelerationLag;
         public float DecelerationLag => _decelerationLag;
         public float InBattleAccelerationLag => _inBattleAccelerationLag;

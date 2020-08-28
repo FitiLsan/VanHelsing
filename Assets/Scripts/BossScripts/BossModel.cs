@@ -163,7 +163,7 @@ namespace BeastHunter
             SphereCollider LeftHandTrigger = leftHandWeapon.GetComponent<SphereCollider>();
             LeftHandTrigger.radius = BossData._bossSettings.LeftHandHitBoxRadius;
             LeftHandTrigger.center = BossData._bossSettings.LeftHandHitBoxCenter;
-            LeftHandTrigger.isTrigger = true;
+            LeftHandTrigger.isTrigger = false;
             LeftHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             LeftWeaponBehavior = leftHandWeapon.GetComponent<WeaponHitBoxBehavior>();
             LeftWeaponBehavior.SetType(InteractableObjectType.HitBox);
@@ -174,7 +174,7 @@ namespace BeastHunter
             SphereCollider RightHandTrigger = rightHandWeapon.GetComponent<SphereCollider>();
             RightHandTrigger.radius = BossData._bossSettings.RightHandHitBoxRadius;
             RightHandTrigger.center = BossData._bossSettings.RightHandHitBoxCenter;
-            RightHandTrigger.isTrigger = true;
+            RightHandTrigger.isTrigger = false;
             RightHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             RightWeaponBehavior = rightHandWeapon.GetComponent<WeaponHitBoxBehavior>();
             RightWeaponBehavior.SetType(InteractableObjectType.HitBox);

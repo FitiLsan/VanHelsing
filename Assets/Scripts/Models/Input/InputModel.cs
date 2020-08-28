@@ -9,6 +9,8 @@ namespace BeastHunter
 
         public Dictionary<string, InputEventTypes> inputOnButtonDown;
 
+        public float MouseInputX;
+        public float MouseInputY;
         public float InputAxisX;
         public float InputAxisY;
         public float InputTotalAxisX;
@@ -16,6 +18,7 @@ namespace BeastHunter
 
         private bool _isInputMove;
         private bool _isInputRun;
+        private bool _isInputWeaponChoise;
 
         #endregion
 
@@ -65,6 +68,30 @@ namespace BeastHunter
                     else
                     {
                         Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.RunStop);
+                    }
+                }
+            }
+        }
+
+        public bool IsInputWeaponChoise
+        {
+            get
+            {
+                return _isInputWeaponChoise;
+            }
+            set
+            {
+                if (_isInputWeaponChoise != value)
+                {
+                    _isInputWeaponChoise = value;
+
+                    if (_isInputWeaponChoise)
+                    {
+                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.WeaponWheelOpen);
+                    }
+                    else
+                    {
+                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.WeaponWheelClose);
                     }
                 }
             }

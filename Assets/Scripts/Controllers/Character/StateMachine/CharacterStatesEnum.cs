@@ -24,10 +24,7 @@
         RollingTarget,
         Stunned,
         Talking,
-        SneakingIdle,
-        SneakingMovement,
-        DefaultToCrouch,
-        CrouchToDefault,
+        Sneaking,
         TrapPlace,
         SettingTimeSkip,
     }

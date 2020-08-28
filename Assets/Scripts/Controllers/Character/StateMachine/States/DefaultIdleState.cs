@@ -19,23 +19,20 @@
         public override void Initialize()
         {
             base.Initialize();
-            //_eventManager.StartListening(InputEventTypes.MoveStart, _stateMachine.BackState.SetDefaultMovementState);
-            //_eventManager.StartListening(InputEventTypes.AttackLeft, _stateMachine.BackState.SetAttackingStateLeft);
-            //_eventManager.StartListening(InputEventTypes.AttackRight, _stateMachine.BackState.SetAttackingStateRight);
-            //_eventManager.StartListening(InputEventTypes.NumberOne, _stateMachine.BackState.GetWeapon);
-            //_eventManager.StartListening(InputEventTypes.BattleExit, _stateMachine.BackState.RemoveWeapon);
+            _stateMachine.BackState.OnMove = () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultMovement]);
+            _stateMachine.BackState.OnSneak = () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Sneaking]);
 
-            _animationController.PlayDefaultIdleAnimation();
+            _stateMachine.BackState.StopCharacter();
+            _animationController.PlayDefaultMovementAnimation(); 
         }
 
         public override void OnExit()
         {
             base.OnExit();
-            //_eventManager.StopListening(InputEventTypes.MoveStart, _stateMachine.BackState.SetDefaultMovementState);
-            //_eventManager.StopListening(InputEventTypes.AttackLeft, _stateMachine.BackState.SetAttackingStateLeft);
-            //_eventManager.StopListening(InputEventTypes.AttackRight, _stateMachine.BackState.SetAttackingStateRight);
-            //_eventManager.StopListening(InputEventTypes.NumberOne, _stateMachine.BackState.GetWeapon);
-            //_eventManager.StopListening(InputEventTypes.BattleExit, _stateMachine.BackState.RemoveWeapon);
+            _stateMachine.BackState.OnMove = null;
+            _stateMachine.BackState.OnSneak = null;
         }
 
         #endregion

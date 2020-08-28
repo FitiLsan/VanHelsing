@@ -1,12 +1,31 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 
-public class WeaponCircle : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class WeaponCircle : MonoBehaviour
 {
+    #region Constants
 
-    #region PrivateFields
+    private const float PARENT_IMAGE_NON_DEDICATED_ALFA = 0.3f;
+    private const float CHILD_IMAGE_NON_DEDICATED_ALFA = 0.4f;
+    private const float PARENT_IMAGE_DEDICATED_ALFA = 0.6f;
+    private const float CHILD_IMAGE_DEDICATED_ALFA = 0.7f;
+
+    private const float PARENT_IMAGE_SCALE_NON_DEDICATED = 0.7f;
+    private const float CHILD_IMAGE_SCALE_NON_DEDICATED = 0.75f;
+    private const float IMAGE_DEDICATED_SCALE = 0.85f;
+
+    private const float DISTANCE_TO_ACTIVATE = 109f;
+
+    #endregion
+
+
+    #region Fields
+
+    public Transform CycleTransform;
+    public string WeaponText;
+
+    private Text _weaponTextField;
 
     private Image _parentImage;
     private Image _childImage;
@@ -14,24 +33,7 @@ public class WeaponCircle : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private Color _parentAlfa;
     private Color _childAlfa;
 
-    private const float PARENT_IMAGE_NON_DEDICATED_ALFA = 0.3f;
-    private const float CHILD_IMAGE_NON_DEDICATED_ALFA = 0.4f;
-    private const float PARENT_IMAGE_DEDICATED_ALFA = 0.6f;
-    private const float CHILD_IMAGE_DEDICATED_ALFA = 0.7f;
-
-
-    private const float PARENT_IMAGE_SCALE_NON_DEDICATED = 0.7f;
-    private const float CHILD_IMAGE_SCALE_NON_DEDICATED = 0.75f;
-    private const float IMAGE_DEDICATED_SCALE = 0.85f;
-
-
-    #endregion
-
-
-    #region Fields
-
-    public Text txt;
-    public string weaponTxt;
+    private float _distance;
 
     #endregion
 
@@ -40,15 +42,18 @@ public class WeaponCircle : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private void Awake()
     {
+        _weaponTextField = CycleTransform.GetComponentInChildren<Text>();
         _parentImage = GetComponent<Image>();
         _parentAlfa = _parentImage.color;
         _childImage = GetComponentInChildren<Image>();
         _childAlfa = _parentImage.color;
     }
 
-    public void OnPointerEnter(PointerEventData pointerEventData)
+    private void Update()
     {
-        if (_parentImage != null && _childImage != null)
+        _distance = Vector3.Distance(transform.localPosition, CycleTransform.localPosition);
+
+        if(_distance <= DISTANCE_TO_ACTIVATE)
         {
             _parentAlfa.a = PARENT_IMAGE_DEDICATED_ALFA;
             _childAlfa.a = CHILD_IMAGE_DEDICATED_ALFA;
@@ -56,13 +61,9 @@ public class WeaponCircle : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             _parentImage.color = _parentAlfa;
             _childImage.rectTransform.localScale = new Vector3(IMAGE_DEDICATED_SCALE, IMAGE_DEDICATED_SCALE, IMAGE_DEDICATED_SCALE);
             _childImage.color = _childAlfa;
-            txt.text = weaponTxt;
+            _weaponTextField.text = WeaponText;
         }
-    }
-
-    public void OnPointerExit(PointerEventData pointerEventData)
-    {
-        if (_parentImage != null && _childImage != null)
+        else
         {
             _parentAlfa.a = PARENT_IMAGE_NON_DEDICATED_ALFA;
             _childAlfa.a = CHILD_IMAGE_NON_DEDICATED_ALFA;

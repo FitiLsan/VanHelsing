@@ -24,8 +24,10 @@
         QuestJournal,
         PlaceTrap1,
         PlaceTrap2,
-        Crouch,
+        Sneak,
         TimeSkipMenu,
+        WeaponWheelOpen,
+        WeaponWheelClose,
     }
 }
 

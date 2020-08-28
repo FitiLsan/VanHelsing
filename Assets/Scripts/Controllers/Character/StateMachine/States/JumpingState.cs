@@ -73,6 +73,7 @@ namespace BeastHunter
 
             if (_currentGroundCheckTime < 0 && (_characterModel.IsGrounded || _currentExitTime <= 0))
             {
+                _stateMachine.ReturnState();
             }
         }
 
@@ -91,7 +92,6 @@ namespace BeastHunter
                 _jumpVector = _characterModel.CharacterTransform.position + (Vector3.up * 
                     JumpVerticalForce * _currentExitTime / EXIT_TIME + _characterModel.CharacterTransform.forward *
                         (JumpHorizontalForce + _speedBeforeJump * SPEED_FORCE_COMPENSATOR)) * Time.smoothDeltaTime;
-                _characterModel.VerticalSpeed = 1;
             }
             else
             {

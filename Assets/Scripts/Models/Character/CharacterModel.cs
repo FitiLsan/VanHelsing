@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using RootMotion.FinalIK;
+using RootMotion.Dynamics;
 
 
 namespace BeastHunter
@@ -19,7 +19,6 @@ namespace BeastHunter
         public Transform LeftFoot { get; }
         public Transform RightFoot { get; }
         public Transform CameraTargetTransform { get; }
-        public Transform TargetMarkTransform { get; }
         public Transform CharacterTransform { get; }
 
         public Vector3 LeftFootPosition { get; set; }
@@ -32,7 +31,6 @@ namespace BeastHunter
         public WeaponHitBoxBehavior LeftWeaponBehavior { get; set; }
         public WeaponHitBoxBehavior RightWeaponBehavior { get; set; } 
 
-        public Vector3 TargetMarkBasePosition { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
         public SphereCollider CharacterSphereCollider { get; }
         public Rigidbody CharacterRigitbody { get; }
@@ -40,6 +38,9 @@ namespace BeastHunter
         public CharacterData CharacterData { get; }
         public CharacterCommonSettingsStruct CharacterCommonSettings { get; }
         public BaseStatsClass CharacterStatsSettings { get; }
+        public PuppetMaster PuppetMaster { get; }
+        public BehaviourPuppet BehaviorPuppet { get; }
+        public BehaviourFall BehaviorFall { get; }
 
         public Animator CharacterAnimator { get; set; }
         public List<Collider> EnemiesInTrigger { get; set; }
@@ -51,7 +52,6 @@ namespace BeastHunter
         public WeaponItem RightHandWeapon { get; set; }
 
         public float CurrentSpeed { get; set; }
-        public float VerticalSpeed { get; set; }
         public float AnimationSpeed { get; set; }
         public float Health { get; set; }
 
@@ -73,72 +73,60 @@ namespace BeastHunter
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData._characterCommonSettings;
             CharacterStatsSettings = CharacterData._characterStatsSettings;
-            CharacterTransform = prefab.transform;
-            //CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
-            //CharacterTransform.name = CharacterCommonSettings.InstanceName;
-            //CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
-            //CharacterTransform.gameObject.layer = CharacterCommonSettings.InstanceLayer;
+            CharacterTransform = prefab.transform.GetChild(2).transform;
+            CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
+            CharacterTransform.name = CharacterCommonSettings.InstanceName;
+            CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
 
-            //Transform[] children = CharacterTransform.GetComponentsInChildren<Transform>();
+            if (CharacterTransform.GetComponent<Rigidbody>() != null)
+            {
+                CharacterRigitbody = CharacterTransform.GetComponent<Rigidbody>();
+            }
+            else
+            {
+                CharacterRigitbody = CharacterTransform.gameObject.AddComponent<Rigidbody>();
+                CharacterRigitbody.freezeRotation = true;
+                CharacterRigitbody.mass = CharacterCommonSettings.RigitbodyMass;
+                CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
+                CharacterRigitbody.angularDrag = CharacterCommonSettings.RigitbodyAngularDrag;
+            }
 
-            //foreach (var child in children)
-            //{
-            //    child.gameObject.layer = CharacterCommonSettings.InstanceLayer;
-            //}
+            CharacterRigitbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
-            //if (prefab.GetComponent<Rigidbody>() != null)
-            //{
-            //    CharacterRigitbody = prefab.GetComponent<Rigidbody>();
-            //}
-            //else
-            //{
-            //    CharacterRigitbody = prefab.AddComponent<Rigidbody>();
-            //    CharacterRigitbody.freezeRotation = true;
-            //    CharacterRigitbody.mass = CharacterCommonSettings.RigitbodyMass;
-            //    CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
-            //    CharacterRigitbody.angularDrag = CharacterCommonSettings.RigitbodyAngularDrag;
-            //}
+            if (CharacterTransform.GetComponent<CapsuleCollider>() != null)
+            {
+                CharacterCapsuleCollider = CharacterTransform.GetComponent<CapsuleCollider>();
+            }
+            else
+            {
+                CharacterCapsuleCollider = CharacterTransform.gameObject.AddComponent<CapsuleCollider>();
+                CharacterCapsuleCollider.center = CharacterCommonSettings.CapsuleColliderCenter;
+                CharacterCapsuleCollider.radius = CharacterCommonSettings.CapsuleColliderRadius;
+                CharacterCapsuleCollider.height = CharacterCommonSettings.CapsuleColliderHeight;
+            }
 
-            //CharacterRigitbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            CharacterCapsuleCollider.transform.position = groundPosition;
 
-            //if (prefab.GetComponent<CapsuleCollider>() != null)
-            //{
-            //    CharacterCapsuleCollider = prefab.GetComponent<CapsuleCollider>();
-            //}
-            //else
-            //{
-            //    CharacterCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
-            //    CharacterCapsuleCollider.center = CharacterCommonSettings.CapsuleColliderCenter;
-            //    CharacterCapsuleCollider.radius = CharacterCommonSettings.CapsuleColliderRadius;
-            //    CharacterCapsuleCollider.height = CharacterCommonSettings.CapsuleColliderHeight;
-            //}
-
-            //CharacterCapsuleCollider.transform.position = groundPosition;
-
-            //if (prefab.GetComponent<SphereCollider>() != null)
-            //{
-            //    CharacterSphereCollider = prefab.GetComponent<SphereCollider>();
-            //    CharacterSphereCollider.isTrigger = true;
-            //}
-            //else
-            //{
-            //    CharacterSphereCollider = prefab.AddComponent<SphereCollider>();
-            //    CharacterSphereCollider.center = CharacterCommonSettings.SphereColliderCenter;
-            //    CharacterSphereCollider.radius = CharacterCommonSettings.SphereColliderRadius;
-            //    CharacterSphereCollider.isTrigger = true;
-            //}
+            if (CharacterTransform.GetComponent<SphereCollider>() != null)
+            {
+                CharacterSphereCollider = CharacterTransform.GetComponent<SphereCollider>();
+                CharacterSphereCollider.isTrigger = true;
+            }
+            else
+            {
+                CharacterSphereCollider = CharacterTransform.gameObject.AddComponent<SphereCollider>();
+                CharacterSphereCollider.center = CharacterCommonSettings.SphereColliderCenter;
+                CharacterSphereCollider.radius = CharacterCommonSettings.SphereColliderRadius;
+                CharacterSphereCollider.isTrigger = true;
+            }
 
             CameraTarget = Services.SharedInstance.CameraService.CreateCameraTarget(CharacterTransform);
             CameraTargetTransform = CameraTarget.transform;
 
-            //TargetMarkBasePosition = new Vector3(CharacterTransform.localPosition.x,
-            //    CharacterTransform.localPosition.y + CharacterCapsuleCollider.height +
-            //        CharacterCommonSettings.TargetMarkHeight, CharacterTransform.localPosition.z);
-
-            //TargetMark = CharacterCommonSettings.CreateTargetMark(CharacterTransform, TargetMarkBasePosition);
-            //TargetMarkTransform = TargetMark.transform;
-
-            CharacterAnimator = prefab.GetComponent<Animator>();
+            CharacterAnimator = prefab.transform.GetChild(2).GetComponent<Animator>();
+            PuppetMaster = prefab.transform.GetChild(1).gameObject.GetComponent<PuppetMaster>();
+            BehaviorPuppet = prefab.transform.GetChild(0).GetChild(0).gameObject.GetComponent<BehaviourPuppet>();
+            BehaviorFall = prefab.transform.GetChild(0).GetChild(1).gameObject.GetComponent<BehaviourFall>();
 
             CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterAnimator;
             CharacterAnimator.applyRootMotion = false;
@@ -167,29 +155,10 @@ namespace BeastHunter
             CurrentSpeed = 0;
             AnimationSpeed = CharacterData._characterCommonSettings.AnimatorBaseSpeed;
 
-            //LeftHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
-            //RightHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightHand);
-            //LeftFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftFoot);
-            //RightFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightFoot);
-
-            //CharacterTransform.gameObject.AddComponent<FullBodyBipedIK>();
-            //CharacterTransform.gameObject.AddComponent<GrounderFBBIK>();
-
-            //SphereCollider LeftFootTrigger = LeftFoot.gameObject.AddComponent<SphereCollider>();
-            //LeftFootTrigger.radius = CharacterCommonSettings.LeftFootHitBoxRadius;
-            //LeftFootTrigger.isTrigger = true;
-            //LeftFoot.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            //LeftFootBehavior = LeftFoot.gameObject.AddComponent<WeaponHitBoxBehavior>();
-            //LeftFootBehavior.SetType(InteractableObjectType.HitBox);
-            //LeftFootBehavior.IsInteractable = false;
-
-            //SphereCollider RightFootTrigger = RightFoot.gameObject.AddComponent<SphereCollider>();
-            //RightFootTrigger.radius = CharacterCommonSettings.RightFootHitBoxRadius;
-            //RightFootTrigger.isTrigger = true;
-            //RightFoot.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            //RightFootBehavior = RightFoot.gameObject.AddComponent<WeaponHitBoxBehavior>();
-            //RightFootBehavior.SetType(InteractableObjectType.HitBox);
-            //RightFootBehavior.IsInteractable = false;
+            LeftHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
+            RightHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightHand);
+            LeftFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftFoot);
+            RightFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightFoot);
 
             LeftHandWeapon = null;
             RightHandWeapon = null;

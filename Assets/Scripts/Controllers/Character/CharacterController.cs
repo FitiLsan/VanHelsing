@@ -52,7 +52,10 @@ namespace BeastHunter
 
         public void Updating()
         {
-            if (!_characterModel.IsDead) _stateMachine.Execute();
+            if (!_characterModel.IsDead)
+            {
+                _stateMachine.Execute();
+            } 
         }
 
         #endregion
