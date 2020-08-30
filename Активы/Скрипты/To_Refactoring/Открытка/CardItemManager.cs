@@ -1,4 +1,4 @@
-﻿
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +37,8 @@ public class CardItemManager : MonoBehaviour
     public GameObject SlotContainer;
     [SerializeField]
     public GameObject CardContainer;
-
+    [SerializeField]
+    public GameObject CardContainers;
 
 
 
@@ -53,11 +54,11 @@ public class CardItemManager : MonoBehaviour
             item.Add(new CardItem());
         }
 
-
+       
         #region
 
-      
-       
+
+
     }
     //GenerateCardItemll();
 
@@ -100,61 +101,69 @@ public class CardItemManager : MonoBehaviour
     #endregion
     void Update()
     {
-
-        if (Input.GetKeyDown(takeButton))
-        {
-            AddCard();
-        }
-
-
+       
+            if (Input.GetKeyDown(takeButton))
+            {
+                AddCard();
+            }
+    
     }
-
-    void AddCard()
+      void AddCard()
     {
-           
-        
-            for (int i = 0; i < item.Count; i++)
+
+        for (int i = 0; i < item.Count; i++)
         {
+
 
             if (item[i].Id != 0)
             {
 
-
-                item[i] = GetComponent<CardItem>();  // добовления предмета из рекаста или  каким то оброзом из списка 
-            
-                //GenerateCardItem();
-                DisplayCardItems();//отресовка в слоте
-                                   break;
-                                   //Destroy(GetComponent<CardItem>().gameObject);
-
-                //}
+                //Transform ItemD = CardContainer;
 
 
-            }
+                // добовления предмета из рекаста или  каким то оброзом из списка 
+                //item[i] = GetComponent<CardItem>();
+
+                Transform ItemDg = CardContainers.transform;
+                Transform ItemD = CardContainer.transform;
+                item[i] = ItemD.GetComponent<CardItem>();
+                item[i] = ItemDg.GetComponent<CardItem>();
+
+                //GenerateCardItem(); 
+                DisplayCardItems();
+            //отресовка в слоте
+            break;
+                //Destroy(GetComponent<CardItem>().gameObject);
+            };
+
         }
-        }
 
-        void DisplayCardItems()
+
+
+    }
+
+    void DisplayCardItems()
+    {
+
+        for (int i = 0; i < item.Count; i++)
         {
 
-            for (int i = 0; i < item.Count; i++)
+            Transform Slot = SlotContainer.transform.GetChild(i);
+            Transform icon = Slot.GetChild(0);
+            Image img = icon.GetComponent<Image>();
+            if (item[i].Id == 0)
             {
 
-                Transform Slot = SlotContainer.transform.GetChild(i);
-                Transform icon = Slot.GetChild(0);
-                Image img = icon.GetComponent<Image>();
-                //if (item[i].Id == 0)
-                //{
-
-                    img.enabled = true;
-                    img.sprite = Resources.Load<Sprite>(item[i].PathIcon);
-                }
-                Debug.Log("q1");
+                img.enabled = true;
+                img.sprite = Resources.Load<Sprite>(item[i].PathIcon);
+        }
+        Debug.Log("q1");
 
 
-            }
+        }
+    }
 
-}
+  }   
 
 
 
