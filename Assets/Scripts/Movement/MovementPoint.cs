@@ -26,6 +26,7 @@ namespace BeastHunter
         [SerializeField] private Vector3 _handleA;
         [SerializeField] private Vector3 _handleB;
         [SerializeField] private HandleType _handleStyle;
+        [SerializeField, Min(0)] private float _waitingTime;
 
         #endregion
 
@@ -108,6 +109,12 @@ namespace BeastHunter
         {
             get => _handleStyle;
             set => _handleStyle = value;
+        }
+
+        public float WaitingTime
+        {
+            get => _waitingTime;
+            set => _waitingTime = value < 0 ? 0 : value;
         }
 
         #endregion

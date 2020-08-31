@@ -20,6 +20,7 @@ namespace BeastHunter
         #region Fields
 
         private MovementPoint _point;
+        private SerializedProperty _waitingTimeProp;
         private SerializedProperty _handleTypeProp;
         private SerializedProperty _handleAProp;
         private SerializedProperty _handleBProp;
@@ -32,7 +33,7 @@ namespace BeastHunter
         private void OnEnable()
         {
             _point = (MovementPoint) target;
-
+            _waitingTimeProp = serializedObject.FindProperty("_waitingTime");
             _handleTypeProp = serializedObject.FindProperty("_handleStyle");
             _handleAProp = serializedObject.FindProperty("_handleA");
             _handleBProp = serializedObject.FindProperty("_handleB");
@@ -41,6 +42,10 @@ namespace BeastHunter
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+            
+            var newWaitingTime = EditorGUILayout.FloatField("Waiting Time", _waitingTimeProp.floatValue);
+            
+            _waitingTimeProp.floatValue = newWaitingTime < 0 ? 0 : newWaitingTime;
 
             var newHandleType = (MovementPoint.HandleType) EditorGUILayout.EnumPopup("Handle Type",
                 (MovementPoint.HandleType) _handleTypeProp.intValue);

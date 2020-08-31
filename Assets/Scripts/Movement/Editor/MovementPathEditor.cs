@@ -85,6 +85,7 @@ namespace BeastHunter
         {
             var serObj = new SerializedObject(point);
             var handleStyleProp = serObj.FindProperty("_handleStyle");
+            var waitingTimeProp = serObj.FindProperty("_waitingTime");
             var handleAProp = serObj.FindProperty("_handleA");
             var handleBProp = serObj.FindProperty("_handleB");
 
@@ -120,6 +121,10 @@ namespace BeastHunter
             EditorGUI.indentLevel++;
             EditorGUI.indentLevel++;
 
+            var newWaitingTime = EditorGUILayout.FloatField("WaitingTime", point.WaitingTime);
+            
+            waitingTimeProp.floatValue = newWaitingTime < 0 ? 0 : newWaitingTime;
+            
             var newType = (int) (object) EditorGUILayout.EnumPopup("Handle Type",
                 (MovementPoint.HandleType) handleStyleProp.enumValueIndex);
 
@@ -159,7 +164,7 @@ namespace BeastHunter
                 }
             }
 
-            var newPointPos = EditorGUILayout.Vector3Field("Position : ", point.transform.localPosition);
+            var newPointPos = EditorGUILayout.Vector3Field("Position", point.transform.localPosition);
             if (newPointPos != point.transform.localPosition)
             {
                 Undo.RegisterCompleteObjectUndo(point.transform, "Move Bezier Point");
