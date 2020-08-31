@@ -34,7 +34,9 @@ namespace BeastHunter
         {
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(_resolutionProp);
+            var newResolution = EditorGUILayout.IntField("Resolution", _resolutionProp.intValue);
+            _resolutionProp.intValue = newResolution < 1 ? 1 : newResolution;
+            
             EditorGUILayout.PropertyField(_closeProp);
             EditorGUILayout.PropertyField(_colorProp);
 
@@ -122,7 +124,6 @@ namespace BeastHunter
             EditorGUI.indentLevel++;
 
             var newWaitingTime = EditorGUILayout.FloatField("WaitingTime", point.WaitingTime);
-            
             waitingTimeProp.floatValue = newWaitingTime < 0 ? 0 : newWaitingTime;
             
             var newType = (int) (object) EditorGUILayout.EnumPopup("Handle Type",

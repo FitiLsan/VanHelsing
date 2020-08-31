@@ -12,7 +12,7 @@ namespace BeastHunter
         #region Fields
 
         [SerializeField] private MovementPoint[] _points = new MovementPoint[0];
-        [SerializeField] private int _resolution = 10;
+        [SerializeField, Min(1)] private int _resolution = 10;
         [SerializeField] private Color _drawColor = Color.white;
         [SerializeField] private bool _close;
         private float _length;

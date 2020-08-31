@@ -44,7 +44,6 @@ namespace BeastHunter
             serializedObject.Update();
             
             var newWaitingTime = EditorGUILayout.FloatField("Waiting Time", _waitingTimeProp.floatValue);
-            
             _waitingTimeProp.floatValue = newWaitingTime < 0 ? 0 : newWaitingTime;
 
             var newHandleType = (MovementPoint.HandleType) EditorGUILayout.EnumPopup("Handle Type",
