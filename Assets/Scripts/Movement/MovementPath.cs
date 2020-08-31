@@ -9,6 +9,17 @@ namespace BeastHunter
     [Serializable]
     public sealed class MovementPath : MonoBehaviour
     {
+        #region PrivateData
+
+        public struct Point
+        {
+            public Vector3 Position;
+            public float WaitingTime;
+        }
+
+        #endregion
+        
+        
         #region Fields
 
         [SerializeField] private MovementPoint[] _points = new MovementPoint[0];
@@ -72,10 +83,10 @@ namespace BeastHunter
             if (_points.Length > 1)
             {
                 for (var i = 0; i < _points.Length - 1; i++)
-                    DrawCurve(_points[i], _points[i + 1], _resolution);
+                    DrawPath(_points[i], _points[i + 1], _resolution);
 
                 if (Close)
-                    DrawCurve(_points[_points.Length - 1], _points[0], _resolution);
+                    DrawPath(_points[_points.Length - 1], _points[0], _resolution);
             }
         }
 
@@ -85,6 +96,7 @@ namespace BeastHunter
         }
 
         #endregion
+
 
         #region Methods
 
@@ -136,10 +148,12 @@ namespace BeastHunter
             for (var i = 0; i < _points.Length - 1; i++)
             {
                 curvePercent = ApproximateLength(_points[i], _points[i + 1]) / Length;
+                
                 if (totalPercent + curvePercent > t)
                 {
                     pointA = _points[i];
                     pointB = _points[i + 1];
+                    
                     break;
                 }
 
@@ -165,8 +179,66 @@ namespace BeastHunter
                 if (_points[i] == point)
                 {
                     result = i;
+                    
                     break;
                 }
+
+            return result;
+        }
+        
+        public List<Point> GetPoints()
+        {
+            var result = new List<Point>();
+            
+            if (_points.Length > 0)
+            {
+                for (var i = 0; i < _points.Length - 1; i++)
+                {
+                    result.Add(new Point()
+                    {
+                        Position = _points[i].Position,
+                        WaitingTime = _points[i].WaitingTime
+                    });
+                    
+                    for (var j = 1; j < _resolution; j++)
+                    {
+                        var currentPosition = GetPoint(_points[i], _points[i + 1], j / (float) _resolution);
+                        
+                        result.Add(new Point()
+                        {
+                            Position = currentPosition,
+                            WaitingTime = 0
+                        });
+                    }
+                }
+                
+                var lastIndex = _points.Length - 1;
+                    
+                result.Add(new Point()
+                {
+                    Position = _points[lastIndex].Position,
+                    WaitingTime = _points[lastIndex].WaitingTime
+                });
+
+                if (Close)
+                {
+                    for (var j = 1; j < _resolution; j++)
+                    {
+                        var currentPosition = GetPoint(_points[lastIndex], _points[0], j / (float) _resolution);
+                        
+                        result.Add(new Point()
+                        {
+                            Position = currentPosition,
+                            WaitingTime = 0
+                        });
+                    }
+                }
+            }
+            
+            for (var i = 0; i < result.Count - 1; i++)
+            {
+                Debug.DrawLine(result[i].Position, result[i + 1].Position);
+            }
 
             return result;
         }
@@ -176,15 +248,14 @@ namespace BeastHunter
             Dirty = true;
         }
 
-        public static void DrawCurve(MovementPoint pointA, MovementPoint pointB, int resolution)
+        public static void DrawPath(MovementPoint pointA, MovementPoint pointB, int resolution)
         {
             var limit = resolution + 1;
-            float res = resolution;
             var lastPoint = pointA.Position;
 
             for (var i = 1; i < limit; i++)
             {
-                var currentPoint = GetPoint(pointA, pointB, i / res);
+                var currentPoint = GetPoint(pointA, pointB, i / (float) resolution);
 
                 Gizmos.DrawLine(lastPoint, currentPoint);
                 lastPoint = currentPoint;
@@ -254,13 +325,12 @@ namespace BeastHunter
 
         public static float ApproximateLength(MovementPoint pointA, MovementPoint pointB, int resolution = 10)
         {
-            float res = resolution;
-            float total = 0;
+            var total = 0f;
             var lastPosition = pointA.Position;
 
             for (var i = 0; i < resolution + 1; i++)
             {
-                var currentPosition = GetPoint(pointA, pointB, i / res);
+                var currentPosition = GetPoint(pointA, pointB, i / (float) resolution);
 
                 total += (currentPosition - lastPosition).magnitude;
                 lastPosition = currentPosition;
