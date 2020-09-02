@@ -47,15 +47,20 @@ namespace BeastHunter
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Discription = Instantiate(Resources.Load("Inventory/Discription"), canvas.transform) as GameObject;
-            Discription.transform.localPosition = new Vector3(-620, -280);
-            Text DiscriptionText = Discription.GetComponent<Text>();
-            DiscriptionText.text = ItemData.ItemStruct.Discription;
+            ShowDicription();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             Object.Destroy(Discription);
+        }
+
+        public void ShowDicription()
+        {
+            Discription = Instantiate(Resources.Load("Inventory/Discription"), canvas.transform) as GameObject;
+            Discription.transform.localPosition = new Vector3(-620, -280);
+            Text DiscriptionText = Discription.GetComponent<Text>();
+            DiscriptionText.text = ItemData.ItemStruct.Discription;
         }
 
         public void OnPointerDown(PointerEventData data)
@@ -69,7 +74,18 @@ namespace BeastHunter
                 clicktime = 0;
                 if(ItemData.ItemStruct.ItemType == ItemType.Cloth)
                 {
-                    Services.SharedInstance.InventoryService.SetCloth(ItemData as ClothItem);
+                    ItemData = Services.SharedInstance.InventoryService.SetCloth(ItemData as ClothItem);
+                    if(ItemData != null)
+                    {
+                        LoadIcon();
+                        Object.Destroy(Discription);
+                        ShowDicription();
+                        ResetConditions();
+                    }
+                    else
+                    {
+                        Destroy(gameObject);
+                    }
                 }
 
             }

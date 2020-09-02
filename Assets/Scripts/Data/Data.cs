@@ -19,6 +19,9 @@ namespace BeastHunter {
         [SerializeField] private string _rabbitDataPath;
         [SerializeField] private string _questIndicatorDataPath;
         [SerializeField] private string _questJournalDataPath;
+        [SerializeField] private string _shouldersPath;
+        [SerializeField] private string _shoesPath;
+        [SerializeField] private string _ironGreavesPath;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -30,6 +33,9 @@ namespace BeastHunter {
         private static WeaponItem _feast;
         private static ClothItem _jacket;
         private static ClothItem _helm;
+        private static ClothItem _shoulders;
+        private static ClothItem _shoes;
+        private static ClothItem _ironGreaves;
         private static CameraData _cameraData;
         private static RabbitData _rabbitData;
         private static QuestJournalData _questJournalData;
@@ -123,6 +129,18 @@ namespace BeastHunter {
             }
         }
 
+        public static ClothItem Shoulders
+        {
+            get
+            {
+                if (_shoulders == null)
+                {
+                    _shoulders = Resources.Load<ClothItem>("Data/" + Instance._shouldersPath);
+                }
+                return _shoulders;
+            }
+        }
+
         public static ClothItem Helm
         {
             get
@@ -130,9 +148,32 @@ namespace BeastHunter {
                 if (_helm == null)
                 {
                     _helm = Resources.Load<ClothItem>("Data/" + Instance._helmPath);
-                    Debug.Log(Resources.Load<ClothItem>("Data/" + Instance._helmPath));
                 }
                 return _helm;
+            }
+        }
+
+        public static ClothItem Shoes
+        {
+            get
+            {
+                if (_shoes == null)
+                {
+                    _shoes = Resources.Load<ClothItem>("Data/" + Instance._shoesPath);
+                }
+                return _shoes;
+            }
+        }
+
+        public static ClothItem IronGreaves
+        {
+            get
+            {
+                if (_ironGreaves == null)
+                {
+                    _ironGreaves = Resources.Load<ClothItem>("Data/" + Instance._ironGreavesPath);
+                }
+                return _ironGreaves;
             }
         }
 

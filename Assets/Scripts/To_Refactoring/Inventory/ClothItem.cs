@@ -9,6 +9,8 @@ namespace BeastHunter
         #region Fields
 
         public BodyParts BodyParts = BodyParts.None;
+        public Mesh[] MeshView;
+        public Mesh[] MeshAccessories;
         public PocketInfo[] PocketInfos;
 
         #endregion
