@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
 
@@ -11,6 +12,7 @@ namespace BeastHunter
 
         public BossSettings _bossSettings;
         public EnemyStats _bossStats;
+        public MovementPath _movementPath;
 
         #endregion
 

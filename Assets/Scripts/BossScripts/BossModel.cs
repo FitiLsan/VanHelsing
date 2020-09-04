@@ -46,6 +46,8 @@ namespace BeastHunter
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
 
+        public MovementPath.Point[] MovementPoints;
+
         #endregion
 
 
@@ -206,6 +208,8 @@ namespace BeastHunter
 
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
             CurrentHealth = BossStats.MainStats.HealthPoints;
+            
+            MovementPoints = BossData._movementPath.GetPoints().ToArray();
         }
 
         #endregion
