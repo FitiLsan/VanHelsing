@@ -10,7 +10,7 @@ namespace BeastHunter
 
         private MovementPath _path;
         private SerializedProperty _resolutionProp;
-        private SerializedProperty _closeProp;
+        private SerializedProperty _loopProp;
         private SerializedProperty _pointsProp;
         private SerializedProperty _colorProp;
         private static bool _showPoints = true;
@@ -24,7 +24,7 @@ namespace BeastHunter
         {
             _path = (MovementPath) target;
             _resolutionProp = serializedObject.FindProperty("_resolution");
-            _closeProp = serializedObject.FindProperty("_close");
+            _loopProp = serializedObject.FindProperty("_loop");
             _pointsProp = serializedObject.FindProperty("_points");
             _colorProp = serializedObject.FindProperty("_drawColor");
         }
@@ -36,7 +36,7 @@ namespace BeastHunter
             var newResolution = EditorGUILayout.IntField("Resolution", _resolutionProp.intValue);
             _resolutionProp.intValue = newResolution < 1 ? 1 : newResolution;
 
-            EditorGUILayout.PropertyField(_closeProp);
+            EditorGUILayout.PropertyField(_loopProp);
             EditorGUILayout.PropertyField(_colorProp);
 
             _showPoints = EditorGUILayout.Foldout(_showPoints, "Points");
