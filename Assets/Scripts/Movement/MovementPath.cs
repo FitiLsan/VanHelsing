@@ -11,7 +11,7 @@ namespace BeastHunter
     {
         #region PrivateData
 
-        public struct Point
+        public class Point
         {
             public Vector3 Position;
             public float WaitingTime;

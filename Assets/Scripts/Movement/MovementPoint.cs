@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
+    [ExecuteInEditMode]
     [Serializable]
     public sealed class MovementPoint : MonoBehaviour
     {
@@ -27,7 +28,8 @@ namespace BeastHunter
         [SerializeField] private Vector3 _handleB;
         [SerializeField] private HandleType _handleStyle;
         [SerializeField, Min(0)] private float _waitingTime;
-
+        [SerializeField] private bool _isGrounded;
+        
         #endregion
 
         #region Properties
@@ -55,6 +57,18 @@ namespace BeastHunter
         {
             get => transform.localPosition;
             set => transform.localPosition = value;
+        }
+
+        public Quaternion Rotation
+        {
+            get => transform.rotation;
+            set => transform.rotation = value;
+        }
+        
+        public Quaternion LocalRotation
+        {
+            get => transform.localRotation;
+            set => transform.localRotation = value;
         }
 
         public Vector3 HandleA
@@ -117,6 +131,18 @@ namespace BeastHunter
             set => _waitingTime = value < 0 ? 0 : value;
         }
 
+        public bool IsGrounded
+        {
+            get => _isGrounded;
+            set
+            {
+                if (value)
+                    transform.position = PhysicsService.GetGroundedPosition(transform.position);
+
+                _isGrounded = value;
+            }
+        }
+
         #endregion
 
 
@@ -124,10 +150,12 @@ namespace BeastHunter
 
         private void Update()
         {
-            if (!_path.Dirty && transform.position != _lastPosition)
+            if ((!_path.Dirty || _isGrounded) && transform.position != _lastPosition)
             {
                 _path.SetDirty();
-                _lastPosition = transform.position;
+                _lastPosition = _isGrounded 
+                    ? transform.position = PhysicsService.GetGroundedPosition(transform.position)
+                    : transform.position;
             }
         }
 

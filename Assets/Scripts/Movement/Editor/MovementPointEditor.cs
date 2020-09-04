@@ -20,10 +20,6 @@ namespace BeastHunter
         #region Fields
 
         private MovementPoint _point;
-        private SerializedProperty _waitingTimeProp;
-        private SerializedProperty _handleTypeProp;
-        private SerializedProperty _handleAProp;
-        private SerializedProperty _handleBProp;
 
         #endregion
 
@@ -33,83 +29,73 @@ namespace BeastHunter
         private void OnEnable()
         {
             _point = (MovementPoint) target;
-            _waitingTimeProp = serializedObject.FindProperty("_waitingTime");
-            _handleTypeProp = serializedObject.FindProperty("_handleStyle");
-            _handleAProp = serializedObject.FindProperty("_handleA");
-            _handleBProp = serializedObject.FindProperty("_handleB");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
             
-            var newWaitingTime = EditorGUILayout.FloatField("Waiting Time", _waitingTimeProp.floatValue);
-            _waitingTimeProp.floatValue = newWaitingTime < 0 ? 0 : newWaitingTime;
+            _point.IsGrounded = EditorGUILayout.Toggle("Is Grounded", _point.IsGrounded);
+            _point.WaitingTime = EditorGUILayout.FloatField("Waiting Time", _point.WaitingTime);
 
-            var newHandleType = (MovementPoint.HandleType) EditorGUILayout.EnumPopup("Handle Type",
-                (MovementPoint.HandleType) _handleTypeProp.intValue);
+            var newHandleType = (MovementPoint.HandleType) EditorGUILayout.EnumPopup("Handle Type", _point.HandleStyle);
 
-            if (newHandleType != (MovementPoint.HandleType) _handleTypeProp.intValue)
+            if (newHandleType != _point.HandleStyle)
             {
-                _handleTypeProp.intValue = (int) newHandleType;
-
-                if ((int) newHandleType == 0)
+                switch (newHandleType)
                 {
-                    if (_handleAProp.vector3Value != Vector3.zero)
-                    {
-                        _handleBProp.vector3Value = -_handleAProp.vector3Value;
-                    }
-                    else if (_handleBProp.vector3Value != Vector3.zero)
-                    {
-                        _handleAProp.vector3Value = -_handleBProp.vector3Value;
-                    }
-                    else
-                    {
-                        _handleAProp.vector3Value = new Vector3(0.1f, 0, 0);
-                        _handleBProp.vector3Value = new Vector3(-0.1f, 0, 0);
-                    }
-                }
-
-                else if ((int) newHandleType == 1)
-                {
-                    if (_handleAProp.vector3Value == Vector3.zero && _handleBProp.vector3Value == Vector3.zero)
-                    {
-                        _handleAProp.vector3Value = new Vector3(0.1f, 0, 0);
-                        _handleBProp.vector3Value = new Vector3(-0.1f, 0, 0);
-                    }
-                }
-
-                else if ((int) newHandleType == 2)
-                {
-                    _handleAProp.vector3Value = Vector3.zero;
-                    _handleBProp.vector3Value = Vector3.zero;
+                    case MovementPoint.HandleType.Connected:
+                        if (_point.HandleA != Vector3.zero)
+                        {
+                            _point.HandleB = -_point.HandleA;
+                        }
+                        else if (_point.HandleB != Vector3.zero)
+                        {
+                            _point.HandleA = -_point.HandleB;
+                        }
+                        else
+                        {
+                            _point.HandleA = new Vector3(0.1f, 0, 0);
+                            _point.HandleB = new Vector3(-0.1f, 0, 0);
+                        }
+                        break;
+                    case MovementPoint.HandleType.Broken:
+                        if (_point.HandleA == Vector3.zero && _point.HandleB == Vector3.zero)
+                        {
+                            _point.HandleA = new Vector3(0.1f, 0, 0);
+                            _point.HandleB = new Vector3(-0.1f, 0, 0);
+                        }
+                        break;
+                    case MovementPoint.HandleType.None:
+                        _point.HandleA = Vector3.zero;
+                        _point.HandleB = Vector3.zero;
+                        break;
                 }
             }
 
-            if (_handleTypeProp.intValue != 2)
+            if (_point.HandleStyle != MovementPoint.HandleType.None)
             {
-                var newHandleA = EditorGUILayout.Vector3Field("Handle A", _handleAProp.vector3Value);
-                var newHandleB = EditorGUILayout.Vector3Field("Handle B", _handleBProp.vector3Value);
+                var newHandleA = EditorGUILayout.Vector3Field("Handle A", _point.HandleA);
+                var newHandleB = EditorGUILayout.Vector3Field("Handle B", _point.HandleB);
 
-                if (_handleTypeProp.intValue == 0)
+                if (_point.HandleStyle != MovementPoint.HandleType.Connected)
                 {
-                    if (newHandleA != _handleAProp.vector3Value)
+                    if (newHandleA != _point.HandleA)
                     {
-                        _handleAProp.vector3Value = newHandleA;
-                        _handleBProp.vector3Value = -newHandleA;
+                        _point.HandleA = newHandleA;
+                        _point.HandleB = -newHandleA;
                     }
 
-                    else if (newHandleB != _handleBProp.vector3Value)
+                    else if (newHandleB != _point.HandleB)
                     {
-                        _handleAProp.vector3Value = -newHandleB;
-                        _handleBProp.vector3Value = newHandleB;
+                        _point.HandleA = -newHandleB;
+                        _point.HandleB = newHandleB;
                     }
                 }
-
                 else
                 {
-                    _handleAProp.vector3Value = newHandleA;
-                    _handleBProp.vector3Value = newHandleB;
+                    _point.HandleA = newHandleA;
+                    _point.HandleB = newHandleB;
                 }
             }
 
@@ -123,9 +109,9 @@ namespace BeastHunter
         private void OnSceneGUI()
         {
             Handles.color = Color.green;
-            var newPosition = Handles.FreeMoveHandle(_point.Position, _point.transform.rotation,
+            var newPosition = Handles.FreeMoveHandle(_point.Position, _point.Rotation,
                 HandleUtility.GetHandleSize(_point.Position) * 0.2f, Vector3.zero, Handles.CubeHandleCap);
-
+            
             if (_point.Position != newPosition) _point.Position = newPosition;
 
             _handlers[(int) _point.HandleStyle](_point);
@@ -142,28 +128,28 @@ namespace BeastHunter
 
         #region Methods
 
-        private static void HandleConnected(MovementPoint p)
+        private static void HandleConnected(MovementPoint point)
         {
             Handles.color = Color.cyan;
 
-            var newGlobalA = Handles.FreeMoveHandle(p.GlobalHandleA, p.transform.rotation,
-                HandleUtility.GetHandleSize(p.GlobalHandleA) * 0.15f, Vector3.zero, Handles.SphereHandleCap);
+            var newGlobalA = Handles.FreeMoveHandle(point.GlobalHandleA, point.Rotation,
+                HandleUtility.GetHandleSize(point.GlobalHandleA) * 0.15f, Vector3.zero, Handles.SphereHandleCap);
 
-            if (newGlobalA != p.GlobalHandleA)
+            if (newGlobalA != point.GlobalHandleA)
             {
-                Undo.RegisterCompleteObjectUndo(p, "Move Handle");
-                p.GlobalHandleA = newGlobalA;
-                p.GlobalHandleB = -(newGlobalA - p.Position) + p.Position;
+                Undo.RegisterCompleteObjectUndo(point, "Move Handle");
+                point.GlobalHandleA = newGlobalA;
+                point.GlobalHandleB = -(newGlobalA - point.Position) + point.Position;
             }
 
-            var newGlobalB = Handles.FreeMoveHandle(p.GlobalHandleB, p.transform.rotation,
-                HandleUtility.GetHandleSize(p.GlobalHandleB) * 0.15f, Vector3.zero, Handles.SphereHandleCap);
+            var newGlobalB = Handles.FreeMoveHandle(point.GlobalHandleB, point.Rotation,
+                HandleUtility.GetHandleSize(point.GlobalHandleB) * 0.15f, Vector3.zero, Handles.SphereHandleCap);
 
-            if (newGlobalB != p.GlobalHandleB)
+            if (newGlobalB != point.GlobalHandleB)
             {
-                Undo.RegisterCompleteObjectUndo(p, "Move Handle");
-                p.GlobalHandleA = -(newGlobalB - p.Position) + p.Position;
-                p.GlobalHandleB = newGlobalB;
+                Undo.RegisterCompleteObjectUndo(point, "Move Handle");
+                point.GlobalHandleA = -(newGlobalB - point.Position) + point.Position;
+                point.GlobalHandleB = newGlobalB;
             }
         }
 

@@ -59,11 +59,11 @@ namespace BeastHunter
             return isHit;
         }
 
-        public Vector3 GetGroundedPosition(Vector3 position)
+        public static Vector3 GetGroundedPosition(Vector3 position)
         {
             Vector3 groundedPosition = position;
                 
-            bool isHit = Physics.Raycast(new Vector3(position.x, Mathf.Infinity, position.z), 
+            bool isHit = Physics.Raycast(new Vector3(position.x, 1000f, position.z), 
                 Vector3.down, out RaycastHit hit);
 
             if (isHit)
