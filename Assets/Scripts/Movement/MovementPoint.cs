@@ -27,9 +27,9 @@ namespace BeastHunter
         [SerializeField] private Vector3 _handleA;
         [SerializeField] private Vector3 _handleB;
         [SerializeField] private HandleType _handleStyle;
-        [SerializeField, Min(0)] private float _waitingTime;
-        [SerializeField] private bool _isGrounded;
-        
+        [SerializeField] [Min(0)] private float _waitingTime;
+        [SerializeField] private bool _isGrounded = true;
+
         #endregion
 
         #region Properties
@@ -64,7 +64,7 @@ namespace BeastHunter
             get => transform.rotation;
             set => transform.rotation = value;
         }
-        
+
         public Quaternion LocalRotation
         {
             get => transform.localRotation;
@@ -137,7 +137,7 @@ namespace BeastHunter
             set
             {
                 if (value)
-                    transform.position = PhysicsService.GetGroundedPosition(transform.position);
+                    transform.position = PhysicsService.GetGroundedPositionStatic(transform.position);
 
                 _isGrounded = value;
             }
@@ -153,8 +153,8 @@ namespace BeastHunter
             if ((!_path.Dirty || _isGrounded) && transform.position != _lastPosition)
             {
                 _path.SetDirty();
-                _lastPosition = _isGrounded 
-                    ? transform.position = PhysicsService.GetGroundedPosition(transform.position)
+                _lastPosition = _isGrounded
+                    ? transform.position = PhysicsService.GetGroundedPositionStatic(transform.position)
                     : transform.position;
             }
         }

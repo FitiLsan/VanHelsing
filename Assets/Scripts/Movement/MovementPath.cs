@@ -14,18 +14,19 @@ namespace BeastHunter
         public class Point
         {
             public Vector3 Position;
+            public bool IsGrounded;
             public float WaitingTime;
         }
 
         #endregion
-        
-        
+
+
         #region Fields
 
         [SerializeField] private MovementPoint[] _points = new MovementPoint[0];
-        [SerializeField, Min(1)] private int _resolution = 10;
-        [SerializeField] private Color _drawColor = Color.white;
-        [SerializeField] private bool _close;
+        [SerializeField] [Min(1)] private int _resolution = 10;
+        [SerializeField] private Color _drawColor = Color.magenta;
+        [SerializeField] private bool _loop;
         private float _length;
 
         #endregion
@@ -37,13 +38,14 @@ namespace BeastHunter
 
         public bool Dirty { get; private set; }
 
-        public bool Close
+        public bool Loop
         {
-            get => _close;
+            get => _loop;
             set
             {
-                if (_close == value) return;
-                _close = value;
+                if (_loop == value) return;
+
+                _loop = value;
                 Dirty = true;
             }
         }
@@ -61,7 +63,7 @@ namespace BeastHunter
                     for (var i = 0; i < _points.Length - 1; i++)
                         _length += ApproximateLength(_points[i], _points[i + 1], _resolution);
 
-                    if (Close)
+                    if (Loop)
                         _length += ApproximateLength(_points[_points.Length - 1], _points[0], _resolution);
 
                     Dirty = false;
@@ -80,13 +82,31 @@ namespace BeastHunter
         {
             Gizmos.color = _drawColor;
 
-            if (_points.Length > 1)
-            {
-                for (var i = 0; i < _points.Length - 1; i++)
-                    DrawPath(_points[i], _points[i + 1], _resolution);
+            var points = GetPoints();
 
-                if (Close)
-                    DrawPath(_points[_points.Length - 1], _points[0], _resolution);
+            if (points.Count > 1)
+            {
+                for (var i = 0; i < points.Count - 1; i++)
+                {
+                    var currentPoint = points[i].Position;
+                    currentPoint.y += .1f;
+
+                    var nextPoint = points[i + 1].Position;
+                    nextPoint.y += .1f;
+
+                    Gizmos.DrawLine(currentPoint, nextPoint);
+                }
+
+                if (Loop)
+                {
+                    var currentPoint = points[points.Count - 1].Position;
+                    currentPoint.y += .1f;
+
+                    var nextPoint = points[0].Position;
+                    nextPoint.y += .1f;
+
+                    Gizmos.DrawLine(currentPoint, nextPoint);
+                }
             }
         }
 
@@ -139,8 +159,8 @@ namespace BeastHunter
             if (t <= 0) return _points[0].Position;
             if (t >= 1) return _points[_points.Length - 1].Position;
 
-            float totalPercent = 0;
-            float curvePercent = 0;
+            var totalPercent = 0f;
+            var curvePercent = 0f;
 
             MovementPoint pointA = null;
             MovementPoint pointB = null;
@@ -148,19 +168,19 @@ namespace BeastHunter
             for (var i = 0; i < _points.Length - 1; i++)
             {
                 curvePercent = ApproximateLength(_points[i], _points[i + 1]) / Length;
-                
+
                 if (totalPercent + curvePercent > t)
                 {
                     pointA = _points[i];
                     pointB = _points[i + 1];
-                    
+
                     break;
                 }
 
                 totalPercent += curvePercent;
             }
 
-            if (Close && pointA == null)
+            if (Loop && pointA == null)
             {
                 pointA = _points[_points.Length - 1];
                 pointB = _points[0];
@@ -179,17 +199,17 @@ namespace BeastHunter
                 if (_points[i] == point)
                 {
                     result = i;
-                    
+
                     break;
                 }
 
             return result;
         }
-        
+
         public List<Point> GetPoints()
         {
             var result = new List<Point>();
-            
+
             if (_points.Length > 0)
             {
                 for (var i = 0; i < _points.Length - 1; i++)
@@ -197,47 +217,48 @@ namespace BeastHunter
                     result.Add(new Point()
                     {
                         Position = _points[i].Position,
+                        IsGrounded = _points[i].IsGrounded,
                         WaitingTime = _points[i].WaitingTime
                     });
-                    
+
                     for (var j = 1; j < _resolution; j++)
                     {
                         var currentPosition = GetPoint(_points[i], _points[i + 1], j / (float) _resolution);
-                        
+
                         result.Add(new Point()
                         {
-                            Position = currentPosition,
+                            Position = _points[i].IsGrounded
+                                ? PhysicsService.GetGroundedPositionStatic(currentPosition)
+                                : currentPosition,
+                            IsGrounded = _points[i].IsGrounded,
                             WaitingTime = 0
                         });
                     }
                 }
-                
+
                 var lastIndex = _points.Length - 1;
-                    
+
                 result.Add(new Point()
                 {
                     Position = _points[lastIndex].Position,
+                    IsGrounded = _points[lastIndex].IsGrounded,
                     WaitingTime = _points[lastIndex].WaitingTime
                 });
 
-                if (Close)
-                {
+                if (Loop)
                     for (var j = 1; j < _resolution; j++)
                     {
                         var currentPosition = GetPoint(_points[lastIndex], _points[0], j / (float) _resolution);
-                        
+
                         result.Add(new Point()
                         {
-                            Position = currentPosition,
+                            Position = _points[lastIndex].IsGrounded
+                                ? PhysicsService.GetGroundedPositionStatic(currentPosition)
+                                : currentPosition,
+                            IsGrounded = _points[lastIndex].IsGrounded,
                             WaitingTime = 0
                         });
                     }
-                }
-            }
-            
-            for (var i = 0; i < result.Count - 1; i++)
-            {
-                Debug.DrawLine(result[i].Position, result[i + 1].Position);
             }
 
             return result;
@@ -248,26 +269,13 @@ namespace BeastHunter
             Dirty = true;
         }
 
-        public static void DrawPath(MovementPoint pointA, MovementPoint pointB, int resolution)
-        {
-            var limit = resolution + 1;
-            var lastPoint = pointA.Position;
-
-            for (var i = 1; i < limit; i++)
-            {
-                var currentPoint = GetPoint(pointA, pointB, i / (float) resolution);
-
-                Gizmos.DrawLine(lastPoint, currentPoint);
-                lastPoint = currentPoint;
-            }
-        }
-
         public static Vector3 GetPoint(MovementPoint pointA, MovementPoint pointB, float t)
         {
             if (pointA.HandleB != Vector3.zero)
             {
                 if (pointB.HandleA != Vector3.zero)
-                    return GetCubicCurvePoint(pointA.Position, pointA.GlobalHandleB, pointB.GlobalHandleA, pointB.Position, t);
+                    return GetCubicCurvePoint(pointA.Position, pointA.GlobalHandleB, pointB.GlobalHandleA,
+                        pointB.Position, t);
 
                 return GetQuadraticCurvePoint(pointA.Position, pointA.GlobalHandleB, pointB.Position, t);
             }

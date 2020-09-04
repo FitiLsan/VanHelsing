@@ -34,7 +34,7 @@ namespace BeastHunter
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            
+
             _point.IsGrounded = EditorGUILayout.Toggle("Is Grounded", _point.IsGrounded);
             _point.WaitingTime = EditorGUILayout.FloatField("Waiting Time", _point.WaitingTime);
 
@@ -42,6 +42,8 @@ namespace BeastHunter
 
             if (newHandleType != _point.HandleStyle)
             {
+                _point.HandleStyle = newHandleType;
+
                 switch (newHandleType)
                 {
                     case MovementPoint.HandleType.Connected:
@@ -58,6 +60,7 @@ namespace BeastHunter
                             _point.HandleA = new Vector3(0.1f, 0, 0);
                             _point.HandleB = new Vector3(-0.1f, 0, 0);
                         }
+
                         break;
                     case MovementPoint.HandleType.Broken:
                         if (_point.HandleA == Vector3.zero && _point.HandleB == Vector3.zero)
@@ -65,7 +68,9 @@ namespace BeastHunter
                             _point.HandleA = new Vector3(0.1f, 0, 0);
                             _point.HandleB = new Vector3(-0.1f, 0, 0);
                         }
+
                         break;
+                    default:
                     case MovementPoint.HandleType.None:
                         _point.HandleA = Vector3.zero;
                         _point.HandleB = Vector3.zero;
@@ -111,7 +116,7 @@ namespace BeastHunter
             Handles.color = Color.green;
             var newPosition = Handles.FreeMoveHandle(_point.Position, _point.Rotation,
                 HandleUtility.GetHandleSize(_point.Position) * 0.2f, Vector3.zero, Handles.CubeHandleCap);
-            
+
             if (_point.Position != newPosition) _point.Position = newPosition;
 
             _handlers[(int) _point.HandleStyle](_point);

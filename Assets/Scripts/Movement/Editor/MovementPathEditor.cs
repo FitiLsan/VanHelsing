@@ -35,7 +35,7 @@ namespace BeastHunter
 
             var newResolution = EditorGUILayout.IntField("Resolution", _resolutionProp.intValue);
             _resolutionProp.intValue = newResolution < 1 ? 1 : newResolution;
-            
+
             EditorGUILayout.PropertyField(_closeProp);
             EditorGUILayout.PropertyField(_colorProp);
 
@@ -125,6 +125,8 @@ namespace BeastHunter
 
             if (newHandleType != point.HandleStyle)
             {
+                point.HandleStyle = newHandleType;
+
                 switch (newHandleType)
                 {
                     case MovementPoint.HandleType.Connected:
@@ -141,6 +143,7 @@ namespace BeastHunter
                             point.HandleA = new Vector3(0.1f, 0, 0);
                             point.HandleB = new Vector3(-0.1f, 0, 0);
                         }
+
                         break;
                     case MovementPoint.HandleType.Broken:
                         if (point.HandleA == Vector3.zero && point.HandleB == Vector3.zero)
@@ -148,7 +151,9 @@ namespace BeastHunter
                             point.HandleA = new Vector3(0.1f, 0, 0);
                             point.HandleB = new Vector3(-0.1f, 0, 0);
                         }
+
                         break;
+                    default:
                     case MovementPoint.HandleType.None:
                         point.HandleA = Vector3.zero;
                         point.HandleB = Vector3.zero;
@@ -273,7 +278,7 @@ namespace BeastHunter
             p4.HandleStyle = MovementPoint.HandleType.Connected;
             p4.HandleA = new Vector3(0, 0, -0.28f);
 
-            path.Close = true;
+            path.Loop = true;
         }
 
         #endregion

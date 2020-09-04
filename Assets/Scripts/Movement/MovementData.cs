@@ -19,7 +19,7 @@ namespace BeastHunter
 
         public List<MovementPath.Point> Points => _points ?? (_points = _path.GetPoints());
 
-        public bool Loop => _path.Close;
+        public bool Loop => _path.Loop;
 
         #endregion
     }
