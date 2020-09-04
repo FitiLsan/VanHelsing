@@ -12,9 +12,9 @@ namespace BeastHunter
 
         public enum HandleType
         {
-            Connected,
+            None,
             Broken,
-            None
+            Connected
         }
 
         #endregion

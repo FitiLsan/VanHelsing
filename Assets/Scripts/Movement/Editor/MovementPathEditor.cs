@@ -68,6 +68,7 @@ namespace BeastHunter
                     pointObject.transform.localPosition = Vector3.zero;
                     var newPoint = pointObject.AddComponent<MovementPoint>();
 
+                    newPoint.HandleStyle = MovementPoint.HandleType.Connected;
                     newPoint.Path = _path;
                     newPoint.HandleA = Vector3.right * 0.1f;
                     newPoint.HandleB = -Vector3.right * 0.1f;
