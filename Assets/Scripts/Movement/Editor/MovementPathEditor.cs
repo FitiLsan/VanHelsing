@@ -9,6 +9,7 @@ namespace BeastHunter
         #region Fields
 
         private MovementPath _path;
+        private LineRenderer _lineRenderer;
         private SerializedProperty _resolutionProp;
         private SerializedProperty _loopProp;
         private SerializedProperty _pointsProp;
@@ -27,11 +28,22 @@ namespace BeastHunter
             _loopProp = serializedObject.FindProperty("_loop");
             _pointsProp = serializedObject.FindProperty("_points");
             _colorProp = serializedObject.FindProperty("_drawColor");
+            _lineRenderer = _path.gameObject.GetComponent<LineRenderer>();
+            
+            if (_lineRenderer == null)
+            {
+                _path.gameObject.AddComponent<LineRenderer>();
+            }
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+            
+            if (GUILayout.Button("Update LineRenderer"))
+            {
+                UpdateLineRenderer();
+            }
 
             var newResolution = EditorGUILayout.IntField("Resolution", _resolutionProp.intValue);
             _resolutionProp.intValue = newResolution < 1 ? 1 : newResolution;
@@ -62,6 +74,8 @@ namespace BeastHunter
 
                     _pointsProp.InsertArrayElementAtIndex(_pointsProp.arraySize);
                     _pointsProp.GetArrayElementAtIndex(_pointsProp.arraySize - 1).objectReferenceValue = newPoint;
+                    
+                    UpdateLineRenderer();
                 }
             }
 
@@ -69,6 +83,7 @@ namespace BeastHunter
             {
                 serializedObject.ApplyModifiedProperties();
                 EditorUtility.SetDirty(target);
+                UpdateLineRenderer();
             }
         }
 
@@ -82,6 +97,19 @@ namespace BeastHunter
 
         #region Methods
 
+        private void UpdateLineRenderer()
+        {
+            var points = _path.GetPoints();
+
+            _lineRenderer.positionCount = points.Count;
+            _lineRenderer.loop = _path.Loop;
+
+            for (var i = 0; i < points.Count; i++)
+            {
+                _lineRenderer.SetPosition(i, points[i].Position);
+            }
+        }
+        
         private void DrawPointInspector(MovementPoint point, int index)
         {
             var serObj = new SerializedObject(point);
@@ -94,6 +122,7 @@ namespace BeastHunter
                 _pointsProp.MoveArrayElement(_path.GetPointIndex(point), _path.PointCount - 1);
                 _pointsProp.arraySize--;
                 DestroyImmediate(point.gameObject);
+                UpdateLineRenderer();
                 return;
             }
 
@@ -201,6 +230,7 @@ namespace BeastHunter
             {
                 serObj.ApplyModifiedProperties();
                 EditorUtility.SetDirty(serObj.targetObject);
+                UpdateLineRenderer();
             }
         }
 
@@ -261,6 +291,7 @@ namespace BeastHunter
             var pathObject = new GameObject("MovementPath");
             Undo.RegisterCompleteObjectUndo(pathObject, "Undo Create Path");
             var path = pathObject.AddComponent<MovementPath>();
+            var lineRenderer = pathObject.AddComponent<LineRenderer>(); 
 
             var p1 = path.AddPointAt(Vector3.forward * 0.5f);
             p1.HandleStyle = MovementPoint.HandleType.Connected;
