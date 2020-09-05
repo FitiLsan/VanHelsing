@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System;
 
 
 namespace BeastHunter
 {
-    public class RollingTargetState : CharacterBaseState
+    public sealed class RollingTargetState : CharacterBaseState
     {
         #region Constants
 
@@ -29,7 +28,6 @@ namespace BeastHunter
 
         #region Properties
 
-        public Action OnRollEnd { get; set; }
         private float RollTime { get; set; }
 
         #endregion
@@ -40,6 +38,9 @@ namespace BeastHunter
         public RollingTargetState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Battle;
+            IsTargeting = true;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = false;
         }
@@ -63,9 +64,7 @@ namespace BeastHunter
             }
             else
             {
-                CanExit = true;
-                CanBeOverriden = true;
-                _stateMachine.ReturnState();
+                CheckNextState();
             }
         }
 
@@ -81,15 +80,32 @@ namespace BeastHunter
             _characterModel.AnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
         }
 
+        public override void OnTearDown()
+        {
+        }
+
         private void ExitCheck()
         {
             RollTime -= Time.deltaTime;
 
             if (RollTime <= 0)
             {
-                CanExit = true;
-                CanBeOverriden = true;
+                CheckNextState();
+            }
+        }
+
+        private void CheckNextState()
+        {
+            CanExit = true;
+            CanBeOverriden = true;
+
+            if (NextState == null)
+            {
                 _stateMachine.ReturnState();
+            }
+            else
+            {
+                _stateMachine.SetState(NextState);
             }
         }
 

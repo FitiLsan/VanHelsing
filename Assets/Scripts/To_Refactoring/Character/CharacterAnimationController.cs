@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class CharacterAnimationController
+    public sealed class CharacterAnimationController
     {
         #region Fields
 

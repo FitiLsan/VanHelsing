@@ -3,8 +3,8 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewWeapon", menuName = "CreateWeapon/New", order = 0)]
-    public class WeaponItem : BaseItem
+    [CreateAssetMenu(fileName = "NewWeapon", menuName = "CreateItem/CreateWeapon", order = 0)]
+    public sealed class WeaponItem : BaseItem
     {
         #region Fields
 

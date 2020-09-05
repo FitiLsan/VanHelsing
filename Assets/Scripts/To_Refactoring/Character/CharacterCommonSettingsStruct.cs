@@ -212,7 +212,7 @@ namespace BeastHunter
         public float CapsuleColliderRadius => _capsuleColliderRadius;
         public float CapsuleColliderHeight => _capsuleColliderHeight;
         public float SphereColliderRadius => _sphereColliderRadius;
-        public float SphereColliderRadiusIncrese => _sphereColliderRadiusIncrease;
+        public float SphereColliderRadiusIncrease => _sphereColliderRadiusIncrease;
 
         public float HealthPoints => _healthPoints;
         public float WalkSpeed => _walkSpeed;

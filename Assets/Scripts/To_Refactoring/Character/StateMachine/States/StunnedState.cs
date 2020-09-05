@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class StunnedState : CharacterBaseState
+    public sealed class StunnedState : CharacterBaseState
     {
         #region Constants
 
@@ -24,6 +24,9 @@ namespace BeastHunter
         public StunnedState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Battle;
+            IsTargeting = false;
+            IsAttacking = false;
             CanExit = false;
             CanBeOverriden = false;
         }
@@ -48,6 +51,10 @@ namespace BeastHunter
         public override void OnExit()
         {
 
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void ExitCheck()

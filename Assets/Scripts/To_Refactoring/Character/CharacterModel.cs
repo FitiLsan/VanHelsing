@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEditor;
-using Cinemachine;
 using System.Collections.Generic;
 
 
@@ -9,11 +7,6 @@ namespace BeastHunter
     public sealed class CharacterModel
     {
         #region Properties
-
-        public Camera CharacterCamera { get; }
-        public CinemachineFreeLook CharacterFreelookCamera { get; }
-        public CinemachineVirtualCamera CharacterTargetCamera { get; }
-        public CinemachineBrain CameraCinemachineBrain { get; }
 
         public GameObject CameraTarget { get; }
         public GameObject TargetMark { get; }
@@ -40,7 +33,6 @@ namespace BeastHunter
         public PlayerBehavior PlayerBehavior { get; }
         public CharacterData CharacterData { get; }
         public CharacterCommonSettingsStruct CharacterCommonSettings { get; }
-        public CharacterCameraStruct CharacterCameraSettings { get; }
         public BaseStatsClass CharacterStatsSettings { get; }
 
         public Animator CharacterAnimator { get; set; }
@@ -52,6 +44,7 @@ namespace BeastHunter
         public float CurrentSpeed { get; set; }
         public float VerticalSpeed { get; set; }
         public float AnimationSpeed { get; set; }
+
         public bool IsMoving { get; set; }
         public bool IsGrounded { get; set; }
         public bool IsInBattleMode { get; set; }
@@ -67,7 +60,6 @@ namespace BeastHunter
         {
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData._characterCommonSettings;
-            CharacterCameraSettings = CharacterData._characterCameraSettings;
             CharacterStatsSettings = CharacterData._characterStatsSettings;
             CharacterTransform = prefab.transform;
             CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
@@ -124,7 +116,7 @@ namespace BeastHunter
                 CharacterSphereCollider.isTrigger = true;
             }
 
-            CameraTarget = CharacterCameraSettings.CreateCameraTarget(CharacterTransform);
+            CameraTarget = Services.SharedInstance.CameraService.CreateCameraTarget(CharacterTransform);
             CameraTargetTransform = CameraTarget.transform;
 
             TargetMarkBasePosition = new Vector3(CharacterTransform.localPosition.x,
@@ -133,11 +125,7 @@ namespace BeastHunter
 
             TargetMark = CharacterCommonSettings.CreateTargetMark(CharacterTransform, TargetMarkBasePosition);
             TargetMarkTransform = TargetMark.transform;
-            CharacterCamera = CharacterCameraSettings.CreateCharacterCamera();
-            CameraCinemachineBrain = CharacterCamera.GetComponent<CinemachineBrain>() ?? null;
-            CharacterCamera.transform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
-            CharacterFreelookCamera = CharacterCameraSettings.CreateCharacterFreelookCamera(CameraTargetTransform);
-            CharacterTargetCamera = CharacterCameraSettings.CreateCharacterTargetCamera(CameraTargetTransform);
+
 
             if (prefab.GetComponent<Animator>() != null)
             {
@@ -199,26 +187,9 @@ namespace BeastHunter
             LeftHandWeaponObject = null;
             RightHandWeaponObject = null;
 
-#if (UNITY_EDITOR)
-            EditorApplication.playModeStateChanged += SaveCameraSettings;
-#endif
+            Services.SharedInstance.CameraService.Initialise(this);
         }
 
-        #endregion
-
-        #region Methods
-
-#if (UNITY_EDITOR)
-        private void SaveCameraSettings(PlayModeStateChange state)
-        {
-            if(state == PlayModeStateChange.ExitingPlayMode)
-            {
-                Data.CharacterData._characterCameraSettings.
-                    SaveCameraSettings(CharacterFreelookCamera, CharacterTargetCamera);
-                EditorApplication.playModeStateChanged -= SaveCameraSettings;
-            }
-        }
-#endif
         #endregion
     }
 }

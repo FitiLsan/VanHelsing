@@ -29,6 +29,7 @@ namespace BeastHunter
 
         #region Properties
 
+        private Transform CameraTransform { get; set; }
         private float TargetDirection { get; set; }
         private float CurrentDirecton { get; set; }
         private float AdditionalDirection { get; set; }
@@ -43,8 +44,12 @@ namespace BeastHunter
         public DefaultMovementState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
             CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
         {
+            Type = StateType.Default;
+            IsTargeting = false;
+            IsAttacking = false;
             CanExit = true;
             CanBeOverriden = true;
+            CameraTransform = Services.SharedInstance.CameraService.CharacterCamera.transform;
         }
 
         #endregion
@@ -54,10 +59,7 @@ namespace BeastHunter
 
         public override void Initialize()
         {
-            _characterModel.CharacterSphereCollider.radius = _characterModel.CharacterCommonSettings.SphereColliderRadius;
             _animationController.PlayDefaultMovementAnimation();
-            _characterModel.CameraCinemachineBrain.m_DefaultBlend.m_Time = 0f;
-            _characterModel.CharacterTargetCamera.Priority = 5;
         }
 
         public override void Execute()
@@ -69,6 +71,10 @@ namespace BeastHunter
         public override void OnExit()
         {
             
+        }
+
+        public override void OnTearDown()
+        {
         }
 
         private void MovementControl()
@@ -102,8 +108,7 @@ namespace BeastHunter
                 }
 
                 CurrentDirecton = _characterModel.CharacterTransform.localEulerAngles.y;
-                TargetDirection = _characterModel.CharacterCamera.transform.localEulerAngles.y + AdditionalDirection;
-
+                TargetDirection = CameraTransform.localEulerAngles.y + AdditionalDirection;           
                 CurrentAngle = Mathf.SmoothDampAngle(CurrentDirecton, TargetDirection, ref _currentAngleVelocity,
                     _characterModel.CharacterCommonSettings.DirectionChangeLag);
 

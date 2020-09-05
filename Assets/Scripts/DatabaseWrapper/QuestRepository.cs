@@ -9,7 +9,10 @@ namespace BeastHunter
     public static class QuestRepository
     {
         #region Fields
+
         private static Dictionary<int, QuestDto> _cache = new Dictionary<int, QuestDto>();
+        private static DataTable _dialogueCache = new DataTable();
+        private static DataTable _questTaskCache = new DataTable();
         private static Locale _locale = Locale.RU;
         private static readonly Dictionary<Locale, (string, string)> _localeTables = new Dictionary<Locale, (string, string)>
             {
@@ -29,6 +32,9 @@ namespace BeastHunter
         private const byte QUEST_REWARDMONEY = 6;
         private const byte QUEST_STARTDIALOGID = 7;
         private const byte QUEST_ENDDIALOGID = 8;
+        private const byte QUEST_STARTQUESTEVENTTYPE = 9;
+        private const byte QUEST_ENDQUESTEVENTTYPE = 10;
+        private const byte QUEST_ISREPETABLE = 11;
 
         //table : Quest_locale_xx
         private const byte QUEST_LOCALE_ID = 0;
@@ -85,6 +91,41 @@ namespace BeastHunter
 
         #region Methods
 
+        public static DataTable GetDialogueCache()
+        {
+            try
+            {
+                if (_dialogueCache.Rows.Count == 0)
+                {
+                    _dialogueCache = DatabaseWrapper.GetTable($"select * from 'dialogue_answers' where Quest_ID!= 0;");
+                }
+                return _dialogueCache;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{DateTime.Now.ToShortTimeString()}    dialogueCache error     {e}\n");
+                throw;
+            }
+        }
+
+        public static DataTable GetQuestTaskCache()
+        {
+            try
+            {
+                if (_questTaskCache.Rows.Count == 0)
+                {
+                    _questTaskCache = DatabaseWrapper.GetTable($"select quest_objectives.Id, QuestId, TargetID, dialogue_answers.Npc_id from 'quest_objectives'" +
+                   $" INNER Join 'dialogue_answers' on quest_objectives.TargetId = dialogue_answers.Id where Type = 8;");
+                }
+                return _questTaskCache;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{DateTime.Now.ToShortTimeString()}    questTaskCache error     {e}\n");
+                throw;
+            }
+        }
+
         public static QuestDto GetById(int id)
         {
             try
@@ -114,7 +155,8 @@ namespace BeastHunter
                     ZoneId = dtQ.Rows[0].GetInt(QUEST_ZONEID),
                     TimeAllowed = dtQ.Rows[0].GetInt(QUEST_TIMEALLOWED),
                     StartDialogId = dtQ.Rows[0].GetInt(QUEST_STARTDIALOGID),
-                    EndDialogId = dtQ.Rows[0].GetInt(QUEST_ENDDIALOGID)
+                    EndDialogId = dtQ.Rows[0].GetInt(QUEST_ENDDIALOGID),
+                    IsRepetable = dtQ.Rows[0].GetInt(QUEST_ISREPETABLE)
                 };
 
                 foreach (DataRow row in dtReq.Rows)
@@ -146,7 +188,7 @@ namespace BeastHunter
                 foreach (DataRow row in dtObj.Rows)
                 {
                     var tid = row.GetInt(QUEST_OBJECTIVES_ID);
-                    var tmp = DatabaseWrapper.ExecuteQueryWithAnswer($"select 'Title' from '{GetQuestObjectivesLocaleTable()}' where ObjectiveId={tid} limit 1;");
+                    var tmp = DatabaseWrapper.ExecuteQueryWithAnswer($"select Title from '{GetQuestObjectivesLocaleTable()}' where ObjectiveId={tid} limit 1;");
                     var task = new QuestTaskDto
                     {
                         Id = row.GetInt(QUEST_OBJECTIVES_ID),
@@ -207,7 +249,7 @@ namespace BeastHunter
         public static void Init()
         {
             //TODO: Событие смены языка 
-            EventManager.StartListening(GameEventTypes.QuestReported, OnQuestReported);
+            Services.SharedInstance.EventManager.StartListening(GameEventTypes.QuestReported, OnQuestReported);
         }
 
         private static void OnQuestReported(EventArgs arg0)

@@ -71,6 +71,10 @@ MonoBehaviour:
       type: 3}
     _characterTargetCameraName: CharacterTargetCamera
     _cameraTargetName: Target
+    _cameraTargetHeight: 1.6
+    _characterDialogCamera: {fileID: 7502929037863473527, guid: 93d64c43965a1ee4394b13e780d22afa,
+      type: 3}
+    _characterDialogCameraName: CharacterDialogCamera
     _freeLookFieldOfView: 40
     _freeLookNearClipPlane: 0.1
     _freeLookFarClipPlane: 5000
@@ -84,16 +88,16 @@ MonoBehaviour:
     _freeLookDecelerationLagY: 0.1
     _isInvertedAxisY: 1
     _freeLookSplineCurvature: 0.2
-    _freeLookTopRigHeight: 1
-    _freeLookTopRigRadius: 3
-    _freeLookMiddleRigHeight: 3
-    _freeLookMiddleRigRadius: 4
-    _freeLookBottomRigHeight: 5
-    _freeLookBottomRigRadius: 2.51
+    _freeLookTopRigHeight: -0.6
+    _freeLookTopRigRadius: 2
+    _freeLookMiddleRigHeight: 0
+    _freeLookMiddleRigRadius: 3.5
+    _freeLookBottomRigHeight: 3
+    _freeLookBottomRigRadius: 2
     _freeLookTopRigBodyDampingY: 1
     _freeLookTopRigBodyDampingZ: 1
     _freeLookTopRigOffsetX: 0
-    _freeLookTopRigOffsetY: 1.6
+    _freeLookTopRigOffsetY: 0
     _freeLookTopRigOffsetZ: 0
     _freeLookTopRigLookaheadTime: 0
     _freeLookTopRigLookaheadSmoothing: 0
@@ -110,7 +114,7 @@ MonoBehaviour:
     _freeLookMiddleRigBodyDampingY: 1
     _freeLookMiddleRigBodyDampingZ: 1
     _freeLookMiddleRigOffsetX: 0
-    _freeLookMiddleRigOffsetY: 1.6
+    _freeLookMiddleRigOffsetY: 0
     _freeLookMiddleRigOffsetZ: 0
     _freeLookMiddleRigLookaheadTime: 0
     _freeLookMiddleRigLookaheadSmoothing: 0
@@ -127,7 +131,7 @@ MonoBehaviour:
     _freeLookBottomRigBodyDampingY: 1
     _freeLookBottomRigBodyDampingZ: 1
     _freeLookBottomRigOffsetX: 0
-    _freeLookBottomRigOffsetY: 1.6
+    _freeLookBottomRigOffsetY: 0
     _freeLookBottomRigOffsetZ: 0
     _freeLookBottomRigLookaheadTime: 0
     _freeLookBottomRigLookaheadSmoothing: 0
@@ -152,8 +156,8 @@ MonoBehaviour:
     _targetCameraFarClipPlane: 5000
     _targetCameraDutch: 0
     _targetCameraFollowOffsetX: 0
-    _targetCameraFollowOffsetY: 3.77
-    _targetCameraFollowOffsetZ: -4.6
+    _targetCameraFollowOffsetY: 2
+    _targetCameraFollowOffsetZ: -3.75
     _targetCameraDampingX: 1
     _targetCameraDampingY: 1
     _targetCameraDampingZ: 1
@@ -161,8 +165,8 @@ MonoBehaviour:
     _targetCameraYawDamping: 0
     _targetCameraRollDamping: 0
     _targetCameraTrackedOffsetX: 0
-    _targetCameraTrackedOffsetY: 1.52
-    _targetCameraTrackedOffsetZ: -0.03
+    _targetCameraTrackedOffsetY: 0
+    _targetCameraTrackedOffsetZ: 0
     _targetCameraLookaheadTime: 0
     _targetCameraLookaheadSmoothing: 10
     _targetCameraHorizontalDamping: 0.5
@@ -175,6 +179,34 @@ MonoBehaviour:
     _targetCameraSoftZoneHeight: 0.055
     _targetCameraBiasX: 0
     _targetCameraBiasY: 0
+    _dialogCameraFieldOfView: 40
+    _dialogCameraNearClipPlane: 0.1
+    _dialogCameraFarClipPlane: 5000
+    _dialogCameraDutch: 0
+    _dialogCameraFollowOffsetX: 0
+    _dialogCameraFollowOffsetY: 0
+    _dialogCameraFollowOffsetZ: 0
+    _dialogCameraDampingX: 0
+    _dialogCameraDampingY: 0
+    _dialogCameraDampingZ: 0
+    _dialogCameraPitchDamping: 0
+    _dialogCameraYawDamping: 0
+    _dialogCameraRollDamping: 0
+    _dialogCameraTrackedOffsetX: 0
+    _dialogCameraTrackedOffsetY: 0
+    _dialogCameraTrackedOffsetZ: 0
+    _dialogCameraLookaheadTime: 0
+    _dialogCameraLookaheadSmoothing: 0
+    _dialogCameraHorizontalDamping: 0
+    _dialogCameraVerticalDamping: 0
+    _dialogCameraScreenX: 0.5
+    _dialogCameraScreenY: 0.5
+    _dialogCameraDeadZoneWidth: 0
+    _dialogCameraDeadZoneHeight: 0
+    _dialogCameraSoftZoneWidth: 0
+    _dialogCameraSoftZoneHeight: 0
+    _dialogCameraBiasX: 0
+    _dialogCameraBiasY: 0
   _characterStatsSettings:
     _physicalPower: 2
     _physicalDamageResistance: 0.25
