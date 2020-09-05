@@ -76,7 +76,6 @@ namespace BeastHunter
             SetRightWeapon(_services.InventoryService.GetAllWeapons()[0]);
             //SetLeftWeapon(_services.InventoryService.Feast);
             //SetRightWeapon(_services.InventoryService.Feast);
-            _services.InventoryService.HideWepons(_characterModel);
         }
 
         #endregion
@@ -271,9 +270,7 @@ namespace BeastHunter
                     _characterModel.LeftWeaponBehavior.OnFilterHandler -= OnHitBoxFilter;
                     _characterModel.LeftWeaponBehavior.OnTriggerEnterHandler -= OnLeftHitBoxHit;
                 }
-
-                _services.InventoryService.SetWeaponInLeftHand(_characterModel, newWeapon, out WeaponHitBoxBehavior newBehaviour);
-                _characterModel.LeftWeaponBehavior = newBehaviour;
+                
 
                 _characterModel.LeftWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
                 _characterModel.LeftWeaponBehavior.OnTriggerEnterHandler += OnLeftHitBoxHit;
@@ -293,9 +290,7 @@ namespace BeastHunter
                     _characterModel.RightWeaponBehavior.OnFilterHandler -= OnHitBoxFilter;
                     _characterModel.RightWeaponBehavior.OnTriggerEnterHandler -= OnRightHitBoxHit;
                 }
-
-                _services.InventoryService.SetWeaponInRightHand(_characterModel, newWeapon, out WeaponHitBoxBehavior newBehaviour);
-                _characterModel.RightWeaponBehavior = newBehaviour;
+                
 
                 _characterModel.RightWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
                 _characterModel.RightWeaponBehavior.OnTriggerEnterHandler += OnRightHitBoxHit;
@@ -312,10 +307,7 @@ namespace BeastHunter
                     _characterModel.LeftWeaponBehavior.OnFilterHandler -= OnHitBoxFilter;
                     _characterModel.LeftWeaponBehavior.OnTriggerEnterHandler -= OnLeftHitBoxHit;
                 }
-
-                _services.InventoryService.SetWeaponInRightHand(_characterModel, newWeapon, out WeaponHitBoxBehavior newBehaviour);
-                _characterModel.RightWeaponBehavior = newBehaviour;
-                _characterModel.LeftWeaponBehavior = newBehaviour;
+                
 
                 _characterModel.RightWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
                 _characterModel.RightWeaponBehavior.OnTriggerEnterHandler += OnRightHitBoxHit;

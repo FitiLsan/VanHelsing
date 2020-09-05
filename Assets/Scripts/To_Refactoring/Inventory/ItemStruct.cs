@@ -16,7 +16,7 @@ namespace BeastHunter
         public ItemType ItemType;
 
         public Mesh MeshOfObject;
-        //public Image Icon;
+        public Sprite Icon;
 
         #endregion
     }

@@ -93,7 +93,7 @@ namespace BeastHunter
 
                 if(_appearingTime < 0)
                 {
-                    Services.SharedInstance.InventoryService.ShowWeapons(_characterModel);
+                    //Services.SharedInstance.InventoryService.ShowWeapons(_characterModel);
                 }
             }
         }
