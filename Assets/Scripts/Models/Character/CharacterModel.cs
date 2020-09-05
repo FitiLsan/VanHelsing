@@ -164,7 +164,6 @@ namespace BeastHunter
             LeftHandWeaponObject = null;
             RightHandWeaponObject = null;
 
-            Services.SharedInstance.InventoryService.Initialize(this);
             Services.SharedInstance.CameraService.Initialize(this);
 
             CurrentWeapon = null;
