@@ -18,6 +18,7 @@ namespace BeastHunter
         [SerializeField] private string _feastPath;
         [SerializeField] private string _bossFeastPath;
         [SerializeField] private string _jacketPath;
+        [SerializeField] private string _helmPath;
         [SerializeField] private string _cameraDataPath;
         [SerializeField] private string _questIndicatorDataPath;
         [SerializeField] private string _questJournalDataPath;
@@ -31,6 +32,9 @@ namespace BeastHunter
         [SerializeField] private string _bossThirdWeakPointPath;
         [SerializeField] private string _timeSkipDataPath;
         [SerializeField] private string _weaponWheelUIPath;
+        [SerializeField] private string _shouldersPath;
+        [SerializeField] private string _shoesPath;
+        [SerializeField] private string _ironGreavesPath;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -43,6 +47,10 @@ namespace BeastHunter
         private static WeaponItem _feast;
         private static WeaponItem _bossFeast;
         private static ClothItem _jacket;
+        private static ClothItem _helm;
+        private static ClothItem _shoulders;
+        private static ClothItem _shoes;
+        private static ClothItem _ironGreaves;
         private static CameraData _cameraData;
         private static QuestJournalData _questJournalData;
         private static TemporaryBuffClass _healthBuffData;
@@ -166,6 +174,54 @@ namespace BeastHunter
                     _jacket = Resources.Load<ClothItem> ("Data/" + Instance._jacketPath);
                 }
                 return _jacket;
+            }
+        }
+
+        public static ClothItem Shoulders
+        {
+            get
+            {
+                if (_shoulders == null)
+                {
+                    _shoulders = Resources.Load<ClothItem>("Data/" + Instance._shouldersPath);
+                }
+                return _shoulders;
+            }
+        }
+
+        public static ClothItem Helm
+        {
+            get
+            {
+                if (_helm == null)
+                {
+                    _helm = Resources.Load<ClothItem>("Data/" + Instance._helmPath);
+                }
+                return _helm;
+            }
+        }
+
+        public static ClothItem Shoes
+        {
+            get
+            {
+                if (_shoes == null)
+                {
+                    _shoes = Resources.Load<ClothItem>("Data/" + Instance._shoesPath);
+                }
+                return _shoes;
+            }
+        }
+
+        public static ClothItem IronGreaves
+        {
+            get
+            {
+                if (_ironGreaves == null)
+                {
+                    _ironGreaves = Resources.Load<ClothItem>("Data/" + Instance._ironGreavesPath);
+                }
+                return _ironGreaves;
             }
         }
 
