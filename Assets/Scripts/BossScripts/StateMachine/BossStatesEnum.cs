@@ -4,6 +4,7 @@
     {
         None,
         Idle,
+        Moving,
         Patroling,
         Chasing,
         Attacking,

@@ -46,7 +46,9 @@ namespace BeastHunter
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
 
-        public MovementPath.Point[] MovementPoints;
+        public MovementPath.Point[] MovementPoints { get; set; }
+        
+        public bool MovementLoop { get; set; }
 
         #endregion
 
@@ -134,6 +136,12 @@ namespace BeastHunter
                 BossBehavior = prefab.AddComponent<BossBehavior>();
             }
 
+            GameObject movement = GameObject.Instantiate(BossData._movementPrefab);
+            MovementPath movementPath = movement.GetComponent<MovementPath>() ?? movement.AddComponent<MovementPath>();
+            
+            MovementPoints = movementPath.GetPoints().ToArray();
+            MovementLoop = movementPath.Loop;
+
             BossBehavior.SetType(InteractableObjectType.Enemy);
             BossBehavior.Stats = BossStats.MainStats;
             BossStateMachine = new BossStateMachine(context, this);
@@ -208,8 +216,6 @@ namespace BeastHunter
 
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
             CurrentHealth = BossStats.MainStats.HealthPoints;
-            
-            MovementPoints = BossData._movementPath.GetPoints().ToArray();
         }
 
         #endregion

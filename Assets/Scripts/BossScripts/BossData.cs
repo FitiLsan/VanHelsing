@@ -12,7 +12,7 @@ namespace BeastHunter
 
         public BossSettings _bossSettings;
         public EnemyStats _bossStats;
-        public MovementPath _movementPath;
+        public GameObject _movementPrefab;
 
         #endregion
 
