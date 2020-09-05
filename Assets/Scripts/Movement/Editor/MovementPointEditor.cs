@@ -37,6 +37,7 @@ namespace BeastHunter
 
             _point.IsGrounded = EditorGUILayout.Toggle("Is Grounded", _point.IsGrounded);
             _point.WaitingTime = EditorGUILayout.FloatField("Waiting Time", _point.WaitingTime);
+            _point.AnimationState = EditorGUILayout.TextField("Animation State", _point.AnimationState);
 
             var newHandleType = (MovementPoint.HandleType) EditorGUILayout.EnumPopup("Handle Type", _point.HandleStyle);
 

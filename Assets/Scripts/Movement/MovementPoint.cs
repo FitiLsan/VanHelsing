@@ -21,13 +21,15 @@ namespace BeastHunter
 
 
         #region Fields
-
+        
+        public const string DEFAULT_ANIMATION_STATE = "MovingState";
         private Vector3 _lastPosition;
         [SerializeField] private MovementPath _path;
         [SerializeField] private Vector3 _handleA;
         [SerializeField] private Vector3 _handleB;
         [SerializeField] private HandleType _handleStyle;
         [SerializeField] [Min(0)] private float _waitingTime;
+        [SerializeField] private string _animationState = DEFAULT_ANIMATION_STATE;
         [SerializeField] private bool _isGrounded = true;
 
         #endregion
@@ -141,6 +143,12 @@ namespace BeastHunter
 
                 _isGrounded = value;
             }
+        }
+
+        public string AnimationState
+        {
+            get => _animationState;
+            set => _animationState = value;
         }
 
         #endregion

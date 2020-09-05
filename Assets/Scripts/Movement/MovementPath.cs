@@ -13,9 +13,10 @@ namespace BeastHunter
 
         public class Point
         {
-            public Vector3 Position;
-            public bool IsGrounded;
-            public float WaitingTime;
+            public Vector3 Position { get; set; }
+            public bool IsGrounded { get; set; }
+            public float WaitingTime { get; set; }
+            public string AnimationState { get; set; }
         }
 
         #endregion
@@ -218,7 +219,8 @@ namespace BeastHunter
                     {
                         Position = _points[i].Position,
                         IsGrounded = _points[i].IsGrounded,
-                        WaitingTime = _points[i].WaitingTime
+                        WaitingTime = _points[i].WaitingTime,
+                        AnimationState = _points[i].AnimationState
                     });
 
                     for (var j = 1; j < _resolution; j++)
@@ -231,7 +233,8 @@ namespace BeastHunter
                                 ? PhysicsService.GetGroundedPositionStatic(currentPosition)
                                 : currentPosition,
                             IsGrounded = _points[i].IsGrounded,
-                            WaitingTime = 0
+                            WaitingTime = 0,
+                            AnimationState = MovementPoint.DEFAULT_ANIMATION_STATE
                         });
                     }
                 }
@@ -242,7 +245,8 @@ namespace BeastHunter
                 {
                     Position = _points[lastIndex].Position,
                     IsGrounded = _points[lastIndex].IsGrounded,
-                    WaitingTime = _points[lastIndex].WaitingTime
+                    WaitingTime = _points[lastIndex].WaitingTime,
+                    AnimationState = _points[lastIndex].AnimationState
                 });
 
                 if (Loop)
@@ -256,7 +260,8 @@ namespace BeastHunter
                                 ? PhysicsService.GetGroundedPositionStatic(currentPosition)
                                 : currentPosition,
                             IsGrounded = _points[lastIndex].IsGrounded,
-                            WaitingTime = 0
+                            WaitingTime = 0,
+                            AnimationState = MovementPoint.DEFAULT_ANIMATION_STATE
                         });
                     }
             }
