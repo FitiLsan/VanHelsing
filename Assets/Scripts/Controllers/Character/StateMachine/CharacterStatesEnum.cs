@@ -3,6 +3,7 @@
     public enum CharacterStatesEnum
     {
         None,
+        Attacking,
         AttackingFromLeft,
         AttackingFromRight,
         BattleIdle,

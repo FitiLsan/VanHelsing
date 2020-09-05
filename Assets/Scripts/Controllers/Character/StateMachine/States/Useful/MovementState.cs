@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class DefaultMovementState : CharacterBaseState, IUpdate
+    public sealed class MovementState : CharacterBaseState, IUpdate
     {
         #region Constants
 
@@ -22,7 +22,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public DefaultMovementState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
+        public MovementState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             Type = StateType.Default;
             IsTargeting = false;
@@ -55,7 +55,9 @@ namespace BeastHunter
             _stateMachine.BackState.OnMove = StopCountExitTime;
             _stateMachine.BackState.OnSneak = () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Sneaking]);
-            _animationController.PlayDefaultMovementAnimation();
+            _stateMachine.BackState.OnAttack = () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
+            _animationController.PlayMovementAnimation();
         }
 
         public override void OnExit()
@@ -64,6 +66,7 @@ namespace BeastHunter
             _stateMachine.BackState.OnStop = null;
             _stateMachine.BackState.OnMove = null;
             _stateMachine.BackState.OnSneak = null;
+            _stateMachine.BackState.OnAttack = null;
         }
 
         private void ControlMovement()

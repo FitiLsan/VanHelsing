@@ -9,8 +9,11 @@ namespace BeastHunter
     {
         #region Properties
 
-        public GameObject CameraTarget { get; }
-        public GameObject TargetMark { get; }
+        public GameObject CurrentWeapon { get; set; }
+        public WeaponItem CurrentWeaponItem { get; set; }
+
+
+
         public GameObject LeftHandWeaponObject { get; set; }
         public GameObject RightHandWeaponObject { get; set; }
 
@@ -18,7 +21,6 @@ namespace BeastHunter
         public Transform RightHand { get; }
         public Transform LeftFoot { get; }
         public Transform RightFoot { get; }
-        public Transform CameraTargetTransform { get; }
         public Transform CharacterTransform { get; }
 
         public Vector3 LeftFootPosition { get; set; }
@@ -120,9 +122,6 @@ namespace BeastHunter
                 CharacterSphereCollider.isTrigger = true;
             }
 
-            CameraTarget = Services.SharedInstance.CameraService.CreateCameraTarget(CharacterTransform);
-            CameraTargetTransform = CameraTarget.transform;
-
             CharacterAnimator = prefab.transform.GetChild(2).GetComponent<Animator>();
             PuppetMaster = prefab.transform.GetChild(1).gameObject.GetComponent<PuppetMaster>();
             BehaviorPuppet = prefab.transform.GetChild(0).GetChild(0).gameObject.GetComponent<BehaviourPuppet>();
@@ -167,6 +166,9 @@ namespace BeastHunter
 
             Services.SharedInstance.InventoryService.Initialize(this);
             Services.SharedInstance.CameraService.Initialize(this);
+
+            CurrentWeapon = null;
+            CurrentWeaponItem = null;
         }
 
         #endregion

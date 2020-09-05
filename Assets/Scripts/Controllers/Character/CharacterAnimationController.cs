@@ -7,8 +7,8 @@ namespace BeastHunter
     {
         #region Fields
 
-        private int _defaultMovementHash;
-        private int _defaultIdleHash;
+        private int _movementHash;
+        private int _idleHash;
         private int _jumpHash;
         private int _fallHash;
         private int _battleIdleHash;
@@ -50,9 +50,9 @@ namespace BeastHunter
 
         public void Initialize()
         {
-            _defaultMovementHash = Animator.StringToHash("DefaultMovement");
+            _movementHash = Animator.StringToHash("Movement");
             _jumpHash = Animator.StringToHash("Jump");
-            _defaultIdleHash = Animator.StringToHash("DefaultIdle");
+            _idleHash = Animator.StringToHash("Idle");
             _dancingHash = Animator.StringToHash("Dancing");
             _fallHash = Animator.StringToHash("Fall");
             _rollHash = Animator.StringToHash("Roll");
@@ -80,15 +80,47 @@ namespace BeastHunter
             }
         }
 
-        public void PlayDefaultIdleAnimation()
+        public void PlayIdleAnimation()
         {
-            CharacterAnimator.Play(_defaultIdleHash);
+            CharacterAnimator.Play(_idleHash);
         }
 
-        public void PlayDefaultMovementAnimation()
+        public void PlayMovementAnimation()
         {
-            CharacterAnimator.Play(_defaultMovementHash);
+            CharacterAnimator.Play(_movementHash);
         }
+
+        public void PlayNotArmedAttackAnimation(int attackIndex)
+        {
+            CharacterAnimator.Play("NotArmedAttack_"+ attackIndex.ToString());
+        }
+
+        public void PlayArmedAttackAnimation(string weaponName, int attackIndex)
+        {
+            CharacterAnimator.Play(weaponName.ToString() + "Attack_" + attackIndex.ToString());
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public void PlayBattleIdleAnimation(WeaponItem leftWeapon, WeaponItem rightWeapon)
         {
@@ -135,7 +167,7 @@ namespace BeastHunter
         }
 
         public void PlayRollAnimation(float rollingX, float rollingY, WeaponItem leftWeapon, WeaponItem rightWeapon)
-        {   
+        {
             CharacterAnimator.SetFloat("RollingX", rollingX);
             CharacterAnimator.SetFloat("RollingY", rollingY);
 

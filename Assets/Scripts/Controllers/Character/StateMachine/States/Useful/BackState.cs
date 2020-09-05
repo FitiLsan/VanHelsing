@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
 using System.Linq;
@@ -18,6 +19,10 @@ namespace BeastHunter
         private const float CAMERA_BACK_ANGLE = 180f;
         private const float ANGULAR_VELOCITY_FADE_SPEED = 0.2f;
         private const float TIME_SCALE_FOR_WEAPON_WHEEL = 0.2f;
+        private const float WEAPON_WHEEL_MAX_CYCLE_DISTANCE = 15f;
+
+        private const string WEAPON_WHEEL_PANEL_NAME = "Panel";
+        private const string WEAPON_WHEEL_CYCLE_NAME = "Cycle";
 
         #endregion
 
@@ -46,8 +51,11 @@ namespace BeastHunter
         private readonly PuppetMaster _puppetController;
 
         private GameObject _weaponWheelUI;
+        private WeaponCircle[] _weaponWheelItems;
+        private WeaponCircle _closestWeaponOnWheel;
         private Transform _cameraTransform;
         private Transform _weaponWheelTransform;
+
         private Vector3 _groundHit;
         private Vector3 _lastPosition;
         private Vector3 _currentPosition;
@@ -59,6 +67,7 @@ namespace BeastHunter
         private float _targetSpeed;
         private float _speedChangeLag;
         private float _currentVelocity;
+        private float _weaponWheelDistance;
 
         private bool _isWeaponWheelOpen;
 
@@ -91,7 +100,9 @@ namespace BeastHunter
             _speedArray = new float[3] { 0, 0, 0, };
 
             _weaponWheelUI = GameObject.Instantiate(Data.WeaponWheelUI);
-            _weaponWheelTransform = _weaponWheelUI.transform.Find("Panel").Find("Cycle").transform;
+            _weaponWheelTransform = _weaponWheelUI.transform.
+                Find(WEAPON_WHEEL_PANEL_NAME).Find(WEAPON_WHEEL_CYCLE_NAME).transform;
+            _weaponWheelItems = _weaponWheelUI.transform.Find(WEAPON_WHEEL_PANEL_NAME).GetComponentsInChildren<WeaponCircle>();
 
             _cameraTransform = _services.CameraService.CharacterCamera.transform;
             CloseWeaponWheel();
@@ -114,16 +125,16 @@ namespace BeastHunter
             //StartDialogueData.StartDialog += SetTalkingState;
             //GlobalEventsModel.OnBossDie += StopTarget; // TO REFACTOR
 
-            _services.InventoryService.HideWepons(_characterModel);
+            //_services.InventoryService.HideWepons(_characterModel);
             _services.TrapService.LoadTraps();
 
             _services.EventManager.StartListening(InputEventTypes.MoveStart, OnMoveHandler);
             _services.EventManager.StartListening(InputEventTypes.MoveStop, OnStopHandler);
-            _services.EventManager.StartListening(InputEventTypes.Jump, OnJumpHandler);
             _services.EventManager.StartListening(InputEventTypes.Sneak, OnSneakHandler);
             _services.EventManager.StartListening(InputEventTypes.TimeSkipMenu, OnTimeSkipOpenCloseHandler);
             _services.EventManager.StartListening(InputEventTypes.WeaponWheelOpen, OnWeaponWheelOpenHandler);
             _services.EventManager.StartListening(InputEventTypes.WeaponWheelClose, OnWeaponWheelCloseHandler);
+            _services.EventManager.StartListening(InputEventTypes.AttackLeft, OnAttackHandler);
 
             OnWeaponWheelOpen += OpenWeaponWheel;
             OnWeaponWheelClose += CloseWeaponWheel;
@@ -162,11 +173,11 @@ namespace BeastHunter
 
             _services.EventManager.StopListening(InputEventTypes.MoveStart, OnMoveHandler);
             _services.EventManager.StopListening(InputEventTypes.MoveStop, OnStopHandler);
-            _services.EventManager.StopListening(InputEventTypes.Jump, OnJumpHandler);
             _services.EventManager.StopListening(InputEventTypes.Sneak, OnSneakHandler);
             _services.EventManager.StopListening(InputEventTypes.TimeSkipMenu, OnTimeSkipOpenCloseHandler);
             _services.EventManager.StopListening(InputEventTypes.WeaponWheelOpen, OnWeaponWheelOpenHandler);
             _services.EventManager.StopListening(InputEventTypes.WeaponWheelClose, OnWeaponWheelCloseHandler);
+            _services.EventManager.StopListening(InputEventTypes.AttackLeft, OnAttackHandler);
 
             OnWeaponWheelOpen -= OpenWeaponWheel;
             OnWeaponWheelClose -= CloseWeaponWheel;
@@ -287,6 +298,11 @@ namespace BeastHunter
             OnTimeSkipOpenClose?.Invoke();
         }     
 
+        public void OnAttackHandler()
+        {
+            OnAttack?.Invoke();
+        }
+
         #endregion
 
 
@@ -359,6 +375,7 @@ namespace BeastHunter
             _weaponWheelUI.SetActive(true);
             _services.CameraService.LockFreeLookCamera();
             _weaponWheelTransform.localPosition = Vector3.zero;
+            _closestWeaponOnWheel = null;
             _isWeaponWheelOpen = true;
         }
 
@@ -367,6 +384,16 @@ namespace BeastHunter
             _weaponWheelUI.SetActive(false);
             _services.CameraService.UnlockFreeLookCamera();
             _isWeaponWheelOpen = false;
+
+            if (_closestWeaponOnWheel != null && _closestWeaponOnWheel.WeaponItem != null)
+            {
+                RemoveWeapon();
+                GetWeapon(_closestWeaponOnWheel.WeaponItem, HumanBodyBones.RightHand);
+            }
+            else
+            {
+                RemoveWeapon();
+            }
         }
 
         public void ControlWeaponWheel()
@@ -374,17 +401,79 @@ namespace BeastHunter
             if (_isWeaponWheelOpen)
             {
                 _weaponWheelTransform.localPosition = new Vector3(
-                    Mathf.Clamp(_weaponWheelTransform.localPosition.x + _inputModel.MouseInputX, -15, 15),
-                    Mathf.Clamp(_weaponWheelTransform.localPosition.y + _inputModel.MouseInputY, -15, 15),
+                    Mathf.Clamp(_weaponWheelTransform.localPosition.x + _inputModel.MouseInputX, 
+                    -WEAPON_WHEEL_MAX_CYCLE_DISTANCE, WEAPON_WHEEL_MAX_CYCLE_DISTANCE),
+                    Mathf.Clamp(_weaponWheelTransform.localPosition.y + _inputModel.MouseInputY, 
+                    -WEAPON_WHEEL_MAX_CYCLE_DISTANCE, WEAPON_WHEEL_MAX_CYCLE_DISTANCE),
                     _weaponWheelTransform.localPosition.z);
 
-                float distance = Vector3.Distance(_weaponWheelTransform.localPosition, Vector3.zero);
+                float distanceFromCenter = Vector3.Distance(_weaponWheelTransform.localPosition, Vector3.zero);
 
-                if (distance > 15f)
+                if (distanceFromCenter > WEAPON_WHEEL_MAX_CYCLE_DISTANCE)
                 {
-                    _weaponWheelTransform.localPosition *= 15f / distance;
+                    _weaponWheelTransform.localPosition *= WEAPON_WHEEL_MAX_CYCLE_DISTANCE / distanceFromCenter;
+                }          
+
+                if(distanceFromCenter > WEAPON_WHEEL_MAX_CYCLE_DISTANCE / 2)
+                {
+                    _closestWeaponOnWheel = GetClosestWeaponItemInWheel();
+                    _closestWeaponOnWheel.Activate();
+                    DisableAllWeaponItemsInWheel(_closestWeaponOnWheel);
+                }
+                else
+                {
+                    DisableAllWeaponItemsInWheel();
+                    _closestWeaponOnWheel = null;
                 }
             }
+        }
+
+        public WeaponCircle GetClosestWeaponItemInWheel()
+        {
+            float minimalDistance = Mathf.Infinity;
+            float currentDistance = minimalDistance;
+            WeaponCircle weaponItem = null;
+
+            for(int item = 0; item < _weaponWheelItems.Length; item++)
+            {
+                currentDistance = Vector3.Distance(_weaponWheelItems[item].AnchorPosition, _weaponWheelTransform.localPosition);
+
+                if (currentDistance < minimalDistance)
+                {
+                    minimalDistance = currentDistance;
+                    weaponItem = _weaponWheelItems[item];
+                }
+            }
+
+            return weaponItem;
+        }
+
+        public void DisableAllWeaponItemsInWheel(WeaponCircle exceptionItem = null)
+        {
+            foreach (var item in _weaponWheelItems)
+            {
+                if(item != exceptionItem) item.Deactivate();
+            }
+        }
+
+        public void RemoveWeapon()
+        {
+            if(_characterModel.CurrentWeapon != null)
+            {
+                _characterModel.PuppetMaster.propMuscles[0].currentProp = null;
+                GameObject.Destroy(_characterModel.CurrentWeapon, 0.1f);
+            }
+
+            _characterModel.CurrentWeaponItem = null;
+        }
+
+        public void GetWeapon(WeaponItem weapon, HumanBodyBones hand)
+        {
+            GameObject newWeapon = GameObject.Instantiate(weapon.WeaponPrefab);
+
+            _characterModel.CurrentWeapon = newWeapon;
+            _characterModel.CurrentWeaponItem = weapon;
+            _characterModel.PuppetMaster.propMuscles[0].currentProp = newWeapon.GetComponent<PuppetMasterProp>();
         }
 
         #endregion
