@@ -29,7 +29,7 @@ namespace BeastHunter
         public override void Initialize()
         {
             base.Initialize();
-            _animationController.PlayDefaultIdleAnimation();
+            _animationController.PlayIdleAnimation();
         }
 
         #endregion

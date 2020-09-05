@@ -71,7 +71,7 @@ namespace BeastHunter
             _stateMachine.BackState.OnJump = () => CharacterPose = CharacterPositionEnum.SneakingToStanding;
             _stateMachine.BackState.OnSneak = () => CharacterPose = CharacterPositionEnum.SneakingToStanding;
 
-            _animationController.PlayDefaultMovementAnimation();
+            _animationController.PlayMovementAnimation();
         }
 
         public override void OnExit()

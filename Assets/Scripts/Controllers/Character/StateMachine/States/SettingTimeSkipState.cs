@@ -24,7 +24,7 @@ namespace BeastHunter
         public override void Initialize()
         {
             base.Initialize();
-            _animationController.PlayDefaultIdleAnimation();
+            _animationController.PlayIdleAnimation();
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             Services.SharedInstance.CameraService.SetActiveCamera(Services.SharedInstance.CameraService.CharacterTargetCamera);

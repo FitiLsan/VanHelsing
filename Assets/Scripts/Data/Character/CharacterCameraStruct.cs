@@ -1032,13 +1032,13 @@ namespace BeastHunter
             return characterCamera;
         }
 
-        public CinemachineFreeLook CreateCharacterFreelookCamera(Transform targetTransform)
+        public CinemachineFreeLook CreateCharacterFreelookCamera(Transform followTransform, Transform lookAtTransform)
         {
             CinemachineFreeLook characterFreelookCamera = GameObject.Instantiate(CharacterFreelookCamera);
             characterFreelookCamera.name = CharacterFreelookCameraName;
 
-            characterFreelookCamera.Follow = targetTransform;
-            characterFreelookCamera.LookAt = targetTransform;
+            characterFreelookCamera.Follow = followTransform;
+            characterFreelookCamera.LookAt = lookAtTransform;
 
             characterFreelookCamera.m_Lens.FieldOfView = FreeLookFieldOfView;
             characterFreelookCamera.m_Lens.NearClipPlane = FreeLookNearClipPlane;
@@ -1060,7 +1060,7 @@ namespace BeastHunter
             for (var rig = 0; rig < 3; rig++)
             {
                 CinemachineVirtualCamera cinemachineRig = characterFreelookCamera.GetRig(rig);
-                cinemachineRig.LookAt = targetTransform;
+                cinemachineRig.LookAt = lookAtTransform;
 
                 CinemachineOrbitalTransposer transposerFromData = GetFreeCameraOrbitalTransposer(rig);
                 CinemachineOrbitalTransposer transposerFromCamera = cinemachineRig.
@@ -1103,13 +1103,13 @@ namespace BeastHunter
             return characterFreelookCamera;
         }
 
-        public CinemachineVirtualCamera CreateCharacterTargetCamera(Transform targetTransform)
+        public CinemachineVirtualCamera CreateCharacterTargetCamera(Transform followTransform, Transform lookAtTransform)
         {
             CinemachineVirtualCamera characterTargetCamera = GameObject.Instantiate(CharacterTargetCamera);
             characterTargetCamera.name = CharacterTargetCameraName;
 
-            characterTargetCamera.Follow = targetTransform;
-            characterTargetCamera.LookAt = targetTransform;
+            characterTargetCamera.Follow = followTransform;
+            characterTargetCamera.LookAt = lookAtTransform;
 
             characterTargetCamera.m_Lens.FieldOfView = TargetCameraFieldOfView;
             characterTargetCamera.m_Lens.NearClipPlane = TargetCameraNearClipPlane;
@@ -1152,13 +1152,13 @@ namespace BeastHunter
             return characterTargetCamera;
         }
 
-        public CinemachineVirtualCamera CreateCharacterDialogCamera(Transform targetTransform)
+        public CinemachineVirtualCamera CreateCharacterDialogCamera(Transform followTransform, Transform lookAtTransform)
         {
             CinemachineVirtualCamera characterDialogCamera = GameObject.Instantiate(CharacterDialogCamera);
             characterDialogCamera.name = CharacterDialogCameraName;
 
-            characterDialogCamera.Follow = targetTransform;
-            characterDialogCamera.LookAt = targetTransform;
+            characterDialogCamera.Follow = followTransform;
+            characterDialogCamera.LookAt = lookAtTransform;
 
             characterDialogCamera.m_Lens.FieldOfView = DialogCameraFieldOfView;
             characterDialogCamera.m_Lens.NearClipPlane = DialogCameraNearClipPlane;

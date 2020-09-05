@@ -34,9 +34,10 @@ namespace BeastHunter
             AnimationController = animationController;
             BackState = new BackState(context, this);
 
-            CharacterStates.Add(CharacterStatesEnum.DefaultIdle, new DefaultIdleState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.DefaultMovement, new DefaultMovementState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.DefaultIdle, new IdleState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.DefaultMovement, new MovementState(context, this));
             CharacterStates.Add(CharacterStatesEnum.Sneaking, new SneakingState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.Attacking, new AttackingState(context, this));
             CharacterStates.Add(CharacterStatesEnum.Jumping, new JumpingState(context, this));
         }
 
@@ -68,6 +69,7 @@ namespace BeastHunter
             BackState.Updating();
 
             if (CurrentState is IUpdate) (CurrentState as IUpdate).Updating();
+            CustomDebug.Log(CurrentState);
         }
 
         public void OnTearDown()
