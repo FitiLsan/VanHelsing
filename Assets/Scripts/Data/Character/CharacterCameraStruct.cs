@@ -37,7 +37,7 @@ namespace BeastHunter
 
         [Range(0.0f, 10.0f)]
         [Tooltip("Target camera blend time between 0 and 10.")]
-        [SerializeField] private float _characterTargetameraBlendTime;
+        [SerializeField] private float _characterTargetCameraBlendTime;
 
         [Range(0.0f, 5.0f)]
         [Tooltip("Camera target height between 0 and 5.")]
@@ -627,7 +627,7 @@ namespace BeastHunter
         public string CharacterDialogCameraName => _characterDialogCameraName;
 
         public float CharacterFreelookCameraBlendTime => _characterFreelookCameraBlendTime;
-        public float CHaracterTargetCameraBlendTime => _characterTargetameraBlendTime;
+        public float CharacterTargetCameraBlendTime => _characterTargetCameraBlendTime;
         public float CHaracterDialogCameraBlendTIme => _characterDialogCameraBlendTime;
         public float CameraTargetHeight => _cameraTargetHeight;
 

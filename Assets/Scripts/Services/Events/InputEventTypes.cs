@@ -11,8 +11,8 @@
         BattleExit,
         Dodge,
         TargetLock,
-        AttackLeft,
-        AttackRight,
+        Attack,
+        Aim,
         Use,
         Dance,
         Cancel,
@@ -28,6 +28,8 @@
         TimeSkipMenu,
         WeaponWheelOpen,
         WeaponWheelClose,
+        AimStart,
+        AimEnd,
     }
 }
 

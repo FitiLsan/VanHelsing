@@ -16,7 +16,7 @@ namespace BeastHunter
         [SerializeField] private string _giantMudCrabDataPath;
         [SerializeField] private string _rabbitDataPath;
         [SerializeField] private string _feastPath;
-        [SerializeField] private string _bossFeastPath;
+        [SerializeField] private string _bossFeastsPath;
         [SerializeField] private string _jacketPath;
         [SerializeField] private string _helmPath;
         [SerializeField] private string _cameraDataPath;
@@ -41,11 +41,10 @@ namespace BeastHunter
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
-        private static GiantMudCrabData _giantMudCrabData;
         private static RabbitData _rabbitData;
         private static QuestIndicatorData _questIndicatorData;
         private static WeaponItem _feast;
-        private static WeaponItem _bossFeast;
+        private static WeaponData _bossFeast;
         private static ClothItem _jacket;
         private static ClothItem _helm;
         private static ClothItem _shoulders;
@@ -114,15 +113,6 @@ namespace BeastHunter
             }
         }
 
-        public static GiantMudCrabData GiantMudCrabData {
-            get {
-                if (_giantMudCrabData == null) {
-                    _giantMudCrabData = Resources.Load<GiantMudCrabData> ("Data/" + Instance._giantMudCrabDataPath);
-                }
-                return _giantMudCrabData;
-            }
-        }
-
         public static RabbitData RabbitData
         {
             get
@@ -156,13 +146,13 @@ namespace BeastHunter
             }
         }
 
-        public static WeaponItem BossFeast
+        public static WeaponData BossFeasts
         {
             get
             {
                 if (_bossFeast == null)
                 {
-                    _bossFeast = Resources.Load<WeaponItem>("Data/" + Instance._bossFeastPath);
+                    _bossFeast = Resources.Load<WeaponData>("Data/" + Instance._bossFeastsPath);
                 }
                 return _bossFeast;
             }

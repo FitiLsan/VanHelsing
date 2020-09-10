@@ -4,12 +4,17 @@
 namespace BeastHunter
 {   
     [Serializable]
-    public struct AttackModel
+    public class AttackModel
     {
         #region Fields
 
-        public float Time;
+        public string Name;
         public Damage AttackDamage;
+        public WeaponItem WeaponItem;
+        public HandsEnum AttackType;
+
+        public float AttackTime;
+        public float AttackStaminaCost;
 
         #endregion
     }

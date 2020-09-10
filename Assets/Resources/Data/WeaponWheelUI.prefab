@@ -184,14 +184,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 5aaeb5d677df27045866dad939ee328b, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -470,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponItem: {fileID: 0}
+  WeaponData: {fileID: 0}
   WeaponTextField: {fileID: 8623649329471294276}
   AnchorPosition: {x: -70.7, y: 70.7, z: 0}
 --- !u!1 &5913406805559798496
@@ -531,14 +531,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 87206693f5a6a4e4590538396bd8dc43, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -635,7 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponItem: {fileID: 0}
+  WeaponData: {fileID: 0}
   WeaponTextField: {fileID: 8623649329471294276}
   AnchorPosition: {x: -100, y: 0, z: 0}
 --- !u!1 &5913406805632240260
@@ -696,14 +696,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 0b4b58087fa268140b5588bcb2c5ad06, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -836,14 +836,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 5384e6810d7c96047b999f37d99b00ce, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -940,7 +940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponItem: {fileID: 0}
+  WeaponData: {fileID: 0}
   WeaponTextField: {fileID: 8623649329471294276}
   AnchorPosition: {x: 100, y: 0, z: 0}
 --- !u!1 &5913406806183415132
@@ -1045,14 +1045,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c3849069b37f45448b8f6840b521e825, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1119,14 +1119,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ae8f3afccac8d62458e11a203a92d66f, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1223,7 +1223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponItem: {fileID: 0}
+  WeaponData: {fileID: 0}
   WeaponTextField: {fileID: 8623649329471294276}
   AnchorPosition: {x: 70.7, y: 70.7, z: 0}
 --- !u!1 &5913406806421216929
@@ -1314,7 +1314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponItem: {fileID: 0}
+  WeaponData: {fileID: 11400000, guid: 3ad3d5c5d0901e640aff0afcd55cf93a, type: 2}
   WeaponTextField: {fileID: 8623649329471294276}
   AnchorPosition: {x: 70.7, y: -70.7, z: 0}
 --- !u!1 &5913406806548488889
@@ -1405,6 +1405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponItem: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}
+  WeaponData: {fileID: 0}
   WeaponTextField: {fileID: 8623649329471294276}
   AnchorPosition: {x: -70.7, y: -70.7, z: 0}

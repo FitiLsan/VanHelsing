@@ -10,29 +10,11 @@ namespace BeastHunter
         #region Properties
 
         public GameObject CurrentWeapon { get; set; }
-        public WeaponItem CurrentWeaponItem { get; set; }
+        public WeaponData CurrentWeaponData { get; set; }
+        public WeaponHitBoxBehavior FirstWeaponBehavior { get; set; }
+        public WeaponHitBoxBehavior SecondWeaponBehavior { get; set; }
 
-
-
-        public GameObject LeftHandWeaponObject { get; set; }
-        public GameObject RightHandWeaponObject { get; set; }
-
-        public Transform LeftHand { get; }
-        public Transform RightHand { get; }
-        public Transform LeftFoot { get; }
-        public Transform RightFoot { get; }
         public Transform CharacterTransform { get; }
-
-        public Vector3 LeftFootPosition { get; set; }
-        public Vector3 RightFootPosition { get; set; }
-        public Vector3 LeftFootRotation { get; set; }
-        public Vector3 RightFootRotation { get; set; }
-
-        public WeaponHitBoxBehavior LeftHandBehavior { get; }
-        public WeaponHitBoxBehavior RightHandBehavior { get; }
-        public WeaponHitBoxBehavior LeftWeaponBehavior { get; set; }
-        public WeaponHitBoxBehavior RightWeaponBehavior { get; set; } 
-
         public CapsuleCollider CharacterCapsuleCollider { get; }
         public SphereCollider CharacterSphereCollider { get; }
         public Rigidbody CharacterRigitbody { get; }
@@ -47,11 +29,6 @@ namespace BeastHunter
         public Animator CharacterAnimator { get; set; }
         public List<Collider> EnemiesInTrigger { get; set; }
         public Collider ClosestEnemy { get; set; }
-
-        public WeaponItem LeftHandFeast { get; set; }
-        public WeaponItem RigheHandWeapon { get; set; }
-        public WeaponItem LeftHandWeapon { get; set; }
-        public WeaponItem RightHandWeapon { get; set; }
 
         public float CurrentSpeed { get; set; }
         public float AnimationSpeed { get; set; }
@@ -105,6 +82,7 @@ namespace BeastHunter
                 CharacterCapsuleCollider.center = CharacterCommonSettings.CapsuleColliderCenter;
                 CharacterCapsuleCollider.radius = CharacterCommonSettings.CapsuleColliderRadius;
                 CharacterCapsuleCollider.height = CharacterCommonSettings.CapsuleColliderHeight;
+                CharacterCapsuleCollider.material = CharacterCommonSettings.CapsuleColliderPhysicMaterial;
             }
 
             CharacterCapsuleCollider.transform.position = groundPosition;
@@ -128,7 +106,7 @@ namespace BeastHunter
             BehaviorFall = prefab.transform.GetChild(0).GetChild(1).gameObject.GetComponent<BehaviourFall>();
 
             CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterAnimator;
-            CharacterAnimator.applyRootMotion = false;
+            CharacterAnimator.applyRootMotion = CharacterCommonSettings.BeginningApplyRootMotion;
 
             if (prefab.GetComponent<PlayerBehavior>() != null)
             {
@@ -154,20 +132,10 @@ namespace BeastHunter
             CurrentSpeed = 0;
             AnimationSpeed = CharacterData._characterCommonSettings.AnimatorBaseSpeed;
 
-            LeftHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
-            RightHand = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightHand);
-            LeftFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.LeftFoot);
-            RightFoot = CharacterAnimator.GetBoneTransform(HumanBodyBones.RightFoot);
-
-            LeftHandWeapon = null;
-            RightHandWeapon = null;
-            LeftHandWeaponObject = null;
-            RightHandWeaponObject = null;
-
             Services.SharedInstance.CameraService.Initialize(this);
 
             CurrentWeapon = null;
-            CurrentWeaponItem = null;
+            CurrentWeaponData = null;
         }
 
         #endregion

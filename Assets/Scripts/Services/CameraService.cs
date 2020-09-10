@@ -77,18 +77,18 @@ namespace BeastHunter
             {
                 if(newCamera != CharacterFreelookCamera)
                 {
-                    CharacterFreelookCamera.m_RecenterToTargetHeading.m_enabled = true;                  
+                    CharacterFreelookCamera.m_RecenterToTargetHeading.m_enabled = true;
+                    LockFreeLookCamera();
                 }
                 else
                 {
                     CharacterFreelookCamera.m_RecenterToTargetHeading.m_enabled = false;
+                    UnlockFreeLookCamera();
                 }
                 
                 PreviousActiveCamera = CurrentActiveCamera;
                 CurrentActiveCamera = newCamera;
-
                 SetAllCamerasEqual();
-                CurrentActiveCamera.Priority++;
 
                 float blendTime = 0f;
 
@@ -98,7 +98,7 @@ namespace BeastHunter
                 }
                 else if (CurrentActiveCamera == CharacterTargetCamera)
                 {
-                    blendTime = _cameraData._cameraSettings.CHaracterTargetCameraBlendTime;
+                    blendTime = _cameraData._cameraSettings.CharacterTargetCameraBlendTime;
                 }
                 else if (CurrentActiveCamera == CharacterDialogCamera)
                 {
@@ -106,6 +106,7 @@ namespace BeastHunter
                 }
 
                 SetBlendTime(blendTime);
+                CurrentActiveCamera.Priority++;
             }
         }
 
