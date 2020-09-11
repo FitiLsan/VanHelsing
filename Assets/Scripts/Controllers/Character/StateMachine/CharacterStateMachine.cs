@@ -34,11 +34,15 @@ namespace BeastHunter
             AnimationController = animationController;
             BackState = new BackState(context, this);
 
-            CharacterStates.Add(CharacterStatesEnum.DefaultIdle, new IdleState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.DefaultMovement, new MovementState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.Idle, new IdleState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.Movement, new MovementState(context, this));
             CharacterStates.Add(CharacterStatesEnum.Sneaking, new SneakingState(context, this));
             CharacterStates.Add(CharacterStatesEnum.Attacking, new AttackingState(context, this));
             CharacterStates.Add(CharacterStatesEnum.Jumping, new JumpingState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.Sliding, new SlidingState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.Battle, new BattleState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.Dodging, new DodgingState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.Dead, new DeadState(context, this));
         }
 
         #endregion
@@ -69,7 +73,7 @@ namespace BeastHunter
             BackState.Updating();
 
             if (CurrentState is IUpdate) (CurrentState as IUpdate).Updating();
-            CustomDebug.Log(CurrentState);
+            //CustomDebug.Log(CurrentState);
         }
 
         public void OnTearDown()
@@ -85,50 +89,50 @@ namespace BeastHunter
         public void SetState(CharacterBaseState newState)
         {
             OnBeforeStateChange(CurrentState, newState);
-            CurrentState.OnExit();
+            CurrentState.OnExit(newState);
             PreviousState = CurrentState;
             CurrentState = newState;
             CurrentState.NextState = null;
             OnStateChange(PreviousState, CurrentState);
-            CurrentState.Initialize();
+            CurrentState.Initialize(PreviousState);
             OnAfterStateChange(CurrentState);
         }
 
         public void SetState(CharacterBaseState newState, CharacterBaseState nextState)
         {
             OnBeforeStateChange(CurrentState, newState);
-            CurrentState.OnExit();
+            CurrentState.OnExit(newState);
             PreviousState = CurrentState;
             CurrentState = newState;
             CurrentState.NextState = nextState;
             OnStateChange(PreviousState, CurrentState);
-            CurrentState.Initialize();
+            CurrentState.Initialize(PreviousState);
             OnAfterStateChange(CurrentState);
         }
 
         public void ReturnState()
         {
             OnBeforeStateChange(CurrentState, PreviousState);
-            CurrentState.OnExit();
+            CurrentState.OnExit(PreviousState);
             CharacterBaseState tempState = PreviousState;
             PreviousState = CurrentState;
             CurrentState = tempState;
             CurrentState.NextState = null;
             OnStateChange(PreviousState, CurrentState);
-            CurrentState.Initialize();
+            CurrentState.Initialize(PreviousState);
             OnAfterStateChange(CurrentState);
         }
 
         public void ReturnState(CharacterBaseState nextState)
         {
             OnBeforeStateChange(CurrentState, PreviousState);
-            CurrentState.OnExit();
+            CurrentState.OnExit(PreviousState);
             CharacterBaseState tempState = PreviousState;
             PreviousState = CurrentState;
             CurrentState = tempState;
             CurrentState.NextState = nextState;
             OnStateChange(PreviousState, CurrentState);
-            CurrentState.Initialize();
+            CurrentState.Initialize(PreviousState);
             OnAfterStateChange(CurrentState);
         }
 

@@ -46,12 +46,15 @@ namespace BeastHunter
             _inputModel.inputOnButtonDown.Add("NO_BUTTON_4", InputEventTypes.RunStop);
             _inputModel.inputOnButtonDown.Add("NO_BUTTON_5", InputEventTypes.WeaponWheelOpen);
             _inputModel.inputOnButtonDown.Add("NO_BUTTON_6", InputEventTypes.WeaponWheelClose);
+            _inputModel.inputOnButtonDown.Add("NO_BUTTON_7", InputEventTypes.AimStart);
+            _inputModel.inputOnButtonDown.Add("NO_BUTTON_8", InputEventTypes.AimEnd);
+
             _inputModel.inputOnButtonDown.Add("Jump", InputEventTypes.Jump);
             _inputModel.inputOnButtonDown.Add("Battle Exit", InputEventTypes.BattleExit);
             _inputModel.inputOnButtonDown.Add("Dodge", InputEventTypes.Dodge);
             _inputModel.inputOnButtonDown.Add("Target lock", InputEventTypes.TargetLock);
-            _inputModel.inputOnButtonDown.Add("AttackLeft", InputEventTypes.AttackLeft);
-            _inputModel.inputOnButtonDown.Add("AttackRight", InputEventTypes.AttackRight);
+            _inputModel.inputOnButtonDown.Add("AttackLeft", InputEventTypes.Attack);
+            _inputModel.inputOnButtonDown.Add("AttackRight", InputEventTypes.Aim);
             _inputModel.inputOnButtonDown.Add("Use", InputEventTypes.Use);
             _inputModel.inputOnButtonDown.Add("Dance", InputEventTypes.Dance);
             _inputModel.inputOnButtonDown.Add("Cancel", InputEventTypes.Cancel);
@@ -90,6 +93,7 @@ namespace BeastHunter
             _inputModel.InputAxisY = Input.GetAxis("Vertical");
             _inputModel.IsInputMove = (_inputModel.InputAxisX != 0 || _inputModel.InputAxisY != 0) ? true : false;
             _inputModel.IsInputRun = Input.GetButton("Sprint");
+            _inputModel.IsInputAim = Input.GetButton("AttackRight");
             _inputModel.IsInputWeaponChoise = Input.GetButton("WeaponWheel");
 
             CheckAxisTotal();

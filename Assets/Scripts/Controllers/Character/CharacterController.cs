@@ -42,7 +42,7 @@ namespace BeastHunter
 
             _stateMachine = new CharacterStateMachine(_context, _animationController);
             _stateMachine.OnAwake();
-            _stateMachine.SetStartState(_stateMachine.CharacterStates[CharacterStatesEnum.DefaultIdle]);          
+            _stateMachine.SetStartState(_stateMachine.CharacterStates[CharacterStatesEnum.Idle]);          
         }
 
         #endregion

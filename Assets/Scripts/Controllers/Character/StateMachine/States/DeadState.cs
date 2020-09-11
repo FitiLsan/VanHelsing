@@ -6,7 +6,6 @@
 
         public DeadState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
-            Type = StateType.NotActive;
             IsTargeting = false;
             IsAttacking = false;
         }
@@ -16,13 +15,20 @@
 
         #region Methods
 
-        public override void Initialize()
+        public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
             _characterModel.IsDead = true;
-            _animationController.PlayDeadAnimation();
             _characterModel.CharacterTransform.tag = TagManager.NPC;
             GlobalEventsModel.OnPlayerDie?.Invoke();
+
+            if(_characterModel.CurrentWeaponData != null)
+            {
+                _characterModel.PuppetMaster.propMuscles[0].currentProp = null;
+                _characterModel.PuppetMaster.propMuscles[1].currentProp = null;
+            }
+
+            _characterModel.PuppetMaster.state = RootMotion.Dynamics.PuppetMaster.State.Dead;
         }
 
         #endregion

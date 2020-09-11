@@ -18,6 +18,7 @@ namespace BeastHunter
 
         private bool _isInputMove;
         private bool _isInputRun;
+        private bool _isInputAim;
         private bool _isInputWeaponChoise;
 
         #endregion
@@ -68,6 +69,30 @@ namespace BeastHunter
                     else
                     {
                         Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.RunStop);
+                    }
+                }
+            }
+        }
+
+        public bool IsInputAim
+        {
+            get
+            {
+                return _isInputAim;
+            }
+            set
+            {
+                if (_isInputAim != value)
+                {
+                    _isInputAim = value;
+
+                    if (_isInputAim)
+                    {
+                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.AimStart);
+                    }
+                    else
+                    {
+                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.AimEnd);
                     }
                 }
             }
