@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class BossInitializeController : NpcInitializeController
+    public sealed class BossInitializeController : EnemyInitializeController
     {
         #region ClassLifeCycle
 

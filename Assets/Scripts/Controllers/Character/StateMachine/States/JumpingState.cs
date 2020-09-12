@@ -3,49 +3,31 @@
 
 namespace BeastHunter
 {
-    public sealed class JumpingState : CharacterBaseState
+    public sealed class JumpingState : CharacterBaseState, IUpdate
     {
-        #region Constants
-
-        private const float NOT_CHECK_GROUND_TIME = 0.2f;
-        private const float EXIT_TIME = 1f;
-        private const float SPEED_FORCE_COMPENSATOR = 0.5f;
-
-        #endregion
-
-
-        #region Fields
-
-        private Vector3 _jumpVector;
-        private Vector3 _previousPosition;
-        private Vector3 _currentPosition;
-        private float _currentGroundCheckTime;
-        private float _currentExitTime;
-        private float _speedBeforeJump;
-        
-        #endregion
-
-
         #region Properties
 
-        private float JumpVerticalForce { get; set; }
-        private float JumpHorizontalForce { get; set; }
+        private float _jumpTime;
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public JumpingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public JumpingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
-            Type = StateType.Default;
             IsTargeting = false;
-            IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = true;
-            JumpVerticalForce = _characterModel.CharacterCommonSettings.JumpVerticalForce;
-            JumpHorizontalForce = _characterModel.CharacterCommonSettings.JumpHorizontalForce;
+            IsAttacking = false;            
+        }
+
+        #endregion
+
+
+        #region IUpdate
+
+        public void Updating()
+        {
+            ExitCheck();
         }
 
         #endregion
@@ -53,70 +35,46 @@ namespace BeastHunter
 
         #region Methods
 
-        public override void Initialize()
+        public override void Initialize(CharacterBaseState previousState = null)
         {
-            CanExit = false;
-            _speedBeforeJump = _characterModel.CurrentSpeed;
-            _currentGroundCheckTime = NOT_CHECK_GROUND_TIME;
-            _currentExitTime = EXIT_TIME;
-            _animationController.PlayJumpAnimation();
-            UpdatePosition();
+            base.Initialize();
+            _jumpTime = _characterModel.CharacterData._characterCommonSettings.JumpTime;
+            _animationController.SetRootMotion(true);
+            _animationController.PlayJumpForwardAnimation();
+            _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
+            _characterModel.IsDodging = true;
         }
 
-        public override void Execute()
+        public override void OnExit(CharacterBaseState nextState = null)
         {
-            ExitCheck();
-            Jumping();
-        }
-
-        public override void OnExit()
-        {
-
-        }
-
-        public override void OnTearDown()
-        {
+            base.OnExit();
+            _animationController.SetRootMotion(false);
+            _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Active;
+            _characterModel.IsDodging = false;
         }
 
         private void ExitCheck()
         {
-            _currentGroundCheckTime -= Time.deltaTime;
-            _currentExitTime -= Time.deltaTime;
+            _jumpTime -= Time.deltaTime;
 
-            if (_currentGroundCheckTime < 0 && (_characterModel.IsGrounded || _currentExitTime <= 0))
+            if (_jumpTime <= 0)
             {
-                CanExit = true;
+                CheckNextState();
             }
         }
 
-        public void UpdatePosition()
+        private void CheckNextState()
         {
-            _previousPosition = _currentPosition;
-            _currentPosition = _characterModel.CharacterTransform.position;
-        }
-
-        public void Jumping()
-        {
-            UpdatePosition();
-
-            if(_currentPosition.y >= _previousPosition.y)
+            if (_inputModel.IsInputMove)
             {
-                _jumpVector = _characterModel.CharacterTransform.position + (Vector3.up * 
-                    JumpVerticalForce * _currentExitTime / EXIT_TIME + _characterModel.CharacterTransform.forward *
-                        (JumpHorizontalForce + _speedBeforeJump * SPEED_FORCE_COMPENSATOR)) * Time.smoothDeltaTime;
-                _characterModel.VerticalSpeed = 1;
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
             }
             else
             {
-                _jumpVector = _characterModel.CharacterTransform.position + _characterModel.CharacterTransform.forward * 
-                    (JumpHorizontalForce + _speedBeforeJump * SPEED_FORCE_COMPENSATOR) * Time.smoothDeltaTime;
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Idle]);
             }
-
-            _characterModel.CharacterTransform.position = Vector3.Lerp(_characterModel.CharacterTransform.position, 
-                _jumpVector, 1);
         }
 
         #endregion
     }
 }
-

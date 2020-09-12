@@ -14,15 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemStruct:
     Name: Jacket
-    Discription: jacket
-    SlotSize: 1
+    Discription: Jacket with four slots! Dreams come true!
+    SlotSize: 2
     ItemType: 3
     MeshOfObject: {fileID: 0}
+    Icon: {fileID: 21300000, guid: ed81ab10cb0d82048a81f31e2d70c9be, type: 3}
+  BodyParts: 2
+  MeshView:
+  - {fileID: 4300484, guid: 038320a534bd8b444b43734860d1a211, type: 3}
   PocketInfos:
-  - Prefab: {fileID: 1241252054098534, guid: cdcd31ac69744ec4d928e5d032e933a4, type: 3}
-    Attachment: 8
-    SlotEnum: 3
-    ItemTypeInPocket: 2
-    ItemInPocket: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}
-    LocalPosition: {x: -50, y: -15, z: -15}
-    LocalRotation: {x: 0, y: -200, z: 100}
+  - SlotEnum: 3
+    ItemTypeInPocket: 0
+    ItemInPocket: {fileID: 11400000, guid: dd57c8a717db79e4a84caa4547428ba3, type: 2}
+  - SlotEnum: 2
+    ItemTypeInPocket: 0
+    ItemInPocket: {fileID: 11400000, guid: dd57c8a717db79e4a84caa4547428ba3, type: 2}
+  - SlotEnum: 0
+    ItemTypeInPocket: 0
+    ItemInPocket: {fileID: 0}
+  - SlotEnum: 1
+    ItemTypeInPocket: 0
+    ItemInPocket: {fileID: 11400000, guid: 20737c7ae1746a5498ef0facaf10a5f6, type: 2}

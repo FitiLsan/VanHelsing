@@ -5,12 +5,12 @@ using UnityEngine.AI;
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "BossData")]
-    public class BossData : ScriptableObject
+    public sealed class BossData : ScriptableObject
     {
         #region PrivateData
 
         public BossSettings _bossSettings;
-        public NpcStats _bossStats;
+        public EnemyStats _bossStats;
 
         #endregion
 

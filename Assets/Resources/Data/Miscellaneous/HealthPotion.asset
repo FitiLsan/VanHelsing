@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9d085960bebefe47b97d12801227721, type: 3}
+  m_Name: HealthPotion
+  m_EditorClassIdentifier: 
+  ItemStruct:
+    Name: Health Potion
+    Discription: Great and old like a world health potion.
+    SlotSize: 1
+    ItemType: 1
+    MeshOfObject: {fileID: 0}
+    Icon: {fileID: 21300000, guid: f3e7d95abf5d7b444a387096d959dc8f, type: 3}

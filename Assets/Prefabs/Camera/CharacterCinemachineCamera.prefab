@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3520822708366150838}
   - component: {fileID: 1046887095545056062}
   - component: {fileID: -172189964953927634}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CharacterCinemachineCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CollideAgainst:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 24375
   m_IgnoreTag: Player
   m_MinimumDistanceFromTarget: 0.1
   m_AvoidObstacles: 1

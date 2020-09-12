@@ -7,7 +7,7 @@ namespace BeastHunter
     {
         #region Constants
 
-        private const float DISTANCE_TO_START_ATTACK = 2f;
+        private const float DISTANCE_TO_START_ATTACK = 1.5f;
         private const float TRIGGER_VIEW_INCREASE = 5f;
 
         #endregion
@@ -71,7 +71,7 @@ namespace BeastHunter
             if(Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target)
                 .sqrMagnitude) <= DISTANCE_TO_START_ATTACK)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Targeting);
             }
         }
 
