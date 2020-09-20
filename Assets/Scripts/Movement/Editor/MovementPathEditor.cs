@@ -6,15 +6,22 @@ namespace BeastHunter
     [CustomEditor(typeof(MovementPath))]
     public class MovementPathEditor : Editor
     {
+        #region Constants
+
+        private const float HANDLE_LENGHT = 0.1f;
+
+        #endregion
+        
+        
         #region Fields
 
         private MovementPath _path;
         private LineRenderer _lineRenderer;
         private SerializedProperty _resolutionProp;
         private SerializedProperty _loopProp;
-        private SerializedProperty _pointsProp;
+        private SerializedProperty _stepsProp;
         private SerializedProperty _colorProp;
-        private static bool _showPoints = true;
+        private static bool _showSteps = true;
 
         #endregion
 
@@ -26,7 +33,7 @@ namespace BeastHunter
             _path = (MovementPath) target;
             _resolutionProp = serializedObject.FindProperty("_resolution");
             _loopProp = serializedObject.FindProperty("_loop");
-            _pointsProp = serializedObject.FindProperty("_points");
+            _stepsProp = serializedObject.FindProperty("_steps");
             _colorProp = serializedObject.FindProperty("_drawColor");
             _lineRenderer = _path.gameObject.GetComponent<LineRenderer>();
             
@@ -51,30 +58,30 @@ namespace BeastHunter
             EditorGUILayout.PropertyField(_loopProp);
             EditorGUILayout.PropertyField(_colorProp);
 
-            _showPoints = EditorGUILayout.Foldout(_showPoints, "Points");
+            _showSteps = EditorGUILayout.Foldout(_showSteps, "Steps");
 
-            if (_showPoints)
+            if (_showSteps)
             {
-                var pointCount = _pointsProp.arraySize;
+                var stepCount = _stepsProp.arraySize;
 
-                for (var i = 0; i < pointCount; i++) DrawPointInspector(_path[i], i);
+                for (var i = 0; i < stepCount; i++) DrawStepInspector(_path[i], i);
 
-                if (GUILayout.Button("Add Point"))
+                if (GUILayout.Button("Add Step"))
                 {
-                    Undo.RegisterSceneUndo("Add Point");
+                    Undo.RegisterSceneUndo("Add Step");
 
-                    var pointObject = new GameObject("Point " + _pointsProp.arraySize);
-                    pointObject.transform.parent = _path.transform;
-                    pointObject.transform.localPosition = Vector3.zero;
-                    var newPoint = pointObject.AddComponent<MovementPoint>();
+                    var stepObject = new GameObject("Step " + _stepsProp.arraySize);
+                    stepObject.transform.parent = _path.transform;
+                    stepObject.transform.localPosition = Vector3.zero;
+                    var newStep = stepObject.AddComponent<MovementStep>();
 
-                    newPoint.HandleStyle = MovementPoint.HandleType.Connected;
-                    newPoint.Path = _path;
-                    newPoint.HandleA = Vector3.right * 0.1f;
-                    newPoint.HandleB = -Vector3.right * 0.1f;
+                    newStep.HandleStyle = MovementHandleType.Connected;
+                    newStep.Path = _path;
+                    newStep.HandleA = Vector3.right * HANDLE_LENGHT;
+                    newStep.HandleB = -Vector3.right * HANDLE_LENGHT;
 
-                    _pointsProp.InsertArrayElementAtIndex(_pointsProp.arraySize);
-                    _pointsProp.GetArrayElementAtIndex(_pointsProp.arraySize - 1).objectReferenceValue = newPoint;
+                    _stepsProp.InsertArrayElementAtIndex(_stepsProp.arraySize);
+                    _stepsProp.GetArrayElementAtIndex(_stepsProp.arraySize - 1).objectReferenceValue = newStep;
                     
                     UpdateLineRenderer();
                 }
@@ -90,7 +97,7 @@ namespace BeastHunter
 
         private void OnSceneGUI()
         {
-            for (var i = 0; i < _path.PointCount; i++) DrawPointSceneGUI(_path[i]);
+            for (var i = 0; i < _path.StepCount; i++) DrawStepSceneGUI(_path[i]);
         }
 
         #endregion
@@ -100,47 +107,47 @@ namespace BeastHunter
 
         private void UpdateLineRenderer()
         {
-            var points = _path.GetPoints();
+            var steps = _path.GetPoints();
 
-            _lineRenderer.positionCount = points.Count;
+            _lineRenderer.positionCount = steps.Count;
             _lineRenderer.loop = _path.Loop;
 
-            for (var i = 0; i < points.Count; i++)
+            for (var i = 0; i < steps.Count; i++)
             {
-                _lineRenderer.SetPosition(i, points[i].Position);
+                _lineRenderer.SetPosition(i, steps[i].Position);
             }
         }
         
-        private void DrawPointInspector(MovementPoint point, int index)
+        private void DrawStepInspector(MovementStep step, int index)
         {
-            var serObj = new SerializedObject(point);
+            var serObj = new SerializedObject(step);
 
             EditorGUILayout.BeginHorizontal();
 
             if (GUILayout.Button("✕", GUILayout.Width(20)))
             {
-                Undo.RegisterSceneUndo("Remove Point");
-                _pointsProp.MoveArrayElement(_path.GetPointIndex(point), _path.PointCount - 1);
-                _pointsProp.arraySize--;
-                DestroyImmediate(point.gameObject);
+                Undo.RegisterSceneUndo("Remove Step");
+                _stepsProp.MoveArrayElement(_path.GetStepIndex(step), _path.StepCount - 1);
+                _stepsProp.arraySize--;
+                DestroyImmediate(step.gameObject);
                 UpdateLineRenderer();
                 return;
             }
 
-            EditorGUILayout.ObjectField(point.gameObject, typeof(GameObject), true);
+            EditorGUILayout.ObjectField(step.gameObject, typeof(GameObject), true);
 
             if (index != 0 && GUILayout.Button("↑", GUILayout.Width(25)))
             {
-                var other = _pointsProp.GetArrayElementAtIndex(index - 1).objectReferenceValue;
-                _pointsProp.GetArrayElementAtIndex(index - 1).objectReferenceValue = point;
-                _pointsProp.GetArrayElementAtIndex(index).objectReferenceValue = other;
+                var other = _stepsProp.GetArrayElementAtIndex(index - 1).objectReferenceValue;
+                _stepsProp.GetArrayElementAtIndex(index - 1).objectReferenceValue = step;
+                _stepsProp.GetArrayElementAtIndex(index).objectReferenceValue = other;
             }
 
-            if (index != _pointsProp.arraySize - 1 && GUILayout.Button("↓", GUILayout.Width(25)))
+            if (index != _stepsProp.arraySize - 1 && GUILayout.Button("↓", GUILayout.Width(25)))
             {
-                var other = _pointsProp.GetArrayElementAtIndex(index + 1).objectReferenceValue;
-                _pointsProp.GetArrayElementAtIndex(index + 1).objectReferenceValue = point;
-                _pointsProp.GetArrayElementAtIndex(index).objectReferenceValue = other;
+                var other = _stepsProp.GetArrayElementAtIndex(index + 1).objectReferenceValue;
+                _stepsProp.GetArrayElementAtIndex(index + 1).objectReferenceValue = step;
+                _stepsProp.GetArrayElementAtIndex(index).objectReferenceValue = other;
             }
 
             EditorGUILayout.EndHorizontal();
@@ -148,80 +155,80 @@ namespace BeastHunter
             EditorGUI.indentLevel++;
             EditorGUI.indentLevel++;
 
-            point.IsGrounded = EditorGUILayout.Toggle("Is Grounded", point.IsGrounded);
-            point.WaitingTime = EditorGUILayout.FloatField("Waiting Time", point.WaitingTime);
-            point.AnimationState = EditorGUILayout.TextField("Animation State", point.AnimationState);
+            step.IsGrounded = EditorGUILayout.Toggle("Is Grounded", step.IsGrounded);
+            step.WaitingTime = EditorGUILayout.FloatField("Waiting Time", step.WaitingTime);
+            step.AnimationState = EditorGUILayout.TextField("Animation State", step.AnimationState);
 
-            var newHandleType = (MovementPoint.HandleType) EditorGUILayout.EnumPopup("Handle Type", point.HandleStyle);
+            var newMovementHandleType = (MovementHandleType) EditorGUILayout.EnumPopup("Handle Type", step.HandleStyle);
 
-            if (newHandleType != point.HandleStyle)
+            if (newMovementHandleType != step.HandleStyle)
             {
-                point.HandleStyle = newHandleType;
+                step.HandleStyle = newMovementHandleType;
 
-                switch (newHandleType)
+                switch (newMovementHandleType)
                 {
-                    case MovementPoint.HandleType.Connected:
-                        if (point.HandleA != Vector3.zero)
+                    case MovementHandleType.Connected:
+                        if (step.HandleA != Vector3.zero)
                         {
-                            point.HandleB = -point.HandleA;
+                            step.HandleB = -step.HandleA;
                         }
-                        else if (point.HandleB != Vector3.zero)
+                        else if (step.HandleB != Vector3.zero)
                         {
-                            point.HandleA = -point.HandleB;
+                            step.HandleA = -step.HandleB;
                         }
                         else
                         {
-                            point.HandleA = new Vector3(0.1f, 0, 0);
-                            point.HandleB = new Vector3(-0.1f, 0, 0);
+                            step.HandleA = new Vector3(HANDLE_LENGHT, 0, 0);
+                            step.HandleB = new Vector3(-HANDLE_LENGHT, 0, 0);
                         }
 
                         break;
-                    case MovementPoint.HandleType.Broken:
-                        if (point.HandleA == Vector3.zero && point.HandleB == Vector3.zero)
+                    case MovementHandleType.Broken:
+                        if (step.HandleA == Vector3.zero && step.HandleB == Vector3.zero)
                         {
-                            point.HandleA = new Vector3(0.1f, 0, 0);
-                            point.HandleB = new Vector3(-0.1f, 0, 0);
+                            step.HandleA = new Vector3(HANDLE_LENGHT, 0, 0);
+                            step.HandleB = new Vector3(-HANDLE_LENGHT, 0, 0);
                         }
 
                         break;
+                    case MovementHandleType.None:
                     default:
-                    case MovementPoint.HandleType.None:
-                        point.HandleA = Vector3.zero;
-                        point.HandleB = Vector3.zero;
+                        step.HandleA = Vector3.zero;
+                        step.HandleB = Vector3.zero;
                         break;
                 }
             }
 
-            var newPointPos = EditorGUILayout.Vector3Field("Position", point.LocalPosition);
-            if (newPointPos != point.LocalPosition)
+            var newStepPos = EditorGUILayout.Vector3Field("Position", step.LocalPosition);
+            if (newStepPos != step.LocalPosition)
             {
-                Undo.RegisterCompleteObjectUndo(point.transform, "Move Path Point");
-                point.LocalPosition = newPointPos;
+                Undo.RegisterCompleteObjectUndo(step.transform, "Move Path Step");
+                step.LocalPosition = newStepPos;
             }
 
-            if (point.HandleStyle != MovementPoint.HandleType.None)
+            if (step.HandleStyle != MovementHandleType.None)
             {
-                var newHandleA = EditorGUILayout.Vector3Field("Handle A", point.HandleA);
-                var newHandleB = EditorGUILayout.Vector3Field("Handle B", point.HandleB);
+                var newHandleA = EditorGUILayout.Vector3Field("Handle A", step.HandleA);
+                var newHandleB = EditorGUILayout.Vector3Field("Handle B", step.HandleB);
 
-                if (point.HandleStyle != MovementPoint.HandleType.Connected)
+                if (step.HandleStyle != MovementHandleType.Connected)
                 {
-                    if (newHandleA != point.HandleA)
+                    if (newHandleA != step.HandleA)
                     {
-                        point.HandleA = newHandleA;
-                        point.HandleB = -newHandleA;
+                        step.HandleA = newHandleA;
+                        step.HandleB = -newHandleA;
                     }
 
-                    else if (newHandleB != point.HandleB)
+                    else if (newHandleB != step.HandleB)
                     {
-                        point.HandleA = -newHandleB;
-                        point.HandleB = newHandleB;
+                        step.HandleA = -newHandleB;
+                        step.HandleB = newHandleB;
                     }
                 }
                 else
                 {
-                    point.HandleA = newHandleA;
-                    point.HandleB = newHandleB;
+                    step.HandleA = newHandleA;
+                    step.HandleB = newHandleB;
                 }
             }
 
@@ -236,55 +243,55 @@ namespace BeastHunter
             }
         }
 
-        private static void DrawPointSceneGUI(MovementPoint point)
+        private static void DrawStepSceneGUI(MovementStep step)
         {
-            Handles.Label(point.Position + new Vector3(0, HandleUtility.GetHandleSize(point.Position) * 0.4f, 0),
-                point.gameObject.name);
+            Handles.Label(step.Position + new Vector3(0, HandleUtility.GetHandleSize(step.Position) * 0.4f, 0),
+                step.gameObject.name);
 
             Handles.color = Color.green;
-            var newPosition = Handles.FreeMoveHandle(point.Position, point.Rotation,
-                HandleUtility.GetHandleSize(point.Position) * 0.1f, Vector3.zero, Handles.RectangleHandleCap);
+            var newPosition = Handles.FreeMoveHandle(step.Position, step.Rotation,
+                HandleUtility.GetHandleSize(step.Position) * HANDLE_LENGHT, Vector3.zero, Handles.RectangleHandleCap);
 
-            if (newPosition != point.Position)
+            if (newPosition != step.Position)
             {
-                Undo.RegisterCompleteObjectUndo(point.transform, "Move Point");
-                point.Position = newPosition;
+                Undo.RegisterCompleteObjectUndo(step.transform, "Move Step");
+                step.Position = newPosition;
             }
 
-            if (point.HandleStyle != MovementPoint.HandleType.None)
+            if (step.HandleStyle != MovementHandleType.None)
             {
                 Handles.color = Color.cyan;
-                var newGlobal1 = Handles.FreeMoveHandle(point.GlobalHandleA, point.Rotation,
-                    HandleUtility.GetHandleSize(point.GlobalHandleA) * 0.075f, Vector3.zero, Handles.CircleHandleCap);
-                if (point.GlobalHandleA != newGlobal1)
+                var newGlobalA = Handles.FreeMoveHandle(step.GlobalHandleA, step.Rotation,
+                    HandleUtility.GetHandleSize(step.GlobalHandleA) * HANDLE_LENGHT, Vector3.zero, Handles.CircleHandleCap);
+                if (step.GlobalHandleA != newGlobalA)
                 {
-                    Undo.RegisterCompleteObjectUndo(point, "Move Handle");
-                    point.GlobalHandleA = newGlobal1;
-                    if (point.HandleStyle == MovementPoint.HandleType.Connected)
-                        point.GlobalHandleB = -(newGlobal1 - point.Position) + point.Position;
+                    Undo.RegisterCompleteObjectUndo(step, "Move Handle");
+                    step.GlobalHandleA = newGlobalA;
+                    if (step.HandleStyle == MovementHandleType.Connected)
+                        step.GlobalHandleB = -(newGlobalA - step.Position) + step.Position;
                 }
 
-                var newGlobal2 = Handles.FreeMoveHandle(point.GlobalHandleB, point.Rotation,
-                    HandleUtility.GetHandleSize(point.GlobalHandleB) * 0.075f, Vector3.zero, Handles.CircleHandleCap);
-                if (point.GlobalHandleB != newGlobal2)
+                var newGlobalB = Handles.FreeMoveHandle(step.GlobalHandleB, step.Rotation,
+                    HandleUtility.GetHandleSize(step.GlobalHandleB) * HANDLE_LENGHT, Vector3.zero, Handles.CircleHandleCap);
+                if (step.GlobalHandleB != newGlobalB)
                 {
-                    Undo.RegisterCompleteObjectUndo(point, "Move Handle");
-                    point.GlobalHandleB = newGlobal2;
-                    if (point.HandleStyle == MovementPoint.HandleType.Connected)
-                        point.GlobalHandleA = -(newGlobal2 - point.Position) + point.Position;
+                    Undo.RegisterCompleteObjectUndo(step, "Move Handle");
+                    step.GlobalHandleB = newGlobalB;
+                    if (step.HandleStyle == MovementHandleType.Connected)
+                        step.GlobalHandleA = -(newGlobalB - step.Position) + step.Position;
                 }
 
                 Handles.color = Color.yellow;
-                Handles.DrawLine(point.Position, point.GlobalHandleA);
-                Handles.DrawLine(point.Position, point.GlobalHandleB);
+                Handles.DrawLine(step.Position, step.GlobalHandleA);
+                Handles.DrawLine(step.Position, step.GlobalHandleB);
             }
         }
 
-        public static void DrawOtherPoints(MovementPath path, MovementPoint caller)
+        public static void DrawOtherSteps(MovementPath path, MovementStep caller)
         {
-            foreach (var p in path.GetAnchorPoints())
+            foreach (var p in path.GetAnchorSteps())
                 if (p != caller)
-                    DrawPointSceneGUI(p);
+                    DrawStepSceneGUI(p);
         }
 
         [MenuItem("GameObject/Create Other/Movement Path")]
@@ -295,20 +302,20 @@ namespace BeastHunter
             var path = pathObject.AddComponent<MovementPath>();
             var lineRenderer = pathObject.AddComponent<LineRenderer>(); 
 
-            var p1 = path.AddPointAt(Vector3.forward * 0.5f);
-            p1.HandleStyle = MovementPoint.HandleType.Connected;
+            var p1 = path.AddStepAt(Vector3.forward * 0.5f);
+            p1.HandleStyle = MovementHandleType.Connected;
             p1.HandleA = new Vector3(-0.28f, 0, 0);
 
-            var p2 = path.AddPointAt(Vector3.right * 0.5f);
-            p2.HandleStyle = MovementPoint.HandleType.Connected;
+            var p2 = path.AddStepAt(Vector3.right * 0.5f);
+            p2.HandleStyle = MovementHandleType.Connected;
             p2.HandleA = new Vector3(0, 0, 0.28f);
 
-            var p3 = path.AddPointAt(-Vector3.forward * 0.5f);
-            p3.HandleStyle = MovementPoint.HandleType.Connected;
+            var p3 = path.AddStepAt(-Vector3.forward * 0.5f);
+            p3.HandleStyle = MovementHandleType.Connected;
             p3.HandleA = new Vector3(0.28f, 0, 0);
 
-            var p4 = path.AddPointAt(-Vector3.right * 0.5f);
-            p4.HandleStyle = MovementPoint.HandleType.Connected;
+            var p4 = path.AddStepAt(-Vector3.right * 0.5f);
+            p4.HandleStyle = MovementHandleType.Connected;
             p4.HandleA = new Vector3(0, 0, -0.28f);
 
             path.Loop = true;

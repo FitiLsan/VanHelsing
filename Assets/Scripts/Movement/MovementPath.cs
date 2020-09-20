@@ -7,24 +7,11 @@ namespace BeastHunter
 {
     [ExecuteInEditMode]
     [Serializable]
-    public sealed class MovementPath : MonoBehaviour
+    public sealed partial class MovementPath : MonoBehaviour
     {
-        #region PrivateData
-
-        public class Point
-        {
-            public Vector3 Position { get; set; }
-            public bool IsGrounded { get; set; }
-            public float WaitingTime { get; set; }
-            public string AnimationState { get; set; }
-        }
-
-        #endregion
-
-
         #region Fields
 
-        [SerializeField] private MovementPoint[] _points = new MovementPoint[0];
+        [SerializeField] private List<MovementStep> _steps = new List<MovementStep>();
         [SerializeField] [Min(1)] private int _resolution = 10;
         [SerializeField] private Color _drawColor = Color.magenta;
         [SerializeField] private bool _loop;
@@ -35,7 +22,7 @@ namespace BeastHunter
 
         #region Properties
 
-        public MovementPoint this[int index] => _points[index];
+        public MovementStep this[int index] => _steps[index];
 
         public bool Dirty { get; private set; }
 
@@ -51,28 +38,7 @@ namespace BeastHunter
             }
         }
 
-        public int PointCount => _points.Length;
-
-        public float Length
-        {
-            get
-            {
-                if (Dirty)
-                {
-                    _length = 0;
-
-                    for (var i = 0; i < _points.Length - 1; i++)
-                        _length += ApproximateLength(_points[i], _points[i + 1], _resolution);
-
-                    if (Loop)
-                        _length += ApproximateLength(_points[_points.Length - 1], _points[0], _resolution);
-
-                    Dirty = false;
-                }
-
-                return _length;
-            }
-        }
+        public int StepCount => _steps.Count;
 
         #endregion
 
@@ -83,30 +49,30 @@ namespace BeastHunter
         {
             Gizmos.color = _drawColor;
 
-            var points = GetPoints();
+            var steps = GetPoints();
 
-            if (points.Count > 1)
+            if (steps.Count > 1)
             {
-                for (var i = 0; i < points.Count - 1; i++)
+                for (var i = 0; i < steps.Count - 1; i++)
                 {
-                    var currentPoint = points[i].Position;
-                    currentPoint.y += .1f;
+                    var currentStep = steps[i].Position;
+                    currentStep.y += .1f;
 
-                    var nextPoint = points[i + 1].Position;
-                    nextPoint.y += .1f;
+                    var nextStep = steps[i + 1].Position;
+                    nextStep.y += .1f;
 
-                    Gizmos.DrawLine(currentPoint, nextPoint);
+                    Gizmos.DrawLine(currentStep, nextStep);
                 }
 
                 if (Loop)
                 {
-                    var currentPoint = points[points.Count - 1].Position;
-                    currentPoint.y += .1f;
+                    var currentStep = steps[steps.Count - 1].Position;
+                    currentStep.y += .1f;
 
-                    var nextPoint = points[0].Position;
-                    nextPoint.y += .1f;
+                    var nextStep = steps[0].Position;
+                    nextStep.y += .1f;
 
-                    Gizmos.DrawLine(currentPoint, nextPoint);
+                    Gizmos.DrawLine(currentStep, nextStep);
                 }
             }
         }
@@ -121,59 +87,77 @@ namespace BeastHunter
 
         #region Methods
 
-        public void AddPoint(MovementPoint point)
+        public void AddStep(MovementStep step)
         {
-            var tempArray = new List<MovementPoint>(_points) {point};
+            var tempArray = new List<MovementStep>(_steps) {step};
 
-            _points = tempArray.ToArray();
+            _steps = tempArray;
             Dirty = true;
         }
 
-        public MovementPoint AddPointAt(Vector3 position)
+        public MovementStep AddStepAt(Vector3 position)
         {
-            var pointObject = new GameObject("Point " + PointCount);
+            var stepObject = new GameObject("Step " + StepCount);
 
-            pointObject.transform.parent = transform;
-            pointObject.transform.position = position;
+            stepObject.transform.parent = transform;
+            stepObject.transform.position = position;
 
-            var newPoint = pointObject.AddComponent<MovementPoint>();
-            newPoint.Path = this;
+            var newStep = stepObject.AddComponent<MovementStep>();
+            newStep.Path = this;
 
-            return newPoint;
+            return newStep;
         }
 
-        public void RemovePoint(MovementPoint point)
+        public void RemoveStep(MovementStep step)
         {
-            var tempArray = new List<MovementPoint>(_points);
-            tempArray.Remove(point);
-            _points = tempArray.ToArray();
+            var tempArray = new List<MovementStep>(_steps);
+            tempArray.Remove(step);
+            _steps = tempArray;
             Dirty = false;
         }
 
-        public MovementPoint[] GetAnchorPoints()
+        public List<MovementStep> GetAnchorSteps()
         {
-            return (MovementPoint[]) _points.Clone();
+            return _steps;
+        }
+        
+        public float GetLength()
+        {
+            if (Dirty)
+            {
+                _length = 0;
+
+                for (var i = 0; i < _steps.Count - 1; i++)
+                    _length += ApproximateLength(_steps[i], _steps[i + 1], _resolution);
+
+                if (Loop)
+                    _length += ApproximateLength(_steps[_steps.Count - 1], _steps[0], _resolution);
+
+                Dirty = false;
+            }
+
+            return _length;
         }
 
-        public Vector3 GetPointAt(float t)
+        public Vector3 GetStepAt(float t)
         {
-            if (t <= 0) return _points[0].Position;
-            if (t >= 1) return _points[_points.Length - 1].Position;
+            if (t <= 0) return _steps[0].Position;
+            if (t >= 1) return _steps[_steps.Count - 1].Position;
 
             var totalPercent = 0f;
             var curvePercent = 0f;
 
-            MovementPoint pointA = null;
-            MovementPoint pointB = null;
+            MovementStep stepA = null;
+            MovementStep stepB = null;
 
-            for (var i = 0; i < _points.Length - 1; i++)
+            for (var i = 0; i < _steps.Count - 1; i++)
             {
-                curvePercent = ApproximateLength(_points[i], _points[i + 1]) / Length;
+                curvePercent = ApproximateLength(_steps[i], _steps[i + 1]) / GetLength();
 
                 if (totalPercent + curvePercent > t)
                 {
-                    pointA = _points[i];
-                    pointB = _points[i + 1];
+                    stepA = _steps[i];
+                    stepB = _steps[i + 1];
 
                     break;
                 }
@@ -181,23 +165,23 @@ namespace BeastHunter
                 totalPercent += curvePercent;
             }
 
-            if (Loop && pointA == null)
+            if (Loop && stepA == null)
             {
-                pointA = _points[_points.Length - 1];
-                pointB = _points[0];
+                stepA = _steps[_steps.Count - 1];
+                stepB = _steps[0];
             }
 
             t -= totalPercent;
 
-            return GetPoint(pointA, pointB, t / curvePercent);
+            return GetStep(stepA, stepB, t / curvePercent);
         }
 
-        public int GetPointIndex(MovementPoint point)
+        public int GetStepIndex(MovementStep step)
         {
             var result = -1;
 
-            for (var i = 0; i < _points.Length; i++)
-                if (_points[i] == point)
+            for (var i = 0; i < _steps.Count; i++)
+                if (_steps[i] == step)
                 {
                     result = i;
 
@@ -207,61 +191,61 @@ namespace BeastHunter
             return result;
         }
 
-        public List<Point> GetPoints()
+        public List<MovementPoint> GetPoints()
         {
-            var result = new List<Point>();
+            var result = new List<MovementPoint>();
 
-            if (_points.Length > 0)
+            if (_steps.Count > 0)
             {
-                for (var i = 0; i < _points.Length - 1; i++)
+                for (var i = 0; i < _steps.Count - 1; i++)
                 {
-                    result.Add(new Point()
+                    result.Add(new MovementPoint()
                     {
-                        Position = _points[i].Position,
-                        IsGrounded = _points[i].IsGrounded,
-                        WaitingTime = _points[i].WaitingTime,
-                        AnimationState = _points[i].AnimationState
+                        Position = _steps[i].Position,
+                        IsGrounded = _steps[i].IsGrounded,
+                        WaitingTime = _steps[i].WaitingTime,
+                        AnimationState = _steps[i].AnimationState
                     });
 
                     for (var j = 1; j < _resolution; j++)
                     {
-                        var currentPosition = GetPoint(_points[i], _points[i + 1], j / (float) _resolution);
+                        var currentPosition = GetStep(_steps[i], _steps[i + 1], j / (float) _resolution);
 
-                        result.Add(new Point()
+                        result.Add(new MovementPoint()
                         {
-                            Position = _points[i].IsGrounded
+                            Position = _steps[i].IsGrounded
                                 ? PhysicsService.GetGroundedPositionStatic(currentPosition)
                                 : currentPosition,
-                            IsGrounded = _points[i].IsGrounded,
+                            IsGrounded = _steps[i].IsGrounded,
                             WaitingTime = 0,
-                            AnimationState = MovementPoint.DEFAULT_ANIMATION_STATE
+                            AnimationState = MovementStep.DEFAULT_ANIMATION_STATE
                         });
                     }
                 }
 
-                var lastIndex = _points.Length - 1;
+                var lastIndex = _steps.Count - 1;
 
-                result.Add(new Point()
+                result.Add(new MovementPoint()
                 {
-                    Position = _points[lastIndex].Position,
-                    IsGrounded = _points[lastIndex].IsGrounded,
-                    WaitingTime = _points[lastIndex].WaitingTime,
-                    AnimationState = _points[lastIndex].AnimationState
+                    Position = _steps[lastIndex].Position,
+                    IsGrounded = _steps[lastIndex].IsGrounded,
+                    WaitingTime = _steps[lastIndex].WaitingTime,
+                    AnimationState = _steps[lastIndex].AnimationState
                 });
 
                 if (Loop)
                     for (var j = 1; j < _resolution; j++)
                     {
-                        var currentPosition = GetPoint(_points[lastIndex], _points[0], j / (float) _resolution);
+                        var currentPosition = GetStep(_steps[lastIndex], _steps[0], j / (float) _resolution);
 
-                        result.Add(new Point()
+                        result.Add(new MovementPoint()
                         {
-                            Position = _points[lastIndex].IsGrounded
+                            Position = _steps[lastIndex].IsGrounded
                                 ? PhysicsService.GetGroundedPositionStatic(currentPosition)
                                 : currentPosition,
-                            IsGrounded = _points[lastIndex].IsGrounded,
+                            IsGrounded = _steps[lastIndex].IsGrounded,
                             WaitingTime = 0,
-                            AnimationState = MovementPoint.DEFAULT_ANIMATION_STATE
+                            AnimationState = MovementStep.DEFAULT_ANIMATION_STATE
                         });
                     }
             }
@@ -274,76 +258,76 @@ namespace BeastHunter
             Dirty = true;
         }
 
-        public static Vector3 GetPoint(MovementPoint pointA, MovementPoint pointB, float t)
+        public static Vector3 GetStep(MovementStep stepA, MovementStep stepB, float t)
         {
-            if (pointA.HandleB != Vector3.zero)
+            if (stepA.HandleB != Vector3.zero)
             {
-                if (pointB.HandleA != Vector3.zero)
-                    return GetCubicCurvePoint(pointA.Position, pointA.GlobalHandleB, pointB.GlobalHandleA,
-                        pointB.Position, t);
+                if (stepB.HandleA != Vector3.zero)
+                    return GetCubicCurveStep(stepA.Position, stepA.GlobalHandleB, stepB.GlobalHandleA,
+                        stepB.Position, t);
 
-                return GetQuadraticCurvePoint(pointA.Position, pointA.GlobalHandleB, pointB.Position, t);
+                return GetQuadraticCurveStep(stepA.Position, stepA.GlobalHandleB, stepB.Position, t);
             }
 
-            if (pointB.HandleA != Vector3.zero)
-                return GetQuadraticCurvePoint(pointA.Position, pointB.GlobalHandleA, pointB.Position, t);
+            if (stepB.HandleA != Vector3.zero)
+                return GetQuadraticCurveStep(stepA.Position, stepB.GlobalHandleA, stepB.Position, t);
 
-            return GetLinearPoint(pointA.Position, pointB.Position, t);
+            return GetLinearStep(stepA.Position, stepB.Position, t);
         }
 
-        public static Vector3 GetCubicCurvePoint(Vector3 pointA, Vector3 pointB, Vector3 p3, Vector3 p4, float t)
+        public static Vector3 GetCubicCurveStep(Vector3 stepA, Vector3 stepB, Vector3 p3, Vector3 p4, float t)
         {
             t = Mathf.Clamp01(t);
 
-            var part1 = Mathf.Pow(1 - t, 3) * pointA;
-            var part2 = 3 * Mathf.Pow(1 - t, 2) * t * pointB;
+            var part1 = Mathf.Pow(1 - t, 3) * stepA;
+            var part2 = 3 * Mathf.Pow(1 - t, 2) * t * stepB;
             var part3 = 3 * (1 - t) * Mathf.Pow(t, 2) * p3;
             var part4 = Mathf.Pow(t, 3) * p4;
 
             return part1 + part2 + part3 + part4;
         }
 
-        public static Vector3 GetQuadraticCurvePoint(Vector3 pointA, Vector3 pointB, Vector3 p3, float t)
+        public static Vector3 GetQuadraticCurveStep(Vector3 stepA, Vector3 stepB, Vector3 p3, float t)
         {
             t = Mathf.Clamp01(t);
 
-            var part1 = Mathf.Pow(1 - t, 2) * pointA;
-            var part2 = 2 * (1 - t) * t * pointB;
+            var part1 = Mathf.Pow(1 - t, 2) * stepA;
+            var part2 = 2 * (1 - t) * t * stepB;
             var part3 = Mathf.Pow(t, 2) * p3;
 
             return part1 + part2 + part3;
         }
 
-        public static Vector3 GetLinearPoint(Vector3 pointA, Vector3 pointB, float t)
+        public static Vector3 GetLinearStep(Vector3 stepA, Vector3 stepB, float t)
         {
-            return pointA + (pointB - pointA) * t;
+            return stepA + (stepB - stepA) * t;
         }
 
-        public static Vector3 GetPoint(float t, params Vector3[] points)
+        public static Vector3 GetStep(float t, params Vector3[] steps)
         {
             t = Mathf.Clamp01(t);
 
-            var order = points.Length - 1;
-            var point = Vector3.zero;
+            var order = steps.Length - 1;
+            var step = Vector3.zero;
 
-            for (var i = 0; i < points.Length; i++)
+            for (var i = 0; i < steps.Length; i++)
             {
-                var vectorToAdd = points[points.Length - i - 1] *
+                var vectorToAdd = steps[steps.Length - i - 1] *
                                   (BinomialCoefficient(i, order) * Mathf.Pow(t, order - i) * Mathf.Pow(1 - t, i));
-                point += vectorToAdd;
+                step += vectorToAdd;
             }
 
-            return point;
+            return step;
         }
 
-        public static float ApproximateLength(MovementPoint pointA, MovementPoint pointB, int resolution = 10)
+        public static float ApproximateLength(MovementStep stepA, MovementStep stepB, int resolution = 10)
         {
             var total = 0f;
-            var lastPosition = pointA.Position;
+            var lastPosition = stepA.Position;
 
             for (var i = 0; i < resolution + 1; i++)
             {
-                var currentPosition = GetPoint(pointA, pointB, i / (float) resolution);
+                var currentPosition = GetStep(stepA, stepB, i / (float) resolution);
 
                 total += (currentPosition - lastPosition).magnitude;
                 lastPosition = currentPosition;

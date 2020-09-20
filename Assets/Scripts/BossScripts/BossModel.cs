@@ -46,7 +46,7 @@ namespace BeastHunter
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
 
-        public MovementPath.Point[] MovementPoints { get; set; }
+        public MovementPoint[] MovementPoints { get; set; }
         
         public bool MovementLoop { get; set; }
 

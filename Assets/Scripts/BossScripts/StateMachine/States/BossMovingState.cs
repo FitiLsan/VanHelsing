@@ -17,10 +17,10 @@ namespace BeastHunter
         #region Fields
 
         private readonly NavMeshPath _navMeshPath;
-        private readonly MovementPath.Point[] _movementPoints;
+        private readonly MovementPoint[] _movementPoints;
         private readonly bool _movementLoop;
-        private readonly IEnumerator<MovementPath.Point> _pointsEnumerator;
-        private MovementPath.Point _currentPoint;
+        private readonly IEnumerator<MovementPoint> _pointsEnumerator;
+        private MovementPoint _currentPoint;
         private string _lastAnimationState;
         private Vector3 _target;
         private Vector3 _checkTargetPosition;
@@ -34,7 +34,7 @@ namespace BeastHunter
 
         #region Properties
 
-        private IEnumerable<MovementPath.Point> Points
+        private IEnumerable<MovementPoint> Points
         {
             get
             {
@@ -78,7 +78,7 @@ namespace BeastHunter
             _isWaiting = false;
             _stuckTime = STUCK_TIME_COUNT;
             _waitingTime = 0f;
-            _lastAnimationState = "MovingState";
+            _lastAnimationState = MovementStep.DEFAULT_ANIMATION_STATE;
             _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
             _stateMachine._model.BossAnimator.Play(_lastAnimationState);
         }
@@ -101,6 +101,9 @@ namespace BeastHunter
 
         private void CheckTarget()
         {
+            //Services.SharedInstance.UnityTimeService
+            
+            
             if (_isWaiting)
             {
                 _waitingTime -= Time.deltaTime;
@@ -116,7 +119,7 @@ namespace BeastHunter
             {
                 _currentPoint = GetNextPoint();
 
-                if (_currentPoint is null)
+                if (_currentPoint.Equals(null))
                 {
                     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
                 }
@@ -177,7 +180,7 @@ namespace BeastHunter
             }
         }
 
-        private MovementPath.Point GetNextPoint()
+        private MovementPoint GetNextPoint()
         {
             return _pointsEnumerator.MoveNext()
                 ? _pointsEnumerator.Current
