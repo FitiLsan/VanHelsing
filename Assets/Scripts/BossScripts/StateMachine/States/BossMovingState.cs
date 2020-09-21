@@ -96,6 +96,7 @@ namespace BeastHunter
         {
             _stateMachine._model.BossNavAgent.autoBraking = true;
             _waitingTimer.RemoveTimeRemaining();
+            _stuckTimer.RemoveTimeRemaining();
         }
 
         public override void OnTearDown()
