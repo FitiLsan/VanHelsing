@@ -32,6 +32,7 @@ namespace BeastHunter
             {
                 value.Time = newTime;
             }
+            value.IsActive = true;
             value.CurrentTime = value.Time;
             _timeRemainings.Add(value);
         }
@@ -42,6 +43,7 @@ namespace BeastHunter
             {
                 return;
             }
+            value.IsActive = false;
             _timeRemainings.Remove(value);
         }
         
