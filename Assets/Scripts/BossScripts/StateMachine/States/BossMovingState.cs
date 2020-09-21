@@ -26,9 +26,9 @@ namespace BeastHunter
         private Vector3 _checkTargetPosition;
         private bool _isTargetSet;
         private bool _isWaiting;
-        private float _stuckTime;
         private float _waitingTime;
         private TimeRemaining _waitingTimer;
+        private TimeRemaining _stuckTimer;
 
         #endregion
 
@@ -77,12 +77,12 @@ namespace BeastHunter
             CanBeOverriden = true;
             _isTargetSet = false;
             _isWaiting = false;
-            _stuckTime = STUCK_TIME_COUNT;
             _waitingTime = 0f;
             _lastAnimationState = MovementStep.DEFAULT_ANIMATION_STATE;
             _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
             _stateMachine._model.BossAnimator.Play(_lastAnimationState);
             _waitingTimer = new TimeRemaining(() => _isWaiting = false, _waitingTime);
+            _stuckTimer = new TimeRemaining(() => _isTargetSet = false, STUCK_TIME_COUNT);
         }
 
         public override void Execute()
@@ -116,7 +116,6 @@ namespace BeastHunter
                 {
                     _checkTargetPosition = _currentPoint.Position;
                     _waitingTime = _currentPoint.WaitingTime;
-                    _stuckTime = STUCK_TIME_COUNT;
 
                     _stateMachine._model.BossNavAgent.autoBraking = _waitingTime > 0;
                     _stateMachine._model.BossNavAgent.CalculatePath(_checkTargetPosition, _navMeshPath);
@@ -139,18 +138,12 @@ namespace BeastHunter
         
         private void CheckStuck()
         {
-            if (_isTargetSet && !_isWaiting && _stateMachine._model.CurrentSpeed == 0)
+            if (_isTargetSet && !_isWaiting)
             {
-                if(_stuckTime > 0)
-                {
-                    _stuckTime -= Time.deltaTime;
-
-                    if(_stuckTime <= 0)
-                    {
-                        _isTargetSet = false;
-                        _stuckTime = STUCK_TIME_COUNT;
-                    }
-                }
+                if (_stateMachine._model.CurrentSpeed == 0)
+                    _stuckTimer.AddTimeRemaining(STUCK_TIME_COUNT);
+                else
+                    _stuckTimer.RemoveTimeRemaining();
             }
         }
         
@@ -166,6 +159,8 @@ namespace BeastHunter
                     _waitingTimer.AddTimeRemaining(_waitingTime);
                 else
                     _waitingTimer.RemoveTimeRemaining();
+                
+                _stuckTimer.RemoveTimeRemaining();
 
                 if (_lastAnimationState != _currentPoint.AnimationState)
                 {

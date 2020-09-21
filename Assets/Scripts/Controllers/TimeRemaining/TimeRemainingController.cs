@@ -38,7 +38,6 @@ namespace BeastHunter
                     obj?.Method?.Invoke();
                     if (!obj.IsRepeating)
                     {
-                        obj.IsActive = false;
                         obj.RemoveTimeRemaining();
                     }
                     else
