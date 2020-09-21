@@ -49,16 +49,16 @@ namespace BeastHunter
         {
             Gizmos.color = _drawColor;
 
-            var steps = GetPoints();
+            var points = GetPoints();
 
-            if (steps.Count > 1)
+            if (points.Count > 1)
             {
-                for (var i = 0; i < steps.Count - 1; i++)
+                for (var i = 0; i < points.Count - 1; i++)
                 {
-                    var currentStep = steps[i].Position;
+                    var currentStep = points[i].Position;
                     currentStep.y += .1f;
 
-                    var nextStep = steps[i + 1].Position;
+                    var nextStep = points[i + 1].Position;
                     nextStep.y += .1f;
 
                     Gizmos.DrawLine(currentStep, nextStep);
@@ -66,10 +66,10 @@ namespace BeastHunter
 
                 if (Loop)
                 {
-                    var currentStep = steps[steps.Count - 1].Position;
+                    var currentStep = points[points.Count - 1].Position;
                     currentStep.y += .1f;
 
-                    var nextStep = steps[0].Position;
+                    var nextStep = points[0].Position;
                     nextStep.y += .1f;
 
                     Gizmos.DrawLine(currentStep, nextStep);

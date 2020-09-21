@@ -28,6 +28,7 @@ namespace BeastHunter
         private bool _isWaiting;
         private float _stuckTime;
         private float _waitingTime;
+        private TimeRemaining _waitingTimer;
 
         #endregion
 
@@ -81,6 +82,7 @@ namespace BeastHunter
             _lastAnimationState = MovementStep.DEFAULT_ANIMATION_STATE;
             _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
             _stateMachine._model.BossAnimator.Play(_lastAnimationState);
+            _waitingTimer = new TimeRemaining(() => _isWaiting = false, _waitingTime);
         }
 
         public override void Execute()
@@ -93,6 +95,7 @@ namespace BeastHunter
         public override void OnExit()
         {
             _stateMachine._model.BossNavAgent.autoBraking = true;
+            _waitingTimer.RemoveTimeRemaining();
         }
 
         public override void OnTearDown()
@@ -101,20 +104,6 @@ namespace BeastHunter
 
         private void CheckTarget()
         {
-            //Services.SharedInstance.UnityTimeService
-            
-            
-            if (_isWaiting)
-            {
-                _waitingTime -= Time.deltaTime;
-
-                if(_waitingTime <= 0)
-                {
-                    _isWaiting = false;
-                    _waitingTime = 0f;
-                }
-            }
-            
             if (!_isTargetSet && !_isWaiting)
             {
                 _currentPoint = GetNextPoint();
@@ -127,6 +116,7 @@ namespace BeastHunter
                 {
                     _checkTargetPosition = _currentPoint.Position;
                     _waitingTime = _currentPoint.WaitingTime;
+                    _stuckTime = STUCK_TIME_COUNT;
 
                     _stateMachine._model.BossNavAgent.autoBraking = _waitingTime > 0;
                     _stateMachine._model.BossNavAgent.CalculatePath(_checkTargetPosition, _navMeshPath);
@@ -171,7 +161,12 @@ namespace BeastHunter
             {
                 _isTargetSet = false;
                 _isWaiting = _waitingTime > 0;
-                
+
+                if (_isWaiting)
+                    _waitingTimer.AddTimeRemaining(_waitingTime);
+                else
+                    _waitingTimer.RemoveTimeRemaining();
+
                 if (_lastAnimationState != _currentPoint.AnimationState)
                 {
                     _lastAnimationState = _currentPoint.AnimationState;
