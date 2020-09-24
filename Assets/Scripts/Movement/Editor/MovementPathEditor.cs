@@ -120,6 +120,8 @@ namespace BeastHunter
         
         private void DrawStepInspector(MovementStep step, int index)
         {
+            if (step == null) return;
+
             var serObj = new SerializedObject(step);
 
             EditorGUILayout.BeginHorizontal();
@@ -129,6 +131,7 @@ namespace BeastHunter
                 Undo.RegisterSceneUndo("Remove Step");
                 _stepsProp.MoveArrayElement(_path.GetStepIndex(step), _path.StepCount - 1);
                 _stepsProp.arraySize--;
+                _path.RemoveStep(step);
                 DestroyImmediate(step.gameObject);
                 UpdateLineRenderer();
                 return;
@@ -245,6 +248,8 @@ namespace BeastHunter
 
         private static void DrawStepSceneGUI(MovementStep step)
         {
+            if (step == null) return;
+            
             Handles.Label(step.Position + new Vector3(0, HandleUtility.GetHandleSize(step.Position) * 0.4f, 0),
                 step.gameObject.name);
 

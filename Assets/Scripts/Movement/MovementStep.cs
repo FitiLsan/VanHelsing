@@ -169,6 +169,11 @@ namespace BeastHunter
             }
         }
 
+        private void OnDestroy()
+        {
+            _path.RemoveStep(this);
+        }
+
         #endregion
     }
 }

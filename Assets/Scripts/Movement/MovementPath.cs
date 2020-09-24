@@ -22,7 +22,7 @@ namespace BeastHunter
 
         #region Properties
 
-        public MovementStep this[int index] => _steps[index];
+        public MovementStep this[int index] => index < _steps.Count ? _steps[index] : null;
 
         public bool Dirty { get; private set; }
 
