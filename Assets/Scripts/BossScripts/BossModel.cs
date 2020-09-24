@@ -137,7 +137,12 @@ namespace BeastHunter
             }
 
             GameObject movement = GameObject.Instantiate(BossData._movementPrefab);
-            MovementPath movementPath = movement.GetComponent<MovementPath>() ?? movement.AddComponent<MovementPath>();
+            MovementPath movementPath = movement.GetComponent<MovementPath>();
+
+            if (!movementPath)
+            {
+                movementPath = movement.AddComponent<MovementPath>();
+            }
             
             MovementPoints = movementPath.GetPoints().ToArray();
             MovementLoop = movementPath.Loop;
