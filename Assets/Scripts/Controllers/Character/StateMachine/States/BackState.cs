@@ -112,7 +112,7 @@ namespace BeastHunter
             _puppetController = _characterModel.PuppetMaster;
             _speedArray = new float[5] { 0f, 0f, 0f, 0f, 0f};
 
-            _weaponWheelUI = GameObject.Instantiate(Data.WeaponWheelUI);
+            _weaponWheelUI = GameObject.Instantiate(Data.WeaponWheelData.UIPrefab);
             _weaponWheelTransform = _weaponWheelUI.transform.
                 Find(WEAPON_WHEEL_PANEL_NAME).Find(WEAPON_WHEEL_CYCLE_NAME).transform;
             _weaponWheelItems = _weaponWheelUI.transform.Find(WEAPON_WHEEL_PANEL_NAME).
@@ -352,7 +352,6 @@ namespace BeastHunter
 
         private void OnHitBoxHit(ITrigger hitBox, Collider enemy)
         {
-
             if (hitBox.IsInteractable)
             {
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
@@ -510,8 +509,8 @@ namespace BeastHunter
 
             if (_closestWeaponOnWheel != chosenWeapon)
             {
-                SetActivityOfElementOnWeaponWheel(chosenWeapon, true);
                 SetActivityOfElementOnWeaponWheel(_closestWeaponOnWheel, false);
+                SetActivityOfElementOnWeaponWheel(chosenWeapon, true);
             }
 
             return chosenWeapon;
@@ -611,48 +610,160 @@ namespace BeastHunter
 
         public void RemoveWeapon()
         {
-            if(_characterModel.CurrentWeapon != null)
+            if(_characterModel.CurrentWeaponData != null)
             {
-                if(_characterModel.CurrentWeaponData is OneHandedWeaponData)
+                if (_characterModel.CurrentWeaponLeft != null)
                 {
-                    _characterModel.FirstWeaponBehavior.OnFilterHandler -= OnHitBoxFilter;
-                    _characterModel.FirstWeaponBehavior.OnTriggerEnterHandler -= OnHitBoxHit;
+                    if(_characterModel.WeaponBehaviorLeft != null)
+                    {
+                        _characterModel.WeaponBehaviorLeft.OnFilterHandler -= OnHitBoxFilter;
+                        _characterModel.WeaponBehaviorLeft.OnTriggerEnterHandler -= OnHitBoxHit;
+                    }
 
-                    _characterModel.PuppetMaster.propMuscles[(int)(_characterModel.
-                        CurrentWeaponData as OneHandedWeaponData).InWhichHand - 1].currentProp = null;
-                    GameObject.Destroy(_characterModel.CurrentWeapon, 0.1f); // TO REFACTOR
+                    _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Left) - 1].currentProp = null;
+                    GameObject.Destroy(_characterModel.CurrentWeaponLeft, 0.1f); // TO REFACTOR
                 }
-                else
+
+                if(_characterModel.CurrentWeaponRight != null)
                 {
-                    // TODO
-                }            
+                    if (_characterModel.WeaponBehaviorRight != null)
+                    {
+                        _characterModel.WeaponBehaviorRight.OnFilterHandler -= OnHitBoxFilter;
+                        _characterModel.WeaponBehaviorRight.OnTriggerEnterHandler -= OnHitBoxHit;
+                    }
+
+                    _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Right) - 1].currentProp = null;
+                    GameObject.Destroy(_characterModel.CurrentWeaponRight, 0.1f); // TO REFACTOR
+                }
+
+                if (_characterModel.CurrentWeaponData.Type == WeaponType.Shooting)
+                {
+                    _characterModel.CurrentWeaponData.OnHit -= OnHitBoxHit;
+                }
             }
 
-            _characterModel.CurrentWeapon = null;
             _characterModel.CurrentWeaponData = null;
+            _characterModel.CurrentWeaponLeft = null;
+            _characterModel.CurrentWeaponRight = null;
             OnWeaponChange?.Invoke();
         }
 
         public void GetWeapon(WeaponData weaponData)
         {
-            if(weaponData is OneHandedWeaponData)
+            _characterModel.CurrentWeaponData = weaponData;
+
+            if (weaponData is OneHandedWeaponData)
             {
                 OneHandedWeaponData newWeaponData = weaponData as OneHandedWeaponData;
                 GameObject newWeapon = GameObject.Instantiate(newWeaponData.ActualWeapon.WeaponPrefab);
+                newWeaponData.Init(newWeapon);
 
-                _characterModel.CurrentWeapon = newWeapon;
-                _characterModel.CurrentWeaponData = weaponData;
-                _characterModel.FirstWeaponBehavior = newWeapon.GetComponentInChildren<WeaponHitBoxBehavior>();
+                switch (newWeaponData.InWhichHand)
+                {
+                    case HandsEnum.Left:
+                        _characterModel.CurrentWeaponLeft = newWeapon;
+                        _characterModel.WeaponBehaviorLeft = newWeapon.GetComponentInChildren<WeaponHitBoxBehavior>();
 
-                _characterModel.FirstWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
-                _characterModel.FirstWeaponBehavior.OnTriggerEnterHandler += OnHitBoxHit;
+                        if (_characterModel.WeaponBehaviorLeft != null)
+                        {
+                            _characterModel.WeaponBehaviorLeft.OnFilterHandler += OnHitBoxFilter;
+                            _characterModel.WeaponBehaviorLeft.OnTriggerEnterHandler += OnHitBoxHit;
+                        }
+                        break;
+                    case HandsEnum.Right:
+                        _characterModel.CurrentWeaponRight = newWeapon;
+                        _characterModel.WeaponBehaviorRight = newWeapon.GetComponentInChildren<WeaponHitBoxBehavior>();
+
+                        if (_characterModel.WeaponBehaviorRight != null)
+                        {
+                            _characterModel.WeaponBehaviorRight.OnFilterHandler += OnHitBoxFilter;
+                            _characterModel.WeaponBehaviorRight.OnTriggerEnterHandler += OnHitBoxHit;
+                        }
+                        break;
+                    default:
+                        break;
+                }
 
                 _characterModel.PuppetMaster.propMuscles[(int)newWeaponData.InWhichHand - 1].
                     currentProp = newWeapon.GetComponent<PuppetMasterProp>();
             }
             else
             {
-                // TODO
+                TwoHandedWeaponData newWeaponData = weaponData as TwoHandedWeaponData;
+
+                if(newWeaponData.Type == WeaponType.Shooting)
+                {
+                    newWeaponData.OnHit += OnHitBoxHit;
+                }
+
+                switch (newWeaponData.InWhichHand)
+                {
+                    case HandsEnum.Left:
+
+                        _characterModel.CurrentWeaponLeft = GameObject.Instantiate(newWeaponData.
+                            LeftActualWeapon.WeaponPrefab);
+                        _characterModel.WeaponBehaviorLeft = _characterModel.CurrentWeaponLeft.
+                            GetComponentInChildren<WeaponHitBoxBehavior>();
+
+                        if (_characterModel.WeaponBehaviorLeft != null)
+                        {
+                            _characterModel.WeaponBehaviorLeft.OnFilterHandler += OnHitBoxFilter;
+                            _characterModel.WeaponBehaviorLeft.OnTriggerEnterHandler += OnHitBoxHit;
+                        }
+
+                        _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Left) - 1].
+                            currentProp = _characterModel.CurrentWeaponLeft.GetComponent<PuppetMasterProp>();
+                        break;
+                    case HandsEnum.Right:
+
+                        _characterModel.CurrentWeaponRight = GameObject.Instantiate(newWeaponData.
+                            LeftActualWeapon.WeaponPrefab);
+                        _characterModel.WeaponBehaviorRight = _characterModel.CurrentWeaponRight.
+                            GetComponentInChildren<WeaponHitBoxBehavior>();
+
+                        if (_characterModel.WeaponBehaviorRight != null)
+                        {
+                            _characterModel.WeaponBehaviorRight.OnFilterHandler += OnHitBoxFilter;
+                            _characterModel.WeaponBehaviorRight.OnTriggerEnterHandler += OnHitBoxHit;
+                        }
+
+                        _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Right) - 1].
+                            currentProp = _characterModel.CurrentWeaponLeft.GetComponent<PuppetMasterProp>();
+                        break;
+                    case HandsEnum.Both:
+
+                        _characterModel.CurrentWeaponLeft = GameObject.Instantiate(newWeaponData.
+                            LeftActualWeapon.WeaponPrefab);
+                        _characterModel.CurrentWeaponRight = GameObject.Instantiate(newWeaponData.
+                            RightActualWeapon.WeaponPrefab);
+
+                        _characterModel.WeaponBehaviorLeft = _characterModel.CurrentWeaponLeft.
+                            GetComponentInChildren<WeaponHitBoxBehavior>();
+                        _characterModel.WeaponBehaviorRight = _characterModel.CurrentWeaponRight.
+                            GetComponentInChildren<WeaponHitBoxBehavior>();
+
+                        if (_characterModel.WeaponBehaviorLeft != null)
+                        {
+                            _characterModel.WeaponBehaviorLeft.OnFilterHandler += OnHitBoxFilter;
+                            _characterModel.WeaponBehaviorLeft.OnTriggerEnterHandler += OnHitBoxHit;
+                        }
+
+                        if(_characterModel.WeaponBehaviorRight != null)
+                        {
+                            _characterModel.WeaponBehaviorRight.OnFilterHandler += OnHitBoxFilter;
+                            _characterModel.WeaponBehaviorRight.OnTriggerEnterHandler += OnHitBoxHit;
+                        }
+
+                        _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Left) - 1].
+                            currentProp = _characterModel.CurrentWeaponLeft.GetComponent<PuppetMasterProp>();
+                        _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Right) - 1].
+                            currentProp = _characterModel.CurrentWeaponRight.GetComponent<PuppetMasterProp>();
+                        break;
+                    default:
+                        break;
+                }
+
+                newWeaponData.Init(_characterModel.CurrentWeaponLeft, _characterModel.CurrentWeaponRight);
             }
 
             OnWeaponChange?.Invoke();

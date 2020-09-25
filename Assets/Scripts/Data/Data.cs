@@ -31,7 +31,7 @@ namespace BeastHunter
         [SerializeField] private string _bossSecondWeakPointPath;
         [SerializeField] private string _bossThirdWeakPointPath;
         [SerializeField] private string _timeSkipDataPath;
-        [SerializeField] private string _weaponWheelUIPath;
+        [SerializeField] private string _weaponWheelDataPath;
         [SerializeField] private string _shouldersPath;
         [SerializeField] private string _shoesPath;
         [SerializeField] private string _ironGreavesPath;
@@ -61,7 +61,7 @@ namespace BeastHunter
         private static WeakPointData _bossSecondWeakPoint;
         private static WeakPointData _bossThirdWeakPoint;
         private static TimeSkipData _timeSkipData;
-        private static GameObject _weaponWheelUI;
+        private static WeaponWheelData _weaponWheelData;
 
         #endregion
 
@@ -347,15 +347,15 @@ namespace BeastHunter
             }
         }
 
-        public static GameObject WeaponWheelUI
+        public static WeaponWheelData WeaponWheelData
         {
             get
             {
-                if(_weaponWheelUI == null)
+                if(_weaponWheelData == null)
                 {
-                    _weaponWheelUI = Load<GameObject>("Data/" + Instance._weaponWheelUIPath);
+                    _weaponWheelData = Load<WeaponWheelData>("Data/" + Instance._weaponWheelDataPath);
                 }
-                return _weaponWheelUI;
+                return _weaponWheelData;
             }
         }
 

@@ -41,8 +41,9 @@ namespace BeastHunter
             base.Initialize();
             _animationController.SetRootMotion(true);
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Kinematic;
+            _animationController.SetTopBodyAnimationWeigth(0f);
 
-            if(_characterModel.CurrentWeapon == null)
+            if (_characterModel.CurrentWeaponData == null)
             {
                 _attackIndex = Random.Range(0, 2);
                 _exitTIme = 0.8f;
@@ -50,10 +51,22 @@ namespace BeastHunter
             }
             else
             {
-                if (_characterModel.FirstWeaponBehavior != null) _characterModel.FirstWeaponBehavior.IsInteractable = true;
-                if (_characterModel.SecondWeaponBehavior != null) _characterModel.SecondWeaponBehavior.IsInteractable = true;
+                switch (_characterModel.CurrentWeaponData.Type)
+                {
+                    case WeaponType.Melee:
+                        if (_characterModel.WeaponBehaviorLeft != null) _characterModel.WeaponBehaviorLeft.IsInteractable = true;
+                        if (_characterModel.WeaponBehaviorRight != null) _characterModel.WeaponBehaviorRight.IsInteractable = true;
+                        break;
+                    case WeaponType.Shooting:
+                        break;
+                    case WeaponType.Throwing:
+                        break;
+                    default:
+                        break;
+                }
 
-                _characterModel.CurrentWeaponData.MakeSimpleAttack(out _attackIndex);
+
+                _characterModel.CurrentWeaponData.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
                 _exitTIme = _characterModel.CurrentWeaponData.CurrentAttack.AttackTime;
                 _animationController.PlayArmedAttackAnimation(_characterModel.CurrentWeaponData.SimpleAttackAnimationPrefix, _attackIndex);
             }
@@ -64,11 +77,23 @@ namespace BeastHunter
         public override void OnExit(CharacterBaseState nextState = null)
         {
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Active;
+            _animationController.SetTopBodyAnimationWeigth(1f);
 
-            if (_characterModel.CurrentWeapon != null)
+            if (_characterModel.CurrentWeaponData != null)
             {
-                if (_characterModel.FirstWeaponBehavior != null) _characterModel.FirstWeaponBehavior.IsInteractable = false;
-                if (_characterModel.SecondWeaponBehavior != null) _characterModel.SecondWeaponBehavior.IsInteractable = false;
+                switch (_characterModel.CurrentWeaponData.Type)
+                {
+                    case WeaponType.Melee:
+                        if (_characterModel.WeaponBehaviorLeft != null) _characterModel.WeaponBehaviorLeft.IsInteractable = false;
+                        if (_characterModel.WeaponBehaviorRight != null) _characterModel.WeaponBehaviorRight.IsInteractable = false;
+                        break;
+                    case WeaponType.Shooting:
+                        break;
+                    case WeaponType.Throwing:
+                        break;
+                    default:
+                        break;
+                }
             }
 
             _animationController.SetRootMotion(false);

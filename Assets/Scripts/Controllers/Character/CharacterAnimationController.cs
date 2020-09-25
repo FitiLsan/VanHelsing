@@ -7,6 +7,7 @@ namespace BeastHunter
     {
         #region Constants
 
+        private const string NONE_ANIMATON_NAME = "None";
         private const string IDLE_ANIMATION_NAME = "Idle";
         private const string MOVEMENT_ANIMATION_NAME = "Movement";
         private const string STRAFE_ANIMATION_NAME = "Strafe";
@@ -95,6 +96,11 @@ namespace BeastHunter
         {
             CharacterAnimator.SetFloat(DODGE_AXIS_X_ANIMATOR_PARAMETER_NAME, dodgeAxisX);
             CharacterAnimator.SetFloat(DODGE_AXIS_Y_ANIMATOR_PARAMETER_NAME, dodgeAxisY);
+        }
+
+        public void SetTopBodyAnimationWeigth(float value)
+        {
+            CharacterAnimator.SetLayerWeight(1, value);
         }
 
         public void PlayIdleAnimation()

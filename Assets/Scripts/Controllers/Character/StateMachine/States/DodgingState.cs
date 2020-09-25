@@ -40,7 +40,6 @@ namespace BeastHunter
             base.Initialize();
 
             _rollTime = _characterModel.CharacterData._characterCommonSettings.RollingTime;
-            _animationController.PlaySlideForwardAnimation();
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
             _characterModel.IsDodging = true;
 

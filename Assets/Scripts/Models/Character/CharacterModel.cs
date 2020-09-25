@@ -9,10 +9,11 @@ namespace BeastHunter
     {
         #region Properties
 
-        public GameObject CurrentWeapon { get; set; }
         public WeaponData CurrentWeaponData { get; set; }
-        public WeaponHitBoxBehavior FirstWeaponBehavior { get; set; }
-        public WeaponHitBoxBehavior SecondWeaponBehavior { get; set; }
+        public GameObject CurrentWeaponLeft { get; set; }
+        public GameObject CurrentWeaponRight { get; set; }
+        public WeaponHitBoxBehavior WeaponBehaviorLeft { get; set; }
+        public WeaponHitBoxBehavior WeaponBehaviorRight { get; set; }
 
         public Transform CharacterTransform { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
@@ -134,8 +135,9 @@ namespace BeastHunter
 
             Services.SharedInstance.CameraService.Initialize(this);
 
-            CurrentWeapon = null;
             CurrentWeaponData = null;
+            CurrentWeaponLeft = null;
+            CurrentWeaponRight = null;
         }
 
         #endregion

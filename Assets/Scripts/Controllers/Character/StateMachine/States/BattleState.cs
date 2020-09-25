@@ -67,7 +67,7 @@
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
             _stateMachine.BackState.OnStartRun = () => _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
             _stateMachine.BackState.OnStopRun = () => _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
-            _stateMachine.BackState.OnJump = Roll;
+            _stateMachine.BackState.OnJump = Dodge;
             _stateMachine.BackState.OnWeaponWheelOpen += () => _hasCameraControl = false;
             _stateMachine.BackState.OnWeaponWheelClose += () => _hasCameraControl = true;
         }
@@ -114,6 +114,7 @@
             }
 
             _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
+            _animationController.SetTopBodyAnimationWeigth(0f);
 
             base.OnExit();
         }
@@ -124,7 +125,7 @@
             _stateMachine.BackState.MoveCharacter(true);
         }
 
-        private void Roll()
+        private void Dodge()
         {
             if (_inputModel.IsInputMove)
             {
@@ -136,6 +137,7 @@
         {
             if(_stateMachine.CurrentState == this)
             {
+                _animationController.SetTopBodyAnimationWeigth(1f);
                 _animationController.PlayStrafeAnimation(_characterModel.CurrentWeaponData?.StrafeAndDodgePostfix);
             }            
         }
