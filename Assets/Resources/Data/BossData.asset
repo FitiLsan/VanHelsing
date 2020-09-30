@@ -40,11 +40,20 @@ MonoBehaviour:
     _leftHandHitBoxCenter: {x: 0, y: 0, z: 0}
     _rightHandHitBoxRadius: 0.25
     _rightHandHitBoxCenter: {x: 0, y: 0, z: 0}
-  _bossStats:
-    MaxHealth: 0
-    BaseStats:
-      _healthPoints: 100
-      _physicalPower: 10
-      _physicalDamageResistance: 0.5
+  BaseStats:
+    MainStats:
+      _maxHealth: 0
+      _enemyType: 0
+      _viewRadius: 0
+      _viewAngle: 0
+      _healthPoints: 0
+      _physicalPower: 0
+      _physicalDamageResistance: 0
       _stunProbabilityResistance: 0
+    AttackList: []
+    DefenceStats:
+      _baseDefense: 0
     Prefab: {fileID: 0}
+    SpawnPointName: 
+  BossStats:
+    _idlePattern: 1

@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace BeastHunter
 {
-    public sealed class BossModel : NpcModel
+    public sealed class BossModel : EnemyModel
     {
         #region Properties
 
@@ -26,7 +26,7 @@ namespace BeastHunter
         public BossBehavior BossBehavior { get; }
         public BossData BossData { get; }
         public BossSettings BossSettings { get; }
-        public NpcStats BossStats { get; }
+        public EnemyStats BossStats { get; }
         public BossStateMachine BossStateMachine { get; }
 
         public Animator BossAnimator { get; set; }
@@ -48,7 +48,7 @@ namespace BeastHunter
         {
             BossData = bossData;
             BossSettings = BossData._bossSettings;
-            BossStats = BossData._bossStats;
+            BossStats = BossData.BaseStats;
             BossTransform = prefab.transform;
             BossTransform.rotation = Quaternion.Euler(0, BossSettings.InstantiateDirection, 0);
             BossTransform.name = BossSettings.InstanceName;
@@ -126,7 +126,7 @@ namespace BeastHunter
             }
 
             BossBehavior.SetType(InteractableObjectType.Enemy);
-            BossBehavior.Stats = BossStats.BaseStats;
+            BossBehavior.Stats = BossStats.MainStats;
             BossStateMachine = new BossStateMachine(context, this);
 
             Player = null;
@@ -174,7 +174,7 @@ namespace BeastHunter
             RightWeaponBehavior.IsInteractable = false;
 
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
-            CurrentHealth = BossStats.BaseStats.HealthPoints;
+            CurrentHealth = BossStats.MainStats.HealthPoints;
         }
 
         #endregion
@@ -197,9 +197,9 @@ namespace BeastHunter
             BossStateMachine.Execute();
         }
 
-        public override NpcStats GetStats()
+        public override EnemyStats GetStats()
         {
-            return BossStats;
+            return BossData.BaseStats;
         }
 
         public override void TakeDamage(Damage damage)
@@ -207,7 +207,7 @@ namespace BeastHunter
             CurrentHealth = CurrentHealth < damage.PhysicalDamage ? 0 : CurrentHealth - damage.PhysicalDamage;
             Debug.Log("Boss has: " + CurrentHealth + " of HP");
 
-            if (damage.StunProbability > BossData._bossStats.BaseStats.StunResistance)
+            if (damage.StunProbability > BossData.BaseStats.MainStats.StunResistance)
             {
                 GlobalEventsModel.OnBossStunned?.Invoke();
             }

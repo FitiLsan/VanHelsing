@@ -114,7 +114,7 @@ namespace BeastHunter
                 case BehaviourState.Returning:
                     {
                         Return(rabbit);
-                        var moveDistance = RabbitStats.RunningRadius / RabbitData.STOP_RETURNING_DISTANCE_FACTOR;
+                        var moveDistance = RabbitStats.RunningRadius / STOP_RETURNING_DISTANCE_FACTOR;
                         if ((rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).sqrMagnitude < moveDistance * moveDistance)
                         {
                             rabbit.RabbitState = BehaviourState.Roaming;
@@ -203,21 +203,21 @@ namespace BeastHunter
             for (int i = 0; i < targets.Count; i++)
             {
                 var distToTarget = targets[i].position - transform.position;
-                if (distToTarget.sqrMagnitude > RabbitStats.ViewRadius)
+                if (distToTarget.sqrMagnitude > BaseStats.MainStats.ViewRadius)
                 {
                     targets.RemoveAt(i);
                 }
             }
 
             //var triggers = _physicsService.GetObjectsInRadius(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer);
-            var triggers = Physics.OverlapSphere(transform.position, RabbitStats.ViewRadius, LayerManager.DefaultLayer);//change layer!!
+            var triggers = Physics.OverlapSphere(transform.position, BaseStats.MainStats.ViewRadius, LayerManager.DefaultLayer);//change layer!!
             var result = false;
             foreach (Collider target in triggers)
             {
                 if (!target.CompareTag(TagManager.RABBIT))
                 {
                     var dirToTarget = target.bounds.center - transform.position;
-                    if (Vector3.Angle(transform.forward, dirToTarget.normalized) < RabbitStats.ViewAngle)
+                    if (Vector3.Angle(transform.forward, dirToTarget.normalized) < BaseStats.MainStats.ViewAngle)
                     {
                         if (!Physics.Raycast(transform.position, dirToTarget.normalized, dirToTarget.magnitude, LayerManager.EnvironmentLayer))
                         {
@@ -318,7 +318,7 @@ namespace BeastHunter
             foreach (var obj in targets)
             {
                 var dir = transform.position - obj.position;
-                dir = dir.normalized * RabbitStats.ViewRadius * RabbitStats.ViewRadius / dir.sqrMagnitude;
+                dir = dir.normalized * BaseStats.MainStats.ViewRadius * BaseStats.MainStats.ViewRadius / dir.sqrMagnitude;
                 sum += dir;
             }
             var result = new Vector2(sum.x, sum.z);

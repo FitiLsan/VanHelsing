@@ -24,11 +24,11 @@ namespace BeastHunter
         {
             if (collision.transform.CompareTag(TagManager.ENEMY))
             {
-                Context.NpcModels[collision.gameObject.GetInstanceID()].TakeDamage(
+                Context.EnemyModels[collision.gameObject.GetInstanceID()].TakeDamage(
                 Services.SharedInstance.AttackService.CountDamage(
                 ProjectileDamage,
-                Context.NpcModels[collision.gameObject.GetInstanceID()].GetStats().
-                BaseStats));
+                Context.EnemyModels[collision.gameObject.GetInstanceID()].GetStats().
+                MainStats));
                 Destroy(this.gameObject);
             }
         }
