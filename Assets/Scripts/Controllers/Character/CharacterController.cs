@@ -7,11 +7,12 @@ namespace BeastHunter
     {
         #region Fields
 
-        private CharacterModel _characterModel;
+        private readonly GameContext _context;     
         private InputModel _inputModel;
-
-        private readonly GameContext _context;
         private Services _services;
+
+        private CharacterModel _characterModel;
+        private CharacterAnimationController _animationController;
         private CharacterStateMachine _stateMachine;
         private CharacterAnimationController _animationController;
 

@@ -4,14 +4,10 @@
     {
         #region ClassLifeCycle
 
-        public DeadState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public DeadState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
-            Type = StateType.NotActive;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
         }
 
         #endregion
@@ -19,24 +15,20 @@
 
         #region Methods
 
-        public override void Initialize()
+        public override void Initialize(CharacterBaseState previousState = null)
         {
+            base.Initialize();
             _characterModel.IsDead = true;
-            _animationController.PlayDeadAnimation();
             _characterModel.CharacterTransform.tag = TagManager.NPC;
             GlobalEventsModel.OnPlayerDie?.Invoke();
-        }
 
-        public override void Execute()
-        {
-        }
+            if(_characterModel.CurrentWeaponData != null)
+            {
+                _characterModel.PuppetMaster.propMuscles[0].currentProp = null;
+                _characterModel.PuppetMaster.propMuscles[1].currentProp = null;
+            }
 
-        public override void OnExit()
-        {
-        }
-
-        public override void OnTearDown()
-        {
+            _characterModel.PuppetMaster.state = RootMotion.Dynamics.PuppetMaster.State.Dead;
         }
 
         #endregion

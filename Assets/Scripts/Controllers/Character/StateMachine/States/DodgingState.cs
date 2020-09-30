@@ -1,29 +1,33 @@
-﻿namespace BeastHunter
+﻿using UnityEngine;
+
+
+namespace BeastHunter
 {
-    public sealed class DodgingState : CharacterBaseState
+    public class DodgingState : CharacterBaseState, IUpdate
     {
-        #region Fields
-
-
-        #endregion
-
-
         #region Properties
 
+        private float _rollTime;
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public DodgingState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController,
-            CharacterStateMachine stateMachine) : base(characterModel, inputModel, animationController, stateMachine)
+        public DodgingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
-            Type = StateType.Battle;
             IsTargeting = false;
             IsAttacking = false;
-            CanExit = false;
-            CanBeOverriden = false;
+        }
+
+        #endregion
+
+
+        #region IUpdate
+
+        public void Updating()
+        {
+            ExitCheck();
         }
 
         #endregion
@@ -31,23 +35,37 @@
 
         #region Methods
 
-        public override void Initialize()
+        public override void Initialize(CharacterBaseState previousState = null)
         {
+            base.Initialize();
 
+            _rollTime = _characterModel.CharacterData._characterCommonSettings.RollingTime;
+            _animationController.PlaySlideForwardAnimation();
+            _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
+            _characterModel.IsDodging = true;
+
+            _animationController.SetDodgeAxises(_inputModel.InputTotalAxisX, _inputModel.InputTotalAxisY);
+            _animationController.SetRootMotion(true);
+            _animationController.PlayDodgeAnimation(_characterModel.CurrentWeaponData?.StrafeAndDodgePostfix);
         }
 
-        public override void Execute()
+        public override void OnExit(CharacterBaseState nextState = null)
         {
+            _animationController.SetRootMotion(false);
+            _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Active;
+            _characterModel.IsDodging = false;
 
+            base.OnExit();
         }
 
-        public override void OnExit()
+        private void ExitCheck()
         {
+            _rollTime -= Time.deltaTime;
 
-        }
-
-        public override void OnTearDown()
-        {
+            if (_rollTime <= 0)
+            {
+                _stateMachine.ReturnState();
+            }
         }
 
         #endregion

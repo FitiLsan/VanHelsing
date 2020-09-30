@@ -5,24 +5,39 @@ namespace BeastHunter
 {
     public sealed class CharacterAnimationController
     {
+        #region Constants
+
+        private const string IDLE_ANIMATION_NAME = "Idle";
+        private const string MOVEMENT_ANIMATION_NAME = "Movement";
+        private const string STRAFE_ANIMATION_NAME = "Strafe";
+        private const string SLIDE_FORWARD_ANIMATION_NAME = "SlideForward";
+        private const string TURN_AROUND_ANIMATION_NAME = "TurningAround";
+        private const string JUMP_FORWARD_ANIMATION_NAME = "JumpForward";
+        private const string DODGE_ANIMATION_NAME = "Dodge";
+
+        private const string AXIS_X_ANIMATOR_PARAMETER_NAME = "AxisX";
+        private const string AXIS_Y_ANIMATOR_PARAMETER_NAME = "AxisY";
+        private const string MOVE_SPEED_ANIMATOR_PARAMETER_NAME = "MoveSpeed";
+        private const string MOUSE_AXIS_X_ANIMATOR_PARAMETER_NAME = "MouseAxisX";
+        private const string CROUCH_LEVEL_ANIMATOR_PARAMETER_NAME = "CrouchLevel";
+        private const string DODGE_AXIS_X_ANIMATOR_PARAMETER_NAME = "DodgeAxisX";
+        private const string DODGE_AXIS_Y_ANIMATOR_PARAMETER_NAME = "DodgeAxisY";
+
+        private const string NOT_ARMED_ATTACK_ANIMATION_NAME_PREFIX = "NotArmedAttack_";
+        private const string ARMED_ATTACK_ANIMATION_NAME_PREFIX = "Attack_";
+
+        #endregion
+
+
         #region Fields
 
-        private int _defaultMovementHash;
-        private int _defaultIdleHash;
-        private int _jumpHash;
-        private int _fallHash;
-        private int _battleIdleHash;
-        private int _battleIdleTwoHandedSliceHash;
-        private int _battleMovementHash;
-        private int _battleMovementTwoHandedSliceHash;
-        private int _battleTargetMovementHash;
-        private int _battleTargetMovementTwoHandedSliceHash;
-        private int _rollHash;
-        private int _rollTwoHandedSliceHash;
-        private int _rollForwardHash;
-        private int _dancingHash;
-        private int _stunnedHash;
-        private int _deadHash;
+        private int _idleHash;
+        private int _movementHash;
+        private int _strafeHash;
+        private int _jumpForwardHash;
+        private int _dodgeHash;
+        private int _slideForwardHash;
+        private int _turningAroundHash;
 
         #endregion
 
@@ -49,159 +64,101 @@ namespace BeastHunter
 
         public void Initialize()
         {
-            _defaultMovementHash = Animator.StringToHash("DefaultMovement");
-            _jumpHash = Animator.StringToHash("Jump");
-            _defaultIdleHash = Animator.StringToHash("DefaultIdle");
-            _dancingHash = Animator.StringToHash("Dancing");
-            _fallHash = Animator.StringToHash("Fall");
-            _rollHash = Animator.StringToHash("Roll");
-            _rollTwoHandedSliceHash = Animator.StringToHash("RollTwoHandedSlice");
-            _rollForwardHash = Animator.StringToHash("RollForward");
-            _battleIdleHash = Animator.StringToHash("BattleIdle");
-            _battleIdleTwoHandedSliceHash = Animator.StringToHash("BattleIdleTwoHandedSlice");
-            _battleMovementHash = Animator.StringToHash("BattleMovement");
-            _battleMovementTwoHandedSliceHash = Animator.StringToHash("BattleMovementTwoHandedSlice");
-            _battleTargetMovementHash = Animator.StringToHash("BattleTargetMovement");
-            _battleTargetMovementTwoHandedSliceHash = Animator.StringToHash("BattleTargetMovementTwoHandedSlice");
-            _stunnedHash = Animator.StringToHash("Stunned");
-            _deadHash = Animator.StringToHash("Dead");
+            _idleHash = Animator.StringToHash(IDLE_ANIMATION_NAME);
+            _movementHash = Animator.StringToHash(MOVEMENT_ANIMATION_NAME);
+            _strafeHash = Animator.StringToHash(STRAFE_ANIMATION_NAME);
+            _slideForwardHash = Animator.StringToHash(SLIDE_FORWARD_ANIMATION_NAME);
+            _turningAroundHash = Animator.StringToHash(TURN_AROUND_ANIMATION_NAME);
+            _jumpForwardHash = Animator.StringToHash(JUMP_FORWARD_ANIMATION_NAME);
+            _dodgeHash = Animator.StringToHash(DODGE_ANIMATION_NAME);
         }
 
-        public void UpdateAnimationParameters(float axisX, float axisY, float moveSpeed, float animationSpeed)
+        public void UpdateAnimationParameters(float axisX, float axisY, float mouseAxisX, float moveSpeed, 
+            float animationSpeed)
         {
             if (CharacterAnimator != null)
             {
-                CharacterAnimator.SetFloat("AxisX", axisX);
-                CharacterAnimator.SetFloat("AxisY", axisY);
-                CharacterAnimator.SetFloat("MoveSpeed", moveSpeed);
+                CharacterAnimator.SetFloat(AXIS_X_ANIMATOR_PARAMETER_NAME, axisX);
+                CharacterAnimator.SetFloat(AXIS_Y_ANIMATOR_PARAMETER_NAME, axisY);
+                CharacterAnimator.SetFloat(MOVE_SPEED_ANIMATOR_PARAMETER_NAME, moveSpeed);
+                CharacterAnimator.SetFloat(MOUSE_AXIS_X_ANIMATOR_PARAMETER_NAME, mouseAxisX);
                 CharacterAnimator.speed = animationSpeed;
             }
         }
 
-        public void PlayDefaultIdleAnimation()
+        public void SetRootMotion(bool shouldBeOn)
         {
-            CharacterAnimator.Play(_defaultIdleHash);
+            CharacterAnimator.applyRootMotion = shouldBeOn;
         }
 
-        public void PlayDefaultMovementAnimation()
+        public void SetDodgeAxises(float dodgeAxisX, float dodgeAxisY)
         {
-            CharacterAnimator.Play(_defaultMovementHash);
+            CharacterAnimator.SetFloat(DODGE_AXIS_X_ANIMATOR_PARAMETER_NAME, dodgeAxisX);
+            CharacterAnimator.SetFloat(DODGE_AXIS_Y_ANIMATOR_PARAMETER_NAME, dodgeAxisY);
         }
 
-        public void PlayBattleIdleAnimation(WeaponItem leftWeapon, WeaponItem rightWeapon)
+        public void PlayIdleAnimation()
         {
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! to refactor
-            if (leftWeapon.WeaponHandType == WeaponHandType.TwoHanded && leftWeapon.WeaponType == WeaponType.MeleeCutting)
+            CharacterAnimator.Play(_idleHash);
+        }
+
+        public void PlayMovementAnimation()
+        {
+            CharacterAnimator.Play(_movementHash);
+        }
+
+        public void PlayStrafeAnimation(string weaponPostfix = null)
+        {
+            if (weaponPostfix == null)
             {
-                CharacterAnimator.Play(_battleIdleTwoHandedSliceHash);
+                CharacterAnimator.Play(_strafeHash);
             }
             else
             {
-                CharacterAnimator.Play(_battleIdleHash);
+                CharacterAnimator.Play(STRAFE_ANIMATION_NAME + weaponPostfix);
             }
         }
 
-        public void PlayBattleMovementAnimation(WeaponItem leftWeapon, WeaponItem rightWeapon)
+        public void PlayDodgeAnimation(string weaponPostfix = null)
         {
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! to refactor
-            if (leftWeapon.WeaponHandType == WeaponHandType.TwoHanded && leftWeapon.WeaponType == WeaponType.MeleeCutting)
+            if (weaponPostfix == null)
             {
-                CharacterAnimator.Play(_battleMovementTwoHandedSliceHash);
+                CharacterAnimator.Play(_dodgeHash);
             }
             else
             {
-                CharacterAnimator.Play(_battleMovementHash);
+                CharacterAnimator.Play(DODGE_ANIMATION_NAME + weaponPostfix);
             }
         }
 
-        public void PlayBattleTargetMovementAnimation(WeaponItem leftWeapon, WeaponItem rightWeapon)
+        public void PlayJumpForwardAnimation()
         {
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! to refactor
-            if (leftWeapon.WeaponHandType == WeaponHandType.TwoHanded && leftWeapon.WeaponType == WeaponType.MeleeCutting)
-            {
-                CharacterAnimator.Play(_battleTargetMovementTwoHandedSliceHash);
-            }
-            else
-            {
-                CharacterAnimator.Play(_battleTargetMovementHash);
-            }
+            CharacterAnimator.Play(_jumpForwardHash);
         }
 
-        public void PlayJumpAnimation()
+        public void PlaySlideForwardAnimation()
         {
-            CharacterAnimator.Play(_jumpHash);
+            CharacterAnimator.Play(_slideForwardHash);
         }
 
-        public void PlayRollAnimation(float rollingX, float rollingY, WeaponItem leftWeapon, WeaponItem rightWeapon)
-        {   
-            CharacterAnimator.SetFloat("RollingX", rollingX);
-            CharacterAnimator.SetFloat("RollingY", rollingY);
-
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! to refactor
-            if (leftWeapon.WeaponHandType == WeaponHandType.TwoHanded && leftWeapon.WeaponType == WeaponType.MeleeCutting)
-            {
-                CharacterAnimator.Play(_rollTwoHandedSliceHash);
-            }
-            else
-            {
-                CharacterAnimator.Play(_rollHash);
-            }
+        public void PlayNotArmedAttackAnimation(int attackIndex)
+        {
+            CharacterAnimator.Play(NOT_ARMED_ATTACK_ANIMATION_NAME_PREFIX + attackIndex.ToString());
         }
 
-        public void PlayRollForwardAnimation()
+        public void PlayArmedAttackAnimation(string weaponName, int attackIndex)
         {
-            CharacterAnimator.Play(_rollForwardHash);
+            CharacterAnimator.Play(weaponName.ToString() + ARMED_ATTACK_ANIMATION_NAME_PREFIX + attackIndex.ToString());
         }
 
-        public void PlayDancingAnimation()
+        public void SetCrouchLevel(float value)
         {
-            CharacterAnimator.Play(_dancingHash);
+            CharacterAnimator.SetFloat(CROUCH_LEVEL_ANIMATOR_PARAMETER_NAME, value);  
         }
 
-        public void PlayAttackAnimation(int attackHash, float attackNumber)
+        public float GetCurrentAnimationTime()
         {
-            CharacterAnimator.SetFloat("AttackNumber", attackNumber);
-            CharacterAnimator.Play(attackHash);
-        }
-
-        public void PlayStunnedAnimation()
-        {
-            CharacterAnimator.Play(_stunnedHash);
-        }
-
-        public void PlayDeadAnimation()
-        {
-            CharacterAnimator.Play(_deadHash);
-        }
-
-        public void PlayFallAnimation()
-        {
-            CharacterAnimator.Play(_fallHash);
-        }
-
-        public void PlayGettingWeaponAnimation(int gettingHash)
-        {
-            CharacterAnimator.Play(gettingHash);
-        }
-
-        public void PlayRemovingWeaponAnimation(int removingHash)
-        {
-            CharacterAnimator.Play(removingHash);
-        }
-
-        public void SetLookAt(Vector3 target)
-        {
-            CharacterAnimator.SetLookAtPosition(target);
-        }
-
-        public void StopLookAt()
-        {
-            CharacterAnimator.SetLookAtWeight(0f);
-        }
-
-        public void SetLookAtWeight(float weight, float bodyWeight, float headWeight, float eyesWeight, float clampWeight)
-        {
-            CharacterAnimator.SetLookAtWeight(weight, bodyWeight, headWeight, eyesWeight, clampWeight);
+            return CharacterAnimator.GetCurrentAnimatorStateInfo(0).length;
         }
 
         #endregion

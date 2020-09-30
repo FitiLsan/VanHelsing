@@ -9,6 +9,8 @@
         Attacking,
         Searching,
         Stunned,
+        Hitted,
+        Targeting,
         Dead,
     }
 }

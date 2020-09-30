@@ -7,13 +7,13 @@
         public MainControllers(GameContext context)
         {
             AddInitializeControllers(context);
-            Add(new InitializeInteractableObjectController(context));
+            //Add(new InitializeInteractableObjectController(context));
             AddControllers(context);
 
-            Add(new QuestIndicatorInitializeController(context));
-			Add(new QuestJournalInitializeController(context));
-            Add(new QuestIndicatorController(context));
-            Add(new QuestIndicatorController(context));
+            //Add(new QuestIndicatorInitializeController(context));
+            //Add(new QuestJournalInitializeController(context));
+            //Add(new QuestIndicatorController(context));
+            //Add(new QuestIndicatorController(context));
         }
 
         #endregion

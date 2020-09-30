@@ -6,8 +6,9 @@
 
         protected readonly InputModel _inputModel;
         protected readonly CharacterModel _characterModel;
-        protected CharacterAnimationController _animationController;
-        protected CharacterStateMachine _stateMachine;
+        protected readonly CharacterAnimationController _animationController;
+        protected readonly CharacterStateMachine _stateMachine;
+        protected readonly EventManager _eventManager;
 
         #endregion
 
@@ -15,24 +16,24 @@
         #region Properties
 
         public CharacterBaseState NextState { get; set; }
-        public StateType Type { get; protected set; }
+
+        public bool IsActive { get; private set; }
+        public bool IsInBattle { get; private set; }
         public bool IsTargeting { get; protected set; }
         public bool IsAttacking { get; protected set; }
-        public bool CanExit { get; protected set; }
-        public bool CanBeOverriden { get; protected set; }
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public CharacterBaseState(CharacterModel characterModel, InputModel inputModel, CharacterAnimationController animationController, 
-            CharacterStateMachine stateMachine)
+        public CharacterBaseState(GameContext context, CharacterStateMachine stateMachine)
         {
-            _characterModel = characterModel;
-            _inputModel = inputModel;
-            _animationController = animationController;
             _stateMachine = stateMachine;
+            _characterModel = context.CharacterModel;
+            _inputModel = context.InputModel;
+            _animationController = _stateMachine.AnimationController;
+            _eventManager = Services.SharedInstance.EventManager;
         }
 
         #endregion
@@ -40,13 +41,18 @@
 
         #region Methods
 
-        public abstract void Initialize();
+        protected virtual void EnableActions() { IsActive = true; }
+        protected virtual void DisableActions() { IsActive = false; }
 
-        public abstract void Execute();
+        public virtual void Initialize(CharacterBaseState previousState = null)
+        {         
+            EnableActions();
+        }
 
-        public abstract void OnExit();
-
-        public abstract void OnTearDown();
+        public virtual void OnExit(CharacterBaseState nextState = null)
+        {
+            DisableActions();       
+        }
 
         #endregion
     }

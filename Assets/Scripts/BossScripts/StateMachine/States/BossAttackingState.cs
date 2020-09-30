@@ -153,7 +153,7 @@ namespace BeastHunter
         }
 
         private bool OnHitBoxFilter(Collider hitedObject)
-        {
+        {         
             bool isEnemyColliderHit = hitedObject.CompareTag(TagManager.PLAYER);
 
             if (hitedObject.isTrigger || _stateMachine.CurrentState != _stateMachine.States[BossStatesEnum.Attacking])
@@ -166,7 +166,7 @@ namespace BeastHunter
 
         private void OnLeftHitBoxHit(ITrigger hitBox, Collider enemy)
         {
-            if (enemy.transform.GetComponent<InteractableObjectBehavior>() != null && hitBox.IsInteractable)
+            if (hitBox.IsInteractable)
             {
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
@@ -178,7 +178,7 @@ namespace BeastHunter
 
         private void OnRightHitBoxHit(ITrigger hitBox, Collider enemy)
         {
-            if (enemy.transform.GetComponent<InteractableObjectBehavior>() != null && hitBox.IsInteractable)
+            if (hitBox.IsInteractable)
             {
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
