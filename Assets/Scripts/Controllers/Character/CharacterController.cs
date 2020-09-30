@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class CharacterController : IAwake, IUpdate, ITearDown
+    public sealed class CharacterController : IAwake, IUpdate, ITearDown, IDealDamage
     {
         #region Fields
 

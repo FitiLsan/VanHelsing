@@ -31,7 +31,7 @@ MonoBehaviour:
     _rigitbodyAngularDrag: 0.5
     _isRigitbodyKinematic: 1
     _capsuleColliderCenter: {x: 0, y: 1, z: 0}
-    _capsuleColliderRadius: 0.5
+    _capsuleColliderRadius: 0.3
     _capsuleColliderHeight: 2
     _sphereColliderCenter: {x: 0, y: 1, z: 0}
     _sphereColliderRadius: 7
@@ -62,7 +62,6 @@ MonoBehaviour:
       _baseDefense: 0
     Prefab: {fileID: 0}
   _movementPrefab: {fileID: 3608412240235365698, guid: 780860c28e2fd0e4b83fcab9bb4061b7,
-    type: 3}
     SpawnPointName: 
   BossStats:
     _idlePattern: 1
