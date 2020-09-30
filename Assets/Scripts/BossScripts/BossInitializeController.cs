@@ -25,7 +25,7 @@ namespace BeastHunter
             GameObject instance = GameObject.Instantiate(bossData._bossSettings.Prefab);
             BossModel boss = new BossModel(instance, bossData, groundedInstancePosition, _context);
 
-            _context.NpcModels.Add(instance.GetInstanceID(), boss);
+            _context.EnemyModels.Add(instance.GetInstanceID(), boss);
         }
 
         #endregion

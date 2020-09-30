@@ -34,7 +34,7 @@
                 npcBehaviour.SetDealDamageEvent(DealDamage);
             }
 
-            foreach(var model in _context.NpcModels)
+            foreach(var model in _context.EnemyModels)
             {
                 model.Value.OnAwake();
             }
@@ -47,7 +47,7 @@
 
         public void Updating()
         {
-            foreach (var npc in _context.NpcModels.Values)
+            foreach (var npc in _context.EnemyModels.Values)
             {
                 npc.Execute();
             }
@@ -71,7 +71,7 @@
                 npcBehavior.DeleteDealDamageEvent(DealDamage);
             }
 
-            foreach (var model in _context.NpcModels)
+            foreach (var model in _context.EnemyModels)
             {
                 model.Value.OnTearDown();
             }
@@ -84,12 +84,12 @@
 
         public void DoSmth(int gameObjectId, string how)
         {
-            _context.NpcModels[gameObjectId].DoSmth(how + gameObjectId);
+            _context.EnemyModels[gameObjectId].DoSmth(how + gameObjectId);
         }
 
         public void TakeDamage(int gameObjectId, Damage damage)
         {
-            _context.NpcModels[gameObjectId].TakeDamage(damage);
+            _context.EnemyModels[gameObjectId].TakeDamage(damage);
         }
 
         public void DealDamage(int gameObjectId, InteractableObjectBehavior enemy, Damage damage)

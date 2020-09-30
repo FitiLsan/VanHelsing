@@ -14,12 +14,15 @@ namespace BeastHunter
         [SerializeField] private EnemyType _enemyType;
         //_enemySubtype
 
+        [SerializeField] private float _viewRadius;
+        [Tooltip("Angle from center. Max 180."), Range(0.0f, 180.0f)]
+        [SerializeField] private float _viewAngle;
         //_moveSpeed
         //_jumpHeight
         //etc.
 
         //OBSOLETE
-        [Header("Basic stats")]
+        [Header("Basic stats(obsolete)")]
 
         [Tooltip("Health points")]
         [Range(0.0f, 1000.0f)]
@@ -46,6 +49,8 @@ namespace BeastHunter
         public float HealthPoints => _healthPoints;
         public float MaxHealth => _maxHealth;
         public EnemyType EnemyType => _enemyType;
+        public float ViewRadius => _viewRadius;
+        public float ViewAngle => _viewAngle;
 
         //OBSOLETE
         public float PhysicalPower => _physicalPower;
