@@ -7,10 +7,8 @@ namespace BeastHunter
     public abstract class EnemyModel : IDoSmth, ITakeDamage
     {
         #region Fields
-
-
+        
         public float CurrentHealth;
-
         public bool IsDead;
 
         #endregion

@@ -32,10 +32,11 @@ namespace BeastHunter
                 {
                     if (_charge > 0)
                     {
-                        _context.NpcModels[other.gameObject.GetInstanceID()].TakeDamage(
+                        _context.EnemyModels[other.gameObject.GetInstanceID()].TakeDamage(
                             Services.SharedInstance.AttackService.CountDamage(
-                                _context.TrapModels[this.gameObject.GetInstanceID()].TrapStruct.Damage,
-                                    _context.NpcModels[other.gameObject.GetInstanceID()].GetStats().MainStats));
+                            _context.TrapModels[this.gameObject.GetInstanceID()].TrapStruct.Damage,
+                            _context.EnemyModels[other.gameObject.GetInstanceID()].GetStats().
+                            MainStats));
 
                         _animator.Play("BearTrapLock");
                         _charge -= 1;

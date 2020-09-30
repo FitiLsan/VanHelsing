@@ -54,7 +54,7 @@ namespace BeastHunter
         {
             BossData = bossData;
             BossSettings = BossData._bossSettings;
-            BossStats = BossData._bossStats;
+            BossStats = BossData.BaseStats;
             BossTransform = prefab.transform;
             BossTransform.rotation = Quaternion.Euler(0, BossSettings.InstantiateDirection, 0);
             BossTransform.name = BossSettings.InstanceName;
@@ -231,16 +231,16 @@ namespace BeastHunter
 
         public override EnemyStats GetStats()
         {
-            return BossStats;
+            return BossData.BaseStats;
         }
 
         public override void TakeDamage(Damage damage)
         {
             CurrentHealth = CurrentHealth < damage.PhysicalDamage ? 0 : CurrentHealth - damage.PhysicalDamage;
 
-            Debug.Log("Boss recieved: " + damage.PhysicalDamage + " of damage and has: " + CurrentHealth + " of HP");
+            Debug.Log("Boss has: " + CurrentHealth + " of HP");
 
-            if (damage.StunProbability > BossData._bossStats.MainStats.StunResistance)
+            if (damage.StunProbability > BossData.BaseStats.MainStats.StunResistance)
             {
                 GlobalEventsModel.OnBossStunned?.Invoke();
             }

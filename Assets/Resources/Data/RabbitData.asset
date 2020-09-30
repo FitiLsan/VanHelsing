@@ -13,17 +13,23 @@ MonoBehaviour:
   m_Name: RabbitData
   m_EditorClassIdentifier: 
   BaseStats:
-    MaxHealth: 0
-    BaseStats:
+    MainStats:
+      _maxHealth: 10
+      _enemyType: 1
+      _viewRadius: 3
+      _viewAngle: 100
+      _healthPoints: 0
       _physicalPower: 0
       _physicalDamageResistance: 0
       _stunProbabilityResistance: 0
+    AttackList: []
+    DefenceStats:
+      _baseDefense: 0
     Prefab: {fileID: 6850293822335465738, guid: 635352c46b7621145938ab221e63e0d1,
       type: 3}
+    SpawnPointName: RabbitSpawn
   RabbitStats:
     RunningRadius: 10
     MoveSpeed: 0.5
     JumpHeight: 2
-    ViewRadius: 3
-    ViewAngle: 100
     CanIdle: 1
