@@ -26,7 +26,7 @@ namespace BeastHunter
 
         #region Metods
 
-        public void Act(BossIdlePattern idleTPattern, BossModel model)
+        public void Act(BossIdlePattern idlePattern, BossModel model)
         {
             switch (idlePattern)
             {

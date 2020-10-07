@@ -15,7 +15,7 @@ namespace BeastHunter
 
         #region Properties
 
-        public BossIdleType IdlePattern => _idlePattern;
+        public BossIdlePattern IdlePattern => _idlePattern;
 
         #endregion
     }
