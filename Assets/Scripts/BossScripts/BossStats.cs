@@ -4,11 +4,11 @@ using UnityEngine;
 namespace BeastHunter
 {
     [Serializable]
-    public struct BossStats
+    public class BossStats
     {
         #region Fields
 
-        [SerializeField] private BossIdleType _idlePattern;
+        [SerializeField] private BossIdlePattern _idlePattern;
 
         #endregion
 

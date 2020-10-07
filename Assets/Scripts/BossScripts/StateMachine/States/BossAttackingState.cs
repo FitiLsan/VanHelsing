@@ -8,7 +8,7 @@ namespace BeastHunter
         #region Constants
 
         private const float DISTANCE_TO_START_ATTACK = 2.5f;
-        private const float LOOK_TO_TARGET_SPEED = 1f;
+        private const float LOOK_TO_TARGET_SPEED = 1.0f;
         private const float PART_OF_NONE_ATTACK_TIME_LEFT = 0.15f;
         private const float PART_OF_NONE_ATTACK_TIME_RIGHT = 0.3f;
 
@@ -19,9 +19,6 @@ namespace BeastHunter
 
         private Vector3 _lookDirection;
         private Quaternion _toRotation;
-
-        private WeaponItem _leftWeapon;
-        private WeaponItem _rightWeapon;
 
         private bool _isCurrentAttackRight;
 
@@ -45,9 +42,6 @@ namespace BeastHunter
 
         public override void OnAwake()
         {
-            _leftWeapon = _stateMachine._model.LeftHandWeapon;
-            _rightWeapon = _stateMachine._model.RightHandWeapon;
-
             _stateMachine._model.LeftWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
             _stateMachine._model.RightWeaponBehavior.OnFilterHandler += OnHitBoxFilter;
             _stateMachine._model.LeftWeaponBehavior.OnTriggerEnterHandler += OnLeftHitBoxHit;
@@ -61,30 +55,23 @@ namespace BeastHunter
 
             _stateMachine._model.BossNavAgent.SetDestination(_stateMachine._model.BossTransform.position);
             _stateMachine._model.BossNavAgent.speed = 0f;
-            _isCurrentAttackRight = Random.Range(0, 2) == 1? true : false;
 
-            if (_isCurrentAttackRight)
+            _stateMachine._model.WeaponData.MakeSimpleAttack(out _attackNumber);
+            _currentAttackTime = _stateMachine._model.WeaponData.CurrentAttack.AttackTime;
+            _stateMachine._model.BossAnimator.Play(_stateMachine._model.WeaponData.SimpleAttackAnimationPrefix + "Attack_" + _attackNumber, 0, 0f);
+
+            if (_stateMachine._model.WeaponData.CurrentAttack.AttackType == HandsEnum.Left)
             {
-                _attackNumber = Random.Range(0, _rightWeapon.AttacksRight.Length);
-                _currentAttackTime = _rightWeapon.AttacksRight[_attackNumber].Time;
-                _stateMachine._model.BossAnimator.Play(_rightWeapon.SimpleAttackAnimationName + "Right_" + _attackNumber, 0, 0f);
-                _rightWeapon.CurrentAttack = _rightWeapon.AttacksRight[_attackNumber];
-
-                TimeRemaining enableWeapon = new TimeRemaining(SetRightWeaponInteractable, _currentAttackTime * 
-                    PART_OF_NONE_ATTACK_TIME_RIGHT);
-                enableWeapon.AddTimeRemaining(_currentAttackTime * PART_OF_NONE_ATTACK_TIME_RIGHT);
+                TimeRemaining enableWeapon = new TimeRemaining(() => _stateMachine._model.LeftWeaponBehavior.IsInteractable = true,
+                    _currentAttackTime * PART_OF_NONE_ATTACK_TIME_LEFT);
+                enableWeapon.AddTimeRemaining(_currentAttackTime * PART_OF_NONE_ATTACK_TIME_LEFT);
             }
             else
             {
-                _attackNumber = Random.Range(0, _leftWeapon.AttacksLeft.Length);
-                _currentAttackTime = _leftWeapon.AttacksRight[_attackNumber].Time;
-                _stateMachine._model.BossAnimator.Play(_leftWeapon.SimpleAttackAnimationName + "Left_" + _attackNumber, 0, 0f);
-                _leftWeapon.CurrentAttack = _leftWeapon.AttacksLeft[_attackNumber];
-
-                TimeRemaining enableWeapon = new TimeRemaining(SetLeftWeaponInteractable, _currentAttackTime * 
-                    PART_OF_NONE_ATTACK_TIME_LEFT);
-                enableWeapon.AddTimeRemaining(_currentAttackTime * PART_OF_NONE_ATTACK_TIME_LEFT);
-            }           
+                TimeRemaining enableWeapon = new TimeRemaining(() => _stateMachine._model.RightWeaponBehavior.IsInteractable = true,
+                    _currentAttackTime * PART_OF_NONE_ATTACK_TIME_RIGHT);
+                enableWeapon.AddTimeRemaining(_currentAttackTime * PART_OF_NONE_ATTACK_TIME_RIGHT);
+            }
         }
 
         public override void Execute()
@@ -168,10 +155,9 @@ namespace BeastHunter
         {
             if (enemy.transform.GetComponent<InteractableObjectBehavior>() != null && hitBox.IsInteractable)
             {
-                InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
-
-                DealDamage(enemyBehavior, Services.SharedInstance.AttackService.CountDamage(_stateMachine._model.LeftHandWeapon,
-                    _stateMachine._model.BossStats.MainStats, _stateMachine._context.CharacterModel.PlayerBehavior.Stats));
+                DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
+                    CountDamage(_stateMachine._model.WeaponData, _stateMachine._model.BossStats.MainStats, _stateMachine.
+                        _context.CharacterModel.PlayerBehavior.Stats));
                 hitBox.IsInteractable = false;
             }
         }
@@ -180,10 +166,9 @@ namespace BeastHunter
         {
             if (enemy.transform.GetComponent<InteractableObjectBehavior>() != null && hitBox.IsInteractable)
             {
-                InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
-
-                DealDamage(enemyBehavior, Services.SharedInstance.AttackService.CountDamage(_stateMachine._model.RightHandWeapon,
-                     _stateMachine._model.BossStats.MainStats, _stateMachine._context.CharacterModel.PlayerBehavior.Stats));
+                DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
+                    CountDamage(_stateMachine._model.WeaponData, _stateMachine._model.BossStats.MainStats, _stateMachine.
+                        _context.CharacterModel.PlayerBehavior.Stats));
                 hitBox.IsInteractable = false;
             }
         }

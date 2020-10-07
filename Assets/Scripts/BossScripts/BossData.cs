@@ -10,7 +10,7 @@ namespace BeastHunter
     {
         #region PrivateData
 
-        public BossSettings _bossSettings;
+        public BossSettings BossSettings;
         public EnemyStats BaseStats;
         public BossStats BossStats;
 
@@ -26,13 +26,13 @@ namespace BeastHunter
 
         #region Metods
 
-        public void Act(BossIdleType idleType, BossModel model)
+        public void Act(BossIdlePattern idleTPattern, BossModel model)
         {
-            switch (idleType)
+            switch (idlePattern)
             {
-                case BossIdleType.MoveForward: MoveForward(model.BossTransform, 5f);
+                case BossIdlePattern.MoveForward: MoveForward(model.BossTransform, 5f);
                     break;
-                case BossIdleType.Rotate: Rotate(model.BossTransform, 5f);
+                case BossIdlePattern.Rotate: Rotate(model.BossTransform, 5f);
                     break;
                 default:
                     break;
@@ -65,7 +65,7 @@ namespace BeastHunter
 
         private void Rotate(Transform prefabTransform, float rotateSpeed)
         {
-            prefabTransform.Rotate(Vector3.up, rotateSpeed *Time.deltaTime);
+            prefabTransform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
         }
 
         #endregion
