@@ -9,14 +9,14 @@ namespace BeastHunter
     {
         #region Fields
 
-        [SerializeField] private BossIdleType _idleType;
+        [SerializeField] private BossIdlePattern _idlePattern;
 
         #endregion
 
 
         #region Properties
 
-        public BossIdleType IdleType => _idleType;
+        public BossIdlePattern IdlePattern => _idlePattern;
 
         #endregion
     }

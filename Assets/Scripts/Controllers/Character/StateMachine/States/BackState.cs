@@ -238,7 +238,7 @@ namespace BeastHunter
             if (enemy != null && damage != null)
             {
                 //enemy.TakeDamageEvent(damage); TO REFACTOR
-                _context.NpcModels[GetParent(enemy.transform).GetInstanceID()].TakeDamage(damage);
+                _context.EnemyModels[GetParent(enemy.transform).GetInstanceID()].TakeDamage(damage);
             }
         }
 
@@ -363,7 +363,7 @@ namespace BeastHunter
                 }
 
                 DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.CurrentWeaponData,
-                    _characterModel.CharacterStatsSettings, _context.NpcModels[GetParent(enemyBehavior.transform).
+                    _characterModel.CharacterStatsSettings, _context.EnemyModels[GetParent(enemyBehavior.transform).
                         GetInstanceID()].GetStats().MainStats));
                 hitBox.IsInteractable = false;
             }

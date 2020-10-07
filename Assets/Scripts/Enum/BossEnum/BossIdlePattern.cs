@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public enum BossIdleType
+    public enum BossIdlePattern
     {
         None        = 0,
         MoveForward = 1,

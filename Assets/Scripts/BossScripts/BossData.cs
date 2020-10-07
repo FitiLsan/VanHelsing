@@ -25,13 +25,13 @@ namespace BeastHunter
 
         #region Metods
 
-        public void Act(BossIdleType idleType, BossModel model)
+        public void Act(BossIdlePattern idleType, BossModel model)
         {
             switch (idleType)
             {
-                case BossIdleType.MoveForward: MoveForward(model.BossTransform, 5f);
+                case BossIdlePattern.MoveForward: MoveForward(model.BossTransform, 5f);
                     break;
-                case BossIdleType.Rotate: Rotate(model.BossTransform, 5f);
+                case BossIdlePattern.Rotate: Rotate(model.BossTransform, 5f);
                     break;
                 default:
                     break;
