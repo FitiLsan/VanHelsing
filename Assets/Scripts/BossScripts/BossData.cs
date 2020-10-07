@@ -9,7 +9,7 @@ namespace BeastHunter
     {
         #region PrivateData
 
-        public BossSettings _bossSettings;
+        public BossSettings BossSettings;
         public EnemyStats BaseStats;
         public BossStats BossStats;
 
@@ -64,7 +64,7 @@ namespace BeastHunter
 
         private void Rotate(Transform prefabTransform, float rotateSpeed)
         {
-            prefabTransform.Rotate(Vector3.up, rotateSpeed *Time.deltaTime);
+            prefabTransform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
         }
 
         #endregion

@@ -9,14 +9,14 @@ namespace BeastHunter
     {
         #region Fields
 
-        [Tooltip("Maximum Hp value")]
-        [SerializeField] private float _maxHealth;
+        [SerializeField, Tooltip("Maximum Hp value")]
+        private float _maxHealth;
         [SerializeField] private EnemyType _enemyType;
         //_enemySubtype
 
         [SerializeField] private float _viewRadius;
-        [Tooltip("Angle from center. Max 180."), Range(0.0f, 180.0f)]
-        [SerializeField] private float _viewAngle;
+        [SerializeField, Tooltip("Angle from center. Max 180."), Range(0.0f, 180.0f)]
+        private float _viewAngle;
         //_moveSpeed
         //_jumpHeight
         //etc.

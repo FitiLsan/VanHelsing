@@ -14,7 +14,6 @@ namespace BeastHunter
         private CharacterModel _characterModel;
         private CharacterAnimationController _animationController;
         private CharacterStateMachine _stateMachine;
-        private CharacterAnimationController _animationController;
 
         private Vector3 _groundHit;
         private Vector3 _lastPosition;
