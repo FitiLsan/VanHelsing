@@ -43,6 +43,8 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.Battle, new BattleState(context, this));
             CharacterStates.Add(CharacterStatesEnum.Dodging, new DodgingState(context, this));
             CharacterStates.Add(CharacterStatesEnum.Dead, new DeadState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.TimeSkip, new TimeSkipState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.TrapPlacing, new TrapPlacingState(context, this));
         }
 
         #endregion
@@ -73,7 +75,7 @@ namespace BeastHunter
             BackState.Updating();
 
             if (CurrentState is IUpdate) (CurrentState as IUpdate).Updating();
-            //CustomDebug.Log(CurrentState);
+            CustomDebug.Log(CurrentState);
         }
 
         public void OnTearDown()

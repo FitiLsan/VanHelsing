@@ -28,6 +28,10 @@
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Jumping]);
             _stateMachine.BackState.OnAim = () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Battle]);
+            _stateMachine.BackState.OnTimeSkipOpenClose = () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.TimeSkip]);
+            _stateMachine.BackState.OnTrapPlace = () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.TrapPlacing]);
         }
 
         protected override void DisableActions()
@@ -37,6 +41,8 @@
             _stateMachine.BackState.OnAttack = null;
             _stateMachine.BackState.OnJump = null;
             _stateMachine.BackState.OnAim = null;
+            _stateMachine.BackState.OnTimeSkipOpenClose = null;
+            _stateMachine.BackState.OnTrapPlace = null;
             base.DisableActions();
         }
 

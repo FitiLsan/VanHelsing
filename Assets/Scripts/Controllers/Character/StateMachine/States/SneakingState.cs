@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UniRx;
 
 
 namespace BeastHunter
@@ -81,8 +82,14 @@ namespace BeastHunter
             _crouchLevel = ZERO_CROUCH_LEVEL;
             _crouchLevelForAnimation = _crouchLevel;
             _isMoving = _inputModel.IsInputMove;
-
             _animationController.PlayMovementAnimation();
+            MessageBroker.Default.Publish(new OnPlayerSneakingEventClass { IsSneaking = true });
+        }
+
+        public override void OnExit(CharacterBaseState nextState = null)
+        {
+            MessageBroker.Default.Publish(new OnPlayerSneakingEventClass { IsSneaking = false });
+            base.OnExit(nextState);
         }
 
         private void ControlMovement()

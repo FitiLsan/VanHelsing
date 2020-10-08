@@ -23,7 +23,9 @@ namespace BeastHunter
             _context = context;
             if(_context.TrapModels.Count < 5)
             {
-                SpawnAtLookPoint(trapData, isActive);
+                //SpawnAtLookPoint(trapData, isActive);
+                SpawnAtGivenPoint(trapData, _context.CharacterModel.CharacterTransform.position + _context.
+                    CharacterModel.CharacterTransform.forward, Vector3.zero, false);
             }
         }
 

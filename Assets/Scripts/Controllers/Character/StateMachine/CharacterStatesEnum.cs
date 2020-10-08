@@ -13,6 +13,8 @@
         Jumping,
         Dead,       
         Stunned,
+        TimeSkip,
+        TrapPlacing,
     }
 }
 

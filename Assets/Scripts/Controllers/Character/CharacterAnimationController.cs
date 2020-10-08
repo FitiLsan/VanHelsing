@@ -8,13 +8,13 @@ namespace BeastHunter
         #region Constants
 
         private const string NONE_ANIMATON_NAME = "None";
-        private const string IDLE_ANIMATION_NAME = "Idle";
         private const string MOVEMENT_ANIMATION_NAME = "Movement";
         private const string STRAFE_ANIMATION_NAME = "Strafe";
         private const string SLIDE_FORWARD_ANIMATION_NAME = "SlideForward";
         private const string TURN_AROUND_ANIMATION_NAME = "TurningAround";
         private const string JUMP_FORWARD_ANIMATION_NAME = "JumpForward";
         private const string DODGE_ANIMATION_NAME = "Dodge";
+        private const string TRAP_PLACING_ANIMATION_NAME = "TrapPlacing";
 
         private const string AXIS_X_ANIMATOR_PARAMETER_NAME = "AxisX";
         private const string AXIS_Y_ANIMATOR_PARAMETER_NAME = "AxisY";
@@ -32,13 +32,13 @@ namespace BeastHunter
 
         #region Fields
 
-        private int _idleHash;
         private int _movementHash;
         private int _strafeHash;
         private int _jumpForwardHash;
         private int _dodgeHash;
         private int _slideForwardHash;
         private int _turningAroundHash;
+        private int _trapPlacingHash;
 
         #endregion
 
@@ -65,13 +65,13 @@ namespace BeastHunter
 
         public void Initialize()
         {
-            _idleHash = Animator.StringToHash(IDLE_ANIMATION_NAME);
             _movementHash = Animator.StringToHash(MOVEMENT_ANIMATION_NAME);
             _strafeHash = Animator.StringToHash(STRAFE_ANIMATION_NAME);
             _slideForwardHash = Animator.StringToHash(SLIDE_FORWARD_ANIMATION_NAME);
             _turningAroundHash = Animator.StringToHash(TURN_AROUND_ANIMATION_NAME);
             _jumpForwardHash = Animator.StringToHash(JUMP_FORWARD_ANIMATION_NAME);
             _dodgeHash = Animator.StringToHash(DODGE_ANIMATION_NAME);
+            _trapPlacingHash = Animator.StringToHash(TRAP_PLACING_ANIMATION_NAME);
         }
 
         public void UpdateAnimationParameters(float axisX, float axisY, float mouseAxisX, float moveSpeed, 
@@ -101,11 +101,6 @@ namespace BeastHunter
         public void SetTopBodyAnimationWeigth(float value)
         {
             CharacterAnimator.SetLayerWeight(1, value);
-        }
-
-        public void PlayIdleAnimation()
-        {
-            CharacterAnimator.Play(_idleHash);
         }
 
         public void PlayMovementAnimation()
@@ -145,6 +140,11 @@ namespace BeastHunter
         public void PlaySlideForwardAnimation()
         {
             CharacterAnimator.Play(_slideForwardHash);
+        }
+
+        public void PlayTrapPlacingAnimation()
+        {
+            CharacterAnimator.Play(_trapPlacingHash);
         }
 
         public void PlayNotArmedAttackAnimation(int attackIndex)

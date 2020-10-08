@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using RootMotion.Dynamics;
+using UniRx;
 
 
 namespace BeastHunter
@@ -51,6 +52,7 @@ namespace BeastHunter
         public Action OnWeaponWheelClose;
         public Action OnWeaponChange;
         public Action OnTimeSkipOpenClose;
+        public Action OnTrapPlace;
         
         private readonly GameContext _context;
         private readonly CharacterStateMachine _stateMachine;
@@ -137,7 +139,6 @@ namespace BeastHunter
             //StartDialogueData.StartDialog += SetTalkingState;
             //GlobalEventsModel.OnBossDie += StopTarget; // TO REFACTOR
 
-            //_services.InventoryService.HideWepons(_characterModel);
             _services.TrapService.LoadTraps();
 
             _services.EventManager.StartListening(InputEventTypes.MoveStart, OnMoveHandler);
@@ -151,6 +152,7 @@ namespace BeastHunter
             _services.EventManager.StartListening(InputEventTypes.Jump, OnJumpHandler);
             _services.EventManager.StartListening(InputEventTypes.RunStart, OnStartRunHandler);
             _services.EventManager.StartListening(InputEventTypes.RunStop, OnStopRunHandler);
+            _services.EventManager.StartListening(InputEventTypes.PlaceTrap1, OnTrapPlaceHandler);
 
             OnWeaponWheelOpen += OpenWeaponWheel;
             OnWeaponWheelClose += CloseWeaponWheel;
@@ -194,6 +196,7 @@ namespace BeastHunter
             _services.EventManager.StopListening(InputEventTypes.Jump, OnJumpHandler);
             _services.EventManager.StopListening(InputEventTypes.RunStart, OnStartRunHandler);
             _services.EventManager.StopListening(InputEventTypes.RunStop, OnStopRunHandler);
+            _services.EventManager.StopListening(InputEventTypes.PlaceTrap1, OnTrapPlaceHandler);
 
             OnWeaponWheelOpen -= OpenWeaponWheel;
             OnWeaponWheelClose -= CloseWeaponWheel;
@@ -331,6 +334,11 @@ namespace BeastHunter
             OnStopRun?.Invoke();
         }
 
+        private void OnTrapPlaceHandler()
+        {
+            OnTrapPlace?.Invoke();
+        }
+
         #endregion
 
 
@@ -358,7 +366,7 @@ namespace BeastHunter
 
                 if (enemyBehavior.Type == InteractableObjectType.WeakHitBox)
                 {
-                    GlobalEventsModel.OnBossWeakPointHitted?.Invoke(enemy);
+                    MessageBroker.Default.Publish(new OnBossWeakPointHittedEventClass { WeakPointCollider = enemy });
                 }
 
                 DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.CurrentWeaponData,
@@ -951,6 +959,16 @@ namespace BeastHunter
 
             MovementSpeed = Mathf.SmoothDamp(_characterModel.CurrentSpeed, _targetSpeed, ref _currentVelocity,
                 _speedChangeLag);
+        }
+
+        #endregion
+
+
+        #region InteractionWithObjects
+
+        private void InteractWithClosestObject()
+        {
+
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using UniRx;
 
 
 namespace BeastHunter
@@ -242,11 +243,11 @@ namespace BeastHunter
 
             if (damage.StunProbability > BossData._bossStats.MainStats.StunResistance)
             {
-                GlobalEventsModel.OnBossStunned?.Invoke();
+                MessageBroker.Default.Publish(new OnBossStunnedEventClass());
             }
             else
             {
-                GlobalEventsModel.OnBossHitted?.Invoke();
+                MessageBroker.Default.Publish(new OnBossHittedEventClass());
             }
         }
 

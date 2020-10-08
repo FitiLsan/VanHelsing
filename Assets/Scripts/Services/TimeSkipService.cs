@@ -41,17 +41,17 @@ namespace BeastHunter
         {
             _timeSkipUI.SetActive(true);
             IsOpen = true;
-            OnSetOpenAction();
+            OnSetOpenCloseAction();
         }
 
         public void CloseTimeSkipMenu()
         {
             _timeSkipUI.SetActive(false);
             IsOpen = false;
-            OnSetOpenAction();
+            OnSetOpenCloseAction();
         }
 
-        private void OnSetOpenAction()
+        private void OnSetOpenCloseAction()
         {
             OnOpenCloseWindow?.Invoke(IsOpen);
         }

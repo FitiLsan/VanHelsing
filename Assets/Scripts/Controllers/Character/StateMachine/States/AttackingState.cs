@@ -39,6 +39,7 @@ namespace BeastHunter
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
+
             _animationController.SetRootMotion(true);
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Kinematic;
             _animationController.SetTopBodyAnimationWeigth(0f);
@@ -64,7 +65,6 @@ namespace BeastHunter
                     default:
                         break;
                 }
-
 
                 _characterModel.CurrentWeaponData.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
                 _exitTIme = _characterModel.CurrentWeaponData.CurrentAttack.AttackTime;
