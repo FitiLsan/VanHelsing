@@ -9,7 +9,6 @@ namespace BeastHunter
         #region Fields
 
         private GameObject _timeSkipUI;
-        private TimeSkipData _data;
 
         #endregion
 
@@ -27,8 +26,7 @@ namespace BeastHunter
 
         public TimeSkipService(Contexts contexts) : base(contexts)
         {
-            _data = Data.TimeSkipData;
-            _timeSkipUI = GameObject.Instantiate(_data.UIPrefab);
+            _timeSkipUI = GameObject.Instantiate(Data.UIElementsData.TimeSkipPrefab);
             CloseTimeSkipMenu();
         }
 

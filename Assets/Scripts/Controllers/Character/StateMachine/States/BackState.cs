@@ -52,6 +52,7 @@ namespace BeastHunter
         public Action OnWeaponWheelClose;
         public Action OnWeaponChange;
         public Action OnTimeSkipOpenClose;
+        public Action OnButtonsInfoMenuOpenClose;
         public Action OnTrapPlace;
         
         private readonly GameContext _context;
@@ -63,6 +64,7 @@ namespace BeastHunter
         private readonly PuppetMaster _puppetController;
 
         private GameObject _weaponWheelUI;
+        private GameObject _buttonsInfoUI;
 
         private WeaponCircle[] _weaponWheelItems;
         private WeaponCircle _closestWeaponOnWheel;
@@ -114,13 +116,15 @@ namespace BeastHunter
             _puppetController = _characterModel.PuppetMaster;
             _speedArray = new float[5] { 0f, 0f, 0f, 0f, 0f};
 
-            _weaponWheelUI = GameObject.Instantiate(Data.WeaponWheelData.UIPrefab);
+            _weaponWheelUI = GameObject.Instantiate(Data.UIElementsData.WeaponWheelPrefab);
             _weaponWheelTransform = _weaponWheelUI.transform.
                 Find(WEAPON_WHEEL_PANEL_NAME).Find(WEAPON_WHEEL_CYCLE_NAME).transform;
             _weaponWheelItems = _weaponWheelUI.transform.Find(WEAPON_WHEEL_PANEL_NAME).
                 GetComponentsInChildren<WeaponCircle>();
             _weaponWheelText = _weaponWheelUI.transform.GetComponentInChildren<Text>();
             InitAllWeaponItemsOnWheel();
+
+            _buttonsInfoUI = GameObject.Instantiate(Data.UIElementsData.ButtonsInformationPrefab);
 
             _cameraTransform = _services.CameraService.CharacterCamera.transform;
             CloseWeaponWheel();
@@ -153,9 +157,11 @@ namespace BeastHunter
             _services.EventManager.StartListening(InputEventTypes.RunStart, OnStartRunHandler);
             _services.EventManager.StartListening(InputEventTypes.RunStop, OnStopRunHandler);
             _services.EventManager.StartListening(InputEventTypes.PlaceTrap1, OnTrapPlaceHandler);
+            _services.EventManager.StartListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
 
             OnWeaponWheelOpen += OpenWeaponWheel;
             OnWeaponWheelClose += CloseWeaponWheel;
+            OnButtonsInfoMenuOpenClose += OpenCloseButtonsInfoMenu;
         }
 
         #endregion
@@ -197,9 +203,11 @@ namespace BeastHunter
             _services.EventManager.StopListening(InputEventTypes.RunStart, OnStartRunHandler);
             _services.EventManager.StopListening(InputEventTypes.RunStop, OnStopRunHandler);
             _services.EventManager.StopListening(InputEventTypes.PlaceTrap1, OnTrapPlaceHandler);
+            _services.EventManager.StopListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
 
             OnWeaponWheelOpen -= OpenWeaponWheel;
             OnWeaponWheelClose -= CloseWeaponWheel;
+            OnButtonsInfoMenuOpenClose -= OpenCloseButtonsInfoMenu;
         }
 
         #endregion
@@ -312,6 +320,11 @@ namespace BeastHunter
         private void OnTimeSkipOpenCloseHandler()
         {
             OnTimeSkipOpenClose?.Invoke();
+        }
+
+        private void OnButtonsInfoOpenCloseHandler()
+        {
+            OnButtonsInfoMenuOpenClose?.Invoke();
         }
 
         private void OnAttackHandler()
@@ -964,11 +977,11 @@ namespace BeastHunter
         #endregion
 
 
-        #region InteractionWithObjects
+        #region ButtonsInformationMenu
 
-        private void InteractWithClosestObject()
+        private void OpenCloseButtonsInfoMenu()
         {
-
+            _buttonsInfoUI.SetActive(!_buttonsInfoUI.activeSelf);
         }
 
         #endregion

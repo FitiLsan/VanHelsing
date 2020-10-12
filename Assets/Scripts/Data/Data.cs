@@ -30,11 +30,10 @@ namespace BeastHunter
         [SerializeField] private string _bossFirstWeakPointPath;
         [SerializeField] private string _bossSecondWeakPointPath;
         [SerializeField] private string _bossThirdWeakPointPath;
-        [SerializeField] private string _timeSkipDataPath;
-        [SerializeField] private string _weaponWheelDataPath;
         [SerializeField] private string _shouldersPath;
         [SerializeField] private string _shoesPath;
         [SerializeField] private string _ironGreavesPath;
+        [SerializeField] private string _uiElementsDataPath;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -60,8 +59,7 @@ namespace BeastHunter
         private static WeakPointData _bossFirstWeakPoint;
         private static WeakPointData _bossSecondWeakPoint;
         private static WeakPointData _bossThirdWeakPoint;
-        private static TimeSkipData _timeSkipData;
-        private static WeaponWheelData _weaponWheelData;
+        private static UIElementsData _uiElementsData;
 
         #endregion
 
@@ -335,27 +333,15 @@ namespace BeastHunter
             }
         }
 
-        public static TimeSkipData TimeSkipData
+        public static UIElementsData UIElementsData
         {
             get
             {
-                if (_timeSkipData == null)
+                if (_uiElementsData == null)
                 {
-                    _timeSkipData = Load<TimeSkipData>("Data/" + Instance._timeSkipDataPath);
+                    _uiElementsData = Load<UIElementsData>("Data/" + Instance._uiElementsDataPath);
                 }
-                return _timeSkipData;
-            }
-        }
-
-        public static WeaponWheelData WeaponWheelData
-        {
-            get
-            {
-                if(_weaponWheelData == null)
-                {
-                    _weaponWheelData = Load<WeaponWheelData>("Data/" + Instance._weaponWheelDataPath);
-                }
-                return _weaponWheelData;
+                return _uiElementsData;
             }
         }
 
