@@ -39,13 +39,22 @@ namespace BeastHunter
             States = new Dictionary<BossStatesEnum, BossBaseState>();
             States.Add(BossStatesEnum.Idle, new BossIdleState(this));
             States.Add(BossStatesEnum.Patroling, new BossPatrolingState(this));
-            States.Add(BossStatesEnum.Dead, new BossDeadState(this));
-            States.Add(BossStatesEnum.Searching, new BossSearchingState(this));
-            States.Add(BossStatesEnum.Chasing, new BossChasingState(this));
+            States.Add(BossStatesEnum.Eating, new BossEatingState(this));
+            States.Add(BossStatesEnum.Resting, new BossRestingState(this));
+
+
             States.Add(BossStatesEnum.Attacking, new BossAttackingState(this));
-            States.Add(BossStatesEnum.Stunned, new BossStunnedState(this));
-            States.Add(BossStatesEnum.Targeting, new BossTargetingState(this));
-            States.Add(BossStatesEnum.Hitted, new BossHittedState(this));
+            States.Add(BossStatesEnum.Defencing, new BossDefencingState(this));
+            States.Add(BossStatesEnum.Chasing, new BossChasingState(this));
+            States.Add(BossStatesEnum.Retreating, new BossRetreatingState(this));
+            States.Add(BossStatesEnum.Searching, new BossSearchingState(this));
+            States.Add(BossStatesEnum.Dead, new BossDeadState(this));
+            States.Add(BossStatesEnum.Resurrecting, new BossResurrectingState(this));         
+            
+         //   States.Add(BossStatesEnum.Targeting, new BossTargetingState(this));
+
+          //  States.Add(BossStatesEnum.Stunned, new BossStunnedState(this));
+          //  States.Add(BossStatesEnum.Hitted, new BossHittedState(this));
         }
 
         #endregion

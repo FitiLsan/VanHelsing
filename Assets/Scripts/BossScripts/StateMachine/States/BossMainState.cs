@@ -91,7 +91,7 @@ namespace BeastHunter
         {
             if (!_stateMachine._model.IsDead)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Hitted);
+              //  _stateMachine.SetCurrentStateOverride(BossStatesEnum.Hitted);
             }
         }
 
@@ -99,7 +99,7 @@ namespace BeastHunter
         {
             if (!_stateMachine._model.IsDead)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Stunned);
+             //   _stateMachine.SetCurrentStateOverride(BossStatesEnum.Stunned);
             }         
         }
 
