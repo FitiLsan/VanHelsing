@@ -74,7 +74,7 @@ namespace BeastHunter
             _trapPlacingHash = Animator.StringToHash(TRAP_PLACING_ANIMATION_NAME);
         }
 
-        public void UpdateAnimationParameters(float axisX, float axisY, float mouseAxisX, float moveSpeed, 
+        public void UpdateAnimationParameters(float axisX, float axisY, float rotationAxisX, float moveSpeed, 
             float animationSpeed)
         {
             if (CharacterAnimator != null)
@@ -82,7 +82,7 @@ namespace BeastHunter
                 CharacterAnimator.SetFloat(AXIS_X_ANIMATOR_PARAMETER_NAME, axisX);
                 CharacterAnimator.SetFloat(AXIS_Y_ANIMATOR_PARAMETER_NAME, axisY);
                 CharacterAnimator.SetFloat(MOVE_SPEED_ANIMATOR_PARAMETER_NAME, moveSpeed);
-                CharacterAnimator.SetFloat(MOUSE_AXIS_X_ANIMATOR_PARAMETER_NAME, mouseAxisX);
+                CharacterAnimator.SetFloat(MOUSE_AXIS_X_ANIMATOR_PARAMETER_NAME, rotationAxisX);
                 CharacterAnimator.speed = animationSpeed;
             }
         }

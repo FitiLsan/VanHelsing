@@ -34,6 +34,7 @@ namespace BeastHunter
         [SerializeField] private string _shoesPath;
         [SerializeField] private string _ironGreavesPath;
         [SerializeField] private string _uiElementsDataPath;
+        [SerializeField] private string _materialsDataPath;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -60,6 +61,7 @@ namespace BeastHunter
         private static WeakPointData _bossSecondWeakPoint;
         private static WeakPointData _bossThirdWeakPoint;
         private static UIElementsData _uiElementsData;
+        private static MaterialsData _materialsData;
 
         #endregion
 
@@ -342,6 +344,18 @@ namespace BeastHunter
                     _uiElementsData = Load<UIElementsData>("Data/" + Instance._uiElementsDataPath);
                 }
                 return _uiElementsData;
+            }
+        }
+
+        public static MaterialsData MaterialsData
+        {
+            get
+            {
+                if (_materialsData == null)
+                {
+                    _materialsData = Load<MaterialsData>("Data/" + Instance._materialsDataPath);
+                }
+                return _materialsData;
             }
         }
 

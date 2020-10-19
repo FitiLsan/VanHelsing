@@ -75,7 +75,7 @@ namespace BeastHunter
             BackState.Updating();
 
             if (CurrentState is IUpdate) (CurrentState as IUpdate).Updating();
-            CustomDebug.Log(CurrentState);
+            //CustomDebug.Log(CurrentState);
         }
 
         public void OnTearDown()
@@ -90,26 +90,32 @@ namespace BeastHunter
 
         public void SetState(CharacterBaseState newState)
         {
-            OnBeforeStateChange(CurrentState, newState);
-            CurrentState.OnExit(newState);
-            PreviousState = CurrentState;
-            CurrentState = newState;
-            CurrentState.NextState = null;
-            OnStateChange(PreviousState, CurrentState);
-            CurrentState.Initialize(PreviousState);
-            OnAfterStateChange(CurrentState);
+            if (newState.CanBeActivated())
+            {
+                OnBeforeStateChange(CurrentState, newState);
+                CurrentState.OnExit(newState);
+                PreviousState = CurrentState;
+                CurrentState = newState;
+                CurrentState.NextState = null;
+                OnStateChange(PreviousState, CurrentState);
+                CurrentState.Initialize(PreviousState);
+                OnAfterStateChange(CurrentState);
+            }
         }
 
         public void SetState(CharacterBaseState newState, CharacterBaseState nextState)
         {
-            OnBeforeStateChange(CurrentState, newState);
-            CurrentState.OnExit(newState);
-            PreviousState = CurrentState;
-            CurrentState = newState;
-            CurrentState.NextState = nextState;
-            OnStateChange(PreviousState, CurrentState);
-            CurrentState.Initialize(PreviousState);
-            OnAfterStateChange(CurrentState);
+            if (newState.CanBeActivated())
+            {
+                OnBeforeStateChange(CurrentState, newState);
+                CurrentState.OnExit(newState);
+                PreviousState = CurrentState;
+                CurrentState = newState;
+                CurrentState.NextState = nextState;
+                OnStateChange(PreviousState, CurrentState);
+                CurrentState.Initialize(PreviousState);
+                OnAfterStateChange(CurrentState);
+            }
         }
 
         public void ReturnState()

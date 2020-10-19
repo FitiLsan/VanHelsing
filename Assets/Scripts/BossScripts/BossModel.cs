@@ -144,8 +144,8 @@ namespace BeastHunter
             CurrentSpeed = 0f;
             AnimationSpeed = BossData._bossSettings.AnimatorBaseSpeed;
 
-            LeftHand = BossAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
-            RightHand = BossAnimator.GetBoneTransform(HumanBodyBones.RightHand);
+            LeftHand = BossTransform.Find(BossSettings.LeftHandObjectPath);
+            RightHand = BossTransform.Find(BossSettings.RightHandObjectPath);
 
             AnchorPosition = BossTransform.position;
 

@@ -4,7 +4,8 @@ using System;
 
 namespace BeastHunter
 {
-    public class TimeSkipService : Service
+    [Obsolete]
+    public sealed class TimeSkipService : Service
     {
         #region Fields
 

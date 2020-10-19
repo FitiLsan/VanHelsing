@@ -41,6 +41,7 @@
         {
             _stateMachine.BackState.CountSpeedStrafing();
             ControlMovement();
+            ClosestEnemyCheck();
         }
 
         #endregion
@@ -57,6 +58,12 @@
 
 
         #region Methods
+
+        public override bool CanBeActivated()
+        {
+            ClosestEnemyCheck();
+            return _characterModel.ClosestEnemy != null;
+        }
 
         protected override void EnableActions()
         {
@@ -140,6 +147,35 @@
                 _animationController.SetTopBodyAnimationWeigth(1f);
                 _animationController.PlayStrafeAnimation(_characterModel.CurrentWeaponData?.StrafeAndDodgePostfix);
             }            
+        }
+
+        private void ClosestEnemyCheck()
+        {
+            if (_characterModel.EnemiesInTrigger.Count > 0)
+            {
+                float currentDistanceToEnemy = float.PositiveInfinity;
+                float smallestDistanceToEnemy = currentDistanceToEnemy;
+                int closestEnemyIndex = 0;
+
+                foreach (var enemy in _characterModel.EnemiesInTrigger)
+                {
+                    currentDistanceToEnemy = (enemy.transform.position - _characterModel.CharacterTransform.position).
+                        sqrMagnitude;
+
+                    if (currentDistanceToEnemy < smallestDistanceToEnemy)
+                    {
+                        closestEnemyIndex = _characterModel.EnemiesInTrigger.IndexOf(enemy);
+                        smallestDistanceToEnemy = currentDistanceToEnemy;
+                    }
+                }
+
+                _characterModel.ClosestEnemy = _characterModel.EnemiesInTrigger[closestEnemyIndex];
+            }
+            else
+            {
+                _characterModel.ClosestEnemy = null;
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
+            }
         }
 
         #endregion

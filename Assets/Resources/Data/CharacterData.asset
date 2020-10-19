@@ -49,7 +49,8 @@ MonoBehaviour:
     _sneakDecelerationLag: 0.13
     _directionChangeLag: 0.194
     _animatorBaseSpeed: 1
-    _strafeDirectionChangeSpeed: 50
+    _timeToContinueMovingAfterStop: 1
+    _strafeDirectionChangeSpeed: 0.02
     _jumpTime: 1.96
     _slideTime: 1.3
     _rollTime: 0.9

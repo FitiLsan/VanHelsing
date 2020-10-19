@@ -17,6 +17,12 @@ namespace BeastHunter
         [Tooltip("Boss instance name.")]
         [SerializeField] private string _instanceName;
 
+        [Tooltip("Left hand object path")]
+        [SerializeField] private string _leftHandObjectPath;
+
+        [Tooltip("Right hand object path")]
+        [SerializeField] private string _rightHandObjectPath;
+
         [Tooltip("Boss instance tag.")]
         [SerializeField] private string _instanceTag;
 
@@ -139,6 +145,8 @@ namespace BeastHunter
         public Vector3 RightHandHitBoxCenter => _rightHandHitBoxCenter;
 
         public string InstanceName => _instanceName;
+        public string LeftHandObjectPath => _leftHandObjectPath;
+        public string RightHandObjectPath => _rightHandObjectPath;
         public string InstanceTag => _instanceTag;
 
         public int InstanceLayer => _instanceLayer;

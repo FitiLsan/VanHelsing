@@ -1,12 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using RootMotion.Dynamics;
+using UniRx;
 
 
 namespace BeastHunter
 {
     public sealed class CharacterModel
     {
+        #region Fields
+
+        private Collider _closestEnemy;
+
+        #endregion
+
+
         #region Properties
 
         public WeaponData CurrentWeaponData { get; set; }
@@ -14,6 +22,7 @@ namespace BeastHunter
         public GameObject CurrentWeaponRight { get; set; }
         public WeaponHitBoxBehavior WeaponBehaviorLeft { get; set; }
         public WeaponHitBoxBehavior WeaponBehaviorRight { get; set; }
+        public ReactiveProperty<TrapModel> CurrentPlacingTrapModel { get; set; }
 
         public Transform CharacterTransform { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
@@ -38,10 +47,16 @@ namespace BeastHunter
         public bool IsDodging { get; set; }
         public bool IsSneaking { get; set; }
         public bool IsGrounded { get; set; }
-        public bool IsInBattleMode { get; set; }
+
         public bool IsEnemyNear { get; set; }
-        public bool IsWeaponInHands { get; set; }
         public bool IsDead { get; set; }
+        public bool IsWeaponInHands
+        {
+            get
+            {
+                return CurrentWeaponLeft != null || CurrentWeaponRight != null;
+            }
+        }
 
         #endregion
 
@@ -57,7 +72,7 @@ namespace BeastHunter
             CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
             CharacterTransform.name = CharacterCommonSettings.InstanceName;
             CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
-
+            
             if (CharacterTransform.GetComponent<Rigidbody>() != null)
             {
                 CharacterRigitbody = CharacterTransform.GetComponent<Rigidbody>();
@@ -109,13 +124,13 @@ namespace BeastHunter
             CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterAnimator;
             CharacterAnimator.applyRootMotion = CharacterCommonSettings.BeginningApplyRootMotion;
 
-            if (prefab.GetComponent<PlayerBehavior>() != null)
+            if (prefab.transform.GetChild(2).GetComponent<PlayerBehavior>() != null)
             {
-                PlayerBehavior = prefab.GetComponent<PlayerBehavior>();
+                PlayerBehavior = prefab.transform.GetChild(2).GetComponent<PlayerBehavior>();
             }
             else
             {
-                PlayerBehavior = prefab.AddComponent<PlayerBehavior>();
+                PlayerBehavior = prefab.transform.GetChild(2).gameObject.AddComponent<PlayerBehavior>();
             }
 
             PlayerBehavior.SetType(InteractableObjectType.Player);
@@ -126,8 +141,6 @@ namespace BeastHunter
             IsGrounded = false;
             IsSneaking = false;
             IsEnemyNear = false;
-            IsInBattleMode = false;
-            IsWeaponInHands = false;
             IsDead = false;
 
             CurrentSpeed = 0;
@@ -138,6 +151,8 @@ namespace BeastHunter
             CurrentWeaponData = null;
             CurrentWeaponLeft = null;
             CurrentWeaponRight = null;
+            CurrentPlacingTrapModel = new ReactiveProperty<TrapModel>();
+            CurrentPlacingTrapModel.Value = null;
         }
 
         #endregion

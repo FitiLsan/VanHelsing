@@ -1,21 +1,17 @@
 ﻿using UnityEngine;
+using UniRx;
 
 
 namespace BeastHunter
 {
-    public class TrapPlacingState : CharacterBaseState, IUpdate
+    public class TrapPlacingState : CharacterBaseState, IAwake, IUpdate, ITearDown
     {
-        #region Constants
-
-        private const float TRAP_PLACING_TIME = 3f;
-        private const float TIME_TO_SET_TRAP = 1.5f;
-
-        #endregion
-
-
         #region Fields
 
         private readonly GameContext _context;
+
+        private float _timeToPlaceTrap;
+        private float _timeForTrapToAppear;
         private float _exitTIme;
         private bool _isTrapSet;
 
@@ -29,7 +25,16 @@ namespace BeastHunter
             _context = context;
             IsTargeting = false;
             IsAttacking = false;
-            CheckTimes();
+        }
+
+        #endregion
+
+
+        #region IAwake
+
+        public void OnAwake()
+        {
+            _characterModel.CurrentPlacingTrapModel.Subscribe(UpdateTimes);
         }
 
         #endregion
@@ -45,22 +50,29 @@ namespace BeastHunter
         #endregion
 
 
+        #region ITearDown
+
+        public void TearDown()
+        {
+            _characterModel.CurrentPlacingTrapModel.Dispose();
+        }
+
+        #endregion
+
+
         #region Methods
+
+        public override bool CanBeActivated()
+        {
+            return _characterModel.CurrentPlacingTrapModel != null;
+        }
 
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
             _animationController.PlayTrapPlacingAnimation();
-            _exitTIme = TRAP_PLACING_TIME;
+            _exitTIme = _timeToPlaceTrap;
             _isTrapSet = false;
-        }
-
-        private void CheckTimes()
-        {
-            if(TIME_TO_SET_TRAP > TRAP_PLACING_TIME)
-            {
-                throw new System.Exception("Time to set trap must be less then trap placing time!");
-            }
         }
 
         private void CountTimers()
@@ -71,26 +83,24 @@ namespace BeastHunter
             {
                 _stateMachine.ReturnState();
             }
-            else if (_exitTIme < TIME_TO_SET_TRAP && !_isTrapSet)
+            else if (_exitTIme < _timeForTrapToAppear && !_isTrapSet)
             {
-                SetTrap(0);
+                SetTrap();
             }
         }
 
-        private void SetTrap(int trapNumber)
+        private void SetTrap()
         {
-            switch (trapNumber)
+            _stateMachine.BackState.OnTrapPlace?.Invoke();
+            _isTrapSet = true;
+        }
+
+        private void UpdateTimes(TrapModel currentTrapModel)
+        {
+            if(currentTrapModel != null)
             {
-                case 0:
-                    new InitializeTrapController(_context, Data.TrapData);
-                    _isTrapSet = true;
-                    break;
-                case 1:
-                    new InitializeTrapController(_context, Data.TrapData2);
-                    _isTrapSet = true;
-                    break;
-                default:
-                    break;
+                _timeToPlaceTrap = currentTrapModel.TrapStruct.TotalTimeToPlaceTrap;
+                _timeForTrapToAppear = currentTrapModel.TrapStruct.TimeBeforeTrapAppear;
             }
         }
 

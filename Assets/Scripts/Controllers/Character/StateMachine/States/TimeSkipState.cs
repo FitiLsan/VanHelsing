@@ -18,6 +18,11 @@ namespace BeastHunter
 
         #region Methods
 
+        public override bool CanBeActivated()
+        {
+            return !IsActive;
+        }
+
         protected override void EnableActions()
         {
             base.EnableActions();

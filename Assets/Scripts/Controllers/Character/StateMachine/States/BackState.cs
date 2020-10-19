@@ -47,13 +47,12 @@ namespace BeastHunter
         public Action OnStartRun;
         public Action OnStopRun;
 
-        public Action OnBattleExit;
         public Action OnWeaponWheelOpen;
         public Action OnWeaponWheelClose;
         public Action OnWeaponChange;
+        public Action OnTrapPlace;
         public Action OnTimeSkipOpenClose;
         public Action OnButtonsInfoMenuOpenClose;
-        public Action OnTrapPlace;
         
         private readonly GameContext _context;
         private readonly CharacterStateMachine _stateMachine;
@@ -143,7 +142,7 @@ namespace BeastHunter
             //StartDialogueData.StartDialog += SetTalkingState;
             //GlobalEventsModel.OnBossDie += StopTarget; // TO REFACTOR
 
-            _services.TrapService.LoadTraps();
+            //_services.TrapService.LoadTraps();
 
             _services.EventManager.StartListening(InputEventTypes.MoveStart, OnMoveHandler);
             _services.EventManager.StartListening(InputEventTypes.MoveStop, OnStopHandler);
@@ -156,12 +155,17 @@ namespace BeastHunter
             _services.EventManager.StartListening(InputEventTypes.Jump, OnJumpHandler);
             _services.EventManager.StartListening(InputEventTypes.RunStart, OnStartRunHandler);
             _services.EventManager.StartListening(InputEventTypes.RunStop, OnStopRunHandler);
-            _services.EventManager.StartListening(InputEventTypes.PlaceTrap1, OnTrapPlaceHandler);
             _services.EventManager.StartListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
 
             OnWeaponWheelOpen += OpenWeaponWheel;
             OnWeaponWheelClose += CloseWeaponWheel;
             OnButtonsInfoMenuOpenClose += OpenCloseButtonsInfoMenu;
+            OnWeaponChange += _services.TrapService.RemoveTrap;
+            OnTrapPlace += _services.TrapService.PlaceTrap;
+
+            _characterModel.PlayerBehavior.OnFilterHandler += OnTriggerFilter;
+            _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterSomething;
+            _characterModel.PlayerBehavior.OnTriggerExitHandler += OnTriggerExitSomething;
         }
 
         #endregion
@@ -202,12 +206,17 @@ namespace BeastHunter
             _services.EventManager.StopListening(InputEventTypes.Jump, OnJumpHandler);
             _services.EventManager.StopListening(InputEventTypes.RunStart, OnStartRunHandler);
             _services.EventManager.StopListening(InputEventTypes.RunStop, OnStopRunHandler);
-            _services.EventManager.StopListening(InputEventTypes.PlaceTrap1, OnTrapPlaceHandler);
             _services.EventManager.StopListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
 
             OnWeaponWheelOpen -= OpenWeaponWheel;
             OnWeaponWheelClose -= CloseWeaponWheel;
             OnButtonsInfoMenuOpenClose -= OpenCloseButtonsInfoMenu;
+            OnWeaponChange -= _services.TrapService.RemoveTrap;
+            OnTrapPlace -= _services.TrapService.PlaceTrap;
+
+            _characterModel.PlayerBehavior.OnFilterHandler -= OnTriggerFilter;
+            _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterSomething;
+            _characterModel.PlayerBehavior.OnTriggerExitHandler -= OnTriggerExitSomething;
         }
 
         #endregion
@@ -227,8 +236,6 @@ namespace BeastHunter
                 {
                     _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Dead]);
                 }
-
-                _characterModel.IsInBattleMode = true;
 
                 Debug.Log("Player has: " + _currentHealth + " of HP");
             }
@@ -347,15 +354,39 @@ namespace BeastHunter
             OnStopRun?.Invoke();
         }
 
-        private void OnTrapPlaceHandler()
-        {
-            OnTrapPlace?.Invoke();
-        }
-
         #endregion
 
 
         #region OnTriggerHandlers
+
+        private bool OnTriggerFilter(Collider interactedObject)
+        {
+            bool isEnemyColliderHit = false;
+            InteractableObjectBehavior interacterBehavior = interactedObject.
+                GetComponent<InteractableObjectBehavior>();
+
+            if (interacterBehavior != null)
+            {
+                isEnemyColliderHit = interacterBehavior.Type == InteractableObjectType.Enemy;
+            }
+            return isEnemyColliderHit;
+        }
+
+        private void OnTriggerEnterSomething(ITrigger interactedItrigger, Collider interactedObject)
+        {
+            if (!interactedObject.isTrigger && !_characterModel.EnemiesInTrigger.Contains(interactedObject))
+            {
+                _characterModel.EnemiesInTrigger.Add(interactedObject);
+            }
+        }
+
+        private void OnTriggerExitSomething(ITrigger interactedItrigger, Collider interactedObject)
+        {
+            if (_characterModel.EnemiesInTrigger.Contains(interactedObject))
+            {
+                _characterModel.EnemiesInTrigger.Remove(interactedObject);
+            }
+        }
 
         private bool OnHitBoxFilter(Collider hitedObject)
         {
@@ -397,7 +428,7 @@ namespace BeastHunter
         private void AnimationCheck()
         {
             _animationController.UpdateAnimationParameters(_context.InputModel.InputAxisX,
-                _context.InputModel.InputAxisY, _inputModel.MouseInputX, _characterModel.CurrentSpeed, 
+                _context.InputModel.InputAxisY, _characterModel.CharacterRigitbody.velocity.y, _characterModel.CurrentSpeed, 
                     _characterModel.AnimationSpeed);
         }
 
@@ -412,7 +443,7 @@ namespace BeastHunter
             _inputModel.IsInputMove = _context.InputModel.IsInputMove;
         }
 
-        private void AddSpeed(float speed)
+        private void AddSpeedToArray(float speed)
         {
             for(int index = 0; index < _speedArray.Length - 1; index++)
             {
@@ -437,7 +468,7 @@ namespace BeastHunter
             }
             else
             {
-                AddSpeed(Mathf.Sqrt((_currentPosition - _lastPosition).sqrMagnitude) / Time.deltaTime);
+                AddSpeedToArray(Mathf.Sqrt((_currentPosition - _lastPosition).sqrMagnitude) / Time.deltaTime);
                 _characterModel.CurrentSpeed = GetAverageSpeed();
                 _lastPosition = _currentPosition;
             }
@@ -465,17 +496,25 @@ namespace BeastHunter
 
             if (_closestWeaponOnWheel != null)
             {
-                if (_closestWeaponOnWheel.WeaponData == null)
-                {
-                    RemoveWeapon();
-                }
-                else
+                if (_closestWeaponOnWheel.WeaponData != null)
                 {
                     if (_closestWeaponOnWheel.WeaponData != _characterModel.CurrentWeaponData)
                     {
-                        RemoveWeapon();
+                        OnWeaponChange?.Invoke();
                         GetWeapon(_closestWeaponOnWheel.WeaponData);
                     }
+                }
+                else if (_closestWeaponOnWheel.TrapData != null)
+                {
+                    if (_closestWeaponOnWheel.TrapData != _characterModel.CurrentPlacingTrapModel.Value?.TrapData)
+                    {
+                        OnWeaponChange?.Invoke();
+                        GetTrap(_closestWeaponOnWheel.TrapData);
+                    }
+                }
+                else
+                {
+                    OnWeaponChange?.Invoke();
                 }
             }
         }
@@ -557,6 +596,11 @@ namespace BeastHunter
                     item.GetComponentsInChildren<Image>()[1].sprite = item.WeaponData.WeaponImage;
                     images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
                 }
+                else if(item.TrapData != null)
+                {
+                    item.GetComponentsInChildren<Image>()[1].sprite = item.TrapData.TrapImage;
+                    images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
+                }
                 else
                 {                
                     images[1].color = new Color(1f, 1f, 1f, 0f);
@@ -629,165 +673,14 @@ namespace BeastHunter
 
         #region WeaponControl
 
-        public void RemoveWeapon()
-        {
-            if(_characterModel.CurrentWeaponData != null)
-            {
-                if (_characterModel.CurrentWeaponLeft != null)
-                {
-                    if(_characterModel.WeaponBehaviorLeft != null)
-                    {
-                        _characterModel.WeaponBehaviorLeft.OnFilterHandler -= OnHitBoxFilter;
-                        _characterModel.WeaponBehaviorLeft.OnTriggerEnterHandler -= OnHitBoxHit;
-                    }
-
-                    _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Left) - 1].currentProp = null;
-                    GameObject.Destroy(_characterModel.CurrentWeaponLeft, 0.1f); // TO REFACTOR
-                }
-
-                if(_characterModel.CurrentWeaponRight != null)
-                {
-                    if (_characterModel.WeaponBehaviorRight != null)
-                    {
-                        _characterModel.WeaponBehaviorRight.OnFilterHandler -= OnHitBoxFilter;
-                        _characterModel.WeaponBehaviorRight.OnTriggerEnterHandler -= OnHitBoxHit;
-                    }
-
-                    _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Right) - 1].currentProp = null;
-                    GameObject.Destroy(_characterModel.CurrentWeaponRight, 0.1f); // TO REFACTOR
-                }
-
-                if (_characterModel.CurrentWeaponData.Type == WeaponType.Shooting)
-                {
-                    _characterModel.CurrentWeaponData.OnHit -= OnHitBoxHit;
-                }
-            }
-
-            _characterModel.CurrentWeaponData = null;
-            _characterModel.CurrentWeaponLeft = null;
-            _characterModel.CurrentWeaponRight = null;
-            OnWeaponChange?.Invoke();
-        }
-
         public void GetWeapon(WeaponData weaponData)
         {
-            _characterModel.CurrentWeaponData = weaponData;
+            new InitializeWeaponController(_context, weaponData, OnHitBoxFilter, OnHitBoxHit, ref OnWeaponChange);
+        }
 
-            if (weaponData is OneHandedWeaponData)
-            {
-                OneHandedWeaponData newWeaponData = weaponData as OneHandedWeaponData;
-                GameObject newWeapon = GameObject.Instantiate(newWeaponData.ActualWeapon.WeaponPrefab);
-                newWeaponData.Init(newWeapon);
-
-                switch (newWeaponData.InWhichHand)
-                {
-                    case HandsEnum.Left:
-                        _characterModel.CurrentWeaponLeft = newWeapon;
-                        _characterModel.WeaponBehaviorLeft = newWeapon.GetComponentInChildren<WeaponHitBoxBehavior>();
-
-                        if (_characterModel.WeaponBehaviorLeft != null)
-                        {
-                            _characterModel.WeaponBehaviorLeft.OnFilterHandler += OnHitBoxFilter;
-                            _characterModel.WeaponBehaviorLeft.OnTriggerEnterHandler += OnHitBoxHit;
-                        }
-                        break;
-                    case HandsEnum.Right:
-                        _characterModel.CurrentWeaponRight = newWeapon;
-                        _characterModel.WeaponBehaviorRight = newWeapon.GetComponentInChildren<WeaponHitBoxBehavior>();
-
-                        if (_characterModel.WeaponBehaviorRight != null)
-                        {
-                            _characterModel.WeaponBehaviorRight.OnFilterHandler += OnHitBoxFilter;
-                            _characterModel.WeaponBehaviorRight.OnTriggerEnterHandler += OnHitBoxHit;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                _characterModel.PuppetMaster.propMuscles[(int)newWeaponData.InWhichHand - 1].
-                    currentProp = newWeapon.GetComponent<PuppetMasterProp>();
-            }
-            else
-            {
-                TwoHandedWeaponData newWeaponData = weaponData as TwoHandedWeaponData;
-
-                if(newWeaponData.Type == WeaponType.Shooting)
-                {
-                    newWeaponData.OnHit += OnHitBoxHit;
-                }
-
-                switch (newWeaponData.InWhichHand)
-                {
-                    case HandsEnum.Left:
-
-                        _characterModel.CurrentWeaponLeft = GameObject.Instantiate(newWeaponData.
-                            LeftActualWeapon.WeaponPrefab);
-                        _characterModel.WeaponBehaviorLeft = _characterModel.CurrentWeaponLeft.
-                            GetComponentInChildren<WeaponHitBoxBehavior>();
-
-                        if (_characterModel.WeaponBehaviorLeft != null)
-                        {
-                            _characterModel.WeaponBehaviorLeft.OnFilterHandler += OnHitBoxFilter;
-                            _characterModel.WeaponBehaviorLeft.OnTriggerEnterHandler += OnHitBoxHit;
-                        }
-
-                        _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Left) - 1].
-                            currentProp = _characterModel.CurrentWeaponLeft.GetComponent<PuppetMasterProp>();
-                        break;
-                    case HandsEnum.Right:
-
-                        _characterModel.CurrentWeaponRight = GameObject.Instantiate(newWeaponData.
-                            LeftActualWeapon.WeaponPrefab);
-                        _characterModel.WeaponBehaviorRight = _characterModel.CurrentWeaponRight.
-                            GetComponentInChildren<WeaponHitBoxBehavior>();
-
-                        if (_characterModel.WeaponBehaviorRight != null)
-                        {
-                            _characterModel.WeaponBehaviorRight.OnFilterHandler += OnHitBoxFilter;
-                            _characterModel.WeaponBehaviorRight.OnTriggerEnterHandler += OnHitBoxHit;
-                        }
-
-                        _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Right) - 1].
-                            currentProp = _characterModel.CurrentWeaponLeft.GetComponent<PuppetMasterProp>();
-                        break;
-                    case HandsEnum.Both:
-
-                        _characterModel.CurrentWeaponLeft = GameObject.Instantiate(newWeaponData.
-                            LeftActualWeapon.WeaponPrefab);
-                        _characterModel.CurrentWeaponRight = GameObject.Instantiate(newWeaponData.
-                            RightActualWeapon.WeaponPrefab);
-
-                        _characterModel.WeaponBehaviorLeft = _characterModel.CurrentWeaponLeft.
-                            GetComponentInChildren<WeaponHitBoxBehavior>();
-                        _characterModel.WeaponBehaviorRight = _characterModel.CurrentWeaponRight.
-                            GetComponentInChildren<WeaponHitBoxBehavior>();
-
-                        if (_characterModel.WeaponBehaviorLeft != null)
-                        {
-                            _characterModel.WeaponBehaviorLeft.OnFilterHandler += OnHitBoxFilter;
-                            _characterModel.WeaponBehaviorLeft.OnTriggerEnterHandler += OnHitBoxHit;
-                        }
-
-                        if(_characterModel.WeaponBehaviorRight != null)
-                        {
-                            _characterModel.WeaponBehaviorRight.OnFilterHandler += OnHitBoxFilter;
-                            _characterModel.WeaponBehaviorRight.OnTriggerEnterHandler += OnHitBoxHit;
-                        }
-
-                        _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Left) - 1].
-                            currentProp = _characterModel.CurrentWeaponLeft.GetComponent<PuppetMasterProp>();
-                        _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Right) - 1].
-                            currentProp = _characterModel.CurrentWeaponRight.GetComponent<PuppetMasterProp>();
-                        break;
-                    default:
-                        break;
-                }
-
-                newWeaponData.Init(_characterModel.CurrentWeaponLeft, _characterModel.CurrentWeaponRight);
-            }
-
-            OnWeaponChange?.Invoke();
+        public void GetTrap(TrapData trapData)
+        {
+            _services.TrapService.GetTrap(trapData);
         }
 
         #endregion
@@ -863,7 +756,7 @@ namespace BeastHunter
                     CurrentDirecton = _characterModel.CharacterTransform.localEulerAngles.y;
                     TargetDirection = _cameraTransform.localEulerAngles.y + AdditionalDirection;
                     CurrentAngle = Mathf.SmoothDampAngle(CurrentDirecton, TargetDirection, ref _targetAngleVelocity,
-                    _characterModel.CharacterCommonSettings.DirectionChangeLag);
+                        _characterModel.CharacterCommonSettings.DirectionChangeLag);
                 }
                 else
                 {
@@ -871,12 +764,12 @@ namespace BeastHunter
 
                     if (isStrafing)
                     {
-                        CurrentAngle += _inputModel.MouseInputX * _characterModel.CharacterCommonSettings.
-                            StrafeDirectionChangeSpeed * Time.deltaTime;
+                        _characterModel.CharacterTransform.LookAt(_characterModel.ClosestEnemy.transform.position);
+                        CurrentAngle = _characterModel.CharacterTransform.eulerAngles.y;
                     }
                 }
-                
-                _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle, 
+
+                _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle,
                     -_targetAngleVelocity * Time.fixedDeltaTime);
             }
         }

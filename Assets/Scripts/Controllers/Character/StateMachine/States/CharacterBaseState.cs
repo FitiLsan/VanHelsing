@@ -18,7 +18,6 @@
         public CharacterBaseState NextState { get; set; }
 
         public bool IsActive { get; private set; }
-        public bool IsInBattle { get; private set; }
         public bool IsTargeting { get; protected set; }
         public bool IsAttacking { get; protected set; }
 
@@ -41,8 +40,7 @@
 
         #region Methods
 
-        protected virtual void EnableActions() { IsActive = true; }
-        protected virtual void DisableActions() { IsActive = false; }
+        public abstract bool CanBeActivated();
 
         public virtual void Initialize(CharacterBaseState previousState = null)
         {         
@@ -53,6 +51,9 @@
         {
             DisableActions();       
         }
+
+        protected virtual void EnableActions() { IsActive = true; }
+        protected virtual void DisableActions() { IsActive = false; }
 
         #endregion
     }

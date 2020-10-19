@@ -36,6 +36,15 @@ namespace BeastHunter
 
         #region Methods
 
+        public override bool CanBeActivated()
+        {
+            if(!_characterModel.IsWeaponInHands && _characterModel.CurrentPlacingTrapModel.Value != null)
+            {
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.TrapPlacing]);
+            }
+            return _characterModel.IsWeaponInHands;
+        }
+
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
@@ -44,32 +53,23 @@ namespace BeastHunter
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Kinematic;
             _animationController.SetTopBodyAnimationWeigth(0f);
 
-            if (_characterModel.CurrentWeaponData == null)
+            switch (_characterModel.CurrentWeaponData.Type)
             {
-                _attackIndex = Random.Range(0, 2);
-                _exitTIme = 0.8f;
-                _animationController.PlayNotArmedAttackAnimation(_attackIndex);
+                case WeaponType.Melee:
+                    if (_characterModel.WeaponBehaviorLeft != null) _characterModel.WeaponBehaviorLeft.IsInteractable = true;
+                    if (_characterModel.WeaponBehaviorRight != null) _characterModel.WeaponBehaviorRight.IsInteractable = true;
+                    break;
+                case WeaponType.Shooting:
+                    break;
+                case WeaponType.Throwing:
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                switch (_characterModel.CurrentWeaponData.Type)
-                {
-                    case WeaponType.Melee:
-                        if (_characterModel.WeaponBehaviorLeft != null) _characterModel.WeaponBehaviorLeft.IsInteractable = true;
-                        if (_characterModel.WeaponBehaviorRight != null) _characterModel.WeaponBehaviorRight.IsInteractable = true;
-                        break;
-                    case WeaponType.Shooting:
-                        break;
-                    case WeaponType.Throwing:
-                        break;
-                    default:
-                        break;
-                }
 
-                _characterModel.CurrentWeaponData.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
-                _exitTIme = _characterModel.CurrentWeaponData.CurrentAttack.AttackTime;
-                _animationController.PlayArmedAttackAnimation(_characterModel.CurrentWeaponData.SimpleAttackAnimationPrefix, _attackIndex);
-            }
+            _characterModel.CurrentWeaponData.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
+            _exitTIme = _characterModel.CurrentWeaponData.CurrentAttack.AttackTime;
+            _animationController.PlayArmedAttackAnimation(_characterModel.CurrentWeaponData.SimpleAttackAnimationPrefix, _attackIndex);
 
             _stateMachine.BackState.StopCharacter();
         }
@@ -79,21 +79,18 @@ namespace BeastHunter
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Active;
             _animationController.SetTopBodyAnimationWeigth(1f);
 
-            if (_characterModel.CurrentWeaponData != null)
+            switch (_characterModel.CurrentWeaponData.Type)
             {
-                switch (_characterModel.CurrentWeaponData.Type)
-                {
-                    case WeaponType.Melee:
-                        if (_characterModel.WeaponBehaviorLeft != null) _characterModel.WeaponBehaviorLeft.IsInteractable = false;
-                        if (_characterModel.WeaponBehaviorRight != null) _characterModel.WeaponBehaviorRight.IsInteractable = false;
-                        break;
-                    case WeaponType.Shooting:
-                        break;
-                    case WeaponType.Throwing:
-                        break;
-                    default:
-                        break;
-                }
+                case WeaponType.Melee:
+                    if (_characterModel.WeaponBehaviorLeft != null) _characterModel.WeaponBehaviorLeft.IsInteractable = false;
+                    if (_characterModel.WeaponBehaviorRight != null) _characterModel.WeaponBehaviorRight.IsInteractable = false;
+                    break;
+                case WeaponType.Shooting:
+                    break;
+                case WeaponType.Throwing:
+                    break;
+                default:
+                    break;
             }
 
             _animationController.SetRootMotion(false);
