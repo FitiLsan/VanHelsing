@@ -15,6 +15,11 @@
 
         #region Methods
 
+        public override bool CanBeActivated()
+        {
+            return !IsActive;
+        }
+
         protected override void EnableActions()
         {
             base.EnableActions();
@@ -28,6 +33,8 @@
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Jumping]);
             _stateMachine.BackState.OnAim = () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Battle]);
+            _stateMachine.BackState.OnTimeSkipOpenClose = () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.TimeSkip]);
         }
 
         protected override void DisableActions()
@@ -37,6 +44,7 @@
             _stateMachine.BackState.OnAttack = null;
             _stateMachine.BackState.OnJump = null;
             _stateMachine.BackState.OnAim = null;
+            _stateMachine.BackState.OnTimeSkipOpenClose = null;
             base.DisableActions();
         }
 

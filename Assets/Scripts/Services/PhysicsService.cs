@@ -31,6 +31,17 @@ namespace BeastHunter
 
         #region Methods
 
+        public void DrawLine(Vector3 position, Vector3 direction, float distance)
+        {
+            Debug.DrawLine(position, position + direction * distance, Color.red);
+            Debug.LogError("The line is done");
+        }
+
+        public bool MakeRaycast(Vector3 position, Vector3 direction, out RaycastHit rayHit, float distance)
+        {
+            return Physics.Raycast(position, direction, out rayHit, distance);  
+        }
+
         public bool CheckGround(Vector3 position, float distanceRay, out Vector3 hitPoint)
         {
             hitPoint = Vector3.zero;

@@ -30,11 +30,11 @@ namespace BeastHunter
         [SerializeField] private string _bossFirstWeakPointPath;
         [SerializeField] private string _bossSecondWeakPointPath;
         [SerializeField] private string _bossThirdWeakPointPath;
-        [SerializeField] private string _timeSkipDataPath;
-        [SerializeField] private string _weaponWheelUIPath;
         [SerializeField] private string _shouldersPath;
         [SerializeField] private string _shoesPath;
         [SerializeField] private string _ironGreavesPath;
+        [SerializeField] private string _uiElementsDataPath;
+        [SerializeField] private string _materialsDataPath;
 
         private static Data _instance;
         private static SphereData _sphereData;
@@ -60,8 +60,8 @@ namespace BeastHunter
         private static WeakPointData _bossFirstWeakPoint;
         private static WeakPointData _bossSecondWeakPoint;
         private static WeakPointData _bossThirdWeakPoint;
-        private static TimeSkipData _timeSkipData;
-        private static GameObject _weaponWheelUI;
+        private static UIElementsData _uiElementsData;
+        private static MaterialsData _materialsData;
 
         #endregion
 
@@ -335,27 +335,27 @@ namespace BeastHunter
             }
         }
 
-        public static TimeSkipData TimeSkipData
+        public static UIElementsData UIElementsData
         {
             get
             {
-                if (_timeSkipData == null)
+                if (_uiElementsData == null)
                 {
-                    _timeSkipData = Load<TimeSkipData>("Data/" + Instance._timeSkipDataPath);
+                    _uiElementsData = Load<UIElementsData>("Data/" + Instance._uiElementsDataPath);
                 }
-                return _timeSkipData;
+                return _uiElementsData;
             }
         }
 
-        public static GameObject WeaponWheelUI
+        public static MaterialsData MaterialsData
         {
             get
             {
-                if(_weaponWheelUI == null)
+                if (_materialsData == null)
                 {
-                    _weaponWheelUI = Load<GameObject>("Data/" + Instance._weaponWheelUIPath);
+                    _materialsData = Load<MaterialsData>("Data/" + Instance._materialsDataPath);
                 }
-                return _weaponWheelUI;
+                return _materialsData;
             }
         }
 

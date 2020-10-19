@@ -11,7 +11,7 @@
 
         #region Fields
 
-        private float _bossAcceleration;
+        private bool _isInTrap;
 
         #endregion
 
@@ -56,8 +56,11 @@
 
         private void StopStun()
         {
-            CanBeOverriden = true;
-            _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
+            if (!_isInTrap)
+            {
+                CanBeOverriden = true;
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
+            }
         }
 
         #endregion

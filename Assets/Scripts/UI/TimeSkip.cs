@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 
 namespace BeastHunter
 {
+    [System.Obsolete]
     public sealed class TimeSkip : MonoBehaviour
     {
         #region Constants
@@ -123,8 +123,8 @@ namespace BeastHunter
         public void LoadChosenTime(float time)
         {
             // SET TIME
-            Services.SharedInstance.TrapService.SaveTraps();
-            SceneManager.LoadScene(0);
+            //Services.SharedInstance.TrapService.SaveTraps();
+            //SceneManager.LoadScene(0);
         }
 
         public void CloseWindow()
