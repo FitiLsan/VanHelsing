@@ -110,7 +110,7 @@ namespace BeastHunter
 
             if (!isNear)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Targeting);
+             //   _stateMachine.SetCurrentStateOverride(BossStatesEnum.Targeting);
             }
 
             return isNear;
