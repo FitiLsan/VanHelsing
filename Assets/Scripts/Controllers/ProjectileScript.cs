@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UniRx;
 
 
 namespace BeastHunter
@@ -26,7 +27,8 @@ namespace BeastHunter
             {
                 if(collision.gameObject.GetComponent<InteractableObjectBehavior>().Type == InteractableObjectType.WeakHitBox)
                 {
-                    GlobalEventsModel.OnBossWeakPointHitted?.Invoke(collision.collider);
+                    MessageBroker.Default.Publish(
+                        new OnBossWeakPointHittedEventClass { WeakPointCollider = collision.collider });
                 }
 
                 Context.NpcModels[GetParent(collision.transform).GetInstanceID()].TakeDamage(

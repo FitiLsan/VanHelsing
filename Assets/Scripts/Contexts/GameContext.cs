@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
 
 namespace BeastHunter
 {
@@ -35,7 +35,7 @@ namespace BeastHunter
         {
             _onTriggers = new SortedList<InteractableObjectType, List<IInteractable>>();
             _interactables = new List<IInteractable>();
-
+ 
             NpcModels = new Dictionary<int, EnemyModel>();
         }
 

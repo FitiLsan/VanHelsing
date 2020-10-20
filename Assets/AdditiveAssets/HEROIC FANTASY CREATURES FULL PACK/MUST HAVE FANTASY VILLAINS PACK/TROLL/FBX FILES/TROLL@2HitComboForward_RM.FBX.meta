@@ -1,0 +1,853 @@
+fileFormatVersion: 2
+guid: 00daa325cd4d03941ae9356704a38a8f
+timeCreated: 1481319828
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: TROLL_
+    100004: TROLL_ Head
+    100006: TROLL_ L Calf
+    100008: TROLL_ L Clavicle
+    100010: TROLL_ L Finger0
+    100012: TROLL_ L Finger01
+    100014: TROLL_ L Finger02
+    100016: TROLL_ L Finger1
+    100018: TROLL_ L Finger11
+    100020: TROLL_ L Finger12
+    100022: TROLL_ L Finger2
+    100024: TROLL_ L Finger21
+    100026: TROLL_ L Finger22
+    100028: TROLL_ L Foot
+    100030: TROLL_ L Forearm
+    100032: TROLL_ L Hand
+    100034: TROLL_ L Thigh
+    100036: TROLL_ L Toe0
+    100038: TROLL_ L UpperArm
+    100040: TROLL_ Neck
+    100042: TROLL_ Pelvis
+    100044: TROLL_ Queue de cheval 1
+    100046: TROLL_ R Calf
+    100048: TROLL_ R Clavicle
+    100050: TROLL_ R Finger0
+    100052: TROLL_ R Finger01
+    100054: TROLL_ R Finger02
+    100056: TROLL_ R Finger1
+    100058: TROLL_ R Finger11
+    100060: TROLL_ R Finger12
+    100062: TROLL_ R Finger2
+    100064: TROLL_ R Finger21
+    100066: TROLL_ R Finger22
+    100068: TROLL_ R Foot
+    100070: TROLL_ R Forearm
+    100072: TROLL_ R Hand
+    100074: TROLL_ R Thigh
+    100076: TROLL_ R Toe0
+    100078: TROLL_ R UpperArm
+    100080: TROLL_ Spine
+    100082: TROLL_ Spine1
+    400000: //RootNode
+    400002: TROLL_
+    400004: TROLL_ Head
+    400006: TROLL_ L Calf
+    400008: TROLL_ L Clavicle
+    400010: TROLL_ L Finger0
+    400012: TROLL_ L Finger01
+    400014: TROLL_ L Finger02
+    400016: TROLL_ L Finger1
+    400018: TROLL_ L Finger11
+    400020: TROLL_ L Finger12
+    400022: TROLL_ L Finger2
+    400024: TROLL_ L Finger21
+    400026: TROLL_ L Finger22
+    400028: TROLL_ L Foot
+    400030: TROLL_ L Forearm
+    400032: TROLL_ L Hand
+    400034: TROLL_ L Thigh
+    400036: TROLL_ L Toe0
+    400038: TROLL_ L UpperArm
+    400040: TROLL_ Neck
+    400042: TROLL_ Pelvis
+    400044: TROLL_ Queue de cheval 1
+    400046: TROLL_ R Calf
+    400048: TROLL_ R Clavicle
+    400050: TROLL_ R Finger0
+    400052: TROLL_ R Finger01
+    400054: TROLL_ R Finger02
+    400056: TROLL_ R Finger1
+    400058: TROLL_ R Finger11
+    400060: TROLL_ R Finger12
+    400062: TROLL_ R Finger2
+    400064: TROLL_ R Finger21
+    400066: TROLL_ R Finger22
+    400068: TROLL_ R Foot
+    400070: TROLL_ R Forearm
+    400072: TROLL_ R Hand
+    400074: TROLL_ R Thigh
+    400076: TROLL_ R Toe0
+    400078: TROLL_ R UpperArm
+    400080: TROLL_ Spine
+    400082: TROLL_ Spine1
+    7400000: 2HitComboForward_RM
+    9500000: //RootNode
+    11100000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 'MuscleClip ''TROLL@2HitComboForward_RM''conversion warning:
+      ''TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L Clavicle''
+      has translation animation. It is not supported.
+
+
+      MuscleClip ''TROLL@2HitComboForward_RM''conversion warning: ''TROLL_/TROLL_
+      Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R Clavicle'' has translation
+      animation. It is not supported.
+
+
+'
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 0
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 2
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: 2HitComboForward_RM
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: TROLL_
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ L Thigh
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ L Thigh/TROLL_ L Calf
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ L Thigh/TROLL_ L Calf/TROLL_ L Foot
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ L Thigh/TROLL_ L Calf/TROLL_ L Foot/TROLL_
+          L Toe0
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ R Thigh
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ R Thigh/TROLL_ R Calf
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ R Thigh/TROLL_ R Calf/TROLL_ R Foot
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ R Thigh/TROLL_ R Calf/TROLL_ R Foot/TROLL_
+          R Toe0
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ Head
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ Head/TROLL_
+          Queue de cheval 1
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm/TROLL_ L Hand
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm/TROLL_ L Hand/TROLL_ L Finger0
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm/TROLL_ L Hand/TROLL_ L Finger0/TROLL_
+          L Finger01
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm/TROLL_ L Hand/TROLL_ L Finger0/TROLL_
+          L Finger01/TROLL_ L Finger02
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm/TROLL_ L Hand/TROLL_ L Finger1
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm/TROLL_ L Hand/TROLL_ L Finger1/TROLL_
+          L Finger11
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm/TROLL_ L Hand/TROLL_ L Finger1/TROLL_
+          L Finger11/TROLL_ L Finger12
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm/TROLL_ L Hand/TROLL_ L Finger2
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm/TROLL_ L Hand/TROLL_ L Finger2/TROLL_
+          L Finger21
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ L
+          Clavicle/TROLL_ L UpperArm/TROLL_ L Forearm/TROLL_ L Hand/TROLL_ L Finger2/TROLL_
+          L Finger21/TROLL_ L Finger22
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm/TROLL_ R Hand
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm/TROLL_ R Hand/TROLL_ R Finger0
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm/TROLL_ R Hand/TROLL_ R Finger0/TROLL_
+          R Finger01
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm/TROLL_ R Hand/TROLL_ R Finger0/TROLL_
+          R Finger01/TROLL_ R Finger02
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm/TROLL_ R Hand/TROLL_ R Finger1
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm/TROLL_ R Hand/TROLL_ R Finger1/TROLL_
+          R Finger11
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm/TROLL_ R Hand/TROLL_ R Finger1/TROLL_
+          R Finger11/TROLL_ R Finger12
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm/TROLL_ R Hand/TROLL_ R Finger2
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm/TROLL_ R Hand/TROLL_ R Finger2/TROLL_
+          R Finger21
+        weight: 1
+      - path: TROLL_/TROLL_ Pelvis/TROLL_ Spine/TROLL_ Spine1/TROLL_ Neck/TROLL_ R
+          Clavicle/TROLL_ R UpperArm/TROLL_ R Forearm/TROLL_ R Hand/TROLL_ R Finger2/TROLL_
+          R Finger21/TROLL_ R Finger22
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    human:
+    - boneName: TROLL_ Pelvis
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Thigh
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Thigh
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Calf
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Calf
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Foot
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Foot
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ Spine
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ Spine1
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ Head
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Clavicle
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Clavicle
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L UpperArm
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R UpperArm
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Forearm
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Forearm
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Hand
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Hand
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Toe0
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Toe0
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Finger1
+      humanName: Left Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Finger11
+      humanName: Left Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Finger12
+      humanName: Left Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Finger2
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Finger21
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Finger22
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Finger1
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Finger11
+      humanName: Right Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Finger12
+      humanName: Right Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Finger2
+      humanName: Right Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Finger21
+      humanName: Right Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Finger22
+      humanName: Right Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ Neck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ Queue de cheval 1
+      humanName: Jaw
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Finger0
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Finger01
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ L Finger02
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Finger0
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Finger01
+      humanName: Right Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: TROLL_ R Finger02
+      humanName: Right Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: TROLL(Clone)
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: TROLL_
+      position: {x: 0, y: 2.26699996, z: -.491999984}
+      rotation: {x: -.350127578, y: .350126743, z: .614337623, w: .61433804}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: TROLL_ Pelvis
+      position: {x: -.382848859, y: -6.59823229e-07, z: .319050789}
+      rotation: {x: .499999255, y: -.50000006, z: -.50000006, w: -.500000656}
+      scale: {x: .999999821, y: .999999881, z: 1}
+      transformModified: 1
+    - name: TROLL_ L Thigh
+      position: {x: 6.10351549e-07, y: 7.62939408e-07, z: .470616221}
+      rotation: {x: -.380934298, y: .920454144, z: .086806044, w: .0108650625}
+      scale: {x: 1.00000024, y: 1.00000012, z: 1.00000012}
+      transformModified: 1
+    - name: TROLL_ L Calf
+      position: {x: -1.23676872, y: -3.81469718e-08, z: 0}
+      rotation: {x: .000603377761, y: -.00150299049, z: .353143871, w: .935567617}
+      scale: {x: 1.00000036, y: 1.00000012, z: 1.00000012}
+      transformModified: 1
+    - name: TROLL_ L Foot
+      position: {x: -.843485296, y: -3.81469718e-08, z: 0}
+      rotation: {x: .0358889103, y: .0161873698, z: -.230024755, w: .972388148}
+      scale: {x: .999999881, y: .999999762, z: 1}
+      transformModified: 1
+    - name: TROLL_ L Toe0
+      position: {x: -.328763604, y: .312663078, z: 0}
+      rotation: {x: 2.62260414e-06, y: 2.66055554e-06, z: -.707106829, w: .707106769}
+      scale: {x: 1.00000012, y: 1, z: 1}
+      transformModified: 1
+    - name: TROLL_ Spine
+      position: {x: -.327622533, y: -.00899688713, z: 5.23065694e-07}
+      rotation: {x: 1.92225002e-06, y: -6.55651149e-07, z: -.0181966741, w: -.999834478}
+      scale: {x: 1.00000024, y: 1.00000012, z: 1}
+      transformModified: 1
+    - name: TROLL_ Spine1
+      position: {x: -.696689904, y: -.000794982887, z: -2.20548824e-09}
+      rotation: {x: -2.98023188e-08, y: -2.38418551e-07, z: .126945719, w: .991909742}
+      scale: {x: 1, y: .99999994, z: 1}
+      transformModified: 1
+    - name: TROLL_ Neck
+      position: {x: -1.00599205, y: .026801452, z: 3.99129938e-08}
+      rotation: {x: 0, y: -8.34465027e-07, z: .32743454, w: -.944873929}
+      scale: {x: 1.00000036, y: 1.00000036, z: 1.00000012}
+      transformModified: 1
+    - name: TROLL_ Head
+      position: {x: -.453496069, y: .0257144161, z: 2.19483614e-08}
+      rotation: {x: -5.96046448e-08, y: 9.53674316e-07, z: -.372372121, w: -.928083599}
+      scale: {x: .999999881, y: .999999881, z: .999999881}
+      transformModified: 1
+    - name: TROLL_ Queue de cheval 1
+      position: {x: -.0328137204, y: -.0592954233, z: -8.04779404e-07}
+      rotation: {x: 2.98023188e-08, y: -2.20537163e-06, z: .801415443, w: -.598108172}
+      scale: {x: .999999881, y: .999999762, z: 1}
+      transformModified: 1
+    - name: TROLL_ L Clavicle
+      position: {x: .0492047109, y: -.0457339473, z: .147472113}
+      rotation: {x: -.599618018, y: -.218860567, z: .729972899, w: -.244331494}
+      scale: {x: .99999994, y: .999999762, z: 1}
+      transformModified: 1
+    - name: TROLL_ L UpperArm
+      position: {x: -.60973841, y: 1.52587887e-07, z: -3.05175774e-07}
+      rotation: {x: -.2435202, y: .0632800162, z: .0414825939, w: .966939926}
+      scale: {x: .999999762, y: 1.00000024, z: 1.00000012}
+      transformModified: 1
+    - name: TROLL_ L Forearm
+      position: {x: -1.35863948, y: -3.81469718e-08, z: 0}
+      rotation: {x: -.0079189688, y: .0224964358, z: .0270168055, w: .999350488}
+      scale: {x: .999999881, y: .999999881, z: 1.00000012}
+      transformModified: 1
+    - name: TROLL_ L Hand
+      position: {x: -1.17094767, y: 0, z: 0}
+      rotation: {x: .706613839, y: .0120080058, z: .0213151053, w: -.707176447}
+      scale: {x: .999999881, y: .999999344, z: .999999762}
+      transformModified: 1
+    - name: TROLL_ L Finger0
+      position: {x: -.181889191, y: .00554351788, z: -.157200471}
+      rotation: {x: -.77721864, y: .0610259548, z: -.125679508, w: -.61352402}
+      scale: {x: 1.00000024, y: .999999821, z: 1.00000024}
+      transformModified: 1
+    - name: TROLL_ L Finger01
+      position: {x: -.268782943, y: -1.52587887e-07, z: 0}
+      rotation: {x: -8.19563795e-08, y: 2.98023188e-08, z: -.0269748308, w: .999636114}
+      scale: {x: 1.00000012, y: 1.00000048, z: 1.00000024}
+      transformModified: 1
+    - name: TROLL_ L Finger02
+      position: {x: -.233330756, y: 7.62939436e-08, z: 0}
+      rotation: {x: -1.117587e-08, y: 0, z: -.27336809, w: .961909473}
+      scale: {x: .999999762, y: .999999821, z: 1.00000012}
+      transformModified: 1
+    - name: TROLL_ L Finger1
+      position: {x: -.509548187, y: -.0868475288, z: -.0985662043}
+      rotation: {x: .000239002286, y: -.0247896593, z: .04087805, w: .998856544}
+      scale: {x: 1, y: 1.00000012, z: 1}
+      transformModified: 1
+    - name: TROLL_ L Finger11
+      position: {x: -.30942893, y: 0, z: -1.90734852e-07}
+      rotation: {x: -9.02799968e-08, y: 1.82539054e-07, z: -.0341022946, w: .999418378}
+      scale: {x: 1.00000012, y: 1.00000024, z: 1.00000048}
+      transformModified: 1
+    - name: TROLL_ L Finger12
+      position: {x: -.243094787, y: 0, z: 3.05175774e-07}
+      rotation: {x: 2.5331974e-07, y: -1.04308128e-07, z: -.203967035, w: .978977799}
+      scale: {x: 1, y: .999999762, z: .999999762}
+      transformModified: 1
+    - name: TROLL_ L Finger2
+      position: {x: -.494120538, y: -.0401339717, z: .180292502}
+      rotation: {x: .00587177044, y: -.0180682689, z: .0642675683, w: .997751892}
+      scale: {x: .999999881, y: 1, z: 1.00000024}
+      transformModified: 1
+    - name: TROLL_ L Finger21
+      position: {x: -.303314209, y: 3.05175774e-07, z: 0}
+      rotation: {x: 3.41969546e-08, y: -6.40749079e-07, z: -.0341014266, w: .999418378}
+      scale: {x: 1, y: 1.00000012, z: 1.00000036}
+      transformModified: 1
+    - name: TROLL_ L Finger22
+      position: {x: -.237489313, y: 0, z: 1.14440915e-07}
+      rotation: {x: 7.4505806e-08, y: -1.49011612e-08, z: -.0965713263, w: .995326102}
+      scale: {x: 1, y: .99999994, z: 1.00000012}
+      transformModified: 1
+    - name: TROLL_ R Clavicle
+      position: {x: .0492047109, y: -.0457330309, z: -.147472307}
+      rotation: {x: -.599617362, y: -.218858629, z: -.729973495, w: .244333237}
+      scale: {x: .999999702, y: 1, z: .999999702}
+      transformModified: 1
+    - name: TROLL_ R UpperArm
+      position: {x: -.60973835, y: 0, z: 3.05175774e-07}
+      rotation: {x: .243520141, y: -.0632800683, z: .0414822958, w: .966939926}
+      scale: {x: .99999994, y: 1.00000036, z: 1.00000012}
+      transformModified: 1
+    - name: TROLL_ R Forearm
+      position: {x: -1.35863888, y: 7.62939436e-08, z: -3.05175774e-07}
+      rotation: {x: -.00791874062, y: .0224967804, z: -.0270172488, w: -.999350429}
+      scale: {x: 1.00000012, y: 1.00000012, z: 1.00000036}
+      transformModified: 1
+    - name: TROLL_ R Hand
+      position: {x: -1.17094743, y: 1.14440915e-07, z: 3.05175774e-07}
+      rotation: {x: .706613779, y: .0120079778, z: -.0213151742, w: .707176507}
+      scale: {x: .999999881, y: 1, z: .999999881}
+      transformModified: 1
+    - name: TROLL_ R Finger0
+      position: {x: -.18188934, y: .00554321287, z: .157200471}
+      rotation: {x: .777218521, y: -.0610263124, z: -.125679716, w: -.613524079}
+      scale: {x: .99999994, y: 1.00000048, z: .999999762}
+      transformModified: 1
+    - name: TROLL_ R Finger01
+      position: {x: -.268783003, y: 7.62939436e-08, z: 0}
+      rotation: {x: -1.49011612e-08, y: 5.96046448e-08, z: -.0269748569, w: .999636173}
+      scale: {x: .999999881, y: .999999762, z: .999999762}
+      transformModified: 1
+    - name: TROLL_ R Finger02
+      position: {x: -.233330607, y: 0, z: 0}
+      rotation: {x: -1.78813849e-07, y: 1.49011541e-07, z: -.273368061, w: .961909473}
+      scale: {x: 1.00000072, y: 1.00000024, z: 1.00000036}
+      transformModified: 1
+    - name: TROLL_ R Finger1
+      position: {x: -.509548306, y: -.0868475288, z: .0985658988}
+      rotation: {x: -.000239029323, y: .0247895923, z: .0408781394, w: .998856544}
+      scale: {x: .999999881, y: .999999702, z: 1.00000024}
+      transformModified: 1
+    - name: TROLL_ R Finger11
+      position: {x: -.309429318, y: -6.10351549e-07, z: 7.62939436e-08}
+      rotation: {x: -2.3841838e-07, y: -1.86264355e-08, z: -.034100689, w: .999418378}
+      scale: {x: .999999881, y: 1.00000024, z: .999999881}
+      transformModified: 1
+    - name: TROLL_ R Finger12
+      position: {x: -.243094623, y: 3.05175774e-07, z: -7.62939436e-08}
+      rotation: {x: 2.04890839e-07, y: 1.49011523e-08, z: -.203967184, w: .97897774}
+      scale: {x: .99999994, y: .999999821, z: 1}
+      transformModified: 1
+    - name: TROLL_ R Finger2
+      position: {x: -.494120866, y: -.0401342772, z: -.180292666}
+      rotation: {x: -.00587187149, y: .018068986, z: .0642680973, w: .997751772}
+      scale: {x: 1.00000024, y: .99999994, z: .999999821}
+      transformModified: 1
+    - name: TROLL_ R Finger21
+      position: {x: -.303314269, y: 0, z: 3.81469718e-08}
+      rotation: {x: 2.08616086e-07, y: -2.16066653e-07, z: -.0341040976, w: .999418259}
+      scale: {x: 1, y: 1.00000036, z: 1.00000012}
+      transformModified: 1
+    - name: TROLL_ R Finger22
+      position: {x: -.237489626, y: 0, z: -7.62939436e-08}
+      rotation: {x: -1.11758681e-07, y: -4.47034729e-08, z: -.0965713337, w: .995326161}
+      scale: {x: .99999994, y: .999999881, z: .999999881}
+      transformModified: 1
+    - name: TROLL_ R Thigh
+      position: {x: -6.10351549e-07, y: -4.57763662e-07, z: -.470616221}
+      rotation: {x: -.380934536, y: .920453966, z: -.0868067145, w: -.0108667165}
+      scale: {x: 1, y: 1.00000024, z: 1.00000012}
+      transformModified: 1
+    - name: TROLL_ R Calf
+      position: {x: -1.2367686, y: -1.52587887e-07, z: 0}
+      rotation: {x: -.000603467168, y: .0015031693, z: .353143901, w: .935567617}
+      scale: {x: 1.00000012, y: 1.00000012, z: 1.00000036}
+      transformModified: 1
+    - name: TROLL_ R Foot
+      position: {x: -.843485236, y: 7.62939436e-08, z: 7.62939436e-08}
+      rotation: {x: -.0358965099, y: -.0161855817, z: -.2300248, w: .97238791}
+      scale: {x: .999999881, y: .999999702, z: .999999881}
+      transformModified: 1
+    - name: TROLL_ R Toe0
+      position: {x: -.328763604, y: .312663078, z: 3.81469718e-08}
+      rotation: {x: 3.03983688e-06, y: 2.94926576e-06, z: -.707106769, w: .707106829}
+      scale: {x: 1, y: 1.00000024, z: 1}
+      transformModified: 1
+    - name: TROLL_BODY
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -.707106829, y: 0, z: -0, w: .707106829}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: f9a673dcff6cee141bc54abb54faea34,
+    type: 3}
+  animationType: 3
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

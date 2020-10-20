@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
 
-
 namespace BeastHunter
 {
     public class WeaponCircle : MonoBehaviour
@@ -9,6 +8,7 @@ namespace BeastHunter
         #region Fields
 
         public WeaponData WeaponData;
+        public TrapData TrapData;
         public Vector3 AnchorPosition;
 
         #endregion

@@ -8,7 +8,7 @@ namespace BeastHunter
         #region Fields
 
         public Dictionary<string, InputEventTypes> inputOnButtonDown;
-
+        
         public float MouseInputX;
         public float MouseInputY;
         public float InputAxisX;

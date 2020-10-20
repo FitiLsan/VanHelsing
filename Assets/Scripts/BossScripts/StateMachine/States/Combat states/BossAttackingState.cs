@@ -55,7 +55,7 @@ namespace BeastHunter
             _stateMachine._model.BossNavAgent.SetDestination(_stateMachine._model.BossTransform.position);
             _stateMachine._model.BossNavAgent.speed = 0f;
 
-            _stateMachine._model.WeaponData.MakeSimpleAttack(out _attackNumber);
+            _stateMachine._model.WeaponData.MakeSimpleAttack(out _attackNumber, _stateMachine._model.BossTransform);
             _currentAttackTime = _stateMachine._model.WeaponData.CurrentAttack.AttackTime;
             _stateMachine._model.BossAnimator.Play(_stateMachine._model.WeaponData.SimpleAttackAnimationPrefix + "Attack_" + _attackNumber, 0, 0f);
 

@@ -144,6 +144,10 @@ namespace BeastHunter
         [Range(0.0f, 2.0f)]
         [SerializeField] private float _animatorBaseSpeed;
 
+        [Tooltip("Time to continue moving when all keys up")]
+        [Range(0.0f, 5.0f)]
+        [SerializeField] private float _timeToContinueMovingAfterStop;
+
         [Header("Character battle settings")]
 
         [Tooltip("Character strafe direction change speed between 0 and 50.")]
@@ -211,6 +215,7 @@ namespace BeastHunter
         public float SneakDecelerationLag => _sneakDecelerationLag;
         public float DirectionChangeLag => _directionChangeLag;
         public float AnimatorBaseSpeed => _animatorBaseSpeed;
+        public float TImeToContinueMovingAfterStop => _timeToContinueMovingAfterStop;
 
         public float StrafeDirectionChangeSpeed => _strafeDirectionChangeSpeed;
         public float JumpTime => _jumpTime;

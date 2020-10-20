@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System;
 
 namespace BeastHunter
 {
@@ -7,8 +7,11 @@ namespace BeastHunter
     {
         #region Fields
 
+        public Action<ITrigger, Collider> OnHit;
+
         public WeaponHandType HandType;
         public WeaponType Type;
+        public HandsEnum InWhichHand;
 
         public Sprite WeaponImage;
         public AttackModel[] SimpleAttacks;
@@ -87,20 +90,24 @@ namespace BeastHunter
             }
         }
 
+        protected Transform BodyTransform { get; private set; }
+
         #endregion
 
 
         #region Methods
 
-        public virtual void MakeSimpleAttack(out int currentAttackIntex)
+        public virtual void MakeSimpleAttack(out int currentAttackIntex, Transform bodyTransform)
         {
+            BodyTransform = bodyTransform;
             currentAttackIntex = CurrentSimpleAttackIndex;
             CurrentAttack = SimpleAttacks[CurrentSimpleAttackIndex];
             CurrentSimpleAttackIndex++;
         }
 
-        public virtual void MakeSpecialAttack(out int currentAttackIntex)
+        public virtual void MakeSpecialAttack(out int currentAttackIntex, Transform bodyTransform)
         {
+            BodyTransform = bodyTransform;
             currentAttackIntex = CurrentSpecialAttackIndex;
             CurrentAttack = SpecialAttacks[CurrentSpecialAttackIndex];
             CurrentSpecialAttackIndex++;

@@ -1,21 +1,14 @@
 ﻿using UnityEngine;
-using System.IO;
 
 
 namespace BeastHunter
 {
     public class TrapService : Service
     {
-        #region Contants
-
-        private const string TRAPS_SAVE_FILE_PATH = "Assets/Resources/traps";
-
-        #endregion
-
-
         #region Fields
 
         private readonly GameContext _context;
+        private TrapData _currentTrapData;
 
         #endregion
 
@@ -32,50 +25,40 @@ namespace BeastHunter
 
         #region Methods
 
-        public void SaveTraps()
+        public void GetTrap(TrapData trapData)
         {
-            if(_context.TrapModels.Count > 0)
+            if (trapData.TrapsAmount > 0)
             {
-                string trapsDataString = "";
-
-                foreach (var trap in _context.TrapModels)
-                {
-                    trapsDataString += JsonUtility.ToJson(trap.Value.TrapData.TrapType) + "\n";
-                    trapsDataString += JsonUtility.ToJson(trap.Value.Trap.transform.position) + "\n";
-                    trapsDataString += JsonUtility.ToJson(trap.Value.Trap.transform.eulerAngles) + "\n";
-                }
-
-                File.WriteAllText(TRAPS_SAVE_FILE_PATH, trapsDataString);
+                _currentTrapData = trapData;
+                new InitializeTrapController(_context, trapData);
             }
         }
 
-        public void LoadTraps()
+        public void PlaceTrap()
         {
-            if (File.Exists(TRAPS_SAVE_FILE_PATH))
+            if(_currentTrapData != null)
             {
-                string[] lines = File.ReadAllLines(TRAPS_SAVE_FILE_PATH);
+                _context.CharacterModel.CurrentPlacingTrapModel.Value.
+                    TrapObjectInFrontOfCharacter.transform.parent = null;
+                _currentTrapData.Place(_context, _context.CharacterModel.CurrentPlacingTrapModel.Value);
+                GameObject.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInHands);
+                _context.CharacterModel.CurrentPlacingTrapModel.Value = null;
+                _currentTrapData = null;
+            }
+        }
 
-                for (int line = 0; line < lines.Length; line += 3)
-                {
-                    TrapsEnum type = JsonUtility.FromJson<TrapsEnum>(lines[line]);
-                    Vector3 position = JsonUtility.FromJson<Vector3>(lines[line + 1]);
-                    Vector3 eulers = JsonUtility.FromJson<Vector3>(lines[line + 2]);
+        public void RemoveTrap()
+        {
+            if(_currentTrapData != null)
+            {
+                _context.CharacterModel.PuppetMaster.propMuscles[0].currentProp = null;
 
-                    switch (type)
-                    {
-                        case TrapsEnum.None:
-                            break;
-                        case TrapsEnum.BearTrap:
-                            new InitializeTrapController(_context, Data.TrapData, position, eulers, true);
-                            break;
-                        case TrapsEnum.AcidCatapult:
-                            new InitializeTrapController(_context, Data.TrapData2, position, eulers, true);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }          
+                GameObject.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInHands);
+                GameObject.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInFrontOfCharacter);
+
+                _context.CharacterModel.CurrentPlacingTrapModel.Value = null;
+                _currentTrapData = null;
+            }
         }
 
         #endregion

@@ -68,6 +68,7 @@ namespace BeastHunter
             _inputModel.inputOnButtonDown.Add("PlaceTrap2", InputEventTypes.PlaceTrap2);
             _inputModel.inputOnButtonDown.Add("Sneak", InputEventTypes.Sneak);
             _inputModel.inputOnButtonDown.Add("TimeSkip", InputEventTypes.TimeSkipMenu);
+            _inputModel.inputOnButtonDown.Add("ButtonsInfo", InputEventTypes.ButtonsInfoMenu);
         }
 
         #endregion
