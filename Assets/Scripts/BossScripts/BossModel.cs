@@ -46,6 +46,10 @@ namespace BeastHunter
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
 
+        public MovementPoint[] MovementPoints { get; set; }
+        
+        public bool MovementLoop { get; set; }
+
         #endregion
 
 
@@ -131,6 +135,17 @@ namespace BeastHunter
             {
                 BossBehavior = prefab.AddComponent<BossBehavior>();
             }
+
+            GameObject movement = GameObject.Instantiate(BossData._movementPrefab);
+            MovementPath movementPath = movement.GetComponent<MovementPath>();
+
+            if (!movementPath)
+            {
+                movementPath = movement.AddComponent<MovementPath>();
+            }
+            
+            MovementPoints = movementPath.GetPoints().ToArray();
+            MovementLoop = movementPath.Loop;
 
             BossBehavior.SetType(InteractableObjectType.Enemy);
             BossBehavior.Stats = BossStats.MainStats;
