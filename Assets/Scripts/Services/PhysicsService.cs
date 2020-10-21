@@ -31,6 +31,16 @@ namespace BeastHunter
 
         #region Methods
 
+        public GameObject GetParent(Transform instance)
+        {
+            while (instance.parent != null)
+            {
+                instance = instance.parent;
+            }
+
+            return instance.gameObject;
+        }
+
         public void DrawLine(Vector3 position, Vector3 direction, float distance)
         {
             Debug.DrawLine(position, position + direction * distance, Color.red);

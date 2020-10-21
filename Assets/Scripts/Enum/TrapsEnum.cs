@@ -4,7 +4,7 @@
     {
         None,
         Trap,
-        Catapult,
+        SmallCatapult,
         Wire,
     }
 }
