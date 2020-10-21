@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using UniRx;
-
+using System.Collections.Generic;
 
 namespace BeastHunter
 {
@@ -46,6 +46,11 @@ namespace BeastHunter
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
 
+        public List<GameObject> FoodList = new List<GameObject>();
+        public float MaxStamina = 100f;
+        public float CurrentStamina;
+        public GameObject Lair;
+
         #endregion
 
 
@@ -53,6 +58,8 @@ namespace BeastHunter
 
         public BossModel(GameObject prefab, BossData bossData, Vector3 groundPosition, GameContext context)
         {
+            Lair = GameObject.Find("Lair");
+
             BossData = bossData;
             BossSettings = BossData._bossSettings;
             BossStats = BossData._bossStats;

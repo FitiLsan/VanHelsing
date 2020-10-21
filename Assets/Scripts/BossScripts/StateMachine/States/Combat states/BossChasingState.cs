@@ -71,7 +71,7 @@ namespace BeastHunter
             if(Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target)
                 .sqrMagnitude) <= DISTANCE_TO_START_ATTACK)
             {
-               // _stateMachine.SetCurrentStateOverride(BossStatesEnum.Targeting);
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
             }
         }
 

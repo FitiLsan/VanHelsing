@@ -13,6 +13,7 @@
 
         public bool CanExit { get; protected set; }
         public bool CanBeOverriden { get; protected set; }
+        public bool CurrentStateType { get; protected set; }
 
         #endregion
 

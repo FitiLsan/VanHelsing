@@ -10,6 +10,8 @@ namespace BeastHunter
         private const float LOOK_TO_TARGET_SPEED = 1f;
         private const float PART_OF_NONE_ATTACK_TIME_LEFT = 0.15f;
         private const float PART_OF_NONE_ATTACK_TIME_RIGHT = 0.3f;
+        private const float ANGLE_SPEED = 100f;
+        private const float ANGLE_TARGET_RANGE_MIN = 10f;
 
         #endregion
 
@@ -95,11 +97,10 @@ namespace BeastHunter
             if(_currentAttackTime > 0)
             {
                 _currentAttackTime -= Time.deltaTime;
-
-                if(_currentAttackTime <= 0)
-                {
-                    DecideNextMove();
-                }
+            }
+            if (_currentAttackTime <= 0)
+            {
+                DecideNextMove();
             }
         }
 
@@ -110,7 +111,8 @@ namespace BeastHunter
 
             if (!isNear)
             {
-             //   _stateMachine.SetCurrentStateOverride(BossStatesEnum.Targeting);
+                CheckTargetDirection();
+                TargetOnPlayer();
             }
 
             return isNear;
@@ -174,6 +176,40 @@ namespace BeastHunter
             }
         }
 
+        private void CheckTargetDirection()
+        {
+            Vector3 heading = _stateMachine._context.CharacterModel.CharacterTransform.position -
+                _stateMachine._model.BossTransform.position;
+            int directionNumber = _stateMachine._mainState.AngleDirection(
+                _stateMachine._model.BossTransform.forward, heading, _stateMachine._model.BossTransform.up);
+
+            switch (directionNumber)
+            {
+                case -1:
+                    _stateMachine._model.BossAnimator.Play("TurningLeftState", 0, 0f);
+                    break;
+                case 0:
+                    _stateMachine._model.BossAnimator.Play("IdleState", 0, 0f);
+                    break;
+                case 1:
+                    _stateMachine._model.BossAnimator.Play("TurningRightState", 0, 0f);
+                    break;
+                default:
+                    _stateMachine._model.BossAnimator.Play("IdleState", 0, 0f);
+                    break;
+            }
+        }
+
+
+        private void TargetOnPlayer()
+        {
+            if (Quaternion.Angle(_stateMachine._model.BossTransform.rotation,
+                _stateMachine._mainState.TargetRotation) > ANGLE_TARGET_RANGE_MIN)
+            {
+                _stateMachine._model.BossTransform.rotation = Quaternion.RotateTowards(_stateMachine.
+                    _model.BossTransform.rotation, _stateMachine._mainState.TargetRotation, ANGLE_SPEED * Time.deltaTime);
+            }
+        }
 
         #region IDealDamage
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using UnityEngine;
 
 namespace BeastHunter
 {
@@ -79,6 +79,7 @@ namespace BeastHunter
 
         public void Execute()
         {
+            Debug.Log($"current State {CurrentState}");
             _mainState.Execute();
             CurrentState.Execute();
         }

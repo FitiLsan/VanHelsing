@@ -15,6 +15,8 @@ namespace BeastHunter
         private const float SPEED_COUNT_FRAME = 0.15f;
         private const float TIME_TO_NORMILIZE_WEAK_POINT = 5f;
 
+        private const float HUNGER_TIME = 30f;
+
         #endregion
 
 
@@ -27,6 +29,8 @@ namespace BeastHunter
         private Vector3 _targetDirection;
 
         private float _speedCountTime;
+        private float _hungerCountTime = HUNGER_TIME;
+        private bool _isHunger;
 
         #endregion
 
@@ -68,6 +72,8 @@ namespace BeastHunter
                 SpeedCheck();
                 HealthCheck();
                 CheckDirection();
+                HungerCheck();
+                StaminaCheck();
             }          
         }
 
@@ -130,26 +136,86 @@ namespace BeastHunter
             {
                 _stateMachine.SetCurrentStateAnyway(BossStatesEnum.Dead);
             }
+
+            if (_stateMachine._model.CurrentHealth <= _stateMachine._model.BossData._bossStats.MainStats.HealthPoints / 2)
+            {
+                _stateMachine.SetCurrentState(BossStatesEnum.Defencing);
+            }
+
+            if (_stateMachine._model.CurrentHealth <= _stateMachine._model.BossData._bossStats.MainStats.HealthPoints * 0.1f)
+            {
+                _stateMachine.SetCurrentState(BossStatesEnum.Retreating);
+            }
+        }
+
+        private void HungerCheck()
+        {
+            if (!_isHunger)
+            {
+                _hungerCountTime -= Time.deltaTime;
+                if(_hungerCountTime<=0)
+                {
+                    _isHunger = true;
+                    _hungerCountTime = HUNGER_TIME;
+                }
+            }
+        }
+
+        private void StaminaCheck()
+        {
+            if (_stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina)
+            {
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Resting);
+            }
         }
 
         private bool OnFilterHandler(Collider tagObject)
         {
-            return !tagObject.isTrigger && tagObject.CompareTag(TagManager.PLAYER);
+            bool isEnemyColliderHit = false;
+            InteractableObjectBehavior interacterBehavior = tagObject.GetComponent<InteractableObjectBehavior>();
+
+            if (interacterBehavior != null)
+            {
+                if( interacterBehavior.Type == InteractableObjectType.Player || interacterBehavior.Type == InteractableObjectType.Food)
+                {
+                    isEnemyColliderHit = true;
+                }
+            }
+            return isEnemyColliderHit;
         }
 
         private void OnTriggerEnterHandler(ITrigger thisdObject, Collider enteredObject)
         {
-            if(thisdObject.Type == InteractableObjectType.Enemy)
+            var interactableObject = enteredObject.GetComponent<InteractableObjectBehavior>().Type;
+
+            if (interactableObject == InteractableObjectType.Player)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
-            }         
+            }
+
+            if (interactableObject == InteractableObjectType.Food)
+            {
+                if (!_stateMachine._model.FoodList.Contains(enteredObject.gameObject))
+                {
+                    _stateMachine._model.FoodList.Add(enteredObject.gameObject);
+                }
+                if (_isHunger)
+                {
+                    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Eating);
+                }
+            }
         }
 
-        private void OnTriggerExitHandler(ITrigger thisdObject, Collider exitedObject)
+        private void OnTriggerExitHandler(ITrigger thisdObject, Collider enteredObject)
         {
-            if (thisdObject.Type == InteractableObjectType.Enemy)
+            var interactableObject = enteredObject.GetComponent<InteractableObjectBehavior>().Type;
+
+            if (interactableObject == InteractableObjectType.Food)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
+                if (_stateMachine._model.FoodList.Contains(enteredObject.gameObject))
+                {
+                    _stateMachine._model.FoodList.Remove(enteredObject.gameObject);
+                }
             }
         }
 
