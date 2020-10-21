@@ -32,8 +32,7 @@ namespace BeastHunter
             _stateMachine._model.FirstWeakPointBehavior.gameObject.SetActive(false);
             _stateMachine._model.SecondWeakPointBehavior.gameObject.SetActive(false);
             _stateMachine._model.ThirdWeakPointBehavior.gameObject.SetActive(false);
-            _stateMachine._model.BossTransform.tag = TagManager.UNTAGGED;
-            GlobalEventsModel.OnBossDie?.Invoke();
+            _stateMachine._model.BossBehavior.SetType(InteractableObjectType.None);
             _stateMachine._context.CharacterModel.EnemiesInTrigger.Remove(_stateMachine._model.BossCapsuleCollider);
         }
 

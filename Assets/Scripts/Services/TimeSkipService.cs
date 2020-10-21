@@ -4,12 +4,12 @@ using System;
 
 namespace BeastHunter
 {
-    public class TimeSkipService : Service
+    [Obsolete]
+    public sealed class TimeSkipService : Service
     {
         #region Fields
 
         private GameObject _timeSkipUI;
-        private TimeSkipData _data;
 
         #endregion
 
@@ -27,8 +27,7 @@ namespace BeastHunter
 
         public TimeSkipService(Contexts contexts) : base(contexts)
         {
-            _data = Data.TimeSkipData;
-            _timeSkipUI = GameObject.Instantiate(_data.UIPrefab);
+            _timeSkipUI = GameObject.Instantiate(Data.UIElementsData.TimeSkipPrefab);
             CloseTimeSkipMenu();
         }
 
@@ -41,17 +40,17 @@ namespace BeastHunter
         {
             _timeSkipUI.SetActive(true);
             IsOpen = true;
-            OnSetOpenAction();
+            OnSetOpenCloseAction();
         }
 
         public void CloseTimeSkipMenu()
         {
             _timeSkipUI.SetActive(false);
             IsOpen = false;
-            OnSetOpenAction();
+            OnSetOpenCloseAction();
         }
 
-        private void OnSetOpenAction()
+        private void OnSetOpenCloseAction()
         {
             OnOpenCloseWindow?.Invoke(IsOpen);
         }

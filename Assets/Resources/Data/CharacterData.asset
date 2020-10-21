@@ -36,8 +36,8 @@ MonoBehaviour:
     _healthPoints: 100
     _walkSpeed: 4
     _runSpeed: 6
-    _inBattleWalkSpeed: 4
-    _inBattleRunSpeed: 5
+    _inBattleWalkSpeed: 3
+    _inBattleRunSpeed: 4
     _sneakWalkSpeed: 1
     _sneakRunSpeed: 2
     _groundCheckHeight: 1.2
@@ -49,7 +49,8 @@ MonoBehaviour:
     _sneakDecelerationLag: 0.13
     _directionChangeLag: 0.194
     _animatorBaseSpeed: 1
-    _strafeDirectionChangeSpeed: 50
+    _timeToContinueMovingAfterStop: 1
+    _strafeDirectionChangeSpeed: 0.02
     _jumpTime: 1.96
     _slideTime: 1.3
     _rollTime: 0.9

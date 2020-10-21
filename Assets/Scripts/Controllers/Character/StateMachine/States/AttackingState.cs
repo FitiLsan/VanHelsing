@@ -36,27 +36,40 @@ namespace BeastHunter
 
         #region Methods
 
+        public override bool CanBeActivated()
+        {
+            if(!_characterModel.IsWeaponInHands && _characterModel.CurrentPlacingTrapModel.Value != null)
+            {
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.TrapPlacing]);
+            }
+            return _characterModel.IsWeaponInHands;
+        }
+
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
+
             _animationController.SetRootMotion(true);
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Kinematic;
+            _animationController.SetTopBodyAnimationWeigth(0f);
 
-            if(_characterModel.CurrentWeapon == null)
+            switch (_characterModel.CurrentWeaponData.Type)
             {
-                _attackIndex = Random.Range(0, 2);
-                _exitTIme = 0.8f;
-                _animationController.PlayNotArmedAttackAnimation(_attackIndex);
+                case WeaponType.Melee:
+                    if (_characterModel.WeaponBehaviorLeft != null) _characterModel.WeaponBehaviorLeft.IsInteractable = true;
+                    if (_characterModel.WeaponBehaviorRight != null) _characterModel.WeaponBehaviorRight.IsInteractable = true;
+                    break;
+                case WeaponType.Shooting:
+                    break;
+                case WeaponType.Throwing:
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                if (_characterModel.FirstWeaponBehavior != null) _characterModel.FirstWeaponBehavior.IsInteractable = true;
-                if (_characterModel.SecondWeaponBehavior != null) _characterModel.SecondWeaponBehavior.IsInteractable = true;
 
-                _characterModel.CurrentWeaponData.MakeSimpleAttack(out _attackIndex);
-                _exitTIme = _characterModel.CurrentWeaponData.CurrentAttack.AttackTime;
-                _animationController.PlayArmedAttackAnimation(_characterModel.CurrentWeaponData.SimpleAttackAnimationPrefix, _attackIndex);
-            }
+            _characterModel.CurrentWeaponData.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
+            _exitTIme = _characterModel.CurrentWeaponData.CurrentAttack.AttackTime;
+            _animationController.PlayArmedAttackAnimation(_characterModel.CurrentWeaponData.SimpleAttackAnimationPrefix, _attackIndex);
 
             _stateMachine.BackState.StopCharacter();
         }
@@ -64,11 +77,20 @@ namespace BeastHunter
         public override void OnExit(CharacterBaseState nextState = null)
         {
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Active;
+            _animationController.SetTopBodyAnimationWeigth(1f);
 
-            if (_characterModel.CurrentWeapon != null)
+            switch (_characterModel.CurrentWeaponData.Type)
             {
-                if (_characterModel.FirstWeaponBehavior != null) _characterModel.FirstWeaponBehavior.IsInteractable = false;
-                if (_characterModel.SecondWeaponBehavior != null) _characterModel.SecondWeaponBehavior.IsInteractable = false;
+                case WeaponType.Melee:
+                    if (_characterModel.WeaponBehaviorLeft != null) _characterModel.WeaponBehaviorLeft.IsInteractable = false;
+                    if (_characterModel.WeaponBehaviorRight != null) _characterModel.WeaponBehaviorRight.IsInteractable = false;
+                    break;
+                case WeaponType.Shooting:
+                    break;
+                case WeaponType.Throwing:
+                    break;
+                default:
+                    break;
             }
 
             _animationController.SetRootMotion(false);

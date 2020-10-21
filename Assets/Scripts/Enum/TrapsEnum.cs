@@ -3,8 +3,9 @@
     public enum TrapsEnum
     {
         None,
-        BearTrap,
-        AcidCatapult,
+        Trap,
+        SmallCatapult,
+        Wire,
     }
 }
 

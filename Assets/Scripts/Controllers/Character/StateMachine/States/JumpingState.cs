@@ -35,6 +35,11 @@ namespace BeastHunter
 
         #region Methods
 
+        public override bool CanBeActivated()
+        {
+            return !IsActive;
+        }
+
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();

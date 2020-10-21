@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa369dde860e7c4dbb00eb6f4a08be9, type: 3}
+  m_Name: NewSmallCatapultTrapData
+  m_EditorClassIdentifier: 
+  _trapType: 2
+  _trapStruct:
+    _trapPrefabInHands: {fileID: 0}
+    _trapPrefabProjection: {fileID: 0}
+    _trapDamage:
+      PhysicalDamage: 0
+      StunProbability: 0
+    _trapPositionEulers: {x: 0, y: 0, z: 0}
+    _duration: 3
+    _projectionDistanceFromCharacter: 1
+    _placingHeight: 1
+    _totalTimeToPlaceTrap: 1.5
+    _timeBeforeTrapAppear: 1
+    _timeToDestroyAfterActivation: 2
+    _chargeAmount: 1
+  _trapImage: {fileID: 21300000, guid: 9a0428a05ac65f246a92505d10614989, type: 3}
+  _trapsAmount: 2
+  _animationName: 
+  _launchingProjectileData: {fileID: 11400000, guid: 99624bcf6c1df87458dff72c1b2ab4dd,
+    type: 2}
+  _timeToLaunchProjectile: 0.7
+  _launchForceUp: 3
+  _launchForceForward: 2

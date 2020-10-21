@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using UniRx;
 
 
 namespace BeastHunter
@@ -44,6 +45,10 @@ namespace BeastHunter
         public bool IsMoving { get; set; }
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
+
+        public MovementPoint[] MovementPoints { get; set; }
+        
+        public bool MovementLoop { get; set; }
 
         #endregion
 
@@ -131,6 +136,17 @@ namespace BeastHunter
                 BossBehavior = prefab.AddComponent<BossBehavior>();
             }
 
+            GameObject movement = GameObject.Instantiate(BossData._movementPrefab);
+            MovementPath movementPath = movement.GetComponent<MovementPath>();
+
+            if (!movementPath)
+            {
+                movementPath = movement.AddComponent<MovementPath>();
+            }
+            
+            MovementPoints = movementPath.GetPoints().ToArray();
+            MovementLoop = movementPath.Loop;
+
             BossBehavior.SetType(InteractableObjectType.Enemy);
             BossBehavior.Stats = BossStats.MainStats;
             BossStateMachine = new BossStateMachine(context, this);
@@ -143,8 +159,8 @@ namespace BeastHunter
             CurrentSpeed = 0f;
             AnimationSpeed = BossData._bossSettings.AnimatorBaseSpeed;
 
-            LeftHand = BossAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
-            RightHand = BossAnimator.GetBoneTransform(HumanBodyBones.RightHand);
+            LeftHand = BossTransform.Find(BossSettings.LeftHandObjectPath);
+            RightHand = BossTransform.Find(BossSettings.RightHandObjectPath);
 
             AnchorPosition = BossTransform.position;
 
@@ -160,7 +176,7 @@ namespace BeastHunter
             WeaponData = Data.BossFeasts;
 
             GameObject leftHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
-                FirstActialWeapon.WeaponPrefab, LeftHand);
+                LeftActualWeapon.WeaponPrefab, LeftHand);
             SphereCollider LeftHandTrigger = leftHandWeapon.GetComponent<SphereCollider>();
             LeftHandTrigger.radius = BossData._bossSettings.LeftHandHitBoxRadius;
             LeftHandTrigger.center = BossData._bossSettings.LeftHandHitBoxCenter;
@@ -171,7 +187,7 @@ namespace BeastHunter
             LeftWeaponBehavior.IsInteractable = false;
 
             GameObject rightHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
-                SecondActualWeapon.WeaponPrefab, RightHand);
+                RightActualWeapon.WeaponPrefab, RightHand);
             SphereCollider RightHandTrigger = rightHandWeapon.GetComponent<SphereCollider>();
             RightHandTrigger.radius = BossData._bossSettings.RightHandHitBoxRadius;
             RightHandTrigger.center = BossData._bossSettings.RightHandHitBoxCenter;
@@ -242,11 +258,11 @@ namespace BeastHunter
 
             if (damage.StunProbability > BossData._bossStats.MainStats.StunResistance)
             {
-                GlobalEventsModel.OnBossStunned?.Invoke();
+                MessageBroker.Default.Publish(new OnBossStunnedEventClass());
             }
             else
             {
-                GlobalEventsModel.OnBossHitted?.Invoke();
+                MessageBroker.Default.Publish(new OnBossHittedEventClass());
             }
         }
 

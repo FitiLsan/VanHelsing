@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1497896aa09a3f549bd0734863f98c2f, type: 3}
+  m_Name: NewLockTrapData
+  m_EditorClassIdentifier: 
+  _trapType: 1
+  _trapStruct:
+    _trapPrefabInHands: {fileID: 1359724191042463281, guid: e5bd0498d47d1814887cd22a95c78e4e,
+      type: 3}
+    _trapPrefabProjection: {fileID: 5414965182870319241, guid: be19b2eaaa2d7fe4bb6db4ec206a04f6,
+      type: 3}
+    _trapDamage:
+      PhysicalDamage: 26.3
+      StunProbability: 1
+    _trapPositionEulers: {x: 0, y: 0, z: 0}
+    _duration: 3
+    _projectionDistanceFromCharacter: 1
+    _placingHeight: 0.05
+    _totalTimeToPlaceTrap: 1.5
+    _timeBeforeTrapAppear: 1
+    _timeToDestroyAfterActivation: 2
+    _chargeAmount: 1
+  _trapImage: {fileID: 21300000, guid: 8cdaf5dd9c38fbb42ab17e8a6ce65a95, type: 3}
+  _trapsAmount: 3
+  _animationName: BearTrapLock

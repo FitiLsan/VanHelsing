@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HandType: 2
   Type: 1
+  InWhichHand: 3
   WeaponImage: {fileID: 0}
   SimpleAttacks:
   - Name: From right
@@ -45,11 +46,12 @@ MonoBehaviour:
   WeaponName: Boss feasts
   SimpleAttackAnimationPrefix: BossFeasts
   SpecialAttackAnimationPrefix: 
+  StrafeAndDodgePostfix: 
   GettingAnimationName: 
   RemovingAnimationName: 
   TotalTimeToGet: 0
   TimeBeforeGrab: 0
   TotalTimeToRemove: 0
   TimeBeforeLetGo: 0
-  FirstActialWeapon: {fileID: 11400000, guid: 922074f103d5fed419615bb5887430ca, type: 2}
-  SecondActualWeapon: {fileID: 11400000, guid: 922074f103d5fed419615bb5887430ca, type: 2}
+  LeftActualWeapon: {fileID: 11400000, guid: 922074f103d5fed419615bb5887430ca, type: 2}
+  RightActualWeapon: {fileID: 11400000, guid: 922074f103d5fed419615bb5887430ca, type: 2}

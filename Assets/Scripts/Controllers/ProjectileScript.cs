@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using UniRx;
 
 
 namespace BeastHunter
 {
+    [System.Obsolete]
     public sealed class ProjectileScript: MonoBehaviour
     {
         #region Fields
@@ -26,7 +28,8 @@ namespace BeastHunter
             {
                 if(collision.gameObject.GetComponent<InteractableObjectBehavior>().Type == InteractableObjectType.WeakHitBox)
                 {
-                    GlobalEventsModel.OnBossWeakPointHitted?.Invoke(collision.collider);
+                    MessageBroker.Default.Publish(
+                        new OnBossWeakPointHittedEventClass { WeakPointCollider = collision.collider });
                 }
 
                 Context.NpcModels[GetParent(collision.transform).GetInstanceID()].TakeDamage(

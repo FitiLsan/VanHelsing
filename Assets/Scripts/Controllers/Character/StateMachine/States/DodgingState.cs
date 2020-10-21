@@ -35,12 +35,16 @@ namespace BeastHunter
 
         #region Methods
 
+        public override bool CanBeActivated()
+        {
+            return !IsActive;
+        }
+
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
 
             _rollTime = _characterModel.CharacterData._characterCommonSettings.RollingTime;
-            _animationController.PlaySlideForwardAnimation();
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
             _characterModel.IsDodging = true;
 
