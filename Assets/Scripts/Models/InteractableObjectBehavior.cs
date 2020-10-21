@@ -12,7 +12,6 @@ namespace BeastHunter
         private Action<int, string> _onDoSmthHandler;
         private Action<int, Damage> _onTakeDamageHandler;
         private Action<int, InteractableObjectBehavior, Damage> _onDealDamageHandler;
-        //private _onGenerateInventryHandler;
 
         #endregion
 

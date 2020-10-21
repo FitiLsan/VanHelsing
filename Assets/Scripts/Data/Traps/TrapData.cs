@@ -19,8 +19,8 @@ namespace BeastHunter
 
         #region Properties
 
-        protected TrapModel _currentTrapModel { get; private set; }
-        protected GameContext _context { get; private set; }
+        protected TrapModel CurrentTrapModel { get; private set; }
+        protected GameContext Context { get; private set; }
 
         public TrapsEnum TrapType => _trapType;
         public TrapStruct TrapStruct => _trapStruct;
@@ -47,13 +47,13 @@ namespace BeastHunter
 
         public virtual void Place(GameContext context, TrapModel trapModel)
         {
-            _context = context;
-            _currentTrapModel = trapModel;
+            Context = context;
+            CurrentTrapModel = trapModel;
         }
 
         public abstract bool OnTriggerFilter(Collider enteredCollider);
 
-        public abstract void OnTriggerEnterSomething(ITrigger enteredITrigger, Collider enteredCollider);
+        public abstract void OnTriggerEnterSomething(ITrigger trapTrigger, Collider enteredCollider);
 
         #endregion
     }

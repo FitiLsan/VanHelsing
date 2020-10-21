@@ -4,6 +4,7 @@ using UniRx;
 
 namespace BeastHunter
 {
+    [System.Obsolete]
     public sealed class ProjectileScript: MonoBehaviour
     {
         #region Fields
