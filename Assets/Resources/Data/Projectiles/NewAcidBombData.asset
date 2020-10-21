@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: NewAcidBombData
   m_EditorClassIdentifier: 
   _projectileType: 1
-  _projectilePrefab: {fileID: 0}
+  _projectilePrefab: {fileID: 6720938135239163503, guid: 97f3c2cc75b6adb42a44237afe866da2,
+    type: 3}
   _projectileDamage:
     PhysicalDamage: 21.6
     StunProbability: 0.431
   _isDestroyedAfterInstantiation: 1
-  _isDestroyedAfterHit: 0
+  _isDestroyedAfterHit: 1
   _timeToDestroyAfterInstantiation: 5
   _timeToDestroyAfterHit: 0
-  _projectileColliderSize: 0.15
+  _projectileColliderSize: 1
