@@ -27,7 +27,7 @@ namespace BeastHunter
 
         public void Updating()
         {
-            
+            _context.ButterflyModel.Act();
         }
 
         #endregion

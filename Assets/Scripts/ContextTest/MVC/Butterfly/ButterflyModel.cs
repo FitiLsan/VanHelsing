@@ -14,5 +14,15 @@ namespace BeastHunter
         }
 
         #endregion
+
+
+        #region Metods
+
+        public void Act()
+        {
+            
+        }
+
+        #endregion
     }
 }
