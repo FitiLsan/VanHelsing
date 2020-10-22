@@ -8,6 +8,9 @@ public struct ButterflyStruct
 
     public GameObject Prefab;
 
+    public float MaxDistanceFromCurrentPosition;
+    public float Speed;
+
     #endregion
 }
 

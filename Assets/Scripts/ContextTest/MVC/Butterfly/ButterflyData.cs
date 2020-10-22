@@ -10,4 +10,11 @@ public class ButterflyData : ScriptableObject
     public ButterflyStruct ButterflyStruct;
 
     #endregion
+
+
+    #region Metods
+
+    //методы
+
+    #endregion
 }
