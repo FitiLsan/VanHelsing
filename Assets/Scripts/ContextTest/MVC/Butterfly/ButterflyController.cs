@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,7 +38,18 @@ namespace BeastHunter
 
         public void OnAwake()
         {
+            var butterflies = _context.GetTriggers(InteractableObjectType.Butterfly);
+            foreach (var trigger in butterflies)
+            {
+                ButterflyBehaviour butterflyBehaviour = trigger as ButterflyBehaviour;
+                butterflyBehaviour.OnTriggerEnterHandler += OnTriggerEnter;
+            }
+        }
 
+        private void OnTriggerEnter(ITrigger trigger, Collider collider)
+        {
+            Debug.Log("Butterfly OnTriggerEnter");
+            //_context.ButterflyModel.TargetPoint = 
         }
 
         #endregion
