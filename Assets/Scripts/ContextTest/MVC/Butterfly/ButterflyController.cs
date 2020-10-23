@@ -42,13 +42,20 @@ namespace BeastHunter
             foreach (var trigger in butterflies)
             {
                 ButterflyBehaviour butterflyBehaviour = trigger as ButterflyBehaviour;
+                butterflyBehaviour.OnFilterHandler += OnFilter;
                 butterflyBehaviour.OnTriggerEnterHandler += OnTriggerEnter;
             }
+        }
+
+        private bool OnFilter(Collider collider)
+        {
+            return collider.CompareTag(TagManager.GROUND);
         }
 
         private void OnTriggerEnter(ITrigger trigger, Collider collider)
         {
             Debug.Log("Butterfly OnTriggerEnter");
+
             //_context.ButterflyModel.TargetPoint = 
         }
 
