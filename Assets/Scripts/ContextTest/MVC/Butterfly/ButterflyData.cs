@@ -54,7 +54,7 @@ namespace BeastHunter
 
         private PhysicsService _physicsService;
 
-        public RabbitStruct RabbitStruct;
+        public ButterflyStruct ButterflyStruct;
 
         #endregion
 
@@ -68,12 +68,6 @@ namespace BeastHunter
 
         #endregion
 
-
-        #region Fields
-
-        public ButterflyStruct ButterflyStruct;
-
-        #endregion
 
         #region Metods
         public void Act(ButterflyModel butterfly)
