@@ -19,11 +19,8 @@ namespace BeastHunter {
         [SerializeField] private string _cameraDataPath;
 
         private static Data _instance;
-<<<<<<< Updated upstream
-=======
 
         private static ButterflyData _butterflyData;
->>>>>>> Stashed changes
         private static SphereData _sphereData;
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
