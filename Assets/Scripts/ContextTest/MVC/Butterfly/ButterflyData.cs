@@ -244,11 +244,6 @@ namespace BeastHunter
         private Vector3 ReturningNextCoord(Transform transform, Vector3 startPosition, List<Transform> targets)
         {
             var next = (startPosition - transform.position).normalized;
-            //var distance = Mathf.Min((transform.position - startPosition).magnitude, RabbitStruct.RunningRadius);
-            //var angle = AngleDeviation(distance);
-
-            //var distance = Mathf.Min((transform.position - startPosition).magnitude, RabbitStruct.RunningRadius);
-            //var angle = AngleDeviationSqr(distance);
 
             var distance = Mathf.Min((transform.position - startPosition).sqrMagnitude, ButterflyStruct.RunningRadius * ButterflyStruct.RunningRadius);
             var angle = AngleDeviationSqrPlain(distance);
@@ -258,7 +253,7 @@ namespace BeastHunter
             return new Vector3(RotateByAngle(forward, angle).x, transform.forward.y, RotateByAngle(forward, angle).y);
         }
 
-        private float AngleDeviationSqrPlain(float distance) // parabolic, use with distance sqrMagnitude (variant 2, point on startPos)
+        private float AngleDeviationSqrPlain(float distance)
         {
             var r = ButterflyStruct.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
@@ -278,8 +273,7 @@ namespace BeastHunter
                 }
             }
 
-            //var triggers = _physicsService.GetObjectsInRadius(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer);
-            var triggers = Physics.OverlapSphere(transform.position, ButterflyStruct.ViewRadius, LayerManager.DefaultLayer);//change layer!!
+            var triggers = Physics.OverlapSphere(transform.position, ButterflyStruct.ViewRadius, LayerManager.DefaultLayer);
             var result = false;
             foreach (Collider target in triggers)
             {
@@ -350,14 +344,14 @@ namespace BeastHunter
             return new Vector2(vector.x * Mathf.Cos(angle) - vector.y * Mathf.Sin(angle), vector.x * Mathf.Sin(angle) + vector.y * Mathf.Cos(angle));
         }
         
-        private float AngleDeviation(float distance) // linear, use with distance magnitude
+        private float AngleDeviation(float distance)
         {
             var r = ButterflyStruct.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
             return (MAX_ANGLE_DEVIATION * f) / (f - 1.0f) * (-(distance / r) + 1);
         }
 
-        private float AngleDeviationSqr(float distance) // parabolic, use with distance magnitude (variant 1, point on runningRadius/returnFactor)
+        private float AngleDeviationSqr(float distance)
         {
             var r = ButterflyStruct.RunningRadius;
             var f = STOP_RETURNING_DISTANCE_FACTOR;
