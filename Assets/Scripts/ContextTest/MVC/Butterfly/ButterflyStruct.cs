@@ -1,19 +1,40 @@
 ﻿using System;
 using UnityEngine;
 
-
-[Serializable]
-public struct ButterflyStruct
+namespace BeastHunter
 {
-    #region Fields
+    [Serializable]
+    public struct ButterflyStruct
+    {
+        #region Properties
 
-    public float MoveSpeed;
+        public BaseStatsClass Stats;
 
-    public float SphereRadius;
+        [Tooltip("Default: 10")]
+        public float MaxHealth;
 
-    public GameObject Prefab;
+        [Tooltip("Default: 10")]
+        public float RunningRadius;
 
-    public Transform Target;
+        [Tooltip("Default: 0.5")]
+        public float MoveSpeed;
 
-    #endregion
+        [Tooltip("Default: 2")]
+        public float JumpHeight;
+
+        [Tooltip("Default: 3")]
+        public float ViewRadius;
+
+        [Tooltip("Default: 100")]
+        [Range(0.0f, 180.0f)]
+        public float ViewAngle;
+
+        public bool CanIdle;
+
+        public bool IsDead;
+
+        public GameObject Prefab;
+
+        #endregion
+    }
 }

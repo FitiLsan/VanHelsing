@@ -44,18 +44,7 @@ namespace BeastHunter {
             }
         }
 
-        public static ButterflyData ButterflyData
-        {
-            get
-            {
-                if (_butterflyData == null)
-                {
-                    _butterflyData = Load<ButterflyData>("Data/" + Instance._butterflyDataPath);
-                }
-                return _butterflyData;
-            }
-        }
-
+        
         public static SphereData SphereData {
             get {
                 if (_sphereData == null) {
@@ -110,6 +99,18 @@ namespace BeastHunter {
                     _rabbitData = Load<RabbitData>("Data/" + Instance._rabbitDataPath);
                 }
                 return _rabbitData;
+            }
+        }
+        
+        public static ButterflyData ButterflyData
+        {
+            get
+            {
+                if (_butterflyData == null)
+                {
+                    _butterflyData = Load<ButterflyData>("Data/" + Instance._butterflyDataPath);
+                }
+                return _butterflyData;
             }
         }
 
