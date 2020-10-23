@@ -6,20 +6,31 @@ namespace BeastHunter
 {
     public class ButterflyModel
     {
-        Vector3 targetPoint;
-        ButterflyStruct butterflyStruct;
-        ButterflyData butterflyData;
-        GameObject butterfly; //потом оставить только конкретные компоненты
+        public Vector3 TargetPoint;
+        ButterflyData objData;
+        Transform objTransform;
 
         Vector3 Position
         {
             get
             {
-                return butterfly.transform.position;
+                return objTransform.position;
             }
             set
             {
-                butterfly.transform.position = value;
+                objTransform.position = value;
+            }
+        }
+
+        Vector3 Direction
+        {
+            get
+            {
+                return objTransform.forward;
+            }
+            set
+            {
+                objTransform.forward = value;
             }
         }
 
@@ -27,9 +38,8 @@ namespace BeastHunter
 
         public ButterflyModel(GameObject butterflyObject, ButterflyData butterflyData)
         {
-            butterfly = butterflyObject;
-            this.butterflyData = butterflyData;
-            butterflyStruct = butterflyData.ButterflyStruct;
+            objData = butterflyData;
+            objTransform = butterflyObject.transform;
         }
 
         #endregion
@@ -39,34 +49,35 @@ namespace BeastHunter
 
         public void Act()
         {
-            if (Position != targetPoint)
+            if (Position != TargetPoint)
             {
-                Position = Vector3.MoveTowards(Position, targetPoint, butterflyStruct.Speed);
+                Vector3 targetDirection = TargetPoint - Position;
+                Vector3 newDirection = Vector3.RotateTowards(Direction, targetDirection, 0.1f, 0.0f);
+                //Vector3 newDirection = Vector3.RotateTowards(new Vector3(Direction.x, 0 ,Direction.z), new Vector3(targetDirection.x, 0, targetDirection.z), 0.1f, 0.0f);
+                //Vector3 newDirection = Vector3.RotateTowards(new Vector3(0, Direction.y, 0), new Vector3(0, targetDirection.y, 0), 0.1f, 0.0f);
+                objTransform.rotation = Quaternion.LookRotation(newDirection);
+
+                //objTransform.transform.rotation = objData.Turn(objTransform.transform.rotation, Quaternion.FromToRotation(Vector3.forward, Vector3.right));
+                MoveToTarget();
             }
             else
             {
-                targetPoint = NextTargetPoint();
+                ChangeTarget();
             }
         }
 
         #endregion
 
-        void MoveTo(Vector3 point)
-        {
 
+        void MoveToTarget()
+        {
+            Position = objData.Move(Position, TargetPoint);
         }
 
-        Vector3 NextTargetPoint()
+        public void ChangeTarget()
         {
-            float x = GetRandomCoord(Position.x);
-            float y = GetRandomCoord(Position.y);
-            float z = GetRandomCoord(Position.z);
-            return new Vector3(x,y,z);
-        }
-
-        float GetRandomCoord(float currentCoord)
-        {
-            return Random.Range(currentCoord - butterflyStruct.MaxDistanceFromCurrentPosition, currentCoord + butterflyStruct.MaxDistanceFromCurrentPosition);
+            Debug.Log("Butterfly.ChangeTarget()");
+            TargetPoint = objData.NewTargetPoint(Position);
         }
     }
 }

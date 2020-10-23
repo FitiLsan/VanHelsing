@@ -28,7 +28,7 @@ namespace BeastHunter
         public void OnAwake()
         {
             ButterflyData butterflyData = Data.ButterflyData;
-            GameObject butterflyObject = Object.Instantiate(butterflyData.ButterflyStruct.Prefab);
+            GameObject butterflyObject = Object.Instantiate(butterflyData.Struct.Prefab);
             ButterflyModel butterflyModel = new ButterflyModel(butterflyObject, butterflyData);
             _context.ButterflyModel = butterflyModel;
         }

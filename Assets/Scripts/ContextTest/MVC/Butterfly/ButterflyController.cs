@@ -56,7 +56,9 @@ namespace BeastHunter
         {
             Debug.Log("Butterfly OnTriggerEnter");
 
-            //_context.ButterflyModel.TargetPoint = 
+            _context.ButterflyModel.ChangeTarget();
+
+            //collider.
         }
 
         #endregion
