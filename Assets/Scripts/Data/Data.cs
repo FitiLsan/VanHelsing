@@ -7,6 +7,7 @@ namespace BeastHunter {
     public sealed class Data : ScriptableObject {
         #region Fields
 
+        [SerializeField] private string _butterflyDataPath;
         [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _startDialogueDataPath;
@@ -18,6 +19,11 @@ namespace BeastHunter {
         [SerializeField] private string _cameraDataPath;
 
         private static Data _instance;
+<<<<<<< Updated upstream
+=======
+
+        private static ButterflyData _butterflyData;
+>>>>>>> Stashed changes
         private static SphereData _sphereData;
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
@@ -38,6 +44,18 @@ namespace BeastHunter {
                     _instance = Resources.Load<Data> ("Data/" + typeof (Data).Name);
                 }
                 return _instance;
+            }
+        }
+
+        public static ButterflyData ButterflyData
+        {
+            get
+            {
+                if (_butterflyData == null)
+                {
+                    _butterflyData = Load<ButterflyData>("Data/" + Instance._butterflyDataPath);
+                }
+                return _butterflyData;
             }
         }
 
