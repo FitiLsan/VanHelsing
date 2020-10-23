@@ -22,6 +22,7 @@
             Add(new StartDialogueController(context));
             Add(new DialogueTriggerController(context));
             Add(new QuestController(context));
+            Add(new ButterflyController(context));
         }
 
         #endregion

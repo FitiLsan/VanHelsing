@@ -2,17 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButterflyModel : MonoBehaviour
+public sealed class ButterflyModel
 {
-    // Start is called before the first frame update
-    void Start()
+    #region Properties
+
+    public BoxCollider ButterflyCollider { get; }
+    public Transform ButterflyTransform { get; }
+    public ButterflyData ButterflyData;
+    public ButterflyStruct ButterflyStruct;
+
+    #endregion
+
+    #region ClassLifeCycle
+
+    public ButterflyModel(GameObject prefab, ButterflyData butterflydata)
     {
-        
+        ButterflyData = butterflydata;
+        ButterflyStruct = butterflydata.ButterflyStruct;
+        ButterflyTransform = prefab.transform;
+        ButterflyCollider = prefab.gameObject.GetComponent<BoxCollider>();
     }
 
-    // Update is called once per frame
-    void Update()
+    #endregion
+
+    #region Metods
+
+    public void Initilize()
     {
-        
+        ButterflyData.Move(ButterflyTransform, ButterflyStruct.Target, ButterflyStruct.MoveSpeed);
     }
+
+    #endregion
 }
