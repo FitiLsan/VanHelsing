@@ -31,11 +31,11 @@ namespace BeastHunter
         private const float DANGEROUS_OBJECTS_MAX_COUNT = 4.0f;
         private const float STOP_RETURNING_DISTANCE_FACTOR = 3.0f;
 
-        private const float HOP_FREQUENCY = 1.0f;
-        private const float MAX_HOP_FREQUENCY = 2.0f;
+        private const float HOP_FREQUENCY = 0.5f;
+        private const float MAX_HOP_FREQUENCY = 0.01f;
         private const float FLEE_ACCELERATION_FACTOR = 1.3f;
         private const float ROTATION_SPEED = 5.0f;
-        private const float HOP_FORCE_MULTIPLIER = 100.0f;
+        private const float HOP_FORCE_MULTIPLIER = 40.0f;
         private const float MAX_ANGLE_DEVIATION = 40.0f;
 
         private const float FRONT_RAYCAST_DISTANCE = 2.0f;
@@ -126,7 +126,7 @@ namespace BeastHunter
                         butterfly.TimeElapsedAfterStartFleeing += Time.deltaTime;
                         if (butterfly.DangerousObjects.Count >= 0)
                         {
-                            Flee(butterfly);
+                            Flee(RandomNextCoord, butterfly);
                         }
                         if (butterfly.TimeElapsedAfterStartFleeing > STOP_FLEEING_TIME)
                         {
@@ -154,15 +154,15 @@ namespace BeastHunter
 
         private void Roam(ButterflyModel butterfly)
         {
-            Move(RandomNextCoord, butterfly);
+            Flee(RandomNextCoord, butterfly);
         }
 
         private void Return(ButterflyModel butterfly)
         {
-            Move(ReturningNextCoord, butterfly);
+            Flee(RandomNextCoord, butterfly);
         }
 
-        private void Move(Func<Transform, Vector3, List<Transform>, Vector3> nextCoordFunc, ButterflyModel butterfly)
+        private void Flee(Func<Transform, Vector3, List<Transform>, Vector3> nextCoordFunc, ButterflyModel butterfly)
         {
             butterfly.TimeLeft -= Time.deltaTime;
             butterfly.TimeElapsed += Time.deltaTime;
@@ -175,11 +175,17 @@ namespace BeastHunter
                 }
                 if (canHop)
                 {
+                    butterfly.ButterflyRigidbody.AddForce(new Vector3(0, 150, 0));
                     Hop(butterfly.ButterflyRigidbody, butterfly.NextCoord, 1.0f);
                     butterfly.TimeLeft = HOP_FREQUENCY;
                     butterfly.NextCoord = NextCoord(butterfly.ButterflyTransform, butterfly.ButterflyStartPosition, butterfly.DangerousObjects, nextCoordFunc);
                     butterfly.TimeElapsed = 0.0f;
                 }
+            }
+            if (butterfly.ButterflyTransform.position.y <= -10)
+            {
+                butterfly.ButterflyRigidbody.velocity = new Vector3(0, 0, 0);
+                butterfly.ButterflyTransform.position = new Vector3(492, 1, 481);
             }
         }
 
@@ -343,7 +349,7 @@ namespace BeastHunter
         {
             return new Vector2(vector.x * Mathf.Cos(angle) - vector.y * Mathf.Sin(angle), vector.x * Mathf.Sin(angle) + vector.y * Mathf.Cos(angle));
         }
-
+        
         private float AngleDeviation(float distance) // linear, use with distance magnitude
         {
             var r = ButterflyStruct.RunningRadius;
