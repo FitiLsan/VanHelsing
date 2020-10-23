@@ -166,7 +166,7 @@ namespace BeastHunter
         {
             butterfly.TimeLeft -= Time.deltaTime;
             butterfly.TimeElapsed += Time.deltaTime;
-            if (butterfly.TimeLeft < 0.0f && _physicsService.CheckGround(butterfly.ButterflyTransform.position, DOWN_RAYCAST_DISTANCE, out Vector3 hitPoint))
+            if (butterfly.TimeLeft < 0.0f)
             {
                 RotateTo(butterfly.ButterflyTransform, butterfly.ButterflyTransform.forward, butterfly.NextCoord, out bool canHop);
                 if (butterfly.TimeElapsed >= MAX_HOP_FREQUENCY)
@@ -344,6 +344,24 @@ namespace BeastHunter
             return new Vector2(vector.x * Mathf.Cos(angle) - vector.y * Mathf.Sin(angle), vector.x * Mathf.Sin(angle) + vector.y * Mathf.Cos(angle));
         }
 
+        private float AngleDeviation(float distance) // linear, use with distance magnitude
+        {
+            var r = ButterflyStruct.RunningRadius;
+            var f = STOP_RETURNING_DISTANCE_FACTOR;
+            return (MAX_ANGLE_DEVIATION * f) / (f - 1.0f) * (-(distance / r) + 1);
+        }
+
+        private float AngleDeviationSqr(float distance) // parabolic, use with distance magnitude (variant 1, point on runningRadius/returnFactor)
+        {
+            var r = ButterflyStruct.RunningRadius;
+            var f = STOP_RETURNING_DISTANCE_FACTOR;
+            var a = (MAX_ANGLE_DEVIATION * f * f) / (r * r * (2.0f * f - f * f - 1.0f));
+            var b = -(2.0f * a * r) / f;
+            var c = (a * r * r * (2.0f - f)) / f;
+            return a * distance * distance + b * distance + c;
+        }
+
+        
         #endregion
     }
 }

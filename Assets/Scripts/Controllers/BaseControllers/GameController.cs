@@ -26,7 +26,7 @@ namespace BeastHunter
 
         private void Update()
         {
-            _activeController.Updating(UpdateType.Update);
+            _activeController.Updating(UpdateType.Update); 
         }
 
         private void FixedUpdate()

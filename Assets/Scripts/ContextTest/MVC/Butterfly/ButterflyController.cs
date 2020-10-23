@@ -7,7 +7,7 @@ namespace BeastHunter
     {
         #region Fields
 
-        private readonly GameContext _context;
+        private GameContext _context;
 
         #endregion
 
@@ -26,6 +26,7 @@ namespace BeastHunter
 
         public void Updating()
         {
+            Debug.Log("update");
             _context.ButterflyModel.Execute();
         }
 
