@@ -54,11 +54,8 @@ namespace BeastHunter
 
         private void OnTriggerEnter(ITrigger trigger, Collider collider)
         {
-            Debug.Log("Butterfly OnTriggerEnter");
-
-            _context.ButterflyModel.ChangeTarget();
-
-            //collider.
+            Debug.Log(this+" OnTriggerEnter");
+            _context.ButterflyModel.OnTriggerEnter(trigger, collider);
         }
 
         #endregion
