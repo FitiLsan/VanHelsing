@@ -25,6 +25,14 @@ namespace BeastHunter
             }
         }
 
+        private Vector3 Direction
+        {
+            get
+            {
+                return TargetPoint - objTransform.position;
+            }
+        }
+
         #region ClassLifeCycle
 
         public ButterflyModel(GameObject butterflyObject, ButterflyData butterflyData)
@@ -44,15 +52,9 @@ namespace BeastHunter
         {
             if (Position != TargetPoint)
             {
-                if (MaxAltitudeReached())
-                {
-                    Debug.Log(this + " MaxAltitudeReached() " + maxFlyAltitude);
-                    //ChangeTarget();
-                    TargetPoint = -TargetPoint / 2;
-                    Debug.Log(this + " Next point " + TargetPoint);
-                }
-                    TurnToTarget();
-                    MoveToTarget();
+                if (MaxAltitudeReached() && TargetPoint.y > Position.y) ChangeTarget("Y");
+                TurnToTarget();
+                MoveToTarget();
             }
             else
             {
@@ -62,13 +64,14 @@ namespace BeastHunter
 
         public void OnTriggerEnter(ITrigger trigger, Collider collider)
         {
-            TargetPoint = -TargetPoint;
+            ChangeTarget("Y");
         }
 
-        private void ChangeTarget()
+        private void ChangeTarget(string axis = null)
         {
-            //Debug.Log("Butterfly.ChangeTarget()");
-            TargetPoint = objData.NewTargetPoint(Position);
+            if (axis == null) TargetPoint = objData.NewTargetPoint(Position);
+            else TargetPoint = objData.NewTargetPointInOppositeDirection(Position, Direction, axis);
+            Debug.Log(this + " new TargetPoint " + TargetPoint);
         }
 
         private void TurnToTarget()
@@ -83,6 +86,11 @@ namespace BeastHunter
 
         private bool MaxAltitudeReached()
         {
+            if (Position.y >= maxFlyAltitude) //for debug
+            {
+                Debug.Log(this + " MaxAltitudeReached(): " + maxFlyAltitude);
+                Debug.Log(this + " current position " + Position);
+            }
             return Position.y >= maxFlyAltitude;
         }
 

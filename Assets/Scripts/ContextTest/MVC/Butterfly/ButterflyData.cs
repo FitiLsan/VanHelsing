@@ -15,6 +15,7 @@ public class ButterflyData : ScriptableObject
 
     #region Metods
 
+    /// <summary>Return random coordinates within MaxDistanceFromCurrentPosition</summary>
     public Vector3 NewTargetPoint(Vector3 currentPosition)
     {
         float x = GetRandomCoord(currentPosition.x);
@@ -23,9 +24,29 @@ public class ButterflyData : ScriptableObject
         return new Vector3(x, y, z);
     }
 
-    private float GetRandomCoord(float currentCoord)
+    /// <summary>Return random coordinates within MaxDistanceFromCurrentPosition in the opposite direction along the specified coordinate axis</summary>
+    public Vector3 NewTargetPointInOppositeDirection(Vector3 currentPosition, Vector3 currentDirection, string axis)
     {
-        return Random.Range(currentCoord - Struct.MaxDistanceFromCurrentPosition, currentCoord + Struct.MaxDistanceFromCurrentPosition);
+        Vector3 newTarget = NewTargetPoint(currentPosition);
+
+        switch (axis.ToUpper())
+        {
+            case "X": newTarget.x = GetRandomCoord(currentPosition.x, currentDirection.x); break;
+            case "Y": newTarget.y = GetRandomCoord(currentPosition.y, currentDirection.y); break;
+            case "Z": newTarget.z = GetRandomCoord(currentPosition.z, currentDirection.z); break;
+        }
+
+        return newTarget;
+    }
+
+    private float GetRandomCoord(float coord, float? forwardCoord = null)
+    {
+        if (forwardCoord.HasValue && forwardCoord.Value != 0)
+        {
+            if (forwardCoord > 0) return Random.Range(coord - Struct.MaxDistanceFromCurrentPosition, coord);
+            else return Random.Range(coord, coord + Struct.MaxDistanceFromCurrentPosition);
+        }
+        return Random.Range(coord - Struct.MaxDistanceFromCurrentPosition, coord + Struct.MaxDistanceFromCurrentPosition); ;
     }
 
     public Vector3 Move(Vector3 currentPosition, Vector3 targetPoint)
