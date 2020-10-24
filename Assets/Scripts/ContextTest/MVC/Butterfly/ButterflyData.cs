@@ -58,7 +58,8 @@ public class ButterflyData : ScriptableObject
     {
         Vector3 targetDirection = targetPoint - transform.position;
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, Struct.TurnSpeed, 0.0f);
-        return Quaternion.LookRotation(new Vector3(newDirection.x, -sin60, newDirection.z));
+        newDirection.y = -sin60;    //keep constant tilt of the butterfly
+        return Quaternion.LookRotation(newDirection);
     }
 
     #endregion
