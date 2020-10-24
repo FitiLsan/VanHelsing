@@ -153,7 +153,7 @@ namespace BeastHunter
 
         private void OnLeftHitBoxHit(ITrigger hitBox, Collider enemy)
         {
-            if (hitBox.IsInteractable)
+            if (enemy.transform.GetComponent<InteractableObjectBehavior>() != null && hitBox.IsInteractable)
             {
                 DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
                     CountDamage(_stateMachine._model.WeaponData, _stateMachine._model.BossStats.MainStats, _stateMachine.
@@ -164,7 +164,7 @@ namespace BeastHunter
 
         private void OnRightHitBoxHit(ITrigger hitBox, Collider enemy)
         {
-            if (hitBox.IsInteractable)
+            if (enemy.transform.GetComponent<InteractableObjectBehavior>() != null && hitBox.IsInteractable)
             {
                 DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
                     CountDamage(_stateMachine._model.WeaponData, _stateMachine._model.BossStats.MainStats, _stateMachine.

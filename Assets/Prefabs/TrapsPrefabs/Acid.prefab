@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 232784886881737358}
   - component: {fileID: 8791018259208693930}
   - component: {fileID: 6117382226278936748}
-  - component: {fileID: 1600254363480901750}
   - component: {fileID: 3722818075266148107}
+  - component: {fileID: 9179680203887719940}
   m_Layer: 0
   m_Name: Acid
   m_TagString: Untagged
@@ -4815,21 +4815,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &1600254363480901750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6720938135239163503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a035d8502fef0e4396f9eeb11bf9d78, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProjectileDamage:
-    PhysicalDamage: 20
-    StunProbability: 0
 --- !u!54 &3722818075266148107
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4846,3 +4831,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &9179680203887719940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6720938135239163503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97fe0664b28543c4a9e55d291b5860a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectileData: {fileID: 11400000, guid: 99624bcf6c1df87458dff72c1b2ab4dd, type: 2}

@@ -1,4 +1,7 @@
-﻿namespace BeastHunter
+﻿using UniRx;
+
+
+namespace BeastHunter
 {
     public sealed class DeadState : CharacterBaseState
     {
@@ -15,12 +18,17 @@
 
         #region Methods
 
+        public override bool CanBeActivated()
+        {
+            return !IsActive;
+        }
+
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
             _characterModel.IsDead = true;
             _characterModel.CharacterTransform.tag = TagManager.NPC;
-            GlobalEventsModel.OnPlayerDie?.Invoke();
+            MessageBroker.Default.Publish(new OnPlayerDieEventCLass());
 
             if(_characterModel.CurrentWeaponData != null)
             {

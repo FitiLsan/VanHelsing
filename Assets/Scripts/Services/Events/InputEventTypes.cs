@@ -30,6 +30,7 @@
         WeaponWheelClose,
         AimStart,
         AimEnd,
+        ButtonsInfoMenu,
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UniRx;
 using System;
 
 
@@ -47,11 +48,11 @@ namespace BeastHunter
             _stateMachine._model.BossBehavior.OnTriggerEnterHandler += OnTriggerEnterHandler;
             _stateMachine._model.BossBehavior.OnTriggerExitHandler += OnTriggerExitHandler;
 
-            GlobalEventsModel.OnPlayerDie += OnPlayerDieHandler;
-            GlobalEventsModel.OnBossStunned += OnBossStunnedHandler;
-            GlobalEventsModel.OnBossHitted += OnBossHittedHandler;
-            GlobalEventsModel.OnBossWeakPointHitted += MakeWeakPointBurst;
-            GlobalEventsModel.OnPlayerSneaking += OnPlayerSneakingHanlder;
+            MessageBroker.Default.Receive<OnPlayerDieEventCLass>().Subscribe(OnPlayerDieHandler);
+            MessageBroker.Default.Receive<OnBossStunnedEventClass>().Subscribe(OnBossStunnedHandler);
+            MessageBroker.Default.Receive<OnBossHittedEventClass>().Subscribe(OnBossHittedHandler);
+            MessageBroker.Default.Receive<OnBossWeakPointHittedEventClass>().Subscribe(MakeWeakPointBurst);
+            MessageBroker.Default.Receive<OnPlayerSneakingEventClass>().Subscribe(OnPlayerSneakingHandler);
         }
 
         public override void Initialise()
@@ -79,15 +80,9 @@ namespace BeastHunter
             _stateMachine._model.BossBehavior.OnFilterHandler -= OnFilterHandler;
             _stateMachine._model.BossBehavior.OnTriggerEnterHandler -= OnTriggerEnterHandler;
             _stateMachine._model.BossBehavior.OnTriggerExitHandler -= OnTriggerExitHandler;
-
-            GlobalEventsModel.OnPlayerDie -= OnPlayerDieHandler;
-            GlobalEventsModel.OnBossStunned -= OnBossStunnedHandler;
-            GlobalEventsModel.OnBossHitted -= OnBossHittedHandler;
-            GlobalEventsModel.OnBossWeakPointHitted -= MakeWeakPointBurst;
-            GlobalEventsModel.OnPlayerSneaking -= OnPlayerSneakingHanlder;
         }
 
-        private void OnBossHittedHandler()
+        private void OnBossHittedHandler(OnBossHittedEventClass eventClass)
         {
             if (!_stateMachine._model.IsDead)
             {
@@ -95,7 +90,7 @@ namespace BeastHunter
             }
         }
 
-        private void OnBossStunnedHandler()
+        private void OnBossStunnedHandler(OnBossStunnedEventClass eventClass)
         {
             if (!_stateMachine._model.IsDead)
             {
@@ -103,7 +98,7 @@ namespace BeastHunter
             }         
         }
 
-        private void OnPlayerDieHandler()
+        private void OnPlayerDieHandler(OnPlayerDieEventCLass eventClass)
         {
             if (!_stateMachine._model.IsDead)
             {
@@ -158,15 +153,16 @@ namespace BeastHunter
             }
         }
 
-        private void MakeWeakPointBurst(Collider collider)
+        private void MakeWeakPointBurst(OnBossWeakPointHittedEventClass eventClass)
         {
-            collider.gameObject.GetComponent<ParticleSystem>().Play();
+            eventClass.WeakPointCollider.gameObject.GetComponent<ParticleSystem>().Play();
             _stateMachine._model.TakeDamage(Services.SharedInstance.AttackService.CountDamage(
-                collider.GetComponent<HitBoxBehavior>().AdditionalDamage, _stateMachine._model.GetStats().MainStats));
-            collider.GetComponent<Light>().color = Color.red;
-            collider.enabled = false;
+                eventClass.WeakPointCollider.GetComponent<HitBoxBehavior>().AdditionalDamage, 
+                    _stateMachine._model.GetStats().MainStats));
+            eventClass.WeakPointCollider.GetComponent<Light>().color = Color.red;
+            eventClass.WeakPointCollider.enabled = false;
 
-            Action makeWeakPointNormalAction = () => MakeWeakPointNormal(collider);
+            Action makeWeakPointNormalAction = () => MakeWeakPointNormal(eventClass.WeakPointCollider);
             TimeRemaining makeWeakPointNormal = new TimeRemaining(makeWeakPointNormalAction, TIME_TO_NORMILIZE_WEAK_POINT);
             makeWeakPointNormal.AddTimeRemaining(TIME_TO_NORMILIZE_WEAK_POINT);
         }
@@ -203,9 +199,9 @@ namespace BeastHunter
             }
         }
 
-        private void OnPlayerSneakingHanlder(bool isSneaking)
+        private void OnPlayerSneakingHandler(OnPlayerSneakingEventClass eventClass)
         {
-            if (isSneaking)
+            if (eventClass.IsSneaking)
             {
                 _stateMachine._model.BossSphereCollider.radius /= 
                     _stateMachine._model.BossSettings.SphereColliderRadiusDecreace;

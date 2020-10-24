@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59ef159aeb6d295468993ad22e527f24, type: 3}
+  m_Name: NewAcidBombData
+  m_EditorClassIdentifier: 
+  _projectileType: 1
+  _projectilePrefab: {fileID: 0}
+  _projectileDamage:
+    PhysicalDamage: 21.6
+    StunProbability: 0.431
+  _isDestroyedAfterInstantiation: 1
+  _isDestroyedAfterHit: 0
+  _timeToDestroyAfterInstantiation: 5
+  _timeToDestroyAfterHit: 0
+  _projectileColliderSize: 0.15

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
 
@@ -25,9 +26,9 @@ namespace BeastHunter
 
         #region Metods
 
-        public void Act(BossIdlePattern idleType, BossModel model)
+        public void Act(BossIdlePattern idlePattern, BossModel model)
         {
-            switch (idleType)
+            switch (idlePattern)
             {
                 case BossIdlePattern.MoveForward: MoveForward(model.BossTransform, 5f);
                     break;

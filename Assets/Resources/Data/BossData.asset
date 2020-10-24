@@ -15,6 +15,12 @@ MonoBehaviour:
   _bossSettings:
     _prefab: {fileID: 1544180832531774, guid: f9f6be802bd0fe3448c68a8b6f205bce, type: 3}
     _instanceName: Boss
+    _leftHandObjectPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
+      Spine1/OAK_TEE_ENT_ L Clavicle/OAK_TEE_ENT_ L UpperArm/OAK_TEE_ENT_ L Forearm/OAK_TEE_ENT_
+      L Hand
+    _rightHandObjectPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
+      Spine1/OAK_TEE_ENT_ R Clavicle/OAK_TEE_ENT_ R UpperArm/OAK_TEE_ENT_ R Forearm/OAK_TEE_ENT_
+      R Hand
     _instanceTag: Enemy
     _instanceLayer: 11
     _bossAnimator: {fileID: 9100000, guid: c1e5e434f74c52e498297dc81b47b61a, type: 2}
@@ -55,6 +61,7 @@ MonoBehaviour:
     DefenceStats:
       _baseDefense: 0
     Prefab: {fileID: 0}
+  _movementPrefab: {fileID: 3608412240235365698, guid: 780860c28e2fd0e4b83fcab9bb4061b7,
     SpawnPointName: 
   BossStats:
     _idlePattern: 1

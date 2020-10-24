@@ -5,13 +5,6 @@ namespace BeastHunter
 {
     public sealed class MovementState : CharacterBaseState, IUpdate
     {
-        #region Constants
-
-        private const float EXIT_TIME = 1f;
-
-        #endregion
-
-
         #region Properties
 
         private bool IsStopping { get; set; }
@@ -44,6 +37,11 @@ namespace BeastHunter
 
 
         #region Methods
+
+        public override bool CanBeActivated()
+        {
+            return !IsActive;
+        }
 
         protected override void EnableActions()
         {
@@ -112,7 +110,7 @@ namespace BeastHunter
         private void StopCountExitTime()
         {
             IsStopping = false;
-            ExitTime = EXIT_TIME;
+            ExitTime = _characterModel.CharacterData._characterCommonSettings.TImeToContinueMovingAfterStop;
         }
 
         private void SneakOrSlide()

@@ -6,7 +6,7 @@ namespace BeastHunter
     public sealed class TimeRemaining : ITimeRemaining
     {
         #region ITimeRemaining
-        
+
         public Action Method { get; }
         public bool IsRepeating { get; }
         public float Time { get; set; }
