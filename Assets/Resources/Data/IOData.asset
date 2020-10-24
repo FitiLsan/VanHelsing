@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee177f76b37b0845ad48e9e2738621a, type: 3}
   m_Name: IOData
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 6994601839773270451, guid: e771f12c928b3b148ae43a5d7be6abfc, type: 3}
+  BaseStats:
+    MaxHealth: 10
+    BaseStats:
+      _physicalPower: 0
+      _physicalDamageResistance: 0
+      _stunProbabilityResistance: 0
+    Prefab: {fileID: 6994601839773270451, guid: e771f12c928b3b148ae43a5d7be6abfc,
+      type: 3}
