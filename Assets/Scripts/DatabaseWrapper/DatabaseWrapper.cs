@@ -59,7 +59,7 @@ namespace BeastHunter
         {
             _dbPath = GetDatabasePath();
             _connection = new SQLiteConnection("Data Source=" + _dbPath);
-            EventManager.StartListening(GameEventTypes.GameExit, CloseConnection);
+         //   Services.SharedInstance.EventManager.StartListening(GameEventTypes.GameExit, CloseConnection); TODO: triggerEvent GameExit;
         }
 
         private static void CloseConnection(EventArgs eventArgs = null)

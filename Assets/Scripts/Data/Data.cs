@@ -9,9 +9,6 @@ namespace BeastHunter {
 
         [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
-        [SerializeField] private string _startDialogueDataPath;
-        [SerializeField] private string _dialogueSystemDataPath;
-        [SerializeField] private string _giantMudCrabDataPath;
         [SerializeField] private string _rabbitDataPath;
         [SerializeField] private string _feastPath;
         [SerializeField] private string _jacketPath;
@@ -20,15 +17,13 @@ namespace BeastHunter {
         private static Data _instance;
         private static SphereData _sphereData;
         private static CharacterData _characterData;
-        private static StartDialogueData _startDialogueData;
-        private static DialogueSystemData _dialogueSystemData;
-        private static GiantMudCrabData _giantMudCrabData;
         private static RabbitData _rabbitData;
         private static WeaponItem _feast;
         private static ClothItem _jacket;
         private static CameraData _cameraData;
 
         #endregion
+
 
         #region Properties
 
@@ -50,39 +45,12 @@ namespace BeastHunter {
             }
         }
 
-        public static StartDialogueData StartDialogueData {
-            get {
-                if (_startDialogueData == null) {
-                    _startDialogueData = Load<StartDialogueData> ("Data/" + Instance._startDialogueDataPath);
-                }
-                return _startDialogueData;
-            }
-        }
-
-        public static DialogueSystemData DialogueSystemData {
-            get {
-                if (_dialogueSystemData == null) {
-                    _dialogueSystemData = Load<DialogueSystemData> ("Data/" + Instance._dialogueSystemDataPath);
-                }
-                return _dialogueSystemData;
-            }
-        }
-
         public static CharacterData CharacterData {
             get {
                 if (_characterData == null) {
                     _characterData = Load<CharacterData> ("Data/" + Instance._characterDataPath);
                 }
                 return _characterData;
-            }
-        }
-
-        public static GiantMudCrabData GiantMudCrabData {
-            get {
-                if (_giantMudCrabData == null) {
-                    _giantMudCrabData = Load<GiantMudCrabData> ("Data/" + Instance._giantMudCrabDataPath);
-                }
-                return _giantMudCrabData;
             }
         }
 
@@ -95,7 +63,7 @@ namespace BeastHunter {
                     _rabbitData = Load<RabbitData>("Data/" + Instance._rabbitDataPath);
                 }
                 return _rabbitData;
-            }
+			}
         }
 
         public static WeaponItem Feast {
@@ -129,6 +97,7 @@ namespace BeastHunter {
         }
 
         #endregion
+
 
         #region Methods
 

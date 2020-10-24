@@ -11,21 +11,6 @@ namespace BeastHunter
 {
     public class ProgressDatabaseWrapper : ISaveFileWrapper
     {
-        #region PrivateData
-
-        private enum SaveTables
-        {
-            equipment,
-            inventory,
-            quest,
-            quest_objectives,
-            save_info,
-            completed_quests
-        }
-
-        #endregion
-
-
         #region Fields
 
         private const string SAVE_FILE_TAMPLATE = "progress.bytes";
@@ -61,7 +46,7 @@ namespace BeastHunter
             }
         }
 
-        public IEnumerable<int> GetCompletedQuests()
+        public IEnumerable<int> GetCompletedQuestsId()
         {
             foreach (DataRow row in _saveData.Tables[SaveTables.completed_quests.ToString()].Rows)
             {
@@ -79,6 +64,16 @@ namespace BeastHunter
             return res;
         }
 
+        public Dictionary<int, bool> GetCompletedQuests()
+        {
+            var res = new Dictionary<int, bool>();
+            foreach (DataRow row in _saveData.Tables[SaveTables.completed_quests.ToString()].Rows)
+            {
+                res.Add(row.GetInt("QuestId"), true);
+            }
+            return res;
+        }
+
         public Dictionary<int, int> GetActiveObjectives()
         {
             var res = new Dictionary<int,int>();
@@ -87,28 +82,6 @@ namespace BeastHunter
                 res.Add(row.GetInt("ObjectiveId"),row.GetInt("Value"));
             }
             return res;
-        }
-
-        public void SaveQuestLog(IEnumerable<Quest> quests, List<int> completeQuests)
-        {
-            var strBuilder = new StringBuilder();
-            strBuilder.Append("BEGIN TRANSACTION; ");
-            foreach (var quest in quests)
-            {
-                strBuilder.Append($"insert into 'quest' (QuestId, TimeLeft) values ({quest.Id}, {(int) quest.RemainingTime}); ");
-                foreach (var task in quest.Tasks)
-                {
-                    strBuilder.Append($"insert into 'quest_objectives' (ObjectiveId, Value) values ({task.Id}, {task.CurrentAmount}); ");
-                }
-            }
-
-            foreach (var id in completeQuests)
-            {
-                strBuilder.Append($"insert into 'completed_quests' (QuestId) values ({id}); ");
-            }
-
-            strBuilder.Append("COMMIT;");
-            ExecuteQueryWithoutAnswer(strBuilder.ToString());
         }
 
         public int GetNextItemEntry()
