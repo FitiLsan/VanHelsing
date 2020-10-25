@@ -13,6 +13,20 @@ public class ButterflyData : ScriptableObject
     #endregion
 
 
+    #region ClassLifeCycle
+
+    public ButterflyData()
+    {
+        Struct.Size = 0.5f;
+        Struct.Speed = 0.1f;
+        Struct.TurnSpeed = 0.03f;
+        Struct.MaxFlyAltitudeFromSpawn = 5;
+        Struct.MaxDistanceFromCurrentPosition = 10;
+    }
+
+    #endregion
+
+
     #region Methods
 
     /// <summary>Return random coordinates within MaxDistanceFromCurrentPosition</summary>
