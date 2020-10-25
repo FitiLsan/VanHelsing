@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c66b5a7aea9b07418dd89a7d55218da, type: 3}
+  m_Name: IronGreaves
+  m_EditorClassIdentifier: 
+  ItemStruct:
+    Name: Iron Greaves
+    Discription: 
+    SlotSize: 2
+    ItemType: 3
+    MeshOfObject: {fileID: 0}
+    Icon: {fileID: 21300000, guid: 882d487ee7837e346a66000323981f83, type: 3}
+  BodyParts: 4
+  MeshView:
+  - {fileID: 4300754, guid: 038320a534bd8b444b43734860d1a211, type: 3}
+  MeshAccessories: []
+  PocketInfos:
+  - SlotEnum: 1
+    ItemTypeInPocket: 0
+    ItemInPocket: {fileID: 0}

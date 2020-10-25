@@ -24,6 +24,7 @@ namespace BeastHunter
         #region Events
 
         public static event Action<bool> ShowCanvasEvent;
+        public static event Action<Vector3> StartDialog;
 
         #endregion
 
@@ -67,6 +68,7 @@ namespace BeastHunter
         {
             DialogueSystemModel.DialogueNode = DialogueGenerate.DialogueCreate(NpcID, Model.Context);
             ShowCanvasEvent?.Invoke(isShowDialogCanvas);
+            if(isShowDialogCanvas) StartDialog?.Invoke(NpcPos);
         }
 
         public void DialogAreaEnterSwitcher(bool isOn)

@@ -11,6 +11,7 @@ namespace BeastHunter
 
         private readonly GameContext _context;
         private CameraData _cameraData;
+        private GameObject _cameraTarget;
 
         #endregion
 
@@ -48,37 +49,46 @@ namespace BeastHunter
 
         #region Methods
 
-        public void Initialise(CharacterModel characterModel)
+        public void Initialize(CharacterModel characterModel)
         {
-            CharacterCamera.transform.rotation = Quaternion.Euler(0, characterModel.CharacterCommonSettings.InstantiateDirection, 0);
-            CharacterFreelookCamera = _cameraData._cameraSettings.CreateCharacterFreelookCamera(characterModel.CameraTargetTransform);
-            CharacterTargetCamera = _cameraData._cameraSettings.CreateCharacterTargetCamera(characterModel.CameraTargetTransform);
-            CharacterDialogCamera = _cameraData._cameraSettings.CreateCharacterDialogCamera(characterModel.CameraTargetTransform);
+            _cameraTarget = GameObject.Instantiate(new GameObject(), characterModel.CharacterTransform);
+            _cameraTarget.transform.localPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight, 0f);
+            _cameraTarget.name = _cameraData._cameraSettings.CameraTargetName;
+
+            CharacterCamera.transform.rotation = Quaternion.Euler(0, characterModel.CharacterCommonSettings.
+                InstantiateDirection, 0);
+            CharacterFreelookCamera = _cameraData._cameraSettings.
+                CreateCharacterFreelookCamera(_cameraTarget.transform, _cameraTarget.transform);
+            CharacterTargetCamera = _cameraData._cameraSettings.
+                CreateCharacterTargetCamera(_cameraTarget.transform, _cameraTarget.transform);
+            CharacterDialogCamera = _cameraData._cameraSettings.
+                CreateCharacterDialogCamera(_cameraTarget.transform, _cameraTarget.transform);
+
+            CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
+            CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenterWaitTime = 0;
 
             PreviousActiveCamera = CharacterFreelookCamera;
             SetActiveCamera(CharacterFreelookCamera);
         }
 
-        public GameObject CreateCameraTarget(Transform characterTransform)
-        {
-            GameObject target = new GameObject { name = _cameraData._cameraSettings.CameraTargetName };
-
-            target.transform.SetParent(characterTransform);
-            target.transform.localPosition = new Vector3(0, _cameraData._cameraSettings.CameraTargetHeight, 0);
-            target.transform.localRotation = Quaternion.Euler(0, 0, 0);
-
-            return target;
-        }
-
         public void SetActiveCamera(CinemachineVirtualCameraBase newCamera)
         {
-            if(newCamera != CurrentActiveCamera)
+            if(_context.CharacterModel != null && newCamera != CurrentActiveCamera)
             {
+                if(newCamera != CharacterFreelookCamera)
+                {
+                    CharacterFreelookCamera.m_RecenterToTargetHeading.m_enabled = true;
+                    LockFreeLookCamera();
+                }
+                else
+                {
+                    CharacterFreelookCamera.m_RecenterToTargetHeading.m_enabled = false;
+                    UnlockFreeLookCamera();
+                }
+                
                 PreviousActiveCamera = CurrentActiveCamera;
                 CurrentActiveCamera = newCamera;
-
                 SetAllCamerasEqual();
-                newCamera.Priority++;
 
                 float blendTime = 0f;
 
@@ -88,7 +98,7 @@ namespace BeastHunter
                 }
                 else if (CurrentActiveCamera == CharacterTargetCamera)
                 {
-                    blendTime = _cameraData._cameraSettings.CHaracterTargetCameraBlendTime;
+                    blendTime = _cameraData._cameraSettings.CharacterTargetCameraBlendTime;
                 }
                 else if (CurrentActiveCamera == CharacterDialogCamera)
                 {
@@ -96,6 +106,7 @@ namespace BeastHunter
                 }
 
                 SetBlendTime(blendTime);
+                CurrentActiveCamera.Priority++;
             }
         }
 
@@ -109,6 +120,20 @@ namespace BeastHunter
         public void SetBlendTime(float time)
         {
             CameraCinemachineBrain.m_DefaultBlend.m_Time = time;
+        }
+
+        public void LockFreeLookCamera()
+        {
+            CharacterFreelookCamera.m_XAxis.m_MaxSpeed = 0f;
+            CharacterFreelookCamera.m_YAxis.m_MaxSpeed = 0f;
+        }
+
+        public void UnlockFreeLookCamera()
+        {
+            CharacterFreelookCamera.m_XAxis.m_MaxSpeed = _cameraData._cameraSettings.CharacterFreelookCamera.
+                m_XAxis.m_MaxSpeed;
+            CharacterFreelookCamera.m_YAxis.m_MaxSpeed = _cameraData._cameraSettings.CharacterFreelookCamera.
+                m_YAxis.m_MaxSpeed;
         }
 
 #if (UNITY_EDITOR)
