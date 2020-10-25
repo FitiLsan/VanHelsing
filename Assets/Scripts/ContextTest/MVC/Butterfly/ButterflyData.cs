@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using BeastHunter;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewButterfly", menuName = "CreateData/Butterfly", order = 0)]
 public class ButterflyData : ScriptableObject
@@ -27,21 +28,66 @@ public class ButterflyData : ScriptableObject
 
     #region Methods
 
-    public Vector3 Move(Vector3 currentPosition, Vector3 targetPoint)
+    public void Act(ButterflyModel model)
+    {
+        if (model.IsSitting)
+        {
+            model.SittingTimer -= Time.deltaTime;
+            if (model.SittingTimer <= 0) model.IsSitting = false;
+        }
+        else
+        {
+            if (model.Position != model.TargetPoint)
+            {
+                if (model.Position.y >= model.MaxFlyAltitude && model.TargetPoint.y > model.Position.y)
+                {
+                    Debug.Log(this + " maxFlyAltitude has reached");
+                    model.TargetPoint = NewTargetPointInOppositeDirection(model.Position, model.TargetPoint - model.Position, "Y");
+                }
+                model.Rotation = Turn(model.TargetPoint, model.Position, model.Forward);
+                model.Position = Move(model.TargetPoint, model.Position);
+            }
+            else
+            {
+                model.TargetPoint = NewTargetPoint(model.Position);
+            }
+        }
+    }
+
+    public void TriggerEnter(Collider collider, ButterflyModel model)
+    {
+        Debug.Log(this + " OnTriggerEnter(Collider collider)");
+
+        if (collider.gameObject.tag == TagManager.GROUND)
+        {
+            model.TargetPoint = NewTargetPointInOppositeDirection(model.Position, model.TargetPoint - model.Position, "Y");
+            if (Random.Range(1, 100) > 25)
+            {
+                Debug.Log(this + " is sitting");
+
+                model.IsSitting = true;
+                model.SittingTimer = Random.Range(1.5f, 4f);
+
+                Debug.Log(this + " sittingTimer: " + model.SittingTimer);
+            }
+        }
+    }
+
+    private Vector3 Move(Vector3 targetPoint, Vector3 currentPosition)
     {
         return Vector3.MoveTowards(currentPosition, targetPoint, Struct.Speed);
     }
 
-    public Quaternion Turn(Transform transform, Vector3 targetPoint)
+    private Quaternion Turn(Vector3 targetPoint, Vector3 position, Vector3 forward)
     {
-        Vector3 targetDirection = targetPoint - transform.position;
-        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, Struct.TurnSpeed, 0.0f);
+        Vector3 targetDirection = targetPoint - position;
+        Vector3 newDirection = Vector3.RotateTowards(forward, targetDirection, Struct.TurnSpeed, 0.0f);
         newDirection.y = -sin60;    //keep constant tilt of the butterfly
         return Quaternion.LookRotation(newDirection);
     }
 
     /// <summary>Return random coordinates within MaxDistanceFromCurrentPosition</summary>
-    public Vector3 NewTargetPoint(Vector3 currentPosition)
+    private Vector3 NewTargetPoint(Vector3 currentPosition)
     {
         float x = GetRandomCoord(currentPosition.x);
         float y = GetRandomCoord(currentPosition.y);
@@ -50,7 +96,7 @@ public class ButterflyData : ScriptableObject
     }
 
     /// <summary>Return random coordinates within MaxDistanceFromCurrentPosition in the opposite direction along the specified coordinate axis</summary>
-    public Vector3 NewTargetPointInOppositeDirection(Vector3 currentPosition, Vector3 currentDirection, string axis)
+    private Vector3 NewTargetPointInOppositeDirection(Vector3 currentPosition, Vector3 currentDirection, string axis)
     {
         Vector3 newTarget = NewTargetPoint(currentPosition);
 
@@ -64,14 +110,14 @@ public class ButterflyData : ScriptableObject
         return newTarget;
     }
 
-    private float GetRandomCoord(float coord, float? forwardCoord = null)
+    private float GetRandomCoord(float currentCoord, float? directionCoord = null)
     {
-        if (forwardCoord.HasValue && forwardCoord.Value != 0)
+        if (directionCoord.HasValue && directionCoord.Value != 0)
         {
-            if (forwardCoord > 0) return Random.Range(coord - Struct.MaxDistanceFromCurrentPosition, coord);
-            else return Random.Range(coord, coord + Struct.MaxDistanceFromCurrentPosition);
+            if (directionCoord > 0) return Random.Range(currentCoord - Struct.MaxDistanceFromCurrentPosition, currentCoord - 0.5f);
+            else return Random.Range(currentCoord + 0.5f, currentCoord + Struct.MaxDistanceFromCurrentPosition);
         }
-        return Random.Range(coord - Struct.MaxDistanceFromCurrentPosition, coord + Struct.MaxDistanceFromCurrentPosition); ;
+        return Random.Range(currentCoord - Struct.MaxDistanceFromCurrentPosition, currentCoord + Struct.MaxDistanceFromCurrentPosition); ;
     }
 
     #endregion

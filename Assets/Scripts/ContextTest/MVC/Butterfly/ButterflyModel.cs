@@ -8,22 +8,33 @@ namespace BeastHunter
 
         private ButterflyData objData;
         private Transform objTransform;
-        private Vector3 TargetPoint;
 
-        private readonly float maxFlyAltitude;
+        public float SittingTimer = 0.00f;
+        public bool IsSitting = false;
 
-        private float sittingTimer = 0.00f;
-        private bool isSitting = false;
+        public Vector3 TargetPoint;
+        public readonly float MaxFlyAltitude;
 
         #endregion
 
 
         #region Properties
 
-        private Vector3 Position
+        public Vector3 Position
         {
             get => objTransform.position;
             set => objTransform.position = value;
+        }
+
+        public Quaternion Rotation
+        {
+            get => objTransform.rotation;
+            set => objTransform.rotation = value;
+        }
+
+        public Vector3 Forward
+        {
+            get => objTransform.forward;
         }
 
         #endregion
@@ -36,7 +47,7 @@ namespace BeastHunter
             objData = butterflyData;
             objTransform = butterflyObject.transform;
             objTransform.localScale *= objData.Struct.Size;
-            maxFlyAltitude = Position.y + objData.Struct.MaxFlyAltitudeFromSpawn;
+            MaxFlyAltitude = Position.y + objData.Struct.MaxFlyAltitudeFromSpawn;
         }
 
         #endregion
@@ -44,73 +55,8 @@ namespace BeastHunter
 
         #region Methods
 
-        public void Act()
-        {
-            if (isSitting)
-            {
-                sittingTimer -= Time.deltaTime;
-                if (sittingTimer <= 0) isSitting = false;
-            }
-            else
-            {
-                if (Position != TargetPoint)
-                {
-                    if (MaxAltitudeReached() && TargetPoint.y > Position.y)
-                    {
-                        Debug.Log(this + " maxFlyAltitude has reached");
-                        ChangeTarget("Y"); 
-                    }
-                    TurnToTarget();
-                    MoveToTarget();
-                }
-                else
-                {
-                    ChangeTarget();
-                }
-            }
-        }
-
-        public void OnTriggerEnter(Collider collider)
-        {
-            Debug.Log(this + " OnTriggerEnter(Collider collider)");
-
-            if (collider.gameObject.tag == TagManager.GROUND)
-            {
-                ChangeTarget("Y");
-                if (Random.Range(1, 100) > 50) SitDown();
-            }
-        }
-
-        private void SitDown()
-        {
-            Debug.Log(this + " SitDown()");
-
-            isSitting = true;
-            sittingTimer = Random.Range(1.5f, 4f);
-
-            Debug.Log(this+ " sittingTimer: " + sittingTimer);
-        }
-
-        private void ChangeTarget(string axis = null)
-        {
-            if (axis == null) TargetPoint = objData.NewTargetPoint(Position);
-            else TargetPoint = objData.NewTargetPointInOppositeDirection(Position, TargetPoint - objTransform.position, axis);
-        }
-
-        private void TurnToTarget()
-        {
-            objTransform.rotation = objData.Turn(objTransform, TargetPoint);
-        }
-
-        private void MoveToTarget()
-        {
-            Position = objData.Move(Position, TargetPoint);
-        }
-
-        private bool MaxAltitudeReached()
-        {
-            return Position.y >= maxFlyAltitude;
-        }
+        public void Execute() => objData.Act(this);
+        public void OnTriggerEnter(Collider collider) => objData.TriggerEnter(collider, this);
 
         #endregion
     }
