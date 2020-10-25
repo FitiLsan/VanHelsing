@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BeastHunter
 {
@@ -54,8 +51,7 @@ namespace BeastHunter
 
         private void OnTriggerEnter(ITrigger trigger, Collider collider)
         {
-            //Debug.Log(this+" OnTriggerEnter");
-            _context.ButterflyModel.OnTriggerEnter(trigger, collider);
+            _context.ButterflyModel.OnTriggerEnter(collider);
         }
 
         #endregion

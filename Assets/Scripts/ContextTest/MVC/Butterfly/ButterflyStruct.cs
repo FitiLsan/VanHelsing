@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using UnityEngine.Internal;
 
 [Serializable]
 public struct ButterflyStruct

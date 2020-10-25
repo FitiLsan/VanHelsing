@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewButterfly", menuName = "CreateData/Butterfly", order = 0)]
 public class ButterflyData : ScriptableObject
@@ -28,6 +26,19 @@ public class ButterflyData : ScriptableObject
 
 
     #region Methods
+
+    public Vector3 Move(Vector3 currentPosition, Vector3 targetPoint)
+    {
+        return Vector3.MoveTowards(currentPosition, targetPoint, Struct.Speed);
+    }
+
+    public Quaternion Turn(Transform transform, Vector3 targetPoint)
+    {
+        Vector3 targetDirection = targetPoint - transform.position;
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, Struct.TurnSpeed, 0.0f);
+        newDirection.y = -sin60;    //keep constant tilt of the butterfly
+        return Quaternion.LookRotation(newDirection);
+    }
 
     /// <summary>Return random coordinates within MaxDistanceFromCurrentPosition</summary>
     public Vector3 NewTargetPoint(Vector3 currentPosition)
@@ -61,19 +72,6 @@ public class ButterflyData : ScriptableObject
             else return Random.Range(coord, coord + Struct.MaxDistanceFromCurrentPosition);
         }
         return Random.Range(coord - Struct.MaxDistanceFromCurrentPosition, coord + Struct.MaxDistanceFromCurrentPosition); ;
-    }
-
-    public Vector3 Move(Vector3 currentPosition, Vector3 targetPoint)
-    {
-        return Vector3.MoveTowards(currentPosition, targetPoint, Struct.Speed);
-    }
-
-    public Quaternion Turn(Transform transform, Vector3 targetPoint)
-    {
-        Vector3 targetDirection = targetPoint - transform.position;
-        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, Struct.TurnSpeed, 0.0f);
-        newDirection.y = -sin60;    //keep constant tilt of the butterfly
-        return Quaternion.LookRotation(newDirection);
     }
 
     #endregion

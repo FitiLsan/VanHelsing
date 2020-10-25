@@ -1,8 +1,4 @@
-﻿//using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BeastHunter
 {
@@ -10,16 +6,14 @@ namespace BeastHunter
     {
         #region Fields
 
-        private Vector3 TargetPoint;
         private ButterflyData objData;
         private Transform objTransform;
+        private Vector3 TargetPoint;
 
         private readonly float maxFlyAltitude;
 
-        private float sittingTimer;
+        private float sittingTimer = 0.00f;
         private bool isSitting = false;
-
-        //GameObject targetPoint; //for debug
 
         #endregion
 
@@ -28,22 +22,8 @@ namespace BeastHunter
 
         private Vector3 Position
         {
-            get 
-            {
-                return objTransform.position;
-            }
-            set
-            {
-                objTransform.position = value;
-            }
-        }
-
-        private Vector3 Direction
-        {
-            get
-            {
-                return TargetPoint - objTransform.position;
-            }
+            get => objTransform.position;
+            set => objTransform.position = value;
         }
 
         #endregion
@@ -57,8 +37,6 @@ namespace BeastHunter
             objTransform = butterflyObject.transform;
             objTransform.localScale *= objData.Struct.Size;
             maxFlyAltitude = Position.y + objData.Struct.MaxFlyAltitudeFromSpawn;
-
-            //targetPoint = new GameObject("TargetPoint"); //for debug
         }
 
         #endregion
@@ -77,7 +55,11 @@ namespace BeastHunter
             {
                 if (Position != TargetPoint)
                 {
-                    if (MaxAltitudeReached() && TargetPoint.y > Position.y) ChangeTarget("Y");
+                    if (MaxAltitudeReached() && TargetPoint.y > Position.y)
+                    {
+                        Debug.Log(this + " maxFlyAltitude has reached");
+                        ChangeTarget("Y"); 
+                    }
                     TurnToTarget();
                     MoveToTarget();
                 }
@@ -88,8 +70,10 @@ namespace BeastHunter
             }
         }
 
-        public void OnTriggerEnter(ITrigger trigger, Collider collider)
+        public void OnTriggerEnter(Collider collider)
         {
+            Debug.Log(this + " OnTriggerEnter(Collider collider)");
+
             if (collider.gameObject.tag == TagManager.GROUND)
             {
                 ChangeTarget("Y");
@@ -99,6 +83,8 @@ namespace BeastHunter
 
         private void SitDown()
         {
+            Debug.Log(this + " SitDown()");
+
             isSitting = true;
             sittingTimer = Random.Range(1.5f, 4f);
 
@@ -108,10 +94,7 @@ namespace BeastHunter
         private void ChangeTarget(string axis = null)
         {
             if (axis == null) TargetPoint = objData.NewTargetPoint(Position);
-            else TargetPoint = objData.NewTargetPointInOppositeDirection(Position, Direction, axis);
-
-            //targetPoint.transform.position = TargetPoint; //for debug
-            //Debug.Log(this + " new TargetPoint " + TargetPoint);
+            else TargetPoint = objData.NewTargetPointInOppositeDirection(Position, TargetPoint - objTransform.position, axis);
         }
 
         private void TurnToTarget()
@@ -126,11 +109,6 @@ namespace BeastHunter
 
         private bool MaxAltitudeReached()
         {
-            //if (Position.y >= maxFlyAltitude) //for debug
-            //{
-            //    Debug.Log(this + " MaxAltitudeReached(): " + maxFlyAltitude);
-            //    Debug.Log(this + " current position " + Position);
-            //}
             return Position.y >= maxFlyAltitude;
         }
 
