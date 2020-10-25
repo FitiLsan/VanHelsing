@@ -13,7 +13,7 @@ public class ButterflyData : ScriptableObject
     #endregion
 
 
-    #region Metods
+    #region Methods
 
     /// <summary>Return random coordinates within MaxDistanceFromCurrentPosition</summary>
     public Vector3 NewTargetPoint(Vector3 currentPosition)
