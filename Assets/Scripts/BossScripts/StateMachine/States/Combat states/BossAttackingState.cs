@@ -53,6 +53,7 @@ namespace BeastHunter
         {
             CanExit = false;
             CanBeOverriden = true;
+            IsBattleState = true;
             
             _stateMachine._model.BossNavAgent.SetDestination(_stateMachine._model.BossTransform.position);
             _stateMachine._model.BossNavAgent.speed = 0f;

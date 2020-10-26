@@ -10,7 +10,7 @@ namespace BeastHunter
 
         private const float EATING_TIME = 5f;
         private const float DISTANCE_TO_START_EATING = 1.5f;
-        private const float FOOD_POINT = 150f;
+        private const float FOOD_POINT = 50f;
 
         #endregion
 
@@ -40,6 +40,7 @@ namespace BeastHunter
         {
             CanExit = true;
             CanBeOverriden = true;
+            IsBattleState = false;
         }
 
         public override void Initialise()
@@ -92,12 +93,13 @@ namespace BeastHunter
             if (_canEat)
             {
                 Debug.Log("Eating");
-                // _stateMachine._model.BossAnimator.Play("Eating");
+                _stateMachine._model.BossAnimator.Play("EatingState");
                 _eatingCountTime -= Time.deltaTime;
                 if(_eatingCountTime <= 0)
                 {
                     _eatingCountTime = EATING_TIME;
                     _stateMachine._model.FoodList[0].SetActive(false);
+                    _stateMachine._model.FoodList.RemoveAt(0);
                     _stateMachine._model.CurrentStamina += FOOD_POINT;
                     _stateMachine.SetCurrentState(BossStatesEnum.Idle);
                 }

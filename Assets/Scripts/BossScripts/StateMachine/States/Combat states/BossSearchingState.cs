@@ -15,6 +15,7 @@ namespace BeastHunter
         #region Fields
 
         private float _searchingTime;
+        private bool _isSearching;
 
         #endregion
 
@@ -32,6 +33,7 @@ namespace BeastHunter
 
         public override void OnAwake()
         {
+            IsBattleState = true;
         }
 
         public override void Initialise()
@@ -46,7 +48,7 @@ namespace BeastHunter
 
         public override void Execute()
         {
-            CheckSearchingTIme();
+            CheckSearchingTime();
         }
 
         public override void OnExit()
@@ -57,17 +59,24 @@ namespace BeastHunter
         {
         }
 
-        private void CheckSearchingTIme()
+        private void CheckSearchingTime()
         {
             if(_searchingTime > 0)
             {
+                _isSearching = true;
                 _searchingTime -= Time.deltaTime;
 
                 if(_searchingTime <= 0)
                 {
+                    _isSearching = false;
                     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Patroling);
                 }
             }
+        }
+
+        private void Searching()
+        {
+
         }
 
         #endregion

@@ -51,7 +51,6 @@ namespace BeastHunter
             _stateMachine._model.BossBehavior.OnFilterHandler += OnFilterHandler;
             _stateMachine._model.BossBehavior.OnTriggerEnterHandler += OnTriggerEnterHandler;
             _stateMachine._model.BossBehavior.OnTriggerExitHandler += OnTriggerExitHandler;
-
             MessageBroker.Default.Receive<OnPlayerDieEventCLass>().Subscribe(OnPlayerDieHandler);
             MessageBroker.Default.Receive<OnBossStunnedEventClass>().Subscribe(OnBossStunnedHandler);
             MessageBroker.Default.Receive<OnBossHittedEventClass>().Subscribe(OnBossHittedHandler);
@@ -163,7 +162,7 @@ namespace BeastHunter
 
         private void StaminaCheck()
         {
-            if (_stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina)
+            if (_stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina & !_stateMachine.CurrentState.IsBattleState)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Resting);
             }
@@ -199,7 +198,7 @@ namespace BeastHunter
                 {
                     _stateMachine._model.FoodList.Add(enteredObject.gameObject);
                 }
-                if (_isHunger)
+                if (_isHunger & !_stateMachine.CurrentState.IsBattleState)
                 {
                     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Eating);
                 }
@@ -216,6 +215,10 @@ namespace BeastHunter
                 {
                     _stateMachine._model.FoodList.Remove(enteredObject.gameObject);
                 }
+            }
+            if (interactableObject == InteractableObjectType.Player)
+            {
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
             }
         }
 

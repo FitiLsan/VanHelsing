@@ -34,7 +34,9 @@ namespace BeastHunter
 
         public override void OnAwake()
         {
-
+            CanExit = true;
+            CanBeOverriden = true;
+            IsBattleState = false;
         }
 
         public override void Initialise()
@@ -51,6 +53,7 @@ namespace BeastHunter
                 CheckTarget();
             }
             CheckDistance();
+            Resting();
         }
 
         public override void OnExit()
@@ -83,7 +86,7 @@ namespace BeastHunter
         private void CheckDistance()
         {
             if (Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target)
-                .sqrMagnitude) <= DISTANCE_TO_START_RESTING)
+                .sqrMagnitude) <= DISTANCE_TO_START_RESTING & _stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina)
             {
                 _canRest = true;
             }
@@ -98,14 +101,15 @@ namespace BeastHunter
         {
             if (_canRest)
             {
-                Debug.Log("Eating");
-                // _stateMachine._model.BossAnimator.Play("Resting");
+                Debug.Log("Resting");
+                _stateMachine._model.BossAnimator.Play("RestingState");
                 _restingCountTime -= Time.deltaTime;
                 if (_restingCountTime <= 0)
                 {
+                    _canRest = false;
                     _restingCountTime = RESTING_TIME;
-                    _stateMachine._model.CurrentStamina= 0;
-                    _stateMachine.SetCurrentState(BossStatesEnum.Idle);
+                    _stateMachine._model.CurrentStamina = 0;
+                    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
                 }
             }
         }

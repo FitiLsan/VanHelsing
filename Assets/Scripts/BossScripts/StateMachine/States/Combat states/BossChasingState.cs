@@ -33,6 +33,7 @@ namespace BeastHunter
 
         public override void OnAwake()
         {
+            IsBattleState = true;
         }
 
         public override void Initialise()
