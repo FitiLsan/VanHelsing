@@ -9,26 +9,15 @@ namespace BeastHunter
         private ButterflyData objData;
         public Transform ObjTransform;
 
-        public float SittingTimer = 0.00f;
-        public bool IsSitting = false;
-
-        public bool IsCircling = false;
-        public Vector3 CirclePoint;
-        public int RotateAroundDirection;
-
         public Vector3 TargetPoint;
         public readonly float MaxFlyAltitude;
 
-        #endregion
+        public Vector3 CirclePoint;
+        public int RotateAroundDirection;
+        public bool IsCircling = false;
 
-
-        #region Properties
-
-        public Vector3 Position
-        {
-            get => ObjTransform.position;
-            set => ObjTransform.position = value;
-        }
+        public float SittingTimer = 0.00f;
+        public bool IsSitting = false;
 
         #endregion
 
@@ -40,7 +29,7 @@ namespace BeastHunter
             objData = butterflyData;
             ObjTransform = butterflyObject.transform;
             ObjTransform.localScale *= objData.Struct.Size;
-            MaxFlyAltitude = Position.y + objData.Struct.MaxFlyAltitudeFromSpawn;
+            MaxFlyAltitude = ObjTransform.position.y + objData.Struct.MaxFlyAltitudeFromSpawn;
         }
 
         #endregion

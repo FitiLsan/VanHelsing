@@ -28,6 +28,18 @@ public struct ButterflyStruct
     [Tooltip("Default: 5")]
     public float MaxFlyAltitudeFromSpawn;
 
+    /// <summary>butterfly fly speed during a circular motion</summary>
+    [Tooltip("Default: 6")]
+    public float CircularRotationSpeed;
+
+    /// <summary>Minimum circle size that the butterfly will fly</summary>
+    [Tooltip("Default: 1")]
+    public float MinCircleSize;
+
+    /// <summary>Maximum circle size that the butterfly will fly</summary>
+    [Tooltip("Default: 3")]
+    public float MaxCircleSize;
+
     #endregion
 }
 
