@@ -18,7 +18,6 @@ namespace BeastHunter
 
         public List<Transform> DangerousObjects;
         public Vector3 NextCoord;
-        public ButterflyData.BehaviourState ButterflyState;
 
         #endregion
 
@@ -47,22 +46,13 @@ namespace BeastHunter
                 ButterflyStartPosition = prefab.transform.position;
 
                 CurrentHealth = butterflyData.ButterflyStruct.MaxHealth;
-                IsDead = butterflyData.ButterflyStruct.IsDead;
 
                 DangerousObjects = new List<Transform>();
-                NextCoord = butterflyData.RandomNextCoord(ButterflyTransform, ButterflyStartPosition, DangerousObjects);
-                if (butterflyData.ButterflyStruct.CanIdle)
-                {
-                    ButterflyState = ButterflyData.BehaviourState.Idling;
-                }
-                else
-                {
-                    ButterflyState = ButterflyData.BehaviourState.Roaming;
-                }
+                NextCoord = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
             }
             else
             {
-                Debug.LogError("Invalid Rabbit prefab: no Rigidbody");
+                Debug.LogError("Invalid Butterfly prefab: no Rigidbody");
             }
         }
 
@@ -73,10 +63,7 @@ namespace BeastHunter
 
         public void Execute()
         {
-            if (!IsDead)
-            {
-                ButterflyData.Act(this);
-            }
+            ButterflyData.Act(this);
         }
 
         #endregion

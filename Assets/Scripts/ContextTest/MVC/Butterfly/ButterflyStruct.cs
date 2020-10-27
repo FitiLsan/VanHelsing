@@ -29,10 +29,6 @@ namespace BeastHunter
         [Range(0.0f, 180.0f)]
         public float ViewAngle;
 
-        public bool CanIdle;
-
-        public bool IsDead;
-
         public GameObject Prefab;
 
         #endregion
