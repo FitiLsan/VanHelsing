@@ -30,26 +30,65 @@ public class ButterflyData : ScriptableObject
 
     public void Act(ButterflyModel model)
     {
-        if (model.IsSitting)
+        Vector2 forward2D = new Vector2(model.ObjTransform.forward.x, model.ObjTransform.forward.z).normalized;
+        Vector2 right2D = new Vector2(forward2D.y, -forward2D.x);
+
+        Vector2 circlePoint2D = new Vector2(model.CirclePoint.x, model.CirclePoint.z);
+        Vector2 butterflyPosition2D = new Vector2(model.Position.x, model.Position.z);
+
+        Vector3 circlePointDirection = model.CirclePoint - model.Position;
+        Vector2 circlePointDirection2D = circlePoint2D - butterflyPosition2D;
+
+        Vector3 targetDirection = model.TargetPoint - model.Position;
+        Vector2 targetDirection2D = new Vector2(model.TargetPoint.x, model.TargetPoint.z);
+
+        if (model.IsCircling)
         {
-            model.SittingTimer -= Time.deltaTime;
-            if (model.SittingTimer <= 0) model.IsSitting = false;
+            model.ObjTransform.RotateAround(model.CirclePoint, Vector3.up * model.RotateAroundDirection, 8/circlePointDirection2D.magnitude);    //скорость разворота вынести в структуру?
+
+            Vector3 circlePointDirectionRotate = Quaternion.AngleAxis(-90 * model.RotateAroundDirection, Vector3.up) * circlePointDirection;
+            Vector3 newDirection = Vector3.RotateTowards(model.ObjTransform.forward, circlePointDirectionRotate, Struct.TurnSpeed, 0.0f);
+            newDirection.y = -sin60;
+            model.ObjTransform.rotation = Quaternion.LookRotation(newDirection);
+
+            float dot = Vector2.Dot(forward2D, targetDirection2D.normalized);
+            if (dot > 0.99f) model.IsCircling = false;
         }
         else
         {
-            if (model.Position != model.TargetPoint)
+            if (model.IsSitting)
             {
-                if (model.Position.y >= model.MaxFlyAltitude && model.TargetPoint.y > model.Position.y)
+                model.SittingTimer -= Time.deltaTime;
+                if (model.SittingTimer <= 0)
                 {
-                    Debug.Log(this + " maxFlyAltitude has reached");
-                    model.TargetPoint = NewTargetPointInOppositeDirection(model.Position, model.TargetPoint - model.Position, "Y");
+                    model.IsSitting = false;
+                    model.IsCircling = false;
                 }
-                model.Rotation = Turn(model.TargetPoint, model.Position, model.Forward);
-                model.Position = Move(model.TargetPoint, model.Position);
             }
             else
             {
-                model.TargetPoint = NewTargetPoint(model.Position);
+                if (model.Position != model.TargetPoint)
+                {
+                    if (model.Position.y >= model.MaxFlyAltitude && model.TargetPoint.y > model.Position.y)
+                    {
+                        Debug.Log(this + " maxFlyAltitude has reached");
+                        model.TargetPoint = NewTargetPointInOppositeDirection(model.Position, model.TargetPoint - model.Position, "Y");
+                        model.IsCircling = false;
+                    }
+                    model.ObjTransform.rotation = Turn(model.TargetPoint, model.Position, model.ObjTransform.forward);
+                    model.Position = Move(model.TargetPoint, model.Position);
+                }
+                else
+                {
+                    model.TargetPoint = NewTargetPoint(model.Position);
+                    model.CirclePoint = NewCirclePoint(model.Position);
+                    model.IsCircling = true;
+
+                    circlePoint2D = new Vector2(model.CirclePoint.x, model.CirclePoint.z);
+                    circlePointDirection2D = circlePoint2D - butterflyPosition2D;
+                    if (Vector2.Dot(right2D, circlePointDirection2D) > 0) model.RotateAroundDirection = 1;
+                    else model.RotateAroundDirection = -1;
+                }
             }
         }
     }
@@ -118,6 +157,29 @@ public class ButterflyData : ScriptableObject
             else return Random.Range(currentCoord + 0.5f, currentCoord + Struct.MaxDistanceFromCurrentPosition);
         }
         return Random.Range(currentCoord - Struct.MaxDistanceFromCurrentPosition, currentCoord + Struct.MaxDistanceFromCurrentPosition); ;
+    }
+
+    private Vector3 NewCirclePoint(Vector3 currentPosition)
+    {
+        float x = GetRandomCoordForCircle(currentPosition.x);
+        float y = GetRandomCoordForCircle(0);                       //!!для теста
+        float z = GetRandomCoordForCircle(currentPosition.z);
+        return new Vector3(x, y, z);
+    }
+
+    private float GetRandomCoordForCircle(float coord, float? forwardCoord = null)
+    {
+        //float centerDistance = 3;
+        //if (forwardCoord.HasValue && forwardCoord.Value != 0)
+        //{
+        //    if (forwardCoord > 0) return Random.Range(coord - centerDistance, coord - 1);
+        //    else return Random.Range(coord + 1, coord + centerDistance);
+        //}
+
+        int sign = 1;
+        if (Random.Range(1, 100) > 50) sign = -sign;
+        float random = Random.Range(1, 2);
+        return coord + random * sign;
     }
 
     #endregion
