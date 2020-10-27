@@ -92,6 +92,10 @@ namespace BeastHunter
                 butterfly.ButterflyRigidbody.velocity = new Vector3(0, 0, 0);
                 butterfly.ButterflyTransform.position = new Vector3(492, 1, 481);
             }
+            if(butterfly.ButterflyTransform.position.y < 0.4f)
+            {
+                 butterfly.ButterflyRigidbody.AddForce(new Vector3(0, 80, 0));
+            }
         }
 
         
