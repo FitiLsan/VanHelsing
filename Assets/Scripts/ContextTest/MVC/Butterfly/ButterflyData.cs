@@ -7,7 +7,6 @@ public class ButterflyData : ScriptableObject
 {
     #region Fields
 
-    //private readonly float sin60 = Mathf.Sqrt(3) / 2;   //for constant tilt of the butterfly
     public ButterflyStruct Struct;
 
     #endregion
@@ -106,7 +105,6 @@ public class ButterflyData : ScriptableObject
     {
         Vector3 targetDirection = targetPoint - position;
         Vector3 newDirection = Vector3.RotateTowards(forward, targetDirection, Struct.TurnSpeed, 0.0f);
-        //newDirection.y = -sin60;    //keep constant tilt of the butterfly
         newDirection.y = forward.y;
         return Quaternion.LookRotation(newDirection);
     }
@@ -115,7 +113,6 @@ public class ButterflyData : ScriptableObject
     {
         Vector3 circlePointDirectionRotate90 = Quaternion.AngleAxis(-90 * rotateAroundDirection, Vector3.up) * circlePoint.DirectionTo(position);
         Vector3 newDirection = Vector3.RotateTowards(forward, circlePointDirectionRotate90, Struct.TurnSpeed, 0.0f);
-        //newDirection.y = -sin60; //keep constant tilt of the butterfly
         newDirection.y = forward.y;
         return Quaternion.LookRotation(newDirection);
     }
