@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.EntityScripts.Example.Butterfly;
 using UnityEngine;
 
 namespace BeastHunter
@@ -10,6 +11,7 @@ namespace BeastHunter
         #region Fields
 
         public SphereModel SphereModel;
+        public ButterflyModel ButterflyModel;
         public CharacterModel CharacterModel;
         public InputModel InputModel;
         
