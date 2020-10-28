@@ -13,17 +13,7 @@ MonoBehaviour:
   m_Name: ButterflyData
   m_EditorClassIdentifier: 
   ButterflyStruct:
-    Stats:
-      _physicalPower: 0
-      _physicalDamageResistance: 0
-      _stunProbabilityResistance: 0
-    MaxHealth: 10
-    RunningRadius: 10
-    MoveSpeed: 1.81
-    JumpHeight: 2
-    ViewRadius: 3
-    ViewAngle: 101
-    CanIdle: 0
-    IsDead: 0
+    MoveSpeed: 10
+    Edge: {x: 441, y: -10, z: 591}
     Prefab: {fileID: 6917954868609689773, guid: 51073b157933efe4db1adf2e600d384c,
       type: 3}

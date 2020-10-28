@@ -10,14 +10,8 @@ namespace BeastHunter
 
         public float TimeLeft = 1.0f;
         public float TimeElapsed = 0.0f;
-        public float TimeElapsedAfterStateChange = 0.0f;
-        public float TimeElapsedAfterStartFleeing = 0.0f;
 
-        public float CurrentHealth;
-        public bool IsDead;
-
-        public List<Transform> DangerousObjects;
-        public Vector3 NextCoord;
+        public Vector3 Direction;
 
         #endregion
 
@@ -29,6 +23,7 @@ namespace BeastHunter
         public Transform ButterflyTransform { get; }
         public Rigidbody ButterflyRigidbody { get; }
         public Vector3 ButterflyStartPosition { get; }
+        public Vector3 ButterflyEdge { get; }
 
         #endregion
 
@@ -44,11 +39,9 @@ namespace BeastHunter
                 ButterflyTransform = prefab.transform;
                 ButterflyRigidbody = prefab.GetComponent<Rigidbody>();
                 ButterflyStartPosition = prefab.transform.position;
+                ButterflyEdge = ButterflyData.ButterflyStruct.Edge;
 
-                CurrentHealth = butterflyData.ButterflyStruct.MaxHealth;
-
-                DangerousObjects = new List<Transform>();
-                NextCoord = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
+                Direction = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
             }
             else
             {
@@ -63,7 +56,7 @@ namespace BeastHunter
 
         public void Execute()
         {
-            ButterflyData.Act(this);
+            ButterflyData.Flee(this);
         }
 
         #endregion
