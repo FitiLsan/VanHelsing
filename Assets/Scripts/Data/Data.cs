@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Assets.Scripts.EntityScripts.Example.Butterfly;
 using UnityEngine;
 
 
@@ -10,14 +11,16 @@ namespace BeastHunter {
         [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _rabbitDataPath;
+        [SerializeField] private string _butterflyDataPath;
         [SerializeField] private string _feastPath;
         [SerializeField] private string _jacketPath;
         [SerializeField] private string _cameraDataPath;
-
+        
         private static Data _instance;
         private static SphereData _sphereData;
         private static CharacterData _characterData;
         private static RabbitData _rabbitData;
+        private static ButterflyData _butterflyData;
         private static WeaponItem _feast;
         private static ClothItem _jacket;
         private static CameraData _cameraData;
@@ -65,7 +68,17 @@ namespace BeastHunter {
                 return _rabbitData;
 			}
         }
-
+        public static ButterflyData ButterflyData
+        {
+            get
+            {
+                if (_butterflyData == null)
+                {
+                    _butterflyData = Load<ButterflyData>("Data/" + Instance._butterflyDataPath);
+                }
+                return _butterflyData;
+            }
+        }
         public static WeaponItem Feast {
             get {
                 if (_feast == null) {
