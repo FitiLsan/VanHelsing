@@ -16,7 +16,7 @@ namespace BeastHunter
         public int RotateAroundDirection;
         public bool IsCircling = false;
 
-        public float SittingTimer = 0.00f;
+        public float SittingTimer;
         public bool IsSitting = false;
 
         #endregion

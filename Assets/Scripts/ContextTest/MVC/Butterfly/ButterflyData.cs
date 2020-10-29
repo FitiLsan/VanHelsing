@@ -7,6 +7,10 @@ public class ButterflyData : ScriptableObject
 {
     #region Fields
 
+    private const float SITTING_CHANCE = 75.00f;
+    private const float MIN_SITTING_TIME = 1.5f;
+    private const float MAX_SITTING_TIME = 4.0f;
+
     public ButterflyStruct Struct;
 
     #endregion
@@ -19,11 +23,11 @@ public class ButterflyData : ScriptableObject
         Struct.Size = 0.5f;
         Struct.Speed = 0.1f;
         Struct.TurnSpeed = 0.03f;
-        Struct.MaxFlyAltitudeFromSpawn = 5;
-        Struct.MaxDistanceFromCurrentPosition = 10;
-        Struct.CircularRotationSpeed = 6;
-        Struct.MinCircleSize = 1;
-        Struct.MaxCircleSize = 3;
+        Struct.MaxFlyAltitudeFromSpawn = 5.0f;
+        Struct.MaxDistanceFromCurrentPosition = 10.0f;
+        Struct.CircularRotationSpeed = 6.0f;
+        Struct.MinCircleSize = 1.0f;
+        Struct.MaxCircleSize = 3.0f;
     }
 
     #endregion
@@ -70,7 +74,8 @@ public class ButterflyData : ScriptableObject
                     model.IsCircling = true;
 
                     Vector2 directionToCirclePoint = model.CirclePoint.ToVectorXZ().DirectionTo(transform.position.ToVectorXZ());
-                    if (Vector2.Dot(transform.forward.ToVectorXZ().TurnToRight(), directionToCirclePoint) > 0) model.RotateAroundDirection = 1;
+                    float dot = Vector2.Dot(transform.forward.ToVectorXZ().TurnToRight(), directionToCirclePoint);
+                    if (dot > 0) model.RotateAroundDirection = 1;
                     else model.RotateAroundDirection = -1;
                 }
             }
@@ -84,12 +89,12 @@ public class ButterflyData : ScriptableObject
         if (collider.gameObject.tag == TagManager.GROUND)
         {
             model.TargetPoint = NewTargetPointInOppositeDirection(model.ObjTransform.position, model.TargetPoint - model.ObjTransform.position, "Y");
-            if (Random.Range(1, 100) > 25)
+            if (Random.Range(1, 100) <= SITTING_CHANCE)
             {
                 Debug.Log(this + " is sitting");
 
                 model.IsSitting = true;
-                model.SittingTimer = Random.Range(1.5f, 4f);
+                model.SittingTimer = Random.Range(MIN_SITTING_TIME, MAX_SITTING_TIME);
 
                 Debug.Log(this + " sittingTimer: " + model.SittingTimer);
             }
