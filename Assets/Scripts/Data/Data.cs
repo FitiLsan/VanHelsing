@@ -6,6 +6,7 @@ namespace BeastHunter {
     public sealed class Data : ScriptableObject {
         #region Fields
 
+        [SerializeField] private string _butterflyDataPath;
         [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _startDialogueDataPath;
@@ -14,6 +15,7 @@ namespace BeastHunter {
 
         private static Data _instance;
 
+        private static ButterflyData _butterflyData;
         private static SphereData _sphereData;
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
@@ -33,6 +35,18 @@ namespace BeastHunter {
                 }
 
                 return _instance;
+            }
+        }
+
+        public static ButterflyData ButterflyData
+        {
+            get
+            {
+                if (_butterflyData == null)
+                {
+                    _butterflyData = Load<ButterflyData>("Data/" + Instance._butterflyDataPath);
+                }
+                return _butterflyData;
             }
         }
 
