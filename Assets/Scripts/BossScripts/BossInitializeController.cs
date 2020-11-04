@@ -19,13 +19,13 @@ namespace BeastHunter
         {
             var bossData = Data.BossData;
 
-            Vector3 instantiatePosition = bossData._bossSettings.InstantiatePosition;
+            Vector3 instantiatePosition = bossData.BossSettings.InstantiatePosition;
             Vector3 groundedInstancePosition = GetGroundedPosition(instantiatePosition);
 
-            GameObject instance = GameObject.Instantiate(bossData._bossSettings.Prefab);
+            GameObject instance = GameObject.Instantiate(bossData.BossSettings.Prefab);
             BossModel boss = new BossModel(instance, bossData, groundedInstancePosition, _context);
 
-            _context.NpcModels.Add(instance.GetInstanceID(), boss);
+            _context.EnemyModels.Add(instance.GetInstanceID(), boss);
         }
 
         #endregion
