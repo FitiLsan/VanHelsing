@@ -71,6 +71,9 @@ namespace BeastHunter
             if (_stateMachine._model.Lair != null)
             {
                 _stateMachine._model.BossData.MoveTo(_stateMachine._model.BossNavAgent, _target, _stateMachine._model.BossData._bossSettings.WalkSpeed);
+                //_stateMachine._model.BossCurrentTarget = _stateMachine._model.Lair.transform.position;
+                //_stateMachine.SetCurrentState(BossStatesEnum.Moving);
+                
             }
             else
             {
@@ -85,15 +88,18 @@ namespace BeastHunter
 
         private void CheckDistance()
         {
-            if (Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target)
-                .sqrMagnitude) <= DISTANCE_TO_START_RESTING & _stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina)
+            //if (Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target)
+            //    .sqrMagnitude) <= DISTANCE_TO_START_RESTING & _stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina)
+
+            if (_stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _stateMachine._model.BossTransform.rotation, _target, DISTANCE_TO_START_RESTING, 0) 
+                & _stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina)
             {
                 _canRest = true;
             }
             else
             {
-                MoveToLair();
                 _canRest = false;
+                MoveToLair();
             }
         }
 
@@ -102,7 +108,7 @@ namespace BeastHunter
             if (_canRest)
             {
                 Debug.Log("Resting");
-                _stateMachine._model.BossAnimator.Play("RestingState");
+                _stateMachine._model.BossAnimator.Play("RestingState",0,0);
                 _restingCountTime -= Time.deltaTime;
                 if (_restingCountTime <= 0)
                 {

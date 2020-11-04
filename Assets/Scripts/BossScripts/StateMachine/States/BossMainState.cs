@@ -15,7 +15,7 @@ namespace BeastHunter
         private const float SPEED_COUNT_FRAME = 0.15f;
         private const float TIME_TO_NORMILIZE_WEAK_POINT = 5f;
 
-        private const float HUNGER_TIME = 30f;
+        private const float HUNGER_TIME = 5f;
 
         #endregion
 
@@ -200,7 +200,10 @@ namespace BeastHunter
                 }
                 if (_isHunger & !_stateMachine.CurrentState.IsBattleState)
                 {
-                    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Eating);
+                    if (_stateMachine.CurrentState != _stateMachine.States[BossStatesEnum.Eating])
+                    {
+                        _stateMachine.SetCurrentStateOverride(BossStatesEnum.Eating);
+                    }
                 }
             }
         }

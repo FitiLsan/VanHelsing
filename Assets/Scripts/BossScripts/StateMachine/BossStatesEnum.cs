@@ -8,6 +8,8 @@
         Eating,
         Resting,
 
+        Moving,
+
         Attacking,
         Defencing,
         Chasing,

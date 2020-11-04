@@ -9,8 +9,12 @@ namespace BeastHunter
         #region Constants
 
         private const float EATING_TIME = 5f;
-        private const float DISTANCE_TO_START_EATING = 1.5f;
+        private const float EATING_TAKE_TIME = 4f;
+        private const float DISTANCE_TO_START_EATING = 2.3f;
         private const float FOOD_POINT = 50f;
+        private const float ANGLE_SPEED = 100f;
+        private const float ANGLE_RANGE = 5f;
+
 
         #endregion
 
@@ -19,7 +23,11 @@ namespace BeastHunter
 
         private float _eatingCountTime = EATING_TIME;
         private Vector3 _target;
+        private GameObject _targetFood;
         private bool _canEat;
+        private bool _startEating;
+        private bool _setParent;
+        private Quaternion TargetRotation;
 
         #endregion
 
@@ -28,7 +36,7 @@ namespace BeastHunter
 
         public BossEatingState(BossStateMachine stateMachine) : base(stateMachine)
         {
-
+            
         }
 
         #endregion
@@ -41,6 +49,7 @@ namespace BeastHunter
             CanExit = true;
             CanBeOverriden = true;
             IsBattleState = false;
+            
         }
 
         public override void Initialise()
@@ -49,6 +58,7 @@ namespace BeastHunter
             _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_EATING;
             _stateMachine._model.BossAnimator.Play("MovingState");
             _canEat = false;
+            _target = _stateMachine._model.BossCurrentTarget;
         }
 
         public override void Execute()
@@ -70,21 +80,28 @@ namespace BeastHunter
 
         private void CheckTarget()
         {
-            _target = _stateMachine._model.FoodList[0].transform.position;
+            if(!_startEating)
+            {
+                _targetFood = _stateMachine._model.FoodList[0];
+                _stateMachine._model.BossCurrentTarget = _targetFood.transform.position;
+            }
         }
 
 
         private void CheckDistance()
         {
-            if (Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target)
-                .sqrMagnitude) <= DISTANCE_TO_START_EATING)
+            if (!_startEating)
             {
-                _canEat = true;
-            }
-            else
-            {
-                MoveToFood();
-                _canEat = false;
+                if (_stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _stateMachine._model.BossTransform.rotation, _target, DISTANCE_TO_START_EATING, ANGLE_RANGE))
+                {
+                    _canEat = true;
+                }
+                else
+                {
+                    _canEat = false;
+                    _stateMachine.SetCurrentState(BossStatesEnum.Moving);
+
+                }
             }
         }
 
@@ -93,22 +110,31 @@ namespace BeastHunter
             if (_canEat)
             {
                 Debug.Log("Eating");
+                _startEating = true;
                 _stateMachine._model.BossAnimator.Play("EatingState");
                 _eatingCountTime -= Time.deltaTime;
+
+                if(_eatingCountTime<= EATING_TAKE_TIME)
+                {
+                    if (!_setParent)
+                    {
+                        _targetFood.transform.SetParent(_stateMachine._model.RightHand);
+                        _setParent = true;
+                    }
+
+                }
                 if(_eatingCountTime <= 0)
                 {
                     _eatingCountTime = EATING_TIME;
-                    _stateMachine._model.FoodList[0].SetActive(false);
-                    _stateMachine._model.FoodList.RemoveAt(0);
+                    _targetFood.SetActive(false);
+                    _stateMachine._model.FoodList.Remove(_targetFood);
                     _stateMachine._model.CurrentStamina += FOOD_POINT;
+                    _startEating = false;
+                    _setParent = false;
                     _stateMachine.SetCurrentState(BossStatesEnum.Idle);
+                    
                 }
             }
-        }
-
-        private void MoveToFood()
-        {
-            _stateMachine._model.BossData.MoveTo(_stateMachine._model.BossNavAgent, _target, _stateMachine._model.BossData._bossSettings.WalkSpeed);
         }
 
         #endregion

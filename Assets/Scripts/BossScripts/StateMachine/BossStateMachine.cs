@@ -18,6 +18,9 @@ namespace BeastHunter
 
         public Dictionary<BossStatesEnum, BossBaseState> States { get; }
         public BossBaseState CurrentState { get; private set; }
+        public BossBaseState LastState { get; private set; }
+        public BossStatesEnum LastStateType { get; private set; }
+        public BossStatesEnum CurrentStateType { get; private set; }
 
         public Action OnStateChange { get; private set; }
         public Action OnAfterStateChange { get; private set; }
@@ -41,7 +44,7 @@ namespace BeastHunter
             States.Add(BossStatesEnum.Patroling, new BossPatrolingState(this));
             States.Add(BossStatesEnum.Eating, new BossEatingState(this));
             States.Add(BossStatesEnum.Resting, new BossRestingState(this));
-
+            States.Add(BossStatesEnum.Moving, new BossMovingState(this));
 
             States.Add(BossStatesEnum.Attacking, new BossAttackingState(this));
             States.Add(BossStatesEnum.Defencing, new BossDefencingState(this));
@@ -102,6 +105,7 @@ namespace BeastHunter
             if (States.ContainsKey(name))
             {
                 CurrentState = States[name];
+                CurrentStateType = name;
                 CurrentState.Initialise();
                 OnAfterStateChange?.Invoke();
             }
@@ -113,6 +117,9 @@ namespace BeastHunter
             {
                 OnStateChange?.Invoke();
                 CurrentState.OnExit();
+                LastState = CurrentState;
+                LastStateType = CurrentStateType;
+                CurrentStateType = name;
                 CurrentState = States[name];
                 CurrentState.Initialise();
                 OnAfterStateChange?.Invoke();
@@ -125,6 +132,9 @@ namespace BeastHunter
             {
                 OnStateChange?.Invoke();
                 CurrentState.OnExit();
+                LastState = CurrentState;
+                LastStateType = CurrentStateType;
+                CurrentStateType = name;
                 CurrentState = States[name];
                 CurrentState.Initialise();
                 OnAfterStateChange?.Invoke();
@@ -137,6 +147,9 @@ namespace BeastHunter
             {
                 OnStateChange?.Invoke();
                 CurrentState.OnExit();
+                LastState = CurrentState;
+                LastStateType = CurrentStateType;
+                CurrentStateType = name;
                 CurrentState = States[name];
                 CurrentState.Initialise();
                 OnAfterStateChange?.Invoke();
