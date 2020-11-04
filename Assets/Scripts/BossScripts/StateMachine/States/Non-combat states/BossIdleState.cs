@@ -9,6 +9,7 @@ namespace BeastHunter
 
         private const float MINIMAL_IDLE_TIME = 5f;
         private const float MAXIMAL_IDLE_TIME = 10f;
+        private const float PROBABILITY_TO_CHECK_HUNGER = 0.9f;
 
         #endregion
 
@@ -16,6 +17,7 @@ namespace BeastHunter
         #region Fields
 
         private float _timeToIdle;
+        private bool _isHunger;
 
         #endregion
 
@@ -44,6 +46,7 @@ namespace BeastHunter
             _timeToIdle = Random.Range(MINIMAL_IDLE_TIME, MAXIMAL_IDLE_TIME);
 
             _stateMachine._model.BossAnimator.Play("IdleState", 0, 0f);
+            _isHunger = _stateMachine._mainState.IsHunger;
         }
 
         public override void Execute()
@@ -65,6 +68,13 @@ namespace BeastHunter
             {
                 _timeToIdle -= Time.deltaTime;
 
+                if(_timeToIdle <= 2f)
+                {
+                    if (Random.Range(0f, 1f) < PROBABILITY_TO_CHECK_HUNGER)
+                    {
+                        HungerCheck();
+                    }
+                }
                 if(_timeToIdle <= 0)
                 {
                     _stateMachine.SetCurrentState(BossStatesEnum.Patroling);
@@ -72,6 +82,26 @@ namespace BeastHunter
             }
         }
 
+        private void HungerCheck()
+        {
+            if (_isHunger & !_stateMachine.CurrentState.IsBattleState)
+            {
+                if (_stateMachine.CurrentState != _stateMachine.States[BossStatesEnum.Eating])
+                {
+                    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Eating);
+                }
+            }
+        }
+
+        private void StaminaCheck()
+        {
+
+        }
+
+        private void RandomCheck()
+        {
+            
+        }
         #endregion
     }
 }

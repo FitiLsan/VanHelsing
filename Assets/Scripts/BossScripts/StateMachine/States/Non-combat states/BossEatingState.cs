@@ -82,8 +82,15 @@ namespace BeastHunter
         {
             if(!_startEating)
             {
-                _targetFood = _stateMachine._model.FoodList[0];
-                _stateMachine._model.BossCurrentTarget = _targetFood.transform.position;
+                if (_stateMachine._model.FoodList.Count != 0)
+                {
+                    _targetFood = _stateMachine._model.FoodList[0];
+                    _stateMachine._model.BossCurrentTarget = _targetFood.transform.position;
+                }
+                else
+                {
+                    _stateMachine.SetCurrentState(_stateMachine.LastStateType);
+                }
             }
         }
 

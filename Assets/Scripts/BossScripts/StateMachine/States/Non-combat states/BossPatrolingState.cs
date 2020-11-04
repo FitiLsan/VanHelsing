@@ -12,8 +12,8 @@ namespace BeastHunter
         private const float MAXIMAL_TARGET_DISTANCE = 10f;
         private const float MAXIMAL_PATH_DISTANCE = 30f;
         private const float MINIMAL_DISTANCE_TO_TARGET = 0.3f;
-        private const float PROBABILITY_TO_CONTINUE_PATROLING = 0.5f;
-        private const float PROBABILITY_TO_START_SEARCHING = 0.5f;
+        private const float PROBABILITY_TO_CONTINUE_PATROLING = 0.1f;
+        private const float PROBABILITY_TO_START_SEARCHING = 0.9f;
         private const float MAXIMAL_DISTANCE_FROM_ANCHOR = 30f;
         private const float STUCK_TIME_COUNT = 5f;
 

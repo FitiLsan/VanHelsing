@@ -30,7 +30,13 @@ namespace BeastHunter
 
         private float _speedCountTime;
         private float _hungerCountTime = HUNGER_TIME;
-        private bool _isHunger;
+      //  private bool IsHunger;
+
+        #endregion
+
+        #region Properties
+
+        public bool IsHunger { get; private set; }
 
         #endregion
 
@@ -149,12 +155,12 @@ namespace BeastHunter
 
         private void HungerCheck()
         {
-            if (!_isHunger)
+            if (!IsHunger)
             {
                 _hungerCountTime -= Time.deltaTime;
                 if(_hungerCountTime<=0)
                 {
-                    _isHunger = true;
+                    IsHunger = true;
                     _hungerCountTime = HUNGER_TIME;
                 }
             }
@@ -198,13 +204,13 @@ namespace BeastHunter
                 {
                     _stateMachine._model.FoodList.Add(enteredObject.gameObject);
                 }
-                if (_isHunger & !_stateMachine.CurrentState.IsBattleState)
-                {
-                    if (_stateMachine.CurrentState != _stateMachine.States[BossStatesEnum.Eating])
-                    {
-                        _stateMachine.SetCurrentStateOverride(BossStatesEnum.Eating);
-                    }
-                }
+                //if (IsHunger & !_stateMachine.CurrentState.IsBattleState)
+                //{
+                //    if (_stateMachine.CurrentState != _stateMachine.States[BossStatesEnum.Eating])
+                //    {
+                //        _stateMachine.SetCurrentStateOverride(BossStatesEnum.Eating);
+                //    }
+                //}
             }
         }
 
