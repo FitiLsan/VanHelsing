@@ -20,12 +20,6 @@ namespace BeastHunter
             Services services = Services.SharedInstance;
             services.Initialize(context);
 
-            var spawnpoints = GameObject.FindGameObjectsWithTag(TagManager.SPAWNPOINT);
-            foreach (var spawn in spawnpoints)
-            {
-                Destroy(spawn);
-            }
-
             _activeController = new GameSystemsController(context);
             _activeController.Initialize();
         }
