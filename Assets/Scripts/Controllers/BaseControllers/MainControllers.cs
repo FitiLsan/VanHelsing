@@ -29,7 +29,7 @@
             Add(new CharacterInitializeController(context));
             Add(new BossInitializeController(context));
             //Add(new GiantMudCrabInitilizeController(context));
-            //Add(new RabbitInitializeController(context));
+            Add(new RabbitInitializeController(context, 2)); //test
             //Add(new DialogueSystemInitializeController(context));
             //Add(new StartDialogueInitializeController(context));
             //Add(new QuestInitializeController(context));

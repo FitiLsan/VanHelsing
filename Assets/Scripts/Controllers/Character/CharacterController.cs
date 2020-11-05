@@ -7,7 +7,7 @@ namespace BeastHunter
     {
         #region Fields
 
-        private readonly GameContext _context;     
+        private readonly GameContext _context;
         private InputModel _inputModel;
         private Services _services;
 
@@ -42,7 +42,7 @@ namespace BeastHunter
 
             _stateMachine = new CharacterStateMachine(_context, _animationController);
             _stateMachine.OnAwake();
-            _stateMachine.SetStartState(_stateMachine.CharacterStates[CharacterStatesEnum.Idle]);          
+            _stateMachine.SetStartState(_stateMachine.CharacterStates[CharacterStatesEnum.Idle]);
         }
 
         #endregion
@@ -55,7 +55,7 @@ namespace BeastHunter
             if (!_characterModel.IsDead)
             {
                 _stateMachine.Execute();
-            } 
+            }
         }
 
         #endregion
@@ -71,4 +71,3 @@ namespace BeastHunter
         #endregion
     }
 }
-

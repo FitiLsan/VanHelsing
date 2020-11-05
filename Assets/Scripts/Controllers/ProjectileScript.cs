@@ -32,10 +32,10 @@ namespace BeastHunter
                         new OnBossWeakPointHittedEventClass { WeakPointCollider = collision.collider });
                 }
 
-                Context.NpcModels[GetParent(collision.transform).GetInstanceID()].TakeDamage(
+                Context.EnemyModels[GetParent(collision.transform).GetInstanceID()].TakeDamage(
                 Services.SharedInstance.AttackService.CountDamage(
                     ProjectileDamage,
-                        Context.NpcModels[GetParent(collision.transform).GetInstanceID()].GetStats().MainStats));
+                        Context.EnemyModels[GetParent(collision.transform).GetInstanceID()].GetStats().MainStats));
                 Destroy(this.gameObject);
             }
         }

@@ -12,6 +12,7 @@
         public const string ENEMY       = "Enemy";
         public const string HITBOX      = "Hitbox";
         public const string WEAPON      = "Weapon";
+        public const string SPAWNPOINT = "SpawnPoint";
 
         #endregion
     }

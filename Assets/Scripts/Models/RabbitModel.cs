@@ -67,7 +67,7 @@ namespace BeastHunter
         #endregion
 
 
-        #region NpcModel
+        #region EnemyModel
 
         public override void OnAwake()
         {

@@ -1,11 +1,14 @@
-﻿namespace BeastHunter
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace BeastHunter
 {
     public abstract class EnemyModel : IDoSmth, ITakeDamage
     {
         #region Fields
-
+        
         public float CurrentHealth;
-
         public bool IsDead;
 
         #endregion
