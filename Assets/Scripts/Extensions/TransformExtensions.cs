@@ -6,6 +6,16 @@ namespace Extensions
 {
     public static partial class TransformExtensions
     {
+        public static Transform GetMainParent(this Transform obj)
+        {
+            while (obj.parent != null)
+            {
+                obj = obj.parent;
+            }
+
+            return obj;
+        }
+
         public static Transform FindDeep(this Transform obj, string id)
         {
             if (obj.name == id)
