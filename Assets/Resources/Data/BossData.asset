@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BossData
   m_EditorClassIdentifier: 
   _bossSettings:
-    _prefab: {fileID: 1544180832531774, guid: f9f6be802bd0fe3448c68a8b6f205bce, type: 3}
+    _prefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
     _instanceName: Boss
     _leftHandObjectPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
       Spine1/OAK_TEE_ENT_ L Clavicle/OAK_TEE_ENT_ L UpperArm/OAK_TEE_ENT_ L Forearm/OAK_TEE_ENT_
@@ -23,7 +23,7 @@ MonoBehaviour:
       R Hand
     _instanceTag: Enemy
     _instanceLayer: 11
-    _bossAnimator: {fileID: 9100000, guid: c1e5e434f74c52e498297dc81b47b61a, type: 2}
+    _bossAnimator: {fileID: 9100000, guid: 14d982f6bf8adfd409a952a432e6ba01, type: 2}
     _instantiatePosition: {x: 490, y: 24, z: 520}
     _instantiateDirection: -40
     _rigitbodyMass: 1
@@ -43,16 +43,14 @@ MonoBehaviour:
     _groundCheckHeight: 1
     _directionChangeLag: 0.242
     _animatorBaseSpeed: 1
-    _leftHandHitBoxRadius: 0.25
-    _leftHandHitBoxCenter: {x: 0, y: 0, z: 0}
-    _rightHandHitBoxRadius: 0.25
-    _rightHandHitBoxCenter: {x: 0, y: 0, z: 0}
-  BaseStats:
+    _leftHandHitBoxRadius: 1
+    _leftHandHitBoxCenter: {x: -1, y: 0, z: 0}
+    _rightHandHitBoxRadius: 1
+    _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
+  _bossStats:
     MainStats:
       _maxHealth: 100
       _enemyType: 5
-      _viewRadius: 0
-      _viewAngle: 0
       _healthPoints: 100
       _physicalPower: 0.76
       _physicalDamageResistance: 0.818
@@ -62,6 +60,4 @@ MonoBehaviour:
       _baseDefense: 0
     Prefab: {fileID: 0}
   _movementPrefab: {fileID: 3608412240235365698, guid: 780860c28e2fd0e4b83fcab9bb4061b7,
-    SpawnPointName: 
-  BossStats:
-    _idlePattern: 1
+    type: 3}

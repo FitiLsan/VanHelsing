@@ -64,9 +64,7 @@ namespace BeastHunter
             {
                 _timeToIdle -= Time.deltaTime;
 
-                _stateMachine._model.BossData.Act(_stateMachine._model.BossData.BossStats.IdlePattern, _stateMachine._model);
-
-                if (_timeToIdle <= 0)
+                if(_timeToIdle <= 0)
                 {
                     _stateMachine.SetCurrentState(BossStatesEnum.Patroling);
                 }

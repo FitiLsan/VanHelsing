@@ -17,8 +17,6 @@ namespace BeastHunter
         //BehaviorStats (BattleBehavior, NonbattleBehavior)
 
         public GameObject Prefab;
-        public string SpawnPointName;
-        //SpawnClass???
 
         #endregion
     }

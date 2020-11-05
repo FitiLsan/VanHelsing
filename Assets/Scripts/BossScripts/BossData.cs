@@ -10,9 +10,9 @@ namespace BeastHunter
     {
         #region PrivateData
 
-        public BossSettings BossSettings;
-        public EnemyStats BaseStats;
-        public BossStats BossStats;
+        public BossSettings _bossSettings;
+        public EnemyStats _bossStats;
+        public GameObject _movementPrefab;
 
         #endregion
 
@@ -25,22 +25,6 @@ namespace BeastHunter
 
 
         #region Metods
-
-        public void Act(BossIdlePattern idlePattern, BossModel model)
-        {
-            switch (idlePattern)
-            {
-                case BossIdlePattern.MoveForward: MoveForward(model.BossTransform, 5f);
-                    break;
-                case BossIdlePattern.Rotate: Rotate(model.BossTransform, 5f);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        //public void Act(BossBehaviorType, BossModel) ----- общий enum со всеми стейтами - нет ограничений и в Idle можно будет запихнуть атаку
-
 
         public void MoveForward(Transform prefabTransform, float moveSpeed)
         {
@@ -61,11 +45,6 @@ namespace BeastHunter
                 agent.SetDestination(pointTo);
                 agent.speed = speed;
             }
-        }
-
-        private void Rotate(Transform prefabTransform, float rotateSpeed)
-        {
-            prefabTransform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
         }
 
         #endregion

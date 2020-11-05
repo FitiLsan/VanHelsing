@@ -17,8 +17,7 @@ namespace BeastHunter
 
         public WeaponHitBoxBehavior LeftWeaponBehavior { get; set; }
         public WeaponHitBoxBehavior RightWeaponBehavior { get; set; }
-        public WeaponItem LeftHandWeapon { get; set; }
-        public WeaponItem RightHandWeapon { get; set; }
+        public WeaponData WeaponData { get; set; }
 
         public WeakPointData FirstWeakPointData { get; set; }
         public WeakPointData SecondWeakPointData { get; set; }
@@ -59,8 +58,8 @@ namespace BeastHunter
         public BossModel(GameObject prefab, BossData bossData, Vector3 groundPosition, GameContext context)
         {
             BossData = bossData;
-            BossSettings = BossData.BossSettings;
-            BossStats = BossData.BaseStats;
+            BossSettings = BossData._bossSettings;
+            BossStats = BossData._bossStats;
             BossTransform = prefab.transform;
             BossTransform.rotation = Quaternion.Euler(0, BossSettings.InstantiateDirection, 0);
             BossTransform.name = BossSettings.InstanceName;
@@ -87,7 +86,7 @@ namespace BeastHunter
                 BossRigitbody.angularDrag = BossSettings.RigitbodyAngularDrag;
             }
 
-            BossRigitbody.isKinematic = BossData.BossSettings.IsRigitbodyKinematic;
+            BossRigitbody.isKinematic = BossData._bossSettings.IsRigitbodyKinematic;
 
             if (prefab.GetComponent<CapsuleCollider>() != null)
             {
@@ -158,10 +157,10 @@ namespace BeastHunter
             IsPlayerNear = false;
 
             CurrentSpeed = 0f;
-            AnimationSpeed = BossData.BossSettings.AnimatorBaseSpeed;
+            AnimationSpeed = BossData._bossSettings.AnimatorBaseSpeed;
 
-            LeftHand = BossAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
-            RightHand = BossAnimator.GetBoneTransform(HumanBodyBones.RightHand);
+            LeftHand = BossTransform.Find(BossSettings.LeftHandObjectPath);
+            RightHand = BossTransform.Find(BossSettings.RightHandObjectPath);
 
             AnchorPosition = BossTransform.position;
 
@@ -174,22 +173,24 @@ namespace BeastHunter
                 BossNavAgent = prefab.AddComponent<NavMeshAgent>();
             }
 
-            LeftHandWeapon = Data.BossFeast;
-            GameObject leftHandWeapon = GameObject.Instantiate(LeftHandWeapon.WeaponPrefab, LeftHand);
+            WeaponData = Data.BossFeasts;
+
+            GameObject leftHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
+                LeftActualWeapon.WeaponPrefab, LeftHand);
             SphereCollider LeftHandTrigger = leftHandWeapon.GetComponent<SphereCollider>();
-            LeftHandTrigger.radius = BossData.BossSettings.LeftHandHitBoxRadius;
-            LeftHandTrigger.center = BossData.BossSettings.LeftHandHitBoxCenter;
+            LeftHandTrigger.radius = BossData._bossSettings.LeftHandHitBoxRadius;
+            LeftHandTrigger.center = BossData._bossSettings.LeftHandHitBoxCenter;
             LeftHandTrigger.isTrigger = true;
             LeftHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             LeftWeaponBehavior = leftHandWeapon.GetComponent<WeaponHitBoxBehavior>();
             LeftWeaponBehavior.SetType(InteractableObjectType.HitBox);
             LeftWeaponBehavior.IsInteractable = false;
 
-            RightHandWeapon = Data.BossFeast;
-            GameObject rightHandWeapon = GameObject.Instantiate(RightHandWeapon.WeaponPrefab, RightHand);
+            GameObject rightHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
+                RightActualWeapon.WeaponPrefab, RightHand);
             SphereCollider RightHandTrigger = rightHandWeapon.GetComponent<SphereCollider>();
-            RightHandTrigger.radius = BossData.BossSettings.RightHandHitBoxRadius;
-            RightHandTrigger.center = BossData.BossSettings.RightHandHitBoxCenter;
+            RightHandTrigger.radius = BossData._bossSettings.RightHandHitBoxRadius;
+            RightHandTrigger.center = BossData._bossSettings.RightHandHitBoxCenter;
             RightHandTrigger.isTrigger = true;
             RightHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             RightWeaponBehavior = rightHandWeapon.GetComponent<WeaponHitBoxBehavior>();
@@ -246,18 +247,22 @@ namespace BeastHunter
 
         public override EnemyStats GetStats()
         {
-            return BossData.BaseStats;
+            return BossStats;
         }
 
         public override void TakeDamage(Damage damage)
         {
             CurrentHealth = CurrentHealth < damage.PhysicalDamage ? 0 : CurrentHealth - damage.PhysicalDamage;
 
-            Debug.Log("Boss has: " + CurrentHealth + " of HP");
+            Debug.Log("Boss recieved: " + damage.PhysicalDamage + " of damage and has: " + CurrentHealth + " of HP");
 
-            if (damage.StunProbability > BossData.BaseStats.MainStats.StunResistance)
+            if (damage.StunProbability > BossData._bossStats.MainStats.StunResistance)
             {
-                GlobalEventsModel.OnBossStunned?.Invoke();
+                MessageBroker.Default.Publish(new OnBossStunnedEventClass());
+            }
+            else
+            {
+                MessageBroker.Default.Publish(new OnBossHittedEventClass());
             }
         }
 

@@ -39,7 +39,7 @@ namespace BeastHunter
         {
             CanExit = false;
             CanBeOverriden = true;    
-            _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData.BossSettings.RunSpeed;
+            _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.RunSpeed;
             _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK;
             _stateMachine._model.BossSphereCollider.radius += TRIGGER_VIEW_INCREASE;
             _stateMachine._model.BossAnimator.Play("MovingState");
