@@ -27,7 +27,7 @@
             //Add<T>(context) where T : NpcInitializeController
 
             Add(new CharacterInitializeController(context));
-            Add(new BossInitializeController(context));
+            //Add(new BossInitializeController(context));
             //Add(new GiantMudCrabInitilizeController(context));
             //Add(new RabbitInitializeController(context));
             //Add(new DialogueSystemInitializeController(context));
