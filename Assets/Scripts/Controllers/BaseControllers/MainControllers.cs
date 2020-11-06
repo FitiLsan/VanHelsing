@@ -33,6 +33,7 @@
             //Add(new DialogueSystemInitializeController(context));
             //Add(new StartDialogueInitializeController(context));
             //Add(new QuestInitializeController(context));
+            Add(new HellHoundInitializeController(context));
         }
 
         private void AddControllers(GameContext context)
