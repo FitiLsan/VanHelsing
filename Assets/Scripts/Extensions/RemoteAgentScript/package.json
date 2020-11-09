@@ -1,0 +1,12 @@
+{
+  "id": "ptTraceViaRemoteServer",
+  "name": "Trace Via Remote Agent",
+  "description": "Uses a remote server to do the traceroute and pulls the results back as if they were generated locally.",
+  "version": "5.0.0.0",
+  "dependencies": { "PingPlotter": "5.0.0.0" },
+  "type": "engine",
+  "main": "remoteagentmain.js",
+  "traits-file": "remoteagent.meta.json",
+  "editor-html": "remoteagent.html",
+  "default-settings": "default_settings.json"
+}
