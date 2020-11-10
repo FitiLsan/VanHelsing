@@ -10,13 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c66b5a7aea9b07418dd89a7d55218da, type: 3}
-  m_Name: NewCloth
+  m_Name: Jacket
   m_EditorClassIdentifier: 
   ItemStruct:
     Name: Jacket
-    Discription: jacket
-    SlotSize: 1
+    Discription: Jacket with four slots! Dreams come true!
+    SlotSize: 2
     ItemType: 3
-  pocketInfos:
+    MeshOfObject: {fileID: 0}
+    Icon: {fileID: 21300000, guid: ed81ab10cb0d82048a81f31e2d70c9be, type: 3}
+  BodyParts: 2
+  MeshView:
+  - {fileID: 4300484, guid: 038320a534bd8b444b43734860d1a211, type: 3}
+  PocketInfos:
+  - SlotEnum: 3
+    ItemTypeInPocket: 0
+    ItemInPocket: {fileID: 11400000, guid: dd57c8a717db79e4a84caa4547428ba3, type: 2}
   - SlotEnum: 2
-    ItemInPocket: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}
+    ItemTypeInPocket: 0
+    ItemInPocket: {fileID: 11400000, guid: dd57c8a717db79e4a84caa4547428ba3, type: 2}
+  - SlotEnum: 0
+    ItemTypeInPocket: 0
+    ItemInPocket: {fileID: 0}
+  - SlotEnum: 1
+    ItemTypeInPocket: 0
+    ItemInPocket: {fileID: 11400000, guid: 20737c7ae1746a5498ef0facaf10a5f6, type: 2}

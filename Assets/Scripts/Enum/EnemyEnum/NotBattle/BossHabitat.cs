@@ -1,0 +1,22 @@
+﻿public enum BossHabitat 
+{
+    None,
+    Plain,
+    Forest,
+    Mountains,
+    Swamp,
+    MountainForest,
+    AbandonedSettlement,
+    Ruins,
+    MeadowByTheRiver,
+    Ashes,
+    Cave,
+    RuinsInCave,
+    Sewerage,
+    CityIndustrialZone,
+    UrbanResidentialArea,
+    СityPrison,
+    Gardens,
+    Fields,
+    Village
+}

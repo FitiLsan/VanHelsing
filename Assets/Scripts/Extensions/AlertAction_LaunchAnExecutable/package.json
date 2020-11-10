@@ -1,0 +1,13 @@
+{
+  "default-settings": "default_settings.json",
+  "dependencies": { "PingPlotter": "5.0.0.0" },
+  "description": "Run a process or launch an executable when an alert condition is met",
+  "editor-html": "launchanexecutable.html",
+  "gui-file": "launchanexecutable.meta.json",
+  "id": "actionLaunchAnExecutable",
+  "main": "launchanexecutable.js",
+  "name": "Launch an Executable",
+  "allowed_in_standard": true,
+  "type": "alertaction",
+  "version": "5.0.0.0"
+}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6618472693509408435}
   - component: {fileID: 7502929037863473527}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CharacterCinemachineTargetCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 183103944933393036}
   - component: {fileID: 6332101687035818265}
   - component: {fileID: 3429306577196274037}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 3
+  m_BindingMode: 1
   m_FollowOffset: {x: 0, y: 2, z: -2}
   m_XDamping: 1
   m_YDamping: 1
