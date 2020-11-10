@@ -48,17 +48,14 @@ namespace BeastHunter
 
         public override void Execute()
         {
-            if (_target != null)
-            {
-                CheckTarget();
-            }
+            CheckTarget();
             CheckDistance();
             Resting();
         }
 
         public override void OnExit()
         {
-
+            
         }
 
         public override void OnTearDown()
@@ -70,10 +67,8 @@ namespace BeastHunter
         {
             if (_stateMachine._model.Lair != null)
             {
-                _stateMachine._model.BossData.MoveTo(_stateMachine._model.BossNavAgent, _target, _stateMachine._model.BossData._bossSettings.WalkSpeed);
-                //_stateMachine._model.BossCurrentTarget = _stateMachine._model.Lair.transform.position;
-                //_stateMachine.SetCurrentState(BossStatesEnum.Moving);
-                
+                _stateMachine._model.BossCurrentTarget = _stateMachine._model.Lair.transform.position;
+                _stateMachine.SetCurrentState(BossStatesEnum.Moving);
             }
             else
             {
@@ -83,14 +78,14 @@ namespace BeastHunter
 
         private void CheckTarget()
         {
-            _target = _stateMachine._model.Lair.transform.position;
+            if (_stateMachine._model.Lair != null)
+            {
+                _target = _stateMachine._model.Lair.transform.position;
+            }
         }
 
         private void CheckDistance()
         {
-            //if (Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target)
-            //    .sqrMagnitude) <= DISTANCE_TO_START_RESTING & _stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina)
-
             if (_stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _stateMachine._model.BossTransform.rotation, _target, DISTANCE_TO_START_RESTING, 0) 
                 & _stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina)
             {
@@ -115,6 +110,7 @@ namespace BeastHunter
                     _canRest = false;
                     _restingCountTime = RESTING_TIME;
                     _stateMachine._model.CurrentStamina = 0;
+                    _stateMachine._model.BossCurrentTarget = Vector3.zero;
                     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
                 }
             }

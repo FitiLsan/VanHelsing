@@ -11,8 +11,8 @@ namespace BeastHunter
         private const float MINIMAL_TARGET_DISTANCE = 5f;
         private const float MAXIMAL_TARGET_DISTANCE = 10f;
         private const float MAXIMAL_PATH_DISTANCE = 30f;
-        private const float MINIMAL_DISTANCE_TO_TARGET = 0.3f;
-        private const float PROBABILITY_TO_CONTINUE_PATROLING = 0.1f;
+        private const float MINIMAL_DISTANCE_TO_TARGET = 0.7f;
+        private const float PROBABILITY_TO_CONTINUE_PATROLING = 0.2f;
         private const float PROBABILITY_TO_START_SEARCHING = 0.9f;
         private const float MAXIMAL_DISTANCE_FROM_ANCHOR = 30f;
         private const float STUCK_TIME_COUNT = 5f;
@@ -59,6 +59,7 @@ namespace BeastHunter
             _isTargetSet = false;
             _stuckTIme = STUCK_TIME_COUNT;
             _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
+            _stateMachine._model.BossNavAgent.stoppingDistance = 0.2f;
             _stateMachine._model.BossAnimator.Play("MovingState");           
         }
 
@@ -133,8 +134,9 @@ namespace BeastHunter
 
         private void CheckIfNearTarget()
         {
-            if (_isTargetSet &&  Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target)
-                .sqrMagnitude) <= MINIMAL_DISTANCE_TO_TARGET)              
+          //  Debug.Log($"sqrMang {Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target).sqrMagnitude)}");
+
+            if (_isTargetSet &&  Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target).sqrMagnitude) <= MINIMAL_DISTANCE_TO_TARGET)              
             {
                 if (Random.Range(0f, 1f) > PROBABILITY_TO_CONTINUE_PATROLING)
                 {

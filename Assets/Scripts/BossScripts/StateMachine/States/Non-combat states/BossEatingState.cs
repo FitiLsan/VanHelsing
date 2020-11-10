@@ -58,6 +58,7 @@ namespace BeastHunter
             _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_EATING;
             _stateMachine._model.BossAnimator.Play("MovingState");
             _canEat = false;
+            _startEating = false;
             _target = _stateMachine._model.BossCurrentTarget;
         }
 
@@ -138,6 +139,7 @@ namespace BeastHunter
                     _stateMachine._model.CurrentStamina += FOOD_POINT;
                     _startEating = false;
                     _setParent = false;
+                    _stateMachine._model.BossCurrentTarget = Vector3.zero;
                     _stateMachine.SetCurrentState(BossStatesEnum.Idle);
                     
                 }

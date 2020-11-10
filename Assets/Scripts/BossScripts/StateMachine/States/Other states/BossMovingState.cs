@@ -47,7 +47,7 @@ namespace BeastHunter
 
         public override void Execute()
         {
-            if (!CheckDistance())
+            if (!CheckDistance() & _target!= Vector3.zero)
             {
                 MoveTo();
                 RotateTo();
@@ -70,9 +70,9 @@ namespace BeastHunter
         private bool CheckDistance()
         {
             var isNear = _stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _stateMachine._model.BossTransform.rotation, _target, DISTANCE_TO_START_EATING, ANGLE_RANGE);
-                return isNear;
-
+            return isNear;
         }
+
         private void MoveTo()
         {
             _stateMachine._model.BossData.MoveTo(_stateMachine._model.BossNavAgent, _target, _stateMachine._model.BossData._bossSettings.WalkSpeed);

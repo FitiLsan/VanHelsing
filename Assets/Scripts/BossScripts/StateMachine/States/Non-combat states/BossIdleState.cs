@@ -7,9 +7,10 @@ namespace BeastHunter
     {
         #region Constants
 
-        private const float MINIMAL_IDLE_TIME = 5f;
-        private const float MAXIMAL_IDLE_TIME = 10f;
-        private const float PROBABILITY_TO_CHECK_HUNGER = 0.9f;
+        private const float MINIMAL_IDLE_TIME = 4f;
+        private const float MAXIMAL_IDLE_TIME = 7f;
+        private const float PROBABILITY_TO_CHECK_HUNGER = 0.7f;
+        private const float PROBABILITY_TO_CHECK_STAMINA = 0.5f;
 
         #endregion
 
@@ -67,18 +68,10 @@ namespace BeastHunter
             if(_timeToIdle > 0)
             {
                 _timeToIdle -= Time.deltaTime;
-
-                if(_timeToIdle <= 2f)
-                {
-                    if (Random.Range(0f, 1f) < PROBABILITY_TO_CHECK_HUNGER)
-                    {
-                        HungerCheck();
-                    }
-                }
-                if(_timeToIdle <= 0)
-                {
-                    _stateMachine.SetCurrentState(BossStatesEnum.Patroling);
-                }
+            }
+            if (_timeToIdle <= 0)
+            {
+                RandomCheck();
             }
         }
 
@@ -95,12 +88,29 @@ namespace BeastHunter
 
         private void StaminaCheck()
         {
-
+            if (_stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina & !_stateMachine.CurrentState.IsBattleState)
+            {
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Resting);
+            }
         }
 
         private void RandomCheck()
         {
-            
+            var randomNum = Random.Range(0f, 1f);
+
+            if (randomNum < PROBABILITY_TO_CHECK_HUNGER)
+            {
+                HungerCheck();
+            }
+            if (randomNum < PROBABILITY_TO_CHECK_STAMINA)
+            {
+                StaminaCheck();
+            }
+            else
+            {
+                _stateMachine.SetCurrentState(BossStatesEnum.Patroling);
+            }
+
         }
         #endregion
     }

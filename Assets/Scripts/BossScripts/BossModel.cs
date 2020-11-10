@@ -249,6 +249,7 @@ namespace BeastHunter
 
             Debug.Log("Boss recieved: " + damage.PhysicalDamage + " of damage and has: " + CurrentHealth + " of HP");
 
+            
             if (damage.StunProbability > BossData._bossStats.MainStats.StunResistance)
             {
                 MessageBroker.Default.Publish(new OnBossStunnedEventClass());
@@ -257,11 +258,40 @@ namespace BeastHunter
             {
                 MessageBroker.Default.Publish(new OnBossHittedEventClass());
             }
+            DamageCheck(damage.PhysicalDamage);
+            HealthCheck();
         }
 
         public override void OnTearDown()
         {
             BossStateMachine.OnTearDown();
+        }
+
+        public void HealthCheck()
+        {
+            if (CurrentHealth <= 0)
+            {
+                BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Dead);
+            }
+
+            if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.HealthPoints / 2)
+            {
+                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+            }
+
+            if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.HealthPoints * 0.1f)
+            {
+                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
+            }
+        }
+
+        public void DamageCheck(float damage)
+        {
+            if(damage >= BossData._bossStats.MainStats.HealthPoints * 0.18f)
+            {
+                //currentState.15%Damage();
+                Debug.Log("Hit 18% hp");
+            }
         }
 
         #endregion

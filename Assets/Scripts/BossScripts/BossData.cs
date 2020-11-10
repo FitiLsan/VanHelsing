@@ -53,10 +53,10 @@ namespace BeastHunter
 
         public bool CheckIsNearTarget(Vector3 prefabPosition, Quaternion prefabRotation, Vector3 targetPosition, float distanceRange, float angleRange)
         {
-            GetTargetRotation(prefabPosition, targetPosition);
-            var isNear = Mathf.Sqrt((prefabPosition - targetPosition).sqrMagnitude) <= distanceRange &
-                Quaternion.Angle(prefabRotation, _targetRotation) <= angleRange;
-            var isNearQ = Quaternion.Angle(prefabRotation, _targetRotation);
+          //  GetTargetRotation(prefabPosition, targetPosition);
+            var isNear = Mathf.Sqrt((prefabPosition - targetPosition).sqrMagnitude) <= distanceRange;
+            //    & Quaternion.Angle(prefabRotation, _targetRotation) <= angleRange;
+            //var isNearQ = Quaternion.Angle(prefabRotation, _targetRotation);
             return isNear;
         }
 

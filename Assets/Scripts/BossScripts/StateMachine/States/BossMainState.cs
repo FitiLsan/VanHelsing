@@ -30,7 +30,6 @@ namespace BeastHunter
 
         private float _speedCountTime;
         private float _hungerCountTime = HUNGER_TIME;
-      //  private bool IsHunger;
 
         #endregion
 
@@ -75,10 +74,9 @@ namespace BeastHunter
             if (!_stateMachine._model.IsDead)
             {
                 SpeedCheck();
-                HealthCheck();
+               // HealthCheck();
                 CheckDirection();
                 HungerCheck();
-                StaminaCheck();
             }          
         }
 
@@ -135,24 +133,6 @@ namespace BeastHunter
             _stateMachine._model.BossAnimator.SetFloat("Speed", _stateMachine._model.CurrentSpeed);
         }
 
-        private void HealthCheck()
-        {
-            if (_stateMachine._model.CurrentHealth <= 0)
-            {
-                _stateMachine.SetCurrentStateAnyway(BossStatesEnum.Dead);
-            }
-
-            if (_stateMachine._model.CurrentHealth <= _stateMachine._model.BossData._bossStats.MainStats.HealthPoints / 2)
-            {
-                _stateMachine.SetCurrentState(BossStatesEnum.Defencing);
-            }
-
-            if (_stateMachine._model.CurrentHealth <= _stateMachine._model.BossData._bossStats.MainStats.HealthPoints * 0.1f)
-            {
-                _stateMachine.SetCurrentState(BossStatesEnum.Retreating);
-            }
-        }
-
         private void HungerCheck()
         {
             if (!IsHunger)
@@ -163,14 +143,6 @@ namespace BeastHunter
                     IsHunger = true;
                     _hungerCountTime = HUNGER_TIME;
                 }
-            }
-        }
-
-        private void StaminaCheck()
-        {
-            if (_stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina & !_stateMachine.CurrentState.IsBattleState)
-            {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Resting);
             }
         }
 
@@ -204,13 +176,6 @@ namespace BeastHunter
                 {
                     _stateMachine._model.FoodList.Add(enteredObject.gameObject);
                 }
-                //if (IsHunger & !_stateMachine.CurrentState.IsBattleState)
-                //{
-                //    if (_stateMachine.CurrentState != _stateMachine.States[BossStatesEnum.Eating])
-                //    {
-                //        _stateMachine.SetCurrentStateOverride(BossStatesEnum.Eating);
-                //    }
-                //}
             }
         }
 
