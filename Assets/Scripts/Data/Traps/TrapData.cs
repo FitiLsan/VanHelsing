@@ -14,6 +14,9 @@ namespace BeastHunter
         [SerializeField] private int _trapsAmount;
         [SerializeField] private string _animationName;
 
+        [Range(0f, 90f)]
+        [SerializeField] float _maximalGroundAngle;
+
         #endregion
 
 
@@ -39,6 +42,7 @@ namespace BeastHunter
         }
 
         public string AnimationName => _animationName;
+        public float MaximalGroundAngle => _maximalGroundAngle;
 
         #endregion
 
