@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3909860081026214553}
-  - component: {fileID: 4869074991294437122}
   - component: {fileID: 5115654072044510409}
   - component: {fileID: -7312690295998916915}
   - component: {fileID: 885624236341521358}
+  - component: {fileID: -4754923069991383973}
   m_Layer: 0
   m_Name: HellHound
   m_TagString: Untagged
@@ -36,53 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &4869074991294437122
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253339370346634}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: -5455837217613579153, guid: 270cec60a2822744abbf2f33f7ac8b8f,
-    type: 3}
-  m_Animations:
-  - {fileID: -5455837217613579153, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -4067915852145059450, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -3577979661970795860, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 1448375692920218236, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 9142014970586742068, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 3909276034831448994, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 923535195709240454, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -6904514660645144538, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -3419257869308726280, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 5918091445226010643, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 6200578666267062213, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -8571517225488076867, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -2993534804863918692, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -6345241042640424177, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -4684037610281533016, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -8574063939073756356, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 5905015903970572396, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -4997383098304175712, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 4511472414978093751, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 6068442366802068183, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -453365516311160814, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 3802070710740760561, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 583207339900299489, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 41698531880324673, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 9120422434110953746, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -5579541170660343159, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -3824078280368627652, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -7628142719757760166, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: 8729964734347132831, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -5855120942936977313, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  - {fileID: -4518732250559768632, guid: 270cec60a2822744abbf2f33f7ac8b8f, type: 3}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 1
 --- !u!114 &5115654072044510409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,6 +78,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!95 &-4754923069991383973
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253339370346634}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c438903830edea04cb374158991d3ea7, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &82792148270169069
 GameObject:
   m_ObjectHideFlags: 0
