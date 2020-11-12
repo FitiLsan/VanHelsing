@@ -12,16 +12,16 @@ namespace BeastHunter
         public StartDialogueModel StartDialogueModel;
         public DialogueSystemModel DialogueSystemModel;
         public QuestModel QuestModel;
-        public SphereModel SphereModel;
         public BossModel BossModel;
         public CharacterModel CharacterModel;
         public InputModel InputModel;
         public RabbitModel RabbitModel;
 		public List<QuestIndicatorModel> QuestIndicatorModelList = new List<QuestIndicatorModel>();
         public QuestJournalModel QuestJournalModel;
+
         public Dictionary<int, EnemyModel> NpcModels;
         public Dictionary<int, TrapModel> TrapModels;
-        public Dictionary<int, InteractionObjectModel> InteractionModels;
+        public Dictionary<int, InteractionObjectModel> InteractableObjectModels;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;
@@ -36,9 +36,9 @@ namespace BeastHunter
         {
             _onTriggers = new SortedList<InteractableObjectType, List<IInteractable>>();
             _interactables = new List<IInteractable>();
- 
+
             NpcModels = new Dictionary<int, EnemyModel>();
-            InteractionModels = new Dictionary<int, InteractionObjectModel>();
+            InteractableObjectModels = new Dictionary<int, InteractionObjectModel>();
         }
 
         #endregion

@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public abstract class InteractionObjectInitializeController : IAwake
     {
@@ -18,7 +13,6 @@ namespace BeastHunter
         {
             _context = context;
         }
-
 
         public abstract void OnAwake();
     }

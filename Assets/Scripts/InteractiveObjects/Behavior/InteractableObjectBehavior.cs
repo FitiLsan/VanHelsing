@@ -9,7 +9,6 @@ namespace BeastHunter
         #region Fields
 
         [SerializeField] private InteractableObjectType _type;
-        private Action<int, string> _onDoSmthHandler;
         private Action<int, Damage> _onTakeDamageHandler;
         private Action<int, InteractableObjectBehavior, Damage> _onDealDamageHandler;
 
@@ -18,13 +17,14 @@ namespace BeastHunter
 
         #region Properties
 
+        public InteractableObjectType Type { get => _type; }
+        public GameObject GameObject => gameObject;
+
         public Predicate<Collider> OnFilterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerEnterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerExitHandler { get; set; }
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
-        public GameObject GameObject => gameObject;
-        public InteractableObjectType Type { get => _type; }
-        public BaseStatsClass Stats { get; set; }
+
         public bool IsInteractable { get; set; }
 
         #endregion
@@ -48,43 +48,9 @@ namespace BeastHunter
             }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             DestroyHandler?.Invoke(this, _type);
-        }
-
-        #endregion
-
-
-        #region Methods
-
-        public void SetType(InteractableObjectType type)
-        {
-            _type = type;
-        }
-
-
-        #region DoSmth
-
-        public void SetDoSmthEvent(Action<int, string> action)
-        {
-            if (action != null)
-            {
-                _onDoSmthHandler += action;
-            }
-        }
-
-        public void DoSmthEvent(string how)
-        {
-            _onDoSmthHandler?.Invoke(GameObject.GetInstanceID(), how);
-        }
-
-        public void DeleteDoSmthEvent(Action<int, string> action)
-        {
-            if (action != null)
-            {
-                _onDoSmthHandler -= action;
-            }
         }
 
         #endregion
@@ -138,8 +104,6 @@ namespace BeastHunter
                 _onDealDamageHandler -= action;
             }
         }
-
-        #endregion
 
         #endregion
     }

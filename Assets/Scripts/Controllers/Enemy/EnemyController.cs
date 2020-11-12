@@ -29,7 +29,6 @@
             {
                 var npcBehaviour = trigger as InteractableObjectBehavior;
                 //npcBehaviour.Stats = _context.NpcModels[npcBehaviour.GameObject.GetInstanceID()].GetStats().BaseStats;
-                npcBehaviour.SetDoSmthEvent(DoSmth);
                 npcBehaviour.SetTakeDamageEvent(TakeDamage);
                 npcBehaviour.SetDealDamageEvent(DealDamage);
             }
@@ -64,9 +63,7 @@
 
             foreach (var trigger in npc)
             {
-                var npcBehavior = trigger as InteractableObjectBehavior;
-                
-                npcBehavior.DeleteDoSmthEvent(DoSmth);
+                var npcBehavior = trigger as InteractableObjectBehavior;           
                 npcBehavior.DeleteTakeDamageEvent(TakeDamage);
                 npcBehavior.DeleteDealDamageEvent(DealDamage);
             }
@@ -81,11 +78,6 @@
 
 
         #region Methods
-
-        public void DoSmth(int gameObjectId, string how)
-        {
-            _context.NpcModels[gameObjectId].DoSmth(how + gameObjectId);
-        }
 
         public void TakeDamage(int gameObjectId, Damage damage)
         {

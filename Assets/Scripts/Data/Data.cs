@@ -38,7 +38,6 @@ namespace BeastHunter
         [SerializeField] private string _interactionObjectDataPath;
 
         private static Data _instance;
-        private static SphereData _sphereData;
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
@@ -76,15 +75,6 @@ namespace BeastHunter
                     _instance = Resources.Load<Data> ("Data/" + typeof (Data).Name);
                 }
                 return _instance;
-            }
-        }
-
-        public static SphereData SphereData {
-            get {
-                if (_sphereData == null) {
-                    _sphereData = Resources.Load<SphereData> ("Data/" + Instance._sphereDataPath);
-                }
-                return _sphereData;
             }
         }
 

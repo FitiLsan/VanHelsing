@@ -39,7 +39,6 @@
         {
             Add(new EnemyController(context));
             //Add(new GiantMudCrabController(context));
-            Add(new TargetController(context));
             Add(new InputController(context));
             Add(new TimeRemainingController(context));
             Add(new CharacterController(context));
