@@ -21,6 +21,13 @@ namespace BeastHunter
         #endregion
 
 
+        #region Events
+
+        public event Action OnDead;
+
+        #endregion
+
+
         #region ClassLifeCycle
 
         public HellHoundModel(GameObject gameObject, HellHoundData hellHoundData)
@@ -34,6 +41,14 @@ namespace BeastHunter
 
         #endregion
 
+        #region Methods
+
+        public void Died()
+        {
+            OnDead?.Invoke();
+        }
+
+        #endregion
 
         #region EnemyModel
 

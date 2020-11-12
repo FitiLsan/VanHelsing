@@ -53,6 +53,7 @@ namespace BeastHunter
             if (model.IsDead)
             {
                 Debug.Log("Hell hound is dead");
+                (model as HellHoundModel).Died();
             }
         }
 
