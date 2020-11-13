@@ -137,6 +137,7 @@ namespace BeastHunter
             }
 
             EnemiesInTrigger = new List<Collider>();
+
             ClosestEnemy = null;
             IsGrounded = false;
             IsSneaking = false;

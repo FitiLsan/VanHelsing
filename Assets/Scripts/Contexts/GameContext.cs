@@ -21,7 +21,7 @@ namespace BeastHunter
 
         public Dictionary<int, EnemyModel> NpcModels;
         public Dictionary<int, TrapModel> TrapModels;
-        public Dictionary<int, InteractionObjectModel> InteractableObjectModels;
+        public Dictionary<int, BaseInteractiveObjectModel> InteractableObjectModels;
 
         public event Action<IInteractable> AddObjectHandler = delegate (IInteractable interactable) { };
         private readonly SortedList<InteractableObjectType, List<IInteractable>> _onTriggers;
@@ -38,7 +38,7 @@ namespace BeastHunter
             _interactables = new List<IInteractable>();
 
             NpcModels = new Dictionary<int, EnemyModel>();
-            InteractableObjectModels = new Dictionary<int, InteractionObjectModel>();
+            InteractableObjectModels = new Dictionary<int, BaseInteractiveObjectModel>();
         }
 
         #endregion
