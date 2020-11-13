@@ -19,7 +19,6 @@ namespace BeastHunter
             var hellHoundData = Data.HellHoundData;
             GameObject instance = GameObject.Instantiate(hellHoundData.BaseStats.Prefab);
             HellHoundModel hellHound = new HellHoundModel(instance, hellHoundData);
-            instance.GetComponent<HellHoundBehaviour>().Initialize(hellHound);
             _context.NpcModels.Add(instance.GetInstanceID(), hellHound);
         }
 

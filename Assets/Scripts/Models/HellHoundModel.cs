@@ -10,6 +10,7 @@ namespace BeastHunter
         #region Fields
 
         private HellHoundData hellHoundData;
+        private Animator animator;
 
         #endregion
 
@@ -21,19 +22,13 @@ namespace BeastHunter
         #endregion
 
 
-        #region Events
-
-        public event Action OnDead;
-
-        #endregion
-
-
         #region ClassLifeCycle
 
         public HellHoundModel(GameObject gameObject, HellHoundData hellHoundData)
         {
             this.hellHoundData = hellHoundData;
             HellHound = gameObject;
+            animator = HellHound.GetComponent<Animator>();
 
             CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
             IsDead = false;
@@ -41,14 +36,18 @@ namespace BeastHunter
 
         #endregion
 
+
         #region Methods
 
-        public void Died()
+        public void OnDead()
         {
-            OnDead?.Invoke();
+            animator.SetBool("IsDead", true);
+            HellHound.GetComponent<Rigidbody>().isKinematic = true;
+            HellHound.GetComponent<BoxCollider>().enabled = false;
         }
 
         #endregion
+
 
         #region EnemyModel
 
