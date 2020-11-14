@@ -907,18 +907,12 @@ namespace BeastHunter
 
         private void UseInteractiveObject()
         {
-            Debug.Log("lol");
             foreach (BaseInteractiveObjectModel interactiveObjectModel in _context.InteractableObjectModels.Values)
             {
-                Debug.Log("kek");
                 if (interactiveObjectModel.IsInteractive)
                 {
                     interactiveObjectModel.InteractiveObjectData.Interact(interactiveObjectModel);
-                    Debug.Log("azaza");
                 }
-
-
-
             }
         }
 

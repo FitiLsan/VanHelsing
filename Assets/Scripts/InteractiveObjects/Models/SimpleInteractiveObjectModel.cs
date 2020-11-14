@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Extensions;
 
 
 namespace BeastHunter
@@ -21,19 +22,17 @@ namespace BeastHunter
         {
             Prefab = prefab;
             InteractiveObjectData = data;
-            CanvasObject = Prefab.transform.Find(data.CanvasObjectName);
 
-            if(CanvasObject != null)
+            if(Prefab.transform.TryFind(data.CanvasObjectName, out Transform canvasObject))
             {
+                CanvasObject = canvasObject;
                 CanvasObject.gameObject.SetActive(false);
             }
-            else
+
+            if (Prefab.TryGetComponentInChildren(out InteractableObjectBehavior interactiveObjectBehavior))
             {
-                throw new System.Exception("Can't find canvas object on simple interactive object prefab");
+                InteractiveBehavior = interactiveObjectBehavior;
             }
-            
-            InteractiveBehavior = Prefab.GetComponentInChildren<InteractableObjectBehavior>();   
-            
 
             IsActivated = data.IsActivated;
             IsInteractive = false;
