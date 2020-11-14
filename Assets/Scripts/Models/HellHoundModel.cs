@@ -43,7 +43,6 @@ namespace BeastHunter
         {
             animator.SetBool("IsDead", true);
             HellHound.GetComponent<Rigidbody>().isKinematic = true;
-            HellHound.GetComponent<BoxCollider>().enabled = false;
         }
 
         #endregion
