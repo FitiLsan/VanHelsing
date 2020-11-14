@@ -42,7 +42,6 @@ namespace BeastHunter
         public void OnDead()
         {
             animator.SetBool("IsDead", true);
-            HellHound.GetComponent<Rigidbody>().isKinematic = true;
         }
 
         #endregion
