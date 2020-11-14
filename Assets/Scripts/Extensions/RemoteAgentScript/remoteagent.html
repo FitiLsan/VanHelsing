@@ -1,0 +1,21 @@
+﻿<table class="editGrid">
+    <tr><td id="labelAgentAddress"></td><td id="editAgentAddress"></td></tr>
+    <tr><td id="labelAgentUsername"></td><td id="editAgentUsername"></td></tr>
+    <tr><td id="labelAgentPassword"></td><td id="editAgentPassword"></td></tr>
+</table>
+<div id="divAgent"></div>
+<script>
+
+renderOther($("#divAgent"), "For guidance on configuration of remote agents, please ", "span");
+renderLink($("#divAgent"), "visit the manual", "https://www.pingplotter.com/manual/remote_trace.html");
+
+
+renderLabel($("#labelAgentAddress"), "ServerSettings.CurrentConfig.ServerConfiguration.Engine.PacketGenSettings.RemoteAgentAddress");
+renderInput($("#editAgentAddress"), "ServerSettings.CurrentConfig.ServerConfiguration.Engine.PacketGenSettings.RemoteAgentAddress", { Style: "width:99%;" });
+
+renderLabel($("#labelAgentUsername"), "ServerSettings.CurrentConfig.ServerConfiguration.Engine.PacketGenSettings.AuthUsername");
+renderInput($("#editAgentUsername"), "ServerSettings.CurrentConfig.ServerConfiguration.Engine.PacketGenSettings.AuthUsername");
+
+renderLabel($("#labelAgentPassword"), "ServerSettings.CurrentConfig.ServerConfiguration.Engine.PacketGenSettings.AuthPassword");
+renderInput($("#editAgentPassword"), "ServerSettings.CurrentConfig.ServerConfiguration.Engine.PacketGenSettings.AuthPassword");
+</script>
