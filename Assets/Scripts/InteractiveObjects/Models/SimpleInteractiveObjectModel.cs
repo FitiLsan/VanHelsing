@@ -20,11 +20,22 @@ namespace BeastHunter
         public SimpleInteractiveObjectModel(GameObject prefab, SimpleInteractiveObjectData data)
         {
             Prefab = prefab;
-            CanvasObject = Prefab.transform.GetChild(0);
-            CanvasObject.gameObject.SetActive(false);
-            InteractiveBehavior = Prefab.GetComponentInChildren<InteractableObjectBehavior>();
             InteractiveObjectData = data;
-            IsActivated = (InteractiveObjectData as SimpleInteractiveObjectData).IsActivated;
+            CanvasObject = Prefab.transform.Find(data.CanvasObjectName);
+
+            if(CanvasObject != null)
+            {
+                CanvasObject.gameObject.SetActive(false);
+            }
+            else
+            {
+                throw new System.Exception("Can't find canvas object on simple interactive object prefab");
+            }
+            
+            InteractiveBehavior = Prefab.GetComponentInChildren<InteractableObjectBehavior>();   
+            
+
+            IsActivated = data.IsActivated;
             IsInteractive = false;
         }
 

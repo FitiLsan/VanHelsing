@@ -8,6 +8,7 @@ namespace BeastHunter
         #region Fields
 
         [SerializeField] private bool _isActivated;
+        [SerializeField] private string _canvasObjectName;
 
         #endregion
 
@@ -15,6 +16,7 @@ namespace BeastHunter
         #region Properties
 
         public bool IsActivated => _isActivated;
+        public string CanvasObjectName => _canvasObjectName;
 
         #endregion
 

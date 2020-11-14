@@ -52,7 +52,6 @@ namespace BeastHunter
 
         protected override void Deactivate(SimpleInteractiveObjectModel interactiveObjectModel)
         {
-            Debug.Log("deactivate");
             (interactiveObjectModel as TorchModel).TorchFlameParticles.Stop();
             (interactiveObjectModel as TorchModel).TorchLight.enabled = false;
         }
