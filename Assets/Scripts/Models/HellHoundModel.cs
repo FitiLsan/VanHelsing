@@ -11,8 +11,8 @@ namespace BeastHunter
 
         private HellHoundData hellHoundData;
         private Animator animator;
-        private HellHoundData.BehaviourState behaviourState;
 
+        public HellHoundData.BehaviourState BehaviourState;
         public Vector3 SpawnPoint;
         public Vector3 TargetPoint;
         public float IdlingTimer;
@@ -25,25 +25,6 @@ namespace BeastHunter
         public GameObject HellHound { get; }
         public NavMeshAgent NavMeshAgent { get; }
         public Rigidbody Rigidbody { get; }
-        public HellHoundData.BehaviourState BehaviourState
-        {
-            get { return behaviourState; }
-            set
-            {
-                if (behaviourState != value)
-                {
-                    behaviourState = value;
-                    Debug.Log("Change behaviourState on " + behaviourState);
-
-                    switch (behaviourState)
-                    {
-                        case HellHoundData.BehaviourState.Idling:
-                            hellHoundData.SetIdlingTimer(ref IdlingTimer);
-                            break;
-                    }
-                }
-            }
-        }
 
         #endregion
 
@@ -61,7 +42,7 @@ namespace BeastHunter
 
             SpawnPoint = Rigidbody.position;
             TargetPoint = SpawnPoint;
-            BehaviourState = HellHoundData.BehaviourState.Idling;
+            BehaviourState = HellHoundData.BehaviourState.None;
 
             CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
             IsDead = false;

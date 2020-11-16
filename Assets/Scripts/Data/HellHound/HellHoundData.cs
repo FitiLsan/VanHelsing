@@ -54,54 +54,61 @@ namespace BeastHunter
         {
             switch (model.BehaviourState)
             {
+                case BehaviourState.None:
+                    Debug.Log("State selection");
+                    if (Random.Range(1, 100) < ROAMING_CHANCE)
+                    {
+                        model.BehaviourState = BehaviourState.Roaming;
+                    }
+                    else
+                    {
+                        model.BehaviourState = BehaviourState.Idling;
+                    }
+                    OnChangeState(model);
+                    break;
+
                 case BehaviourState.Roaming:
                     if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
                     {
-                        Debug.Log("Choice between Roaming and Idling states");
-                        if (Random.Range(1, 100) < ROAMING_CHANCE) Roaming(model);
-                        else model.BehaviourState = BehaviourState.Idling;
+                        model.BehaviourState = BehaviourState.None;
                     }
                     break;
+
                 case BehaviourState.Idling:
-                    Idling(model);
+                    model.IdlingTimer -= Time.deltaTime;
+                    if(model.IdlingTimer <= 0)
+                    { 
+                        model.BehaviourState = BehaviourState.None;
+                    }
                     break;
             }
         }
 
-        public void SetIdlingTimer(ref float timer)
+        public void OnChangeState(HellHoundModel model)
         {
-            timer = Random.Range(MIN_IDLING_TIME, MAX_IDLING_TIME);
-            Debug.Log("Set idlingTimer on " + timer);
-        }
-
-        private void Roaming(HellHoundModel model)
-        {
-            Debug.Log(model.HellHound.name + " is roaming");
-
-            int i = 0;
-            bool result = false;
-            while (!result)
+            Debug.Log("State change on " + model.BehaviourState);
+            switch (model.BehaviourState)
             {
-                NewTargetPoint(model);
-                result = model.NavMeshAgent.SetDestination(model.TargetPoint);
+                case BehaviourState.Roaming:
+                    int i = 0;
+                    bool result = false;
+                    while (!result)
+                    {
+                        NewTargetPoint(model);
+                        result = model.NavMeshAgent.SetDestination(model.TargetPoint);
 
-                if (i++ > 100) //infinite loop protection
-                {
-                    Debug.LogError(model.HellHound.name + ": impossible to reach the target point");
+                        if (i++ > 100) //infinite loop protection
+                        {
+                            Debug.LogError(model.HellHound.name + ": impossible to reach the target point");
+                            break;
+                        }
+                    }
                     break;
-                }
-            }
 
-            if (result) Debug.Log("Create new path");
-        }
-
-        private void Idling(HellHoundModel model)
-        {
-            model.IdlingTimer -= Time.deltaTime;
-            if (model.IdlingTimer <= 0)
-            {
-                Debug.Log(model.HellHound.name + " finished idling");
-                model.BehaviourState = BehaviourState.Roaming;
+                case BehaviourState.Idling:
+                    model.IdlingTimer = Random.Range(MIN_IDLING_TIME, MAX_IDLING_TIME);
+                    Debug.Log("Set idlingTimer on " + model.IdlingTimer);
+                    break;
             }
         }
 
