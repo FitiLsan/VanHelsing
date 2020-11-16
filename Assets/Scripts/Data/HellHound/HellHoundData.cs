@@ -101,13 +101,12 @@ namespace BeastHunter
                 case BehaviourState.Chasing:
 
                     //Chasing logic
-                    Debug.Log("The dog is chasing");
 
                     break;
             }
         }
 
-        public void OnChangeState(HellHoundModel model)
+        private void OnChangeState(HellHoundModel model)
         {
             Debug.Log("Behaviour state change on " + model.BehaviourState);
 

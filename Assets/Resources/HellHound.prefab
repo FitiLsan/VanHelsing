@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 3909860081026214553}
   - component: {fileID: 885624236341521358}
   - component: {fileID: -4754923069991383973}
-  - component: {fileID: 1426202528877557287}
   - component: {fileID: 4030206861293033282}
   - component: {fileID: -5279949671980555329}
-  - component: {fileID: 2757891603469501098}
+  - component: {fileID: 6153654633217783938}
   m_Layer: 0
   m_Name: HellHound
   m_TagString: Untagged
@@ -35,6 +34,7 @@ Transform:
   m_Children:
   - {fileID: 6371085989924687921}
   - {fileID: 8477940866445817788}
+  - {fileID: 9113720063217392297}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -73,19 +73,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1426202528877557287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253339370346634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca8c0632839b858468e5195b7c0fc210, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _type: 0
 --- !u!136 &4030206861293033282
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -119,22 +106,22 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1
-  m_BaseOffset: 0
+  m_BaseOffset: -0.05
   m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
---- !u!135 &2757891603469501098
-SphereCollider:
+--- !u!114 &6153654633217783938
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7253339370346634}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2
-  m_Center: {x: 0, y: 1, z: 0.8}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca8c0632839b858468e5195b7c0fc210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 5
 --- !u!1 &82792148270169069
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,6 +768,64 @@ Transform:
   m_Father: {fileID: 3587542063676322176}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4937183179919578049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9113720063217392297}
+  - component: {fileID: 4281844921851634242}
+  - component: {fileID: 2893959698958896551}
+  m_Layer: 0
+  m_Name: DetectionSphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9113720063217392297
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4937183179919578049}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3909860081026214553}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &4281844921851634242
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4937183179919578049}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Center: {x: 0, y: 1, z: 0.2}
+--- !u!114 &2893959698958896551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4937183179919578049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca8c0632839b858468e5195b7c0fc210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 1
 --- !u!1 &5015142459499554275
 GameObject:
   m_ObjectHideFlags: 0
