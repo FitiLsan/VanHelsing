@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1426202528877557287}
   - component: {fileID: 4030206861293033282}
   - component: {fileID: -5279949671980555329}
+  - component: {fileID: 2757891603469501098}
   m_Layer: 0
   m_Name: HellHound
   m_TagString: Untagged
@@ -84,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca8c0632839b858468e5195b7c0fc210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 5
+  _type: 0
 --- !u!136 &4030206861293033282
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -109,7 +110,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -334000983
   m_Radius: 0.2
-  m_Speed: 3.5
+  m_Speed: 0
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -121,6 +122,19 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
+--- !u!135 &2757891603469501098
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253339370346634}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2
+  m_Center: {x: 0, y: 1, z: 0.8}
 --- !u!1 &82792148270169069
 GameObject:
   m_ObjectHideFlags: 0

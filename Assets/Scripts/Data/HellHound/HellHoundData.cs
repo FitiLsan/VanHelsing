@@ -16,7 +16,8 @@ namespace BeastHunter
         {
             None,
             Roaming,
-            Idling
+            Idling,
+            Chasing
         }
 
         #endregion
@@ -52,6 +53,10 @@ namespace BeastHunter
 
         public void Act(HellHoundModel model)
         {
+            //если в поле зрения собаки попадает игрок
+            //то включается стадия преследования 
+            //model.BehaviourState = BehaviourState.Chasing
+
             switch (model.BehaviourState)
             {
                 case BehaviourState.None:
@@ -82,6 +87,7 @@ namespace BeastHunter
                     }
 
                     break;
+
                 case BehaviourState.Idling:
 
                     model.IdlingTimer -= Time.deltaTime;
@@ -89,6 +95,13 @@ namespace BeastHunter
                     { 
                         model.BehaviourState = BehaviourState.None;
                     }
+
+                    break;
+
+                case BehaviourState.Chasing:
+
+                    //Chasing logic
+                    Debug.Log("The dog is chasing");
 
                     break;
             }

@@ -1,4 +1,5 @@
 ﻿//using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,6 +12,7 @@ namespace BeastHunter
 
         private HellHoundData hellHoundData;
         private Animator animator;
+        private InteractableObjectBehavior hellHoundBehavior;
 
         public HellHoundData.BehaviourState BehaviourState;
         public Vector3 SpawnPoint;
@@ -38,18 +40,34 @@ namespace BeastHunter
             animator = HellHound.GetComponent<Animator>();
             NavMeshAgent = HellHound.GetComponent<NavMeshAgent>();
             Rigidbody = HellHound.GetComponent<Rigidbody>();
+            hellHoundBehavior = HellHound.GetComponent<InteractableObjectBehavior>();
 
             SpawnPoint = Rigidbody.position;
             BehaviourState = HellHoundData.BehaviourState.None;
 
             CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
             IsDead = false;
+
+            hellHoundBehavior.OnFilterHandler = OnFilterHandler;
+            hellHoundBehavior.OnTriggerEnterHandler = OnTriggerEnterHandler;
         }
 
         #endregion
 
-  
         #region Methods
+
+        bool OnFilterHandler(Collider collider)
+        {
+            return collider.CompareTag(TagManager.PLAYER);
+        }
+
+        void OnTriggerEnterHandler(ITrigger trigger, Collider collider)
+        {
+            if (collider.CompareTag(TagManager.PLAYER) && !collider.isTrigger)
+            {
+                BehaviourState = HellHoundData.BehaviourState.Chasing;
+            }
+        }
 
         public void OnDead()
         {
