@@ -14,7 +14,6 @@ namespace BeastHunter
 
         public HellHoundData.BehaviourState BehaviourState;
         public Vector3 SpawnPoint;
-        public Vector3 TargetPoint;
         public float IdlingTimer;
 
         #endregion
@@ -41,7 +40,6 @@ namespace BeastHunter
             Rigidbody = HellHound.GetComponent<Rigidbody>();
 
             SpawnPoint = Rigidbody.position;
-            TargetPoint = SpawnPoint;
             BehaviourState = HellHoundData.BehaviourState.None;
 
             CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;

@@ -55,87 +55,105 @@ namespace BeastHunter
             switch (model.BehaviourState)
             {
                 case BehaviourState.None:
+
                     Debug.Log("State selection");
-                    if (Random.Range(1, 100) < ROAMING_CHANCE)
+                    BehaviourState selectedState;
+                    float rollDice = Random.Range(1, 100);
+
+                    if (rollDice < ROAMING_CHANCE)
                     {
-                        model.BehaviourState = BehaviourState.Roaming;
+                        selectedState = BehaviourState.Roaming;
                     }
                     else
                     {
-                        model.BehaviourState = BehaviourState.Idling;
+                        selectedState = BehaviourState.Idling;
                     }
+
+                    model.BehaviourState = selectedState;
                     OnChangeState(model);
+
                     break;
 
                 case BehaviourState.Roaming:
+
                     if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
                     {
                         model.BehaviourState = BehaviourState.None;
                     }
-                    break;
 
+                    break;
                 case BehaviourState.Idling:
+
                     model.IdlingTimer -= Time.deltaTime;
                     if(model.IdlingTimer <= 0)
                     { 
                         model.BehaviourState = BehaviourState.None;
                     }
+
                     break;
             }
         }
 
         public void OnChangeState(HellHoundModel model)
         {
-            Debug.Log("State change on " + model.BehaviourState);
+            Debug.Log("Behaviour state change on " + model.BehaviourState);
+
             switch (model.BehaviourState)
             {
                 case BehaviourState.Roaming:
-                    int i = 0;
-                    bool result = false;
-                    while (!result)
-                    {
-                        NewTargetPoint(model);
-                        result = model.NavMeshAgent.SetDestination(model.TargetPoint);
 
-                        if (i++ > 100) //infinite loop protection
+                    bool isFoundRoamingPath = false;
+                    Vector3 destinationPoint;
+
+                    for (int i = 0; i < 100; i++)
+                    {
+                        if (!NewDestinationPoint(model.SpawnPoint, out destinationPoint))
                         {
-                            Debug.LogError(model.HellHound.name + ": impossible to reach the target point");
+                            Debug.LogError(model.HellHound.name + ": could not find NavMesh point");
                             break;
                         }
+                        isFoundRoamingPath = model.NavMeshAgent.SetDestination(destinationPoint);
+                        if (isFoundRoamingPath) break;
                     }
+
+                    if (!isFoundRoamingPath) Debug.LogError(model.HellHound.name + ": impossible to reach the destination point");
+
                     break;
 
                 case BehaviourState.Idling:
+
                     model.IdlingTimer = Random.Range(MIN_IDLING_TIME, MAX_IDLING_TIME);
                     Debug.Log("Set idlingTimer on " + model.IdlingTimer);
+
                     break;
+
             }
         }
 
-        private void NewTargetPoint(HellHoundModel model)
+        /// <summary>If successful sets the out parameter to a random NavMesh point in wandering radius</summary>
+        /// <param name="spawnPoint">hell hound spawn point</param>
+        /// <param name="destinationPoint">parameter to sets a value of random NavMesh point</param>
+        /// <returns>success status</returns>
+        private bool NewDestinationPoint(Vector3 spawnPoint, out Vector3 destinationPoint)
         {
+            destinationPoint = default;
             float wanderingRadius = Stats.WanderingRadius;
-            Vector3 randomPoint;
-            NavMeshHit navMeshHit = new NavMeshHit();
-            int i = 0;
-            bool result = false;
+            Vector3 randomSpherePoint;
+            NavMeshHit navMeshHit;
 
-            while (!result)
+            for (int i = 0; i < 100; i++)
             {
-                randomPoint = Random.insideUnitSphere * wanderingRadius + model.SpawnPoint;
-                result = NavMesh.SamplePosition(randomPoint, out navMeshHit, wanderingRadius * 2, NavMesh.AllAreas);
+                randomSpherePoint = Random.insideUnitSphere * wanderingRadius + spawnPoint;
 
-                if (i++ > 100) //infinite loop protection
+                if (NavMesh.SamplePosition(randomSpherePoint, out navMeshHit, wanderingRadius * 2, NavMesh.AllAreas))
                 {
-                    Debug.LogWarning(model.HellHound.name + ": could not find NavMesh");
-                    break;
+                    destinationPoint = navMeshHit.position;
+                    Debug.Log("NewDestinationPoint: " + destinationPoint);
+                    return true;
                 }
             }
 
-            if (result) model.TargetPoint = navMeshHit.position;
-            else model.TargetPoint = model.SpawnPoint;
-
-            Debug.Log("NewTargetPoint: " + model.TargetPoint);
+            return false;
         }
 
         #endregion
