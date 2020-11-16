@@ -28,6 +28,7 @@ namespace BeastHunter
         private const float ROAMING_CHANCE = 75.0f;
         private const float MIN_IDLING_TIME = 5.0f;
         private const float MAX_IDLING_TIME = 10.0f;
+        private const float TURN_SPEED_NEAR_CHASING_TARGET = 0.1f;
 
         #endregion
 
@@ -44,7 +45,10 @@ namespace BeastHunter
         public HellHoundData()
         {
             Stats.WanderingRadius = 50.0f;
-        }
+            Stats.DetectionRadius = 5.0f;
+            Stats.RoamingSpeed = 2.0f;
+            Stats.RunSpeed = 20.0f;
+    }
 
         #endregion
 
@@ -53,10 +57,6 @@ namespace BeastHunter
 
         public void Act(HellHoundModel model)
         {
-            //если в поле зрения собаки попадает игрок
-            //то включается стадия преследования 
-            //model.BehaviourState = BehaviourState.Chasing
-
             switch (model.BehaviourState)
             {
                 case BehaviourState.None:
@@ -100,7 +100,21 @@ namespace BeastHunter
 
                 case BehaviourState.Chasing:
 
-                    //Chasing logic
+                    Vector3 ChasingTarget = model.ChasingTarget.transform.position;
+                    model.NavMeshAgent.SetDestination(ChasingTarget);
+
+                    if (model.NavMeshAgent.velocity == Vector3.zero)
+                    {
+                        model.HellHound.transform.rotation = Turn(ChasingTarget, model.Transform.position, model.Transform.forward);
+                    }
+
+                    if (Vector3.Distance(ChasingTarget, model.Transform.position) > Stats.DetectionRadius + 2)
+                    {
+                        Debug.Log("The dog is stopped chasing");
+                        Debug.Log(Vector3.Distance(ChasingTarget, model.Transform.position) + " > " + Stats.DetectionRadius);
+                        model.BehaviourState = BehaviourState.None;
+                        model.ChasingTarget = null;
+                    }
 
                     break;
             }
@@ -113,6 +127,8 @@ namespace BeastHunter
             switch (model.BehaviourState)
             {
                 case BehaviourState.Roaming:
+
+                    model.NavMeshAgent.speed = Stats.RoamingSpeed;
 
                     bool isFoundRoamingPath = false;
                     Vector3 destinationPoint;
@@ -166,6 +182,14 @@ namespace BeastHunter
             }
 
             return false;
+        }
+
+        private Quaternion Turn(Vector3 targetPoint, Vector3 position, Vector3 forward)
+        {
+            Vector3 targetDirection = targetPoint - position;
+            Vector3 newDirection = Vector3.RotateTowards(forward, targetDirection, TURN_SPEED_NEAR_CHASING_TARGET, 0.0f);
+            newDirection.y = forward.y;
+            return Quaternion.LookRotation(newDirection);
         }
 
         #endregion

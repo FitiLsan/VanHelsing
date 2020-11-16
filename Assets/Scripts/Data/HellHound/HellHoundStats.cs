@@ -10,6 +10,9 @@ namespace BeastHunter
         #region Properties
 
         public float WanderingRadius;
+        public float DetectionRadius;
+        public float RoamingSpeed;
+        public float RunSpeed;
 
         #endregion
     }
