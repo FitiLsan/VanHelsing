@@ -11,6 +11,12 @@ namespace BeastHunter
     {
         #region PrivateData
 
+        public enum BehaviourState
+        {
+            None,
+            Roaming,
+            Idling
+        }
 
         #endregion
 
@@ -30,6 +36,10 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
+        public HellHoundData()
+        {
+            Stats.WanderingRadius = 50.0f;
+        }
 
         #endregion
 

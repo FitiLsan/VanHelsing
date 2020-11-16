@@ -9,7 +9,8 @@ namespace BeastHunter
     {
         #region Properties
 
-        
+        public float WanderingRadius;
+
         #endregion
     }
 }
