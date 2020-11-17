@@ -32,7 +32,7 @@ namespace BeastHunter
         private const float CHASING_TURN_DISTANCE_TO_TARGET = 3.0f;
         private const float CHASING_BRAKING_MAX_DISTANCE = 6.0f;
         private const float CHASING_BRAKING_MIN_DISTANCE = 2.0f;
-        private const float CHASING_BRAKING_MIN_SPEED = 3.0f;
+        private const float CHASING_BRAKING_MIN_SPEED = 2.0f;
         private const float CHASING_BRAKING_SPEED_RATE = 1.5f;
 
         #endregion
@@ -53,6 +53,9 @@ namespace BeastHunter
             Stats.DetectionRadius = 5.0f;
             Stats.RoamingSpeed = 2.0f;
             Stats.RunSpeed = 10.0f;
+            Stats.AngularSpeed = 450.0f;
+            Stats.Acceleration = 10.0f;
+            Stats.StoppingDistance = 1.5f;
     }
 
         #endregion
@@ -62,14 +65,16 @@ namespace BeastHunter
 
         public void Act(HellHoundModel model)
         {
+            float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
+            model.Animator.SetFloat("RotateDirection", rotateDirection);
             model.Animator.SetFloat("Speed", model.NavMeshAgent.velocity.sqrMagnitude);
-            //model.Animator.
 
             switch (model.BehaviourState)
             {
                 case BehaviourState.None:
 
                     Debug.Log("State selection");
+
                     BehaviourState selectedState;
                     float rollDice = Random.Range(1, 100);
 
@@ -112,7 +117,7 @@ namespace BeastHunter
 
                     if (model.NavMeshAgent.remainingDistance <= CHASING_TURN_DISTANCE_TO_TARGET)
                     {
-                        model.Transform.rotation = Turn(model.ChasingTarget.position, model.Transform.position, model.Transform.forward);
+                        model.Transform.rotation = SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward);
                     }
 
                     model.NavMeshAgent.speed =
@@ -164,6 +169,18 @@ namespace BeastHunter
             }
         }
 
+        /// <summary>Get the direction of the turn</summary>
+        /// <param name="transform">HellHoundModel transform</param>
+        /// <param name="rotatePosition1">Previous rotation value</param>
+        /// <param name="rotatePosition2">Current rotation value</param>
+        /// <returns>If value is negative turn goes left</returns>
+        private float GetRotateDirection(Transform transform, ref float rotatePosition1, ref float rotatePosition2)
+        {
+            rotatePosition1 = rotatePosition2;
+            rotatePosition2 = transform.rotation.eulerAngles.y;
+            return rotatePosition2 - rotatePosition1;
+        }
+
         /// <summary>If successful sets the out parameter to a random NavMesh point in wandering radius</summary>
         /// <param name="spawnPoint">hell hound spawn point</param>
         /// <param name="destinationPoint">parameter to sets a value of random NavMesh point</param>
@@ -190,9 +207,8 @@ namespace BeastHunter
             return false;
         }
 
-        private Quaternion Turn(Vector3 targetPoint, Vector3 position, Vector3 forward)
+        private Quaternion SmoothTurn(Vector3 targetDirection, Vector3 forward)
         {
-            Vector3 targetDirection = targetPoint - position;
             Vector3 newDirection = Vector3.RotateTowards(forward, targetDirection, CHASING_TURN_SPEED_NEAR_TARGET, 0.0f);
             newDirection.y = forward.y;
             return Quaternion.LookRotation(newDirection);

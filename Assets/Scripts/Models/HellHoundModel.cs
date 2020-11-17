@@ -21,6 +21,9 @@ namespace BeastHunter
         public float IdlingTimer;
         public Transform ChasingTarget;
 
+        public float RotatePosition1;
+        public float RotatePosition2;
+
         #endregion
 
 
@@ -58,6 +61,10 @@ namespace BeastHunter
             if (detectionSphere == null) Debug.LogWarning(HellHound.name + " not found SphereCollider in DetectionSphere gameobject");
             else detectionSphere.radius = hellHoundData.Stats.DetectionRadius;
 
+            NavMeshAgent.angularSpeed = hellHoundData.Stats.AngularSpeed;
+            NavMeshAgent.acceleration = hellHoundData.Stats.Acceleration;
+            NavMeshAgent.stoppingDistance = hellHoundData.Stats.StoppingDistance;
+
             CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
             IsDead = false;
 
@@ -67,6 +74,7 @@ namespace BeastHunter
         }
 
         #endregion
+
 
         #region Methods
 

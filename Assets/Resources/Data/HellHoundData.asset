@@ -26,6 +26,9 @@ MonoBehaviour:
     Prefab: {fileID: 7253339370346634, guid: 0221e3a4b68cc0b4da68fd85936de268, type: 3}
   Stats:
     WanderingRadius: 50
-    DetectionRadius: 15
+    DetectionRadius: 10
     RoamingSpeed: 1
     RunSpeed: 10
+    AngularSpeed: 450
+    Acceleration: 10
+    StoppingDistance: 1.5
