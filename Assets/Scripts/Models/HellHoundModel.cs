@@ -21,9 +21,6 @@ namespace BeastHunter
         public float IdlingTimer;
         public Transform ChasingTarget;
 
-        public bool IsJumping = false;
-        public bool IsJumpMovementUp = true;
-
         public float RotatePosition1;
         public float RotatePosition2;
 
@@ -67,6 +64,7 @@ namespace BeastHunter
             NavMeshAgent.angularSpeed = hellHoundData.Stats.AngularSpeed;
             NavMeshAgent.acceleration = hellHoundData.Stats.Acceleration;
             NavMeshAgent.stoppingDistance = hellHoundData.Stats.StoppingDistance;
+            Animator.SetFloat("JumpingSpeedRate", hellHoundData.Stats.JumpingSpeedRate);
 
             CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
             IsDead = false;

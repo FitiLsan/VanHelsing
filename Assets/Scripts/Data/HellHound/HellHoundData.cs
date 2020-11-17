@@ -56,8 +56,7 @@ namespace BeastHunter
             Stats.AngularSpeed = 450.0f;
             Stats.Acceleration = 10.0f;
             Stats.StoppingDistance = 1.5f;
-            Stats.JumpHeight = 1.0f;
-            Stats.JumpSpeed = 4.0f;
+            Stats.JumpingSpeedRate = 1.2f;
             Stats.BaseOffsetByY = -0.05f;
         }
 
@@ -69,8 +68,7 @@ namespace BeastHunter
         public void Act(HellHoundModel model)
         {
             //jump example:
-            if (Input.GetKeyDown(KeyCode.J)) Jump(model);
-            if (model.IsJumping) Jumping(model);
+            if (Input.GetKeyDown(KeyCode.J)) model.Animator.SetTrigger("IsJumping");
 
 
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
@@ -174,39 +172,6 @@ namespace BeastHunter
 
                     break;
 
-            }
-        }
-
-        private void Jump(HellHoundModel model)
-        {
-            if (!model.IsJumping && !model.Animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
-            {
-                model.IsJumping = true;
-                model.Animator.SetBool("IsJumping", model.IsJumping);
-            }
-        }
-
-        private void Jumping(HellHoundModel model)
-        {
-            if (model.IsJumpMovementUp)
-            {
-                model.NavMeshAgent.baseOffset += Time.deltaTime * Stats.JumpSpeed;
-                if (model.NavMeshAgent.baseOffset >= Stats.BaseOffsetByY + Stats.JumpHeight)
-                {
-                    model.NavMeshAgent.baseOffset = Stats.BaseOffsetByY + Stats.JumpHeight;
-                    model.IsJumpMovementUp = false;
-                }
-            }
-            else
-            {
-                model.NavMeshAgent.baseOffset -= Time.deltaTime * Stats.JumpSpeed; ;
-                if (model.NavMeshAgent.baseOffset <= Stats.BaseOffsetByY)
-                {
-                    model.NavMeshAgent.baseOffset = Stats.BaseOffsetByY;
-                    model.IsJumpMovementUp = true;
-                    model.IsJumping = false;
-                    model.Animator.SetBool("IsJumping", model.IsJumping);
-                }
             }
         }
 

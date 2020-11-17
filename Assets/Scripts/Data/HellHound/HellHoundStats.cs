@@ -11,8 +11,7 @@ namespace BeastHunter
 
         public float WanderingRadius;
         public float DetectionRadius;
-        public float JumpHeight;
-        public float JumpSpeed;
+        public float JumpingSpeedRate;
 
         [Header("NavMeshAgent")]
         public float MaxRoamingSpeed;
