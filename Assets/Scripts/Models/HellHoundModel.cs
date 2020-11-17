@@ -20,7 +20,7 @@ namespace BeastHunter
         public HellHoundData.BehaviourState BehaviourState;
         public Vector3 SpawnPoint;
         public float IdlingTimer;
-        public Collider ChasingTarget;
+        public Transform ChasingTarget;
 
         #endregion
 
@@ -75,26 +75,28 @@ namespace BeastHunter
             NavMeshAgent.enabled = false;
         }
 
+        private bool DetectionFilter(Collider collider)
+        {
+            return !collider.isTrigger
+                && (collider.CompareTag(TagManager.PLAYER) && collider.gameObject.name == "Player"
+                || collider.CompareTag(TagManager.RABBIT));
+        }
+
         private void OnDetectionEnemy(ITrigger trigger, Collider collider)
         {
-            if (collider.name == "Player" && (ChasingTarget == null || ChasingTarget.name != "Player"))
+            if (collider.CompareTag(TagManager.PLAYER) && (ChasingTarget == null || ChasingTarget.name != "Player"))
             {
                 Debug.Log("The dog is chasing " + collider.name);
-                ChasingTarget = collider;
+                ChasingTarget = collider.transform;
                 BehaviourState = HellHoundData.BehaviourState.Chasing;
                 NavMeshAgent.speed = hellHoundData.Stats.RunSpeed;
             }
             else if (collider.CompareTag(TagManager.RABBIT) && ChasingTarget == null)
             {
-                ChasingTarget = collider;
+                Debug.Log("The dog is chasing " + collider.name);
+                ChasingTarget = collider.transform;
                 BehaviourState = HellHoundData.BehaviourState.Chasing;
             }
-        }
-
-        private bool DetectionFilter(Collider collider)
-        {
-            return !collider.isTrigger
-                && (collider.CompareTag(TagManager.PLAYER) || collider.CompareTag(TagManager.RABBIT));
         }
 
         private InteractableObjectBehavior GetDetectionSphereIO()

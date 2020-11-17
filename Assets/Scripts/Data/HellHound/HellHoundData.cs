@@ -26,9 +26,14 @@ namespace BeastHunter
         #region Constants
 
         private const float ROAMING_CHANCE = 75.0f;
-        private const float MIN_IDLING_TIME = 5.0f;
-        private const float MAX_IDLING_TIME = 10.0f;
-        private const float TURN_SPEED_NEAR_CHASING_TARGET = 0.1f;
+        private const float IDLING_MIN_TIME = 5.0f;
+        private const float IDLING_MAX_TIME = 10.0f;
+        private const float CHASING_TURN_SPEED_NEAR_TARGET = 0.1f;
+        private const float CHASING_TURN_DISTANCE_FROM_TARGET = 2.0f;
+        private const float CHASING_BRAKING_MAX_DISTANCE = 6.0f;
+        private const float CHASING_BRAKING_MIN_DISTANCE = 2.0f;
+        private const float CHASING_BRAKING_MIN_SPEED = 2.0f;
+        private const float CHASING_BRAKING_SPEED_RATE = 1.25f;
 
         #endregion
 
@@ -47,7 +52,7 @@ namespace BeastHunter
             Stats.WanderingRadius = 50.0f;
             Stats.DetectionRadius = 5.0f;
             Stats.RoamingSpeed = 2.0f;
-            Stats.RunSpeed = 20.0f;
+            Stats.RunSpeed = 10.0f;
     }
 
         #endregion
@@ -100,18 +105,24 @@ namespace BeastHunter
 
                 case BehaviourState.Chasing:
 
-                    Vector3 ChasingTarget = model.ChasingTarget.transform.position;
-                    model.NavMeshAgent.SetDestination(ChasingTarget);
+                    model.NavMeshAgent.SetDestination(model.ChasingTarget.position);
 
-                    if (model.NavMeshAgent.velocity == Vector3.zero)
+                    if (model.NavMeshAgent.remainingDistance <= CHASING_TURN_DISTANCE_FROM_TARGET)
                     {
-                        model.HellHound.transform.rotation = Turn(ChasingTarget, model.Transform.position, model.Transform.forward);
+                        model.Transform.rotation = Turn(model.ChasingTarget.position, model.Transform.position, model.Transform.forward);
                     }
 
-                    if (Vector3.Distance(ChasingTarget, model.Transform.position) > Stats.DetectionRadius + 2)
+                    model.NavMeshAgent.speed =
+                        model.NavMeshAgent.remainingDistance <= CHASING_BRAKING_MAX_DISTANCE ? 
+                        (model.NavMeshAgent.remainingDistance < CHASING_BRAKING_MIN_DISTANCE ?
+                        CHASING_BRAKING_MIN_SPEED :
+                        model.NavMeshAgent.remainingDistance * CHASING_BRAKING_SPEED_RATE) :
+                        Stats.RunSpeed;
+
+                    if (model.NavMeshAgent.remainingDistance > Stats.DetectionRadius + 2)
                     {
                         Debug.Log("The dog is stopped chasing");
-                        Debug.Log(Vector3.Distance(ChasingTarget, model.Transform.position) + " > " + Stats.DetectionRadius);
+                        Debug.Log(Vector3.Distance(model.ChasingTarget.position, model.Transform.position) + " > " + Stats.DetectionRadius+2);
                         model.BehaviourState = BehaviourState.None;
                         model.ChasingTarget = null;
                     }
@@ -150,7 +161,7 @@ namespace BeastHunter
 
                 case BehaviourState.Idling:
 
-                    model.IdlingTimer = Random.Range(MIN_IDLING_TIME, MAX_IDLING_TIME);
+                    model.IdlingTimer = Random.Range(IDLING_MIN_TIME, IDLING_MAX_TIME);
                     Debug.Log("Set idlingTimer on " + model.IdlingTimer);
 
                     break;
@@ -187,7 +198,7 @@ namespace BeastHunter
         private Quaternion Turn(Vector3 targetPoint, Vector3 position, Vector3 forward)
         {
             Vector3 targetDirection = targetPoint - position;
-            Vector3 newDirection = Vector3.RotateTowards(forward, targetDirection, TURN_SPEED_NEAR_CHASING_TARGET, 0.0f);
+            Vector3 newDirection = Vector3.RotateTowards(forward, targetDirection, CHASING_TURN_SPEED_NEAR_TARGET, 0.0f);
             newDirection.y = forward.y;
             return Quaternion.LookRotation(newDirection);
         }
