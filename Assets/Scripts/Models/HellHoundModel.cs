@@ -63,6 +63,7 @@ namespace BeastHunter
 
             detectionSphereIO.OnFilterHandler = DetectionFilter;
             detectionSphereIO.OnTriggerEnterHandler = OnDetectionEnemy;
+            detectionSphereIO.OnTriggerExitHandler = OnLostSightEnemy;
         }
 
         #endregion
@@ -96,6 +97,16 @@ namespace BeastHunter
                 Debug.Log("The dog is chasing " + collider.name);
                 ChasingTarget = collider.transform;
                 BehaviourState = HellHoundData.BehaviourState.Chasing;
+            }
+        }
+
+        private void OnLostSightEnemy(ITrigger trigger, Collider collider)
+        {
+            if (collider.transform.Equals(ChasingTarget))
+            {
+                Debug.Log("The dog is stopped chasing");
+                ChasingTarget = null;
+                BehaviourState = HellHoundData.BehaviourState.None;
             }
         }
 

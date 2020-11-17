@@ -119,14 +119,6 @@ namespace BeastHunter
                         model.NavMeshAgent.remainingDistance * CHASING_BRAKING_SPEED_RATE) :
                         Stats.RunSpeed;
 
-                    if (model.NavMeshAgent.remainingDistance > Stats.DetectionRadius + 2)
-                    {
-                        Debug.Log("The dog is stopped chasing");
-                        Debug.Log(Vector3.Distance(model.ChasingTarget.position, model.Transform.position) + " > " + Stats.DetectionRadius+2);
-                        model.BehaviourState = BehaviourState.None;
-                        model.ChasingTarget = null;
-                    }
-
                     break;
             }
         }
