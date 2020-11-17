@@ -29,11 +29,11 @@ namespace BeastHunter
         private const float IDLING_MIN_TIME = 5.0f;
         private const float IDLING_MAX_TIME = 10.0f;
         private const float CHASING_TURN_SPEED_NEAR_TARGET = 0.1f;
-        private const float CHASING_TURN_DISTANCE_FROM_TARGET = 2.0f;
+        private const float CHASING_TURN_DISTANCE_TO_TARGET = 3.0f;
         private const float CHASING_BRAKING_MAX_DISTANCE = 6.0f;
         private const float CHASING_BRAKING_MIN_DISTANCE = 2.0f;
-        private const float CHASING_BRAKING_MIN_SPEED = 2.0f;
-        private const float CHASING_BRAKING_SPEED_RATE = 1.25f;
+        private const float CHASING_BRAKING_MIN_SPEED = 3.0f;
+        private const float CHASING_BRAKING_SPEED_RATE = 1.5f;
 
         #endregion
 
@@ -62,6 +62,9 @@ namespace BeastHunter
 
         public void Act(HellHoundModel model)
         {
+            model.Animator.SetFloat("Speed", model.NavMeshAgent.velocity.sqrMagnitude);
+            //model.Animator.
+
             switch (model.BehaviourState)
             {
                 case BehaviourState.None:
@@ -107,7 +110,7 @@ namespace BeastHunter
 
                     model.NavMeshAgent.SetDestination(model.ChasingTarget.position);
 
-                    if (model.NavMeshAgent.remainingDistance <= CHASING_TURN_DISTANCE_FROM_TARGET)
+                    if (model.NavMeshAgent.remainingDistance <= CHASING_TURN_DISTANCE_TO_TARGET)
                     {
                         model.Transform.rotation = Turn(model.ChasingTarget.position, model.Transform.position, model.Transform.forward);
                     }

@@ -11,7 +11,6 @@ namespace BeastHunter
         #region Fields
 
         private HellHoundData hellHoundData;
-        private Animator animator;
         private InteractableObjectBehavior[] InteractableObjects;
         private InteractableObjectBehavior detectionSphereIO;
         private List<InteractableObjectBehavior> hitBoxesIO;
@@ -27,6 +26,7 @@ namespace BeastHunter
 
         #region Properties
 
+        public Animator Animator { get; }
         public GameObject HellHound { get; }
         public NavMeshAgent NavMeshAgent { get; }
         public Rigidbody Rigidbody { get; }
@@ -42,7 +42,7 @@ namespace BeastHunter
             this.hellHoundData = hellHoundData;
             HellHound = gameObject;
 
-            animator = HellHound.GetComponent<Animator>();
+            Animator = HellHound.GetComponent<Animator>();
             NavMeshAgent = HellHound.GetComponent<NavMeshAgent>();
             Rigidbody = HellHound.GetComponent<Rigidbody>();
             Transform = HellHound.transform;
@@ -72,7 +72,7 @@ namespace BeastHunter
 
         public void OnDead()
         {
-            animator.SetBool("IsDead", true);
+            Animator.SetBool("IsDead", true);
             NavMeshAgent.enabled = false;
         }
 
