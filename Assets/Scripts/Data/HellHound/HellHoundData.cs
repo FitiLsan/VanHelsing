@@ -51,12 +51,15 @@ namespace BeastHunter
         {
             Stats.WanderingRadius = 50.0f;
             Stats.DetectionRadius = 5.0f;
-            Stats.RoamingSpeed = 2.0f;
-            Stats.RunSpeed = 10.0f;
+            Stats.MaxRoamingSpeed = 2.0f;
+            Stats.MaxChasingSpeed = 10.0f;
             Stats.AngularSpeed = 450.0f;
             Stats.Acceleration = 10.0f;
             Stats.StoppingDistance = 1.5f;
-    }
+            Stats.JumpHeight = 1.0f;
+            Stats.JumpSpeed = 4.0f;
+            Stats.BaseOffsetByY = -0.05f;
+        }
 
         #endregion
 
@@ -65,6 +68,11 @@ namespace BeastHunter
 
         public void Act(HellHoundModel model)
         {
+            //jump example:
+            if (Input.GetKeyDown(KeyCode.J)) Jump(model);
+            if (model.IsJumping) Jumping(model);
+
+
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
             model.Animator.SetFloat("RotateDirection", rotateDirection);
             model.Animator.SetFloat("Speed", model.NavMeshAgent.velocity.sqrMagnitude);
@@ -125,7 +133,7 @@ namespace BeastHunter
                         (model.NavMeshAgent.remainingDistance < CHASING_BRAKING_MIN_DISTANCE ?
                         CHASING_BRAKING_MIN_SPEED :
                         model.NavMeshAgent.remainingDistance * CHASING_BRAKING_SPEED_RATE) :
-                        Stats.RunSpeed;
+                        Stats.MaxChasingSpeed;
 
                     break;
             }
@@ -139,7 +147,7 @@ namespace BeastHunter
             {
                 case BehaviourState.Roaming:
 
-                    model.NavMeshAgent.speed = Stats.RoamingSpeed;
+                    model.NavMeshAgent.speed = Stats.MaxRoamingSpeed;
 
                     bool isFoundRoamingPath = false;
                     Vector3 destinationPoint;
@@ -166,6 +174,39 @@ namespace BeastHunter
 
                     break;
 
+            }
+        }
+
+        private void Jump(HellHoundModel model)
+        {
+            if (!model.IsJumping && !model.Animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+            {
+                model.IsJumping = true;
+                model.Animator.SetBool("IsJumping", model.IsJumping);
+            }
+        }
+
+        private void Jumping(HellHoundModel model)
+        {
+            if (model.IsJumpMovementUp)
+            {
+                model.NavMeshAgent.baseOffset += Time.deltaTime * Stats.JumpSpeed;
+                if (model.NavMeshAgent.baseOffset >= Stats.BaseOffsetByY + Stats.JumpHeight)
+                {
+                    model.NavMeshAgent.baseOffset = Stats.BaseOffsetByY + Stats.JumpHeight;
+                    model.IsJumpMovementUp = false;
+                }
+            }
+            else
+            {
+                model.NavMeshAgent.baseOffset -= Time.deltaTime * Stats.JumpSpeed; ;
+                if (model.NavMeshAgent.baseOffset <= Stats.BaseOffsetByY)
+                {
+                    model.NavMeshAgent.baseOffset = Stats.BaseOffsetByY;
+                    model.IsJumpMovementUp = true;
+                    model.IsJumping = false;
+                    model.Animator.SetBool("IsJumping", model.IsJumping);
+                }
             }
         }
 

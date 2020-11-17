@@ -27,8 +27,11 @@ MonoBehaviour:
   Stats:
     WanderingRadius: 50
     DetectionRadius: 10
-    RoamingSpeed: 1
-    RunSpeed: 10
+    JumpHeight: 1
+    JumpSpeed: 4
+    MaxRoamingSpeed: 1
+    MaxChasingSpeed: 10
     AngularSpeed: 450
     Acceleration: 10
     StoppingDistance: 1.5
+    BaseOffsetByY: -0.05

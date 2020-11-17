@@ -21,6 +21,9 @@ namespace BeastHunter
         public float IdlingTimer;
         public Transform ChasingTarget;
 
+        public bool IsJumping = false;
+        public bool IsJumpMovementUp = true;
+
         public float RotatePosition1;
         public float RotatePosition2;
 
@@ -98,7 +101,7 @@ namespace BeastHunter
                 Debug.Log("The dog is chasing " + collider.name);
                 ChasingTarget = collider.transform;
                 BehaviourState = HellHoundData.BehaviourState.Chasing;
-                NavMeshAgent.speed = hellHoundData.Stats.RunSpeed;
+                NavMeshAgent.speed = hellHoundData.Stats.MaxChasingSpeed;
             }
             else if (collider.CompareTag(TagManager.RABBIT) && ChasingTarget == null)
             {
