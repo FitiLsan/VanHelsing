@@ -75,9 +75,9 @@ namespace Extensions
         public static bool TryGetComponent<T>(this GameObject obj, out T component)
         {
             bool doesComponentExists = false;
-            component = default(T);
+            component = default;
 
-            if (typeof(T) == typeof(Component))
+            if (typeof(T).IsSubclassOf(typeof(Component)))
             {
                 T newComponent = obj.GetComponent<T>();
 
@@ -86,6 +86,43 @@ namespace Extensions
                     component = newComponent;
                     doesComponentExists = true;
                 }
+                else
+                {
+                    throw new System.NullReferenceException("Can't find component: " + component + 
+                        " in object: " + obj.name);
+                }
+            }
+            else
+            {
+                throw new System.Exception("Searching type os not a component");
+            }
+
+            return doesComponentExists;
+        }
+
+        public static bool TryGetComponentInChildren<T>(this GameObject obj, out T component)
+        {
+            bool doesComponentExists = false;
+            component = default;
+
+            if (typeof(T).IsSubclassOf(typeof(Component)))
+            {
+                T newComponent = obj.GetComponentInChildren<T>();
+
+                if (newComponent != null)
+                {
+                    component = newComponent;
+                    doesComponentExists = true;
+                }
+                else
+                {
+                    throw new System.NullReferenceException("Can't find component: " + component +
+                        " in object's: " + obj.name + " children");
+                }
+            }
+            else
+            {
+                throw new System.Exception("Searching type os not a component");
             }
 
             return doesComponentExists;
