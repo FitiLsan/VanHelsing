@@ -14,7 +14,6 @@ namespace BeastHunter
         public BossModel BossModel;
         public CharacterModel CharacterModel;
         public InputModel InputModel;
-        public RabbitModel RabbitModel;
 		public List<QuestIndicatorModel> QuestIndicatorModelList = new List<QuestIndicatorModel>();
         public QuestJournalModel QuestJournalModel;
 
