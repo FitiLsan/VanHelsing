@@ -55,9 +55,12 @@ namespace BeastHunter
             Stats.MaxChasingSpeed = 10.0f;
             Stats.AngularSpeed = 450.0f;
             Stats.Acceleration = 10.0f;
+            Stats.BaseOffsetByY = -0.05f;
             Stats.StoppingDistance = 1.5f;
             Stats.JumpingSpeedRate = 1.2f;
-            Stats.BaseOffsetByY = -0.05f;
+            Stats.JumpingBackSpeedRate = 2.0f;
+            Stats.JumpingBackForce = 0.5f;
+
         }
 
         #endregion
@@ -67,8 +70,9 @@ namespace BeastHunter
 
         public void Act(HellHoundModel model)
         {
-            //jump example:
+            //for tests:
             if (Input.GetKeyDown(KeyCode.J)) model.Animator.SetTrigger("IsJumping");
+            if (Input.GetKeyDown(KeyCode.H)) model.Animator.SetTrigger("IsJumpingBack");
 
 
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);

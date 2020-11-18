@@ -65,6 +65,8 @@ namespace BeastHunter
             NavMeshAgent.acceleration = hellHoundData.Stats.Acceleration;
             NavMeshAgent.stoppingDistance = hellHoundData.Stats.StoppingDistance;
             Animator.SetFloat("JumpingSpeedRate", hellHoundData.Stats.JumpingSpeedRate);
+            Animator.SetFloat("JumpingBackSpeedRate", hellHoundData.Stats.JumpingBackSpeedRate);
+            Animator.SetFloat("JumpingBackForce", hellHoundData.Stats.JumpingBackForce);
 
             CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
             IsDead = false;
