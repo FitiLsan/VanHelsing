@@ -23,16 +23,6 @@
 
         public void OnAwake()
         {
-            var npc = _context.GetListInteractable();
-
-            foreach (var trigger in npc)
-            {
-                var npcBehaviour = trigger as InteractableObjectBehavior;
-                //npcBehaviour.Stats = _context.NpcModels[npcBehaviour.GameObject.GetInstanceID()].GetStats().BaseStats;
-                npcBehaviour.SetTakeDamageEvent(TakeDamage);
-                npcBehaviour.SetDealDamageEvent(DealDamage);
-            }
-
             foreach(var model in _context.NpcModels)
             {
                 model.Value.OnAwake();
@@ -59,15 +49,6 @@
 
         public void TearDown()
         {
-            var npc = _context.GetListInteractable();
-
-            foreach (var trigger in npc)
-            {
-                var npcBehavior = trigger as InteractableObjectBehavior;           
-                npcBehavior.DeleteTakeDamageEvent(TakeDamage);
-                npcBehavior.DeleteDealDamageEvent(DealDamage);
-            }
-
             foreach (var model in _context.NpcModels)
             {
                 model.Value.OnTearDown();
