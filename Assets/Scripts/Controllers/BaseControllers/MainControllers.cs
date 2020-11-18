@@ -44,6 +44,7 @@
             Add(new TimeRemainingController(context));
             Add(new CharacterController(context));
             Add(new TrapController(context));
+            Add(new InteractiveObjectController(context));
             //Add(new DialogueSystemController(context));
             //Add(new StartDialogueController(context));
             //Add(new DialogueTriggerController(context));
