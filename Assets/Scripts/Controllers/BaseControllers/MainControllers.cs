@@ -23,11 +23,11 @@
 
         private void AddInitializeControllers(GameContext context) 
         {
-            //Add(new IOInitializeController(context));
             //Add<T>(context) where T : NpcInitializeController
 
             Add(new CharacterInitializeController(context));
             Add(new BossInitializeController(context));
+            //Add(new SmthInitializeController(context));
             //Add(new GiantMudCrabInitilizeController(context));
             //Add(new RabbitInitializeController(context));
             //Add(new DialogueSystemInitializeController(context));

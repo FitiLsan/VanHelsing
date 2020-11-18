@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ee177f76b37b0845ad48e9e2738621a, type: 3}
-  m_Name: IOData
+  m_Script: {fileID: 11500000, guid: d63798768fe41a44b92f7e80c3f4a681, type: 3}
+  m_Name: LocationData
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 6994601839773270451, guid: e771f12c928b3b148ae43a5d7be6abfc, type: 3}
+  PlayerSpawnData:
+    _spawnPoint: {x: 10, y: 1, z: 10}
+  BossSpawnData:
+    _spawnPoint: {x: -10, y: 1, z: -10}
