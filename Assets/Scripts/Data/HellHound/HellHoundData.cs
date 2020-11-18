@@ -71,13 +71,15 @@ namespace BeastHunter
         public void Act(HellHoundModel model)
         {
             //for tests:
-            if (Input.GetKeyDown(KeyCode.J)) model.Animator.SetTrigger("IsJumping");
-            if (Input.GetKeyDown(KeyCode.H)) model.Animator.SetTrigger("IsJumpingBack");
+            if (Input.GetKeyDown(KeyCode.J)) Jump(model.Animator);
+            if (Input.GetKeyDown(KeyCode.K)) JumpBack(model.Animator); ;
+            if (Input.GetKeyDown(KeyCode.G)) AttackTorso(model.Animator); ;
+            if (Input.GetKeyDown(KeyCode.H)) AttackLegs(model.Animator); ;
 
 
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
             model.Animator.SetFloat("RotateDirection", rotateDirection);
-            model.Animator.SetFloat("Speed", model.NavMeshAgent.velocity.sqrMagnitude);
+            model.Animator.SetFloat("MovementSpeed", model.NavMeshAgent.velocity.sqrMagnitude);
 
             switch (model.BehaviourState)
             {
@@ -179,6 +181,24 @@ namespace BeastHunter
             }
         }
 
+        private void Jump(Animator animator)
+        {
+            animator.SetTrigger("Jumping");
+        }
+        private void JumpBack(Animator animator)
+        {
+            animator.SetTrigger("JumpingBack");
+        }
+        private void AttackTorso(Animator animator)
+        {
+            animator.SetTrigger("AttackingTorso");
+            
+        }
+        private void AttackLegs(Animator animator)
+        {
+            animator.SetTrigger("AttackingLegs");
+        }
+
         /// <summary>Get the direction of the turn</summary>
         /// <param name="transform">HellHoundModel transform</param>
         /// <param name="rotatePosition1">Previous rotation value</param>
@@ -241,5 +261,6 @@ namespace BeastHunter
         }
 
         #endregion
+
     }
 }
