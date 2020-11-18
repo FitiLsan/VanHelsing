@@ -17,6 +17,7 @@ namespace BeastHunter
 
         #region Properties
 
+        public BaseStatsClass CharacterStats { get; set; }
         public WeaponData CurrentWeaponData { get; set; }
         public GameObject CurrentWeaponLeft { get; set; }
         public GameObject CurrentWeaponRight { get; set; }
@@ -72,7 +73,9 @@ namespace BeastHunter
             CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
             CharacterTransform.name = CharacterCommonSettings.InstanceName;
             CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
-            
+
+            CharacterStats = CharacterStatsSettings;
+
             if (CharacterTransform.GetComponent<Rigidbody>() != null)
             {
                 CharacterRigitbody = CharacterTransform.GetComponent<Rigidbody>();
@@ -133,10 +136,8 @@ namespace BeastHunter
                 PlayerBehavior = prefab.transform.GetChild(2).gameObject.AddComponent<PlayerBehavior>();
             }
 
-            PlayerBehavior.SetType(InteractableObjectType.Player);
-            PlayerBehavior.Stats = CharacterStatsSettings;
-
             EnemiesInTrigger = new List<Collider>();
+
             ClosestEnemy = null;
             IsGrounded = false;
             IsSneaking = false;

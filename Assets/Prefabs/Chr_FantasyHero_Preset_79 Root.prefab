@@ -8350,6 +8350,7 @@ GameObject:
   - component: {fileID: 6191437859889331572}
   - component: {fileID: 6956249877283662784}
   - component: {fileID: 7979573915093517452}
+  - component: {fileID: 7562623110677351879}
   m_Layer: 8
   m_Name: Chr_FantasyHero_Preset_79
   m_TagString: Untagged
@@ -8587,6 +8588,19 @@ MonoBehaviour:
   - {fileID: 4348644811432012068}
   - {fileID: 1218309164323299210}
   - {fileID: 2999684500206810137}
+--- !u!114 &7562623110677351879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7669808007086646823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b471bfedd8f8a3d43847b04de6a857d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 4
 --- !u!1 &7690889148778830307
 GameObject:
   m_ObjectHideFlags: 0

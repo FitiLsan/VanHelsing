@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UniRx;
+using Extensions;
 
 
 namespace BeastHunter
@@ -26,7 +27,8 @@ namespace BeastHunter
 
         public override void HitProjectile(IProjectile projectileInterface, Collision touchedCollider)
         {
-            InteractableObjectBehavior touchedBehavior = touchedCollider.gameObject.GetComponent<InteractableObjectBehavior>();
+            InteractableObjectBehavior touchedBehavior = touchedCollider.gameObject.
+                GetComponent<InteractableObjectBehavior>();
 
             if (touchedBehavior.Type == InteractableObjectType.WeakHitBox)
             {
@@ -34,10 +36,9 @@ namespace BeastHunter
                     new OnBossWeakPointHittedEventClass { WeakPointCollider = touchedCollider.collider });
             }
 
-            Context.NpcModels[Services.SharedInstance.PhysicsService.GetParent(touchedCollider.transform).
-                GetInstanceID()].TakeDamage(Services.SharedInstance.AttackService.CountDamage(ProjectileDamage,
-                    Context.NpcModels[Services.SharedInstance.PhysicsService.GetParent(touchedCollider.transform).
-                        GetInstanceID()].GetStats().MainStats));
+            Context.NpcModels[touchedCollider.transform.GetMainParent().gameObject.GetInstanceID()].TakeDamage(Services.
+                SharedInstance.AttackService.CountDamage(ProjectileDamage, Context.NpcModels[touchedCollider.
+                    transform.GetMainParent().gameObject.GetInstanceID()].GetStats().MainStats));
 
             DestroyProjectile(projectileInterface);
         }
