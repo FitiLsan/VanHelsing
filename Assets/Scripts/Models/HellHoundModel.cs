@@ -13,8 +13,8 @@ namespace BeastHunter
         private HellHoundData hellHoundData;
         private InteractableObjectBehavior[] InteractableObjects;
         private InteractableObjectBehavior detectionSphereIO;
-        private List<InteractableObjectBehavior> hitBoxesIO;
         private SphereCollider detectionSphere;
+        private InteractableObjectBehavior hitBoxIO;
 
         public HellHoundData.BehaviourState BehaviourState;
         public Vector3 SpawnPoint;
@@ -34,6 +34,7 @@ namespace BeastHunter
         public NavMeshAgent NavMeshAgent { get; }
         public Rigidbody Rigidbody { get; }
         public Transform Transform { get; }
+        public Collider HitBoxCollider { get; }
 
         #endregion
 
@@ -54,9 +55,11 @@ namespace BeastHunter
             BehaviourState = HellHoundData.BehaviourState.None;
 
             InteractableObjects = HellHound.GetComponentsInChildren<InteractableObjectBehavior>();
-            //hitBoxesIO = GetHitBoxListIO(); //todo
-            detectionSphereIO = GetDetectionSphereIO();
+
+            //Note: need  create a separate InteractableObjectType for detection triggers (for example "InteractableObjectType.DetectionRadius")
+            detectionSphereIO = GetInteractableObject(InteractableObjectType.Sphere);
             detectionSphere = detectionSphereIO.GetComponent<SphereCollider>();
+            hitBoxIO = GetInteractableObject(InteractableObjectType.HitBox);
 
             if (detectionSphere == null) Debug.LogWarning(HellHound.name + " not found SphereCollider in DetectionSphere gameobject");
             else detectionSphere.radius = hellHoundData.Stats.DetectionRadius;
@@ -74,6 +77,10 @@ namespace BeastHunter
             detectionSphereIO.OnFilterHandler = DetectionFilter;
             detectionSphereIO.OnTriggerEnterHandler = OnDetectionEnemy;
             detectionSphereIO.OnTriggerExitHandler = OnLostSightEnemy;
+            hitBoxIO.OnFilterHandler = HitFilter;
+            hitBoxIO.OnTriggerEnterHandler = OnHitEnemy;
+            HitBoxCollider = hitBoxIO.GetComponent<BoxCollider>();
+            HitBoxCollider.enabled = false;
         }
 
         #endregion
@@ -85,6 +92,25 @@ namespace BeastHunter
         {
             Animator.SetBool("IsDead", true);
             NavMeshAgent.enabled = false;
+        }
+
+        private bool HitFilter(Collider collider)
+        {
+            return !collider.isTrigger
+                && (collider.CompareTag(TagManager.PLAYER)
+                || collider.CompareTag(TagManager.RABBIT));
+        }
+
+
+        private void OnHitEnemy(ITrigger trigger, Collider collider)
+        {
+            Damage damage = new Damage() { PhysicalDamage = 10 };  //for test
+            InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>(); //получить родителя
+
+            if (enemy != null) hitBoxIO.DealDamageEvent(enemy, damage);
+            else Debug.LogError(HellHound.name + " not found enemy InteractableObjectBehavior: " + enemy);
+
+            HitBoxCollider.enabled = false;
         }
 
         private bool DetectionFilter(Collider collider)
@@ -121,27 +147,24 @@ namespace BeastHunter
             }
         }
 
-        private InteractableObjectBehavior GetDetectionSphereIO()
+        private InteractableObjectBehavior GetInteractableObject(InteractableObjectType type)
         {
-            /*Note: need  create a separate InteractableObjectType for detection triggers (for example "InteractableObjectType.DetectionRadius"),
-            because if set trigger.Type to InteractableObjectType.Enemy, then the player deals damage on the detection trigger*/
-
             for (int i =0; i< InteractableObjects.Length; i++)
             {
-                if (InteractableObjects[i].Type == InteractableObjectType.Sphere) return InteractableObjects[i];
+                if (InteractableObjects[i].Type == type) return InteractableObjects[i];
             }
-            Debug.LogError("Not found InteractableObjectType.Sphere in " + HellHound.name);
+            Debug.LogWarning("Not found InteractableObject of type " + type + " in " + HellHound.name);
             return null;
         }
 
-        private List<InteractableObjectBehavior> GetHitBoxListIO()
+        private List<InteractableObjectBehavior> GetInteractableObjects(InteractableObjectType type)
         {
             List<InteractableObjectBehavior> result = new List<InteractableObjectBehavior>();
             for (int i = 0; i < InteractableObjects.Length; i++)
             {
-                if (InteractableObjects[i].Type == InteractableObjectType.HitBox) result.Add(InteractableObjects[i]);
+                if (InteractableObjects[i].Type == type) result.Add(InteractableObjects[i]);
             }
-            if (result.Count == 0) Debug.LogWarning("Not found InteractableObjectType.HitBox in " + HellHound.name);
+            if (result.Count == 0) Debug.LogWarning("Not found InteractableObjects of type " + type + " in " + HellHound.name);
             return result;
         }
 

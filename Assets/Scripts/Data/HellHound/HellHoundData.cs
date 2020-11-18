@@ -72,9 +72,9 @@ namespace BeastHunter
         {
             //for tests:
             if (Input.GetKeyDown(KeyCode.J)) Jump(model.Animator);
-            if (Input.GetKeyDown(KeyCode.K)) JumpBack(model.Animator); ;
-            if (Input.GetKeyDown(KeyCode.G)) AttackTorso(model.Animator); ;
-            if (Input.GetKeyDown(KeyCode.H)) AttackLegs(model.Animator); ;
+            if (Input.GetKeyDown(KeyCode.K)) JumpBack(model.Animator);
+            if (Input.GetKeyDown(KeyCode.G)) AttackTorso(model.Animator, model.HitBoxCollider);
+            if (Input.GetKeyDown(KeyCode.H)) AttackLegs(model.Animator);
 
 
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
@@ -189,10 +189,10 @@ namespace BeastHunter
         {
             animator.SetTrigger("JumpingBack");
         }
-        private void AttackTorso(Animator animator)
+        private void AttackTorso(Animator animator, Collider hitBoxCollider)
         {
+            hitBoxCollider.enabled = true;  // !!! todo: должно отключаться по окончании анимации !!! 
             animator.SetTrigger("AttackingTorso");
-            
         }
         private void AttackLegs(Animator animator)
         {
@@ -261,6 +261,5 @@ namespace BeastHunter
         }
 
         #endregion
-
     }
 }

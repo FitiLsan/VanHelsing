@@ -26,6 +26,10 @@ namespace BeastHunter
             GameObject instance = GameObject.Instantiate(hellHoundData.BaseStats.Prefab);
             HellHoundModel hellHound = new HellHoundModel(instance, hellHoundData);
             _context.NpcModels.Add(instance.GetInstanceID(), hellHound);
+
+            //GameObject instance2 = GameObject.Instantiate(hellHoundData.BaseStats.Prefab, new Vector3(495,1,495), Quaternion.identity);
+            //HellHoundModel hellHound2 = new HellHoundModel(instance2, hellHoundData);
+            //_context.NpcModels.Add(instance2.GetInstanceID(), hellHound2);
         }
 
         #endregion

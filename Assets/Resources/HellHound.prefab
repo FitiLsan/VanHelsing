@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6153654633217783938}
   m_Layer: 0
   m_Name: HellHound
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 7253339370346634}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 500, y: 1, z: 500}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6371085989924687921}
   - {fileID: 8477940866445817788}
@@ -96,7 +96,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7253339370346634}
   m_Enabled: 1
   m_AgentTypeID: -334000983
-  m_Radius: 0.2
+  m_Radius: 0.5
   m_Speed: 2
   m_Acceleration: 10
   avoidancePriority: 50
@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 5033363166347695870}
   m_Layer: 0
   m_Name: Bip01 Neck
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -659,7 +659,7 @@ GameObject:
   - component: {fileID: 121189516241875965}
   m_Layer: 0
   m_Name: Bip01 Spine1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -928,9 +928,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5491116134457844817}
+  - component: {fileID: 4172499418612949676}
+  - component: {fileID: 7971234852879127232}
   m_Layer: 0
   m_Name: Bip01 Ponytail1
-  m_TagString: Untagged
+  m_TagString: Hitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -949,6 +951,35 @@ Transform:
   m_Father: {fileID: 3587542063676322176}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4172499418612949676
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7061895090145461645}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.14749631, y: 0.12917252, z: 0.11856689}
+  m_Center: {x: -0.16263276, y: 0.08106101, z: 0.011091719}
+--- !u!114 &7971234852879127232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7061895090145461645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c08723c05f94e6445b7b72f09928a1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 6
+  AdditionalDamage:
+    PhysicalDamage: 0
+    StunProbability: 0
 --- !u!1 &7294661829566073221
 GameObject:
   m_ObjectHideFlags: 0
