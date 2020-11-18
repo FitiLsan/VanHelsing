@@ -14,7 +14,7 @@ namespace BeastHunter
         private InteractableObjectBehavior[] InteractableObjects;
         private InteractableObjectBehavior detectionSphereIO;
         private SphereCollider detectionSphere;
-        private InteractableObjectBehavior hitBoxIO;
+        private InteractableObjectBehavior weaponIO;
 
         public HellHoundData.BehaviourState BehaviourState;
         public Vector3 SpawnPoint;
@@ -34,7 +34,7 @@ namespace BeastHunter
         public NavMeshAgent NavMeshAgent { get; }
         public Rigidbody Rigidbody { get; }
         public Transform Transform { get; }
-        public Collider HitBoxCollider { get; }
+        public Collider AttackCollider { get; }
 
         #endregion
 
@@ -59,7 +59,7 @@ namespace BeastHunter
             //Note: need  create a separate InteractableObjectType for detection triggers (for example "InteractableObjectType.DetectionRadius")
             detectionSphereIO = GetInteractableObject(InteractableObjectType.Sphere);
             detectionSphere = detectionSphereIO.GetComponent<SphereCollider>();
-            hitBoxIO = GetInteractableObject(InteractableObjectType.HitBox);
+            weaponIO = HellHound.GetComponentInChildren<WeaponHitBoxBehavior>();
 
             if (detectionSphere == null) Debug.LogWarning(HellHound.name + " not found SphereCollider in DetectionSphere gameobject");
             else detectionSphere.radius = hellHoundData.Stats.DetectionRadius;
@@ -77,10 +77,10 @@ namespace BeastHunter
             detectionSphereIO.OnFilterHandler = DetectionFilter;
             detectionSphereIO.OnTriggerEnterHandler = OnDetectionEnemy;
             detectionSphereIO.OnTriggerExitHandler = OnLostSightEnemy;
-            hitBoxIO.OnFilterHandler = HitFilter;
-            hitBoxIO.OnTriggerEnterHandler = OnHitEnemy;
-            HitBoxCollider = hitBoxIO.GetComponent<BoxCollider>();
-            HitBoxCollider.enabled = false;
+            weaponIO.OnFilterHandler = HitFilter;
+            weaponIO.OnTriggerEnterHandler = OnHitEnemy;
+            AttackCollider = weaponIO.GetComponent<BoxCollider>();
+            AttackCollider.enabled = false;
         }
 
         #endregion
@@ -96,21 +96,22 @@ namespace BeastHunter
 
         private bool HitFilter(Collider collider)
         {
+            InteractableObjectBehavior IOBehavior = collider.GetComponent<InteractableObjectBehavior>();
             return !collider.isTrigger
-                && (collider.CompareTag(TagManager.PLAYER)
-                || collider.CompareTag(TagManager.RABBIT));
+                && collider.CompareTag(TagManager.PLAYER) && IOBehavior != null && IOBehavior.Type == InteractableObjectType.Player;
         }
 
 
         private void OnHitEnemy(ITrigger trigger, Collider collider)
         {
             Damage damage = new Damage() { PhysicalDamage = 10 };  //for test
-            InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>(); //получить родителя
+            InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();
+            Debug.Log("enemy: "+ enemy);
 
-            if (enemy != null) hitBoxIO.DealDamageEvent(enemy, damage);
-            else Debug.LogError(HellHound.name + " not found enemy InteractableObjectBehavior: " + enemy);
+            if (enemy != null) weaponIO.DealDamageEvent(enemy, damage);
+            else Debug.LogError(HellHound.name + " not found enemy InteractableObjectBehavior");
 
-            HitBoxCollider.enabled = false;
+            AttackCollider.enabled = false;
         }
 
         private bool DetectionFilter(Collider collider)
@@ -128,12 +129,6 @@ namespace BeastHunter
                 ChasingTarget = collider.transform;
                 BehaviourState = HellHoundData.BehaviourState.Chasing;
                 NavMeshAgent.speed = hellHoundData.Stats.MaxChasingSpeed;
-            }
-            else if (collider.CompareTag(TagManager.RABBIT) && ChasingTarget == null)
-            {
-                Debug.Log("The dog is chasing " + collider.name);
-                ChasingTarget = collider.transform;
-                BehaviourState = HellHoundData.BehaviourState.Chasing;
             }
         }
 
