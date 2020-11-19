@@ -13,8 +13,9 @@ namespace BeastHunter
         private HellHoundData hellHoundData;
         private InteractableObjectBehavior[] InteractableObjects;
         private InteractableObjectBehavior detectionSphereIO;
-        private SphereCollider detectionSphere;
         private InteractableObjectBehavior weaponIO;
+        private SphereCollider detectionSphere;
+        private HellHoundAttackStateBehaviour[] attackStates;
 
         public HellHoundData.BehaviourState BehaviourState;
         public Vector3 SpawnPoint;
@@ -80,6 +81,9 @@ namespace BeastHunter
             AttackCollider = weaponIO.GetComponent<BoxCollider>();
             AttackCollider.enabled = false;
 
+            attackStates = Animator.GetBehaviours<HellHoundAttackStateBehaviour>();
+            for (int i = 0; i < attackStates.Length; i++) attackStates[i].OnStateExitHandler += OnAttackStateExit;
+
             CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
             IsDead = false;
         }
@@ -108,7 +112,7 @@ namespace BeastHunter
             Damage damage = new Damage() { PhysicalDamage = 10 };  //for debug only, need damage from basestats?
 
             InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();
-            Debug.Log("The dog is attacking : " + enemy);
+            Debug.Log("The dog is attacking " + enemy);
 
             if (enemy != null) weaponIO.DealDamageEvent(enemy, damage);
             else Debug.LogError(this + " not found enemy InteractableObjectBehavior");
@@ -116,22 +120,24 @@ namespace BeastHunter
             AttackCollider.enabled = false;
         }
 
+        void OnAttackStateExit()
+        {
+            AttackCollider.enabled = false;
+        }
+
         private bool DetectionFilter(Collider collider)
         {
+            InteractableObjectBehavior IOBehavior = collider.GetComponent<InteractableObjectBehavior>();
             return !collider.isTrigger
-                && (collider.CompareTag(TagManager.PLAYER) && collider.gameObject.name == "Player"
-                || collider.CompareTag(TagManager.RABBIT));
+                && collider.CompareTag(TagManager.PLAYER) && IOBehavior != null && IOBehavior.Type == InteractableObjectType.Player;
         }
 
         private void OnDetectionEnemy(ITrigger trigger, Collider collider)
         {
-            if (collider.CompareTag(TagManager.PLAYER) && (ChasingTarget == null || ChasingTarget.name != "Player"))
-            {
-                Debug.Log("The dog is chasing " + collider.name);
-                ChasingTarget = collider.transform;
-                BehaviourState = HellHoundData.BehaviourState.Chasing;
-                NavMeshAgent.speed = hellHoundData.Stats.MaxChasingSpeed;
-            }
+            Debug.Log("The dog is chasing " + collider.name);
+            ChasingTarget = collider.transform;
+            BehaviourState = HellHoundData.BehaviourState.Chasing;
+            NavMeshAgent.speed = hellHoundData.Stats.MaxChasingSpeed;
         }
 
         private void OnLostSightEnemy(ITrigger trigger, Collider collider)
