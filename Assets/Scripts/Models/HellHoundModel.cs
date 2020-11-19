@@ -21,6 +21,7 @@ namespace BeastHunter
         public Vector3 SpawnPoint;
         public float IdlingTimer;
         public Transform ChasingTarget;
+        public bool IsAttacking;
 
         public float RotatePosition1;
         public float RotatePosition2;
@@ -82,7 +83,11 @@ namespace BeastHunter
             AttackCollider.enabled = false;
 
             attackStates = Animator.GetBehaviours<HellHoundAttackStateBehaviour>();
-            for (int i = 0; i < attackStates.Length; i++) attackStates[i].OnStateExitHandler += OnAttackStateExit;
+            for (int i = 0; i < attackStates.Length; i++)
+            {
+                attackStates[i].OnStateEnterHandler += OnAttackStateEnter;
+                attackStates[i].OnStateExitHandler += OnAttackStateExit;
+            }
 
             CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
             IsDead = false;
@@ -109,7 +114,7 @@ namespace BeastHunter
 
         private void OnHitEnemy(ITrigger trigger, Collider collider)
         {
-            Damage damage = new Damage() { PhysicalDamage = 10 };  //for debug only, need damage from basestats?
+            Damage damage = new Damage() { PhysicalDamage = 0 };  //for debug only, need damage from basestats?
 
             InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();
             Debug.Log("The dog is attacking " + enemy);
@@ -120,8 +125,15 @@ namespace BeastHunter
             AttackCollider.enabled = false;
         }
 
+        void OnAttackStateEnter()
+        {
+            IsAttacking = true;
+            AttackCollider.enabled = true;
+        }
+
         void OnAttackStateExit()
         {
+            IsAttacking = false;
             AttackCollider.enabled = false;
         }
 
@@ -136,8 +148,7 @@ namespace BeastHunter
         {
             Debug.Log("The dog is chasing " + collider.name);
             ChasingTarget = collider.transform;
-            BehaviourState = HellHoundData.BehaviourState.Chasing;
-            NavMeshAgent.speed = hellHoundData.Stats.MaxChasingSpeed;
+            BehaviourState = hellHoundData.SetChasingState(NavMeshAgent);
         }
 
         private void OnLostSightEnemy(ITrigger trigger, Collider collider)
