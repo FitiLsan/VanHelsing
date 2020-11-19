@@ -7,7 +7,7 @@
         public MainControllers(GameContext context)
         {
             AddInitializeControllers(context);
-            //Add(new InitializeInteractableObjectController(context));
+            Add(new InitializeInteractableObjectController(context));
             AddControllers(context);
 
             //Add(new QuestIndicatorInitializeController(context));
@@ -40,7 +40,7 @@
         {
             Add(new EnemyController(context));
             //Add(new GiantMudCrabController(context));
-            Add(new TargetController(context));
+            //Add(new TargetController(context));
             Add(new InputController(context));
             Add(new TimeRemainingController(context));
             Add(new CharacterController(context));
