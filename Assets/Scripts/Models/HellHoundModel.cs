@@ -46,41 +46,42 @@ namespace BeastHunter
             this.hellHoundData = hellHoundData;
             HellHound = gameObject;
 
-            Animator = HellHound.GetComponent<Animator>();
-            NavMeshAgent = HellHound.GetComponent<NavMeshAgent>();
-            Rigidbody = HellHound.GetComponent<Rigidbody>();
             Transform = HellHound.transform;
-
-            SpawnPoint = Rigidbody.position;
             BehaviourState = HellHoundData.BehaviourState.None;
 
-            InteractableObjects = HellHound.GetComponentsInChildren<InteractableObjectBehavior>();
+            Rigidbody = HellHound.GetComponent<Rigidbody>();
+            SpawnPoint = Rigidbody.position;
 
-            //Note: need  create a separate InteractableObjectType for detection triggers (for example "InteractableObjectType.DetectionRadius")
-            detectionSphereIO = GetInteractableObject(InteractableObjectType.Sphere);
-            detectionSphere = detectionSphereIO.GetComponent<SphereCollider>();
-            weaponIO = HellHound.GetComponentInChildren<WeaponHitBoxBehavior>();
-
-            if (detectionSphere == null) Debug.LogWarning(HellHound.name + " not found SphereCollider in DetectionSphere gameobject");
-            else detectionSphere.radius = hellHoundData.Stats.DetectionRadius;
-
-            NavMeshAgent.angularSpeed = hellHoundData.Stats.AngularSpeed;
-            NavMeshAgent.acceleration = hellHoundData.Stats.Acceleration;
-            NavMeshAgent.stoppingDistance = hellHoundData.Stats.StoppingDistance;
+            Animator = HellHound.GetComponent<Animator>();
             Animator.SetFloat("JumpingSpeedRate", hellHoundData.Stats.JumpingSpeedRate);
             Animator.SetFloat("JumpingBackSpeedRate", hellHoundData.Stats.JumpingBackSpeedRate);
             Animator.SetFloat("JumpingBackForce", hellHoundData.Stats.JumpingBackForce);
 
-            CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
-            IsDead = false;
+            InteractableObjects = HellHound.GetComponentsInChildren<InteractableObjectBehavior>();
 
+            detectionSphereIO = GetInteractableObject(InteractableObjectType.Sphere);
             detectionSphereIO.OnFilterHandler = DetectionFilter;
             detectionSphereIO.OnTriggerEnterHandler = OnDetectionEnemy;
             detectionSphereIO.OnTriggerExitHandler = OnLostSightEnemy;
+
+            detectionSphere = detectionSphereIO.GetComponent<SphereCollider>();
+            if (detectionSphere == null) Debug.LogError(this + " not found SphereCollider in DetectionSphere gameobject");
+            else detectionSphere.radius = hellHoundData.Stats.DetectionRadius;
+
+            weaponIO = HellHound.GetComponentInChildren<WeaponHitBoxBehavior>();
             weaponIO.OnFilterHandler = HitFilter;
             weaponIO.OnTriggerEnterHandler = OnHitEnemy;
+
+            NavMeshAgent = HellHound.GetComponent<NavMeshAgent>();
+            NavMeshAgent.angularSpeed = hellHoundData.Stats.AngularSpeed;
+            NavMeshAgent.acceleration = hellHoundData.Stats.Acceleration;
+            NavMeshAgent.stoppingDistance = hellHoundData.Stats.StoppingDistance;
+
             AttackCollider = weaponIO.GetComponent<BoxCollider>();
             AttackCollider.enabled = false;
+
+            CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
+            IsDead = false;
         }
 
         #endregion
@@ -109,7 +110,7 @@ namespace BeastHunter
             Debug.Log("enemy: "+ enemy);
 
             if (enemy != null) weaponIO.DealDamageEvent(enemy, damage);
-            else Debug.LogError(HellHound.name + " not found enemy InteractableObjectBehavior");
+            else Debug.LogError(this + " not found enemy InteractableObjectBehavior");
 
             AttackCollider.enabled = false;
         }
@@ -148,7 +149,7 @@ namespace BeastHunter
             {
                 if (InteractableObjects[i].Type == type) return InteractableObjects[i];
             }
-            Debug.LogWarning("Not found InteractableObject of type " + type + " in " + HellHound.name);
+            Debug.LogWarning(this + "  not found InteractableObject of type " + type);
             return null;
         }
 
@@ -159,7 +160,7 @@ namespace BeastHunter
             {
                 if (InteractableObjects[i].Type == type) result.Add(InteractableObjects[i]);
             }
-            if (result.Count == 0) Debug.LogWarning("Not found InteractableObjects of type " + type + " in " + HellHound.name);
+            if (result.Count == 0) Debug.LogWarning(this + " not found InteractableObjects of type " + type);
             return result;
         }
 

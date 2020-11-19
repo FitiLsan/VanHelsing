@@ -160,14 +160,14 @@ namespace BeastHunter
                     {
                         if (!NewDestinationPoint(model.SpawnPoint, out destinationPoint))
                         {
-                            Debug.LogError(model.HellHound.name + ": could not find NavMesh point");
+                            Debug.LogError(this + ": could not find NavMesh point");
                             break;
                         }
                         isFoundRoamingPath = model.NavMeshAgent.SetDestination(destinationPoint);
                         if (isFoundRoamingPath) break;
                     }
 
-                    if (!isFoundRoamingPath) Debug.LogError(model.HellHound.name + ": impossible to reach the destination point");
+                    if (!isFoundRoamingPath) Debug.LogError(this + ": impossible to reach the destination point");
 
                     break;
 
