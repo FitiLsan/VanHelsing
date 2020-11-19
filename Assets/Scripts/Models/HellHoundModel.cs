@@ -105,9 +105,10 @@ namespace BeastHunter
 
         private void OnHitEnemy(ITrigger trigger, Collider collider)
         {
-            Damage damage = new Damage() { PhysicalDamage = 10 };  //for test
+            Damage damage = new Damage() { PhysicalDamage = 10 };  //for debug only, need damage from basestats?
+
             InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();
-            Debug.Log("enemy: "+ enemy);
+            Debug.Log("The dog is attacking : " + enemy);
 
             if (enemy != null) weaponIO.DealDamageEvent(enemy, damage);
             else Debug.LogError(this + " not found enemy InteractableObjectBehavior");
