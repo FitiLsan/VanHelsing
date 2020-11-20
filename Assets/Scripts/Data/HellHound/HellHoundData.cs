@@ -18,7 +18,8 @@ namespace BeastHunter
             Roaming,
             Idling,
             Chasing,
-            JumpingBack
+            JumpingBack,
+            BattleCircling
         }
 
         #endregion
@@ -103,6 +104,7 @@ namespace BeastHunter
             if (Input.GetKeyDown(KeyCode.K)) model.BehaviourState = SetJumpingBackState(model);
             if (Input.GetKeyDown(KeyCode.G)) AttackTorso(model.Animator, model.AttackCollider);
             if (Input.GetKeyDown(KeyCode.H)) AttackLegs(model.Animator, model.AttackCollider);
+            if (Input.GetKeyDown(KeyCode.U)) model.BehaviourState = SetBattleCirclingState(model);
 
 
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
@@ -177,22 +179,54 @@ namespace BeastHunter
                         {
                             model.BehaviourState = SetJumpingBackState(model);
                         }
-                        else if (sqrDistance <= sqrtAttackTorsoMaxDistance)
-                        {
-                            AttackTorso(model.Animator, model.AttackCollider);
-                        }
-                        else if (sqrDistance < sqrtAttackJumpMaxDistance && sqrDistance > sqrtAttackJumpMinDistance)
-                        {
-                            AttackJump(model.Animator, model.AttackCollider);
-                        }
+                        //else if (sqrDistance <= sqrtAttackTorsoMaxDistance)
+                        //{
+                        //    AttackTorso(model.Animator, model.AttackCollider);
+                        //}
+                        //else if (sqrDistance < sqrtAttackJumpMaxDistance && sqrDistance > sqrtAttackJumpMinDistance)
+                        //{
+                        //    AttackJump(model.Animator, model.AttackCollider);
+                        //}
                     }
 
                     break;
 
-                    case BehaviourState.JumpingBack:
+                case BehaviourState.JumpingBack:
 
                     if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
                     {
+                        model.BehaviourState = SetBattleCirclingState(model);
+                    }
+
+                    break;
+
+                case BehaviourState.BattleCircling:
+
+                    if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
+                    {
+                        bool isFoundRoamingPath = false;
+                        Vector3 destinationPoint;
+
+                        for (int i = 0; i < 100; i++)
+                        {
+                            if (!NewCirclingPoint(model.ChasingTarget.position, out destinationPoint))
+                            {
+                                Debug.LogError(this + ": could not find NavMesh point");
+                                break;
+                            }
+                            isFoundRoamingPath = model.NavMeshAgent.SetDestination(destinationPoint);
+                            if (isFoundRoamingPath) break;
+                        }
+
+                        if (!isFoundRoamingPath) Debug.LogError(this + ": impossible to reach the destination point");
+                    }
+
+                    model.Transform.rotation = SmoothTurn(model.ChasingTarget.position - model.Rigidbody.position, model.Transform.forward, CHASING_TURN_SPEED_NEAR_TARGET);
+
+                    model.BattleCirclingTimer -= Time.deltaTime;
+                    if (model.BattleCirclingTimer <= 0)
+                    {
+                        AttackJump(model.Animator, model.AttackCollider);
                         model.BehaviourState = SetChasingState(model.NavMeshAgent);
                     }
 
@@ -200,7 +234,25 @@ namespace BeastHunter
             }
         }
 
-        public BehaviourState SetIdlingState(ref float idlingTimer)
+        float radius = 4;
+        float speed = 3f;
+        float minTime = 1;
+        float maxTime = 3;
+
+        private BehaviourState SetBattleCirclingState(HellHoundModel model)
+        {
+            Debug.Log("The dog is buttle circling");
+
+            model.NavMeshAgent.stoppingDistance = 0;
+            model.NavMeshAgent.updateRotation = false;
+            model.BattleCirclingTimer = Random.Range(minTime, maxTime);
+            model.NavMeshAgent.speed = speed;
+            model.NavMeshAgent.acceleration = Stats.Acceleration;
+
+            return BehaviourState.BattleCircling;
+        }
+
+        private BehaviourState SetIdlingState(ref float idlingTimer)
         {
             Debug.Log("The dog is idling");
 
@@ -312,6 +364,27 @@ namespace BeastHunter
                 {
                     destinationPoint = navMeshHit.position;
                     Debug.Log("NewDestinationPoint: " + destinationPoint);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool NewCirclingPoint(Vector3 targetPosition, out Vector3 destinationPoint)
+        {
+            destinationPoint = default;
+            Vector3 randomSpherePoint;
+            NavMeshHit navMeshHit;
+
+            for (int i = 0; i < 100; i++)
+            {
+                randomSpherePoint = new Vector3(Random.value - 0.5f, targetPosition.y, Random.value - 0.5f).normalized * radius + targetPosition;
+
+                if (NavMesh.SamplePosition(randomSpherePoint, out navMeshHit, radius * 2, NavMesh.AllAreas))
+                {
+                    destinationPoint = navMeshHit.position;
+                    Debug.Log("NewCirclingPoint: " + destinationPoint);
                     return true;
                 }
             }
