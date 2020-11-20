@@ -31,13 +31,17 @@ MonoBehaviour:
     PhysicalDamage: 0
     StunProbability: 0
     AttackTorsoMaxDistance: 1.5
-    AttackJumpMaxDistance: 4
-    AttackJumpMinDistance: 3.5
-    BackJumpSpeed: 5
-    BackJumpLength: 1.5
+    AttackJumpMaxDistance: 3
+    AttackJumpMinDistance: 2.5
     BackJumpDistance: 1
+    BackJumpLength: 1.5
+    BackJumpSpeed: 5
     BackJumpAnimationSpeedRate: 2
     BackJumpAnimationIntensity: 0.5
+    BattleCirclingRadius: 5
+    BattleCirclingSpeed: 3
+    BattleCirclingMinTime: 1
+    BattleCirclingMaxTime: 3
     MaxRoamingSpeed: 1
     MaxChasingSpeed: 10
     AngularSpeed: 450

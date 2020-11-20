@@ -19,7 +19,6 @@ namespace BeastHunter
 
         public HellHoundData.BehaviourState BehaviourState;
         public Vector3 SpawnPoint;
-        public Vector3 TargetPoint;
         public float IdlingTimer;
         public Transform ChasingTarget;
         public bool IsAttacking;
@@ -57,9 +56,9 @@ namespace BeastHunter
             SpawnPoint = Rigidbody.position;
 
             Animator = HellHound.GetComponent<Animator>();
-            Animator.SetFloat("JumpingSpeedRate", hellHoundData.Stats.JumpingSpeedRate);
-            Animator.SetFloat("JumpingBackSpeedRate", hellHoundData.Stats.BackJumpAnimationSpeedRate);
-            Animator.SetFloat("JumpingBackIntensity", hellHoundData.Stats.BackJumpAnimationIntensity);
+            Animator.SetFloat("JumpSpeedRate", hellHoundData.Stats.JumpingSpeedRate);
+            Animator.SetFloat("JumpBackSpeedRate", hellHoundData.Stats.BackJumpAnimationSpeedRate);
+            Animator.SetFloat("JumpBackIntensity", hellHoundData.Stats.BackJumpAnimationIntensity);
 
             InteractableObjects = HellHound.GetComponentsInChildren<InteractableObjectBehavior>();
 

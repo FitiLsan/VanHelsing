@@ -30,6 +30,12 @@ namespace BeastHunter
         [Range(0,1)]
         public float BackJumpAnimationIntensity;
 
+        [Header("BattleCircling")]
+        public float BattleCirclingRadius;
+        public float BattleCirclingSpeed;
+        public float BattleCirclingMinTime;
+        public float BattleCirclingMaxTime;
+
         [Header("NavMeshAgent")]
         public float MaxRoamingSpeed;
         public float MaxChasingSpeed;
