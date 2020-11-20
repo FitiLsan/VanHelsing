@@ -26,13 +26,21 @@ MonoBehaviour:
     Prefab: {fileID: 7253339370346634, guid: 0221e3a4b68cc0b4da68fd85936de268, type: 3}
   Stats:
     WanderingRadius: 50
-    DetectionRadius: 10
+    DetectionRadius: 20
     JumpingSpeedRate: 1.2
-    JumpingBackSpeedRate: 2
-    JumpingBackForce: 0.5
+    PhysicalDamage: 0
+    StunProbability: 0
+    AttackTorsoMaxDistance: 1.5
+    AttackJumpMaxDistance: 4
+    AttackJumpMinDistance: 3.5
+    BackJumpSpeed: 5
+    BackJumpLength: 1.5
+    BackJumpDistance: 1
+    BackJumpAnimationSpeedRate: 2
+    BackJumpAnimationIntensity: 0.5
     MaxRoamingSpeed: 1
     MaxChasingSpeed: 10
     AngularSpeed: 450
     Acceleration: 10
-    StoppingDistance: 1.5
+    StoppingDistance: 1
     BaseOffsetByY: -0.05

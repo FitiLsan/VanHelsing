@@ -39,13 +39,15 @@ namespace BeastHunter
         private const float CHASING_BRAKING_MIN_SPEED = 2.0f;
         private const float CHASING_BRAKING_SPEED_RATE = 1.5f;
 
-        private const float BACKJUMPING_DISTANTION = 1.5f;
-        private const float BACKJUMPING_SPEED = 3.0f;
         #endregion
 
 
         #region Fields
 
+        private float sqrtBackJumpDistance;
+        private float sqrtAttackTorsoMaxDistance;
+        private float sqrtAttackJumpMaxDistance;
+        private float sqrtAttackJumpMinDistance;
         public HellHoundStats Stats;
 
         #endregion
@@ -64,9 +66,27 @@ namespace BeastHunter
             Stats.BaseOffsetByY = -0.05f;
             Stats.StoppingDistance = 1.5f;
             Stats.JumpingSpeedRate = 1.2f;
-            Stats.JumpingBackSpeedRate = 2.0f;
-            Stats.JumpingBackForce = 0.5f;
+            Stats.BackJumpAnimationSpeedRate = 2.0f;
+            Stats.BackJumpAnimationIntensity = 0.5f;
+            Stats.BackJumpLength = 1.5f;
+            Stats.BackJumpSpeed = 5.0f;
+            Stats.BackJumpDistance = 1.0f;
+            Stats.AttackTorsoMaxDistance = 1.5f;
+            Stats.AttackJumpMaxDistance = 4.0f;
+            Stats.AttackJumpMinDistance = 3.5f;
+    }
 
+        #endregion
+
+
+        #region UnityMethods
+
+        private void OnEnable()
+        {
+            sqrtBackJumpDistance = Stats.BackJumpDistance * Stats.BackJumpDistance;
+            sqrtAttackTorsoMaxDistance = Stats.AttackTorsoMaxDistance * Stats.AttackTorsoMaxDistance;
+            sqrtAttackJumpMaxDistance = Stats.AttackJumpMaxDistance * Stats.AttackJumpMaxDistance;
+            sqrtAttackJumpMinDistance = Stats.AttackJumpMinDistance * Stats.AttackJumpMinDistance;
         }
 
         #endregion
@@ -76,6 +96,8 @@ namespace BeastHunter
 
         public void Act(HellHoundModel model)
         {
+            float sqrDistance;
+
             //for tests:
             if (Input.GetKeyDown(KeyCode.J)) Jump(model.Animator);
             if (Input.GetKeyDown(KeyCode.K)) model.BehaviourState = SetJumpingBackState(model);
@@ -138,25 +160,28 @@ namespace BeastHunter
                             SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, 0.5f);
                     }
 
-                    ////improve braking:
+                    //for improve braking:
+                    //sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
                     //model.NavMeshAgent.speed =
-                    //    model.NavMeshAgent.remainingDistance <= CHASING_BRAKING_MAX_DISTANCE ? 
-                    //    (model.NavMeshAgent.remainingDistance < CHASING_BRAKING_MIN_DISTANCE ?
+                    //    sqrDistance <= CHASING_BRAKING_MAX_DISTANCE * CHASING_BRAKING_MAX_DISTANCE ?
+                    //    (sqrDistance < CHASING_BRAKING_MAX_DISTANCE * CHASING_BRAKING_MAX_DISTANCE ?
                     //    CHASING_BRAKING_MIN_SPEED :
-                    //    model.NavMeshAgent.remainingDistance * CHASING_BRAKING_SPEED_RATE) :
+                    //    sqrDistance * CHASING_BRAKING_SPEED_RATE) :
                     //    Stats.MaxChasingSpeed;
 
                     if (!model.IsAttacking)
                     {
-                        if (model.NavMeshAgent.remainingDistance <= 1)
+                        sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
+
+                        if (sqrDistance < sqrtBackJumpDistance)
                         {
                             model.BehaviourState = SetJumpingBackState(model);
                         }
-                        else if (model.NavMeshAgent.remainingDistance <= 2)
+                        else if (sqrDistance <= sqrtAttackTorsoMaxDistance)
                         {
                             AttackTorso(model.Animator, model.AttackCollider);
                         }
-                        else if (model.NavMeshAgent.remainingDistance <= 3 && model.NavMeshAgent.remainingDistance > 2)
+                        else if (sqrDistance < sqrtAttackJumpMaxDistance && sqrDistance > sqrtAttackJumpMinDistance)
                         {
                             AttackJump(model.Animator, model.AttackCollider);
                         }
@@ -177,14 +202,18 @@ namespace BeastHunter
 
         public BehaviourState SetIdlingState(ref float idlingTimer)
         {
+            Debug.Log("The dog is idling");
+
             idlingTimer = Random.Range(IDLING_MIN_TIME, IDLING_MAX_TIME);
-            Debug.Log("Set idlingTimer on " + idlingTimer);
+            Debug.Log("Idling time = " + idlingTimer);
 
             return BehaviourState.Idling;
         }
 
         private BehaviourState SetRoamingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint)
         {
+            Debug.Log("The dog is roaming");
+
             navMeshAgent.speed = Stats.MaxRoamingSpeed;
 
             bool isFoundRoamingPath = false;
@@ -208,21 +237,27 @@ namespace BeastHunter
 
         public BehaviourState SetChasingState(NavMeshAgent navMeshAgent)
         {
+            Debug.Log("The dog is chasing");
+
             navMeshAgent.updateRotation = true;
             navMeshAgent.stoppingDistance = Stats.StoppingDistance;
+            navMeshAgent.acceleration = Stats.Acceleration;
             navMeshAgent.speed = Stats.MaxChasingSpeed;
             return BehaviourState.Chasing;
         }
 
         private BehaviourState SetJumpingBackState(HellHoundModel model)
         {
+            Debug.Log("The dog is jumping back");
+
             Vector3 jumpDirection = (model.Rigidbody.position - model.NavMeshAgent.destination).normalized;
-            Vector3 pointToJump = model.Rigidbody.position + jumpDirection * BACKJUMPING_DISTANTION;
+            model.TargetPoint = model.Rigidbody.position + jumpDirection * Stats.BackJumpLength;
 
             model.NavMeshAgent.updateRotation = false;
             model.NavMeshAgent.stoppingDistance = 0;
-            model.NavMeshAgent.speed = BACKJUMPING_SPEED;
-            model.NavMeshAgent.SetDestination(pointToJump);
+            model.NavMeshAgent.speed = Stats.BackJumpSpeed;
+            model.NavMeshAgent.acceleration = Stats.BackJumpSpeed * 10;
+            model.NavMeshAgent.SetDestination(model.TargetPoint);
             model.Animator.SetTrigger("JumpingBack");
 
             return BehaviourState.JumpingBack;

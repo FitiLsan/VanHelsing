@@ -12,9 +12,23 @@ namespace BeastHunter
         public float WanderingRadius;
         public float DetectionRadius;
         public float JumpingSpeedRate;
-        public float JumpingBackSpeedRate;
+
+        [Header("Damage")]
+        public float PhysicalDamage;
+        public float StunProbability;
+
+        [Header("Attacks")]
+        public float AttackTorsoMaxDistance;
+        public float AttackJumpMaxDistance;
+        public float AttackJumpMinDistance;
+
+        [Header("BackJump")]
+        public float BackJumpDistance;
+        public float BackJumpLength;
+        public float BackJumpSpeed;
+        public float BackJumpAnimationSpeedRate;
         [Range(0,1)]
-        public float JumpingBackForce;
+        public float BackJumpAnimationIntensity;
 
         [Header("NavMeshAgent")]
         public float MaxRoamingSpeed;

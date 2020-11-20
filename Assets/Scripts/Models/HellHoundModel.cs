@@ -19,6 +19,7 @@ namespace BeastHunter
 
         public HellHoundData.BehaviourState BehaviourState;
         public Vector3 SpawnPoint;
+        public Vector3 TargetPoint;
         public float IdlingTimer;
         public Transform ChasingTarget;
         public bool IsAttacking;
@@ -56,8 +57,8 @@ namespace BeastHunter
 
             Animator = HellHound.GetComponent<Animator>();
             Animator.SetFloat("JumpingSpeedRate", hellHoundData.Stats.JumpingSpeedRate);
-            Animator.SetFloat("JumpingBackSpeedRate", hellHoundData.Stats.JumpingBackSpeedRate);
-            Animator.SetFloat("JumpingBackForce", hellHoundData.Stats.JumpingBackForce);
+            Animator.SetFloat("JumpingBackSpeedRate", hellHoundData.Stats.BackJumpAnimationSpeedRate);
+            Animator.SetFloat("JumpingBackIntensity", hellHoundData.Stats.BackJumpAnimationIntensity);
 
             InteractableObjects = HellHound.GetComponentsInChildren<InteractableObjectBehavior>();
 
@@ -114,7 +115,11 @@ namespace BeastHunter
 
         private void OnHitEnemy(ITrigger trigger, Collider collider)
         {
-            Damage damage = new Damage() { PhysicalDamage = 0 };  //for debug only, need damage from basestats?
+            Damage damage = new Damage()
+            {
+                PhysicalDamage = hellHoundData.Stats.PhysicalDamage,
+                StunProbability = hellHoundData.Stats.StunProbability
+            };
 
             InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();
             Debug.Log("The dog is attacking " + enemy);
@@ -146,7 +151,7 @@ namespace BeastHunter
 
         private void OnDetectionEnemy(ITrigger trigger, Collider collider)
         {
-            Debug.Log("The dog is chasing " + collider.name);
+            Debug.Log("The dog noticed " + collider.name);
             ChasingTarget = collider.transform;
             BehaviourState = hellHoundData.SetChasingState(NavMeshAgent);
         }
@@ -155,7 +160,7 @@ namespace BeastHunter
         {
             if (collider.transform.Equals(ChasingTarget))
             {
-                Debug.Log("The dog is stopped chasing");
+                Debug.Log("The dog lost sight of the target");
                 ChasingTarget = null;
                 BehaviourState = HellHoundData.BehaviourState.None;
             }
