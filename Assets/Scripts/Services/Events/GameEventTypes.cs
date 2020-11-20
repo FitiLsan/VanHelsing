@@ -30,6 +30,9 @@
         QuestJournalCreated,
         QuestJournalOpened,
         QuestUpdated,
+        BestiaryCreated,
+        NextPageButtonClickEvent,
+        ЗreviousPageButtonClickEvent,
         AnswerButtonClicked
     }
 }

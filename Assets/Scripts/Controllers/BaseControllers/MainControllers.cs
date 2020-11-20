@@ -28,6 +28,7 @@
 
             Add(new CharacterInitializeController(context));
             Add(new BossInitializeController(context));
+            Add(new UIBestiarylInitializeController(context));
             //Add(new GiantMudCrabInitilizeController(context));
             //Add(new RabbitInitializeController(context));
             //Add(new DialogueSystemInitializeController(context));
@@ -44,6 +45,7 @@
             Add(new TimeRemainingController(context));
             Add(new CharacterController(context));
             Add(new TrapController(context));
+            Add(new UIBestiaryController(context));
             //Add(new DialogueSystemController(context));
             //Add(new StartDialogueController(context));
             //Add(new DialogueTriggerController(context));

@@ -14,7 +14,7 @@ namespace BeastHunter
 
         public UIBestiaryStruct UIBestiaryStruct;
         public UIBestiaryModel Model;
-        
+                
         
         #endregion
     }

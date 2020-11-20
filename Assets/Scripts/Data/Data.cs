@@ -22,6 +22,7 @@ namespace BeastHunter
         [SerializeField] private string _cameraDataPath;
         [SerializeField] private string _questIndicatorDataPath;
         [SerializeField] private string _questJournalDataPath;
+        [SerializeField] private string _uiBestiaryDataPath;
         [SerializeField] private string _healthBuffDataPath;
         [SerializeField] private string _staminaBuffDataPath;
         [SerializeField] private string _bossDataPath;
@@ -52,6 +53,7 @@ namespace BeastHunter
         private static ClothItem _ironGreaves;
         private static CameraData _cameraData;
         private static QuestJournalData _questJournalData;
+        private static UIBestiaryData _uiBestiaryData;
         private static TemporaryBuffClass _healthBuffData;
         private static TemporaryBuffClass _staminaBuffData;
         private static BossData _bossData;
@@ -236,6 +238,18 @@ namespace BeastHunter
                     _questJournalData = Load<QuestJournalData>("Data/" + Instance._questJournalDataPath);
                 }
                 return _questJournalData;
+            }
+        }
+
+        public static UIBestiaryData UIBestiaryData
+        {
+            get
+            {
+                if(_uiBestiaryData == null)
+                {
+                    _uiBestiaryData = Load<UIBestiaryData>("Data/" + Instance._uiBestiaryDataPath);
+                }
+                return _uiBestiaryData;
             }
         }
 
