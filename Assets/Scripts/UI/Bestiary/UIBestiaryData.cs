@@ -14,7 +14,7 @@ namespace BeastHunter
         public UIBestiaryModel Model;
 
         public int PageCount;
-        int PageId = 0;
+        public int PageId = 0;
 
         #endregion
 
@@ -24,13 +24,6 @@ namespace BeastHunter
         {
             Model.BestiaryTransform.GetChild(0).GetChild(2).GetComponent<Image>().sprite = UIBestiaryStruct.BossImage[PageId];
             Model.BestiaryTransform.GetChild(0).GetChild(3).GetComponent<Text>().text = UIBestiaryStruct.BossDescription[PageId];
-            if(PageId != 1)
-            {
-                PageId = 1;
-            } else if(PageId != 0)
-            {
-                PageId = 0;
-            }
         }
 
         #endregion

@@ -8,11 +8,24 @@ namespace BeastHunter
         #region Fields
 
         Canvas canvas;
+        public UIBestiaryData uiBestiaryData;
 
         #endregion
 
 
         #region Methods
+
+        public void NextPage()
+        {
+            if (uiBestiaryData.PageId < uiBestiaryData.PageCount)
+                uiBestiaryData.PageId++;
+        }
+
+        public void PreviousPage()
+        {
+            if (uiBestiaryData.PageId > 0)
+                uiBestiaryData.PageId--;
+        }
 
         public void On()
         {

@@ -15,6 +15,7 @@ namespace BeastHunter
         #region Properties
 
         public Transform BestiaryTransform { get; }
+        public UIBestiarySwitcher uiBestiarySwitcher { get; }
         public UIBestiaryData UIBestiaryData { get; }
         public UIBestiaryStruct UIBestiaryStruct { get; }
 
@@ -26,6 +27,8 @@ namespace BeastHunter
         {
             UIBestiaryData = UIbestiaryData;
             UIBestiaryStruct = UIbestiaryData.UIBestiaryStruct;
+            uiBestiarySwitcher = prefab.GetComponent<UIBestiarySwitcher>();
+            uiBestiarySwitcher.uiBestiaryData = UIbestiaryData;
             BestiaryTransform = prefab.transform;
             UIBestiaryData.Model = this;
             Context = context;
