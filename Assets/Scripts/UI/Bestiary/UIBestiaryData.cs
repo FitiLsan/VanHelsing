@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BeastHunter
 {
@@ -9,13 +10,29 @@ namespace BeastHunter
     {
         #region Fields
 
-
-        public List<GameObject> BestiaryPage = new List<GameObject>();
-
         public UIBestiaryStruct UIBestiaryStruct;
         public UIBestiaryModel Model;
-                
-        
+
+        public int PageCount;
+        int PageId = 0;
+
+        #endregion
+
+        #region Methods
+
+        public void Update()
+        {
+            Model.BestiaryTransform.GetChild(0).GetChild(2).GetComponent<Image>().sprite = UIBestiaryStruct.BossImage[PageId];
+            Model.BestiaryTransform.GetChild(0).GetChild(3).GetComponent<Text>().text = UIBestiaryStruct.BossDescription[PageId];
+            if(PageId != 1)
+            {
+                PageId = 1;
+            } else if(PageId != 0)
+            {
+                PageId = 0;
+            }
+        }
+
         #endregion
     }
 }

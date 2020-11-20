@@ -14,6 +14,7 @@ namespace BeastHunter
 
         #region Properties
 
+        public Transform BestiaryTransform { get; }
         public UIBestiaryData UIBestiaryData { get; }
         public UIBestiaryStruct UIBestiaryStruct { get; }
 
@@ -25,6 +26,7 @@ namespace BeastHunter
         {
             UIBestiaryData = UIbestiaryData;
             UIBestiaryStruct = UIbestiaryData.UIBestiaryStruct;
+            BestiaryTransform = prefab.transform;
             UIBestiaryData.Model = this;
             Context = context;
         }
@@ -35,6 +37,7 @@ namespace BeastHunter
 
         public void Execute()
         {
+            UIBestiaryData.Update();
         }
     
         #endregion

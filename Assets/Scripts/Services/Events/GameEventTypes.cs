@@ -31,8 +31,7 @@
         QuestJournalOpened,
         QuestUpdated,
         BestiaryCreated,
-        NextPageButtonClickEvent,
-        ЗreviousPageButtonClickEvent,
+        BestiaryOpened,
         AnswerButtonClicked
     }
 }
