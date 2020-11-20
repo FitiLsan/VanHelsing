@@ -21,7 +21,7 @@ MonoBehaviour:
     _characterAnimator: {fileID: 9100000, guid: 71768c8e0d54fb34396989829cda6ca1,
       type: 2}
     _beginningApplyRootMotion: 0
-    _instantiatePosition: {x: 490, y: 2, z: 480}
+    _instantiatePosition: {x: 10, y: 2, z: 10}
     _instantiateDirection: -40
     _rigitbodyMass: 10
     _rigitbodyDrag: 0
@@ -58,6 +58,8 @@ MonoBehaviour:
   _characterStatsSettings:
     _maxHealth: 0
     _enemyType: 0
+    _viewRadius: 0
+    _viewAngle: 0
     _healthPoints: 0
     _physicalPower: 2
     _physicalDamageResistance: 0.25

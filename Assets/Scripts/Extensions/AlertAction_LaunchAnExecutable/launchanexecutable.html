@@ -1,0 +1,115 @@
+<%
+    AlertPath = 'Alert.Actions['+actionIndex+']';
+%>﻿
+<script>
+
+    function testActionCompletion() {
+        return false;
+    }
+
+    var canComplete = function () {
+        if (UserIsAdmin() && !IsLaunchExeAllowed()) {
+            return false;
+        }
+        if (!Settings["<%= AlertPath %>.Settings.ProcessName"].Value) {
+            return false;
+        }
+        return true;
+    }
+
+</script>
+<div class="breather">
+    <div class="breather">
+        <span class="alertActiontitle">Launch an executable</span>
+    </div>
+    <div class="alertInsetInfo">
+        <div class="breather">
+            <span class="alertbodysecondary">This action runs a command and/or executable, with the ability to pass it a host name or similar target-interesting piece of data.</span>
+        </div>
+        <div class="breather-sm">
+            <div class="labelSecondary"><%= Traits['Alert.Actions.StateTrigger'].Label %>:</div>
+        </div>
+        <div class="breather-sm">
+            <select id="stateTriggerDropdown" class="dropDown"></select>
+            <!--#INCLUDE FILE="/Core/hookup_condition_dropdown.html"-->
+        </div>
+        <div class="breather-sm">
+            <div class="labelSecondary"><%= Traits['Alert.Actions.LaunchCommand'].Label %>:</div>
+        </div>
+        <div class="breather-sm">
+            <input class="inputTextbox" id="processnameInput" placeholder="c:\path-to\command.exe" data-setting="<%= AlertPath %>.Settings.ProcessName" style="width: 100%;" />
+        </div>
+        <div class="breather">
+            <button onclick="browseFile()" class="testButton">Browse...</button>
+        </div>
+        <div class="breather-sm">
+            <div style="float:right;font-size:90%;"><a href="https://www.pingplotter.com/manual/variable_substitution.html"><span class="faIconGreen">&#xf02b;&nbsp;See Variable List</span></a></div>
+            <div class="labelSecondary"><%= Traits['Alert.Actions.Parameters'].Label %>:</div>
+        </div>
+        <div class="breather-sm">
+            <input class="inputTextbox" id="parametersInput" placeholder="{{ Host.PreferredName }}" data-setting="<%= AlertPath %>.Settings.Parameters" style="width: 100%;" />
+        </div>
+        <div class="breather">
+            <button id="btnDoTest" style="width: 100 !important;" onclick="testAlert()" class="testButton">Test Launch</button>
+        </div>
+        <% if (UserIsAdmin()) { %>
+        <div class="breather">
+            <span class="alertbodysecondary">This executable will run with elevated system permissions. It must first be enabled by an Administrator by clicking the button below.<br /> <a href="https://www.pingman.com/kb/129">Read More</a></span>
+        </div>
+        <div class="breather-sm">
+            <button id="btnIsAllowed" onclick="toggleIsAllowed()" class="testButton">Enable</button>
+        </div>
+        <% } %>
+
+
+        <script>
+
+            function updateAllowedBtn() {
+                if (UserIsAdmin()) {
+                    $control("#btnIsAllowed").Value = (IsLaunchExeAllowed() ? "Disable" : "Enable");
+                }
+                $control("#btnDoTest").IsDisabled = !canComplete();
+            }
+
+            updateAllowedBtn();
+
+            function toggleIsAllowed() {
+                SetLaunchExeAllowed(!IsLaunchExeAllowed());
+                updateAllowedBtn();
+            }
+
+            function testAlert() {
+                if (!IsLaunchExeAllowed()) {
+                    MessageBox("This action must first be enabled");
+                    return;
+                }
+                var result = DoAction('Alerts/Management.html', { 'Action': 'TestAlertAction', 'ActionIndex': <%= actionIndex %> });
+                if (result.message) {
+                    MessageBox(result.message);
+                }
+            };
+
+            Settings["Alert.Actions[<%= actionIndex %>]"].add_OnChange(function (editSetting) {
+                $control("#btnDoTest").IsDisabled = !canComplete();
+            });
+
+            $control("#btnDoTest").IsDisabled = !canComplete(); // Run it now to set the state
+
+            function browseFile() {
+                var path = '';
+                if (Platform === 'Mac') {
+                    // on mac you have the option to enter new executable filetypes we may have left out
+                    // preserve the synax of <filetype>,<filetype>...
+                    path = SelectAnExecutable('exe,sh,pl,py,app');
+                } else {
+                    // windows should allow you to select any type of file.
+                    path = SelectAnExecutable();
+                }
+
+                $control("#processnameInput").Text = path;
+            }
+
+
+        </script>
+    </div>
+</div>

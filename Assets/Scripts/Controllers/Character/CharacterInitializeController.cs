@@ -26,10 +26,15 @@ namespace BeastHunter
 
         public void OnAwake()
         {
+            var locationData = Resources.Load<LocationData>("Data/LocationData");
+            var spawnPoint = locationData.PlayerSpawnData.SpawnPoint;
+
             var characterData = Data.CharacterData;
 
-            Vector3 instantiatePosition = characterData._characterCommonSettings.InstantiatePosition;
-            Vector3 groundedInstancePosition = GetGroundedPosition(instantiatePosition);
+            Vector3 groundedInstancePosition = GetGroundedPosition(spawnPoint);
+
+            //Vector3 instantiatePosition = characterData._characterCommonSettings.InstantiatePosition;
+            //Vector3 groundedInstancePosition = GetGroundedPosition(instantiatePosition);
 
             GameObject instance = GameObject.Instantiate(characterData._characterCommonSettings.Prefab);
 

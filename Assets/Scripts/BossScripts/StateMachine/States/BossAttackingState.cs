@@ -158,7 +158,7 @@ namespace BeastHunter
             {
                 DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
                     CountDamage(_stateMachine._model.WeaponData, _stateMachine._model.BossStats.MainStats, _stateMachine.
-                        _context.CharacterModel.PlayerBehavior.Stats));
+                        _context.CharacterModel.CharacterStats));
                 hitBox.IsInteractable = false;
             }
         }
@@ -169,7 +169,7 @@ namespace BeastHunter
             {
                 DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
                     CountDamage(_stateMachine._model.WeaponData, _stateMachine._model.BossStats.MainStats, _stateMachine.
-                        _context.CharacterModel.PlayerBehavior.Stats));
+                        _context.CharacterModel.CharacterStats));
                 hitBox.IsInteractable = false;
             }
         }

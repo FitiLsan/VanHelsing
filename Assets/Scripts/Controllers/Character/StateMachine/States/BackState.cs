@@ -53,7 +53,8 @@ namespace BeastHunter
         public Action OnTrapPlace;
         public Action OnTimeSkipOpenClose;
         public Action OnButtonsInfoMenuOpenClose;
-        
+        public Action OnUse;
+
         private readonly GameContext _context;
         private readonly CharacterStateMachine _stateMachine;
         private readonly Services _services;
@@ -156,12 +157,14 @@ namespace BeastHunter
             _services.EventManager.StartListening(InputEventTypes.RunStart, OnStartRunHandler);
             _services.EventManager.StartListening(InputEventTypes.RunStop, OnStopRunHandler);
             _services.EventManager.StartListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
+            _services.EventManager.StartListening(InputEventTypes.Use, OnUseHandler);
 
             OnWeaponWheelOpen += OpenWeaponWheel;
             OnWeaponWheelClose += CloseWeaponWheel;
             OnButtonsInfoMenuOpenClose += OpenCloseButtonsInfoMenu;
             OnWeaponChange += _services.TrapService.RemoveTrap;
             OnTrapPlace += _services.TrapService.PlaceTrap;
+            OnUse += UseInteractiveObject;
 
             _characterModel.PlayerBehavior.OnFilterHandler += OnTriggerFilter;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterSomething;
@@ -207,12 +210,14 @@ namespace BeastHunter
             _services.EventManager.StopListening(InputEventTypes.RunStart, OnStartRunHandler);
             _services.EventManager.StopListening(InputEventTypes.RunStop, OnStopRunHandler);
             _services.EventManager.StopListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
+            _services.EventManager.StopListening(InputEventTypes.Use, OnUseHandler);
 
             OnWeaponWheelOpen -= OpenWeaponWheel;
             OnWeaponWheelClose -= CloseWeaponWheel;
             OnButtonsInfoMenuOpenClose -= OpenCloseButtonsInfoMenu;
             OnWeaponChange -= _services.TrapService.RemoveTrap;
             OnTrapPlace -= _services.TrapService.PlaceTrap;
+            OnUse -= UseInteractiveObject;
 
             _characterModel.PlayerBehavior.OnFilterHandler -= OnTriggerFilter;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterSomething;
@@ -354,6 +359,11 @@ namespace BeastHunter
             OnStopRun?.Invoke();
         }
 
+        private void OnUseHandler()
+        {
+            OnUse?.Invoke();
+        }
+
         #endregion
 
 
@@ -361,30 +371,43 @@ namespace BeastHunter
 
         private bool OnTriggerFilter(Collider interactedObject)
         {
-            bool isEnemyColliderHit = false;
-            InteractableObjectBehavior interacterBehavior = interactedObject.
-                GetComponent<InteractableObjectBehavior>();
-
-            if (interacterBehavior != null)
-            {
-                isEnemyColliderHit = interacterBehavior.Type == InteractableObjectType.Enemy;
-            }
-            return isEnemyColliderHit;
+            return interactedObject.GetComponentInChildren<InteractableObjectBehavior>() != null && 
+                !interactedObject.isTrigger;
         }
 
         private void OnTriggerEnterSomething(ITrigger interactedItrigger, Collider interactedObject)
         {
-            if (!interactedObject.isTrigger && !_characterModel.EnemiesInTrigger.Contains(interactedObject))
+            InteractableObjectBehavior interactedBehavior = interactedObject.
+                GetComponentInChildren<InteractableObjectBehavior>();
+
+            switch (interactedBehavior.Type)
             {
-                _characterModel.EnemiesInTrigger.Add(interactedObject);
+                case InteractableObjectType.Enemy:
+                    if (!_characterModel.EnemiesInTrigger.Contains(interactedObject))
+                    {
+                        _characterModel.EnemiesInTrigger.Add(interactedObject);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
         private void OnTriggerExitSomething(ITrigger interactedItrigger, Collider interactedObject)
         {
-            if (_characterModel.EnemiesInTrigger.Contains(interactedObject))
+            InteractableObjectBehavior interactedBehavior = interactedObject.
+                GetComponentInChildren<InteractableObjectBehavior>();
+
+            switch (interactedBehavior.Type)
             {
-                _characterModel.EnemiesInTrigger.Remove(interactedObject);
+                case InteractableObjectType.Enemy:
+                    if (_characterModel.EnemiesInTrigger.Contains(interactedObject))
+                    {
+                        _characterModel.EnemiesInTrigger.Remove(interactedObject);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -875,6 +898,22 @@ namespace BeastHunter
         private void OpenCloseButtonsInfoMenu()
         {
             _buttonsInfoUI.SetActive(!_buttonsInfoUI.activeSelf);
+        }
+
+        #endregion
+
+
+        #region UsingMethods
+
+        private void UseInteractiveObject()
+        {
+            foreach (BaseInteractiveObjectModel interactiveObjectModel in _context.InteractableObjectModels.Values)
+            {
+                if (interactiveObjectModel.IsInteractive)
+                {
+                    interactiveObjectModel.InteractiveObjectData.Interact(interactiveObjectModel);
+                }
+            }
         }
 
         #endregion

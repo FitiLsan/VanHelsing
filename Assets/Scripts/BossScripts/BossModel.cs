@@ -127,13 +127,13 @@ namespace BeastHunter
             BossAnimator.runtimeAnimatorController = BossSettings.BossAnimator;
             BossAnimator.applyRootMotion = false;
 
-            if (prefab.GetComponent<BossBehavior>() != null)
+            if (prefab. GetComponent<BossBehavior>() != null)
             {
                 BossBehavior = prefab.GetComponent<BossBehavior>();
             }
             else
             {
-                BossBehavior = prefab.AddComponent<BossBehavior>();
+                throw new System.Exception("Boss has no behavior script");
             }
 
             GameObject movement = GameObject.Instantiate(BossData._movementPrefab);
@@ -147,8 +147,6 @@ namespace BeastHunter
             MovementPoints = movementPath.GetPoints().ToArray();
             MovementLoop = movementPath.Loop;
 
-            BossBehavior.SetType(InteractableObjectType.Enemy);
-            BossBehavior.Stats = BossStats.MainStats;
             BossStateMachine = new BossStateMachine(context, this);
 
             Player = null;
@@ -183,7 +181,6 @@ namespace BeastHunter
             LeftHandTrigger.isTrigger = true;
             LeftHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             LeftWeaponBehavior = leftHandWeapon.GetComponent<WeaponHitBoxBehavior>();
-            LeftWeaponBehavior.SetType(InteractableObjectType.HitBox);
             LeftWeaponBehavior.IsInteractable = false;
 
             GameObject rightHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
@@ -194,7 +191,6 @@ namespace BeastHunter
             RightHandTrigger.isTrigger = true;
             RightHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             RightWeaponBehavior = rightHandWeapon.GetComponent<WeaponHitBoxBehavior>();
-            RightWeaponBehavior.SetType(InteractableObjectType.HitBox);
             RightWeaponBehavior.IsInteractable = false;
 
             FirstWeakPointData = Data.BossFirstWeakPoint;

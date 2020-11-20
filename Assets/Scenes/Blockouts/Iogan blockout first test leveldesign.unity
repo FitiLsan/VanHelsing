@@ -119,7 +119,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: dfd6fef0b92239a48a0d246a67fbd738, type: 2}
 --- !u!1 &14833792
 GameObject:
   m_ObjectHideFlags: 0
@@ -28260,12 +28260,12 @@ GameObject:
   - component: {fileID: 2112209186}
   - component: {fileID: 2112209185}
   - component: {fileID: 2112209184}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &2112209184
 MeshCollider:

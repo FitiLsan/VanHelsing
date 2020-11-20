@@ -14,24 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trapType: 2
   _trapStruct:
-    _trapPrefabInHands: {fileID: 0}
-    _trapPrefabProjection: {fileID: 0}
+    _trapPrefabInHands: {fileID: 1724260475813912619, guid: 322267ed2338df44087da4386660f689,
+      type: 3}
+    _trapPrefabProjection: {fileID: 1724260475813912619, guid: 7d1df51bf41637b4c92386518c2a6322,
+      type: 3}
     _trapDamage:
       PhysicalDamage: 0
       StunProbability: 0
     _trapPositionEulers: {x: 0, y: 0, z: 0}
-    _duration: 3
-    _projectionDistanceFromCharacter: 1
-    _placingHeight: 1
+    _duration: 30
+    _projectionDistanceFromCharacter: 1.5
+    _placingHeight: 0.2
     _totalTimeToPlaceTrap: 1.5
     _timeBeforeTrapAppear: 1
     _timeToDestroyAfterActivation: 2
     _chargeAmount: 1
   _trapImage: {fileID: 21300000, guid: 9a0428a05ac65f246a92505d10614989, type: 3}
-  _trapsAmount: 2
+  _trapsAmount: 1
   _animationName: 
+  _maximalGroundAngle: 0
   _launchingProjectileData: {fileID: 11400000, guid: 99624bcf6c1df87458dff72c1b2ab4dd,
     type: 2}
   _timeToLaunchProjectile: 0.7
   _launchForceUp: 3
   _launchForceForward: 2
+  _launchParentObjectPath: AxeRing/holder/Spoon/Acid

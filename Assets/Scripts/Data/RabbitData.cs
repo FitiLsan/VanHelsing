@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 namespace BeastHunter
 {
 
-    [CreateAssetMenu(fileName = "NewModel", menuName = "CreateData/Rabbit", order = 2)]
+    [CreateAssetMenu(fileName = "NewModel", menuName = "CreateData/Rabbit")]
     public sealed class RabbitData : EnemyData
     {
         #region PrivateData
@@ -203,21 +203,21 @@ namespace BeastHunter
             for (int i = 0; i < targets.Count; i++)
             {
                 var distToTarget = targets[i].position - transform.position;
-                if (distToTarget.sqrMagnitude > RabbitStats.ViewRadius)
+                if (distToTarget.sqrMagnitude > BaseStats.MainStats.ViewRadius)
                 {
                     targets.RemoveAt(i);
                 }
             }
 
             //var triggers = _physicsService.GetObjectsInRadius(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer);
-            var triggers = Physics.OverlapSphere(transform.position, RabbitStats.ViewRadius, LayerManager.DefaultLayer);//change layer!!
+            var triggers = Physics.OverlapSphere(transform.position, BaseStats.MainStats.ViewRadius, LayerManager.DefaultLayer);//change layer!!
             var result = false;
             foreach (Collider target in triggers)
             {
                 if (!target.CompareTag(TagManager.RABBIT))
                 {
                     var dirToTarget = target.bounds.center - transform.position;
-                    if (Vector3.Angle(transform.forward, dirToTarget.normalized) < RabbitStats.ViewAngle)
+                    if (Vector3.Angle(transform.forward, dirToTarget.normalized) < BaseStats.MainStats.ViewAngle)
                     {
                         if (!Physics.Raycast(transform.position, dirToTarget.normalized, dirToTarget.magnitude, LayerManager.EnvironmentLayer))
                         {
@@ -245,7 +245,6 @@ namespace BeastHunter
 
         private void Hop(Rigidbody rigidbody, Vector3 direction, float acceleration)
         {
-            Debug.Log(direction + " " + RabbitStats.MoveSpeed + " " + acceleration + " " + RabbitStats.JumpHeight + " " + HOP_FORCE_MULTIPLIER);
             rigidbody.AddForce((direction * RabbitStats.MoveSpeed * acceleration + Vector3.up * RabbitStats.JumpHeight) * HOP_FORCE_MULTIPLIER);
         }
 
@@ -318,7 +317,7 @@ namespace BeastHunter
             foreach (var obj in targets)
             {
                 var dir = transform.position - obj.position;
-                dir = dir.normalized * RabbitStats.ViewRadius * RabbitStats.ViewRadius / dir.sqrMagnitude;
+                dir = dir.normalized * BaseStats.MainStats.ViewRadius * BaseStats.MainStats.ViewRadius / dir.sqrMagnitude;
                 sum += dir;
             }
             var result = new Vector2(sum.x, sum.z);
@@ -365,7 +364,7 @@ namespace BeastHunter
         #endregion
 
 
-        #region NpcData
+        #region EnemyData
 
         public override void TakeDamage(EnemyModel instance, Damage damage)
         {
