@@ -99,12 +99,6 @@ namespace BeastHunter
 
         #region Methods
 
-        public void OnDead()
-        {
-            Animator.SetBool("IsDead", true);
-            NavMeshAgent.enabled = false;
-        }
-
         private bool HitFilter(Collider collider)
         {
             InteractableObjectBehavior IOBehavior = collider.GetComponent<InteractableObjectBehavior>();

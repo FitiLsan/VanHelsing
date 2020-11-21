@@ -37,8 +37,8 @@ namespace BeastHunter
 
         //for improve braking (the dog brakes more gently)
         private const float CHASING_BRAKING_MAX_DISTANCE = 6.0f;
-        private const float CHASING_BRAKING_MIN_DISTANCE = 2.5f;
-        private const float CHASING_BRAKING_MIN_SPEED = 2.5f;
+        private const float CHASING_BRAKING_MIN_DISTANCE = 2.0f;
+        private const float CHASING_BRAKING_MIN_SPEED = 2.0f;
         private const float CHASING_BRAKING_SPEED_RATE = 1.5f;
 
         #endregion
@@ -391,12 +391,17 @@ namespace BeastHunter
 
         public override void TakeDamage(EnemyModel model, Damage damage)
         {
+            HellHoundModel hellHoundModel = model as HellHoundModel;
             base.TakeDamage(model, damage);
+
+            Debug.Log("The dog is taking damage");
+            hellHoundModel.Animator.SetTrigger("TakeDamage");
 
             if (model.IsDead)
             {
                 Debug.Log("Hell hound is dead");
-                (model as HellHoundModel).OnDead();
+                hellHoundModel.Animator.SetTrigger("Dead");
+                hellHoundModel.NavMeshAgent.enabled = false;
             }
         }
 
