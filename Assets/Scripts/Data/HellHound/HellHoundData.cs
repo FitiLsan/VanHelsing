@@ -35,9 +35,10 @@ namespace BeastHunter
         private const float CHASING_TURN_SPEED_NEAR_TARGET = 0.1f;
         private const float CHASING_TURN_DISTANCE_TO_TARGET = 3.0f;
 
+        //for improve braking (the dog brakes more gently)
         private const float CHASING_BRAKING_MAX_DISTANCE = 6.0f;
-        private const float CHASING_BRAKING_MIN_DISTANCE = 2.0f;
-        private const float CHASING_BRAKING_MIN_SPEED = 2.0f;
+        private const float CHASING_BRAKING_MIN_DISTANCE = 2.5f;
+        private const float CHASING_BRAKING_MIN_SPEED = 2.5f;
         private const float CHASING_BRAKING_SPEED_RATE = 1.5f;
 
         #endregion
@@ -103,13 +104,8 @@ namespace BeastHunter
         {
             float sqrDistance;
 
-            //for tests:
-            if (Input.GetKeyDown(KeyCode.J)) Jump(model.Animator);
-            if (Input.GetKeyDown(KeyCode.K)) model.BehaviourState = SetJumpingBackState(model);
-            if (Input.GetKeyDown(KeyCode.G)) AttackDirect(model.Animator, model.AttackCollider);
-            if (Input.GetKeyDown(KeyCode.H)) AttackBottom(model.Animator, model.AttackCollider);
-            if (Input.GetKeyDown(KeyCode.U)) model.BehaviourState = SetBattleCirclingState(model);
-
+            //for jump test:
+            //if (Input.GetKeyDown(KeyCode.J)) Jump(model.Animator);
 
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
             model.Animator.SetFloat("RotateDirection", rotateDirection);
@@ -166,11 +162,11 @@ namespace BeastHunter
                             SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, 0.5f);
                     }
 
-                    ////for improve braking:
+                    ////for improve braking (the dog brakes more gently):
                     //sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
                     //model.NavMeshAgent.speed =
                     //    sqrDistance <= CHASING_BRAKING_MAX_DISTANCE * CHASING_BRAKING_MAX_DISTANCE ?
-                    //    (sqrDistance < CHASING_BRAKING_MAX_DISTANCE * CHASING_BRAKING_MAX_DISTANCE ?
+                    //    (sqrDistance < CHASING_BRAKING_MIN_DISTANCE * CHASING_BRAKING_MIN_DISTANCE ?
                     //    CHASING_BRAKING_MIN_SPEED :
                     //    sqrDistance * CHASING_BRAKING_SPEED_RATE) :
                     //    Stats.MaxChasingSpeed;
@@ -307,7 +303,7 @@ namespace BeastHunter
             model.NavMeshAgent.speed = Stats.BackJumpSpeed;
             model.NavMeshAgent.acceleration = Stats.BackJumpSpeed * 10;
             model.NavMeshAgent.SetDestination(navMeshHit.position);
-            model.Animator.SetTrigger("JumpBack");
+            model.Animator.Play("JumpBack");
 
             return BehaviourState.JumpingBack;
         }
@@ -315,25 +311,25 @@ namespace BeastHunter
         private void Jump(Animator animator)
         {
             Debug.Log("The dog is jumping");
-            animator.SetTrigger("Jump");
+            animator.Play("Jump");
         }
 
         private void AttackJump(Animator animator, Collider attackCollider)
         {
             Debug.Log("The dog is jumping attack");
-            animator.SetTrigger("AttackJump");
+            animator.Play("AttackJump");
         }
 
         private void AttackDirect(Animator animator, Collider attackCollider)
         {
-            Debug.Log("The dog is attacking torso");
-            animator.SetTrigger("AttackDirect");
+            Debug.Log("The dog is attacking direct");
+            animator.Play("AttackDirect");
         }
 
         private void AttackBottom(Animator animator, Collider attackCollider)
         {
-            Debug.Log("The dog is attacking legs");
-            animator.SetTrigger("AttackBottom");
+            Debug.Log("The dog is attacking bottom");
+            animator.Play("AttackBottom");
         }
 
         /// <summary>Get the direction of the turn</summary>
