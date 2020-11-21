@@ -183,7 +183,7 @@ namespace BeastHunter
                         {
                             model.BehaviourState = SetJumpingBackState(model);
                         }
-                        else if (sqrDistance <= sqrtAttacksMaxDistance)
+                        else if (sqrDistance < sqrtAttacksMaxDistance)
                         {
                             if (Random.Range(1, 100) < 50) AttackDirect(model.Animator, model.AttackCollider);
                             else AttackBottom(model.Animator, model.AttackCollider);
