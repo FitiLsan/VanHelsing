@@ -46,7 +46,7 @@ namespace BeastHunter
         #region Fields
 
         private float sqrtBackJumpDistance;
-        private float sqrtAttackTorsoMaxDistance;
+        private float sqrtAttacksMaxDistance;
         private float sqrtAttackJumpMaxDistance;
         private float sqrtAttackJumpMinDistance;
         public HellHoundStats Stats;
@@ -72,7 +72,7 @@ namespace BeastHunter
             Stats.BackJumpLength = 1.5f;
             Stats.BackJumpSpeed = 5.0f;
             Stats.BackJumpDistance = 1.0f;
-            Stats.AttackTorsoMaxDistance = 1.5f;
+            Stats.AttacksMaxDistance = 1.5f;
             Stats.AttackJumpMaxDistance = 3.0f;
             Stats.AttackJumpMinDistance = 2.5f;
             Stats.BattleCirclingRadius = 5.0f;
@@ -89,7 +89,7 @@ namespace BeastHunter
         private void OnEnable()
         {
             sqrtBackJumpDistance = Stats.BackJumpDistance * Stats.BackJumpDistance;
-            sqrtAttackTorsoMaxDistance = Stats.AttackTorsoMaxDistance * Stats.AttackTorsoMaxDistance;
+            sqrtAttacksMaxDistance = Stats.AttacksMaxDistance * Stats.AttacksMaxDistance;
             sqrtAttackJumpMaxDistance = Stats.AttackJumpMaxDistance * Stats.AttackJumpMaxDistance;
             sqrtAttackJumpMinDistance = Stats.AttackJumpMinDistance * Stats.AttackJumpMinDistance;
         }
@@ -183,9 +183,10 @@ namespace BeastHunter
                         {
                             model.BehaviourState = SetJumpingBackState(model);
                         }
-                        else if (sqrDistance <= sqrtAttackTorsoMaxDistance)
+                        else if (sqrDistance <= sqrtAttacksMaxDistance)
                         {
-                            AttackDirect(model.Animator, model.AttackCollider);
+                            if (Random.Range(1, 100) < 50) AttackDirect(model.Animator, model.AttackCollider);
+                            else AttackBottom(model.Animator, model.AttackCollider);
                         }
                         else if (sqrDistance < sqrtAttackJumpMaxDistance && sqrDistance > sqrtAttackJumpMinDistance)
                         {

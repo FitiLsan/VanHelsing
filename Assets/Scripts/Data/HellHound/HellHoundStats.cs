@@ -18,7 +18,7 @@ namespace BeastHunter
         public float StunProbability;
 
         [Header("Attacks")]
-        public float AttackTorsoMaxDistance;
+        public float AttacksMaxDistance;
         public float AttackJumpMaxDistance;
         public float AttackJumpMinDistance;
 
