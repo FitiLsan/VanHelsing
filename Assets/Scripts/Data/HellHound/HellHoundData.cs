@@ -21,7 +21,8 @@ namespace BeastHunter
             JumpingBack,
             BattleCircling,
             Escaping,
-            Resting
+            Resting,
+            Searching
         }
 
         #endregion
@@ -289,6 +290,12 @@ namespace BeastHunter
                     }
 
                     break;
+
+                case BehaviourState.Searching:
+
+                    //придумать логику выхода из состояния
+
+                    break;
             }
         }
 
@@ -411,6 +418,27 @@ namespace BeastHunter
             return BehaviourState.Escaping;
         }
 
+        private BehaviourState SetSearchingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint)
+        {
+            Debug.Log("The dog is searching");
+
+            navMeshAgent.speed = 5; //max searching speed
+            navMeshAgent.acceleration = Stats.Acceleration;
+
+            Vector3 navMeshPoint;
+            for (int i = 0; i < 100; i++)
+            {
+                if (SearchRandomNavMeshPoint(() => RandomInsideSpherePoint(spawnPoint, Stats.WanderingRadius), Stats.WanderingRadius * 2, out navMeshPoint)
+                    && navMeshAgent.SetDestination(navMeshPoint))
+                {
+                    return BehaviourState.Searching;
+                }
+            }
+
+            Debug.LogError(this + ": impossible to reach the destination point in SetRoamingState method");
+            return BehaviourState.Idling;
+        }
+
         private void Jump(Animator animator)
         {
             Debug.Log("The dog is jumping");
@@ -505,6 +533,14 @@ namespace BeastHunter
                 Debug.Log("Hell hound is dead");
                 hellHoundModel.Animator.SetTrigger("Dead");
                 hellHoundModel.NavMeshAgent.enabled = false;
+            }
+
+            if (hellHoundModel.ChasingTarget == null
+                && (hellHoundModel.BehaviourState == BehaviourState.Roaming 
+                || hellHoundModel.BehaviourState == BehaviourState.Idling
+                || hellHoundModel.BehaviourState == BehaviourState.Resting))
+            {
+                hellHoundModel.BehaviourState = SetSearchingState(hellHoundModel.NavMeshAgent, hellHoundModel.SpawnPoint);
             }
         }
 
