@@ -51,6 +51,7 @@ namespace BeastHunter
         private float sqrtAttacksMaxDistance;
         private float sqrtAttackJumpMaxDistance;
         private float sqrtAttackJumpMinDistance;
+        private float sqrtEscapeDistance;
         public HellHoundStats Stats;
 
         #endregion
@@ -61,7 +62,9 @@ namespace BeastHunter
         public HellHoundData()
         {
             Stats.WanderingRadius = 50.0f;
-            Stats.DetectionRadius = 5.0f;
+            Stats.DetectionRadius = 20.0f;
+            Stats.EscapeDistance = 30.0f;
+            Stats.PercentEscapeHealth = 30.0f;
             Stats.MaxRoamingSpeed = 2.0f;
             Stats.MaxChasingSpeed = 10.0f;
             Stats.AngularSpeed = 450.0f;
@@ -77,10 +80,11 @@ namespace BeastHunter
             Stats.AttacksMaxDistance = 1.5f;
             Stats.AttackJumpMaxDistance = 3.0f;
             Stats.AttackJumpMinDistance = 2.5f;
-            Stats.BattleCirclingRadius = 5.0f;
+            Stats.BattleCirclingRadius = 3.0f;
             Stats.BattleCirclingSpeed = 3.0f;
             Stats.BattleCirclingMinTime = 1.0f;
             Stats.BattleCirclingMaxTime = 3.0f;
+            Stats.AttacksTurnSpeed = 0.5f;
     }
 
         #endregion
@@ -94,6 +98,10 @@ namespace BeastHunter
             sqrtAttacksMaxDistance = Stats.AttacksMaxDistance * Stats.AttacksMaxDistance;
             sqrtAttackJumpMaxDistance = Stats.AttackJumpMaxDistance * Stats.AttackJumpMaxDistance;
             sqrtAttackJumpMinDistance = Stats.AttackJumpMinDistance * Stats.AttackJumpMinDistance;
+
+            sqrtEscapeDistance = Stats.EscapeDistance > Stats.DetectionRadius ?
+                Stats.EscapeDistance * Stats.EscapeDistance :
+                Stats.DetectionRadius * Stats.DetectionRadius + Stats.DetectionRadius * 0.2f;
         }
 
         #endregion
@@ -154,47 +162,47 @@ namespace BeastHunter
 
                 case BehaviourState.Chasing:
 
-                    float currentHealthPercent = model.CurrentHealth * 100 / BaseStats.MainStats.MaxHealth;
-                    if (currentHealthPercent < 50)
+                    if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
                     {
-                        Debug.Log("The dog currentHealthPercent=" + currentHealthPercent);
                         model.BehaviourState = SetEscapingState(model);
                     }
-
-                    model.NavMeshAgent.SetDestination(model.ChasingTarget.position);
-
-                    if (model.NavMeshAgent.remainingDistance <= CHASING_TURN_DISTANCE_TO_TARGET)
+                    else
                     {
-                        model.Transform.rotation = model.IsAttacking?
-                            SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, CHASING_TURN_SPEED_NEAR_TARGET) :
-                            SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, 0.5f);
-                    }
+                        model.NavMeshAgent.SetDestination(model.ChasingTarget.position);
 
-                    ////for improve braking (the dog brakes more gently):
-                    //sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
-                    //model.NavMeshAgent.speed =
-                    //    sqrDistance <= CHASING_BRAKING_MAX_DISTANCE * CHASING_BRAKING_MAX_DISTANCE ?
-                    //    (sqrDistance < CHASING_BRAKING_MIN_DISTANCE * CHASING_BRAKING_MIN_DISTANCE ?
-                    //    CHASING_BRAKING_MIN_SPEED :
-                    //    sqrDistance * CHASING_BRAKING_SPEED_RATE) :
-                    //    Stats.MaxChasingSpeed;
-
-                    if (!model.IsAttacking)
-                    {
-                        sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
-
-                        if (sqrDistance < sqrtBackJumpDistance)
+                        if (model.NavMeshAgent.remainingDistance <= CHASING_TURN_DISTANCE_TO_TARGET)
                         {
-                            model.BehaviourState = SetJumpingBackState(model);
+                            model.Transform.rotation = model.IsAttacking ?
+                                SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, CHASING_TURN_SPEED_NEAR_TARGET) :
+                                SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, Stats.AttacksTurnSpeed);
                         }
-                        else if (sqrDistance < sqrtAttacksMaxDistance)
+
+                        ////for improve braking (the dog brakes more gently):
+                        //sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
+                        //model.NavMeshAgent.speed =
+                        //    sqrDistance <= CHASING_BRAKING_MAX_DISTANCE * CHASING_BRAKING_MAX_DISTANCE ?
+                        //    (sqrDistance < CHASING_BRAKING_MIN_DISTANCE * CHASING_BRAKING_MIN_DISTANCE ?
+                        //    CHASING_BRAKING_MIN_SPEED :
+                        //    sqrDistance * CHASING_BRAKING_SPEED_RATE) :
+                        //    Stats.MaxChasingSpeed;
+
+                        if (!model.IsAttacking)
                         {
-                            if (Random.Range(1, 100) < 50) AttackDirect(model.Animator, model.AttackCollider);
-                            else AttackBottom(model.Animator, model.AttackCollider);
-                        }
-                        else if (sqrDistance < sqrtAttackJumpMaxDistance && sqrDistance > sqrtAttackJumpMinDistance)
-                        {
-                            AttackJump(model.Animator, model.AttackCollider);
+                            sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
+
+                            if (sqrDistance < sqrtBackJumpDistance)
+                            {
+                                model.BehaviourState = SetJumpingBackState(model);
+                            }
+                            else if (sqrDistance < sqrtAttacksMaxDistance)
+                            {
+                                if (Random.Range(1, 100) < 50) AttackDirect(model.Animator, model.AttackCollider);
+                                else AttackBottom(model.Animator, model.AttackCollider);
+                            }
+                            else if (sqrDistance < sqrtAttackJumpMaxDistance && sqrDistance > sqrtAttackJumpMinDistance)
+                            {
+                                AttackJump(model.Animator, model.AttackCollider);
+                            }
                         }
                     }
 
@@ -211,24 +219,31 @@ namespace BeastHunter
 
                 case BehaviourState.BattleCircling:
 
-                    if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
+                    if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
                     {
-                        Func<Vector3> randomCirclePoint = () => new Vector3(Random.value - 0.5f, model.ChasingTarget.position.y, Random.value - 0.5f).normalized * Stats.BattleCirclingRadius + model.ChasingTarget.position;
-
-                        if (!RandomDestination(model.NavMeshAgent, randomCirclePoint, Stats.BattleCirclingRadius * 2, 1))
+                        model.BehaviourState = SetEscapingState(model);
+                    }
+                    else
+                    {
+                        if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
                         {
-                            Debug.LogWarning(this + "not found NavMesh point in case BehaviourState.BattleCircling");
+                            Vector3 navMeshPoint;
+                            if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.BattleCirclingRadius), Stats.BattleCirclingRadius * 2, out navMeshPoint)
+                                || !model.NavMeshAgent.SetDestination(navMeshPoint))
+                            {
+                                Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.BattleCircling");
+                                model.BehaviourState = SetChasingState(model.NavMeshAgent);
+                            }
+                        }
+
+                        model.Transform.rotation = SmoothTurn(model.ChasingTarget.position - model.Rigidbody.position, model.Transform.forward, CHASING_TURN_SPEED_NEAR_TARGET);
+
+                        model.BattleCirclingTimer -= Time.deltaTime;
+                        if (model.BattleCirclingTimer <= 0)
+                        {
+                            model.Animator.SetBool("BattleCircling", false);
                             model.BehaviourState = SetChasingState(model.NavMeshAgent);
                         }
-                    }
-
-                    model.Transform.rotation = SmoothTurn(model.ChasingTarget.position - model.Rigidbody.position, model.Transform.forward, CHASING_TURN_SPEED_NEAR_TARGET);
-
-                    model.BattleCirclingTimer -= Time.deltaTime;
-                    if (model.BattleCirclingTimer <= 0)
-                    {
-                        model.Animator.SetBool("BattleCircling", false);
-                        model.BehaviourState = SetChasingState(model.NavMeshAgent);
                     }
 
                     break;
@@ -236,59 +251,26 @@ namespace BeastHunter
                 case BehaviourState.Escaping:
 
                     sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
-                    if (sqrDistance > Stats.DetectionRadius * Stats.DetectionRadius + 10)
+                    if (sqrDistance >= sqrtEscapeDistance)
                     {
                         model.BehaviourState = BehaviourState.None;
                     }
-
-                    if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
+                    else
                     {
-                        Func<Vector3> randomCirclePoint2 = () => new Vector3(Random.value - 0.5f, model.ChasingTarget.position.y, Random.value - 0.5f).normalized * 50 + model.ChasingTarget.position;
-                        if (!RandomDestination(model.NavMeshAgent, randomCirclePoint2, 50, 100))
+                        if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
                         {
-                            Debug.LogWarning(this + "not found NavMesh point in SetEscapingState");
-                            model.BehaviourState = SetChasingState(model.NavMeshAgent);
+                            Vector3 navMeshpoint;
+                            if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.EscapeDistance), Stats.EscapeDistance * 2, out navMeshpoint)
+                                || !model.NavMeshAgent.SetDestination(navMeshpoint))
+                            {
+                                Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.Escaping");
+                                model.BehaviourState = SetChasingState(model.NavMeshAgent);
+                            }
                         }
                     }
 
                     break;
             }
-        }
-
-        private BehaviourState SetEscapingState(HellHoundModel model)
-        {
-            Debug.Log("The dog is escaping");
-
-            Func<Vector3> randomCirclePoint = () => new Vector3(Random.value - 0.5f, model.ChasingTarget.position.y, Random.value - 0.5f).normalized * 50 + model.ChasingTarget.position;
-
-            if (!RandomDestination(model.NavMeshAgent, randomCirclePoint, 50, 100))
-            {
-                Debug.LogWarning(this + "not found NavMesh point in SetEscapingState");
-                model.BehaviourState = SetChasingState(model.NavMeshAgent);
-            }
-
-            return BehaviourState.Escaping;
-        }
-
-            private BehaviourState SetBattleCirclingState(HellHoundModel model)
-        {
-            Debug.Log("The dog is battle circling");
-
-            model.NavMeshAgent.stoppingDistance = 0;
-            model.NavMeshAgent.updateRotation = false;
-            model.BattleCirclingTimer = Random.Range(Stats.BattleCirclingMinTime, Stats.BattleCirclingMaxTime);
-            model.NavMeshAgent.speed = Stats.BattleCirclingSpeed;
-            model.NavMeshAgent.acceleration = Stats.Acceleration;
-
-            Func<Vector3> randomCirclePoint = () => new Vector3(Random.value - 0.5f, model.ChasingTarget.position.y, Random.value - 0.5f).normalized * Stats.BattleCirclingRadius + model.ChasingTarget.position;
-            if (!RandomDestination(model.NavMeshAgent, randomCirclePoint, Stats.BattleCirclingRadius * 2, 1))
-            {
-                Debug.LogWarning(this + "not found NavMesh point in SetBattleCirclingState()");
-                return SetChasingState(model.NavMeshAgent);
-            }
-
-            model.Animator.SetBool("BattleCircling", true);
-            return BehaviourState.BattleCircling;
         }
 
         private BehaviourState SetIdlingState(ref float idlingTimer)
@@ -306,14 +288,42 @@ namespace BeastHunter
             Debug.Log("The dog is roaming");
 
             navMeshAgent.speed = Stats.MaxRoamingSpeed;
+            navMeshAgent.acceleration = Stats.Acceleration;
 
-            Func<Vector3> randomSpherePointFunc = () => Random.insideUnitSphere * Stats.WanderingRadius + spawnPoint; ;
-            if (!RandomDestination(navMeshAgent, randomSpherePointFunc, Stats.WanderingRadius * 2, 100))
+            Vector3 navMeshPoint;
+            for (int i = 0; i < 100; i++)
             {
-                Debug.LogError(this + ": impossible to reach the destination point");
+                if (SearchRandomNavMeshPoint(() => RandomInsideSpherePoint(spawnPoint, Stats.WanderingRadius), Stats.WanderingRadius * 2, out navMeshPoint)
+                    && navMeshAgent.SetDestination(navMeshPoint))
+                {
+                    return BehaviourState.Roaming;
+                }
             }
 
-            return BehaviourState.Roaming;
+            Debug.LogError(this + ": impossible to reach the destination point in SetRoamingState method");
+            return BehaviourState.Idling;
+        }
+
+        private BehaviourState SetBattleCirclingState(HellHoundModel model)
+        {
+            Debug.Log("The dog is battle circling");
+
+            model.NavMeshAgent.stoppingDistance = 0;
+            model.NavMeshAgent.updateRotation = false;
+            model.BattleCirclingTimer = Random.Range(Stats.BattleCirclingMinTime, Stats.BattleCirclingMaxTime);
+            model.NavMeshAgent.speed = Stats.BattleCirclingSpeed;
+            model.NavMeshAgent.acceleration = Stats.Acceleration;
+
+            Vector3 navMeshPoint;
+            if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.BattleCirclingRadius), Stats.BattleCirclingRadius * 2, out navMeshPoint)
+                || !model.NavMeshAgent.SetDestination(navMeshPoint))
+            {
+                Debug.LogWarning(this + ": impossible to reach the destination point in SetBattleCirclingState method");
+                return SetChasingState(model.NavMeshAgent);
+            }
+
+            model.Animator.SetBool("BattleCircling", true);
+            return BehaviourState.BattleCircling;
         }
 
         public BehaviourState SetChasingState(NavMeshAgent navMeshAgent)
@@ -324,6 +334,7 @@ namespace BeastHunter
             navMeshAgent.stoppingDistance = Stats.StoppingDistance;
             navMeshAgent.acceleration = Stats.Acceleration;
             navMeshAgent.speed = Stats.MaxChasingSpeed;
+
             return BehaviourState.Chasing;
         }
 
@@ -349,6 +360,24 @@ namespace BeastHunter
             model.Animator.Play("JumpBack");
 
             return BehaviourState.JumpingBack;
+        }
+
+        private BehaviourState SetEscapingState(HellHoundModel model)
+        {
+            Debug.Log("The dog is escaping");
+
+            model.NavMeshAgent.acceleration = Stats.MaxChasingSpeed * 2;
+            model.NavMeshAgent.stoppingDistance = 0;
+
+            Vector3 navMeshpoint;
+            if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.EscapeDistance), Stats.EscapeDistance * 2, out navMeshpoint)
+                || !model.NavMeshAgent.SetDestination(navMeshpoint))
+            {
+                Debug.LogWarning(this + ": impossible to reach the destination point in SetEscapingState method");
+                return SetChasingState(model.NavMeshAgent);
+            }
+
+            return BehaviourState.Escaping;
         }
 
         private void Jump(Animator animator)
@@ -387,25 +416,19 @@ namespace BeastHunter
             return rotatePosition2 - rotatePosition1;
         }
 
-        private bool RandomDestination(NavMeshAgent navMeshAgent, Func<Vector3> randomPointFunc, float searchDistance, int attemptsAmount)
+        private Vector3 RandomInsideSpherePoint(Vector3 center, float radius)
         {
-            Vector3 navMeshPoint;
-            for (int i = 0; i < attemptsAmount; i++)
-            {
-                if (!SearchNavMesh(randomPointFunc, searchDistance, out navMeshPoint))
-                {
-                    Debug.LogError(this + ": could not find NavMesh point");
-                    return false;
-                }
-                if (navMeshAgent.SetDestination(navMeshPoint))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return Random.insideUnitSphere * radius + center;
         }
 
-        private bool SearchNavMesh(Func<Vector3> randomPointFunc, float searchDistance, out Vector3 navMeshPoint)
+        private Vector3 RandomBorderCirclePoint(Vector3 center, float radius)
+        {
+            Vector2 center2D = new Vector2(center.x, center.z);
+            Vector2 randomPoint = new Vector2(Random.value - 0.5f, Random.value - 0.5f).normalized * radius + center2D;
+            return new Vector3(randomPoint.x, center.y, randomPoint.y);
+        }
+
+        private bool SearchRandomNavMeshPoint(Func<Vector3> randomPointFunc, float searchDistance, out Vector3 navMeshPoint)
         {
             navMeshPoint = default;
             NavMeshHit navMeshHit;
@@ -417,7 +440,13 @@ namespace BeastHunter
                     return true;
                 }
             }
+            Debug.LogError(this + ": could not find NavMesh point");
             return false;
+        }
+
+        private float CurrentHealthPercent(float currentHealth)
+        {
+            return currentHealth * 100 / BaseStats.MainStats.MaxHealth;
         }
 
         private Quaternion SmoothTurn(Vector3 targetDirection, Vector3 forward, float speed)

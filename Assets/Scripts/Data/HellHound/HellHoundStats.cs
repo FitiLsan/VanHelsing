@@ -17,7 +17,13 @@ namespace BeastHunter
         public float PhysicalDamage;
         public float StunProbability;
 
+        [Header("Escape")]
+        [Tooltip("Must be greater than a detection radius")]
+        public float EscapeDistance;
+        public float PercentEscapeHealth;
+
         [Header("Attacks")]
+        public float AttacksTurnSpeed;
         public float AttacksMaxDistance;
         public float AttackJumpMaxDistance;
         public float AttackJumpMinDistance;

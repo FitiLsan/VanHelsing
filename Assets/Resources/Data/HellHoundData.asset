@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseStats:
     MainStats:
-      _maxHealth: 500
+      _maxHealth: 300
       _enemyType: 0
       _healthPoints: 0
       _physicalPower: 0
@@ -30,6 +30,9 @@ MonoBehaviour:
     JumpingSpeedRate: 1.2
     PhysicalDamage: 0
     StunProbability: 0
+    EscapeDistance: 30
+    PercentEscapeHealth: 30
+    AttacksTurnSpeed: 0.5
     AttacksMaxDistance: 1.5
     AttackJumpMaxDistance: 3
     AttackJumpMinDistance: 2.5
@@ -38,7 +41,7 @@ MonoBehaviour:
     BackJumpSpeed: 5
     BackJumpAnimationSpeedRate: 2
     BackJumpAnimationIntensity: 0.5
-    BattleCirclingRadius: 5
+    BattleCirclingRadius: 3
     BattleCirclingSpeed: 3
     BattleCirclingMinTime: 1
     BattleCirclingMaxTime: 3
