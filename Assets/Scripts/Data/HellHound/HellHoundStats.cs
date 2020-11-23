@@ -52,6 +52,12 @@ namespace BeastHunter
         [Tooltip ("The percentage of health at which the escape state is enabled. Default: 30.0")]
         public float PercentEscapeHealth;
 
+        [Header("Searching")]
+        [Tooltip("The time during which the dog searches for the player. Default: 45.0")]
+        public float SearchingTime;
+        [Tooltip("Dog movement speed during search. Default: 5.0")]
+        public float SearchingSpeed;
+
         [Header("BackJumping")]
         [Tooltip ("Distance at which the jump will occur. Default: 1.0")]
         public float BackJumpDistance;

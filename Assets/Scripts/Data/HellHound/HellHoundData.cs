@@ -88,6 +88,8 @@ namespace BeastHunter
             Stats.RestingChance = 10.0f;
             Stats.IdlingMinTime = 5.0f;
             Stats.IdlingMaxTime = 10.0f;
+            Stats.SearchingTime = 45.0f;
+            Stats.SearchingSpeed = 5.0f;
     }
 
         #endregion
@@ -131,7 +133,7 @@ namespace BeastHunter
 
                     if (rollDice < Stats.RoamingChance)
                     {
-                        selectedState = SetRoamingState(model.NavMeshAgent, model.SpawnPoint);
+                        selectedState = SetRoamingState(model.NavMeshAgent, model.SpawnPoint, ref model.IdlingTimer);
                     }
                     else
                     {
@@ -293,7 +295,25 @@ namespace BeastHunter
 
                 case BehaviourState.Searching:
 
-                    //придумать логику выхода из состояния
+                    if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
+                    {
+                        Vector3 navMeshPoint;
+                        for (int i = 0; i < 100; i++)
+                        {
+                            if (!SearchRandomNavMeshPoint(() => RandomInsideSpherePoint(model.SpawnPoint, Stats.WanderingRadius), Stats.WanderingRadius * 2, out navMeshPoint)
+                                || !model.NavMeshAgent.SetDestination(navMeshPoint))
+                            {
+                                Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Searching");
+                                model.BehaviourState = SetIdlingState(ref model.IdlingTimer);
+                            }
+                        }
+                    }
+
+                    model.SearchingTimer -= Time.deltaTime;
+                    if (model.SearchingTimer <= 0)
+                    {
+                        model.BehaviourState = BehaviourState.None;
+                    }
 
                     break;
             }
@@ -309,7 +329,7 @@ namespace BeastHunter
             return BehaviourState.Idling;
         }
 
-        private BehaviourState SetRoamingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint)
+        private BehaviourState SetRoamingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint, ref float timer)
         {
             Debug.Log("The dog is roaming");
 
@@ -327,7 +347,7 @@ namespace BeastHunter
             }
 
             Debug.LogError(this + ": impossible to reach the destination point in SetRoamingState method");
-            return BehaviourState.Idling;
+            return SetIdlingState(ref timer);
         }
 
         private BehaviourState SetRestingState(Animator animator, ref float restingTimer)
@@ -418,11 +438,12 @@ namespace BeastHunter
             return BehaviourState.Escaping;
         }
 
-        private BehaviourState SetSearchingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint)
+        private BehaviourState SetSearchingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint, ref float timer)
         {
             Debug.Log("The dog is searching");
 
-            navMeshAgent.speed = 5; //max searching speed
+            timer = Stats.SearchingTime;
+            navMeshAgent.speed = Stats.SearchingSpeed;
             navMeshAgent.acceleration = Stats.Acceleration;
 
             Vector3 navMeshPoint;
@@ -435,8 +456,8 @@ namespace BeastHunter
                 }
             }
 
-            Debug.LogError(this + ": impossible to reach the destination point in SetRoamingState method");
-            return BehaviourState.Idling;
+            Debug.LogError(this + ": impossible to reach the destination point in SetSearchingState method");
+            return SetIdlingState(ref timer);
         }
 
         private void Jump(Animator animator)
@@ -540,7 +561,7 @@ namespace BeastHunter
                 || hellHoundModel.BehaviourState == BehaviourState.Idling
                 || hellHoundModel.BehaviourState == BehaviourState.Resting))
             {
-                hellHoundModel.BehaviourState = SetSearchingState(hellHoundModel.NavMeshAgent, hellHoundModel.SpawnPoint);
+                hellHoundModel.BehaviourState = SetSearchingState(hellHoundModel.NavMeshAgent, hellHoundModel.SpawnPoint, ref hellHoundModel.SearchingTimer);
             }
         }
 

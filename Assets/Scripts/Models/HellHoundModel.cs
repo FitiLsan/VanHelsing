@@ -24,6 +24,7 @@ namespace BeastHunter
         public bool IsAttacking;
         public float BattleCirclingTimer;
         public float RestingTimer;
+        public float SearchingTimer;
 
         public float RotatePosition1;
         public float RotatePosition2;
