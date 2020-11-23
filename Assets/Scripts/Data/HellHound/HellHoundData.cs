@@ -28,6 +28,26 @@ namespace BeastHunter
         #endregion
 
 
+        #region Debug messages
+
+        private Action NoneStateMsg;
+        private Action IdlingStateMsg;
+        private Action RoamingStateMsg;
+        private Action RestingStateMsg;
+        private Action ChasingStateMsg;
+        private Action BackJumpingStateMsg;
+        private Action BattleCirclingStateMsg;
+        private Action SearchingStateMsg;
+        private Action EscapingStateMsg;
+        private Action TakingDamageMsg;
+        private Action JumpingMsg;
+        private Action AttackJumpingMsg;
+        private Action AttackDirectMsg;
+        private Action AttackBottomMsg;
+
+        #endregion
+
+
         #region Constants
 
         private const float CHASING_TURN_SPEED_NEAR_TARGET = 0.1f;
@@ -58,6 +78,7 @@ namespace BeastHunter
 
         public HellHoundData()
         {
+            Stats.DebugMessages = false;
             Stats.WanderingRadius = 50.0f;
             Stats.DetectionRadius = 20.0f;
             Stats.EscapeDistance = 30.0f;
@@ -90,6 +111,7 @@ namespace BeastHunter
             Stats.IdlingMaxTime = 10.0f;
             Stats.SearchingTime = 45.0f;
             Stats.SearchingSpeed = 5.0f;
+            Stats.EscapingSpeed = 7.0f;
     }
 
         #endregion
@@ -107,7 +129,9 @@ namespace BeastHunter
             sqrtEscapeDistance = Stats.EscapeDistance > Stats.DetectionRadius ?
                 Stats.EscapeDistance * Stats.EscapeDistance :
                 Stats.DetectionRadius * Stats.DetectionRadius + Stats.DetectionRadius * 0.2f;
-        }
+
+            DebugMessages(Stats.DebugMessages);
+    }
 
         #endregion
 
@@ -126,7 +150,7 @@ namespace BeastHunter
             {
                 case BehaviourState.None:
 
-                    Debug.Log("State selection");
+                    NoneStateMsg?.Invoke();
 
                     BehaviourState selectedState;
                     float rollDice = Random.Range(1, 100);
@@ -232,6 +256,7 @@ namespace BeastHunter
 
                     if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
                     {
+                        model.Animator.SetBool("BattleCircling", false);
                         model.BehaviourState = SetEscapingState(model.NavMeshAgent, model.ChasingTarget.position);
                     }
                     else
@@ -321,7 +346,7 @@ namespace BeastHunter
 
         private BehaviourState SetIdlingState(ref float timer)
         {
-            Debug.Log("The dog is idling");
+            IdlingStateMsg?.Invoke();
 
             timer = Random.Range(Stats.IdlingMinTime, Stats.IdlingMaxTime);
             Debug.Log("Idling time = " + timer);
@@ -331,7 +356,7 @@ namespace BeastHunter
 
         private BehaviourState SetRoamingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint, ref float timer)
         {
-            Debug.Log("The dog is roaming");
+            RoamingStateMsg?.Invoke();
 
             navMeshAgent.speed = Stats.MaxRoamingSpeed;
             navMeshAgent.acceleration = Stats.Acceleration;
@@ -352,7 +377,7 @@ namespace BeastHunter
 
         private BehaviourState SetRestingState(Animator animator, ref float timer)
         {
-            Debug.Log("The dog is resting");
+            RestingStateMsg?.Invoke();
 
             timer = Random.Range(Stats.RestingMinTime, Stats.RestingMaxTime);
             Debug.Log("Resting timer = " + timer);
@@ -365,7 +390,7 @@ namespace BeastHunter
 
         public BehaviourState SetChasingState(NavMeshAgent navMeshAgent)
         {
-            Debug.Log("The dog is chasing");
+            ChasingStateMsg?.Invoke();
 
             navMeshAgent.updateRotation = true;
             navMeshAgent.stoppingDistance = Stats.StoppingDistance;
@@ -377,7 +402,7 @@ namespace BeastHunter
 
         private BehaviourState SetJumpingBackState(NavMeshAgent navMeshAgent, Animator animator, Rigidbody rigidbody)
         {
-            Debug.Log("The dog is jumping back");
+            BackJumpingStateMsg?.Invoke();
 
             Vector3 jumpDirection = (rigidbody.position - navMeshAgent.destination).normalized;
             Vector3 jumpPoint = rigidbody.position + jumpDirection * Stats.BackJumpLength;
@@ -401,7 +426,7 @@ namespace BeastHunter
 
         private BehaviourState SetBattleCirclingState(HellHoundModel model)
         {
-            Debug.Log("The dog is battle circling");
+            BattleCirclingStateMsg?.Invoke();
 
             model.Timer = Random.Range(Stats.BattleCirclingMinTime, Stats.BattleCirclingMaxTime);
             model.NavMeshAgent.stoppingDistance = 0;
@@ -423,9 +448,11 @@ namespace BeastHunter
 
         private BehaviourState SetEscapingState(NavMeshAgent navMeshAgent, Vector3 chasingTargetPosition)
         {
-            Debug.Log("The dog is escaping");
+            EscapingStateMsg?.Invoke();
 
+            navMeshAgent.speed = Stats.EscapingSpeed;
             navMeshAgent.stoppingDistance = 0;
+            navMeshAgent.updateRotation = true;
 
             Vector3 navMeshpoint;
             if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(chasingTargetPosition, Stats.EscapeDistance), Stats.EscapeDistance * 2, out navMeshpoint)
@@ -440,7 +467,7 @@ namespace BeastHunter
 
         private BehaviourState SetSearchingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint, ref float timer)
         {
-            Debug.Log("The dog is searching");
+            SearchingStateMsg?.Invoke();
 
             timer = Stats.SearchingTime;
             navMeshAgent.speed = Stats.SearchingSpeed;
@@ -462,25 +489,25 @@ namespace BeastHunter
 
         private void Jump(Animator animator)
         {
-            Debug.Log("The dog is jumping");
+            JumpingMsg?.Invoke();
             animator.Play("Jump");
         }
 
         private void AttackJump(Animator animator)
         {
-            Debug.Log("The dog is jumping attack");
+            AttackJumpingMsg?.Invoke();
             animator.Play("AttackJump");
         }
 
         private void AttackDirect(Animator animator)
         {
-            Debug.Log("The dog is attacking direct");
+            AttackDirectMsg?.Invoke();
             animator.Play("AttackDirect");
         }
 
         private void AttackBottom(Animator animator)
         {
-            Debug.Log("The dog is attacking bottom");
+            AttackBottomMsg?.Invoke();
             animator.Play("AttackBottom");
         }
 
@@ -546,7 +573,7 @@ namespace BeastHunter
             HellHoundModel hellHoundModel = model as HellHoundModel;
             base.TakeDamage(model, damage);
 
-            Debug.Log("The dog is taking damage");
+            TakingDamageMsg?.Invoke();
             hellHoundModel.Animator.SetTrigger("TakeDamage");
 
             if (model.IsDead)
@@ -562,6 +589,29 @@ namespace BeastHunter
                 || hellHoundModel.BehaviourState == BehaviourState.Resting))
             {
                 hellHoundModel.BehaviourState = SetSearchingState(hellHoundModel.NavMeshAgent, hellHoundModel.SpawnPoint, ref hellHoundModel.Timer);
+            }
+        }
+
+        /// <summary>Subscribes to message delegates</summary>
+        /// <param name="switcher">on/off debug messages</param>
+        private void DebugMessages(bool switcher)
+        {
+            if (switcher)
+            {
+                NoneStateMsg = () => Debug.Log("State selection");
+                IdlingStateMsg = () => Debug.Log("The dog is idling");
+                RoamingStateMsg = () => Debug.Log("The dog is roaming");
+                RestingStateMsg = () => Debug.Log("The dog is resting");
+                ChasingStateMsg = () => Debug.Log("The dog is chasing");
+                BackJumpingStateMsg = () => Debug.Log("The dog is jumping back");
+                BattleCirclingStateMsg = () => Debug.Log("The dog is battle circling");
+                SearchingStateMsg = () => Debug.Log("The dog is searching");
+                EscapingStateMsg = () => Debug.Log("The dog is escaping");
+                TakingDamageMsg = () => Debug.Log("The dog is taking damage");
+                JumpingMsg = () => Debug.Log("The dog is jumping");
+                AttackJumpingMsg = () => Debug.Log("The dog is jumping attack");
+                AttackDirectMsg = () => Debug.Log("The dog is attacking direct");
+                AttackBottomMsg = () => Debug.Log("The dog is attacking bottom");
             }
         }
 

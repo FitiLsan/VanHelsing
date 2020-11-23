@@ -9,6 +9,8 @@ namespace BeastHunter
     {
         #region Properties
 
+        [Tooltip ("Display debugging messages")]
+        public bool DebugMessages;
         [Tooltip ("The radius the dog will move away from the spawn point. Default: 50.0")]
         public float WanderingRadius;
         [Tooltip ("Player detection radius. Default: 30.0")]
@@ -51,6 +53,8 @@ namespace BeastHunter
         public float EscapeDistance;
         [Tooltip ("The percentage of health at which the escape state is enabled. Default: 30.0")]
         public float PercentEscapeHealth;
+        [Tooltip ("The maximum speed at which the dog runs away. Default: 7.0")]
+        public float EscapingSpeed;
 
         [Header("Searching")]
         [Tooltip("The time during which the dog searches for the player. Default: 45.0")]

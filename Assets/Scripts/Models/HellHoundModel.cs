@@ -8,6 +8,15 @@ namespace BeastHunter
 {
     public sealed class HellHoundModel : EnemyModel
     {
+        #region DebugMessages
+
+        private Action<InteractableObjectBehavior> OnHitEnemyMsg;
+        private Action<string> OnDetectionEnemyMsg;
+        private Action OnLostSightEnemyMsg;
+
+        #endregion
+
+
         #region Fields
 
         private HellHoundData hellHoundData;
@@ -91,6 +100,8 @@ namespace BeastHunter
 
             CurrentHealth = this.hellHoundData.BaseStats.MainStats.MaxHealth;
             IsDead = false;
+
+            DebugMessages(false);
         }
 
         #endregion
@@ -115,7 +126,7 @@ namespace BeastHunter
             };
 
             InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();
-            Debug.Log("The dog is deal damage to " + enemy);
+            OnHitEnemyMsg?.Invoke(enemy);
 
             if (enemy != null) weaponIO.DealDamageEvent(enemy, damage);
             else Debug.LogError(this + " not found enemy InteractableObjectBehavior");
@@ -144,7 +155,7 @@ namespace BeastHunter
 
         private void OnDetectionEnemy(ITrigger trigger, Collider collider)
         {
-            Debug.Log("The dog noticed " + collider.name);
+            OnDetectionEnemyMsg?.Invoke(collider.name);
             ChasingTarget = collider.transform;
             BehaviourState = hellHoundData.SetChasingState(NavMeshAgent);
         }
@@ -153,7 +164,7 @@ namespace BeastHunter
         {
             if (collider.transform.Equals(ChasingTarget))
             {
-                Debug.Log("The dog lost sight of the target");
+                OnLostSightEnemyMsg?.Invoke();
                 ChasingTarget = null;
                 BehaviourState = HellHoundData.BehaviourState.None;
             }
@@ -178,6 +189,18 @@ namespace BeastHunter
             }
             if (result.Count == 0) Debug.LogWarning(this + " not found InteractableObjects of type " + type);
             return result;
+        }
+
+        /// <summary>Subscribes to message delegates</summary>
+        /// <param name="switcher">on/off debug messages</param>
+        private void DebugMessages(bool switcher)
+        {
+            if (switcher)
+            {
+                OnHitEnemyMsg = (enemy) => Debug.Log("The dog is deal damage to " + enemy);
+                OnDetectionEnemyMsg = (colliderName) => Debug.Log("The dog noticed " + colliderName);
+                OnLostSightEnemyMsg = () => Debug.Log("The dog lost sight of the target");
+            }
         }
 
         #endregion

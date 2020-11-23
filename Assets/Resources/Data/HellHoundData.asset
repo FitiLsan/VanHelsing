@@ -25,23 +25,27 @@ MonoBehaviour:
       _baseDefense: 0
     Prefab: {fileID: 7253339370346634, guid: 0221e3a4b68cc0b4da68fd85936de268, type: 3}
   Stats:
+    DebugMessages: 0
     WanderingRadius: 50
-    DetectionRadius: 1
-    JumpingSpeedRate: 1.2
+    DetectionRadius: 20
     RoamingChance: 75
-    RestingChance: 10
-    IdlingMinTime: 5
-    IdlingMaxTime: 10
-    RestingMinTime: 30
-    RestingMaxTime: 60
+    JumpingSpeedRate: 1.2
     PhysicalDamage: 0
     StunProbability: 0
-    EscapeDistance: 30
-    PercentEscapeHealth: 30
     AttacksTurnSpeed: 0.5
     AttacksMaxDistance: 1.5
     AttackJumpMaxDistance: 3
     AttackJumpMinDistance: 2.5
+    IdlingMinTime: 5
+    IdlingMaxTime: 10
+    RestingChance: 10
+    RestingMinTime: 30
+    RestingMaxTime: 60
+    EscapeDistance: 30
+    PercentEscapeHealth: 50
+    EscapingSpeed: 7
+    SearchingTime: 45
+    SearchingSpeed: 5
     BackJumpDistance: 1
     BackJumpLength: 1.5
     BackJumpSpeed: 5
