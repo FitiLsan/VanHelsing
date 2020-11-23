@@ -133,7 +133,7 @@ namespace BeastHunter
 
                     if (rollDice < Stats.RoamingChance)
                     {
-                        selectedState = SetRoamingState(model.NavMeshAgent, model.SpawnPoint, ref model.IdlingTimer);
+                        selectedState = SetRoamingState(model.NavMeshAgent, model.SpawnPoint, ref model.Timer);
                     }
                     else
                     {
@@ -141,11 +141,11 @@ namespace BeastHunter
 
                         if (rollDice < Stats.RestingChance)
                         {
-                            selectedState = SetRestingState(model.Animator, ref model.RestingTimer);
+                            selectedState = SetRestingState(model.Animator, ref model.Timer);
                         }
                         else
                         {
-                            selectedState = SetIdlingState(ref model.IdlingTimer);
+                            selectedState = SetIdlingState(ref model.Timer);
                         }
                     }
                     model.BehaviourState = selectedState;
@@ -163,8 +163,8 @@ namespace BeastHunter
 
                 case BehaviourState.Idling:
 
-                    model.IdlingTimer -= Time.deltaTime;
-                    if(model.IdlingTimer <= 0)
+                    model.Timer -= Time.deltaTime;
+                    if(model.Timer <= 0)
                     { 
                         model.BehaviourState = BehaviourState.None;
                     }
@@ -249,8 +249,8 @@ namespace BeastHunter
 
                         model.Transform.rotation = SmoothTurn(model.ChasingTarget.position - model.Rigidbody.position, model.Transform.forward, CHASING_TURN_SPEED_NEAR_TARGET);
 
-                        model.BattleCirclingTimer -= Time.deltaTime;
-                        if (model.BattleCirclingTimer <= 0)
+                        model.Timer -= Time.deltaTime;
+                        if (model.Timer <= 0)
                         {
                             model.Animator.SetBool("BattleCircling", false);
                             model.BehaviourState = SetChasingState(model.NavMeshAgent);
@@ -284,8 +284,8 @@ namespace BeastHunter
 
                 case BehaviourState.Resting:
 
-                    model.RestingTimer -= Time.deltaTime;
-                    if (model.RestingTimer <= 0)
+                    model.Timer -= Time.deltaTime;
+                    if (model.Timer <= 0)
                     {
                         model.Animator.SetTrigger("RestingEnd");
                         model.BehaviourState = BehaviourState.None;
@@ -304,13 +304,13 @@ namespace BeastHunter
                                 || !model.NavMeshAgent.SetDestination(navMeshPoint))
                             {
                                 Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Searching");
-                                model.BehaviourState = SetIdlingState(ref model.IdlingTimer);
+                                model.BehaviourState = SetIdlingState(ref model.Timer);
                             }
                         }
                     }
 
-                    model.SearchingTimer -= Time.deltaTime;
-                    if (model.SearchingTimer <= 0)
+                    model.Timer -= Time.deltaTime;
+                    if (model.Timer <= 0)
                     {
                         model.BehaviourState = BehaviourState.None;
                     }
@@ -319,12 +319,12 @@ namespace BeastHunter
             }
         }
 
-        private BehaviourState SetIdlingState(ref float idlingTimer)
+        private BehaviourState SetIdlingState(ref float timer)
         {
             Debug.Log("The dog is idling");
 
-            idlingTimer = Random.Range(Stats.IdlingMinTime, Stats.IdlingMaxTime);
-            Debug.Log("Idling time = " + idlingTimer);
+            timer = Random.Range(Stats.IdlingMinTime, Stats.IdlingMaxTime);
+            Debug.Log("Idling time = " + timer);
 
             return BehaviourState.Idling;
         }
@@ -350,12 +350,12 @@ namespace BeastHunter
             return SetIdlingState(ref timer);
         }
 
-        private BehaviourState SetRestingState(Animator animator, ref float restingTimer)
+        private BehaviourState SetRestingState(Animator animator, ref float timer)
         {
             Debug.Log("The dog is resting");
 
-            restingTimer = Random.Range(Stats.RestingMinTime, Stats.RestingMaxTime);
-            Debug.Log("Resting timer = " + restingTimer);
+            timer = Random.Range(Stats.RestingMinTime, Stats.RestingMaxTime);
+            Debug.Log("Resting timer = " + timer);
 
             if (Random.Range(1, 100) < 50) animator.SetTrigger("RestingSit");
             else animator.SetTrigger("RestingLie");
@@ -403,7 +403,7 @@ namespace BeastHunter
         {
             Debug.Log("The dog is battle circling");
 
-            model.BattleCirclingTimer = Random.Range(Stats.BattleCirclingMinTime, Stats.BattleCirclingMaxTime);
+            model.Timer = Random.Range(Stats.BattleCirclingMinTime, Stats.BattleCirclingMaxTime);
             model.NavMeshAgent.stoppingDistance = 0;
             model.NavMeshAgent.updateRotation = false;
             model.NavMeshAgent.speed = Stats.BattleCirclingSpeed;
@@ -561,7 +561,7 @@ namespace BeastHunter
                 || hellHoundModel.BehaviourState == BehaviourState.Idling
                 || hellHoundModel.BehaviourState == BehaviourState.Resting))
             {
-                hellHoundModel.BehaviourState = SetSearchingState(hellHoundModel.NavMeshAgent, hellHoundModel.SpawnPoint, ref hellHoundModel.SearchingTimer);
+                hellHoundModel.BehaviourState = SetSearchingState(hellHoundModel.NavMeshAgent, hellHoundModel.SpawnPoint, ref hellHoundModel.Timer);
             }
         }
 

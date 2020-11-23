@@ -19,12 +19,9 @@ namespace BeastHunter
 
         public HellHoundData.BehaviourState BehaviourState;
         public Vector3 SpawnPoint;
-        public float IdlingTimer;
         public Transform ChasingTarget;
         public bool IsAttacking;
-        public float BattleCirclingTimer;
-        public float RestingTimer;
-        public float SearchingTimer;
+        public float Timer;
 
         public float RotatePosition1;
         public float RotatePosition2;
@@ -118,7 +115,7 @@ namespace BeastHunter
             };
 
             InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();
-            Debug.Log("The dog is attacking " + enemy);
+            Debug.Log("The dog is deal damage to " + enemy);
 
             if (enemy != null) weaponIO.DealDamageEvent(enemy, damage);
             else Debug.LogError(this + " not found enemy InteractableObjectBehavior");
