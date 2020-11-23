@@ -23,6 +23,7 @@ namespace BeastHunter
         public Transform ChasingTarget;
         public bool IsAttacking;
         public float BattleCirclingTimer;
+        public float RestingTimer;
 
         public float RotatePosition1;
         public float RotatePosition2;

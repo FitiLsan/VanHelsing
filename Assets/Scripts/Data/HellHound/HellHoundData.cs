@@ -20,18 +20,14 @@ namespace BeastHunter
             Chasing,
             JumpingBack,
             BattleCircling,
-            Escaping
+            Escaping,
+            Resting
         }
 
         #endregion
 
 
         #region Constants
-
-        private const float ROAMING_CHANCE = 75.0f;
-
-        private const float IDLING_MIN_TIME = 5.0f;
-        private const float IDLING_MAX_TIME = 10.0f;
 
         private const float CHASING_TURN_SPEED_NEAR_TARGET = 0.1f;
         private const float CHASING_TURN_DISTANCE_TO_TARGET = 3.0f;
@@ -85,6 +81,12 @@ namespace BeastHunter
             Stats.BattleCirclingMinTime = 1.0f;
             Stats.BattleCirclingMaxTime = 3.0f;
             Stats.AttacksTurnSpeed = 0.5f;
+            Stats.RestingMinTime = 30.0f;
+            Stats.RestingMaxTime = 60.0f;
+            Stats.RoamingChance = 75.0f;
+            Stats.RestingChance = 10.0f;
+            Stats.IdlingMinTime = 5.0f;
+            Stats.IdlingMaxTime = 10.0f;
     }
 
         #endregion
@@ -113,9 +115,6 @@ namespace BeastHunter
         {
             float sqrDistance;
 
-            //for jump test:
-            //if (Input.GetKeyDown(KeyCode.J)) Jump(model.Animator);
-
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
             model.Animator.SetFloat("RotateDirection", rotateDirection);
             model.Animator.SetFloat("MovementSpeed", model.NavMeshAgent.velocity.sqrMagnitude);
@@ -129,13 +128,22 @@ namespace BeastHunter
                     BehaviourState selectedState;
                     float rollDice = Random.Range(1, 100);
 
-                    if (rollDice < ROAMING_CHANCE)
+                    if (rollDice < Stats.RoamingChance)
                     {
                         selectedState = SetRoamingState(model.NavMeshAgent, model.SpawnPoint);
                     }
                     else
                     {
-                        selectedState = SetIdlingState(ref model.IdlingTimer);
+                        rollDice = Random.Range(1, 100);
+
+                        if (rollDice < Stats.RestingChance)
+                        {
+                            selectedState = SetRestingState(model);
+                        }
+                        else
+                        {
+                            selectedState = SetIdlingState(ref model.IdlingTimer);
+                        }
                     }
                     model.BehaviourState = selectedState;
 
@@ -270,6 +278,17 @@ namespace BeastHunter
                     }
 
                     break;
+
+                case BehaviourState.Resting:
+
+                    model.RestingTimer -= Time.deltaTime;
+                    if (model.RestingTimer <= 0)
+                    {
+                        model.Animator.SetTrigger("RestingEnd");
+                        model.BehaviourState = BehaviourState.None;
+                    }
+
+                    break;
             }
         }
 
@@ -277,7 +296,7 @@ namespace BeastHunter
         {
             Debug.Log("The dog is idling");
 
-            idlingTimer = Random.Range(IDLING_MIN_TIME, IDLING_MAX_TIME);
+            idlingTimer = Random.Range(Stats.IdlingMinTime, Stats.IdlingMaxTime);
             Debug.Log("Idling time = " + idlingTimer);
 
             return BehaviourState.Idling;
@@ -304,26 +323,17 @@ namespace BeastHunter
             return BehaviourState.Idling;
         }
 
-        private BehaviourState SetBattleCirclingState(HellHoundModel model)
+        private BehaviourState SetRestingState(HellHoundModel model)
         {
-            Debug.Log("The dog is battle circling");
+            Debug.Log("The dog is resting");
 
-            model.NavMeshAgent.stoppingDistance = 0;
-            model.NavMeshAgent.updateRotation = false;
-            model.BattleCirclingTimer = Random.Range(Stats.BattleCirclingMinTime, Stats.BattleCirclingMaxTime);
-            model.NavMeshAgent.speed = Stats.BattleCirclingSpeed;
-            model.NavMeshAgent.acceleration = Stats.Acceleration;
+            model.RestingTimer = Random.Range(Stats.RestingMinTime, Stats.RestingMaxTime);
+            Debug.Log("Resting timer = " + model.RestingTimer);
 
-            Vector3 navMeshPoint;
-            if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.BattleCirclingRadius), Stats.BattleCirclingRadius * 2, out navMeshPoint)
-                || !model.NavMeshAgent.SetDestination(navMeshPoint))
-            {
-                Debug.LogWarning(this + ": impossible to reach the destination point in SetBattleCirclingState method");
-                return SetChasingState(model.NavMeshAgent);
-            }
+            if (Random.Range(1, 100) < 50) model.Animator.SetTrigger("RestingSit");
+            else model.Animator.SetTrigger("RestingLie");
 
-            model.Animator.SetBool("BattleCircling", true);
-            return BehaviourState.BattleCircling;
+            return BehaviourState.Resting;
         }
 
         public BehaviourState SetChasingState(NavMeshAgent navMeshAgent)
@@ -346,8 +356,8 @@ namespace BeastHunter
             Vector3 jumpPoint = model.Rigidbody.position + jumpDirection * Stats.BackJumpLength;
 
             NavMeshHit navMeshHit;
-            if (!NavMesh.SamplePosition(jumpPoint, out navMeshHit, Stats.BackJumpLength*2, NavMesh.AllAreas))
-            { 
+            if (!NavMesh.SamplePosition(jumpPoint, out navMeshHit, Stats.BackJumpLength * 2, NavMesh.AllAreas))
+            {
                 Debug.LogWarning(this + "not found NavMesh point in SetJumpingBackState method");
                 return SetChasingState(model.NavMeshAgent);
             }
@@ -362,11 +372,32 @@ namespace BeastHunter
             return BehaviourState.JumpingBack;
         }
 
+        private BehaviourState SetBattleCirclingState(HellHoundModel model)
+        {
+            Debug.Log("The dog is battle circling");
+
+            model.NavMeshAgent.stoppingDistance = 0;
+            model.NavMeshAgent.updateRotation = false;
+            model.BattleCirclingTimer = Random.Range(Stats.BattleCirclingMinTime, Stats.BattleCirclingMaxTime);
+            model.NavMeshAgent.speed = Stats.BattleCirclingSpeed;
+            model.NavMeshAgent.acceleration = Stats.Acceleration;
+
+            Vector3 navMeshPoint;
+            if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.BattleCirclingRadius), Stats.BattleCirclingRadius * 2, out navMeshPoint)
+                || !model.NavMeshAgent.SetDestination(navMeshPoint))
+            {
+                Debug.LogWarning(this + ": impossible to reach the destination point in SetBattleCirclingState method");
+                return SetChasingState(model.NavMeshAgent);
+            }
+
+            model.Animator.SetBool("BattleCircling", true);
+            return BehaviourState.BattleCircling;
+        }
+
         private BehaviourState SetEscapingState(HellHoundModel model)
         {
             Debug.Log("The dog is escaping");
 
-            model.NavMeshAgent.acceleration = Stats.MaxChasingSpeed * 2;
             model.NavMeshAgent.stoppingDistance = 0;
 
             Vector3 navMeshpoint;

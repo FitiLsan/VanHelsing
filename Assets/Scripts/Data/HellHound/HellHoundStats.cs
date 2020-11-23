@@ -12,6 +12,12 @@ namespace BeastHunter
         public float WanderingRadius;
         public float DetectionRadius;
         public float JumpingSpeedRate;
+        public float RoamingChance;
+        public float RestingChance;
+        public float IdlingMinTime;
+        public float IdlingMaxTime;
+        public float RestingMinTime;
+        public float RestingMaxTime;
 
         [Header("Damage")]
         public float PhysicalDamage;
