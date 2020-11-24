@@ -45,9 +45,12 @@ namespace BeastHunter
         private Action AttackDirectMsg;
         private Action AttackBottomMsg;
         private Action OnDeadMsg;
+        private Action OnLostSightEnemyMsg;
         private Action<float> IdlingTimerMsg;
         private Action<float> RestingTimerMsg;
         private Action<float> SearchingTimerMsg;
+        private Action<string> OnDetectionEnemyMsg;
+        private Action<InteractableObjectBehavior> OnHitEnemyMsg;
 
         #endregion
 
@@ -141,6 +144,68 @@ namespace BeastHunter
 
 
         #region Methods
+
+        #region EnemyModel
+
+        public bool DetectionFilter(Collider collider)
+        {
+            InteractableObjectBehavior IOBehavior = collider.GetComponent<InteractableObjectBehavior>();
+            return !collider.isTrigger
+                && collider.CompareTag(TagManager.PLAYER) && IOBehavior != null && IOBehavior.Type == InteractableObjectType.Player;
+        }
+
+        public void OnDetectionEnemy(Collider collider, HellHoundModel model)
+        {
+            OnDetectionEnemyMsg?.Invoke(collider.name);
+            model.ChasingTarget = collider.transform;
+            model.BehaviourState = SetChasingState(model.NavMeshAgent);
+        }
+
+        public void OnLostSightEnemy(Collider collider, HellHoundModel model)
+        {
+            if (collider.transform.Equals(model.ChasingTarget))
+            {
+                OnLostSightEnemyMsg?.Invoke();
+                model.ChasingTarget = null;
+                model.BehaviourState = BehaviourState.None;
+            }
+        }
+
+        public bool OnHitEnemyFilter(Collider collider)
+        {
+            InteractableObjectBehavior IOBehavior = collider.GetComponent<InteractableObjectBehavior>();
+            return !collider.isTrigger
+                && collider.CompareTag(TagManager.PLAYER) && IOBehavior != null && IOBehavior.Type == InteractableObjectType.Player;
+        }
+
+        public void OnHitEnemy(Collider collider, HellHoundModel model)
+        {
+            Damage damage = new Damage()
+            {
+                PhysicalDamage = Stats.PhysicalDamage,
+                StunProbability = Stats.StunProbability
+            };
+
+            InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();
+            OnHitEnemyMsg?.Invoke(enemy);
+
+            if (enemy != null) model.WeaponIO.DealDamageEvent(enemy, damage);
+            else Debug.LogError(this + " not found enemy InteractableObjectBehavior");
+
+            model.AttackCollider.enabled = false;
+        }
+
+        public void OnAttackStateEnter(HellHoundModel model)
+        {
+            model.IsAttacking = true;
+            model.AttackCollider.enabled = true;
+        }
+
+        public void OnAttackStateExit(HellHoundModel model)
+        {
+            model.IsAttacking = false;
+            model.AttackCollider.enabled = false;
+        }
 
         public void Act(HellHoundModel model)
         {
@@ -344,21 +409,9 @@ namespace BeastHunter
             }
         }
 
-        /// <summary>improve braking (the dog brakes more gently)</summary>
-        /// <param name="switcher">on/off braking</param>
-        private void ImproveBraking(HellHoundModel model, bool switcher)
-        {
-            if (switcher)
-            {
-                float sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
-                model.NavMeshAgent.speed =
-                    sqrDistance <= sqrChasingBrakingMaxDistance ?
-                    (sqrDistance < sqrChasingBrakingMinDistance ?
-                    Stats.ChasingBrakingMinSpeed :
-                    sqrDistance * Stats.ChasingBrakingSpeedRate) :
-                    Stats.MaxChasingSpeed;
-            }
-        }
+        #endregion
+
+        #region SetStates
 
         private BehaviourState SetIdlingState(ref float timer)
         {
@@ -404,7 +457,7 @@ namespace BeastHunter
             return BehaviourState.Resting;
         }
 
-        public BehaviourState SetChasingState(NavMeshAgent navMeshAgent)
+        private BehaviourState SetChasingState(NavMeshAgent navMeshAgent)
         {
             ChasingStateMsg?.Invoke();
 
@@ -529,17 +582,9 @@ namespace BeastHunter
             animator.Play("AttackBottom");
         }
 
-        /// <summary>Get the direction of the turn</summary>
-        /// <param name="transform">HellHoundModel transform</param>
-        /// <param name="rotatePosition1">Previous rotation value</param>
-        /// <param name="rotatePosition2">Current rotation value</param>
-        /// <returns>If value is negative turn goes left</returns>
-        private float GetRotateDirection(Transform transform, ref float rotatePosition1, ref float rotatePosition2)
-        {
-            rotatePosition1 = rotatePosition2;
-            rotatePosition2 = transform.rotation.eulerAngles.y;
-            return rotatePosition2 - rotatePosition1;
-        }
+        #endregion
+
+        #region Helpers
 
         private Vector3 RandomInsideSpherePoint(Vector3 center, float radius)
         {
@@ -581,32 +626,31 @@ namespace BeastHunter
             return Quaternion.LookRotation(newDirection);
         }
 
-        #endregion
-
-
-        #region EnemyData
-
-        public override void TakeDamage(EnemyModel model, Damage damage)
+        /// <summary>Get the direction of the turn</summary>
+        /// <param name="transform">HellHoundModel transform</param>
+        /// <param name="rotatePosition1">Previous rotation value</param>
+        /// <param name="rotatePosition2">Current rotation value</param>
+        /// <returns>If value is negative turn goes left</returns>
+        private float GetRotateDirection(Transform transform, ref float rotatePosition1, ref float rotatePosition2)
         {
-            HellHoundModel hellHoundModel = model as HellHoundModel;
-            base.TakeDamage(model, damage);
+            rotatePosition1 = rotatePosition2;
+            rotatePosition2 = transform.rotation.eulerAngles.y;
+            return rotatePosition2 - rotatePosition1;
+        }
 
-            TakingDamageMsg?.Invoke();
-            hellHoundModel.Animator.SetTrigger("TakeDamage");
-
-            if (model.IsDead)
+        /// <summary>improve braking (the dog brakes more gently)</summary>
+        /// <param name="switcher">on/off braking</param>
+        private void ImproveBraking(HellHoundModel model, bool switcher)
+        {
+            if (switcher)
             {
-                OnDeadMsg?.Invoke();
-                hellHoundModel.Animator.SetTrigger("Dead");
-                hellHoundModel.NavMeshAgent.enabled = false;
-            }
-
-            if (hellHoundModel.ChasingTarget == null
-                && (hellHoundModel.BehaviourState == BehaviourState.Roaming 
-                || hellHoundModel.BehaviourState == BehaviourState.Idling
-                || hellHoundModel.BehaviourState == BehaviourState.Resting))
-            {
-                hellHoundModel.BehaviourState = SetSearchingState(hellHoundModel.NavMeshAgent, hellHoundModel.SpawnPoint, ref hellHoundModel.Timer);
+                float sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
+                model.NavMeshAgent.speed =
+                    sqrDistance <= sqrChasingBrakingMaxDistance ?
+                    (sqrDistance < sqrChasingBrakingMinDistance ?
+                    Stats.ChasingBrakingMinSpeed :
+                    sqrDistance * Stats.ChasingBrakingSpeedRate) :
+                    Stats.MaxChasingSpeed;
             }
         }
 
@@ -634,6 +678,40 @@ namespace BeastHunter
                 IdlingTimerMsg = (timer) => Debug.Log("Idling time = " + timer);
                 RestingTimerMsg = (timer) => Debug.Log("Resting timer = " + timer);
                 SearchingTimerMsg = (timer) => Debug.Log("Searching timer = " + timer);
+                OnHitEnemyMsg = (enemy) => Debug.Log("The dog is deal damage to " + enemy);
+                OnDetectionEnemyMsg = (colliderName) => Debug.Log("The dog noticed " + colliderName);
+                OnLostSightEnemyMsg = () => Debug.Log("The dog lost sight of the target");
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+
+        #region EnemyData
+
+        public override void TakeDamage(EnemyModel model, Damage damage)
+        {
+            HellHoundModel hellHoundModel = model as HellHoundModel;
+            base.TakeDamage(model, damage);
+
+            TakingDamageMsg?.Invoke();
+            hellHoundModel.Animator.SetTrigger("TakeDamage");
+
+            if (model.IsDead)
+            {
+                OnDeadMsg?.Invoke();
+                hellHoundModel.Animator.SetTrigger("Dead");
+                hellHoundModel.NavMeshAgent.enabled = false;
+            }
+
+            if (hellHoundModel.ChasingTarget == null
+                && (hellHoundModel.BehaviourState == BehaviourState.Roaming 
+                || hellHoundModel.BehaviourState == BehaviourState.Idling
+                || hellHoundModel.BehaviourState == BehaviourState.Resting))
+            {
+                hellHoundModel.BehaviourState = SetSearchingState(hellHoundModel.NavMeshAgent, hellHoundModel.SpawnPoint, ref hellHoundModel.Timer);
             }
         }
 
