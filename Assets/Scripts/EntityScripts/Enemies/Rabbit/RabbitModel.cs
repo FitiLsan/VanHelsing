@@ -49,18 +49,11 @@ namespace BeastHunter
 
                 DangerousObjects = new List<Transform>();
                 NextCoord = rabbitData.RandomNextCoord(RabbitTransform, RabbitStartPosition, DangerousObjects);
-                if (rabbitData.RabbitStats.CanIdle)
-                {
-                    RabbitState = RabbitData.BehaviourState.Idling;
-                }
-                else
-                {
-                    RabbitState = RabbitData.BehaviourState.Roaming;
-                }
+                RabbitState = RabbitData.BehaviourState.Roaming;
             }
             else
             {
-                Debug.LogError("Invalid Rabbit prefab: no Rigidbody");
+                // Debug.LogError("Invalid Rabbit prefab: no Rigidbody");
             }
         }
 

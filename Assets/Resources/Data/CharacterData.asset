@@ -19,8 +19,8 @@ MonoBehaviour:
     _instanceLayer: 8
     _characterAnimator: {fileID: 9100000, guid: 71768c8e0d54fb34396989829cda6ca1,
       type: 2}
-    _instantiatePosition: {x: 10, y: 2, z: 10}
-    _instantiateDirection: -40
+    _instantiatePosition: {x: 10, y: 20, z: 10}
+    _instantiateDirection: 0
     _rigitbodyMass: 1
     _rigitbodyDrag: 0
     _rigitbodyAngularDrag: 0.05
@@ -61,6 +61,6 @@ MonoBehaviour:
     _rollFrameDistance: 5.55
     _rollAnimationSpeed: 1
   _characterStatsSettings:
-    _physicalPower: 2
+    _physicalPower: 10
     _physicalDamageResistance: 0.25
     _stunProbabilityResistance: 0.075

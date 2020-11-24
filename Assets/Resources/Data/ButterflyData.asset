@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9dea14c6996633c46a662ee466e83b72, type: 3}
-  m_Name: RabbitData
+  m_Name: ButterflyData
   m_EditorClassIdentifier: 
   BaseStats:
-    MaxHealth: 10
+    MaxHealth: 1
     BaseStats:
-      _physicalPower: 0
+      _physicalPower: 10
       _physicalDamageResistance: 0
       _stunProbabilityResistance: 0
-    Prefab: {fileID: 6850293822335465738, guid: 635352c46b7621145938ab221e63e0d1,
+    Prefab: {fileID: 3228841119783048552, guid: 0d5642ad868acb14ab3315f9abd06aa3,
       type: 3}
   RabbitStats:
     RunningRadius: 10
-    MoveSpeed: 0.5
-    JumpHeight: 2
-    ViewRadius: 3
-    ViewAngle: 100
-    CanIdle: 1
+    MoveSpeed: 492.89
+    JumpHeight: 0
+    ViewRadius: 5
+    ViewAngle: 180
+    CanIdle: 0
