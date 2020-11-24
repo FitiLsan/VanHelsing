@@ -21,9 +21,9 @@ namespace BeastHunter
             RabbitModel rabbit = new RabbitModel(instance, RabbitData);
             _context.EnemyModels.Add(instance.GetInstanceID(), rabbit);
 
-            //GameObject instance2 = GameObject.Instantiate(RabbitData.RabbitStruct.Prefab, new Vector3(2, 0.5f, 2), Quaternion.identity);
-            //RabbitModel Rabbit2 = new RabbitModel(instance2, RabbitData);
-            //_context.RabbitModels.Add(Rabbit2);
+            // GameObject instance2 = GameObject.Instantiate(RabbitData.BaseStats.Prefab, new Vector3(2, 100, 2), Quaternion.identity);
+            // RabbitModel Rabbit2 = new RabbitModel(instance2, RabbitData);
+            // _context.EnemyModels.Add(instance.GetInstanceID() + 1, Rabbit2);
         }
 
         #endregion
