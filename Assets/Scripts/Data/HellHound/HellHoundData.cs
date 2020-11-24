@@ -44,20 +44,9 @@ namespace BeastHunter
         private Action AttackJumpingMsg;
         private Action AttackDirectMsg;
         private Action AttackBottomMsg;
-
-        #endregion
-
-
-        #region Constants
-
-        private const float CHASING_TURN_SPEED_NEAR_TARGET = 0.1f;
-        private const float CHASING_TURN_DISTANCE_TO_TARGET = 3.0f;
-
-        //for improve braking (the dog brakes more gently)
-        private const float CHASING_BRAKING_MAX_DISTANCE = 6.0f;
-        private const float CHASING_BRAKING_MIN_DISTANCE = 2.0f;
-        private const float CHASING_BRAKING_MIN_SPEED = 2.0f;
-        private const float CHASING_BRAKING_SPEED_RATE = 1.5f;
+        private Action<float> IdlingTimerMsg;
+        private Action<float> RestingTimerMsg;
+        private Action<float> SearchingTimerMsg;
 
         #endregion
 
@@ -69,6 +58,8 @@ namespace BeastHunter
         private float sqrtAttackJumpMaxDistance;
         private float sqrtAttackJumpMinDistance;
         private float sqrtEscapeDistance;
+        private float sqrChasingBrakingMinDistance;
+        private float sqrChasingBrakingMaxDistance;
         public HellHoundStats Stats;
 
         #endregion
@@ -112,7 +103,14 @@ namespace BeastHunter
             Stats.SearchingTime = 45.0f;
             Stats.SearchingSpeed = 5.0f;
             Stats.EscapingSpeed = 7.0f;
-    }
+            Stats.ChasingBraking = false;
+            Stats.ChasingBrakingMaxDistance = 6.0f;
+            Stats.ChasingBrakingMinDistance = 2.0f;
+            Stats.ChasingBrakingMinSpeed = 2.0f;
+            Stats.ChasingBrakingSpeedRate = 0.5f;
+            Stats.ChasingTurnSpeedNearTarget = 0.1f;
+            Stats.ChasingTurnDistanceNearTarget = 3.0f;
+        }
 
         #endregion
 
@@ -125,6 +123,8 @@ namespace BeastHunter
             sqrtAttacksMaxDistance = Stats.AttacksMaxDistance * Stats.AttacksMaxDistance;
             sqrtAttackJumpMaxDistance = Stats.AttackJumpMaxDistance * Stats.AttackJumpMaxDistance;
             sqrtAttackJumpMinDistance = Stats.AttackJumpMinDistance * Stats.AttackJumpMinDistance;
+            sqrChasingBrakingMinDistance = Stats.ChasingBrakingMinDistance * Stats.ChasingBrakingMinDistance;
+            sqrChasingBrakingMaxDistance = Stats.ChasingBrakingMaxDistance * Stats.ChasingBrakingMaxDistance;
 
             sqrtEscapeDistance = Stats.EscapeDistance > Stats.DetectionRadius ?
                 Stats.EscapeDistance * Stats.EscapeDistance :
@@ -205,21 +205,14 @@ namespace BeastHunter
                     {
                         model.NavMeshAgent.SetDestination(model.ChasingTarget.position);
 
-                        if (model.NavMeshAgent.remainingDistance <= CHASING_TURN_DISTANCE_TO_TARGET)
+                        if (model.NavMeshAgent.remainingDistance <= Stats.ChasingTurnDistanceNearTarget)
                         {
                             model.Transform.rotation = model.IsAttacking ?
-                                SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, CHASING_TURN_SPEED_NEAR_TARGET) :
-                                SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, Stats.AttacksTurnSpeed);
+                                SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, Stats.AttacksTurnSpeed) :
+                                SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, Stats.ChasingTurnSpeedNearTarget);
                         }
 
-                        ////for improve braking (the dog brakes more gently):
-                        //sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
-                        //model.NavMeshAgent.speed =
-                        //    sqrDistance <= CHASING_BRAKING_MAX_DISTANCE * CHASING_BRAKING_MAX_DISTANCE ?
-                        //    (sqrDistance < CHASING_BRAKING_MIN_DISTANCE * CHASING_BRAKING_MIN_DISTANCE ?
-                        //    CHASING_BRAKING_MIN_SPEED :
-                        //    sqrDistance * CHASING_BRAKING_SPEED_RATE) :
-                        //    Stats.MaxChasingSpeed;
+                        ImproveBraking(model, Stats.ChasingBraking);
 
                         if (!model.IsAttacking)
                         {
@@ -272,7 +265,7 @@ namespace BeastHunter
                             }
                         }
 
-                        model.Transform.rotation = SmoothTurn(model.ChasingTarget.position - model.Rigidbody.position, model.Transform.forward, CHASING_TURN_SPEED_NEAR_TARGET);
+                        model.Transform.rotation = SmoothTurn(model.ChasingTarget.position - model.Rigidbody.position, model.Transform.forward, Stats.ChasingTurnSpeedNearTarget);
 
                         model.Timer -= Time.deltaTime;
                         if (model.Timer <= 0)
@@ -344,12 +337,28 @@ namespace BeastHunter
             }
         }
 
+        /// <summary>improve braking (the dog brakes more gently)</summary>
+        /// <param name="switcher">on/off braking</param>
+        private void ImproveBraking(HellHoundModel model, bool switcher)
+        {
+            if (switcher)
+            {
+                float sqrDistance = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
+                model.NavMeshAgent.speed =
+                    sqrDistance <= sqrChasingBrakingMaxDistance ?
+                    (sqrDistance < sqrChasingBrakingMinDistance ?
+                    Stats.ChasingBrakingMinSpeed :
+                    sqrDistance * Stats.ChasingBrakingSpeedRate) :
+                    Stats.MaxChasingSpeed;
+            }
+        }
+
         private BehaviourState SetIdlingState(ref float timer)
         {
             IdlingStateMsg?.Invoke();
 
             timer = Random.Range(Stats.IdlingMinTime, Stats.IdlingMaxTime);
-            Debug.Log("Idling time = " + timer);
+            IdlingTimerMsg?.Invoke(timer);
 
             return BehaviourState.Idling;
         }
@@ -380,7 +389,7 @@ namespace BeastHunter
             RestingStateMsg?.Invoke();
 
             timer = Random.Range(Stats.RestingMinTime, Stats.RestingMaxTime);
-            Debug.Log("Resting timer = " + timer);
+            RestingTimerMsg?.Invoke(timer);
 
             if (Random.Range(1, 100) < 50) animator.SetTrigger("RestingSit");
             else animator.SetTrigger("RestingLie");
@@ -470,6 +479,8 @@ namespace BeastHunter
             SearchingStateMsg?.Invoke();
 
             timer = Stats.SearchingTime;
+            SearchingTimerMsg?.Invoke(timer);
+
             navMeshAgent.speed = Stats.SearchingSpeed;
             navMeshAgent.acceleration = Stats.Acceleration;
 
@@ -612,6 +623,9 @@ namespace BeastHunter
                 AttackJumpingMsg = () => Debug.Log("The dog is jumping attack");
                 AttackDirectMsg = () => Debug.Log("The dog is attacking direct");
                 AttackBottomMsg = () => Debug.Log("The dog is attacking bottom");
+                IdlingTimerMsg = (timer) => Debug.Log("Idling time = " + timer);
+                RestingTimerMsg = (timer) => Debug.Log("Resting timer = " + timer);
+                SearchingTimerMsg = (timer) => Debug.Log("Searching timer = " + timer);
             }
         }
 

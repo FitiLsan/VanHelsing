@@ -84,6 +84,26 @@ namespace BeastHunter
         [Tooltip ("Default: 3.0")]
         public float BattleCirclingMaxTime;
 
+        [Header("Chasing")]
+        [Tooltip("Turn rate near target. Default: 0.1")]
+        public float ChasingTurnSpeedNearTarget;
+        [Tooltip("Distance at which ChasingTurnSpeedNearTarget starts to operate. Default: 3.0")]
+        public float ChasingTurnDistanceNearTarget;
+
+        [Header("ChasingBraking")]
+        [Tooltip("Increased braking when approaching a target during chasing state." +
+            "The dog will slow down more accurately as it approaches the target," +
+            " but this behavior looks calmer. Default: false")]
+        public bool ChasingBraking;
+        [Tooltip("Braking speed rate. Default: 0.5")]
+        public float ChasingBrakingSpeedRate;
+        [Tooltip("Minimum braking speed. Default: 2.0")]
+        public float ChasingBrakingMinSpeed;
+        [Tooltip("Distance at which braking starts. Default: 6.0")]
+        public float ChasingBrakingMaxDistance;
+        [Tooltip("Distance at which minimum braking speed (ChasingBrakingMinSpeed) begins to operate. Default: 2.0")]
+        public float ChasingBrakingMinDistance;
+
         [Header("NavMeshAgent")]
         [Tooltip ("Default: 2.0")]
         public float MaxRoamingSpeed;

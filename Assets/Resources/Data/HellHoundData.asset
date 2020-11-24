@@ -55,6 +55,13 @@ MonoBehaviour:
     BattleCirclingSpeed: 3
     BattleCirclingMinTime: 1
     BattleCirclingMaxTime: 3
+    ChasingTurnSpeedNearTarget: 0.1
+    ChasingTurnDistanceNearTarget: 3
+    ChasingBraking: 0
+    ChasingBrakingSpeedRate: 0.5
+    ChasingBrakingMinSpeed: 2
+    ChasingBrakingMaxDistance: 6
+    ChasingBrakingMinDistance: 2
     MaxRoamingSpeed: 1
     MaxChasingSpeed: 10
     AngularSpeed: 450
