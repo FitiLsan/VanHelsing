@@ -27,8 +27,10 @@ namespace BeastHunter
         [Header("Attacks")]
         [Tooltip("The speed at which the dog will turn towards the player during attacks. Default: 0.5")]
         public float AttacksTurnSpeed;
-        [Tooltip ("The maximum distance from which the dog will try to attack the player, excluding jumping. Default: 1.5")]
-        public float AttacksMaxDistance;
+        [Tooltip ("The maximum distance from which the dog will try to attack direct. Default: 1.5")]
+        public float AttackDirectDistance;
+        [Tooltip("The maximum distance from which the dog will try to attack bottom. Default: 1.25")]
+        public float AttackBottomDistance;
         [Tooltip ("The maximum distance from which the dog will conduct an attacking jump. Default: 3.0")]
         public float AttackJumpMaxDistance;
         [Tooltip ("The minimum distance from which the dog will conduct an attacking jump. Default: 2.5")]

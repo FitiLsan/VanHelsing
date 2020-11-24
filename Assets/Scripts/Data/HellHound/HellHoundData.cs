@@ -44,6 +44,7 @@ namespace BeastHunter
         private Action AttackJumpingMsg;
         private Action AttackDirectMsg;
         private Action AttackBottomMsg;
+        private Action OnDeadMsg;
         private Action<float> IdlingTimerMsg;
         private Action<float> RestingTimerMsg;
         private Action<float> SearchingTimerMsg;
@@ -54,7 +55,8 @@ namespace BeastHunter
         #region Fields
 
         private float sqrtBackJumpDistance;
-        private float sqrtAttacksMaxDistance;
+        private float sqrtAttackDirectDistance;
+        private float sqrtAttackBottomDistance;
         private float sqrtAttackJumpMaxDistance;
         private float sqrtAttackJumpMinDistance;
         private float sqrtEscapeDistance;
@@ -86,7 +88,8 @@ namespace BeastHunter
             Stats.BackJumpLength = 1.5f;
             Stats.BackJumpSpeed = 5.0f;
             Stats.BackJumpDistance = 1.0f;
-            Stats.AttacksMaxDistance = 1.5f;
+            Stats.AttackDirectDistance = 1.5f;
+            Stats.AttackBottomDistance = 1.25f;
             Stats.AttackJumpMaxDistance = 3.0f;
             Stats.AttackJumpMinDistance = 2.5f;
             Stats.BattleCirclingRadius = 3.0f;
@@ -120,7 +123,8 @@ namespace BeastHunter
         private void OnEnable()
         {
             sqrtBackJumpDistance = Stats.BackJumpDistance * Stats.BackJumpDistance;
-            sqrtAttacksMaxDistance = Stats.AttacksMaxDistance * Stats.AttacksMaxDistance;
+            sqrtAttackDirectDistance = Stats.AttackDirectDistance * Stats.AttackDirectDistance;
+            sqrtAttackBottomDistance = Stats.AttackBottomDistance * Stats.AttackBottomDistance;
             sqrtAttackJumpMaxDistance = Stats.AttackJumpMaxDistance * Stats.AttackJumpMaxDistance;
             sqrtAttackJumpMinDistance = Stats.AttackJumpMinDistance * Stats.AttackJumpMinDistance;
             sqrChasingBrakingMinDistance = Stats.ChasingBrakingMinDistance * Stats.ChasingBrakingMinDistance;
@@ -222,10 +226,13 @@ namespace BeastHunter
                             {
                                 model.BehaviourState = SetJumpingBackState(model.NavMeshAgent, model.Animator, model.Rigidbody);
                             }
-                            else if (sqrDistance < sqrtAttacksMaxDistance)
+                            else if (sqrDistance < sqrtAttackBottomDistance)
                             {
-                                if (Random.Range(1, 100) < 50) AttackDirect(model.Animator);
-                                else AttackBottom(model.Animator);
+                                AttackBottom(model.Animator);
+                            }
+                            else if (sqrDistance < sqrtAttackDirectDistance)
+                            {
+                                AttackDirect(model.Animator);
                             }
                             else if (sqrDistance < sqrtAttackJumpMaxDistance && sqrDistance > sqrtAttackJumpMinDistance)
                             {
@@ -589,7 +596,7 @@ namespace BeastHunter
 
             if (model.IsDead)
             {
-                Debug.Log("Hell hound is dead");
+                OnDeadMsg?.Invoke();
                 hellHoundModel.Animator.SetTrigger("Dead");
                 hellHoundModel.NavMeshAgent.enabled = false;
             }
@@ -623,6 +630,7 @@ namespace BeastHunter
                 AttackJumpingMsg = () => Debug.Log("The dog is jumping attack");
                 AttackDirectMsg = () => Debug.Log("The dog is attacking direct");
                 AttackBottomMsg = () => Debug.Log("The dog is attacking bottom");
+                OnDeadMsg = () => Debug.Log("Hell hound is dead");
                 IdlingTimerMsg = (timer) => Debug.Log("Idling time = " + timer);
                 RestingTimerMsg = (timer) => Debug.Log("Resting timer = " + timer);
                 SearchingTimerMsg = (timer) => Debug.Log("Searching timer = " + timer);

@@ -25,7 +25,7 @@ MonoBehaviour:
       _baseDefense: 0
     Prefab: {fileID: 7253339370346634, guid: 0221e3a4b68cc0b4da68fd85936de268, type: 3}
   Stats:
-    DebugMessages: 0
+    DebugMessages: 1
     WanderingRadius: 50
     DetectionRadius: 20
     RoamingChance: 75
@@ -33,7 +33,8 @@ MonoBehaviour:
     PhysicalDamage: 0
     StunProbability: 0
     AttacksTurnSpeed: 0.5
-    AttacksMaxDistance: 1.5
+    AttackDirectDistance: 1.5
+    AttackBottomDistance: 1.25
     AttackJumpMaxDistance: 3
     AttackJumpMinDistance: 2.5
     IdlingMinTime: 5
