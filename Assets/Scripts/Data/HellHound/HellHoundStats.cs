@@ -43,7 +43,7 @@ namespace BeastHunter
         public float IdlingMaxTime;
 
         [Header("Resting")]
-        [Tooltip ("The chance is calculated from idling chance. Default: 10.0")]
+        [Tooltip ("The chance is calculated from idling chance. Default: 20.0")]
         public float RestingChance;
         [Tooltip ("Default: 30.0")]
         public float RestingMinTime;
@@ -85,6 +85,8 @@ namespace BeastHunter
         public float BattleCirclingMinTime;
         [Tooltip ("Default: 3.0")]
         public float BattleCirclingMaxTime;
+        [Tooltip("Checking distance from the enemy at which the dog will interrupt the battle circling state. Default: 5.0")]
+        public float BattleCirclingMaxDistance;
 
         [Header("Chasing")]
         [Tooltip("Turn rate near target. Default: 0.1")]

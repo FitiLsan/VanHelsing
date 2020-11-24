@@ -39,7 +39,7 @@ MonoBehaviour:
     AttackJumpMinDistance: 2.5
     IdlingMinTime: 5
     IdlingMaxTime: 10
-    RestingChance: 10
+    RestingChance: 20
     RestingMinTime: 30
     RestingMaxTime: 60
     EscapeDistance: 30
@@ -56,6 +56,7 @@ MonoBehaviour:
     BattleCirclingSpeed: 3
     BattleCirclingMinTime: 1
     BattleCirclingMaxTime: 3
+    BattleCirclingMaxDistance: 5
     ChasingTurnSpeedNearTarget: 0.1
     ChasingTurnDistanceNearTarget: 3
     ChasingBraking: 0
