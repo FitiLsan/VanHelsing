@@ -65,6 +65,7 @@ namespace BeastHunter
         private float sqrChasingBrakingMinDistance;
         private float sqrChasingBrakingMaxDistance;
         private float sqrBattleCirclingDistance;
+        private float sqrChasingTurnDistanceNearTarget;
 
         public HellHoundStats Stats;
 
@@ -135,6 +136,7 @@ namespace BeastHunter
             sqrChasingBrakingMinDistance = Stats.ChasingBrakingMinDistance * Stats.ChasingBrakingMinDistance;
             sqrChasingBrakingMaxDistance = Stats.ChasingBrakingMaxDistance * Stats.ChasingBrakingMaxDistance;
             sqrBattleCirclingDistance = Stats.BattleCirclingMaxDistance * Stats.BattleCirclingMaxDistance;
+            sqrChasingTurnDistanceNearTarget = Stats.ChasingTurnDistanceNearTarget * Stats.ChasingTurnDistanceNearTarget;
 
             DebugMessages(Stats.DebugMessages);
     }
@@ -278,7 +280,8 @@ namespace BeastHunter
                         {
                             model.NavMeshAgent.SetDestination(model.ChasingTarget.position);
 
-                            if (model.NavMeshAgent.remainingDistance <= Stats.ChasingTurnDistanceNearTarget)
+                            float sqrDistanceToEnemy = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
+                            if (sqrDistanceToEnemy <= sqrChasingTurnDistanceNearTarget)
                             {
                                 model.Transform.rotation = model.IsAttacking ?
                                     SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, Stats.AttacksTurnSpeed) :
@@ -289,7 +292,7 @@ namespace BeastHunter
 
                             if (!model.IsAttacking)
                             {
-                                float sqrDistanceToEnemy = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
+                                sqrDistanceToEnemy = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
 
                                 if (sqrDistanceToEnemy < sqrBackJumpDistance)
                                 {
