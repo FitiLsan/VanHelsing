@@ -14,7 +14,7 @@ namespace BeastHunter
 
         #endregion
 
-
+        
         #region ClassLifeCycle
 
         public InputController(GameContext context)
@@ -69,6 +69,7 @@ namespace BeastHunter
             _inputModel.inputOnButtonDown.Add("Sneak", InputEventTypes.Sneak);
             _inputModel.inputOnButtonDown.Add("TimeSkip", InputEventTypes.TimeSkipMenu);
             _inputModel.inputOnButtonDown.Add("ButtonsInfo", InputEventTypes.ButtonsInfoMenu);
+            _inputModel.inputOnButtonDown.Add("Bestiary", InputEventTypes.Bestiary);
         }
 
         #endregion
