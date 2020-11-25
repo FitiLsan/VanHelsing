@@ -28,7 +28,7 @@
             foreach (var trigger in npc)
             {
                 var npcBehaviour = trigger as InteractableObjectBehavior;
-                if (npcBehaviour.tag == TagManager.ENEMY)
+                if (npcBehaviour.Type == InteractableObjectType.Enemy)
                 {
                     //npcBehaviour.Stats = _context.NpcModels[npcBehaviour.GameObject.GetInstanceID()].GetStats().BaseStats;
                     npcBehaviour.SetDoSmthEvent(DoSmth);
@@ -68,10 +68,13 @@
             foreach (var trigger in npc)
             {
                 var npcBehavior = trigger as InteractableObjectBehavior;
-                
-                npcBehavior.DeleteDoSmthEvent(DoSmth);
-                npcBehavior.DeleteTakeDamageEvent(TakeDamage);
-                npcBehavior.DeleteDealDamageEvent(DealDamage);
+
+                if (npcBehavior.Type == InteractableObjectType.Enemy)
+                {
+                    npcBehavior.DeleteDoSmthEvent(DoSmth);
+                    npcBehavior.DeleteTakeDamageEvent(TakeDamage);
+                    npcBehavior.DeleteDealDamageEvent(DealDamage);
+                }
             }
 
             foreach (var model in _context.NpcModels)
