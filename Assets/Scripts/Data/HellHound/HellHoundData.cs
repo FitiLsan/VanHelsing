@@ -342,10 +342,10 @@ namespace BeastHunter
                         else if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
                         {
                             Vector3 navMeshPoint;
-                            if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.BattleCirclingRadius), Stats.BattleCirclingRadius * 2, out navMeshPoint)
+                            if (!RandomBorderCircleNavMeshPoint(model.ChasingTarget.position, Stats.BattleCirclingRadius, Stats.BattleCirclingRadius * 2, out navMeshPoint)
                                 || !model.NavMeshAgent.SetDestination(navMeshPoint))
                             {
-                                Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.BattleCircling");
+                                Debug.LogWarning(this + ": not found NavMesh point in case BehaviourState.BattleCircling");
                                 model.BehaviourState = ChangeState(BehaviourState.Chasing, model);
                             }
                         }
@@ -363,15 +363,26 @@ namespace BeastHunter
                         }
                         else
                         {
-                            Vector3 navMeshpoint;
+                            Vector3 navMeshPoint;
+                            bool isSetDestination = false;
+
                             for (int i = 0; i < 100; i++)
                             {
-                                if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.EscapeDistance), Stats.EscapeDistance * 2, out navMeshpoint)
-                                || !model.NavMeshAgent.SetDestination(navMeshpoint))
+                                if (!RandomBorderCircleNavMeshPoint(model.ChasingTarget.position, Stats.EscapeDistance, Stats.EscapeDistance * 2, out navMeshPoint))
                                 {
-                                    Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.Escaping");
+                                    Debug.LogError(this + ": not found NavMesh in case BehaviourState.Escaping");
                                     model.BehaviourState = ChangeState(BehaviourState.Chasing, model);
+                                    break;
                                 }
+
+                                isSetDestination = model.NavMeshAgent.SetDestination(navMeshPoint);
+                                if (isSetDestination) break;
+                            }
+
+                            if (!isSetDestination)
+                            {
+                                Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Escaping");
+                                model.BehaviourState = ChangeState(BehaviourState.Chasing, model);
                             }
                         }
                     }
@@ -393,14 +404,25 @@ namespace BeastHunter
                     if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
                     {
                         Vector3 navMeshPoint;
+                        bool isSetDestination = false;
+
                         for (int i = 0; i < 100; i++)
                         {
-                            if (!SearchRandomNavMeshPoint(() => RandomInsideSpherePoint(model.SpawnPoint, Stats.WanderingRadius), Stats.WanderingRadius * 2, out navMeshPoint)
-                                || !model.NavMeshAgent.SetDestination(navMeshPoint))
+                            if (!RandomInsideSphereNavMeshPoint(model.SpawnPoint, Stats.WanderingRadius, Stats.WanderingRadius * 2, out navMeshPoint))
                             {
-                                Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Searching");
+                                Debug.LogError(this + ": not found NavMesh in case BehaviourState.Searching");
                                 model.BehaviourState = ChangeState(BehaviourState.Idling, model);
+                                break;
                             }
+
+                            isSetDestination = model.NavMeshAgent.SetDestination(navMeshPoint);
+                            if (isSetDestination) break;
+                        }
+
+                        if (!isSetDestination)
+                        {
+                            Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Searching");
+                            model.BehaviourState = ChangeState(BehaviourState.Idling, model);
                         }
                     }
 
@@ -459,7 +481,7 @@ namespace BeastHunter
                     return BehaviourState.None;
 
                 case BehaviourState.Roaming:
-                    return SetRoamingState(model);
+                    return SetRoamingState(model.NavMeshAgent, model.SpawnPoint, ref model.Timer);
 
                 case BehaviourState.Idling:
                     return SetIdlingState(ref model.Timer);
@@ -468,19 +490,19 @@ namespace BeastHunter
                     return SetChasingState(model.NavMeshAgent);
 
                 case BehaviourState.JumpingBack:
-                    return SetJumpingBackState(model);
+                    return SetJumpingBackState(model.NavMeshAgent, model.Animator, model.Rigidbody);
 
                 case BehaviourState.BattleCircling:
-                    return SetBattleCirclingState(model);
+                    return SetBattleCirclingState(model.NavMeshAgent, model.Animator, model.ChasingTarget.position, ref model.Timer);
 
                 case BehaviourState.Escaping:
-                    return SetEscapingState(model);
+                    return SetEscapingState(model.NavMeshAgent, model.ChasingTarget.position);
 
                 case BehaviourState.Resting:
                     return SetRestingState(model.Animator, ref model.Timer);
 
                 case BehaviourState.Searching:
-                    return SetSearchingState(model);
+                    return SetSearchingState(model.NavMeshAgent, model.SpawnPoint, ref model.Timer);
 
                 default: return newState;
             }
@@ -497,25 +519,35 @@ namespace BeastHunter
             return BehaviourState.Idling;
         }
 
-        private BehaviourState SetRoamingState(HellHoundModel model)
+        private BehaviourState SetRoamingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint, ref float timer)
         {
             RoamingStateMsg?.Invoke();
 
-            model.NavMeshAgent.speed = Stats.MaxRoamingSpeed;
-            model.NavMeshAgent.acceleration = Stats.Acceleration;
+            navMeshAgent.speed = Stats.MaxRoamingSpeed;
+            navMeshAgent.acceleration = Stats.Acceleration;
 
             Vector3 navMeshPoint;
+            bool isSetDestination = false;
+
             for (int i = 0; i < 100; i++)
             {
-                if (SearchRandomNavMeshPoint(() => RandomInsideSpherePoint(model.SpawnPoint, Stats.WanderingRadius), Stats.WanderingRadius * 2, out navMeshPoint)
-                    && model.NavMeshAgent.SetDestination(navMeshPoint))
+                if (!RandomInsideSphereNavMeshPoint(spawnPoint, Stats.WanderingRadius, Stats.WanderingRadius * 2, out navMeshPoint))
                 {
-                    return BehaviourState.Roaming;
+                    Debug.LogError(this + ": not found NavMesh in SetRoamingState method");
+                    return SetIdlingState(ref timer);
                 }
+
+                isSetDestination = navMeshAgent.SetDestination(navMeshPoint);
+                if (isSetDestination) break;
             }
 
-            Debug.LogError(this + ": impossible to reach the destination point in SetRoamingState method");
-            return ChangeState(BehaviourState.Idling, model);
+            if (!isSetDestination)
+            {
+                Debug.LogError(this + ": impossible to reach the destination point in SetRoamingState method");
+                return SetIdlingState(ref timer);
+            }
+
+            return BehaviourState.Roaming;
         }
 
         private BehaviourState SetRestingState(Animator animator, ref float timer)
@@ -543,94 +575,118 @@ namespace BeastHunter
             return BehaviourState.Chasing;
         }
 
-        private BehaviourState SetJumpingBackState(HellHoundModel model)
+        private BehaviourState SetJumpingBackState(NavMeshAgent navMeshAgent, Animator animator, Rigidbody rigidbody)
         {
             BackJumpingStateMsg?.Invoke();
 
-            Vector3 jumpDirection = (model.Rigidbody.position - model.NavMeshAgent.destination).normalized;
-            Vector3 jumpPoint = model.Rigidbody.position + jumpDirection * Stats.BackJumpLength;
+            Vector3 jumpDirection = (rigidbody.position - navMeshAgent.destination).normalized;
+            Vector3 jumpPoint = rigidbody.position + jumpDirection * Stats.BackJumpLength;
 
             NavMeshHit navMeshHit;
             if (!NavMesh.SamplePosition(jumpPoint, out navMeshHit, Stats.BackJumpLength * 2, NavMesh.AllAreas))
             {
                 Debug.LogWarning(this + "not found NavMesh point in SetJumpingBackState method");
-                return ChangeState(BehaviourState.Chasing, model);
+                return SetChasingState(navMeshAgent);
             }
 
-            model.NavMeshAgent.updateRotation = false;
-            model.NavMeshAgent.stoppingDistance = 0;
-            model.NavMeshAgent.speed = Stats.BackJumpSpeed;
-            model.NavMeshAgent.acceleration = Stats.BackJumpSpeed * 10;
-            model.NavMeshAgent.SetDestination(navMeshHit.position);
-            model.Animator.Play("JumpBack");
+            navMeshAgent.updateRotation = false;
+            navMeshAgent.stoppingDistance = 0;
+            navMeshAgent.speed = Stats.BackJumpSpeed;
+            navMeshAgent.acceleration = Stats.BackJumpSpeed * 10;
+            navMeshAgent.SetDestination(navMeshHit.position);
+            animator.Play("JumpBack");
 
             return BehaviourState.JumpingBack;
         }
 
-        private BehaviourState SetBattleCirclingState(HellHoundModel model)
+        private BehaviourState SetBattleCirclingState(NavMeshAgent navMeshAgent, Animator animator, Vector3 chasingTargetPosition, ref float timer)
         {
             BattleCirclingStateMsg?.Invoke();
 
-            model.Timer = Random.Range(Stats.BattleCirclingMinTime, Stats.BattleCirclingMaxTime);
-            model.NavMeshAgent.stoppingDistance = 0;
-            model.NavMeshAgent.updateRotation = false;
-            model.NavMeshAgent.speed = Stats.BattleCirclingSpeed;
-            model.NavMeshAgent.acceleration = Stats.Acceleration;
+            timer = Random.Range(Stats.BattleCirclingMinTime, Stats.BattleCirclingMaxTime);
+            navMeshAgent.stoppingDistance = 0;
+            navMeshAgent.updateRotation = false;
+            navMeshAgent.speed = Stats.BattleCirclingSpeed;
+            navMeshAgent.acceleration = Stats.Acceleration;
 
             Vector3 navMeshPoint;
-            if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.BattleCirclingRadius), Stats.BattleCirclingRadius * 2, out navMeshPoint)
-                || !model.NavMeshAgent.SetDestination(navMeshPoint))
+            if (!RandomBorderCircleNavMeshPoint(chasingTargetPosition, Stats.BattleCirclingRadius, Stats.BattleCirclingRadius * 2, out navMeshPoint)
+                || !navMeshAgent.SetDestination(navMeshPoint))
             {
-                Debug.LogWarning(this + ": impossible to reach the destination point in SetBattleCirclingState method");
-                return ChangeState(BehaviourState.Chasing, model);
+                Debug.LogWarning(this + ": not found NavMesh point in SetBattleCirclingState method");
+                return SetChasingState(navMeshAgent);
             }
 
-            model.Animator.SetBool("BattleCircling", true);
+            animator.SetBool("BattleCircling", true);
             return BehaviourState.BattleCircling;
         }
 
-        private BehaviourState SetEscapingState(HellHoundModel model)
+        private BehaviourState SetEscapingState(NavMeshAgent navMeshAgent, Vector3 chasingTargetPosition)
         {
             EscapingStateMsg?.Invoke();
 
-            model.NavMeshAgent.speed = Stats.EscapingSpeed;
-            model.NavMeshAgent.stoppingDistance = 0;
-            model.NavMeshAgent.updateRotation = true;
+            navMeshAgent.speed = Stats.EscapingSpeed;
+            navMeshAgent.stoppingDistance = 0;
+            navMeshAgent.updateRotation = true;
 
-            Vector3 navMeshpoint;
-            if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.EscapeDistance), Stats.EscapeDistance * 2, out navMeshpoint)
-                || !model.NavMeshAgent.SetDestination(navMeshpoint))
+            Vector3 navMeshPoint;
+            bool isSetDestination = false;
+
+            for (int i = 0; i < 100; i++)
             {
-                Debug.LogWarning(this + ": impossible to reach the destination point in SetEscapingState method");
-                return ChangeState(BehaviourState.Chasing, model);
+                if (!RandomBorderCircleNavMeshPoint(chasingTargetPosition, Stats.EscapeDistance, Stats.EscapeDistance * 2, out navMeshPoint))
+                {
+                    Debug.LogError(this + ": not found NavMesh in SetEscapingState method");
+                    return SetChasingState(navMeshAgent);
+                }
+
+                isSetDestination = navMeshAgent.SetDestination(navMeshPoint);
+                if (isSetDestination) break;
+            }
+
+            if (!isSetDestination)
+            {
+                Debug.LogError(this + ": impossible to reach the destination point in SetEscapingState method");
+                return SetChasingState(navMeshAgent);
             }
 
             return BehaviourState.Escaping;
         }
 
-        private BehaviourState SetSearchingState(HellHoundModel model)
+        private BehaviourState SetSearchingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint, ref float timer)
         {
             SearchingStateMsg?.Invoke();
 
-            model.Timer = Stats.SearchingTime;
-            SearchingTimerMsg?.Invoke(model.Timer);
+            timer = Stats.SearchingTime;
+            SearchingTimerMsg?.Invoke(timer);
 
-            model.NavMeshAgent.speed = Stats.SearchingSpeed;
-            model.NavMeshAgent.acceleration = Stats.Acceleration;
+            navMeshAgent.speed = Stats.SearchingSpeed;
+            navMeshAgent.acceleration = Stats.Acceleration;
 
             Vector3 navMeshPoint;
+            bool isSetDestination = false;
+
             for (int i = 0; i < 100; i++)
             {
-                if (SearchRandomNavMeshPoint(() => RandomInsideSpherePoint(model.SpawnPoint, Stats.WanderingRadius), Stats.WanderingRadius * 2, out navMeshPoint)
-                    && model.NavMeshAgent.SetDestination(navMeshPoint))
+                if (!RandomInsideSphereNavMeshPoint(spawnPoint, Stats.WanderingRadius, Stats.WanderingRadius * 2, out navMeshPoint))
                 {
-                    return BehaviourState.Searching;
+                    Debug.LogError(this + ": not found NavMesh in SetSearchingState method");
+                    return SetIdlingState(ref timer);
                 }
+
+                isSetDestination = navMeshAgent.SetDestination(navMeshPoint);
+                if (isSetDestination) break;
             }
 
-            Debug.LogError(this + ": impossible to reach the destination point in SetSearchingState method");
-            return ChangeState(BehaviourState.Idling, model);
+            if (!isSetDestination)
+            {
+                Debug.LogError(this + ": impossible to reach the destination point in SetSearchingState method");
+                return SetIdlingState(ref timer);
+            }
+
+            return BehaviourState.Searching;
         }
+    
 
         private void Jump(Animator animator)
         {
@@ -660,31 +716,43 @@ namespace BeastHunter
 
         #region Helpers
 
-        private Vector3 RandomInsideSpherePoint(Vector3 center, float radius)
-        {
-            return Random.insideUnitSphere * radius + center;
-        }
-
-        private Vector3 RandomBorderCirclePoint(Vector3 center, float radius)
-        {
-            Vector2 center2D = new Vector2(center.x, center.z);
-            Vector2 randomPoint = new Vector2(Random.value - 0.5f, Random.value - 0.5f).normalized * radius + center2D;
-            return new Vector3(randomPoint.x, center.y, randomPoint.y);
-        }
-
-        private bool SearchRandomNavMeshPoint(Func<Vector3> randomPointFunc, float searchDistance, out Vector3 navMeshPoint)
+        private bool RandomBorderCircleNavMeshPoint(Vector3 center, float radius, float searchDistance, out Vector3 navMeshPoint)
         {
             navMeshPoint = default;
             NavMeshHit navMeshHit;
+            Vector3 randomPoint;
+            Vector2 randomPoint2D;
+            Vector2 center2D = new Vector2(center.x, center.z);
+
             for (int i = 0; i < 100; i++)
             {
-                if (NavMesh.SamplePosition(randomPointFunc.Invoke(), out navMeshHit, searchDistance, NavMesh.AllAreas))
+                randomPoint2D = new Vector2(Random.value - 0.5f, Random.value - 0.5f).normalized * radius + center2D;
+                randomPoint = new Vector3(randomPoint2D.x, center.y, randomPoint2D.y);
+
+                if (NavMesh.SamplePosition(randomPoint, out navMeshHit, searchDistance, NavMesh.AllAreas))
                 {
                     navMeshPoint = navMeshHit.position;
                     return true;
                 }
             }
-            Debug.LogError(this + ": could not find NavMesh point");
+            return false;
+        }
+
+        private bool RandomInsideSphereNavMeshPoint(Vector3 center, float radius, float searchDistance, out Vector3 navMeshPoint)
+        {
+            navMeshPoint = default;
+            NavMeshHit navMeshHit;
+            Vector3 randomPoint;
+
+            for (int i = 0; i < 100; i++)
+            {
+                randomPoint = Random.insideUnitSphere * radius + center;
+                if (NavMesh.SamplePosition(randomPoint, out navMeshHit, searchDistance, NavMesh.AllAreas))
+                {
+                    navMeshPoint = navMeshHit.position;
+                    return true;
+                }
+            }
             return false;
         }
 
