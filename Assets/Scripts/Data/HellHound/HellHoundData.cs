@@ -157,7 +157,7 @@ namespace BeastHunter
         {
             OnDetectionEnemyMsg?.Invoke(collider.name);
             model.ChasingTarget = collider.transform;
-            model.BehaviourState = SetChasingState(model.NavMeshAgent, model.Animator, model.BehaviourState);
+            model.BehaviourState = ChangeState(BehaviourState.Chasing, model);
         }
 
         public void OnLostSightEnemy(Collider collider, HellHoundModel model)
@@ -224,7 +224,7 @@ namespace BeastHunter
 
                     if (rollDice < Stats.RoamingChance)
                     {
-                        selectedState = SetRoamingState(model.NavMeshAgent, model.SpawnPoint, ref model.Timer);
+                        selectedState = ChangeState(BehaviourState.Roaming, model);
                     }
                     else
                     {
@@ -232,11 +232,11 @@ namespace BeastHunter
 
                         if (rollDice < Stats.RestingChance)
                         {
-                            selectedState = SetRestingState(model.Animator, ref model.Timer);
+                            selectedState = ChangeState(BehaviourState.Resting, model);
                         }
                         else
                         {
-                            selectedState = SetIdlingState(ref model.Timer);
+                            selectedState = ChangeState(BehaviourState.Idling, model);
                         }
                     }
                     model.BehaviourState = selectedState;
@@ -247,7 +247,7 @@ namespace BeastHunter
 
                     if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
                     {
-                        model.BehaviourState = BehaviourState.None;
+                        model.BehaviourState = ChangeState(BehaviourState.None, model);
                     }
 
                     break;
@@ -257,7 +257,7 @@ namespace BeastHunter
                     model.Timer -= Time.deltaTime;
                     if(model.Timer <= 0)
                     { 
-                        model.BehaviourState = BehaviourState.None;
+                        model.BehaviourState = ChangeState(BehaviourState.None, model);
                     }
 
                     break;
@@ -266,13 +266,13 @@ namespace BeastHunter
 
                     if (model.ChasingTarget == null)
                     {
-                        model.BehaviourState = BehaviourState.None;
+                        model.BehaviourState = ChangeState(BehaviourState.None, model);
                     }
                     else
                     {
                         if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
                         {
-                            model.BehaviourState = SetEscapingState(model);
+                            model.BehaviourState = ChangeState(BehaviourState.Escaping, model);
                         }
                         else
                         {
@@ -293,7 +293,7 @@ namespace BeastHunter
 
                                 if (sqrDistanceToEnemy < sqrBackJumpDistance)
                                 {
-                                    model.BehaviourState = SetJumpingBackState(model);
+                                    model.BehaviourState = ChangeState(BehaviourState.JumpingBack, model);
                                 }
                                 else if (sqrDistanceToEnemy < sqrAttackBottomDistance)
                                 {
@@ -317,7 +317,7 @@ namespace BeastHunter
 
                     if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
                     {
-                        model.BehaviourState = SetBattleCirclingState(model);
+                        model.BehaviourState = ChangeState(BehaviourState.BattleCircling, model);
                     }
 
                     break;
@@ -326,29 +326,27 @@ namespace BeastHunter
 
                     if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
                     {
-                        model.Animator.SetBool("BattleCircling", false);
-                        model.BehaviourState = SetEscapingState(model);
+                        model.BehaviourState = ChangeState(BehaviourState.Escaping, model);
                     }
                     else
                     {
                         model.Transform.rotation = SmoothTurn(model.ChasingTarget.position - model.Rigidbody.position, model.Transform.forward, Stats.ChasingTurnSpeedNearTarget);
 
-                        float sqrDistanceToEnemy = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
                         model.Timer -= Time.deltaTime;
+                        float sqrDistanceToEnemy = (model.ChasingTarget.position - model.Rigidbody.position).sqrMagnitude;
+
                         if (model.Timer <= 0 || sqrDistanceToEnemy > sqrBattleCirclingDistance)
                         {
-                            model.Animator.SetBool("BattleCircling", false);
-                            model.BehaviourState = SetChasingState(model.NavMeshAgent, model.Animator, model.BehaviourState);
+                            model.BehaviourState = ChangeState(BehaviourState.Chasing, model);
                         }
-
-                        if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
+                        else if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
                         {
                             Vector3 navMeshPoint;
                             if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.BattleCirclingRadius), Stats.BattleCirclingRadius * 2, out navMeshPoint)
                                 || !model.NavMeshAgent.SetDestination(navMeshPoint))
                             {
                                 Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.BattleCircling");
-                                model.BehaviourState = SetChasingState(model.NavMeshAgent, model.Animator, model.BehaviourState);
+                                model.BehaviourState = ChangeState(BehaviourState.Chasing, model);
                             }
                         }
                     }
@@ -361,16 +359,19 @@ namespace BeastHunter
                     {
                         if (model.ChasingTarget == null)
                         {
-                            model.BehaviourState = BehaviourState.None;
+                            model.BehaviourState = ChangeState(BehaviourState.None, model);
                         }
                         else
                         {
                             Vector3 navMeshpoint;
-                            if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.EscapeDistance), Stats.EscapeDistance * 2, out navMeshpoint)
-                                || !model.NavMeshAgent.SetDestination(navMeshpoint))
+                            for (int i = 0; i < 100; i++)
                             {
-                                Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.Escaping");
-                                model.BehaviourState = SetChasingState(model.NavMeshAgent, model.Animator, model.BehaviourState);
+                                if (!SearchRandomNavMeshPoint(() => RandomBorderCirclePoint(model.ChasingTarget.position, Stats.EscapeDistance), Stats.EscapeDistance * 2, out navMeshpoint)
+                                || !model.NavMeshAgent.SetDestination(navMeshpoint))
+                                {
+                                    Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.Escaping");
+                                    model.BehaviourState = ChangeState(BehaviourState.Chasing, model);
+                                }
                             }
                         }
                     }
@@ -382,8 +383,7 @@ namespace BeastHunter
                     model.Timer -= Time.deltaTime;
                     if (model.Timer <= 0)
                     {
-                        model.Animator.SetTrigger("RestingEnd");
-                        model.BehaviourState = BehaviourState.None;
+                        model.BehaviourState = ChangeState(BehaviourState.None, model);
                     }
 
                     break;
@@ -399,7 +399,7 @@ namespace BeastHunter
                                 || !model.NavMeshAgent.SetDestination(navMeshPoint))
                             {
                                 Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Searching");
-                                model.BehaviourState = SetIdlingState(ref model.Timer);
+                                model.BehaviourState = ChangeState(BehaviourState.Idling, model);
                             }
                         }
                     }
@@ -407,7 +407,7 @@ namespace BeastHunter
                     model.Timer -= Time.deltaTime;
                     if (model.Timer <= 0)
                     {
-                        model.BehaviourState = BehaviourState.None;
+                        model.BehaviourState = ChangeState(BehaviourState.None, model);
                     }
 
                     break;
@@ -417,6 +417,75 @@ namespace BeastHunter
         #endregion
 
         #region SetStates
+
+        /// <summary>Used to correctly change states. Allows correctly terminate a state and enter a new one</summary>
+        private BehaviourState ChangeState(BehaviourState newState, HellHoundModel model)
+        {
+            switch (model.BehaviourState)
+            {
+                case BehaviourState.None:
+                    break;
+
+                case BehaviourState.Roaming:
+                    break;
+
+                case BehaviourState.Idling:
+                    break;
+
+                case BehaviourState.Chasing:
+                    break;
+
+                case BehaviourState.JumpingBack:
+                    break;
+
+                case BehaviourState.BattleCircling:
+                    model.Animator.SetBool("BattleCircling", false);
+                    break;
+
+                case BehaviourState.Escaping:
+                    break;
+
+                case BehaviourState.Resting:
+                    model.Animator.SetTrigger("RestingEnd");
+                    break;
+
+                case BehaviourState.Searching:
+                    break;
+            }
+
+            switch (newState)
+            {
+                case BehaviourState.None:
+                    return BehaviourState.None;
+
+                case BehaviourState.Roaming:
+                    return SetRoamingState(model);
+
+                case BehaviourState.Idling:
+                    return SetIdlingState(ref model.Timer);
+
+                case BehaviourState.Chasing:
+                    return SetChasingState(model.NavMeshAgent);
+
+                case BehaviourState.JumpingBack:
+                    return SetJumpingBackState(model);
+
+                case BehaviourState.BattleCircling:
+                    return SetBattleCirclingState(model);
+
+                case BehaviourState.Escaping:
+                    return SetEscapingState(model);
+
+                case BehaviourState.Resting:
+                    return SetRestingState(model.Animator, ref model.Timer);
+
+                case BehaviourState.Searching:
+                    return SetSearchingState(model);
+
+                default: return newState;
+            }
+
+        }
 
         private BehaviourState SetIdlingState(ref float timer)
         {
@@ -428,25 +497,25 @@ namespace BeastHunter
             return BehaviourState.Idling;
         }
 
-        private BehaviourState SetRoamingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint, ref float timer)
+        private BehaviourState SetRoamingState(HellHoundModel model)
         {
             RoamingStateMsg?.Invoke();
 
-            navMeshAgent.speed = Stats.MaxRoamingSpeed;
-            navMeshAgent.acceleration = Stats.Acceleration;
+            model.NavMeshAgent.speed = Stats.MaxRoamingSpeed;
+            model.NavMeshAgent.acceleration = Stats.Acceleration;
 
             Vector3 navMeshPoint;
             for (int i = 0; i < 100; i++)
             {
-                if (SearchRandomNavMeshPoint(() => RandomInsideSpherePoint(spawnPoint, Stats.WanderingRadius), Stats.WanderingRadius * 2, out navMeshPoint)
-                    && navMeshAgent.SetDestination(navMeshPoint))
+                if (SearchRandomNavMeshPoint(() => RandomInsideSpherePoint(model.SpawnPoint, Stats.WanderingRadius), Stats.WanderingRadius * 2, out navMeshPoint)
+                    && model.NavMeshAgent.SetDestination(navMeshPoint))
                 {
                     return BehaviourState.Roaming;
                 }
             }
 
             Debug.LogError(this + ": impossible to reach the destination point in SetRoamingState method");
-            return SetIdlingState(ref timer);
+            return ChangeState(BehaviourState.Idling, model);
         }
 
         private BehaviourState SetRestingState(Animator animator, ref float timer)
@@ -462,11 +531,9 @@ namespace BeastHunter
             return BehaviourState.Resting;
         }
 
-        private BehaviourState SetChasingState(NavMeshAgent navMeshAgent, Animator animator, BehaviourState currentState)
+        private BehaviourState SetChasingState(NavMeshAgent navMeshAgent)
         {
             ChasingStateMsg?.Invoke();
-
-            if (currentState == BehaviourState.Resting) animator.SetTrigger("RestingEnd");
 
             navMeshAgent.updateRotation = true;
             navMeshAgent.stoppingDistance = Stats.StoppingDistance;
@@ -487,7 +554,7 @@ namespace BeastHunter
             if (!NavMesh.SamplePosition(jumpPoint, out navMeshHit, Stats.BackJumpLength * 2, NavMesh.AllAreas))
             {
                 Debug.LogWarning(this + "not found NavMesh point in SetJumpingBackState method");
-                return SetChasingState(model.NavMeshAgent, model.Animator, model.BehaviourState);
+                return ChangeState(BehaviourState.Chasing, model);
             }
 
             model.NavMeshAgent.updateRotation = false;
@@ -515,7 +582,7 @@ namespace BeastHunter
                 || !model.NavMeshAgent.SetDestination(navMeshPoint))
             {
                 Debug.LogWarning(this + ": impossible to reach the destination point in SetBattleCirclingState method");
-                return SetChasingState(model.NavMeshAgent, model.Animator, model.BehaviourState);
+                return ChangeState(BehaviourState.Chasing, model);
             }
 
             model.Animator.SetBool("BattleCircling", true);
@@ -535,34 +602,34 @@ namespace BeastHunter
                 || !model.NavMeshAgent.SetDestination(navMeshpoint))
             {
                 Debug.LogWarning(this + ": impossible to reach the destination point in SetEscapingState method");
-                return SetChasingState(model.NavMeshAgent, model.Animator, model.BehaviourState);
+                return ChangeState(BehaviourState.Chasing, model);
             }
 
             return BehaviourState.Escaping;
         }
 
-        private BehaviourState SetSearchingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint, ref float timer)
+        private BehaviourState SetSearchingState(HellHoundModel model)
         {
             SearchingStateMsg?.Invoke();
 
-            timer = Stats.SearchingTime;
-            SearchingTimerMsg?.Invoke(timer);
+            model.Timer = Stats.SearchingTime;
+            SearchingTimerMsg?.Invoke(model.Timer);
 
-            navMeshAgent.speed = Stats.SearchingSpeed;
-            navMeshAgent.acceleration = Stats.Acceleration;
+            model.NavMeshAgent.speed = Stats.SearchingSpeed;
+            model.NavMeshAgent.acceleration = Stats.Acceleration;
 
             Vector3 navMeshPoint;
             for (int i = 0; i < 100; i++)
             {
-                if (SearchRandomNavMeshPoint(() => RandomInsideSpherePoint(spawnPoint, Stats.WanderingRadius), Stats.WanderingRadius * 2, out navMeshPoint)
-                    && navMeshAgent.SetDestination(navMeshPoint))
+                if (SearchRandomNavMeshPoint(() => RandomInsideSpherePoint(model.SpawnPoint, Stats.WanderingRadius), Stats.WanderingRadius * 2, out navMeshPoint)
+                    && model.NavMeshAgent.SetDestination(navMeshPoint))
                 {
                     return BehaviourState.Searching;
                 }
             }
 
             Debug.LogError(this + ": impossible to reach the destination point in SetSearchingState method");
-            return SetIdlingState(ref timer);
+            return ChangeState(BehaviourState.Idling, model);
         }
 
         private void Jump(Animator animator)
@@ -718,7 +785,7 @@ namespace BeastHunter
                 || hellHoundModel.BehaviourState == BehaviourState.Idling
                 || hellHoundModel.BehaviourState == BehaviourState.Resting))
             {
-                hellHoundModel.BehaviourState = SetSearchingState(hellHoundModel.NavMeshAgent, hellHoundModel.SpawnPoint, ref hellHoundModel.Timer);
+                hellHoundModel.BehaviourState = ChangeState(BehaviourState.Searching, hellHoundModel);
             }
         }
 
