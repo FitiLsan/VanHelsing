@@ -36,7 +36,7 @@ namespace BeastHunter
             //Vector3 instantiatePosition = characterData._characterCommonSettings.InstantiatePosition;
             //Vector3 groundedInstancePosition = GetGroundedPosition(instantiatePosition);
 
-            GameObject instance = GameObject.Instantiate(characterData._characterCommonSettings.Prefab);
+            GameObject instance = GameObject.Instantiate(characterData.CharacterCommonSettings.Prefab);
 
             CharacterModel character = new CharacterModel(instance, characterData, groundedInstancePosition);
             _context.CharacterModel = character;

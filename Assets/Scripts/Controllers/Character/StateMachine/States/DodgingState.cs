@@ -16,6 +16,7 @@ namespace BeastHunter
 
         public DodgingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Dodging;
             IsTargeting = false;
             IsAttacking = false;
         }
@@ -50,7 +51,7 @@ namespace BeastHunter
 
             _animationController.SetDodgeAxises(_inputModel.InputTotalAxisX, _inputModel.InputTotalAxisY);
             _animationController.SetRootMotion(true);
-            _animationController.PlayDodgeAnimation(_characterModel.CurrentWeaponData?.StrafeAndDodgePostfix);
+            _animationController.PlayDodgeAnimation(_characterModel.CurrentWeaponData?.StrafeAnimationPostfix);
         }
 
         public override void OnExit(CharacterBaseState nextState = null)

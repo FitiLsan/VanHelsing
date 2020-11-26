@@ -100,7 +100,7 @@ namespace BeastHunter
                 BossCapsuleCollider.height = BossSettings.CapsuleColliderHeight;
             }
 
-            BossCapsuleCollider.transform.position = groundPosition;
+            BossTransform.position = groundPosition;
 
             if (prefab.GetComponent<SphereCollider>() != null)
             {

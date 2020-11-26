@@ -32,9 +32,6 @@ namespace BeastHunter
         [Tooltip("Boss default movement runtime animator controller.")]
         [SerializeField] private RuntimeAnimatorController _bossAnimator;
 
-        [Tooltip("Vector 3 prefab position on the scene")]
-        [SerializeField] private Vector3 _instantiatePosition;
-
         [Tooltip("Prefab direction on the scene")]
         [SerializeField] private float _instantiateDirection;
 
@@ -138,7 +135,6 @@ namespace BeastHunter
 
         public RuntimeAnimatorController BossAnimator => _bossAnimator;
 
-        public Vector3 InstantiatePosition => _instantiatePosition;
         public Vector3 CapsuleColliderCenter => _capsuleColliderCenter;
         public Vector3 SphereColliderCenter => _sphereColliderCenter;
         public Vector3 LeftHandHitBoxCenter => _leftHandHitBoxCenter;

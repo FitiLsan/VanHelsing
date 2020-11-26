@@ -6,17 +6,22 @@ namespace BeastHunter
     [CreateAssetMenu(fileName = "CharacterData")]
     public sealed class CharacterData : ScriptableObject
     {
-        #region PrivateData
+        #region Fields
 
-        public CharacterCommonSettingsStruct _characterCommonSettings;
-        public BaseStatsClass _characterStatsSettings;
+        [SerializeField] private CharacterCommonSettingsStruct _characterCommonSettings;
+        [SerializeField] private CharacterAnimationData _characterAnimationData;
+        [SerializeField] private BaseStatsClass _characterStatsSettings;
+
+        private Vector3 _movementVector;
 
         #endregion
 
 
         #region Fields
 
-        private Vector3 _movementVector;
+        public CharacterCommonSettingsStruct CharacterCommonSettings => _characterCommonSettings;
+        public CharacterAnimationData CharacterAnimationData => _characterAnimationData;
+        public BaseStatsClass CharacterStatsSettings => _characterStatsSettings;
 
         #endregion
 

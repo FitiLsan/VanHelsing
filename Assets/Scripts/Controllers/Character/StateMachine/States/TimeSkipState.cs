@@ -9,6 +9,7 @@ namespace BeastHunter
 
         public TimeSkipState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.TimeSkip;
             IsTargeting = false;
             IsAttacking = false;
         }

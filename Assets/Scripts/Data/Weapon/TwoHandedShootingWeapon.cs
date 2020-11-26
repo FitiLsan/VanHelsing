@@ -4,17 +4,18 @@
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewWeapon", menuName = "CreateWeapon/CreateTwoHandedShooting", order = 0)]
-    public class TwoHandedShootingWeapon : TwoHandedWeaponData
+    public sealed class TwoHandedShootingWeapon : TwoHandedWeaponData, IShoot
     {
         #region Fields
 
-        public BulletType BulletType;
-        public int MagazineSize;
+        [SerializeField] private BulletType _bulletType;
+        [SerializeField] private int _magazineSize;
 
-        public float HitDistance;
-        public float ReloadTime;
+        [SerializeField] private float _hitDistance;
+        [SerializeField] private float _reloadTime;
 
-        public string ReloadAnimationPrefix;
+        [SerializeField] private string _aimingAnimationPostfix;
+        [SerializeField] private string _reloadAnimationPostfix;
 
         private WeaponHitBoxBehavior LeftWeaponHitBoxBehavior;
         private WeaponHitBoxBehavior RightWeaponHitBoxBehavior;
@@ -24,12 +25,24 @@ namespace BeastHunter
         #endregion
 
 
+        #region Properties
+
+        public BulletType BulletType => _bulletType;
+        public int MagazineSize => _magazineSize;
+        public float HitDistance => _hitDistance;
+        public float ReloadTime => _reloadTime;
+        public string AimingAnimationPostfix => _aimingAnimationPostfix;
+        public string ReloadAnimationPostfix => _reloadAnimationPostfix;
+
+        #endregion
+
+
         #region ClassLifeCycle
 
         public TwoHandedShootingWeapon()
         {
-            HandType = WeaponHandType.TwoHanded;
-            Type = WeaponType.Shooting;
+            _handType = WeaponHandType.TwoHanded;
+            _type = WeaponType.Shooting;
         }
 
         #endregion
@@ -93,7 +106,7 @@ namespace BeastHunter
             shootTime.AddTimeRemaining(CurrentAttack.AttackTime / 2);
         }
 
-        private void Shoot(Vector3 gunPosition, Vector3 forwardDirection)
+        public void Shoot(Vector3 gunPosition, Vector3 forwardDirection)
         {
             RaycastHit rayHit;
 

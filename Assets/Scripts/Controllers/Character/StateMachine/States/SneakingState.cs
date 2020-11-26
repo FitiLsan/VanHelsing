@@ -35,6 +35,7 @@ namespace BeastHunter
 
         public SneakingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Sneaking;
             IsTargeting = false;
             IsAttacking = false;
         }

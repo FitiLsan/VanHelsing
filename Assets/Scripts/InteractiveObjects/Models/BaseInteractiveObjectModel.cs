@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public abstract class BaseInteractiveObjectModel
     {

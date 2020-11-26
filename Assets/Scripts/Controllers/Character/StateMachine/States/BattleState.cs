@@ -15,6 +15,7 @@
 
         public BattleState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Battle;
             IsTargeting = false;
             IsAttacking = false;
             _baseAnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
@@ -61,8 +62,16 @@
 
         public override bool CanBeActivated()
         {
-            ClosestEnemyCheck();
-            return _characterModel.ClosestEnemy != null;
+            if(_characterModel.CurrentWeaponData?.Type == WeaponType.Shooting)
+            {
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Aiming]);
+            }
+            else
+            {
+                ClosestEnemyCheck();
+            }
+            
+            return _characterModel.ClosestEnemy != null && _characterModel.CurrentWeaponData.Type != WeaponType.Shooting;
         }
 
         protected override void EnableActions()
@@ -96,7 +105,7 @@
             base.Initialize();
             _hasCameraControl = true;
 
-            if (Services.SharedInstance.CameraService.CurrentActiveCamera != Services.
+            if (Services.SharedInstance.CameraService.CurrentActiveCamera.Value != Services.
                 SharedInstance.CameraService.CharacterTargetCamera)
             {
                 Services.SharedInstance.CameraService.SetActiveCamera(Services.SharedInstance.
@@ -145,7 +154,7 @@
             if(_stateMachine.CurrentState == this)
             {
                 _animationController.SetTopBodyAnimationWeigth(1f);
-                _animationController.PlayStrafeAnimation(_characterModel.CurrentWeaponData?.StrafeAndDodgePostfix);
+                _animationController.PlayStrafeAnimation(_characterModel.CurrentWeaponData?.StrafeAnimationPostfix);
             }            
         }
 

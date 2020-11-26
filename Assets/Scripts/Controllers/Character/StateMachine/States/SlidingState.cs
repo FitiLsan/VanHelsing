@@ -16,6 +16,7 @@ namespace BeastHunter
 
         public SlidingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Sliding;
             IsTargeting = false;
             IsAttacking = false;
         }

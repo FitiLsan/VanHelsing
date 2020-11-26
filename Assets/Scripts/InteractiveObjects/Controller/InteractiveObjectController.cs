@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public class InteractiveObjectController : IAwake, IUpdate, ITearDown
+    public sealed class InteractiveObjectController : IAwake, IUpdate, ITearDown
     {
         #region Fields
 

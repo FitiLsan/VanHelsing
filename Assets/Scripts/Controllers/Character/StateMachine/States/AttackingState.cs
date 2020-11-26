@@ -17,6 +17,7 @@ namespace BeastHunter
 
         public AttackingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Attacking;
             IsTargeting = false;
             IsAttacking = true;
         }
@@ -49,11 +50,9 @@ namespace BeastHunter
         {
             base.Initialize();
 
-            _animationController.SetRootMotion(true);
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Kinematic;
-            _animationController.SetTopBodyAnimationWeigth(0f);
 
-            switch (_characterModel.CurrentWeaponData.Type)
+            switch (_characterModel.CurrentWeaponData.Value.Type)
             {
                 case WeaponType.Melee:
                     if (_characterModel.WeaponBehaviorLeft != null) _characterModel.WeaponBehaviorLeft.IsInteractable = true;
@@ -67,9 +66,8 @@ namespace BeastHunter
                     break;
             }
 
-            _characterModel.CurrentWeaponData.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
-            _exitTIme = _characterModel.CurrentWeaponData.CurrentAttack.AttackTime;
-            _animationController.PlayArmedAttackAnimation(_characterModel.CurrentWeaponData.SimpleAttackAnimationPrefix, _attackIndex);
+            _characterModel.CurrentWeaponData.Value.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
+            _exitTIme = _characterModel.CurrentWeaponData.Value.CurrentAttack.AttackTime;
 
             _stateMachine.BackState.StopCharacter();
         }
@@ -77,9 +75,8 @@ namespace BeastHunter
         public override void OnExit(CharacterBaseState nextState = null)
         {
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Active;
-            _animationController.SetTopBodyAnimationWeigth(1f);
 
-            switch (_characterModel.CurrentWeaponData.Type)
+            switch (_characterModel.CurrentWeaponData.Value.Type)
             {
                 case WeaponType.Melee:
                     if (_characterModel.WeaponBehaviorLeft != null) _characterModel.WeaponBehaviorLeft.IsInteractable = false;
@@ -93,7 +90,6 @@ namespace BeastHunter
                     break;
             }
 
-            _animationController.SetRootMotion(false);
             base.OnExit(nextState);
         }
 

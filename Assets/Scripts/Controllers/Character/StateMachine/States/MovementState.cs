@@ -17,6 +17,7 @@ namespace BeastHunter
 
         public MovementState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Movement;
             IsTargeting = false;
             IsAttacking = false;
         }

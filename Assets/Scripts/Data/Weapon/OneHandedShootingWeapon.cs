@@ -4,17 +4,30 @@
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewWeapon", menuName = "CreateWeapon/CreateOneHandedShooting", order = 0)]
-    public class OneHandedShootingWeapon : OneHandedWeaponData
+    public sealed class OneHandedShootingWeapon : OneHandedWeaponData, IShoot
     {
         #region Fields
 
-        public BulletType BulletType;
-        public int MagazineSize;
+        [SerializeField] private BulletType _bulletType;
+        [SerializeField] private int _magazineSize;
 
-        public float HitDistance;
-        public float ReloadTime;
+        [SerializeField] private float _hitDistance;
+        [SerializeField] private float _reloadTime;
 
-        public string ReloadAnimationPrefix;
+        [SerializeField] private string _aimingAnimationPostfix;
+        [SerializeField] private string _reloadAnimationPostfix;
+
+        #endregion
+
+
+        #region Properties
+
+        public BulletType BulletType => _bulletType;
+        public int MagazineSize => _magazineSize;
+        public float HitDistance => _hitDistance;
+        public float ReloadTime => _reloadTime;
+        public string AimingAnimationPostfix => _aimingAnimationPostfix;
+        public string ReloadAnimationPostfix => _reloadAnimationPostfix;
 
         #endregion
 
@@ -23,8 +36,8 @@ namespace BeastHunter
 
         public OneHandedShootingWeapon()
         {
-            HandType = WeaponHandType.OneHanded;
-            Type = WeaponType.Shooting;
+            _handType = WeaponHandType.OneHanded;
+            _type = WeaponType.Shooting;
         }
 
         #endregion
@@ -48,6 +61,11 @@ namespace BeastHunter
             {
                 // TODO
             }
+        }
+
+        public void Shoot(Vector3 gunPosition, Vector3 forwardDirection)
+        {
+            // TODO
         }
 
         #endregion

@@ -16,6 +16,7 @@ namespace BeastHunter
 
         public JumpingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Jumping;
             IsTargeting = false;
             IsAttacking = false;            
         }
@@ -45,7 +46,7 @@ namespace BeastHunter
             base.Initialize();
             _jumpTime = _characterModel.CharacterData._characterCommonSettings.JumpTime;
             _animationController.SetRootMotion(true);
-            _animationController.PlayJumpForwardAnimation();
+            _animationController.PlayLongDodgeAnimation();
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
             _characterModel.IsDodging = true;
         }

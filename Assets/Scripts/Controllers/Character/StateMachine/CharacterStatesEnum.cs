@@ -3,6 +3,7 @@
     public enum CharacterStatesEnum
     {
         None,
+        Aiming,
         Attacking,
         Idle,
         Movement,
