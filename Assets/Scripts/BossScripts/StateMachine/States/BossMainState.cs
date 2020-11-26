@@ -10,7 +10,7 @@ namespace BeastHunter
         #region Constants
 
         public const float ANGLE_TARGET_RANGE = 20f;
-        public const float DISTANCE_TO_START_ATTACK = 1.5f;
+        public const float DISTANCE_TO_START_ATTACK = 5f;
 
         private const float SPEED_COUNT_FRAME = 0.15f;
         private const float TIME_TO_NORMILIZE_WEAK_POINT = 5f;

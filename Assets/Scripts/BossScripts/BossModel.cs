@@ -15,8 +15,9 @@ namespace BeastHunter
 
         public Vector3 AnchorPosition { get; }
 
-        public WeaponHitBoxBehavior LeftWeaponBehavior { get; set; }
-        public WeaponHitBoxBehavior RightWeaponBehavior { get; set; }
+        public WeaponHitBoxBehavior LeftHandBehavior { get; set; }
+        public WeaponHitBoxBehavior RightHandBehavior { get; set; }
+
         public WeaponData WeaponData { get; set; }
 
         public WeakPointData FirstWeakPointData { get; set; }
@@ -175,9 +176,9 @@ namespace BeastHunter
             LeftHandTrigger.center = BossData._bossSettings.LeftHandHitBoxCenter;
             LeftHandTrigger.isTrigger = true;
             LeftHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            LeftWeaponBehavior = leftHandWeapon.GetComponent<WeaponHitBoxBehavior>();
-            LeftWeaponBehavior.SetType(InteractableObjectType.HitBox);
-            LeftWeaponBehavior.IsInteractable = false;
+            LeftHandBehavior = leftHandWeapon.GetComponent<WeaponHitBoxBehavior>();
+            LeftHandBehavior.SetType(InteractableObjectType.HitBox);
+            LeftHandBehavior.IsInteractable = false;
 
             GameObject rightHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
                 RightActualWeapon.WeaponPrefab, RightHand);
@@ -186,9 +187,9 @@ namespace BeastHunter
             RightHandTrigger.center = BossData._bossSettings.RightHandHitBoxCenter;
             RightHandTrigger.isTrigger = true;
             RightHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            RightWeaponBehavior = rightHandWeapon.GetComponent<WeaponHitBoxBehavior>();
-            RightWeaponBehavior.SetType(InteractableObjectType.HitBox);
-            RightWeaponBehavior.IsInteractable = false;
+            RightHandBehavior = rightHandWeapon.GetComponent<WeaponHitBoxBehavior>();
+            RightHandBehavior.SetType(InteractableObjectType.HitBox);
+            RightHandBehavior.IsInteractable = false;
 
             FirstWeakPointData = Data.BossFirstWeakPoint;
             GameObject firstWeakPoint = GameObject.Instantiate(FirstWeakPointData.InstancePrefab,

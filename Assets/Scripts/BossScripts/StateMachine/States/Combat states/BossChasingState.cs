@@ -7,7 +7,7 @@ namespace BeastHunter
     {
         #region Constants
 
-        private const float DISTANCE_TO_START_ATTACK = 1.5f;
+        private const float DISTANCE_TO_START_ATTACK = 4f;
         private const float TRIGGER_VIEW_INCREASE = 5f;
 
         #endregion
