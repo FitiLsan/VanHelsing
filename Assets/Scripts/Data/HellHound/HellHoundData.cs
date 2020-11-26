@@ -150,9 +150,8 @@ namespace BeastHunter
 
         public bool DetectionFilter(Collider collider)
         {
-            InteractableObjectBehavior IOBehavior = collider.GetComponent<InteractableObjectBehavior>();
             return !collider.isTrigger
-                && collider.CompareTag(TagManager.PLAYER) && IOBehavior != null && IOBehavior.Type == InteractableObjectType.Player;
+                && collider.GetComponentInChildren<PlayerBehavior>() != null;
         }
 
         public void OnDetectionEnemy(Collider collider, HellHoundModel model)
@@ -173,9 +172,8 @@ namespace BeastHunter
 
         public bool OnHitEnemyFilter(Collider collider)
         {
-            InteractableObjectBehavior IOBehavior = collider.GetComponent<InteractableObjectBehavior>();
             return !collider.isTrigger
-                && collider.CompareTag(TagManager.PLAYER) && IOBehavior != null && IOBehavior.Type == InteractableObjectType.Player;
+                && collider.GetComponentInChildren<PlayerBehavior>() != null;
         }
 
         public void OnHitEnemy(Collider collider, HellHoundModel model)
@@ -189,7 +187,7 @@ namespace BeastHunter
             InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();
             OnHitEnemyMsg?.Invoke(enemy);
 
-            if (enemy != null) model.WeaponIO.DealDamageEvent(enemy, damage);
+            if (enemy != null) enemy.TakeDamageEvent(damage);
             else Debug.LogError(this + " not found enemy InteractableObjectBehavior");
 
             model.AttackCollider.enabled = false;
