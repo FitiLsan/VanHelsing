@@ -3,37 +3,37 @@
 
 namespace BeastHunter
 {
-    public sealed class InitializeInteractableObjectController : IAwake
-    {
-        #region Fields
+    //public sealed class InitializeInteractableObjectController : IAwake
+    //{
+    //    #region Fields
 
-        private readonly GameContext _context;
+    //    private readonly GameContext _context;
 
-        #endregion
-
-
-        #region ClassLifeCycles
-
-        public InitializeInteractableObjectController(GameContext context)
-        {
-            _context = context;
-        }
-
-        #endregion
+    //    #endregion
 
 
-        #region IAwake
+    //    #region ClassLifeCycles
 
-        public void OnAwake()
-        {
-            var triggers = Object.FindObjectsOfType<InteractableObjectBehavior>();
+    //    public InitializeInteractableObjectController(GameContext context)
+    //    {
+    //        _context = context;
+    //    }
 
-            foreach (var trigger in triggers)
-            {
-                _context.AddTriggers(trigger.Type, trigger);
-            }
-        }
+    //    #endregion
 
-        #endregion
-    }
+
+    //    #region IAwake
+
+    //    public void OnAwake()
+    //    {
+    //        var triggers = Object.FindObjectsOfType<InteractableObjectBehavior>();
+
+    //        foreach (var trigger in triggers)
+    //        {
+    //            _context.AddTriggers(trigger.Type, trigger);
+    //        }
+    //    }
+
+    //    #endregion
+    //}
 }

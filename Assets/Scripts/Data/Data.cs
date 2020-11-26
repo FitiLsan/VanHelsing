@@ -22,6 +22,7 @@ namespace BeastHunter
         [SerializeField] private string _cameraDataPath;
         [SerializeField] private string _questIndicatorDataPath;
         [SerializeField] private string _questJournalDataPath;
+        [SerializeField] private string _uiBestiaryDataPath;
         [SerializeField] private string _healthBuffDataPath;
         [SerializeField] private string _staminaBuffDataPath;
         [SerializeField] private string _bossDataPath;
@@ -35,10 +36,10 @@ namespace BeastHunter
         [SerializeField] private string _ironGreavesPath;
         [SerializeField] private string _uiElementsDataPath;
         [SerializeField] private string _materialsDataPath;
+        [SerializeField] private string _torchObjectPath;
         [SerializeField] private string _hellHoundDataPath;
 
         private static Data _instance;
-        private static SphereData _sphereData;
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
@@ -53,6 +54,7 @@ namespace BeastHunter
         private static ClothItem _ironGreaves;
         private static CameraData _cameraData;
         private static QuestJournalData _questJournalData;
+        private static UIBestiaryData _uiBestiaryData;
         private static TemporaryBuffClass _healthBuffData;
         private static TemporaryBuffClass _staminaBuffData;
         private static BossData _bossData;
@@ -63,6 +65,7 @@ namespace BeastHunter
         private static WeakPointData _bossThirdWeakPoint;
         private static UIElementsData _uiElementsData;
         private static MaterialsData _materialsData;
+        private static TorchData _torchObjectData;
         private static HellHoundData _hellHoundData;
 
         #endregion
@@ -76,15 +79,6 @@ namespace BeastHunter
                     _instance = Resources.Load<Data> ("Data/" + typeof (Data).Name);
                 }
                 return _instance;
-            }
-        }
-
-        public static SphereData SphereData {
-            get {
-                if (_sphereData == null) {
-                    _sphereData = Resources.Load<SphereData> ("Data/" + Instance._sphereDataPath);
-                }
-                return _sphereData;
             }
         }
 
@@ -241,6 +235,18 @@ namespace BeastHunter
             }
         }
 
+        public static UIBestiaryData UIBestiaryData
+        {
+            get
+            {
+                if(_uiBestiaryData == null)
+                {
+                    _uiBestiaryData = Load<UIBestiaryData>("Data/" + Instance._uiBestiaryDataPath);
+                }
+                return _uiBestiaryData;
+            }
+        }
+
         public static TemporaryBuffClass HealthBuffData
         {
             get
@@ -358,6 +364,18 @@ namespace BeastHunter
                     _materialsData = Load<MaterialsData>("Data/" + Instance._materialsDataPath);
                 }
                 return _materialsData;
+            }
+        }
+
+        public static TorchData TorchObjectData
+        {
+            get
+            {
+                if (_torchObjectData == null)
+                {
+                    _torchObjectData = Load<TorchData>("Data/" + Instance._torchObjectPath);
+                }
+                return _torchObjectData;
             }
         }
 

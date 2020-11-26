@@ -23,20 +23,6 @@
 
         public void OnAwake()
         {
-            var npc = _context.GetListInteractable();
-
-            foreach (var trigger in npc)
-            {
-                var npcBehaviour = trigger as InteractableObjectBehavior;
-                if (npcBehaviour.Type == InteractableObjectType.Enemy)
-                {
-                    //npcBehaviour.Stats = _context.NpcModels[npcBehaviour.GameObject.GetInstanceID()].GetStats().BaseStats;
-                    npcBehaviour.SetDoSmthEvent(DoSmth);
-                    npcBehaviour.SetTakeDamageEvent(TakeDamage);
-                    npcBehaviour.SetDealDamageEvent(DealDamage);
-                }
-            }
-
             foreach(var model in _context.NpcModels)
             {
                 model.Value.OnAwake();
@@ -63,20 +49,6 @@
 
         public void TearDown()
         {
-            var npc = _context.GetListInteractable();
-
-            foreach (var trigger in npc)
-            {
-                var npcBehavior = trigger as InteractableObjectBehavior;
-
-                if (npcBehavior.Type == InteractableObjectType.Enemy)
-                {
-                    npcBehavior.DeleteDoSmthEvent(DoSmth);
-                    npcBehavior.DeleteTakeDamageEvent(TakeDamage);
-                    npcBehavior.DeleteDealDamageEvent(DealDamage);
-                }
-            }
-
             foreach (var model in _context.NpcModels)
             {
                 model.Value.OnTearDown();
@@ -87,11 +59,6 @@
 
 
         #region Methods
-
-        public void DoSmth(int gameObjectId, string how)
-        {
-            _context.NpcModels[gameObjectId].DoSmth(how + gameObjectId);
-        }
 
         public void TakeDamage(int gameObjectId, Damage damage)
         {

@@ -5,27 +5,30 @@ using UnityEngine;
 namespace BeastHunter
 {
     [Serializable]
-    public struct RabbitStats
+    public class RabbitStats
     {
-        #region Properties
+        #region Fields
 
         [Tooltip("Default: 10")]
-        public float RunningRadius;
+        [SerializeField] private float _runningRadius;
 
         [Tooltip("Default: 0.5")]
-        public float MoveSpeed;
+        [SerializeField] private float _moveSpeed;
 
         [Tooltip("Default: 2")]
-        public float JumpHeight;
+        [SerializeField] private float _jumpHeight;
 
-        [Tooltip("Default: 3")]
-        public float ViewRadius;
+        [SerializeField] private bool _canIdle;
 
-        [Tooltip("Default: 100")]
-        [Range(0.0f, 180.0f)]
-        public float ViewAngle;
+        #endregion
 
-        public bool CanIdle;
+
+        #region Properties
+
+        public float RunningRadius => _runningRadius;
+        public float MoveSpeed => _moveSpeed;
+        public float JumpHeight => _jumpHeight;
+        public bool CanIdle => _canIdle;
 
         #endregion
     }

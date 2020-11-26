@@ -109,7 +109,7 @@ namespace BeastHunter
             {
                 _currentPoint = GetNextPoint();
 
-                if (_currentPoint.Equals(null))
+                if (_currentPoint == null)
                 {
                     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
                 }

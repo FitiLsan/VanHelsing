@@ -21,7 +21,7 @@
         NumberThree,
         NumberFour,
         Inventory,
-        QuestJournal,
+        QuestJournal = 29,
         PlaceTrap1,
         PlaceTrap2,
         Sneak,
@@ -31,6 +31,7 @@
         AimStart,
         AimEnd,
         ButtonsInfoMenu,
+        Bestiary
     }
 }
 
