@@ -16,6 +16,8 @@ MonoBehaviour:
     MainStats:
       _maxHealth: 300
       _enemyType: 0
+      _viewRadius: 0
+      _viewAngle: 0
       _healthPoints: 0
       _physicalPower: 0
       _physicalDamageResistance: 0
@@ -27,7 +29,7 @@ MonoBehaviour:
   Stats:
     DebugMessages: 1
     WanderingRadius: 50
-    DetectionRadius: 20
+    DetectionRadius: 30
     RoamingChance: 75
     JumpingSpeedRate: 1.2
     PhysicalDamage: 0
@@ -42,8 +44,8 @@ MonoBehaviour:
     RestingChance: 20
     RestingMinTime: 30
     RestingMaxTime: 60
-    EscapeDistance: 30
-    PercentEscapeHealth: 50
+    EscapeDistance: 50
+    PercentEscapeHealth: 30
     EscapingSpeed: 7
     SearchingTime: 45
     SearchingSpeed: 5
@@ -69,4 +71,4 @@ MonoBehaviour:
     AngularSpeed: 450
     Acceleration: 10
     StoppingDistance: 1
-    BaseOffsetByY: -0.05
+    BaseOffsetByY: 0

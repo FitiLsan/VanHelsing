@@ -51,7 +51,7 @@ namespace BeastHunter
         public float RestingMaxTime;
 
         [Header("Escaping")]
-        [Tooltip("Must be greater than a detection radius. Default: 40.0")]
+        [Tooltip("Must be greater than a detection radius. Default: 50.0")]
         public float EscapeDistance;
         [Tooltip ("The percentage of health at which the escape state is enabled. Default: 30.0")]
         public float PercentEscapeHealth;

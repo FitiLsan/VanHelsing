@@ -78,7 +78,7 @@ namespace BeastHunter
         {
             Stats.DebugMessages = false;
             Stats.WanderingRadius = 50.0f;
-            Stats.DetectionRadius = 20.0f;
+            Stats.DetectionRadius = 30.0f;
             Stats.PercentEscapeHealth = 30.0f;
             Stats.MaxRoamingSpeed = 2.0f;
             Stats.MaxChasingSpeed = 10.0f;
@@ -110,7 +110,7 @@ namespace BeastHunter
             Stats.IdlingMaxTime = 10.0f;
             Stats.SearchingTime = 45.0f;
             Stats.SearchingSpeed = 5.0f;
-            Stats.EscapeDistance = 30.0f;
+            Stats.EscapeDistance = 50.0f;
             Stats.EscapingSpeed = 7.0f;
             Stats.ChasingBraking = false;
             Stats.ChasingBrakingMaxDistance = 6.0f;
