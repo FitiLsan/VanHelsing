@@ -7,7 +7,6 @@ namespace BeastHunter
         public MainControllers(GameContext context)
         {
             AddInitializeControllers(context);
-            Add(new InitializeInteractableObjectController(context));
             AddControllers(context);
 
             //Add(new QuestIndicatorInitializeController(context));
@@ -27,7 +26,7 @@ namespace BeastHunter
             //Add<T>(context) where T : NpcInitializeController
 
             Add(new CharacterInitializeController(context));
-            Add(new BossInitializeController(context));
+            //Add(new BossInitializeController(context));
 
             
 
