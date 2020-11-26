@@ -77,6 +77,7 @@ namespace BeastHunter
             NavMeshAgent.angularSpeed = hellHoundData.Stats.AngularSpeed;
             NavMeshAgent.acceleration = hellHoundData.Stats.Acceleration;
             NavMeshAgent.stoppingDistance = hellHoundData.Stats.StoppingDistance;
+            NavMeshAgent.baseOffset = hellHoundData.Stats.BaseOffsetByY;
 
             AttackCollider = WeaponIO.GetComponent<BoxCollider>();
             AttackCollider.enabled = false;

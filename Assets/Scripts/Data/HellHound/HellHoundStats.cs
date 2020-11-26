@@ -119,7 +119,7 @@ namespace BeastHunter
         public float Acceleration;
         [Tooltip("Default: 1.0")]
         public float StoppingDistance;
-        [Tooltip("Default: -0.05")]
+        [Tooltip("Default: 0.0")]
         public float BaseOffsetByY;
 
         #endregion

@@ -84,7 +84,7 @@ namespace BeastHunter
             Stats.MaxChasingSpeed = 10.0f;
             Stats.AngularSpeed = 450.0f;
             Stats.Acceleration = 10.0f;
-            Stats.BaseOffsetByY = -0.05f;
+            Stats.BaseOffsetByY = 0.0f;
             Stats.StoppingDistance = 1.5f;
             Stats.JumpingSpeedRate = 1.2f;
             Stats.BackJumpAnimationSpeedRate = 2.0f;
