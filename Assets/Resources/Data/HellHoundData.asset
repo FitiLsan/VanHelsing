@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11b0e2db6f52ccc4e8b52d7e5baebaf6, type: 3}
+  m_Name: HellHoundData
+  m_EditorClassIdentifier: 
+  BaseStats:
+    MainStats:
+      _maxHealth: 300
+      _enemyType: 0
+      _healthPoints: 0
+      _physicalPower: 0
+      _physicalDamageResistance: 0
+      _stunProbabilityResistance: 0
+    AttackList: []
+    DefenceStats:
+      _baseDefense: 0
+    Prefab: {fileID: 7253339370346634, guid: 0221e3a4b68cc0b4da68fd85936de268, type: 3}
+  Stats:
+    DebugMessages: 1
+    WanderingRadius: 50
+    DetectionRadius: 20
+    RoamingChance: 75
+    JumpingSpeedRate: 1.2
+    PhysicalDamage: 0
+    StunProbability: 0
+    AttacksTurnSpeed: 0.5
+    AttackDirectDistance: 1.5
+    AttackBottomDistance: 1.25
+    AttackJumpMaxDistance: 3
+    AttackJumpMinDistance: 2.5
+    IdlingMinTime: 5
+    IdlingMaxTime: 10
+    RestingChance: 20
+    RestingMinTime: 30
+    RestingMaxTime: 60
+    EscapeDistance: 30
+    PercentEscapeHealth: 50
+    EscapingSpeed: 7
+    SearchingTime: 45
+    SearchingSpeed: 5
+    BackJumpDistance: 1
+    BackJumpLength: 1.5
+    BackJumpSpeed: 5
+    BackJumpAnimationSpeedRate: 2
+    BackJumpAnimationIntensity: 0.5
+    BattleCirclingRadius: 3
+    BattleCirclingSpeed: 3
+    BattleCirclingMinTime: 1
+    BattleCirclingMaxTime: 3
+    BattleCirclingMaxDistance: 5
+    ChasingTurnSpeedNearTarget: 0.1
+    ChasingTurnDistanceNearTarget: 3
+    ChasingBraking: 0
+    ChasingBrakingSpeedRate: 0.5
+    ChasingBrakingMinSpeed: 2
+    ChasingBrakingMaxDistance: 6
+    ChasingBrakingMinDistance: 2
+    MaxRoamingSpeed: 1
+    MaxChasingSpeed: 10
+    AngularSpeed: 450
+    Acceleration: 10
+    StoppingDistance: 1
+    BaseOffsetByY: -0.05
