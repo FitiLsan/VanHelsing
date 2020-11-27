@@ -61,26 +61,26 @@ namespace BeastHunter
             InteractableObjects = HellHound.GetComponentsInChildren<InteractableObjectBehavior>();
 
             detectionSphereIO = GetInteractableObject(InteractableObjectType.Sphere);
-            detectionSphereIO.OnFilterHandler = DetectionFilter;
+            detectionSphereIO.OnFilterHandler = Filter;
             detectionSphereIO.OnTriggerEnterHandler = OnDetectionEnemy;
-            detectionSphereIO.OnTriggerExitHandler = OnLostSightEnemy;
+            detectionSphereIO.OnTriggerExitHandler = OnLostEnemy;
 
             detectionSphere = detectionSphereIO.GetComponent<SphereCollider>();
             if (detectionSphere == null) Debug.LogError(this + " not found SphereCollider in DetectionSphere gameobject");
             else detectionSphere.radius = hellHoundData.Stats.DetectionRadius;
 
             WeaponIO = HellHound.GetComponentInChildren<WeaponHitBoxBehavior>();
-            WeaponIO.OnFilterHandler = OnHitEnemyFilter;
+            WeaponIO.OnFilterHandler = Filter;
             WeaponIO.OnTriggerEnterHandler = OnHitEnemy;
+
+            AttackCollider = WeaponIO.GetComponent<BoxCollider>();
+            AttackCollider.enabled = false;
 
             NavMeshAgent = HellHound.GetComponent<NavMeshAgent>();
             NavMeshAgent.angularSpeed = hellHoundData.Stats.AngularSpeed;
             NavMeshAgent.acceleration = hellHoundData.Stats.Acceleration;
             NavMeshAgent.stoppingDistance = hellHoundData.Stats.StoppingDistance;
             NavMeshAgent.baseOffset = hellHoundData.Stats.BaseOffsetByY;
-
-            AttackCollider = WeaponIO.GetComponent<BoxCollider>();
-            AttackCollider.enabled = false;
 
             attackStates = Animator.GetBehaviours<HellHoundAttackStateBehaviour>();
             for (int i = 0; i < attackStates.Length; i++)
@@ -97,10 +97,9 @@ namespace BeastHunter
 
 
         #region Methods
-        private bool DetectionFilter(Collider collider) => hellHoundData.DetectionFilter(collider);
+        private bool Filter(Collider collider) => hellHoundData.Filter(collider);
         private void OnDetectionEnemy(ITrigger trigger, Collider collider) => hellHoundData.OnDetectionEnemy(collider, this);
-        private void OnLostSightEnemy(ITrigger trigger, Collider collider) => hellHoundData.OnLostSightEnemy(collider, this);
-        private bool OnHitEnemyFilter(Collider collider) => hellHoundData.OnHitEnemyFilter(collider);
+        private void OnLostEnemy(ITrigger trigger, Collider collider) => hellHoundData.OnLostEnemy(collider, this);
         private void OnHitEnemy(ITrigger trigger, Collider collider) => hellHoundData.OnHitEnemy(collider, this);
         private void OnAttackStateEnter() => hellHoundData.OnAttackStateEnter(this);
         private void OnAttackStateExit() => hellHoundData.OnAttackStateExit(this);

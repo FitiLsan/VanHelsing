@@ -148,7 +148,7 @@ namespace BeastHunter
 
         #region EnemyModel
 
-        public bool DetectionFilter(Collider collider)
+        public bool Filter(Collider collider)
         {
             return !collider.isTrigger
                 && collider.GetComponentInChildren<PlayerBehavior>() != null;
@@ -161,19 +161,13 @@ namespace BeastHunter
             model.BehaviourState = ChangeState(BehaviourState.Chasing, model);
         }
 
-        public void OnLostSightEnemy(Collider collider, HellHoundModel model)
+        public void OnLostEnemy(Collider collider, HellHoundModel model)
         {
             if (collider.transform.Equals(model.ChasingTarget))
             {
                 OnLostSightEnemyMsg?.Invoke();
                 model.ChasingTarget = null;
             }
-        }
-
-        public bool OnHitEnemyFilter(Collider collider)
-        {
-            return !collider.isTrigger
-                && collider.GetComponentInChildren<PlayerBehavior>() != null;
         }
 
         public void OnHitEnemy(Collider collider, HellHoundModel model)
@@ -441,9 +435,10 @@ namespace BeastHunter
 
         #region SetStates
 
-        /// <summary>Used to correctly change states. Allows correctly terminate a state and enter a new one</summary>
+        /// <summary>Used to correctly change states. Allows correctly exit a current state and enter a new state</summary>
         private BehaviourState ChangeState(BehaviourState newState, HellHoundModel model)
         {
+            //exit from current state
             switch (model.BehaviourState)
             {
                 case BehaviourState.None:
@@ -476,6 +471,7 @@ namespace BeastHunter
                     break;
             }
 
+            //enter to new state
             switch (newState)
             {
                 case BehaviourState.None:
@@ -688,7 +684,6 @@ namespace BeastHunter
             return BehaviourState.Searching;
         }
     
-
         private void Jump(Animator animator)
         {
             JumpingMsg?.Invoke();
@@ -717,6 +712,37 @@ namespace BeastHunter
 
         #region Helpers
 
+        private Quaternion SmoothTurn(Vector3 targetDirection, Vector3 forward, float speed)
+        {
+            Vector3 newDirection = Vector3.RotateTowards(forward, targetDirection, speed, 0.0f);
+            newDirection.y = forward.y;
+            return Quaternion.LookRotation(newDirection);
+        }
+
+        /// <summary>Current health in percent</summary>
+        private float CurrentHealthPercent(float currentHealth)
+        {
+            return currentHealth * 100 / BaseStats.MainStats.MaxHealth;
+        }
+
+        /// <summary>Get the direction of the turn</summary>
+        /// <param name="transform">HellHoundModel transform</param>
+        /// <param name="rotatePosition1">Previous rotation value</param>
+        /// <param name="rotatePosition2">Current rotation value</param>
+        /// <returns>If value is negative turn goes left</returns>
+        private float GetRotateDirection(Transform transform, ref float rotatePosition1, ref float rotatePosition2)
+        {
+            rotatePosition1 = rotatePosition2;
+            rotatePosition2 = transform.rotation.eulerAngles.y;
+            return rotatePosition2 - rotatePosition1;
+        }
+
+        /// <summary>Searches for a random NavMesh point on the boundary of a circle. If successful saves it to out variable</summary>
+        /// <param name="center">center of circle</param>
+        /// <param name="radius">radius of circle</param>
+        /// <param name="searchDistance">the length of the ray that searches for NavMesh</param>
+        /// <param name="navMeshPoint">out parameter for save the found NavMesh point</param>
+        /// <returns>true if successful</returns>
         private bool RandomBorderCircleNavMeshPoint(Vector3 center, float radius, float searchDistance, out Vector3 navMeshPoint)
         {
             navMeshPoint = default;
@@ -739,6 +765,12 @@ namespace BeastHunter
             return false;
         }
 
+        /// <summary>Searches for a random NavMesh point inside sphere. If successful saves it to out variable</summary>
+        /// <param name="center">center of sphere</param>
+        /// <param name="radius">radius of sphere</param>
+        /// <param name="searchDistance">the length of the ray that searches for NavMesh</param>
+        /// <param name="navMeshPoint">out parameter for save the found NavMesh point</param>
+        /// <returns>true if successful</returns>
         private bool RandomInsideSphereNavMeshPoint(Vector3 center, float radius, float searchDistance, out Vector3 navMeshPoint)
         {
             navMeshPoint = default;
@@ -755,30 +787,6 @@ namespace BeastHunter
                 }
             }
             return false;
-        }
-
-        private float CurrentHealthPercent(float currentHealth)
-        {
-            return currentHealth * 100 / BaseStats.MainStats.MaxHealth;
-        }
-
-        private Quaternion SmoothTurn(Vector3 targetDirection, Vector3 forward, float speed)
-        {
-            Vector3 newDirection = Vector3.RotateTowards(forward, targetDirection, speed, 0.0f);
-            newDirection.y = forward.y;
-            return Quaternion.LookRotation(newDirection);
-        }
-
-        /// <summary>Get the direction of the turn</summary>
-        /// <param name="transform">HellHoundModel transform</param>
-        /// <param name="rotatePosition1">Previous rotation value</param>
-        /// <param name="rotatePosition2">Current rotation value</param>
-        /// <returns>If value is negative turn goes left</returns>
-        private float GetRotateDirection(Transform transform, ref float rotatePosition1, ref float rotatePosition2)
-        {
-            rotatePosition1 = rotatePosition2;
-            rotatePosition2 = transform.rotation.eulerAngles.y;
-            return rotatePosition2 - rotatePosition1;
         }
 
         /// <summary>improve braking (the dog brakes more gently)</summary>
