@@ -5,7 +5,9 @@
         #region Fields
 
         protected BossStateMachine _stateMachine;
-
+        protected BossData _bossData;
+        protected BossModel _bossModel;
+        protected BossMainState _mainState;
         #endregion
 
 
@@ -24,6 +26,9 @@
         public BossBaseState(BossStateMachine stateMachine)
         {
             _stateMachine = stateMachine;
+            _bossData = _stateMachine._model.BossData;
+            _bossModel = _stateMachine._model;
+            _mainState = _stateMachine._mainState;
         }
 
         #endregion

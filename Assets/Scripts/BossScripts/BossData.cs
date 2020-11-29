@@ -46,18 +46,29 @@ namespace BeastHunter
             }
         }
 
-        public Quaternion RotateTo(Quaternion prefabRotation, Vector3 prefabPosition, Vector3 targetPosition, float angleSpeed)
+        public Quaternion RotateTo(Quaternion prefabRotation, Quaternion targetRotation, float angleSpeed)
         {
-            return Quaternion.RotateTowards(prefabRotation, GetTargetRotation(prefabPosition, targetPosition), angleSpeed * Time.deltaTime);
+            return Quaternion.RotateTowards(prefabRotation, targetRotation, angleSpeed * Time.deltaTime);
         }
 
-        public bool CheckIsNearTarget(Vector3 prefabPosition, Quaternion prefabRotation, Vector3 targetPosition, float distanceRange, float angleRange)
+        public bool CheckIsNearTarget(Vector3 prefabPosition, Vector3 targetPosition, float distanceRange)
         {
-          //  GetTargetRotation(prefabPosition, targetPosition);
             var isNear = Mathf.Sqrt((prefabPosition - targetPosition).sqrMagnitude) <= distanceRange;
-            //    & Quaternion.Angle(prefabRotation, _targetRotation) <= angleRange;
-            //var isNearQ = Quaternion.Angle(prefabRotation, _targetRotation);
             return isNear;
+        }
+
+        public bool CheckIsNearTarget(Vector3 prefabPosition, Vector3 targetPosition, float distanceRangeMin, float distanceRangeMax)
+        {
+            var distance = Mathf.Sqrt((prefabPosition - targetPosition).sqrMagnitude);
+            var isNear = distance >= distanceRangeMin & distance <= distanceRangeMax;
+
+            return isNear;
+        }
+
+        public bool CheckIsLookAtTarget(Quaternion prefabRotation, Quaternion targetRotation, float angleRange)
+        {
+            var isLook = Quaternion.Angle(prefabRotation, targetRotation) <= angleRange;
+            return isLook;
         }
 
         public Quaternion GetTargetRotation(Vector3 prefabPosition, Vector3 targetPosition)
@@ -65,6 +76,31 @@ namespace BeastHunter
             var _targetDirection = (targetPosition - prefabPosition).normalized;
             _targetRotation = Quaternion.LookRotation(_targetDirection);
             return _targetRotation;
+        }
+
+        public float GetTargetDistance(Vector3 prefabPosition, Vector3 targetPosition)
+        {
+            var distance = Mathf.Sqrt((prefabPosition - targetPosition).sqrMagnitude);
+            return distance;
+        }
+
+        public int AngleDirection(Vector3 forward, Vector3 targetDirection, Vector3 up)
+        {
+            Vector3 perpendicular = Vector3.Cross(forward, targetDirection);
+            float direction = Vector3.Dot(perpendicular, up);
+
+            if (direction > 0f)
+            {
+                return 1;
+            }
+            else if (direction < 0f)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         #endregion

@@ -59,7 +59,7 @@ namespace BeastHunter
             _stateMachine._model.BossAnimator.Play("MovingState");
             _canEat = false;
             _startEating = false;
-            _target = _stateMachine._model.BossCurrentTarget;
+            _target = _stateMachine._model.BossCurrentTarget.transform.position;
         }
 
         public override void Execute()
@@ -86,7 +86,7 @@ namespace BeastHunter
                 if (_stateMachine._model.FoodList.Count != 0)
                 {
                     _targetFood = _stateMachine._model.FoodList[0];
-                    _stateMachine._model.BossCurrentTarget = _targetFood.transform.position;
+                    _stateMachine._model.BossCurrentTarget = _targetFood;
                 }
                 else
                 {
@@ -100,7 +100,7 @@ namespace BeastHunter
         {
             if (!_startEating)
             {
-                if (_stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _stateMachine._model.BossTransform.rotation, _target, DISTANCE_TO_START_EATING, ANGLE_RANGE))
+                if (_stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _target, DISTANCE_TO_START_EATING))
                 {
                     _canEat = true;
                 }
@@ -139,7 +139,7 @@ namespace BeastHunter
                     _stateMachine._model.CurrentStamina += FOOD_POINT;
                     _startEating = false;
                     _setParent = false;
-                    _stateMachine._model.BossCurrentTarget = Vector3.zero;
+                    _stateMachine._model.BossCurrentTarget = null;
                     _stateMachine.SetCurrentState(BossStatesEnum.Idle);
                     
                 }

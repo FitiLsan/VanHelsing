@@ -51,7 +51,7 @@ namespace BeastHunter
         public float MaxStamina = 100f;
         public float CurrentStamina;
         public GameObject Lair;
-        public Vector3 BossCurrentTarget;
+        public GameObject BossCurrentTarget;
 
         #endregion
 

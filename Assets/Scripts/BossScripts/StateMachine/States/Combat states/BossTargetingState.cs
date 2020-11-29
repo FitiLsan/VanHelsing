@@ -34,7 +34,7 @@ namespace BeastHunter
 
             Vector3 heading = _stateMachine._context.CharacterModel.CharacterTransform.position - 
                 _stateMachine._model.BossTransform.position;
-            int directionNumber = _stateMachine._mainState.AngleDirection(
+            int directionNumber = _stateMachine._model.BossData.AngleDirection(
                 _stateMachine._model.BossTransform.forward, heading, _stateMachine._model.BossTransform.up);
 
             switch (directionNumber)

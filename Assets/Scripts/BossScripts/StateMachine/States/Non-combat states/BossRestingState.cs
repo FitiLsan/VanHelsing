@@ -67,7 +67,7 @@ namespace BeastHunter
         {
             if (_stateMachine._model.Lair != null)
             {
-                _stateMachine._model.BossCurrentTarget = _stateMachine._model.Lair.transform.position;
+                _stateMachine._model.BossCurrentTarget = _stateMachine._model.Lair;
                 _stateMachine.SetCurrentState(BossStatesEnum.Moving);
             }
             else
@@ -86,7 +86,7 @@ namespace BeastHunter
 
         private void CheckDistance()
         {
-            if (_stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _stateMachine._model.BossTransform.rotation, _target, DISTANCE_TO_START_RESTING, 0) 
+            if (_stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _target, DISTANCE_TO_START_RESTING) 
                 & _stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina)
             {
                 _canRest = true;
@@ -110,7 +110,7 @@ namespace BeastHunter
                     _canRest = false;
                     _restingCountTime = RESTING_TIME;
                     _stateMachine._model.CurrentStamina = 0;
-                    _stateMachine._model.BossCurrentTarget = Vector3.zero;
+                    _stateMachine._model.BossCurrentTarget = null;
                     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
                 }
             }

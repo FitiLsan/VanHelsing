@@ -9,6 +9,7 @@ namespace BeastHunter
 
         private const float DISTANCE_TO_START_ATTACK = 4f;
         private const float TRIGGER_VIEW_INCREASE = 5f;
+        private const float FORCE_ATTACK_TIME = 10f;
 
         #endregion
 
@@ -16,6 +17,7 @@ namespace BeastHunter
         #region Fields
 
         private Vector3 _target;
+        private float _forceAttackTime = FORCE_ATTACK_TIME;
 
         #endregion
 
@@ -38,6 +40,7 @@ namespace BeastHunter
 
         public override void Initialise()
         {
+            Debug.Log($"current State CHASING initialise");
             CanExit = false;
             CanBeOverriden = true;    
             _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.RunSpeed;
@@ -50,6 +53,7 @@ namespace BeastHunter
         {
             CheckTarget();
             CheckDistance();
+            CheckExtraAttack();
         }
 
         public override void OnExit()
@@ -63,15 +67,24 @@ namespace BeastHunter
 
         private void CheckTarget()
         {
-            _target = _stateMachine._context.CharacterModel.CharacterTransform.position;
+            _target = _stateMachine._model.BossCurrentTarget.transform.position;//_context.CharacterModel.CharacterTransform.position;
             _stateMachine._model.BossNavAgent.SetDestination(_target);
         }
 
         private void CheckDistance()
         {
-            if(Mathf.Sqrt((_stateMachine._model.BossTransform.position - _target)
-                .sqrMagnitude) <= DISTANCE_TO_START_ATTACK)
+            if(_bossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _target, DISTANCE_TO_START_ATTACK))
             {
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
+            }
+        }
+
+        private void CheckExtraAttack()
+        {
+            _forceAttackTime -= Time.deltaTime;
+            if (_forceAttackTime <= 0)
+            {
+                _forceAttackTime = FORCE_ATTACK_TIME;
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
             }
         }

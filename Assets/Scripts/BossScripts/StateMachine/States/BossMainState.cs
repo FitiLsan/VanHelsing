@@ -167,6 +167,7 @@ namespace BeastHunter
 
             if (interactableObject == InteractableObjectType.Player)
             {
+                _bossModel.BossCurrentTarget = enteredObject.gameObject;
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
             }
 
@@ -221,25 +222,6 @@ namespace BeastHunter
             _targetDirection = (_stateMachine._context.CharacterModel.CharacterTransform.position -
                 _stateMachine._model.BossTransform.position).normalized;
             TargetRotation = Quaternion.LookRotation(_targetDirection);
-        }
-
-        public int AngleDirection(Vector3 forward, Vector3 targetDirection, Vector3 up)
-        {
-            Vector3 perpendicular = Vector3.Cross(forward, targetDirection);
-            float direction = Vector3.Dot(perpendicular, up);
-
-            if (direction > 0f)
-            {
-                return 1;
-            }
-            else if (direction < 0f)
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
         }
 
         private void OnPlayerSneakingHandler(OnPlayerSneakingEventClass eventClass)

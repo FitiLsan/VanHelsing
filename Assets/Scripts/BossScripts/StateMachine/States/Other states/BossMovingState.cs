@@ -42,7 +42,7 @@ namespace BeastHunter
             _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
             _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_EATING;
             _stateMachine._model.BossAnimator.Play("MovingState");
-            _target = _stateMachine._model.BossCurrentTarget;
+            _target = _stateMachine._model.BossCurrentTarget.transform.position;
         }
 
         public override void Execute()
@@ -69,7 +69,7 @@ namespace BeastHunter
 
         private bool CheckDistance()
         {
-            var isNear = _stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _stateMachine._model.BossTransform.rotation, _target, DISTANCE_TO_START_EATING, ANGLE_RANGE);
+            var isNear = _stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _target, DISTANCE_TO_START_EATING, ANGLE_RANGE);
             return isNear;
         }
 
@@ -80,7 +80,8 @@ namespace BeastHunter
 
         private void RotateTo()
         {
-           _stateMachine._model.BossTransform.rotation =  _stateMachine._model.BossData.RotateTo(_stateMachine._model.BossTransform.rotation, _stateMachine._model.BossTransform.position, _target, ANGLE_SPEED);
+            var targetRotation = _stateMachine._model.BossData.GetTargetRotation(_stateMachine._model.BossTransform.position, _target);
+           _stateMachine._model.BossTransform.rotation =  _stateMachine._model.BossData.RotateTo(_stateMachine._model.BossTransform.rotation, targetRotation , ANGLE_SPEED);
         }
 
         #endregion
