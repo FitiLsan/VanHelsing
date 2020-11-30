@@ -175,6 +175,7 @@ namespace BeastHunter
         public float LeftHandHitBoxRadius => _leftHandHitBoxRadius;
         public float RightHandHitBoxRadius => _rightHandHitBoxRadius;
 
+
         #endregion
     }
 }

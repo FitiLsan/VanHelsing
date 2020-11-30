@@ -1,5 +1,84 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &130984978027224057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7250437388414149807}
+  - component: {fileID: 7001271840748157482}
+  - component: {fileID: 207684127139024115}
+  - component: {fileID: 5945398081768149022}
+  m_Layer: 11
+  m_Name: BossFeastTriggerLeft
+  m_TagString: Weapon
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7250437388414149807
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130984978027224057}
+  m_LocalRotation: {x: 0.042644124, y: -0.08047928, z: 0.6795463, w: 0.727957}
+  m_LocalPosition: {x: -1.063, y: 0.227, z: -0.079}
+  m_LocalScale: {x: 1.24, y: 1.24, z: 1.24}
+  m_Children: []
+  m_Father: {fileID: 175389950596966600}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 9.873, y: -3.446, z: 85.762}
+--- !u!114 &7001271840748157482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130984978027224057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c08723c05f94e6445b7b72f09928a1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 6
+  AdditionalDamage:
+    PhysicalDamage: 0
+    StunProbability: 0
+--- !u!54 &207684127139024115
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130984978027224057}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &5945398081768149022
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130984978027224057}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &427900491286176329
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,6 +760,7 @@ Transform:
   - {fileID: 4577081000496147344}
   - {fileID: 4767631159499255854}
   - {fileID: 671629259102874832}
+  - {fileID: 5024413105390903568}
   m_Father: {fileID: 2850488036777210596}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1124,6 +1204,85 @@ Transform:
   m_Father: {fileID: 7411012148295751968}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2613565214063891352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5024413105390903568}
+  - component: {fileID: 4760682851363719261}
+  - component: {fileID: 1446024624114569416}
+  - component: {fileID: 3510089652499588954}
+  m_Layer: 11
+  m_Name: BossFeastTriggerRight
+  m_TagString: Weapon
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5024413105390903568
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2613565214063891352}
+  m_LocalRotation: {x: -0.3593364, y: -0.29496753, z: -0.6716186, w: 0.57688826}
+  m_LocalPosition: {x: -1.033, y: 0.166, z: 0.111}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5898187791390180934}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: -54.175003, y: 14.075001, z: -105.90401}
+--- !u!114 &4760682851363719261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2613565214063891352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c08723c05f94e6445b7b72f09928a1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 6
+  AdditionalDamage:
+    PhysicalDamage: 0
+    StunProbability: 0
+--- !u!54 &1446024624114569416
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2613565214063891352}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &3510089652499588954
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2613565214063891352}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2689134204462910922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,11 +1836,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 671629259102874832}
-  - component: {fileID: 7894027276235122418}
   - component: {fileID: 2750751929259866423}
   - component: {fileID: 4393229805855398113}
+  - component: {fileID: 2163874377252349564}
   m_Layer: 11
-  m_Name: BossFeast(Clone)
+  m_Name: BossFeastRight
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1694,26 +1853,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4074782466556317382}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.3593364, y: -0.29496753, z: -0.6716186, w: 0.57688826}
+  m_LocalPosition: {x: -1.033, y: 0.166, z: 0.111}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5898187791390180934}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &7894027276235122418
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4074782466556317382}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: -1, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -54.175003, y: 14.075001, z: -105.90401}
 --- !u!114 &2750751929259866423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1746,6 +1892,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &2163874377252349564
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4074782466556317382}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 0.3
+  m_Height: 1.7
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4166150087217690695
 GameObject:
   m_ObjectHideFlags: 0
@@ -1909,11 +2069,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4498993184105917022}
-  - component: {fileID: 7509686890538636385}
   - component: {fileID: 2290627535890854822}
   - component: {fileID: 6612113431640088743}
+  - component: {fileID: 5609985365192075119}
   m_Layer: 11
-  m_Name: BossFeast(Clone)
+  m_Name: BossFeastLeft
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1926,26 +2086,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4692207812266442799}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.042644124, y: -0.08047928, z: 0.6795463, w: 0.727957}
+  m_LocalPosition: {x: -1.063, y: 0.227, z: -0.079}
+  m_LocalScale: {x: 1.24, y: 1.24, z: 1.24}
   m_Children: []
   m_Father: {fileID: 175389950596966600}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &7509686890538636385
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4692207812266442799}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: -1, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 9.873, y: -3.446, z: 85.762}
 --- !u!114 &2290627535890854822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1978,6 +2125,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &5609985365192075119
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4692207812266442799}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 0.3
+  m_Height: 1.7
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4999334844442744219
 GameObject:
   m_ObjectHideFlags: 0
@@ -2041,6 +2202,7 @@ Transform:
   - {fileID: 7147002248635311349}
   - {fileID: 7469768932026521131}
   - {fileID: 4498993184105917022}
+  - {fileID: 7250437388414149807}
   m_Father: {fileID: 4221560636838710832}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

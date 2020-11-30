@@ -1,201 +1,547 @@
 fileFormatVersion: 2
 guid: cbca30dbe37cdf348ab30a46b46d2465
-timeCreated: 1481304393
-licenseType: Store
 ModelImporter:
-  serializedVersion: 18
-  fileIDToRecycleName:
-    100000: OAK_TEE_ENT_
-    100002: OAK_TEE_ENT_ Head
-    100004: OAK_TEE_ENT_ L Calf
-    100006: OAK_TEE_ENT_ L Clavicle
-    100008: OAK_TEE_ENT_ L Finger0
-    100010: OAK_TEE_ENT_ L Finger01
-    100012: OAK_TEE_ENT_ L Finger02
-    100014: OAK_TEE_ENT_ L Finger1
-    100016: OAK_TEE_ENT_ L Finger11
-    100018: OAK_TEE_ENT_ L Finger12
-    100020: OAK_TEE_ENT_ L Finger2
-    100022: OAK_TEE_ENT_ L Finger21
-    100024: OAK_TEE_ENT_ L Finger22
-    100026: OAK_TEE_ENT_ L Foot
-    100028: OAK_TEE_ENT_ L Forearm
-    100030: OAK_TEE_ENT_ L Hand
-    100032: OAK_TEE_ENT_ L Thigh
-    100034: OAK_TEE_ENT_ L Toe0
-    100036: OAK_TEE_ENT_ L Toe01
-    100038: OAK_TEE_ENT_ L Toe02
-    100040: OAK_TEE_ENT_ L Toe1
-    100042: OAK_TEE_ENT_ L Toe11
-    100044: OAK_TEE_ENT_ L Toe12
-    100046: OAK_TEE_ENT_ L Toe2
-    100048: OAK_TEE_ENT_ L Toe21
-    100050: OAK_TEE_ENT_ L Toe22
-    100052: OAK_TEE_ENT_ L UpperArm
-    100054: OAK_TEE_ENT_ Neck
-    100056: OAK_TEE_ENT_ Pelvis
-    100058: OAK_TEE_ENT_ R Calf
-    100060: OAK_TEE_ENT_ R Clavicle
-    100062: OAK_TEE_ENT_ R Finger0
-    100064: OAK_TEE_ENT_ R Finger01
-    100066: OAK_TEE_ENT_ R Finger02
-    100068: OAK_TEE_ENT_ R Finger1
-    100070: OAK_TEE_ENT_ R Finger11
-    100072: OAK_TEE_ENT_ R Finger12
-    100074: OAK_TEE_ENT_ R Finger2
-    100076: OAK_TEE_ENT_ R Finger21
-    100078: OAK_TEE_ENT_ R Finger22
-    100080: OAK_TEE_ENT_ R Foot
-    100082: OAK_TEE_ENT_ R Forearm
-    100084: OAK_TEE_ENT_ R Hand
-    100086: OAK_TEE_ENT_ R Thigh
-    100088: OAK_TEE_ENT_ R Toe0
-    100090: OAK_TEE_ENT_ R Toe01
-    100092: OAK_TEE_ENT_ R Toe02
-    100094: OAK_TEE_ENT_ R Toe1
-    100096: OAK_TEE_ENT_ R Toe11
-    100098: OAK_TEE_ENT_ R Toe12
-    100100: OAK_TEE_ENT_ R Toe2
-    100102: OAK_TEE_ENT_ R Toe21
-    100104: OAK_TEE_ENT_ R Toe22
-    100106: OAK_TEE_ENT_ R UpperArm
-    100108: OAK_TEE_ENT_ Spine
-    100110: OAK_TEE_ENT_ Spine1
-    100112: //RootNode
-    100114: OAK_TREE_ENT_EYE_L
-    100116: OAK_TREE_ENT_EYE_L_ROOT
-    100118: OAK_TREE_ENT_EYE_R
-    100120: OAK_TREE_ENT_EYE_R_nub
-    100122: OAK_TREE_ENT_EYE_R_nub 1
-    100124: OAK_TREE_ENT_EYE_R_ROOT
-    100126: OAK_TREE_ENT_EYEBROW_L_1
-    100128: OAK_TREE_ENT_EYEBROW_L_2
-    100130: OAK_TREE_ENT_EYEBROW_L_3
-    100132: OAK_TREE_ENT_EYEBROW_R_1
-    100134: OAK_TREE_ENT_EYEBROW_R_2
-    100136: OAK_TREE_ENT_EYEBROW_R_3
-    100138: OAK_TREE_ENT_EYELID_LOWER_L
-    100140: OAK_TREE_ENT_EYELID_LOWER_R
-    100142: OAK_TREE_ENT_EYELID_UPPER_L
-    100144: OAK_TREE_ENT_EYELID_UPPER_R
-    100146: OAK_TREE_ENT_LIP_LOWER_L_1
-    100148: OAK_TREE_ENT_LIP_LOWER_L_2
-    100150: OAK_TREE_ENT_LIP_LOWER_R_1
-    100152: OAK_TREE_ENT_LIP_LOWER_R_2
-    100154: OAK_TREE_ENT_LIP_UPPER_L_1
-    100156: OAK_TREE_ENT_LIP_UPPER_L_2
-    100158: OAK_TREE_ENT_LIP_UPPER_R_1
-    100160: OAK_TREE_ENT_LIP_UPPER_R_2
-    100162: OAK_TREE_ENT_NOSE_1
-    100164: OAK_TREE_ENT_NOSE_2
-    400000: OAK_TEE_ENT_
-    400002: OAK_TEE_ENT_ Head
-    400004: OAK_TEE_ENT_ L Calf
-    400006: OAK_TEE_ENT_ L Clavicle
-    400008: OAK_TEE_ENT_ L Finger0
-    400010: OAK_TEE_ENT_ L Finger01
-    400012: OAK_TEE_ENT_ L Finger02
-    400014: OAK_TEE_ENT_ L Finger1
-    400016: OAK_TEE_ENT_ L Finger11
-    400018: OAK_TEE_ENT_ L Finger12
-    400020: OAK_TEE_ENT_ L Finger2
-    400022: OAK_TEE_ENT_ L Finger21
-    400024: OAK_TEE_ENT_ L Finger22
-    400026: OAK_TEE_ENT_ L Foot
-    400028: OAK_TEE_ENT_ L Forearm
-    400030: OAK_TEE_ENT_ L Hand
-    400032: OAK_TEE_ENT_ L Thigh
-    400034: OAK_TEE_ENT_ L Toe0
-    400036: OAK_TEE_ENT_ L Toe01
-    400038: OAK_TEE_ENT_ L Toe02
-    400040: OAK_TEE_ENT_ L Toe1
-    400042: OAK_TEE_ENT_ L Toe11
-    400044: OAK_TEE_ENT_ L Toe12
-    400046: OAK_TEE_ENT_ L Toe2
-    400048: OAK_TEE_ENT_ L Toe21
-    400050: OAK_TEE_ENT_ L Toe22
-    400052: OAK_TEE_ENT_ L UpperArm
-    400054: OAK_TEE_ENT_ Neck
-    400056: OAK_TEE_ENT_ Pelvis
-    400058: OAK_TEE_ENT_ R Calf
-    400060: OAK_TEE_ENT_ R Clavicle
-    400062: OAK_TEE_ENT_ R Finger0
-    400064: OAK_TEE_ENT_ R Finger01
-    400066: OAK_TEE_ENT_ R Finger02
-    400068: OAK_TEE_ENT_ R Finger1
-    400070: OAK_TEE_ENT_ R Finger11
-    400072: OAK_TEE_ENT_ R Finger12
-    400074: OAK_TEE_ENT_ R Finger2
-    400076: OAK_TEE_ENT_ R Finger21
-    400078: OAK_TEE_ENT_ R Finger22
-    400080: OAK_TEE_ENT_ R Foot
-    400082: OAK_TEE_ENT_ R Forearm
-    400084: OAK_TEE_ENT_ R Hand
-    400086: OAK_TEE_ENT_ R Thigh
-    400088: OAK_TEE_ENT_ R Toe0
-    400090: OAK_TEE_ENT_ R Toe01
-    400092: OAK_TEE_ENT_ R Toe02
-    400094: OAK_TEE_ENT_ R Toe1
-    400096: OAK_TEE_ENT_ R Toe11
-    400098: OAK_TEE_ENT_ R Toe12
-    400100: OAK_TEE_ENT_ R Toe2
-    400102: OAK_TEE_ENT_ R Toe21
-    400104: OAK_TEE_ENT_ R Toe22
-    400106: OAK_TEE_ENT_ R UpperArm
-    400108: OAK_TEE_ENT_ Spine
-    400110: OAK_TEE_ENT_ Spine1
-    400112: //RootNode
-    400114: OAK_TREE_ENT_EYE_L
-    400116: OAK_TREE_ENT_EYE_L_ROOT
-    400118: OAK_TREE_ENT_EYE_R
-    400120: OAK_TREE_ENT_EYE_R_nub
-    400122: OAK_TREE_ENT_EYE_R_nub 1
-    400124: OAK_TREE_ENT_EYE_R_ROOT
-    400126: OAK_TREE_ENT_EYEBROW_L_1
-    400128: OAK_TREE_ENT_EYEBROW_L_2
-    400130: OAK_TREE_ENT_EYEBROW_L_3
-    400132: OAK_TREE_ENT_EYEBROW_R_1
-    400134: OAK_TREE_ENT_EYEBROW_R_2
-    400136: OAK_TREE_ENT_EYEBROW_R_3
-    400138: OAK_TREE_ENT_EYELID_LOWER_L
-    400140: OAK_TREE_ENT_EYELID_LOWER_R
-    400142: OAK_TREE_ENT_EYELID_UPPER_L
-    400144: OAK_TREE_ENT_EYELID_UPPER_R
-    400146: OAK_TREE_ENT_LIP_LOWER_L_1
-    400148: OAK_TREE_ENT_LIP_LOWER_L_2
-    400150: OAK_TREE_ENT_LIP_LOWER_R_1
-    400152: OAK_TREE_ENT_LIP_LOWER_R_2
-    400154: OAK_TREE_ENT_LIP_UPPER_L_1
-    400156: OAK_TREE_ENT_LIP_UPPER_L_2
-    400158: OAK_TREE_ENT_LIP_UPPER_R_1
-    400160: OAK_TREE_ENT_LIP_UPPER_R_2
-    400162: OAK_TREE_ENT_NOSE_1
-    400164: OAK_TREE_ENT_NOSE_2
-    7400000: clawsAttack2HitComboForward
-    9500000: //RootNode
+  serializedVersion: 25
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: OAK_TEE_ENT_
+  - first:
+      1: 100002
+    second: OAK_TEE_ENT_ Head
+  - first:
+      1: 100004
+    second: OAK_TEE_ENT_ L Calf
+  - first:
+      1: 100006
+    second: OAK_TEE_ENT_ L Clavicle
+  - first:
+      1: 100008
+    second: OAK_TEE_ENT_ L Finger0
+  - first:
+      1: 100010
+    second: OAK_TEE_ENT_ L Finger01
+  - first:
+      1: 100012
+    second: OAK_TEE_ENT_ L Finger02
+  - first:
+      1: 100014
+    second: OAK_TEE_ENT_ L Finger1
+  - first:
+      1: 100016
+    second: OAK_TEE_ENT_ L Finger11
+  - first:
+      1: 100018
+    second: OAK_TEE_ENT_ L Finger12
+  - first:
+      1: 100020
+    second: OAK_TEE_ENT_ L Finger2
+  - first:
+      1: 100022
+    second: OAK_TEE_ENT_ L Finger21
+  - first:
+      1: 100024
+    second: OAK_TEE_ENT_ L Finger22
+  - first:
+      1: 100026
+    second: OAK_TEE_ENT_ L Foot
+  - first:
+      1: 100028
+    second: OAK_TEE_ENT_ L Forearm
+  - first:
+      1: 100030
+    second: OAK_TEE_ENT_ L Hand
+  - first:
+      1: 100032
+    second: OAK_TEE_ENT_ L Thigh
+  - first:
+      1: 100034
+    second: OAK_TEE_ENT_ L Toe0
+  - first:
+      1: 100036
+    second: OAK_TEE_ENT_ L Toe01
+  - first:
+      1: 100038
+    second: OAK_TEE_ENT_ L Toe02
+  - first:
+      1: 100040
+    second: OAK_TEE_ENT_ L Toe1
+  - first:
+      1: 100042
+    second: OAK_TEE_ENT_ L Toe11
+  - first:
+      1: 100044
+    second: OAK_TEE_ENT_ L Toe12
+  - first:
+      1: 100046
+    second: OAK_TEE_ENT_ L Toe2
+  - first:
+      1: 100048
+    second: OAK_TEE_ENT_ L Toe21
+  - first:
+      1: 100050
+    second: OAK_TEE_ENT_ L Toe22
+  - first:
+      1: 100052
+    second: OAK_TEE_ENT_ L UpperArm
+  - first:
+      1: 100054
+    second: OAK_TEE_ENT_ Neck
+  - first:
+      1: 100056
+    second: OAK_TEE_ENT_ Pelvis
+  - first:
+      1: 100058
+    second: OAK_TEE_ENT_ R Calf
+  - first:
+      1: 100060
+    second: OAK_TEE_ENT_ R Clavicle
+  - first:
+      1: 100062
+    second: OAK_TEE_ENT_ R Finger0
+  - first:
+      1: 100064
+    second: OAK_TEE_ENT_ R Finger01
+  - first:
+      1: 100066
+    second: OAK_TEE_ENT_ R Finger02
+  - first:
+      1: 100068
+    second: OAK_TEE_ENT_ R Finger1
+  - first:
+      1: 100070
+    second: OAK_TEE_ENT_ R Finger11
+  - first:
+      1: 100072
+    second: OAK_TEE_ENT_ R Finger12
+  - first:
+      1: 100074
+    second: OAK_TEE_ENT_ R Finger2
+  - first:
+      1: 100076
+    second: OAK_TEE_ENT_ R Finger21
+  - first:
+      1: 100078
+    second: OAK_TEE_ENT_ R Finger22
+  - first:
+      1: 100080
+    second: OAK_TEE_ENT_ R Foot
+  - first:
+      1: 100082
+    second: OAK_TEE_ENT_ R Forearm
+  - first:
+      1: 100084
+    second: OAK_TEE_ENT_ R Hand
+  - first:
+      1: 100086
+    second: OAK_TEE_ENT_ R Thigh
+  - first:
+      1: 100088
+    second: OAK_TEE_ENT_ R Toe0
+  - first:
+      1: 100090
+    second: OAK_TEE_ENT_ R Toe01
+  - first:
+      1: 100092
+    second: OAK_TEE_ENT_ R Toe02
+  - first:
+      1: 100094
+    second: OAK_TEE_ENT_ R Toe1
+  - first:
+      1: 100096
+    second: OAK_TEE_ENT_ R Toe11
+  - first:
+      1: 100098
+    second: OAK_TEE_ENT_ R Toe12
+  - first:
+      1: 100100
+    second: OAK_TEE_ENT_ R Toe2
+  - first:
+      1: 100102
+    second: OAK_TEE_ENT_ R Toe21
+  - first:
+      1: 100104
+    second: OAK_TEE_ENT_ R Toe22
+  - first:
+      1: 100106
+    second: OAK_TEE_ENT_ R UpperArm
+  - first:
+      1: 100108
+    second: OAK_TEE_ENT_ Spine
+  - first:
+      1: 100110
+    second: OAK_TEE_ENT_ Spine1
+  - first:
+      1: 100112
+    second: //RootNode
+  - first:
+      1: 100114
+    second: OAK_TREE_ENT_EYE_L
+  - first:
+      1: 100116
+    second: OAK_TREE_ENT_EYE_L_ROOT
+  - first:
+      1: 100118
+    second: OAK_TREE_ENT_EYE_R
+  - first:
+      1: 100120
+    second: OAK_TREE_ENT_EYE_R_nub
+  - first:
+      1: 100122
+    second: OAK_TREE_ENT_EYE_R_nub 1
+  - first:
+      1: 100124
+    second: OAK_TREE_ENT_EYE_R_ROOT
+  - first:
+      1: 100126
+    second: OAK_TREE_ENT_EYEBROW_L_1
+  - first:
+      1: 100128
+    second: OAK_TREE_ENT_EYEBROW_L_2
+  - first:
+      1: 100130
+    second: OAK_TREE_ENT_EYEBROW_L_3
+  - first:
+      1: 100132
+    second: OAK_TREE_ENT_EYEBROW_R_1
+  - first:
+      1: 100134
+    second: OAK_TREE_ENT_EYEBROW_R_2
+  - first:
+      1: 100136
+    second: OAK_TREE_ENT_EYEBROW_R_3
+  - first:
+      1: 100138
+    second: OAK_TREE_ENT_EYELID_LOWER_L
+  - first:
+      1: 100140
+    second: OAK_TREE_ENT_EYELID_LOWER_R
+  - first:
+      1: 100142
+    second: OAK_TREE_ENT_EYELID_UPPER_L
+  - first:
+      1: 100144
+    second: OAK_TREE_ENT_EYELID_UPPER_R
+  - first:
+      1: 100146
+    second: OAK_TREE_ENT_LIP_LOWER_L_1
+  - first:
+      1: 100148
+    second: OAK_TREE_ENT_LIP_LOWER_L_2
+  - first:
+      1: 100150
+    second: OAK_TREE_ENT_LIP_LOWER_R_1
+  - first:
+      1: 100152
+    second: OAK_TREE_ENT_LIP_LOWER_R_2
+  - first:
+      1: 100154
+    second: OAK_TREE_ENT_LIP_UPPER_L_1
+  - first:
+      1: 100156
+    second: OAK_TREE_ENT_LIP_UPPER_L_2
+  - first:
+      1: 100158
+    second: OAK_TREE_ENT_LIP_UPPER_R_1
+  - first:
+      1: 100160
+    second: OAK_TREE_ENT_LIP_UPPER_R_2
+  - first:
+      1: 100162
+    second: OAK_TREE_ENT_NOSE_1
+  - first:
+      1: 100164
+    second: OAK_TREE_ENT_NOSE_2
+  - first:
+      4: 400000
+    second: OAK_TEE_ENT_
+  - first:
+      4: 400002
+    second: OAK_TEE_ENT_ Head
+  - first:
+      4: 400004
+    second: OAK_TEE_ENT_ L Calf
+  - first:
+      4: 400006
+    second: OAK_TEE_ENT_ L Clavicle
+  - first:
+      4: 400008
+    second: OAK_TEE_ENT_ L Finger0
+  - first:
+      4: 400010
+    second: OAK_TEE_ENT_ L Finger01
+  - first:
+      4: 400012
+    second: OAK_TEE_ENT_ L Finger02
+  - first:
+      4: 400014
+    second: OAK_TEE_ENT_ L Finger1
+  - first:
+      4: 400016
+    second: OAK_TEE_ENT_ L Finger11
+  - first:
+      4: 400018
+    second: OAK_TEE_ENT_ L Finger12
+  - first:
+      4: 400020
+    second: OAK_TEE_ENT_ L Finger2
+  - first:
+      4: 400022
+    second: OAK_TEE_ENT_ L Finger21
+  - first:
+      4: 400024
+    second: OAK_TEE_ENT_ L Finger22
+  - first:
+      4: 400026
+    second: OAK_TEE_ENT_ L Foot
+  - first:
+      4: 400028
+    second: OAK_TEE_ENT_ L Forearm
+  - first:
+      4: 400030
+    second: OAK_TEE_ENT_ L Hand
+  - first:
+      4: 400032
+    second: OAK_TEE_ENT_ L Thigh
+  - first:
+      4: 400034
+    second: OAK_TEE_ENT_ L Toe0
+  - first:
+      4: 400036
+    second: OAK_TEE_ENT_ L Toe01
+  - first:
+      4: 400038
+    second: OAK_TEE_ENT_ L Toe02
+  - first:
+      4: 400040
+    second: OAK_TEE_ENT_ L Toe1
+  - first:
+      4: 400042
+    second: OAK_TEE_ENT_ L Toe11
+  - first:
+      4: 400044
+    second: OAK_TEE_ENT_ L Toe12
+  - first:
+      4: 400046
+    second: OAK_TEE_ENT_ L Toe2
+  - first:
+      4: 400048
+    second: OAK_TEE_ENT_ L Toe21
+  - first:
+      4: 400050
+    second: OAK_TEE_ENT_ L Toe22
+  - first:
+      4: 400052
+    second: OAK_TEE_ENT_ L UpperArm
+  - first:
+      4: 400054
+    second: OAK_TEE_ENT_ Neck
+  - first:
+      4: 400056
+    second: OAK_TEE_ENT_ Pelvis
+  - first:
+      4: 400058
+    second: OAK_TEE_ENT_ R Calf
+  - first:
+      4: 400060
+    second: OAK_TEE_ENT_ R Clavicle
+  - first:
+      4: 400062
+    second: OAK_TEE_ENT_ R Finger0
+  - first:
+      4: 400064
+    second: OAK_TEE_ENT_ R Finger01
+  - first:
+      4: 400066
+    second: OAK_TEE_ENT_ R Finger02
+  - first:
+      4: 400068
+    second: OAK_TEE_ENT_ R Finger1
+  - first:
+      4: 400070
+    second: OAK_TEE_ENT_ R Finger11
+  - first:
+      4: 400072
+    second: OAK_TEE_ENT_ R Finger12
+  - first:
+      4: 400074
+    second: OAK_TEE_ENT_ R Finger2
+  - first:
+      4: 400076
+    second: OAK_TEE_ENT_ R Finger21
+  - first:
+      4: 400078
+    second: OAK_TEE_ENT_ R Finger22
+  - first:
+      4: 400080
+    second: OAK_TEE_ENT_ R Foot
+  - first:
+      4: 400082
+    second: OAK_TEE_ENT_ R Forearm
+  - first:
+      4: 400084
+    second: OAK_TEE_ENT_ R Hand
+  - first:
+      4: 400086
+    second: OAK_TEE_ENT_ R Thigh
+  - first:
+      4: 400088
+    second: OAK_TEE_ENT_ R Toe0
+  - first:
+      4: 400090
+    second: OAK_TEE_ENT_ R Toe01
+  - first:
+      4: 400092
+    second: OAK_TEE_ENT_ R Toe02
+  - first:
+      4: 400094
+    second: OAK_TEE_ENT_ R Toe1
+  - first:
+      4: 400096
+    second: OAK_TEE_ENT_ R Toe11
+  - first:
+      4: 400098
+    second: OAK_TEE_ENT_ R Toe12
+  - first:
+      4: 400100
+    second: OAK_TEE_ENT_ R Toe2
+  - first:
+      4: 400102
+    second: OAK_TEE_ENT_ R Toe21
+  - first:
+      4: 400104
+    second: OAK_TEE_ENT_ R Toe22
+  - first:
+      4: 400106
+    second: OAK_TEE_ENT_ R UpperArm
+  - first:
+      4: 400108
+    second: OAK_TEE_ENT_ Spine
+  - first:
+      4: 400110
+    second: OAK_TEE_ENT_ Spine1
+  - first:
+      4: 400112
+    second: //RootNode
+  - first:
+      4: 400114
+    second: OAK_TREE_ENT_EYE_L
+  - first:
+      4: 400116
+    second: OAK_TREE_ENT_EYE_L_ROOT
+  - first:
+      4: 400118
+    second: OAK_TREE_ENT_EYE_R
+  - first:
+      4: 400120
+    second: OAK_TREE_ENT_EYE_R_nub
+  - first:
+      4: 400122
+    second: OAK_TREE_ENT_EYE_R_nub 1
+  - first:
+      4: 400124
+    second: OAK_TREE_ENT_EYE_R_ROOT
+  - first:
+      4: 400126
+    second: OAK_TREE_ENT_EYEBROW_L_1
+  - first:
+      4: 400128
+    second: OAK_TREE_ENT_EYEBROW_L_2
+  - first:
+      4: 400130
+    second: OAK_TREE_ENT_EYEBROW_L_3
+  - first:
+      4: 400132
+    second: OAK_TREE_ENT_EYEBROW_R_1
+  - first:
+      4: 400134
+    second: OAK_TREE_ENT_EYEBROW_R_2
+  - first:
+      4: 400136
+    second: OAK_TREE_ENT_EYEBROW_R_3
+  - first:
+      4: 400138
+    second: OAK_TREE_ENT_EYELID_LOWER_L
+  - first:
+      4: 400140
+    second: OAK_TREE_ENT_EYELID_LOWER_R
+  - first:
+      4: 400142
+    second: OAK_TREE_ENT_EYELID_UPPER_L
+  - first:
+      4: 400144
+    second: OAK_TREE_ENT_EYELID_UPPER_R
+  - first:
+      4: 400146
+    second: OAK_TREE_ENT_LIP_LOWER_L_1
+  - first:
+      4: 400148
+    second: OAK_TREE_ENT_LIP_LOWER_L_2
+  - first:
+      4: 400150
+    second: OAK_TREE_ENT_LIP_LOWER_R_1
+  - first:
+      4: 400152
+    second: OAK_TREE_ENT_LIP_LOWER_R_2
+  - first:
+      4: 400154
+    second: OAK_TREE_ENT_LIP_UPPER_L_1
+  - first:
+      4: 400156
+    second: OAK_TREE_ENT_LIP_UPPER_L_2
+  - first:
+      4: 400158
+    second: OAK_TREE_ENT_LIP_UPPER_R_1
+  - first:
+      4: 400160
+    second: OAK_TREE_ENT_LIP_UPPER_R_2
+  - first:
+      4: 400162
+    second: OAK_TREE_ENT_NOSE_1
+  - first:
+      4: 400164
+    second: OAK_TREE_ENT_NOSE_2
+  - first:
+      74: 7400000
+    second: clawsAttack2HitComboForward
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      74: 4413799782879924774
+    second: clawsAttack2HitComboForward (2)
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 0
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: clawsAttack2HitComboForward
       takeName: Take 001
+      internalID: 7400000
       firstFrame: 0
       lastFrame: 65
       wrapMode: 0
@@ -203,7 +549,8 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
@@ -480,19 +827,29 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -500,25 +857,35 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 1
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: OAK_TEE_ENT_
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: ded0427ae6e0fdf4ebbaa502cdde64e3,
     type: 3}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

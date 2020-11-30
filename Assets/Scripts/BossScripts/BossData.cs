@@ -46,9 +46,14 @@ namespace BeastHunter
             }
         }
 
-        public Quaternion RotateTo(Quaternion prefabRotation, Quaternion targetRotation, float angleSpeed)
+        public Quaternion RotateTo(Quaternion prefabRotation, Quaternion targetRotation, float angleSpeed, bool immediately = false)
         {
-            return Quaternion.RotateTowards(prefabRotation, targetRotation, angleSpeed * Time.deltaTime);
+            var deltaTime = Time.deltaTime;
+            if(immediately==true)
+            {
+                deltaTime = 1000;
+            }
+            return Quaternion.RotateTowards(prefabRotation, targetRotation, angleSpeed * deltaTime);
         }
 
         public bool CheckIsNearTarget(Vector3 prefabPosition, Vector3 targetPosition, float distanceRange)

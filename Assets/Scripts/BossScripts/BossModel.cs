@@ -17,6 +17,8 @@ namespace BeastHunter
 
         public WeaponHitBoxBehavior LeftHandBehavior { get; set; }
         public WeaponHitBoxBehavior RightHandBehavior { get; set; }
+        public SphereCollider LeftHandCollider { get; set; }
+        public SphereCollider RightHandCollider { get; set; }
 
         public WeaponData WeaponData { get; set; }
 
@@ -169,25 +171,39 @@ namespace BeastHunter
 
             WeaponData = Data.BossFeasts;
 
-            GameObject leftHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
-                LeftActualWeapon.WeaponPrefab, LeftHand);
-            SphereCollider LeftHandTrigger = leftHandWeapon.GetComponent<SphereCollider>();
+            var leftFist = new GameObject("[LeftFist]");
+            GameObject leftHandFist = GameObject.Instantiate(leftFist,LeftHand.position, LeftHand.rotation, LeftHand);
+            GameObject.Destroy(leftFist);
+            SphereCollider LeftHandTrigger = leftHandFist.AddComponent<SphereCollider>();
+            LeftHandCollider = leftHandFist.AddComponent<SphereCollider>();
             LeftHandTrigger.radius = BossData._bossSettings.LeftHandHitBoxRadius;
             LeftHandTrigger.center = BossData._bossSettings.LeftHandHitBoxCenter;
             LeftHandTrigger.isTrigger = true;
+            LeftHandCollider.radius = BossData._bossSettings.LeftHandHitBoxRadius - 0.2f;
+            LeftHandCollider.center = BossData._bossSettings.LeftHandHitBoxCenter;
+            LeftHandCollider.isTrigger = false;
+            LeftHandCollider.enabled = false;
             LeftHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            LeftHandBehavior = leftHandWeapon.GetComponent<WeaponHitBoxBehavior>();
+            LeftHandBehavior = leftHandFist.AddComponent<WeaponHitBoxBehavior>();
             LeftHandBehavior.SetType(InteractableObjectType.HitBox);
             LeftHandBehavior.IsInteractable = false;
 
-            GameObject rightHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
-                RightActualWeapon.WeaponPrefab, RightHand);
-            SphereCollider RightHandTrigger = rightHandWeapon.GetComponent<SphereCollider>();
+            var rightFist = new GameObject("[RightFist]");
+            GameObject rightHandFist = GameObject.Instantiate(rightFist, RightHand.position, RightHand.rotation, RightHand);
+            GameObject.Destroy(rightFist);
+            SphereCollider RightHandTrigger = rightHandFist.AddComponent<SphereCollider>();
+            RightHandCollider = rightHandFist.AddComponent<SphereCollider>();
             RightHandTrigger.radius = BossData._bossSettings.RightHandHitBoxRadius;
             RightHandTrigger.center = BossData._bossSettings.RightHandHitBoxCenter;
             RightHandTrigger.isTrigger = true;
-            RightHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            RightHandBehavior = rightHandWeapon.GetComponent<WeaponHitBoxBehavior>();
+            RightHandCollider.radius = BossData._bossSettings.LeftHandHitBoxRadius - 0.2f;
+            RightHandCollider.center = BossData._bossSettings.LeftHandHitBoxCenter;
+            RightHandCollider.isTrigger = false;
+            RightHandCollider.enabled = false;
+            var rb = rightHandFist.AddComponent<Rigidbody>();//.isKinematic = true;
+            rb.isKinematic = true;
+            rb.mass = 30f;
+            RightHandBehavior = rightHandFist.AddComponent<WeaponHitBoxBehavior>();
             RightHandBehavior.SetType(InteractableObjectType.HitBox);
             RightHandBehavior.IsInteractable = false;
 
