@@ -243,13 +243,33 @@ namespace BeastHunter
         private void PoisonSporesAttackSkill(int id)
         {
             Debug.Log("POISONAttackSkill");
-            // _bossData.RotateTo(_bossModel.BossTransform.rotation, _bossModel.BossCurrentTarget.transform.rotation, 100f, true);
             SetNavMeshAgent(_bossModel.BossCurrentTarget.transform.position, 0f);
-
             _bossModel.BossAnimator.Play("PoisonAttack", 0, 0f);
             TestSkillDictionary[id].IsAttackReady = false;
             SkillCooldown(id, TestSkillDictionary[id].AttackCooldown);
             isAnimationPlay = true;
+            CreateSpores();
+        }
+
+
+        //poisonlogic
+        private void CreateSpores()
+        {
+            var bossPos = _bossModel.BossTransform.position;
+            var targetPos = _bossModel.BossCurrentTarget.transform.position;
+            var distance = _bossData.GetTargetDistance(bossPos, targetPos);
+            var shortDistance = (int)distance / 2;
+            var vector = targetPos - bossPos;
+            var shortVector = vector / shortDistance;
+            var list = new List<TimeRemaining>();
+            for (var j = 1; j <= shortDistance + 3; j++)
+            {
+                var multPos = shortVector * j;
+                list.Add(new TimeRemaining(() =>
+                GameObject.Destroy(GameObject.Instantiate(_bossModel.SporePrefab, bossPos + multPos, Quaternion.identity), 3f), j*0.3f));
+                list[list.Count-1].AddTimeRemaining(j*0.3f);
+                //   GameObject.Destroy(GameObject.Instantiate(_bossModel.SporePrefab, bossPos + (shortVector * j), Quaternion.identity), 3f);
+            }
         }
 
         #endregion

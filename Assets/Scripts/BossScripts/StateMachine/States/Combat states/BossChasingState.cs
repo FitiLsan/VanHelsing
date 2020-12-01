@@ -9,7 +9,7 @@ namespace BeastHunter
 
         private const float DISTANCE_TO_START_ATTACK = 4f;
         private const float TRIGGER_VIEW_INCREASE = 5f;
-        private const float FORCE_ATTACK_TIME = 10f;
+        private const float FORCE_ATTACK_TIME = 1f;
 
         #endregion
 

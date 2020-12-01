@@ -54,6 +54,7 @@ namespace BeastHunter
         public float CurrentStamina;
         public GameObject Lair;
         public GameObject BossCurrentTarget;
+        public GameObject SporePrefab;
 
         #endregion
 
@@ -233,6 +234,7 @@ namespace BeastHunter
 
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
             CurrentHealth = BossStats.MainStats.HealthPoints;
+            SporePrefab = BossSettings.SporePrefab;
         }
 
         #endregion
