@@ -70,20 +70,29 @@ namespace BeastHunter
             return isHit;
         }
 
-        public Vector3 GetGroundedPosition(Vector3 position)
+        public Vector3 GetGroundedPosition(Vector3 position, float positionY = Mathf.Infinity)
         {
             Vector3 groundedPosition = position;
-                
-            bool isHit = Physics.Raycast(new Vector3(position.x, Mathf.Infinity, position.z), 
+
+            bool isHit = Physics.Raycast(new Vector3(position.x, positionY, position.z),
                 Vector3.down, out RaycastHit hit);
 
             if (isHit)
             {
-                groundedPosition = hit.point;
+                if (!hit.collider.CompareTag("Player"))
+                {
+                    groundedPosition = hit.point;
+                }
+                else
+                {
+                    groundedPosition = hit.point - new Vector3(0, 2f, 0);
+                    
+                }
             }
 
             return groundedPosition;
         }
+
 
         public List<ITrigger> GetObjectsInRadius(Vector3 position, float radius, int layerMask = LayerManager.DEFAULT_LAYER)
         {

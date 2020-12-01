@@ -261,14 +261,17 @@ namespace BeastHunter
             var shortDistance = (int)distance / 2;
             var vector = targetPos - bossPos;
             var shortVector = vector / shortDistance;
-            var list = new List<TimeRemaining>();
             for (var j = 1; j <= shortDistance + 3; j++)
             {
-                var multPos = shortVector * j;
-                list.Add(new TimeRemaining(() =>
-                GameObject.Destroy(GameObject.Instantiate(_bossModel.SporePrefab, bossPos + multPos, Quaternion.identity), 3f), j*0.3f));
-                list[list.Count-1].AddTimeRemaining(j*0.3f);
-                //   GameObject.Destroy(GameObject.Instantiate(_bossModel.SporePrefab, bossPos + (shortVector * j), Quaternion.identity), 3f);
+                float horizontalOffset = UnityEngine.Random.Range(-2f, 2f);
+                if (j%2==0)
+                {
+                    horizontalOffset *= -1;
+                }
+                var multPos = shortVector * j + new Vector3(horizontalOffset, 0, 0);
+                var groundedPosition = Services.SharedInstance.PhysicsService.GetGroundedPosition(bossPos + multPos, 20f);
+                var TimeRem = new TimeRemaining(() =>GameObject.Destroy(GameObject.Instantiate(_bossModel.SporePrefab, groundedPosition, Quaternion.identity), 3f), j * 0.1f);
+                TimeRem.AddTimeRemaining(j * 0.1f);
             }
         }
 
