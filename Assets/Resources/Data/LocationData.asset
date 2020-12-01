@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63798768fe41a44b92f7e80c3f4a681, type: 3}
   m_Name: LocationData
   m_EditorClassIdentifier: 
-  PlayerSpawnData:
-    _spawnPoint: {x: 10, y: 1, z: 10}
-  BossSpawnData:
-    _spawnPoint: {x: -10, y: 1, z: -10}
+  _playerSpawnPosition: {x: 5, y: 1, z: -10}
+  _bossSpawnPosition: {x: 15, y: 10, z: 15}
+  _enemySpawnPointData: []
