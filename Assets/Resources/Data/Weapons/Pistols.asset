@@ -12,51 +12,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d56849e5ab3fe46816fa1fb93b6302, type: 3}
   m_Name: Pistols
   m_EditorClassIdentifier: 
-  HandType: 2
-  Type: 2
-  InWhichHand: 3
-  WeaponImage: {fileID: 21300000, guid: 5384e6810d7c96047b999f37d99b00ce, type: 3}
-  SimpleAttacks:
-  - Name: FirstDual
+  _handType: 2
+  _type: 2
+  _inWhichHand: 3
+  _weaponImage: {fileID: 21300000, guid: 5384e6810d7c96047b999f37d99b00ce, type: 3}
+  _simpleAttacks:
+  - Name: Shot right
+    AnimationName: Right
     AttackDamage:
-      PhysicalDamage: 16.4
-      StunProbability: 1
-    WeaponItem: {fileID: 11400000, guid: d366ed2d437ddc940878a227352cf270, type: 2}
-    AttackType: 3
-    AttackTime: 1.5
+      PhysicalDamage: 8
+      StunProbability: 0.2
+    WeaponItem: {fileID: 11400000, guid: ea99992e50c6b0341aba96743a2e5c66, type: 2}
+    AttackType: 2
+    AttackTime: 0.5
     AttackStaminaCost: 0
-  - Name: SecondDual
+  - Name: Shot left
+    AnimationName: Left
     AttackDamage:
-      PhysicalDamage: 16.4
-      StunProbability: 1
+      PhysicalDamage: 8
+      StunProbability: 0.2
     WeaponItem: {fileID: 11400000, guid: d366ed2d437ddc940878a227352cf270, type: 2}
-    AttackType: 3
-    AttackTime: 1.5
+    AttackType: 1
+    AttackTime: 0.5
     AttackStaminaCost: 0
-  SpecialAttacks: []
-  CurrentAttack:
-    Name: FirstDual
-    AttackDamage:
-      PhysicalDamage: 16.4
-      StunProbability: 1
-    WeaponItem: {fileID: 11400000, guid: d366ed2d437ddc940878a227352cf270, type: 2}
-    AttackType: 3
-    AttackTime: 1.5
-    AttackStaminaCost: 0
-  WeaponName: Pistols
-  SimpleAttackAnimationPrefix: Pistols
-  SpecialAttackAnimationPrefix: Pistols
-  StrafeAndDodgePostfix: Pistols
-  GettingAnimationName: 
-  RemovingAnimationName: 
-  TotalTimeToGet: 0
-  TimeBeforeGrab: 0
-  TotalTimeToRemove: 0
-  TimeBeforeLetGo: 0
+  _specialAttacks: []
+  _weaponName: Two handed pistols
+  _simpleAttackAnimationPrefix: DualPistolsSimpleAttack
+  _specialAttackAnimationPrefix: DualPistolsSpecialAttack
+  _strafeAnimationPostfix: Strafe
+  _dodgeAnimationPostfix: Dodge
+  _gettingAnimationPostfix: DualPistolsGetting
+  _holdingAnimationPostfix: DualPistolsHolding
+  _removingAnimationPostfix: DualPistolsRemoving
+  _totalTimeToGet: 2
+  _timeBeforeGrab: 1
+  _totalTimeToRemove: 2
+  _timeBeforeLetGo: 1
   LeftActualWeapon: {fileID: 11400000, guid: d366ed2d437ddc940878a227352cf270, type: 2}
   RightActualWeapon: {fileID: 11400000, guid: ea99992e50c6b0341aba96743a2e5c66, type: 2}
-  BulletType: 1
-  MagazineSize: 1
-  HitDistance: 20
-  ReloadTime: 0
-  ReloadAnimationPrefix: 
+  _projectileData: {fileID: 0}
+  _magazineSize: 2
+  _hitDistance: 25
+  _timeBetweenShots: 1
+  _reloadTime: 3
+  _aimingAnimationPostfix: DualPistolsAiming
+  _reloadAnimationPostfix: DualPistolsReloading

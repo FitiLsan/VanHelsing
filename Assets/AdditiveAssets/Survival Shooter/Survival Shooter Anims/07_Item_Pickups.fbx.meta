@@ -492,7 +492,11 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
+      improve retargeting quality.\n\t'SciFi:Alpha:Spine2' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'SciFi:Alpha:Neck1' is
+      inbetween humanoid transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -508,7 +512,7 @@ ModelImporter:
     - serializedVersion: 16
       name: ItemPickup_Ground
       takeName: Take 001
-      internalID: 0
+      internalID: 7400000
       firstFrame: 1
       lastFrame: 50
       wrapMode: 0
@@ -523,9 +527,9 @@ ModelImporter:
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
-      heightFromFeet: 0
+      heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
@@ -537,7 +541,7 @@ ModelImporter:
     - serializedVersion: 16
       name: ItemPickup_Surface
       takeName: Take 001
-      internalID: 0
+      internalID: 7400002
       firstFrame: 51
       lastFrame: 71
       wrapMode: 0
@@ -566,7 +570,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Item_Discard
       takeName: Take 001
-      internalID: 0
+      internalID: 7400004
       firstFrame: 72
       lastFrame: 102
       wrapMode: 0

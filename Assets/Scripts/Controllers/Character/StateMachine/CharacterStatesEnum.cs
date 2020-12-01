@@ -3,6 +3,7 @@
     public enum CharacterStatesEnum
     {
         None,
+        Aiming,
         Attacking,
         Idle,
         Movement,
@@ -13,6 +14,7 @@
         Jumping,
         Dead,       
         Stunned,
+        Shooting,
         TimeSkip,
         TrapPlacing,
     }

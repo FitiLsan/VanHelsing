@@ -33,10 +33,12 @@ namespace BeastHunter
         public void OnAwake()
         {
             _characterModel = _context.CharacterModel;
-            _inputModel.InputAxisX = 0;
-            _inputModel.InputAxisY = 0;
-            _inputModel.InputTotalAxisX = 0;
-            _inputModel.InputTotalAxisY = 0;
+            _inputModel.MouseInputX = 0f;
+            _inputModel.MouseInputY = 0f;
+            _inputModel.InputAxisX = 0f;
+            _inputModel.InputAxisY = 0f;
+            _inputModel.InputTotalAxisX = 0f;
+            _inputModel.InputTotalAxisY = 0f;
             _inputModel.IsInputMove = false;
             _inputModel.IsInputRun = false;
 

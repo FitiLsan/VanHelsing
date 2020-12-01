@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class ProjectileBehavior : MonoBehaviour, IProjectile
+    public sealed class ProjectileBehavior : MonoBehaviour, IProjectile
     {
         #region Fields
 

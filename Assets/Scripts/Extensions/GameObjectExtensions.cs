@@ -86,11 +86,6 @@ namespace Extensions
                     component = newComponent;
                     doesComponentExists = true;
                 }
-                else
-                {
-                    throw new System.NullReferenceException("Can't find component: " + component + 
-                        " in object: " + obj.name);
-                }
             }
             else
             {
@@ -113,11 +108,6 @@ namespace Extensions
                 {
                     component = newComponent;
                     doesComponentExists = true;
-                }
-                else
-                {
-                    throw new System.NullReferenceException("Can't find component: " + component +
-                        " in object's: " + obj.name + " children");
                 }
             }
             else

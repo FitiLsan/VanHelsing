@@ -35,6 +35,7 @@ namespace BeastHunter
 
         public SneakingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Sneaking;
             IsTargeting = false;
             IsAttacking = false;
         }
@@ -87,7 +88,6 @@ namespace BeastHunter
             _crouchLevel = ZERO_CROUCH_LEVEL;
             _crouchLevelForAnimation = _crouchLevel;
             _isMoving = _inputModel.IsInputMove;
-            _animationController.PlayMovementAnimation();
             MessageBroker.Default.Publish(new OnPlayerSneakingEventClass { IsSneaking = true });
         }
 
@@ -133,7 +133,7 @@ namespace BeastHunter
             _crouchLevelForAnimation = Mathf.SmoothStep(_crouchLevelForAnimation, _targetCrouchLevelForAnimation,
                 POSE_CHANGE_SPEED);
 
-            _animationController.SetCrouchLevel(_crouchLevelForAnimation);
+            _characterModel.CharacterAnimationModel.CrouchLevel = _crouchLevelForAnimation;
         }
 
         private void ExitState()

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10019a953c056624dab928158e804450, type: 3}
+  m_Name: NewCrossbowBoltData
+  m_EditorClassIdentifier: 
+  _projectileType: 2
+  _projectilePrefab: {fileID: 3660602131783454729, guid: 9e1ccf8f91f3a2a49a82d94920dabb7b,
+    type: 3}
+  _projectileDamage:
+    PhysicalDamage: 12
+    StunProbability: 0
+  _isDestroyedAfterInstantiation: 0
+  _isDestroyedAfterHit: 0
+  _timeToDestroyAfterInstantiation: 0
+  _timeToDestroyAfterHit: 0
+  _projectileColliderSize: 0.15

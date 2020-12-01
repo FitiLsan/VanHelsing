@@ -7,7 +7,14 @@ namespace BeastHunter
     {
         #region Fields
 
-        public WeaponItem ActualWeapon;
+        [SerializeField] protected WeaponItem _actualWeapon;
+
+        #endregion
+
+
+        #region Properties
+
+        public WeaponItem ActualWeapon => _actualWeapon;
 
         #endregion
 

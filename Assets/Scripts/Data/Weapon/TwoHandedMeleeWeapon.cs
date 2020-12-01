@@ -4,14 +4,14 @@
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewWeapon", menuName = "CreateWeapon/CreateTwoHandedMelee", order = 0)]
-    public class TwoHandedMeleeWeapon : TwoHandedWeaponData
+    public sealed class TwoHandedMeleeWeapon : TwoHandedWeaponData
     {
         #region ClassLifeCycle
 
         public TwoHandedMeleeWeapon()
         {
-            HandType = WeaponHandType.TwoHanded;
-            Type = WeaponType.Melee;
+            _handType = WeaponHandType.TwoHanded;
+            _type = WeaponType.Melee;
         }
 
         #endregion

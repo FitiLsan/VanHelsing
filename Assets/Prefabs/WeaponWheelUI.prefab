@@ -470,9 +470,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponData: {fileID: 0}
-  TrapData: {fileID: 11400000, guid: 47cf7dcfe40a357499ff42fecab7c88b, type: 2}
-  AnchorPosition: {x: -70.7, y: 70.7, z: 0}
+  _weaponData: {fileID: 11400000, guid: 829920280cdbb69458a431cfd04d9564, type: 2}
+  _trapData: {fileID: 0}
+  _anchorPosition: {x: -0.7, y: 0.7, z: 0}
 --- !u!1 &5913406805559798496
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,9 +635,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponData: {fileID: 0}
-  TrapData: {fileID: 11400000, guid: 3d4ee59bf2d5ace41aa467ba296a15dc, type: 2}
-  AnchorPosition: {x: -100, y: 0, z: 0}
+  _weaponData: {fileID: 11400000, guid: 3ad3d5c5d0901e640aff0afcd55cf93a, type: 2}
+  _trapData: {fileID: 0}
+  _anchorPosition: {x: -1, y: 0, z: 0}
 --- !u!1 &5913406805632240260
 GameObject:
   m_ObjectHideFlags: 0
@@ -940,9 +940,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponData: {fileID: 0}
-  TrapData: {fileID: 0}
-  AnchorPosition: {x: 100, y: 0, z: 0}
+  _weaponData: {fileID: 0}
+  _trapData: {fileID: 11400000, guid: 47cf7dcfe40a357499ff42fecab7c88b, type: 2}
+  _anchorPosition: {x: 1, y: 0, z: 0}
 --- !u!1 &5913406806183415132
 GameObject:
   m_ObjectHideFlags: 0
@@ -1223,9 +1223,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponData: {fileID: 0}
-  TrapData: {fileID: 0}
-  AnchorPosition: {x: 70.7, y: 70.7, z: 0}
+  _weaponData: {fileID: 0}
+  _trapData: {fileID: 11400000, guid: 3d4ee59bf2d5ace41aa467ba296a15dc, type: 2}
+  _anchorPosition: {x: 0.7, y: 0.7, z: 0}
 --- !u!1 &5913406806421216929
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,9 +1314,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponData: {fileID: 11400000, guid: 3ad3d5c5d0901e640aff0afcd55cf93a, type: 2}
-  TrapData: {fileID: 0}
-  AnchorPosition: {x: 70.7, y: -70.7, z: 0}
+  _weaponData: {fileID: 11400000, guid: ea1d636fc53602540a33b79156522386, type: 2}
+  _trapData: {fileID: 0}
+  _anchorPosition: {x: 0.7, y: -0.7, z: 0}
 --- !u!1 &5913406806548488889
 GameObject:
   m_ObjectHideFlags: 0
@@ -1405,6 +1405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6ee2c3068df4a4baa644ac99bbb443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponData: {fileID: 11400000, guid: 829920280cdbb69458a431cfd04d9564, type: 2}
-  TrapData: {fileID: 0}
-  AnchorPosition: {x: -70.7, y: -70.7, z: 0}
+  _weaponData: {fileID: 11400000, guid: f8ad8d509686934488dd0bcf320925d5, type: 2}
+  _trapData: {fileID: 0}
+  _anchorPosition: {x: -0.7, y: -0.7, z: 0}

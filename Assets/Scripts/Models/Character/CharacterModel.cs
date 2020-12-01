@@ -18,13 +18,15 @@ namespace BeastHunter
         #region Properties
 
         public BaseStatsClass CharacterStats { get; set; }
-        public WeaponData CurrentWeaponData { get; set; }
+        public ReactiveProperty<WeaponData> CurrentWeaponData { get; set; }
         public GameObject CurrentWeaponLeft { get; set; }
         public GameObject CurrentWeaponRight { get; set; }
         public WeaponHitBoxBehavior WeaponBehaviorLeft { get; set; }
         public WeaponHitBoxBehavior WeaponBehaviorRight { get; set; }
         public ReactiveProperty<TrapModel> CurrentPlacingTrapModel { get; set; }
+        public ReactiveProperty<CharacterBaseState> CurrentCharacterState { get; set; }
 
+        public CharacterAnimationModel CharacterAnimationModel { get; }
         public Transform CharacterTransform { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
         public SphereCollider CharacterSphereCollider { get; }
@@ -37,7 +39,6 @@ namespace BeastHunter
         public BehaviourPuppet BehaviorPuppet { get; }
         public BehaviourFall BehaviorFall { get; }
 
-        public Animator CharacterAnimator { get; set; }
         public List<Collider> EnemiesInTrigger { get; set; }
         public Collider ClosestEnemy { get; set; }
 
@@ -67,8 +68,8 @@ namespace BeastHunter
         public CharacterModel(GameObject prefab, CharacterData characterData, Vector3 groundPosition)
         {
             CharacterData = characterData;
-            CharacterCommonSettings = CharacterData._characterCommonSettings;
-            CharacterStatsSettings = CharacterData._characterStatsSettings;
+            CharacterCommonSettings = CharacterData.CharacterCommonSettings;
+            CharacterStatsSettings = CharacterData.CharacterStatsSettings;
             CharacterTransform = prefab.transform.GetChild(2).transform;
             CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
             CharacterTransform.name = CharacterCommonSettings.InstanceName;
@@ -119,13 +120,9 @@ namespace BeastHunter
                 CharacterSphereCollider.isTrigger = true;
             }
 
-            CharacterAnimator = prefab.transform.GetChild(2).GetComponent<Animator>();
             PuppetMaster = prefab.transform.GetChild(1).gameObject.GetComponent<PuppetMaster>();
             BehaviorPuppet = prefab.transform.GetChild(0).GetChild(0).gameObject.GetComponent<BehaviourPuppet>();
             BehaviorFall = prefab.transform.GetChild(0).GetChild(1).gameObject.GetComponent<BehaviourFall>();
-
-            CharacterAnimator.runtimeAnimatorController = CharacterCommonSettings.CharacterAnimator;
-            CharacterAnimator.applyRootMotion = CharacterCommonSettings.BeginningApplyRootMotion;
 
             if (prefab.transform.GetChild(2).GetComponent<PlayerBehavior>() != null)
             {
@@ -145,15 +142,19 @@ namespace BeastHunter
             IsDead = false;
 
             CurrentSpeed = 0;
-            AnimationSpeed = CharacterData._characterCommonSettings.AnimatorBaseSpeed;
+            AnimationSpeed = CharacterData.CharacterCommonSettings.AnimatorBaseSpeed;
 
-            Services.SharedInstance.CameraService.Initialize(this);
-
-            CurrentWeaponData = null;
+            CurrentWeaponData = new ReactiveProperty<WeaponData>();
+            CurrentWeaponData.Value = null;
             CurrentWeaponLeft = null;
             CurrentWeaponRight = null;
             CurrentPlacingTrapModel = new ReactiveProperty<TrapModel>();
             CurrentPlacingTrapModel.Value = null;
+            CharacterAnimationModel = new CharacterAnimationModel(prefab.transform.GetChild(2).GetComponent<Animator>(), 
+                CharacterCommonSettings.CharacterAnimator, CharacterCommonSettings.BeginningApplyRootMotion);
+            CurrentCharacterState = new ReactiveProperty<CharacterBaseState>();
+
+            Services.SharedInstance.CameraService.Initialize(this);
         }
 
         #endregion
