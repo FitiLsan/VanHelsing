@@ -9,18 +9,17 @@ namespace BeastHunter
     {
         #region Fields
 
-        //[SerializeField] private static List<SpawnClass> _enemySpawnData;
-        //[SerializeField] private static SpawnClass _playerSpawnData;
-        //[SerializeField] private static SpawnClass _bossSpawnData;
-
+        [SerializeField] private Vector3 _playerSpawnPosition;
+        [SerializeField] private Vector3 _bossSpawnPosition;
+        [SerializeField] private List<SpawnPointData> _enemySpawnPointData;
+        
         #endregion
 
         #region Properties
 
-        //public List<SpawnClass> EnemySpawnData { get => _enemySpawnData; }
-        public SpawnClass PlayerSpawnData;
-        public SpawnClass BossSpawnData;
-        //public SpawnClass OneEnemySpawnData;
+        public Vector3 PlayerSpawnPosition { get => _playerSpawnPosition; }
+        public Vector3 BossSpawnPosition { get => _bossSpawnPosition; }
+        public List<SpawnPointData> EnemySpawnPointData { get => _enemySpawnPointData; }
 
         #endregion
     }

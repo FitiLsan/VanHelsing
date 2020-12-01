@@ -7,7 +7,12 @@ namespace BeastHunter
 {
     public abstract class CreateEnemyModel
     {
-        public abstract EnemyModel CreateModel(GameObject instance, EnemyData data);
-    }
+        #region Methods
 
+        public abstract bool CanCreateModel(DataType data);
+
+        public abstract EnemyModel CreateModel(GameObject instance, EnemyData data);
+
+        #endregion
+    }
 }

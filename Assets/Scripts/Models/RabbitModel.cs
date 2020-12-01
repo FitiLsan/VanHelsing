@@ -64,6 +64,8 @@ namespace BeastHunter
             }
         }
 
+
+
         #endregion
 
 
@@ -85,12 +87,6 @@ namespace BeastHunter
         public override EnemyStats GetStats()
         {
             return RabbitData.BaseStats;
-        }
-
-
-        public override void DoSmth(string how)
-        {
-            //RabbitData.Do(how);
         }
 
         public override void TakeDamage(Damage damage)
