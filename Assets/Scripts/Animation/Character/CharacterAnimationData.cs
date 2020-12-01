@@ -3,6 +3,7 @@
 
 namespace BeastHunter
 {
+    [System.Serializable]
     public struct CharacterAnimationData
     {
         #region Fields
@@ -22,7 +23,16 @@ namespace BeastHunter
         [SerializeField] private string _xDodgeAxisAnimatorParameterName;
         [SerializeField] private string _yDodgeAxisAnimatorParameterName;
 
-        [SerializeField] private string _attackAnimationPrefix;
+        [Range(0f, 1f)]
+        [SerializeField] private float _aimingLookToWeightIK;
+        [Range(0f, 1f)]
+        [SerializeField] private float _aimingLookToBodyWeightIK;
+        [Range(0f, 1f)]
+        [SerializeField] private float _aimingLookToHeadWeightIK;
+        [Range(0f, 1f)]
+        [SerializeField] private float _aimingLookToEyesWeightIK;
+        [Range(0f, 1f)]
+        [SerializeField] private float _aimingLookToClampWeightIK;
 
         #endregion
 
@@ -45,28 +55,13 @@ namespace BeastHunter
         public string XDodgeAxisAnimatorParameterName => _xDodgeAxisAnimatorParameterName;
         public string YDodgeAxisAnimatorParameterName => _yDodgeAxisAnimatorParameterName;
 
-        public string AttackAnimationPrefix => _attackAnimationPrefix;
+        public float AimingLookToWeightIK => _aimingLookToWeightIK;
+        public float AimingLookToBodyWeightIK => _aimingLookToBodyWeightIK;
+        public float AimingLookToHeadWeightIK => _aimingLookToHeadWeightIK;
+        public float AimingLookToEyesWeightIK => _aimingLookToEyesWeightIK;
+        public float AimingLookToClampWeightIK => _aimingLookToClampWeightIK;
 
         #endregion
-
-        //private const string MOVEMENT_ANIMATION_NAME = "Movement";
-        //private const string STRAFE_ANIMATION_NAME = "Strafe";
-        //private const string SLIDE_FORWARD_ANIMATION_NAME = "SlideForward";
-        //private const string JUMP_FORWARD_ANIMATION_NAME = "JumpForward";
-        //private const string DODGE_ANIMATION_NAME = "Dodge";
-        //private const string TRAP_PLACING_ANIMATION_NAME = "TrapPlacing";
-
-        //private const string AXIS_X_ANIMATOR_PARAMETER_NAME = "AxisX";
-        //private const string AXIS_Y_ANIMATOR_PARAMETER_NAME = "AxisY";
-        //private const string MOVE_SPEED_ANIMATOR_PARAMETER_NAME = "MoveSpeed";
-        //private const string MOUSE_AXIS_X_ANIMATOR_PARAMETER_NAME = "MouseAxisX";
-        //private const string CROUCH_LEVEL_ANIMATOR_PARAMETER_NAME = "CrouchLevel";
-        //private const string DODGE_AXIS_X_ANIMATOR_PARAMETER_NAME = "DodgeAxisX";
-        //private const string DODGE_AXIS_Y_ANIMATOR_PARAMETER_NAME = "DodgeAxisY";
-
-        //private const string NOT_ARMED_ATTACK_ANIMATION_NAME_PREFIX = "NotArmedAttack_";
-        //private const string ARMED_ATTACK_ANIMATION_NAME_PREFIX = "Attack_";
-
     }
 }
 

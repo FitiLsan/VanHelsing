@@ -54,7 +54,6 @@
             base.Initialize();
 
             _stateMachine.BackState.StopCharacter();
-            _animationController.PlayMovementAnimation(); 
         }
 
         #endregion

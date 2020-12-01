@@ -41,7 +41,7 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.Idle, new IdleState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Movement, new MovementState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Sneaking, new SneakingState(_context, this));
-            CharacterStates.Add(CharacterStatesEnum.Attacking, new AttackingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Attacking, new MeleeAttackingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Jumping, new JumpingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Sliding, new SlidingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Battle, new BattleState(_context, this));
@@ -50,6 +50,7 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.TimeSkip, new TimeSkipState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.TrapPlacing, new TrapPlacingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Aiming, new AimingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Shooting, new ShootingState(_context, this));
         }
 
         #endregion

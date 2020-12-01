@@ -44,9 +44,7 @@ namespace BeastHunter
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
-            _jumpTime = _characterModel.CharacterData._characterCommonSettings.JumpTime;
-            _animationController.SetRootMotion(true);
-            _animationController.PlayLongDodgeAnimation();
+            _jumpTime = _characterModel.CharacterData.CharacterCommonSettings.JumpTime;
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
             _characterModel.IsDodging = true;
         }
@@ -54,7 +52,6 @@ namespace BeastHunter
         public override void OnExit(CharacterBaseState nextState = null)
         {
             base.OnExit();
-            _animationController.SetRootMotion(false);
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Active;
             _characterModel.IsDodging = false;
         }

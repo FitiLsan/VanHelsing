@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1b914238b1b34547b3d9b0402a50ad8, type: 3}
+  m_Name: NewBombtData
+  m_EditorClassIdentifier: 
+  _projectileType: 3
+  _projectilePrefab: {fileID: 7580386059147003521, guid: 2c130a988ae70b14eb8469356c2eb023,
+    type: 3}
+  _projectileDamage:
+    PhysicalDamage: 27.3
+    StunProbability: 0
+  _isDestroyedAfterInstantiation: 0
+  _isDestroyedAfterHit: 0
+  _timeToDestroyAfterInstantiation: 0
+  _timeToDestroyAfterHit: 0
+  _projectileColliderSize: 1

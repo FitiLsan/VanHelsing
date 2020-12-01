@@ -44,16 +44,13 @@ namespace BeastHunter
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
-            _slideTime = _characterModel.CharacterData._characterCommonSettings.SlideTime;
-            _animationController.SetRootMotion(true);
-            _animationController.PlaySlideForwardAnimation();
+            _slideTime = _characterModel.CharacterData.CharacterCommonSettings.SlideTime;
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
             _characterModel.IsDodging = true;
         }
 
         public override void OnExit(CharacterBaseState nextState = null)
         {
-            _animationController.SetRootMotion(false);
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Active;
             _characterModel.IsDodging = false;
             base.OnExit();

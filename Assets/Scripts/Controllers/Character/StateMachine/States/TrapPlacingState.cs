@@ -68,7 +68,6 @@ namespace BeastHunter
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
-            _animationController.PlayTrapPlacingAnimation();
             _exitTIme = _timeToPlaceTrap;
             _isTrapSet = false;
         }

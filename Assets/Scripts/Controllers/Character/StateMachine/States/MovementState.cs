@@ -56,7 +56,6 @@ namespace BeastHunter
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Jumping]);
             _stateMachine.BackState.OnAim = () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Battle]);
-            _animationController.PlayMovementAnimation();
         }
 
         protected override void DisableActions()
@@ -111,7 +110,7 @@ namespace BeastHunter
         private void StopCountExitTime()
         {
             IsStopping = false;
-            ExitTime = _characterModel.CharacterData._characterCommonSettings.TImeToContinueMovingAfterStop;
+            ExitTime = _characterModel.CharacterData.CharacterCommonSettings.TImeToContinueMovingAfterStop;
         }
 
         private void SneakOrSlide()

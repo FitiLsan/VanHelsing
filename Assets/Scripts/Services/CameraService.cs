@@ -14,6 +14,7 @@ namespace BeastHunter
         private CameraData _cameraData;
         private GameObject _cameraDynamicTarget;
         private GameObject _cameraStaticTarget;
+        private Vector3 _staticCameraCenterPosition;
         private Vector3 _dynamicCameraCenterPosition;
 
         #endregion
@@ -62,14 +63,15 @@ namespace BeastHunter
         public void Initialize(CharacterModel characterModel)
         {
             _cameraDynamicTarget = GameObject.Instantiate(new GameObject(), characterModel.CharacterTransform);
-            _cameraDynamicTarget.transform.localPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight, 
+            _dynamicCameraCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight,
                 _cameraData._cameraSettings.CameraTargetForwardMovementDistance);
+            _cameraDynamicTarget.transform.localPosition = _dynamicCameraCenterPosition;
             _cameraDynamicTarget.name = _cameraData._cameraSettings.CameraTargetName + "Dynamic";
 
             _cameraStaticTarget = GameObject.Instantiate(new GameObject(), characterModel.CharacterTransform);
-            _dynamicCameraCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight, 0);
-            _cameraStaticTarget.transform.localPosition = _dynamicCameraCenterPosition;
-            _cameraStaticTarget.name = _cameraData._cameraSettings.CameraTargetName + "Statics";
+            _staticCameraCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight, 0);
+            _cameraStaticTarget.transform.localPosition = _staticCameraCenterPosition;
+            _cameraStaticTarget.name = _cameraData._cameraSettings.CameraTargetName + "Static";
 
             CharacterCamera.transform.rotation = Quaternion.Euler(0, characterModel.CharacterCommonSettings.
                 InstantiateDirection, 0);
@@ -86,13 +88,15 @@ namespace BeastHunter
             CurrentActiveCamera = new ReactiveProperty<CinemachineVirtualCameraBase>();
             PreviousActiveCamera = CharacterFreelookCamera;
             SetActiveCamera(CharacterFreelookCamera);
+
+            characterModel.CurrentCharacterState.Subscribe(UpdateCameraForCharacterState);
         }
 
         public void SetActiveCamera(CinemachineVirtualCameraBase newCamera)
         {
-            if(_context.CharacterModel != null && newCamera != CurrentActiveCamera.Value)
+            if (_context.CharacterModel != null && newCamera != CurrentActiveCamera.Value)
             {
-                if(newCamera != CharacterFreelookCamera)
+                if (newCamera != CharacterFreelookCamera)
                 {
                     CharacterFreelookCamera.m_RecenterToTargetHeading.m_enabled = true;
                     LockFreeLookCamera();
@@ -124,6 +128,44 @@ namespace BeastHunter
 
                 SetBlendTime(blendTime);
                 CurrentActiveCamera.Value.Priority++;
+            }
+        }
+
+        private void UpdateCameraForCharacterState(CharacterBaseState currentState)
+        {
+            switch (currentState?.StateName)
+            {
+                case CharacterStatesEnum.Aiming:
+                    SetActiveCamera(CharacterAimingCamera);
+                    break;
+                case CharacterStatesEnum.Attacking:                 
+                    break;
+                case CharacterStatesEnum.Shooting:                
+                    break;
+                case CharacterStatesEnum.Battle:
+                    SetActiveCamera(CharacterTargetCamera);
+                    break;
+                case CharacterStatesEnum.Dead:
+                    SetActiveCamera(CharacterFreelookCamera);
+                    break;
+                case CharacterStatesEnum.Dodging:
+                    break;
+                case CharacterStatesEnum.Idle:
+                    SetActiveCamera(CharacterFreelookCamera);
+                    break;
+                case CharacterStatesEnum.Jumping:
+                    break;
+                case CharacterStatesEnum.Movement:
+                    SetActiveCamera(CharacterFreelookCamera);
+                    break;
+                case CharacterStatesEnum.Sliding:
+                    break;
+                case CharacterStatesEnum.Sneaking:
+                    break;
+                case CharacterStatesEnum.TrapPlacing:
+                    break;
+                default:
+                    break;
             }
         }
 

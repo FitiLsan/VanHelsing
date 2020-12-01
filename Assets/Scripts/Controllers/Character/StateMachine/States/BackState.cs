@@ -164,6 +164,8 @@ namespace BeastHunter
             OnTrapPlace += _services.TrapService.PlaceTrap;
             OnUse += UseInteractiveObject;
 
+            _characterModel.CurrentWeaponData.Subscribe(OnWeaponChangeHandler);
+
             _characterModel.PlayerBehavior.OnFilterHandler += OnTriggerFilter;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterSomething;
             _characterModel.PlayerBehavior.OnTriggerExitHandler += OnTriggerExitSomething;
@@ -215,6 +217,8 @@ namespace BeastHunter
             OnWeaponChange -= _services.TrapService.RemoveTrap;
             OnTrapPlace -= _services.TrapService.PlaceTrap;
             OnUse -= UseInteractiveObject;
+
+            _characterModel.CurrentWeaponData.Dispose();
 
             _characterModel.PlayerBehavior.OnFilterHandler -= OnTriggerFilter;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterSomething;
@@ -359,6 +363,17 @@ namespace BeastHunter
         private void OnUseHandler()
         {
             OnUse?.Invoke();
+        }
+
+        private void OnWeaponChangeHandler(WeaponData newWeapon)
+        {
+            if (_stateMachine.CurrentState == _stateMachine.CharacterStates[CharacterStatesEnum.Aiming] &&
+                newWeapon?.Type != WeaponType.Shooting)
+            {
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
+            }
+
+            newWeapon?.Init(_context);
         }
 
         #endregion

@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public class BattleState : CharacterBaseState, IAwake, IUpdate, ITearDown
+    public class BattleState : CharacterBaseState, IUpdate
     {
         #region FIelds
 
@@ -16,21 +16,11 @@
         public BattleState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
             StateName = CharacterStatesEnum.Battle;
-            IsTargeting = false;
+            IsTargeting = true;
             IsAttacking = false;
             _baseAnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
             _animationSpeedWhileRun = _characterModel.CharacterCommonSettings.
                 InBattleRunSpeed / _characterModel.CharacterCommonSettings.InBattleWalkSpeed;
-        }
-
-        #endregion
-
-
-        #region IAwake
-
-        public void OnAwake()
-        {
-            _stateMachine.BackState.OnWeaponChange += SetAnimation;
         }
 
         #endregion
@@ -48,21 +38,11 @@
         #endregion
 
 
-        #region ITearDown
-
-        public void TearDown()
-        {
-            _stateMachine.BackState.OnWeaponChange -= SetAnimation;
-        }
-
-        #endregion
-
-
         #region Methods
 
         public override bool CanBeActivated()
         {
-            if(_characterModel.CurrentWeaponData?.Type == WeaponType.Shooting)
+            if(_characterModel.CurrentWeaponData.Value?.Type == WeaponType.Shooting)
             {
                 _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Aiming]);
             }
@@ -71,7 +51,8 @@
                 ClosestEnemyCheck();
             }
             
-            return _characterModel.ClosestEnemy != null && _characterModel.CurrentWeaponData.Type != WeaponType.Shooting;
+            return _characterModel.ClosestEnemy != null && _characterModel.IsWeaponInHands && _characterModel.
+                CurrentWeaponData.Value.Type != WeaponType.Shooting;
         }
 
         protected override void EnableActions()
@@ -105,32 +86,15 @@
             base.Initialize();
             _hasCameraControl = true;
 
-            if (Services.SharedInstance.CameraService.CurrentActiveCamera.Value != Services.
-                SharedInstance.CameraService.CharacterTargetCamera)
-            {
-                Services.SharedInstance.CameraService.SetActiveCamera(Services.SharedInstance.
-                    CameraService.CharacterTargetCamera);
-            }
-
             if (_inputModel.IsInputRun)
             {
                 _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
             }
-
-            SetAnimation();
         }
 
         public override void OnExit(CharacterBaseState nextState = null)
         {
-            if(nextState != _stateMachine.CharacterStates[CharacterStatesEnum.Attacking] && nextState != _stateMachine.
-                CharacterStates[CharacterStatesEnum.Dodging])
-            {
-                Services.SharedInstance.CameraService.SetActiveCamera(Services.SharedInstance.
-                    CameraService.CharacterFreelookCamera);
-            }
-
             _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
-            _animationController.SetTopBodyAnimationWeigth(0f);
 
             base.OnExit();
         }
@@ -147,15 +111,6 @@
             {
                 _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Dodging]);
             }
-        }
-
-        private void SetAnimation()
-        {
-            if(_stateMachine.CurrentState == this)
-            {
-                _animationController.SetTopBodyAnimationWeigth(1f);
-                _animationController.PlayStrafeAnimation(_characterModel.CurrentWeaponData?.StrafeAnimationPostfix);
-            }            
         }
 
         private void ClosestEnemyCheck()

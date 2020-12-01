@@ -12,42 +12,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 381f28733d6f1c94da138af55956ce97, type: 3}
   m_Name: Crossbow
   m_EditorClassIdentifier: 
-  HandType: 2
-  Type: 2
-  InWhichHand: 2
-  WeaponImage: {fileID: 21300000, guid: 2681520e8d2b5b6459a4a96f31840525, type: 3}
-  SimpleAttacks:
-  - Name: shoot
+  _handType: 1
+  _type: 2
+  _inWhichHand: 2
+  _weaponImage: {fileID: 21300000, guid: 2681520e8d2b5b6459a4a96f31840525, type: 3}
+  _simpleAttacks:
+  - Name: Simple shot
+    AnimationName: Shoot
     AttackDamage:
-      PhysicalDamage: 5.7
+      PhysicalDamage: 3
       StunProbability: 0
     WeaponItem: {fileID: 11400000, guid: e2a1624ec5a336945b8c75bb80548e57, type: 2}
-    AttackType: 2
-    AttackTime: 1
+    AttackType: 3
+    AttackTime: 0.5
     AttackStaminaCost: 0
-  SpecialAttacks: []
-  CurrentAttack:
-    Name: shoot
-    AttackDamage:
-      PhysicalDamage: 5.7
-      StunProbability: 0
-    WeaponItem: {fileID: 11400000, guid: e2a1624ec5a336945b8c75bb80548e57, type: 2}
-    AttackType: 2
-    AttackTime: 1
-    AttackStaminaCost: 0
-  WeaponName: Big crossbow
-  SimpleAttackAnimationPrefix: 
-  SpecialAttackAnimationPrefix: 
-  StrafeAndDodgePostfix: 
-  GettingAnimationName: 
-  RemovingAnimationName: 
-  TotalTimeToGet: 0
-  TimeBeforeGrab: 0
-  TotalTimeToRemove: 0
-  TimeBeforeLetGo: 0
-  ActualWeapon: {fileID: 11400000, guid: e2a1624ec5a336945b8c75bb80548e57, type: 2}
-  BulletType: 4
-  MagazineSize: 50
-  HitDistance: 50
-  ReloadTime: 5
-  ReloadAnimationPrefix: 
+  _specialAttacks: []
+  _weaponName: Crossbow
+  _simpleAttackAnimationPrefix: CrossbowSimpleAttack
+  _specialAttackAnimationPrefix: CrossbowSpecialAttack
+  _strafeAnimationPostfix: Strafe
+  _dodgeAnimationPostfix: Dodge
+  _gettingAnimationPostfix: CrossbowGetting
+  _holdingAnimationPostfix: CrossbowHolding
+  _removingAnimationPostfix: CrossbowRemoving
+  _totalTimeToGet: 2
+  _timeBeforeGrab: 0.5
+  _totalTimeToRemove: 2
+  _timeBeforeLetGo: 0.5
+  _actualWeapon: {fileID: 11400000, guid: e2a1624ec5a336945b8c75bb80548e57, type: 2}
+  _projectileData: {fileID: 11400000, guid: 2d7680b8cfc58fd45ab7be2e8e6457dc, type: 2}
+  _magazineSize: 25
+  _hitDistance: 80
+  _timeBetweenShots: 1
+  _reloadTime: 10
+  _aimingAnimationPostfix: CrossbowAiming
+  _reloadAnimationPostfix: CrossbowReloading

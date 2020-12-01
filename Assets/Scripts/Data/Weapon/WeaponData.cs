@@ -43,8 +43,9 @@ namespace BeastHunter
         [Range(0.0f, 10.0f)]
         [SerializeField] protected float _timeBeforeLetGo;
 
-        private int _currentSimpleAttackIndex;
-        private int _currentSpecialAttackIndex;
+        protected GameContext _context;
+        private int _currentSimpleAttackIndex = 0;
+        private int _currentSpecialAttackIndex = 0;
 
         #endregion
 
@@ -75,6 +76,7 @@ namespace BeastHunter
         public float TimeBeforeLetGo => _timeBeforeLetGo;
 
         public bool IsInHands { get; private set; }
+        public bool IsCurrentAttackSpecial { get; private set; }
 
         public int CurrentSimpleAttackIndex
         {
@@ -120,6 +122,11 @@ namespace BeastHunter
 
 
         #region Methods
+
+        public virtual void Init(GameContext context)
+        {
+            if (_context == null) _context = context;
+        }
 
         public virtual void MakeSimpleAttack(out int currentAttackIntex, Transform bodyTransform)
         {

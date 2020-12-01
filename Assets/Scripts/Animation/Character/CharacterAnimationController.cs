@@ -9,9 +9,9 @@ namespace BeastHunter
         #region Fields
 
         private readonly GameContext _context;
-        private readonly CharacterModel _characterModel;
-        private readonly CharacterAnimationModel _animationModel;
-        private readonly Animator _characterAnimator;
+        private CharacterModel _characterModel;
+        private CharacterAnimationModel _animationModel;
+        private Animator _characterAnimator;
 
         #endregion
 
@@ -27,9 +27,6 @@ namespace BeastHunter
         public CharacterAnimationController(GameContext context)
         {
             _context = context;
-            _characterModel = _context.CharacterModel;
-            _animationModel = _characterModel.CharacterAnimationModel;
-            _characterAnimator = _animationModel.CharacterAnimator;
         }
 
         #endregion
@@ -39,6 +36,9 @@ namespace BeastHunter
 
         public void OnAwake()
         {
+            _characterModel = _context.CharacterModel;
+            _animationModel = _characterModel.CharacterAnimationModel;
+            _characterAnimator = _animationModel.CharacterAnimator;
             _characterModel.CurrentCharacterState.Subscribe(ChangeStateAnimation);
             _characterModel.CurrentWeaponData.Subscribe(ChangeArmsAnimation);
         }
@@ -72,48 +72,99 @@ namespace BeastHunter
 
         private void ChangeArmsAnimation(WeaponData currentWeapon)
         {
-            switch (currentWeapon.Type)
+            if(currentWeapon != null)
             {
-                case WeaponType.Melee:
-                    break;
-                case WeaponType.Shooting:
-                    break;
-                case WeaponType.Throwing:
-                    break;
-                default:
-                    break;
+                switch (currentWeapon.Type)
+                {
+                    case WeaponType.Melee:
+                        SetTopBodyAnimationWeigth(1f, 0f);
+                        PlayArmsAnimationHoldingWeapon();
+                        break;
+                    case WeaponType.Shooting:
+                        SetTopBodyAnimationWeigth(1f, 0f);
+                        PlayArmsAnimationHoldingWeapon();
+                        break;
+                    case WeaponType.Throwing:
+                        SetTopBodyAnimationWeigth(1f, 0f);
+                        PlayArmsAnimationHoldingWeapon();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                PlayArmsNoneAnimation();
             }
         }
 
         private void ChangeStateAnimation(CharacterBaseState currentState)
         {
-            switch (currentState.StateName)
+            switch (currentState?.StateName)
             {
                 case CharacterStatesEnum.Aiming:
-                    SetTopBodyAnimationWeigth(1f);
+                    SetTopBodyAnimationWeigth(1f, 0f);
+                    SetRootMotion(false);
                     PlayStrafeAnimation();
                     PlayArmsAnimationAimingWeapon();
                     break;
                 case CharacterStatesEnum.Attacking:
+                    SetTopBodyAnimationWeigth(0f, 0f);
                     SetRootMotion(true);
+                    PlaySimpleAttackAnimationMelee();
+                    // TO REFACTOR - DONT KNOW HOW TO UNDERSTAND IF IT IS SPECIAL ATTACK
+                    break;
+                case CharacterStatesEnum.Shooting:
+                    SetTopBodyAnimationWeigth(1f, 1f);
+                    SetRootMotion(false);
+                    PlayArmsSimpleAttackAnimation();
                     break;
                 case CharacterStatesEnum.Battle:
+                    SetTopBodyAnimationWeigth(1f, 0f);
+                    SetRootMotion(false);
+                    PlayStrafeAnimation();
+                    PlayArmsAnimationHoldingWeapon();
                     break;
                 case CharacterStatesEnum.Dead:
+                    SetTopBodyAnimationWeigth(0f, 0f);
                     break;
                 case CharacterStatesEnum.Dodging:
+                    SetTopBodyAnimationWeigth(0f, 0f);
+                    SetRootMotion(true);
+                    SetDodgeAxises();
+                    PlayShortDodgeAnimation();
                     break;
                 case CharacterStatesEnum.Idle:
+                    SetTopBodyAnimationWeigth(1f, 0f);
+                    SetRootMotion(false);
+                    PlayMovementAnimation();
+                    PlayArmsAnimationHoldingWeapon();
                     break;
                 case CharacterStatesEnum.Jumping:
+                    SetTopBodyAnimationWeigth(0f, 0f);
+                    SetRootMotion(true);
+                    PlayLongDodgeAnimation();
                     break;
                 case CharacterStatesEnum.Movement:
+                    SetTopBodyAnimationWeigth(1f, 0f);
+                    PlayMovementAnimation();
+                    PlayArmsAnimationHoldingWeapon();
                     break;
                 case CharacterStatesEnum.Sliding:
+                    SetTopBodyAnimationWeigth(0f, 0f);
+                    SetRootMotion(true);
+                    PlaySlideForwardAnimation();
                     break;
                 case CharacterStatesEnum.Sneaking:
+                    SetTopBodyAnimationWeigth(1f, 0f);
+                    SetRootMotion(false);
+                    PlayMovementAnimation();
+                    PlayArmsAnimationHoldingWeapon();
                     break;
                 case CharacterStatesEnum.TrapPlacing:
+                    SetTopBodyAnimationWeigth(0f, 0f);
+                    SetRootMotion(false);
+                    PlayTrapPlacingAnimation();
                     break;
                 default:
                 break;
@@ -155,9 +206,10 @@ namespace BeastHunter
             _characterAnimator.applyRootMotion = shouldBeOn;
         }
 
-        private void SetTopBodyAnimationWeigth(float value)
+        private void SetTopBodyAnimationWeigth(float armsValue, float torsoValue)
         {
-            _characterAnimator.SetLayerWeight(1, value);
+            _characterAnimator.SetLayerWeight(1, armsValue);
+            _characterAnimator.SetLayerWeight(2, torsoValue);
         }
 
         private void PlayMovementAnimation()
@@ -167,12 +219,26 @@ namespace BeastHunter
 
         private void PlayStrafeAnimation()
         {
-            _characterAnimator.Play(_animationModel.StrafingAnimationHash);
+            if (_characterModel.IsWeaponInHands)
+            {
+                _characterAnimator.Play(_characterModel.CurrentWeaponData.Value.StrafeAnimationPostfix);
+            }
+            else
+            {
+                _characterAnimator.Play(_animationModel.StrafingAnimationHash);
+            }         
         }
 
         private void PlayShortDodgeAnimation()
         {
-            _characterAnimator.Play(_animationModel.ShortDodgeAnimationHash);
+            if (_characterModel.IsWeaponInHands)
+            {
+                _characterAnimator.Play(_characterModel.CurrentWeaponData.Value.DodgeAnimationPostfix);
+            }
+            else
+            {
+                _characterAnimator.Play(_animationModel.ShortDodgeAnimationHash);
+            }           
         }
 
         private void PlayLongDodgeAnimation()
@@ -190,59 +256,77 @@ namespace BeastHunter
             _characterAnimator.Play(_animationModel.TrapPlacingAnimationHash);
         }
 
-        private void PlaySimpleAttackAnimation()
+        private void PlaySimpleAttackAnimationMelee()
         {
-            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.WeaponName + 
-                _context.CharacterModel.CurrentWeaponData.Value.SimpleAttackAnimationPrefix +
-                    _context.CharacterModel.CurrentWeaponData.Value.CurrentAttack.AnimationName);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName);
         }
 
-        private void PlaySpecialAttackAnimation()
+        private void PlaySpecialAttackAnimationMelee()
         {
-            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.WeaponName +
-                _context.CharacterModel.CurrentWeaponData.Value.SpecialAttackAnimationPrefix +
-                    _context.CharacterModel.CurrentWeaponData.Value.CurrentAttack.AnimationName);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SpecialAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName);
         }
 
         private void PlayArmsSimpleAttackAnimation()
         {
-            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.WeaponName +
-                _context.CharacterModel.CurrentWeaponData.Value.SimpleAttackAnimationPrefix +
-                    _context.CharacterModel.CurrentWeaponData.Value.CurrentAttack.AnimationName, 1);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName, 1);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName, 2);
         }
 
         private void PlayArmsSpecialAttackAnimation()
         {
-            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.WeaponName +
-                _context.CharacterModel.CurrentWeaponData.Value.SpecialAttackAnimationPrefix +
-                    _context.CharacterModel.CurrentWeaponData.Value.CurrentAttack.AnimationName, 1);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SpecialAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName, 1);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SpecialAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName, 2);
         }
 
         private void PlayArmsAnimationGettingWeapon()
         {
-            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.WeaponName +
-                _context.CharacterModel.CurrentWeaponData.Value.GettingAnimationPostfix, 1);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.GettingAnimationPostfix, 1);
         }
 
         private void PlayArmsAnimationHoldingWeapon()
         {
-            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.WeaponName +
-                _context.CharacterModel.CurrentWeaponData.Value.HoldingAnimationPostfix, 1);
+            if (_characterModel.CurrentWeaponData.Value != null)
+            {
+                _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.HoldingAnimationPostfix, 1);
+                PlayTorsoNoneAnimation();
+            }         
         }
 
         private void PlayArmsAnimationAimingWeapon()
         {
             if(_context.CharacterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting)
             {
-                _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.WeaponName +
-                    (_context.CharacterModel.CurrentWeaponData as IShoot).AimingAnimationPostfix, 1);
+                _characterAnimator.Play((_context.CharacterModel.CurrentWeaponData.Value as IShoot).
+                    AimingAnimationPostfix, 1);
+                PlayTorsoNoneAnimation();
             }        
         }
 
         private void PlayArmsAnimationRemovingWeapon()
         {
-            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.WeaponName +
-                _context.CharacterModel.CurrentWeaponData.Value.RemovingAnimationPostfix, 1);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.RemovingAnimationPostfix, 1);
+        }
+
+        private void PlayArmsNoneAnimation()
+        {
+            _characterAnimator.Play("None", 1);
+        }
+
+        private void PlayTorsoNoneAnimation()
+        {
+            _characterAnimator.Play("None", 2);
         }
 
         #endregion

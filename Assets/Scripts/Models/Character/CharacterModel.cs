@@ -25,8 +25,8 @@ namespace BeastHunter
         public WeaponHitBoxBehavior WeaponBehaviorRight { get; set; }
         public ReactiveProperty<TrapModel> CurrentPlacingTrapModel { get; set; }
         public ReactiveProperty<CharacterBaseState> CurrentCharacterState { get; set; }
-        public CharacterAnimationModel CharacterAnimationModel { get; set; }
 
+        public CharacterAnimationModel CharacterAnimationModel { get; }
         public Transform CharacterTransform { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
         public SphereCollider CharacterSphereCollider { get; }
@@ -144,8 +144,6 @@ namespace BeastHunter
             CurrentSpeed = 0;
             AnimationSpeed = CharacterData.CharacterCommonSettings.AnimatorBaseSpeed;
 
-            Services.SharedInstance.CameraService.Initialize(this);
-
             CurrentWeaponData = new ReactiveProperty<WeaponData>();
             CurrentWeaponData.Value = null;
             CurrentWeaponLeft = null;
@@ -154,6 +152,9 @@ namespace BeastHunter
             CurrentPlacingTrapModel.Value = null;
             CharacterAnimationModel = new CharacterAnimationModel(prefab.transform.GetChild(2).GetComponent<Animator>(), 
                 CharacterCommonSettings.CharacterAnimator, CharacterCommonSettings.BeginningApplyRootMotion);
+            CurrentCharacterState = new ReactiveProperty<CharacterBaseState>();
+
+            Services.SharedInstance.CameraService.Initialize(this);
         }
 
         #endregion

@@ -53,7 +53,7 @@ namespace BeastHunter
             _stateMachine.BackState.OnAim = () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
             _stateMachine.BackState.OnAttack = () => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Shooting]);
             _stateMachine.BackState.OnStartRun = () => _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
             _stateMachine.BackState.OnStopRun = () => _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
             _stateMachine.BackState.OnJump = Dodge;
@@ -73,13 +73,6 @@ namespace BeastHunter
         {
             base.Initialize();
 
-            if (Services.SharedInstance.CameraService.CurrentActiveCamera.Value != Services.
-                SharedInstance.CameraService.CharacterAimingCamera)
-            {
-                Services.SharedInstance.CameraService.SetActiveCamera(Services.SharedInstance.
-                    CameraService.CharacterAimingCamera);
-            }
-
             if (_inputModel.IsInputRun)
             {
                 _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
@@ -88,15 +81,6 @@ namespace BeastHunter
 
         public override void OnExit(CharacterBaseState nextState = null)
         {
-            if (nextState != _stateMachine.CharacterStates[CharacterStatesEnum.Attacking] && nextState != _stateMachine.
-                CharacterStates[CharacterStatesEnum.Dodging])
-            {
-                Services.SharedInstance.CameraService.SetActiveCamera(Services.SharedInstance.
-                    CameraService.CharacterFreelookCamera);
-            }
-
-            Services.SharedInstance.CameraService.CenterCameraTarget();
-
             _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
 
             base.OnExit();

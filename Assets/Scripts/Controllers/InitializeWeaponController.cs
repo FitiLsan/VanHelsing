@@ -160,7 +160,7 @@ namespace BeastHunter
 
         private void RemoveWeapon()
         {
-            if (_characterModel.CurrentWeaponData != null)
+            if (_characterModel.CurrentWeaponData.Value != null)
             {
                 if (_characterModel.CurrentWeaponLeft != null)
                 {
@@ -192,7 +192,7 @@ namespace BeastHunter
                 }
             }
 
-            _characterModel.CurrentWeaponData = null;
+            _characterModel.CurrentWeaponData.Value = null;
             _characterModel.CurrentWeaponLeft = null;
             _characterModel.CurrentWeaponRight = null;
         }

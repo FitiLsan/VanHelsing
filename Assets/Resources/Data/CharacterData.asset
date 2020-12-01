@@ -54,6 +54,25 @@ MonoBehaviour:
     _slideTime: 1.3
     _rollTime: 0.9
     _dodgingTime: 0
+  _characterAnimationData:
+    _movementAnimationName: Movement
+    _strafingAnimationName: Strafe
+    _slidingForwardAnimationName: SlideForward
+    _longDodgeAnimationName: JumpForward
+    _shortDodgeAnimationName: Dodge
+    _trapPlacingAnimationName: TrapPlacing
+    _xAxisAnimatorParameterName: AxisX
+    _yAxisAnimatorParameterName: AxisY
+    _movementSpeedAnimatorParameterName: MoveSpeed
+    _xMouseAxisAnimatorParameterName: MouseAxisX
+    _crouchLevelAnimatorParameterName: CrouchLevel
+    _xDodgeAxisAnimatorParameterName: DodgeAxisX
+    _yDodgeAxisAnimatorParameterName: DodgeAxisY
+    _aimingLookToWeightIK: 1
+    _aimingLookToBodyWeightIK: 0.5
+    _aimingLookToHeadWeightIK: 1
+    _aimingLookToEyesWeightIK: 1
+    _aimingLookToClampWeightIK: 0.506
   _characterStatsSettings:
     _maxHealth: 0
     _enemyType: 0

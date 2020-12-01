@@ -43,7 +43,8 @@ namespace BeastHunter
         {
             Context = context;
             GameObject newProjectile = GameObject.Instantiate(ProjectilePrefab, position, Quaternion.identity);
-            newProjectile.GetComponent<SphereCollider>().radius = ProjectileColliderSize;
+            newProjectile.transform.LookAt(newProjectile.transform.position + forceVector);
+            newProjectile.GetComponentInChildren<SphereCollider>().radius = ProjectileColliderSize;
             newProjectile.GetComponentInChildren<Rigidbody>().AddForce(forceVector, forceMode);
         }
 

@@ -9,6 +9,7 @@ namespace BeastHunter
         #region Fields
 
         private Animator _animatorController;
+        private CharacterAnimationData _animationData;
         private bool _doAim;
 
         #endregion
@@ -19,6 +20,7 @@ namespace BeastHunter
         private void Start()
         {
             _animatorController = gameObject.GetComponent<Animator>();
+            _animationData = Data.CharacterData.CharacterAnimationData;
             _doAim = false;
             Services.SharedInstance.CameraService.CurrentActiveCamera.Subscribe(EnableAiming);
         }
@@ -28,7 +30,10 @@ namespace BeastHunter
             if (_doAim)
             {
                 _animatorController.SetLookAtPosition(Services.SharedInstance.CameraService.CameraDynamicTarget.position);
-                _animatorController.SetLookAtWeight(1f, 1f, 1f, 1f, 1f);
+                _animatorController.SetLookAtWeight(
+                    _animationData.AimingLookToWeightIK, _animationData.AimingLookToBodyWeightIK, 
+                        _animationData.AimingLookToHeadWeightIK, _animationData.AimingLookToEyesWeightIK, 
+                            _animationData.AimingLookToClampWeightIK);
             }
         }
 

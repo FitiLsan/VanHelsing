@@ -14,6 +14,7 @@
         Jumping,
         Dead,       
         Stunned,
+        Shooting,
         TimeSkip,
         TrapPlacing,
     }

@@ -45,18 +45,13 @@ namespace BeastHunter
         {
             base.Initialize();
 
-            _rollTime = _characterModel.CharacterData._characterCommonSettings.RollingTime;
+            _rollTime = _characterModel.CharacterData.CharacterCommonSettings.RollingTime;
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
             _characterModel.IsDodging = true;
-
-            _animationController.SetDodgeAxises(_inputModel.InputTotalAxisX, _inputModel.InputTotalAxisY);
-            _animationController.SetRootMotion(true);
-            _animationController.PlayDodgeAnimation(_characterModel.CurrentWeaponData?.StrafeAnimationPostfix);
         }
 
         public override void OnExit(CharacterBaseState nextState = null)
         {
-            _animationController.SetRootMotion(false);
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Active;
             _characterModel.IsDodging = false;
 

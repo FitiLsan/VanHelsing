@@ -7,10 +7,11 @@ namespace BeastHunter
     {
         #region Properties
 
-        BulletType BulletType { get; }
+        ProjectileData ProjectileData { get; }
         int MagazineSize { get; }
 
         float HitDistance { get; }
+        float TimeBetweenShots { get; }
         float ReloadTime { get; }
 
         string AimingAnimationPostfix { get; }
@@ -21,7 +22,7 @@ namespace BeastHunter
 
         #region Methods
 
-        void Shoot(Vector3 gunPosition, Vector3 forwardDirection);
+        void Shoot(Vector3 gunPosition, Vector3 forwardDirection, HandsEnum inWhichHand);
 
         void Reload();
 

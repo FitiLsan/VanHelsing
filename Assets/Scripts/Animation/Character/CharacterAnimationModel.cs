@@ -38,6 +38,7 @@ namespace BeastHunter
             CharacterAnimationData = Data.CharacterData.CharacterAnimationData;
             CharacterAnimator = characterAnimator;
             CharacterAnimatorController = animatorController;
+            characterAnimator.runtimeAnimatorController = CharacterAnimatorController;
             CharacterAnimator.applyRootMotion = doApplyRootMotion;
 
             MovementAnimationHash = Animator.StringToHash(CharacterAnimationData.MovementAnimationName);

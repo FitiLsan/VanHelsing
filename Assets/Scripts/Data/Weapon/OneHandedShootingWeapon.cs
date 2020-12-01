@@ -8,23 +8,27 @@ namespace BeastHunter
     {
         #region Fields
 
-        [SerializeField] private BulletType _bulletType;
+        [SerializeField] private ProjectileData _projectileData;
         [SerializeField] private int _magazineSize;
 
         [SerializeField] private float _hitDistance;
+        [SerializeField] private float _timeBetweenShots;
         [SerializeField] private float _reloadTime;
 
         [SerializeField] private string _aimingAnimationPostfix;
         [SerializeField] private string _reloadAnimationPostfix;
+
+        private ParticleSystem _particleSystem;
 
         #endregion
 
 
         #region Properties
 
-        public BulletType BulletType => _bulletType;
+        public ProjectileData ProjectileData => _projectileData;
         public int MagazineSize => _magazineSize;
         public float HitDistance => _hitDistance;
+        public float TimeBetweenShots => _timeBetweenShots;
         public float ReloadTime => _reloadTime;
         public string AimingAnimationPostfix => _aimingAnimationPostfix;
         public string ReloadAnimationPostfix => _reloadAnimationPostfix;
@@ -45,6 +49,13 @@ namespace BeastHunter
 
         #region Methods
 
+        public override void Init(GameObject objectOnScene)
+        {
+            base.Init(objectOnScene);
+
+            _particleSystem = objectOnScene.GetComponentInChildren<ParticleSystem>();
+        }
+
         public override void TakeWeapon()
         {
             base.TakeWeapon();
@@ -63,9 +74,18 @@ namespace BeastHunter
             }
         }
 
-        public void Shoot(Vector3 gunPosition, Vector3 forwardDirection)
+        public override void MakeSimpleAttack(out int currentAttackIntex, Transform bodyTransform)
         {
-            // TODO
+            base.MakeSimpleAttack(out currentAttackIntex, bodyTransform);
+
+            Shoot(_particleSystem.transform.position, _particleSystem.transform.forward * HitDistance, 
+                CurrentAttack.AttackType);
+        }
+
+        public void Shoot(Vector3 gunPosition, Vector3 forwardDirection, HandsEnum inWhichHand)
+        {
+            new ProjectileInitializeController(_context, _projectileData, gunPosition, forwardDirection, ForceMode.Impulse);
+            _particleSystem.Play();
         }
 
         #endregion

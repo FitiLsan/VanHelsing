@@ -4,6 +4,8 @@
     {
         None,
         AcidBomb,
+        CrossbowBolt,
+        Bomb,
     }
 }
 
