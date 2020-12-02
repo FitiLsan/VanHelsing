@@ -17,6 +17,9 @@ namespace BeastHunter
         [Tooltip("Spore prefab.")]
         [SerializeField] private GameObject _sporePrefab;
 
+        [Tooltip("StompFuf prefab.")]
+        [SerializeField] private GameObject _stompPuf;
+
         [Tooltip("Boss instance name.")]
         [SerializeField] private string _instanceName;
 
@@ -25,6 +28,12 @@ namespace BeastHunter
 
         [Tooltip("Right hand object path")]
         [SerializeField] private string _rightHandObjectPath;
+
+        [Tooltip("Left foot object path")]
+        [SerializeField] private string _leftFootObjectPath;
+
+        [Tooltip("Right foot object path")]
+        [SerializeField] private string _rightFootObjectPath;
 
         [Tooltip("Boss instance tag.")]
         [SerializeField] private string _instanceTag;
@@ -139,6 +148,7 @@ namespace BeastHunter
 
         public GameObject Prefab => _prefab;
         public GameObject SporePrefab => _sporePrefab;
+        public GameObject StompPuf => _stompPuf;
 
         public RuntimeAnimatorController BossAnimator => _bossAnimator;
 
@@ -151,6 +161,9 @@ namespace BeastHunter
         public string InstanceName => _instanceName;
         public string LeftHandObjectPath => _leftHandObjectPath;
         public string RightHandObjectPath => _rightHandObjectPath;
+        public string LeftFootObjectPath => _leftFootObjectPath;
+        public string RightFootObjectPath => _rightFootObjectPath;
+
         public string InstanceTag => _instanceTag;
 
         public int InstanceLayer => _instanceLayer;

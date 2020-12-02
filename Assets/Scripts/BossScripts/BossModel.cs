@@ -11,6 +11,8 @@ namespace BeastHunter
 
         public Transform LeftHand { get; }
         public Transform RightHand { get; }
+        public Transform LeftFoot { get; }
+        public Transform RightFoot { get; }
         public Transform BossTransform { get; }
 
         public Vector3 AnchorPosition { get; }
@@ -55,6 +57,9 @@ namespace BeastHunter
         public GameObject Lair;
         public GameObject BossCurrentTarget;
         public GameObject SporePrefab;
+        public GameObject StompPufPrefab;
+        public ParticleSystem leftStompEffect;
+        public ParticleSystem rightStompEffect;
 
         #endregion
 
@@ -158,6 +163,8 @@ namespace BeastHunter
 
             LeftHand = BossTransform.Find(BossSettings.LeftHandObjectPath);
             RightHand = BossTransform.Find(BossSettings.RightHandObjectPath);
+            LeftFoot = BossTransform.Find(BossSettings.LeftFootObjectPath);
+            RightFoot = BossTransform.Find(BossSettings.RightFootObjectPath);
 
             AnchorPosition = BossTransform.position;
 
@@ -201,12 +208,19 @@ namespace BeastHunter
             RightHandCollider.center = BossData._bossSettings.LeftHandHitBoxCenter;
             RightHandCollider.isTrigger = false;
             RightHandCollider.enabled = false;
-            var rb = rightHandFist.AddComponent<Rigidbody>();//.isKinematic = true;
+            var rb = rightHandFist.AddComponent<Rigidbody>();
             rb.isKinematic = true;
             rb.mass = 30f;
             RightHandBehavior = rightHandFist.AddComponent<WeaponHitBoxBehavior>();
             RightHandBehavior.SetType(InteractableObjectType.HitBox);
             RightHandBehavior.IsInteractable = false;
+
+            StompPufPrefab = BossSettings.StompPuf;
+
+            GameObject leftFootStompPuf = GameObject.Instantiate(StompPufPrefab, LeftFoot.position, LeftFoot.rotation, LeftFoot);
+            leftStompEffect = leftFootStompPuf.GetComponent<ParticleSystem>();
+            GameObject rightFootStompPuf = GameObject.Instantiate(StompPufPrefab, RightFoot.position, RightFoot.rotation, RightFoot);
+            rightStompEffect = rightFootStompPuf.GetComponent<ParticleSystem>();
 
             FirstWeakPointData = Data.BossFirstWeakPoint;
             GameObject firstWeakPoint = GameObject.Instantiate(FirstWeakPointData.InstancePrefab,
@@ -235,6 +249,7 @@ namespace BeastHunter
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
             CurrentHealth = BossStats.MainStats.HealthPoints;
             SporePrefab = BossSettings.SporePrefab;
+
         }
 
         #endregion

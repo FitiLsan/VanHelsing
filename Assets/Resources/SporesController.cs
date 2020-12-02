@@ -12,38 +12,35 @@ namespace BeastHunter
         public GameObject puff;
         public GameObject death;
         private float time;
-        Sequence sequence;// = DOTween.Sequence();
-
-        private void Awake()
-        {
-            sequence = DOTween.Sequence();
-            for (var i = 0; i < transform.childCount; i++)
-            {
-                sporeList.Add(transform.GetChild(i).gameObject);
-            }
-        }
+        private bool isPuf;
 
         private void Start()
         {
-            time = 3f;
+            time = 5f;
             transform.position += Vector3.down;
             var num = Random.Range(0, sporeList.Count);
             sporeList[num].SetActive(true);
             transform.DOMoveY(0.6f, 1);
-            sequence.PrependInterval(2f).Append(transform.DOMoveY(-1f, 2));
         }
 
         private void Update()
         {
             time -= Time.deltaTime;
-            if(time<= 2)
+            if(time<= 4)
             {
                 puff.SetActive(true);
-               // transform.DOMoveY(-1f, 3);
+            }
+            if (time <= 3.5f)
+            {
+                poisonCloud.SetActive(true);
             }
             if (time <= 1.5f)
             {
-                poisonCloud.SetActive(true);
+                if (!isPuf)
+                {
+                    isPuf = true;
+                    transform.DOMoveY(-1f, 5);
+                }
             }
         }
     }

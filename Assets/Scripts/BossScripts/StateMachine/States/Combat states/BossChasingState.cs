@@ -9,7 +9,8 @@ namespace BeastHunter
 
         private const float DISTANCE_TO_START_ATTACK = 4f;
         private const float TRIGGER_VIEW_INCREASE = 5f;
-        private const float FORCE_ATTACK_TIME = 1f;
+        private const float FORCE_ATTACK_TIME_MIN = 3f;
+        private const float FORCE_ATTACK_TIME_MAX = 10f;
 
         #endregion
 
@@ -17,7 +18,7 @@ namespace BeastHunter
         #region Fields
 
         private Vector3 _target;
-        private float _forceAttackTime = FORCE_ATTACK_TIME;
+        private float _forceAttackTime;
 
         #endregion
 
@@ -47,6 +48,7 @@ namespace BeastHunter
             _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK;
             _stateMachine._model.BossSphereCollider.radius += TRIGGER_VIEW_INCREASE;
             _stateMachine._model.BossAnimator.Play("MovingState");
+            _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
         }
 
         public override void Execute()
@@ -84,7 +86,7 @@ namespace BeastHunter
             _forceAttackTime -= Time.deltaTime;
             if (_forceAttackTime <= 0)
             {
-                _forceAttackTime = FORCE_ATTACK_TIME;
+                _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
             }
         }

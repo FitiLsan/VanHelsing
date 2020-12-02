@@ -26,23 +26,23 @@ namespace BeastHunter
         private const int HORIZONTAL_FIST_ATTACK_ID = 1;
         private const float HORIZONTAL_FIST_ATTACK_RANGE_MIN = 3f;
         private const float HORIZONTAL_FIST_ATTACK_RANGE_MAX = 5f;
-        private const float HORIZONTAL_FIST_ATTACK_COOLDOWN = 5f; //20f
+        private const float HORIZONTAL_FIST_ATTACK_COOLDOWN = 7f; //20f
 
         private const int STOMP_SPLASH_ATTACK_ID = 2;
         private const float STOMP_SPLASH_ATTACK_RANGE_MIN = 0f;
         private const float STOMP_SPLASH_ATTACK_RANGE_MAX = 5f;
-        private const float STOMP_SPLASH_ATTACK_COOLDOWN = 35f;
+        private const float STOMP_SPLASH_ATTACK_COOLDOWN = 5f;
 
         private const int RAGE_OF_FOREST_ATTACK_ID = 3;
         private const float RAGE_OF_FOREST_ATTACK_RANGE_MIN = -1f;
         private const float RAGE_OF_FOREST_ATTACK_RANGE_MAX = -1f;
         private const float RAGE_OF_FOREST_ATTACK_DURATION = 10f;
-        private const float RAGE_OF_FOREST_ATTACK_COOLDOWN = 120f; //120
+        private const float RAGE_OF_FOREST_ATTACK_COOLDOWN = 30f; //120
 
         private const int POISON_SPORES_ATTACK_ID = 4;
         private const float POISON_SPORES_ATTACK_RANGE_MIN = 10f;
         private const float POISON_SPORES_ATTACK_RANGE_MAX = 20f;
-        private const float POISON_SPORES_ATTACK_COOLDOWN = 5f; //20
+        private const float POISON_SPORES_ATTACK_COOLDOWN = 15f; //20
 
 
         SkillInfoStruct _defaultSkill;
@@ -222,6 +222,8 @@ namespace BeastHunter
         {
             Debug.Log("StompAttackSkill");
             _bossModel.BossAnimator.Play("BossStompAttack", 0, 0f);
+            var TimeRem = new TimeRemaining(() => _bossModel.leftStompEffect.Play(true), 0.65f);
+            TimeRem.AddTimeRemaining(0.65f);
 
             TestSkillDictionary[id].IsAttackReady = false;
             SkillCooldown(id, TestSkillDictionary[id].AttackCooldown);
@@ -233,7 +235,12 @@ namespace BeastHunter
             Debug.Log("RAGEAttackSkill");
             SetNavMeshAgent(_bossModel.BossCurrentTarget.transform.position, 5f);
             _bossModel.BossAnimator.Play("BossRageAttack", 0, 0f);
-           
+
+            TurnOnHitBoxTrigger(_bossModel.RightHandBehavior, PART_OF_NONE_ATTACK_TIME_RIGHT);
+            TurnOnHitBoxCollider(_bossModel.RightHandCollider, PART_OF_NONE_ATTACK_TIME_RIGHT);
+            TurnOnHitBoxTrigger(_bossModel.LeftHandBehavior, PART_OF_NONE_ATTACK_TIME_RIGHT);
+            TurnOnHitBoxCollider(_bossModel.LeftHandCollider, PART_OF_NONE_ATTACK_TIME_RIGHT);
+
             TestSkillDictionary[id].IsAttackReady = false;
             SkillCooldown(id, TestSkillDictionary[id].AttackCooldown);
             _currentAttackTime = RAGE_OF_FOREST_ATTACK_DURATION;
@@ -270,7 +277,7 @@ namespace BeastHunter
                 }
                 var multPos = shortVector * j + new Vector3(horizontalOffset, 0, 0);
                 var groundedPosition = Services.SharedInstance.PhysicsService.GetGroundedPosition(bossPos + multPos, 20f);
-                var TimeRem = new TimeRemaining(() =>GameObject.Destroy(GameObject.Instantiate(_bossModel.SporePrefab, groundedPosition, Quaternion.identity), 3f), j * 0.1f);
+                var TimeRem = new TimeRemaining(() =>GameObject.Destroy(GameObject.Instantiate(_bossModel.SporePrefab, groundedPosition, Quaternion.identity), 5f), j * 0.1f);
                 TimeRem.AddTimeRemaining(j * 0.1f);
             }
         }
@@ -388,7 +395,7 @@ namespace BeastHunter
                     CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
                         _context.CharacterModel.PlayerBehavior.Stats));
                 hitBox.IsInteractable = false;
-                TurnOnHitBoxCollider(_bossModel.LeftHandCollider, 0.2f, false);
+               // TurnOnHitBoxCollider(_bossModel.LeftHandCollider, 0.2f, false);
             }
         }
 
@@ -400,7 +407,7 @@ namespace BeastHunter
                     CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
                         _context.CharacterModel.PlayerBehavior.Stats));
                 hitBox.IsInteractable = false;
-                TurnOnHitBoxCollider(_bossModel.RightHandCollider, 0.2f, false);
+               // TurnOnHitBoxCollider(_bossModel.RightHandCollider, 0.2f, false);
             }
         }
 
