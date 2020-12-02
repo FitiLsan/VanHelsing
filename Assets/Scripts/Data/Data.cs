@@ -25,6 +25,7 @@ namespace BeastHunter
         [SerializeField] private string _cameraDataPath;
         [SerializeField] private string _questIndicatorDataPath;
         [SerializeField] private string _questJournalDataPath;
+        [SerializeField] private string _uiBestiaryDataPath;
         [SerializeField] private string _healthBuffDataPath;
         [SerializeField] private string _staminaBuffDataPath;
         [SerializeField] private string _bossDataPath;
@@ -39,6 +40,7 @@ namespace BeastHunter
         [SerializeField] private string _uiElementsDataPath;
         [SerializeField] private string _materialsDataPath;
         [SerializeField] private string _torchObjectPath;
+        [SerializeField] private string _hellHoundDataPath;
 
         private static Data _instance;
         private static LocationData _locationData;
@@ -56,6 +58,7 @@ namespace BeastHunter
         private static ClothItem _ironGreaves;
         private static CameraData _cameraData;
         private static QuestJournalData _questJournalData;
+        private static UIBestiaryData _uiBestiaryData;
         private static TemporaryBuffClass _healthBuffData;
         private static TemporaryBuffClass _staminaBuffData;
         private static BossData _bossData;
@@ -67,6 +70,7 @@ namespace BeastHunter
         private static UIElementsData _uiElementsData;
         private static MaterialsData _materialsData;
         private static TorchData _torchObjectData;
+        private static HellHoundData _hellHoundData;
 
         #endregion
 
@@ -247,6 +251,18 @@ namespace BeastHunter
             }
         }
 
+        public static UIBestiaryData UIBestiaryData
+        {
+            get
+            {
+                if(_uiBestiaryData == null)
+                {
+                    _uiBestiaryData = Load<UIBestiaryData>("Data/" + Instance._uiBestiaryDataPath);
+                }
+                return _uiBestiaryData;
+            }
+        }
+
         public static TemporaryBuffClass HealthBuffData
         {
             get
@@ -376,6 +392,18 @@ namespace BeastHunter
                     _torchObjectData = Load<TorchData>("Data/" + Instance._torchObjectPath);
                 }
                 return _torchObjectData;
+            }
+        }
+
+        public static HellHoundData HellHoundData
+        {
+            get
+            {
+                if (_hellHoundData == null)
+                {
+                    _hellHoundData = Resources.Load<HellHoundData>("Data/" + Instance._hellHoundDataPath);
+                }
+                return _hellHoundData;
             }
         }
 

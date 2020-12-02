@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 
@@ -7,7 +7,8 @@ namespace BeastHunter
     public sealed class GameContext : Contexts
     {
         #region Fields
-
+        
+        public UIBestiaryModel UIBestiaryModel;
         public StartDialogueModel StartDialogueModel;
         public DialogueSystemModel DialogueSystemModel;
         public QuestModel QuestModel;

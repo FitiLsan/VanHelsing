@@ -1,4 +1,4 @@
-﻿namespace BeastHunter
+namespace BeastHunter
 {
     public sealed class MainControllers : ControllersStart
     {
@@ -7,7 +7,6 @@
         public MainControllers(GameContext context)
         {
             AddInitializeControllers(context);
-            //Add(new InitializeInteractableObjectController(context));
             AddControllers(context);
 
             //Add(new QuestIndicatorInitializeController(context));
@@ -23,6 +22,7 @@
 
         private void AddInitializeControllers(GameContext context) 
         {
+            Add(new UIBestiarylInitializeController(context));
             Add(new CharacterInitializeController(context));
             Add(new BossInitializeController(context));
             Add(new LocationInitializeController(context));
@@ -30,6 +30,7 @@
             //Add(new DialogueSystemInitializeController(context));
             //Add(new StartDialogueInitializeController(context));
             //Add(new QuestInitializeController(context));
+            Add(new HellHoundInitializeController(context));
         }
 
         private void AddControllers(GameContext context)
@@ -41,10 +42,12 @@
             Add(new CharacterController(context));
             Add(new TrapController(context));
             Add(new InteractiveObjectController(context));
+
             //Add(new DialogueSystemController(context));
             //Add(new StartDialogueController(context));
             //Add(new DialogueTriggerController(context));
             //Add(new QuestController(context));
+            Add(new UIBestiaryController(context));
         }
 
         #endregion
