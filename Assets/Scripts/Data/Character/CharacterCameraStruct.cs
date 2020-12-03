@@ -26,6 +26,16 @@ namespace BeastHunter
         [Tooltip("Freelook camera blend time between 0 and 10.")]
         [SerializeField] private float _characterFreelookCameraBlendTime;
 
+        [Tooltip("Character free look knocked down camera.")]
+        [SerializeField] private CinemachineFreeLook _characterKnockedDownCamera;
+
+        [Tooltip("Character knocked down camera name.")]
+        [SerializeField] private string _characterKnockedDownCameraName;
+
+        [Range(0.0f, 10.0f)]
+        [Tooltip("Knocked down camera blend time between 0 and 10.")]
+        [SerializeField] private float _characterKnockedDownCameraBlendTime;
+
         [Tooltip("Character target camera.")]
         [SerializeField] private CinemachineVirtualCamera _characterTargetCamera;
 
@@ -634,6 +644,7 @@ namespace BeastHunter
 
         public Camera CharacterCamera => _characterCamera;
         public CinemachineFreeLook CharacterFreelookCamera => _characterFreelookCamera;
+        public CinemachineFreeLook CharacterKnockedDownCamera => _characterKnockedDownCamera;
         public CinemachineVirtualCamera CharacterTargetCamera => _characterTargetCamera;
         public CinemachineVirtualCamera CharacterAimingCamera => _characterAimingCamera;
         public Vector2 CameraTargetDistanceMoveX => _cameraTargetDistanceMoveX;
@@ -641,11 +652,13 @@ namespace BeastHunter
 
         public string CharacterCameraName => _characterCameraName;
         public string CharacterFreelookCameraName => _characterFreelookCameraName;
+        public string CharacterKnockedDownCameraName => _characterKnockedDownCameraName;
         public string CharacterTargetCameraName => _characterTargetCameraName;
         public string CameraTargetName => _cameraTargetName;
         public string CharacterAimingCameraName => _characterAimingCameraName;
 
         public float CharacterFreelookCameraBlendTime => _characterFreelookCameraBlendTime;
+        public float CharacterKnockedDownCameraBlendTime => _characterKnockedDownCameraBlendTime;
         public float CharacterTargetCameraBlendTime => _characterTargetCameraBlendTime;
         public float CHaracterAimingCameraBlendTIme => _characterAimingCameraBlendTime;
         public float CameraTargetHeight => _cameraTargetHeight;
@@ -1048,16 +1061,37 @@ namespace BeastHunter
             _aimingCameraBiasY = dialogComposer.m_BiasY;
         }
 
-        public Camera CreateCharacterCamera()
+        public Camera CreateCharacterCamera(Transform parent = null)
         {
-            Camera characterCamera = GameObject.Instantiate(CharacterCamera);
+            Camera characterCamera;
+
+            if (parent == null)
+            {
+                characterCamera = GameObject.Instantiate(CharacterCamera, parent);
+            }
+            else
+            {
+                characterCamera = GameObject.Instantiate(CharacterCamera);
+            }
+            
             characterCamera.name = CharacterCameraName;
             return characterCamera;
         }
 
-        public CinemachineFreeLook CreateCharacterFreelookCamera(Transform followTransform, Transform lookAtTransform)
+        public CinemachineFreeLook CreateCharacterFreelookCamera(Transform followTransform, Transform lookAtTransform, 
+            Transform parent = null)
         {
-            CinemachineFreeLook characterFreelookCamera = GameObject.Instantiate(CharacterFreelookCamera);
+            CinemachineFreeLook characterFreelookCamera;
+
+            if(parent == null)
+            {
+                characterFreelookCamera = GameObject.Instantiate(CharacterFreelookCamera);
+            }
+            else
+            {
+                characterFreelookCamera = GameObject.Instantiate(CharacterFreelookCamera, parent);
+            }
+                                       
             characterFreelookCamera.name = CharacterFreelookCameraName;
 
             characterFreelookCamera.Follow = followTransform;
@@ -1126,9 +1160,42 @@ namespace BeastHunter
             return characterFreelookCamera;
         }
 
-        public CinemachineVirtualCamera CreateCharacterTargetCamera(Transform followTransform, Transform lookAtTransform)
+        public CinemachineFreeLook CreateCharacterKnockedDownCamera(Transform followTransform, Transform lookAtTransform, 
+            Transform parent = null)
         {
-            CinemachineVirtualCamera characterTargetCamera = GameObject.Instantiate(CharacterTargetCamera);
+            CinemachineFreeLook characterKnockedDownCamera;
+
+            if(parent == null)
+            {
+                characterKnockedDownCamera = GameObject.Instantiate(CharacterFreelookCamera);
+            }
+            else
+            {
+                characterKnockedDownCamera = GameObject.Instantiate(CharacterFreelookCamera, parent);
+            }
+
+            characterKnockedDownCamera.name = CharacterKnockedDownCameraName;
+
+            characterKnockedDownCamera.Follow = followTransform;
+            characterKnockedDownCamera.LookAt = lookAtTransform;
+
+            return characterKnockedDownCamera;
+        }
+
+        public CinemachineVirtualCamera CreateCharacterTargetCamera(Transform followTransform, Transform lookAtTransform, 
+            Transform parent = null)
+        {
+            CinemachineVirtualCamera characterTargetCamera;
+
+            if(parent == null)
+            {
+                characterTargetCamera = GameObject.Instantiate(CharacterTargetCamera);
+            }
+            else
+            {
+                characterTargetCamera = GameObject.Instantiate(CharacterTargetCamera, parent);
+            }
+
             characterTargetCamera.name = CharacterTargetCameraName;
 
             characterTargetCamera.Follow = followTransform;
@@ -1175,9 +1242,20 @@ namespace BeastHunter
             return characterTargetCamera;
         }
 
-        public CinemachineVirtualCamera CreateCharacterAimingCamera(Transform followTransform, Transform lookAtTransform)
+        public CinemachineVirtualCamera CreateCharacterAimingCamera(Transform followTransform, Transform lookAtTransform, 
+            Transform parent = null)
         {
-            CinemachineVirtualCamera characterAimingCamera = GameObject.Instantiate(CharacterAimingCamera);
+            CinemachineVirtualCamera characterAimingCamera;
+
+            if(parent == null)
+            {
+                characterAimingCamera = GameObject.Instantiate(CharacterAimingCamera);
+            }
+            else
+            {
+                characterAimingCamera = GameObject.Instantiate(CharacterAimingCamera, parent);
+            }
+
             characterAimingCamera.name = CharacterAimingCameraName;
 
             characterAimingCamera.Follow = followTransform;

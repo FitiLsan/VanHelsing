@@ -7,7 +7,7 @@ namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewBombtData", menuName = "CreateProjectileData/CreateBombData", order = 0)]
     public sealed class BombData : ProjectileData
-    {
+    {      
         #region Methods
 
         public override bool FilterCollision(Collision touchedCollider)

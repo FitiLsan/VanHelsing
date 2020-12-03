@@ -156,6 +156,7 @@ namespace BeastHunter
             _services.EventManager.StartListening(InputEventTypes.RunStop, OnStopRunHandler);
             _services.EventManager.StartListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
             _services.EventManager.StartListening(InputEventTypes.Use, OnUseHandler);
+            _services.EventManager.StartListening(InputEventTypes.WeaponRemove, OnWeaponChangeHandler);
 
             OnWeaponWheelOpen += OpenWeaponWheel;
             OnWeaponWheelClose += CloseWeaponWheel;
@@ -166,9 +167,17 @@ namespace BeastHunter
 
             _characterModel.CurrentWeaponData.Subscribe(OnWeaponChangeHandler);
 
+            MessageBroker.Default.Receive<OnPlayerReachHidePlaceEventClass>().Subscribe(EnableHiding);
+
             _characterModel.PlayerBehavior.OnFilterHandler += OnTriggerFilter;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterSomething;
             _characterModel.PlayerBehavior.OnTriggerExitHandler += OnTriggerExitSomething;
+            _characterModel.BehaviorFall.OnPostActivate += () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.KnockedDown]);
+            _characterModel.BehaviorPuppet.OnPostActivate += () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.GettingUp]);
+            _characterModel.BehaviorPuppet.onRegainBalance.unityEvent.AddListener(() => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]));
         }
 
         #endregion
@@ -182,6 +191,7 @@ namespace BeastHunter
             MovementCheck();
             SpeedCheck();
             ControlWeaponWheel();
+            Debug.Log(_stateMachine.CurrentState);
         }
 
         #endregion
@@ -210,6 +220,7 @@ namespace BeastHunter
             _services.EventManager.StopListening(InputEventTypes.RunStop, OnStopRunHandler);
             _services.EventManager.StopListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
             _services.EventManager.StopListening(InputEventTypes.Use, OnUseHandler);
+            _services.EventManager.StopListening(InputEventTypes.WeaponRemove, OnWeaponChangeHandler);
 
             OnWeaponWheelOpen -= OpenWeaponWheel;
             OnWeaponWheelClose -= CloseWeaponWheel;
@@ -223,6 +234,12 @@ namespace BeastHunter
             _characterModel.PlayerBehavior.OnFilterHandler -= OnTriggerFilter;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterSomething;
             _characterModel.PlayerBehavior.OnTriggerExitHandler -= OnTriggerExitSomething;
+            _characterModel.BehaviorFall.OnPostActivate -= () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.KnockedDown]);
+            _characterModel.BehaviorPuppet.OnPostActivate -= () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.GettingUp]);
+            _characterModel.BehaviorPuppet.onRegainBalance.unityEvent.RemoveListener(() => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]));
         }
 
         #endregion
@@ -363,6 +380,11 @@ namespace BeastHunter
         private void OnUseHandler()
         {
             OnUse?.Invoke();
+        }
+
+        private void OnWeaponChangeHandler()
+        {
+            OnWeaponChange?.Invoke();
         }
 
         private void OnWeaponChangeHandler(WeaponData newWeapon)
@@ -917,6 +939,21 @@ namespace BeastHunter
                     interactiveObjectModel.InteractiveObjectData.Interact(interactiveObjectModel);
                 }
             }
+        }
+
+        private void EnableHiding(OnPlayerReachHidePlaceEventClass onPlayerHideEvent)
+        {
+            if (onPlayerHideEvent.CanHide && _stateMachine.CurrentState == _stateMachine.
+                CharacterStates[CharacterStatesEnum.Sneaking])
+            {
+                _characterModel.PlayerBehavior.EnableHiding(true);
+            }
+            else
+            {
+                _characterModel.PlayerBehavior.EnableHiding(false);
+            }
+
+            _characterModel.IsInHidingPlace = onPlayerHideEvent.CanHide;
         }
 
         #endregion

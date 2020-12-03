@@ -24,20 +24,16 @@ namespace BeastHunter
         {
             Add(new UIBestiarylInitializeController(context));
             //Add<T>(context) where T : NpcInitializeController
-
             Add(new CharacterInitializeController(context));
-            //Add(new BossInitializeController(context));
-
-            
-
+            //Add(new BossInitializeController(context));         
             //Add(new SmthInitializeController(context));
-
-            //Add(new BossInitializeController(context));
+            Add(new BossInitializeController(context));
             //Add(new GiantMudCrabInitilizeController(context));
             //Add(new RabbitInitializeController(context));
             //Add(new DialogueSystemInitializeController(context));
             //Add(new StartDialogueInitializeController(context));
             //Add(new QuestInitializeController(context));
+            Add(new HideBushInitializeController(context));
             Add(new HellHoundInitializeController(context));
         }
 
@@ -51,7 +47,6 @@ namespace BeastHunter
             Add(new CharacterAnimationController(context));
             Add(new TrapController(context));          
             Add(new InteractiveObjectController(context));
-
             //Add(new DialogueSystemController(context));
             //Add(new StartDialogueController(context));
             //Add(new DialogueTriggerController(context));

@@ -47,6 +47,18 @@ namespace BeastHunter
             _doAim = currentCamera == Services.SharedInstance.CameraService.CharacterAimingCamera;
         }
 
+        public void EnableHiding(bool isHiding)
+        {
+            if (isHiding)
+            {
+                _type = InteractableObjectType.None;
+            }
+            else
+            {
+                _type = InteractableObjectType.Player;
+            }
+        }
+
         #endregion
     }
 }

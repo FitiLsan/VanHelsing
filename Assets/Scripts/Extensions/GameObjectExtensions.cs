@@ -81,7 +81,7 @@ namespace Extensions
             {
                 T newComponent = obj.GetComponent<T>();
 
-                if(newComponent != null)
+                if(newComponent as Component != null)
                 {
                     component = newComponent;
                     doesComponentExists = true;
@@ -104,7 +104,7 @@ namespace Extensions
             {
                 T newComponent = obj.GetComponentInChildren<T>();
 
-                if (newComponent != null)
+                if (newComponent as Component != null)
                 {
                     component = newComponent;
                     doesComponentExists = true;

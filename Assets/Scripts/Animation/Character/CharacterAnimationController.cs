@@ -146,8 +146,12 @@ namespace BeastHunter
                     PlayLongDodgeAnimation();
                     break;
                 case CharacterStatesEnum.Movement:
+                    SetRootMotion(false);
                     SetTopBodyAnimationWeigth(1f, 0f);
-                    PlayMovementAnimation();
+                    if(_characterModel.PreviousCharacterState.Value.StateName != CharacterStatesEnum.GettingUp)
+                    {
+                        PlayMovementAnimation();
+                    }
                     PlayArmsAnimationHoldingWeapon();
                     break;
                 case CharacterStatesEnum.Sliding:
@@ -165,6 +169,13 @@ namespace BeastHunter
                     SetTopBodyAnimationWeigth(0f, 0f);
                     SetRootMotion(false);
                     PlayTrapPlacingAnimation();
+                    break;
+                case CharacterStatesEnum.KnockedDown:
+                    SetTopBodyAnimationWeigth(0f, 0f);
+                    PlayArmsNoneAnimation();
+                    break;
+                case CharacterStatesEnum.GettingUp:
+                    SetRootMotion(true);
                     break;
                 default:
                 break;

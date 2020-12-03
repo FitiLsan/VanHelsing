@@ -51,6 +51,8 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.TrapPlacing, new TrapPlacingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Aiming, new AimingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Shooting, new ShootingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.KnockedDown, new KnockedDownState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.GettingUp, new GettingUpState(_context, this));
         }
 
         #endregion
@@ -162,7 +164,8 @@ namespace BeastHunter
 
         private void OnAfterStateChange(CharacterBaseState currentState)
         {
-            _context.CharacterModel.CurrentCharacterState.Value = currentState;
+            _context.CharacterModel.PreviousCharacterState.Value = PreviousState;
+            _context.CharacterModel.CurrentCharacterState.Value = currentState;          
             OnAfterStateChangeHandler?.Invoke(currentState);
         }
 

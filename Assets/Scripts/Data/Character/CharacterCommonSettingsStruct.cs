@@ -20,6 +20,9 @@ namespace BeastHunter
         [Tooltip("Character instance tag.")]
         [SerializeField] private string _instanceTag;
 
+        [Tooltip("Character head object path")]
+        [SerializeField] private string _headObjectPath;
+
         [Tooltip("Character instance layer.")]
         [SerializeField] private int _instanceLayer;
 
@@ -183,6 +186,7 @@ namespace BeastHunter
 
         public string InstanceName => _instanceName;
         public string InstanceTag => _instanceTag;
+        public string HeadObjectPath => _headObjectPath;
         public int InstanceLayer => _instanceLayer;
 
         public float InstantiateDirection => _instantiateDirection;

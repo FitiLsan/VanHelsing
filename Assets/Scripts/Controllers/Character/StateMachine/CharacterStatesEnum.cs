@@ -17,6 +17,8 @@
         Shooting,
         TimeSkip,
         TrapPlacing,
+        KnockedDown,
+        GettingUp,
     }
 }
 

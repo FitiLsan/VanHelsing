@@ -20,6 +20,10 @@ MonoBehaviour:
       type: 3}
     _characterFreelookCameraName: CharacterFreelookCamera
     _characterFreelookCameraBlendTime: 2
+    _characterKnockedDownCamera: {fileID: 1046887095545056062, guid: 2983e325106020e46b654a293ce2d6bd,
+      type: 3}
+    _characterKnockedDownCameraName: CharacterKnockedDownCamera
+    _characterKnockedDownCameraBlendTime: 2
     _characterTargetCamera: {fileID: 7502929037863473527, guid: 754e3a8556acf0a43814c84409669089,
       type: 3}
     _characterTargetCameraName: CharacterTargetCamera
@@ -29,16 +33,16 @@ MonoBehaviour:
     _characterAimingCamera: {fileID: 7502929037863473527, guid: 93d64c43965a1ee4394b13e780d22afa,
       type: 3}
     _characterAimingCameraName: CharacterAimingCamera
-    _characterAimingCameraBlendTime: 0
+    _characterAimingCameraBlendTime: 2.44
     _freeLookFieldOfView: 40
     _freeLookNearClipPlane: 0.1
     _freeLookFarClipPlane: 5000
     _freeLookDutch: 0
-    _freeLookSpeedX: 0
+    _freeLookSpeedX: 400
     _freeLookAccelerationLagX: 0.1
     _freeLookDecelerationLagX: 0.1
     _isInvertedAxisX: 0
-    _freeLookSpeedY: 0
+    _freeLookSpeedY: 2
     _freeLookAccelerationLagY: 0.1
     _freeLookDecelerationLagY: 0.1
     _isInvertedAxisY: 1

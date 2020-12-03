@@ -88,12 +88,10 @@ namespace BeastHunter
             _crouchLevel = ZERO_CROUCH_LEVEL;
             _crouchLevelForAnimation = _crouchLevel;
             _isMoving = _inputModel.IsInputMove;
-            MessageBroker.Default.Publish(new OnPlayerSneakingEventClass { IsSneaking = true });
         }
 
         public override void OnExit(CharacterBaseState nextState = null)
         {
-            MessageBroker.Default.Publish(new OnPlayerSneakingEventClass { IsSneaking = false });
             base.OnExit(nextState);
         }
 
@@ -154,6 +152,8 @@ namespace BeastHunter
             {
                 _crouchLevel = FULL_CROUCH_LEVEL;
                 CharacterPose = CharacterPositionEnum.Sneaking;
+                if (_characterModel.IsInHidingPlace) _characterModel.PlayerBehavior.EnableHiding(true);
+                MessageBroker.Default.Publish(new OnPlayerHideEventClass(true));
             }
             else
             {
@@ -167,6 +167,8 @@ namespace BeastHunter
             {
                 _crouchLevel = ZERO_CROUCH_LEVEL;
                 CharacterPose = CharacterPositionEnum.Standing;
+                _characterModel.PlayerBehavior.EnableHiding(false);
+                MessageBroker.Default.Publish(new OnPlayerHideEventClass(false));
             }
             else
             {

@@ -14,8 +14,8 @@ namespace BeastHunter
         private CameraData _cameraData;
         private GameObject _cameraDynamicTarget;
         private GameObject _cameraStaticTarget;
-        private Vector3 _staticCameraCenterPosition;
-        private Vector3 _dynamicCameraCenterPosition;
+        private Vector3 _staticTargetCenterPosition;
+        private Vector3 _dynamicTargetCenterPosition;
 
         #endregion
 
@@ -24,6 +24,7 @@ namespace BeastHunter
 
         public Camera CharacterCamera { get; private set; }
         public CinemachineFreeLook CharacterFreelookCamera { get; private set; }
+        public CinemachineFreeLook CharacterKnockedDownCamera { get; private set; }
         public CinemachineVirtualCamera CharacterTargetCamera { get; private set; }
         public CinemachineVirtualCamera CharacterAimingCamera { get; private set; }
         public CinemachineBrain CameraCinemachineBrain { get; private set; }
@@ -47,9 +48,6 @@ namespace BeastHunter
             _context = contexts as GameContext;
             _cameraData = Data.CameraData;
 
-            CharacterCamera = _cameraData._cameraSettings.CreateCharacterCamera();
-            CameraCinemachineBrain = CharacterCamera.GetComponent<CinemachineBrain>() ?? null;
-
 #if (UNITY_EDITOR)
             EditorApplication.playModeStateChanged += SaveCameraSettings;
 #endif
@@ -62,25 +60,30 @@ namespace BeastHunter
 
         public void Initialize(CharacterModel characterModel)
         {
+            CharacterCamera = _cameraData._cameraSettings.CreateCharacterCamera();
+            CameraCinemachineBrain = CharacterCamera.GetComponent<CinemachineBrain>() ?? null;
+
             _cameraDynamicTarget = GameObject.Instantiate(new GameObject(), characterModel.CharacterTransform);
-            _dynamicCameraCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight,
+            _dynamicTargetCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight,
                 _cameraData._cameraSettings.CameraTargetForwardMovementDistance);
-            _cameraDynamicTarget.transform.localPosition = _dynamicCameraCenterPosition;
+            _cameraDynamicTarget.transform.localPosition = _dynamicTargetCenterPosition;
             _cameraDynamicTarget.name = _cameraData._cameraSettings.CameraTargetName + "Dynamic";
 
             _cameraStaticTarget = GameObject.Instantiate(new GameObject(), characterModel.CharacterTransform);
-            _staticCameraCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight, 0);
-            _cameraStaticTarget.transform.localPosition = _staticCameraCenterPosition;
+            _staticTargetCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight, 0);
+            _cameraStaticTarget.transform.localPosition = _staticTargetCenterPosition;
             _cameraStaticTarget.name = _cameraData._cameraSettings.CameraTargetName + "Static";
 
             CharacterCamera.transform.rotation = Quaternion.Euler(0, characterModel.CharacterCommonSettings.
                 InstantiateDirection, 0);
-            CharacterFreelookCamera = _cameraData._cameraSettings.
-                CreateCharacterFreelookCamera(_cameraStaticTarget.transform, _cameraStaticTarget.transform);
-            CharacterTargetCamera = _cameraData._cameraSettings.
-                CreateCharacterTargetCamera(_cameraStaticTarget.transform, _cameraStaticTarget.transform);
-            CharacterAimingCamera = _cameraData._cameraSettings.
-                CreateCharacterAimingCamera(_cameraStaticTarget.transform, _cameraDynamicTarget.transform);
+            CharacterFreelookCamera = _cameraData._cameraSettings.CreateCharacterFreelookCamera(_cameraStaticTarget.
+                transform, _cameraStaticTarget.transform);
+            CharacterKnockedDownCamera = _cameraData._cameraSettings.CreateCharacterKnockedDownCamera(_cameraStaticTarget.
+                transform, _cameraStaticTarget.transform);
+            CharacterTargetCamera = _cameraData._cameraSettings.CreateCharacterTargetCamera(_cameraStaticTarget.
+                transform, _cameraStaticTarget.transform);
+            CharacterAimingCamera = _cameraData._cameraSettings.CreateCharacterAimingCamera(_cameraStaticTarget.
+                transform, _cameraDynamicTarget.transform);
 
             CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
             CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenterWaitTime = 0;
@@ -116,6 +119,10 @@ namespace BeastHunter
                 if (CurrentActiveCamera.Value == CharacterFreelookCamera)
                 {
                     blendTime = _cameraData._cameraSettings.CharacterFreelookCameraBlendTime;
+                }
+                else if (CurrentActiveCamera.Value == CharacterKnockedDownCamera)
+                {
+                    blendTime = _cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime;
                 }
                 else if (CurrentActiveCamera.Value == CharacterTargetCamera)
                 {
@@ -164,6 +171,11 @@ namespace BeastHunter
                     break;
                 case CharacterStatesEnum.TrapPlacing:
                     break;
+                case CharacterStatesEnum.KnockedDown:
+                    //SetActiveCamera(CharacterKnockedDownCamera);
+                    break;
+                case CharacterStatesEnum.GettingUp:
+                    break;
                 default:
                     break;
             }
@@ -172,6 +184,7 @@ namespace BeastHunter
         private void SetAllCamerasEqual()
         {
             CharacterFreelookCamera.Priority = 0;
+            CharacterKnockedDownCamera.Priority = 0;
             CharacterTargetCamera.Priority = 0;
             CharacterAimingCamera.Priority = 0;
         }
@@ -197,7 +210,7 @@ namespace BeastHunter
 
         public void CenterCameraTarget()
         {
-            _cameraDynamicTarget.transform.localPosition = _dynamicCameraCenterPosition;
+            _cameraDynamicTarget.transform.localPosition = _dynamicTargetCenterPosition;
         }
 
         public void SetCameraTargetPosition(Vector3 position, bool isAdded)
