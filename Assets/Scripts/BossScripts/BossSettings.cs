@@ -85,8 +85,8 @@ namespace BeastHunter
         [Tooltip("Sphere trigger center position")]
         [SerializeField] private Vector3 _sphereColliderCenter;
 
-        [Tooltip("Sphere trigger radius between 0 and 20.")]
-        [Range(0.0f, 20.0f)]
+        [Tooltip("Sphere trigger radius between 0 and 100.")]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float _sphereColliderRadius;
 
         [Tooltip("Sphere trigger radius increace in battle between 1 and 2.")]

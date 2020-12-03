@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RootMotion.Dynamics;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace BeastHunter
         private const float ANGLE_SPEED = 150f;
         private const float ANGLE_TARGET_RANGE_MIN = 20f;
         private const float DISTANCE_TO_START_ATTACK = 4f;
+        private const float DELAY_HAND_TRIGGER = 0.2f;
 
 
 
@@ -31,17 +33,17 @@ namespace BeastHunter
         private const int STOMP_SPLASH_ATTACK_ID = 2;
         private const float STOMP_SPLASH_ATTACK_RANGE_MIN = 0f;
         private const float STOMP_SPLASH_ATTACK_RANGE_MAX = 5f;
-        private const float STOMP_SPLASH_ATTACK_COOLDOWN = 5f;
+        private const float STOMP_SPLASH_ATTACK_COOLDOWN = 15f;
 
         private const int RAGE_OF_FOREST_ATTACK_ID = 3;
-        private const float RAGE_OF_FOREST_ATTACK_RANGE_MIN = -1f;
-        private const float RAGE_OF_FOREST_ATTACK_RANGE_MAX = -1f;
-        private const float RAGE_OF_FOREST_ATTACK_COOLDOWN = 10f; //120
+        private const float RAGE_OF_FOREST_ATTACK_RANGE_MIN = 10f;
+        private const float RAGE_OF_FOREST_ATTACK_RANGE_MAX = 30f;
+        private const float RAGE_OF_FOREST_ATTACK_COOLDOWN = 30f; //120
 
         private const int POISON_SPORES_ATTACK_ID = 4;
         private const float POISON_SPORES_ATTACK_RANGE_MIN = 10f;
         private const float POISON_SPORES_ATTACK_RANGE_MAX = 20f;
-        private const float POISON_SPORES_ATTACK_COOLDOWN = 15f; //20
+        private const float POISON_SPORES_ATTACK_COOLDOWN = 2f; //20
 
 
         SkillInfoStruct _defaultSkill;
@@ -59,18 +61,19 @@ namespace BeastHunter
         private Quaternion _toRotation;
 
         private bool _isCurrentAttackRight;
-
+        private WeaponHitBoxBehavior _currenAttacktHand;
         private int _attackNumber;
-
+        private int _skillId;
         private float _currentAttackTime;
 
-        private bool _isDefaultAttackReady = false;
+        private bool _isDefaultAttackReady = true;
         private bool _isHorizontalFistAttackReady = false;
         private bool _isStompSplashAttackReady = false;
         private bool _isRageOfForestAttackReady = false;
-        private bool _isPoisonSporesAttackReady = true;
+        private bool _isPoisonSporesAttackReady = false;
 
-        private Dictionary<int, SkillInfoStruct> TestSkillDictionary = new Dictionary<int, SkillInfoStruct>();
+        private Dictionary<int, SkillInfoStruct> AllSkillDictionary = new Dictionary<int, SkillInfoStruct>();
+        private Dictionary<int,int> _readySkillDictionary = new Dictionary<int, int>();
 
         private bool isAnimationPlay;
         #endregion
@@ -86,11 +89,11 @@ namespace BeastHunter
             _rageOfForestSkill = new SkillInfoStruct(RAGE_OF_FOREST_ATTACK_ID, RAGE_OF_FOREST_ATTACK_RANGE_MIN, RAGE_OF_FOREST_ATTACK_RANGE_MAX, RAGE_OF_FOREST_ATTACK_COOLDOWN, _isRageOfForestAttackReady);
             _poisonSporesSkill = new SkillInfoStruct(POISON_SPORES_ATTACK_ID, POISON_SPORES_ATTACK_RANGE_MIN, POISON_SPORES_ATTACK_RANGE_MAX, POISON_SPORES_ATTACK_COOLDOWN, _isPoisonSporesAttackReady);
 
-            TestSkillDictionary.Add(_defaultSkill.AttackId, _defaultSkill);
-            TestSkillDictionary.Add(_horizontalFirstSkill.AttackId, _horizontalFirstSkill);
-            TestSkillDictionary.Add(_stompSplashSkill.AttackId, _stompSplashSkill);
-            TestSkillDictionary.Add(_rageOfForestSkill.AttackId, _rageOfForestSkill);
-            TestSkillDictionary.Add(_poisonSporesSkill.AttackId, _poisonSporesSkill);
+            AllSkillDictionary.Add(_defaultSkill.AttackId, _defaultSkill);
+            AllSkillDictionary.Add(_horizontalFirstSkill.AttackId, _horizontalFirstSkill);
+            AllSkillDictionary.Add(_stompSplashSkill.AttackId, _stompSplashSkill);
+            AllSkillDictionary.Add(_rageOfForestSkill.AttackId, _rageOfForestSkill);
+            AllSkillDictionary.Add(_poisonSporesSkill.AttackId, _poisonSporesSkill);
         }
 
         #endregion
@@ -114,9 +117,9 @@ namespace BeastHunter
 
             SetNavMeshAgent(_bossModel.BossTransform.position, 0);
 
-            for (var i = 0; i < TestSkillDictionary.Count; i++)
+            for (var i = 0; i < AllSkillDictionary.Count; i++)
             {
-                SkillCooldown(TestSkillDictionary[i].AttackId, TestSkillDictionary[i].AttackCooldown);
+                SkillCooldown(AllSkillDictionary[i].AttackId, AllSkillDictionary[i].AttackCooldown);
             }
             ChoosingAttackSkill();
         }
@@ -141,22 +144,21 @@ namespace BeastHunter
         private void ChoosingAttackSkill(bool isDefault = false)
         {
             var dic = new Dictionary<int, int>();
+            dic.Clear();
             var j = 0;
 
 
-            for (var i = 0; i < TestSkillDictionary.Count; i++)
+            for (var i = 0; i < AllSkillDictionary.Count; i++)
             {
-                if (TestSkillDictionary[i].IsAttackReady)
+                if (AllSkillDictionary[i].IsAttackReady)
                 {
-                    if (CheckDistance(TestSkillDictionary[i].AttackRangeMin, TestSkillDictionary[i].AttackRangeMax))
+                    if (CheckDistance(AllSkillDictionary[i].AttackRangeMin, AllSkillDictionary[i].AttackRangeMax))
                     {
                         dic.Add(j, i);
                         j++;
                     }
                 }
             }
-
-            int skillId;
 
             if(dic.Count==0 & _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position)>=DISTANCE_TO_START_ATTACK)
             {
@@ -167,28 +169,28 @@ namespace BeastHunter
             if (!isDefault & dic.Count!=0)
             {
                 var readyId = UnityEngine.Random.Range(0, dic.Count);
-                skillId = dic[readyId];
+                _skillId = dic[readyId];
             }
             else
             {
-                skillId = DEFAULT_ATTACK_ID;
+                _skillId = DEFAULT_ATTACK_ID;
             }
-            switch (skillId)
+            switch (_skillId)
             {
                 case 1:
-                    HorizontalAttackSkill(skillId);
+                    HorizontalAttackSkill(_skillId);
                     break;
                 case 2:
-                    StompSplashAttackSkill(skillId);
+                    StompSplashAttackSkill(_skillId);
                     break;
                 case 3:
-                    RageOfForestAttackSkill(skillId);
+                    RageOfForestAttackSkill(_skillId);
                     break;
                 case 4:
-                    PoisonSporesAttackSkill(skillId);
+                    PoisonSporesAttackSkill(_skillId);
                     break;
                 default:
-                    DefaultAttackSkill(skillId);
+                    DefaultAttackSkill(_skillId);
                     break;
             }
         }
@@ -197,11 +199,22 @@ namespace BeastHunter
         private void DefaultAttackSkill(int id)
         {
             Debug.Log("DefaultAttackSkill");
-            
-            _bossModel.BossAnimator.Play("BossFeastsAttack_1", 0, 0f);
-            TurnOnHitBoxTrigger(_bossModel.LeftHandBehavior, PART_OF_NONE_ATTACK_TIME_LEFT);
-            TestSkillDictionary[id].IsAttackReady = false;
-            SkillCooldown(id, TestSkillDictionary[id].AttackCooldown);
+            var attackDirection = UnityEngine.Random.Range(0, 2);
+            _bossModel.BossAnimator.Play($"BossFeastsAttack_{attackDirection}", 0, 0f);
+            switch (attackDirection)
+            {
+                case 0:
+                    _currenAttacktHand = _bossModel.RightHandBehavior;
+                    break;
+                case 1:
+                    _currenAttacktHand = _bossModel.LeftHandBehavior;
+                    break;
+                default:
+                    break;
+            }
+            TurnOnHitBoxTrigger(_currenAttacktHand, DELAY_HAND_TRIGGER);
+            AllSkillDictionary[id].IsAttackReady = false;
+            SkillCooldown(id, AllSkillDictionary[id].AttackCooldown);
             isAnimationPlay = true;
         }
 
@@ -211,8 +224,8 @@ namespace BeastHunter
             _bossModel.BossAnimator.Play("BossFeastsAttack_0", 0, 0f);
             TurnOnHitBoxTrigger(_bossModel.RightHandBehavior, PART_OF_NONE_ATTACK_TIME_RIGHT);
             TurnOnHitBoxCollider(_bossModel.RightHandCollider, PART_OF_NONE_ATTACK_TIME_RIGHT);
-            TestSkillDictionary[id].IsAttackReady = false;
-            SkillCooldown(id, TestSkillDictionary[id].AttackCooldown);
+            AllSkillDictionary[id].IsAttackReady = false;
+            SkillCooldown(id, AllSkillDictionary[id].AttackCooldown);
             isAnimationPlay = true;
         }
 
@@ -223,14 +236,15 @@ namespace BeastHunter
             var TimeRem = new TimeRemaining(() => StompShockWave(), 0.65f);
             TimeRem.AddTimeRemaining(0.65f);
 
-            TestSkillDictionary[id].IsAttackReady = false;
-            SkillCooldown(id, TestSkillDictionary[id].AttackCooldown);
+            AllSkillDictionary[id].IsAttackReady = false;
+            SkillCooldown(id, AllSkillDictionary[id].AttackCooldown);
             isAnimationPlay = true;
         }
 
         private void RageOfForestAttackSkill(int id)
         {
             Debug.Log("RAGEAttackSkill");
+            _bossModel.BossTransform.rotation = _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
             SetNavMeshAgent((Vector3)_mainState.GetTargetCurrentPosition(), 5f);
             _bossModel.BossAnimator.Play("BossRageAttack", 0, 0f);
 
@@ -239,18 +253,19 @@ namespace BeastHunter
             TurnOnHitBoxTrigger(_bossModel.LeftHandBehavior, PART_OF_NONE_ATTACK_TIME_RIGHT);
             TurnOnHitBoxCollider(_bossModel.LeftHandCollider, PART_OF_NONE_ATTACK_TIME_RIGHT);
 
-            TestSkillDictionary[id].IsAttackReady = false;
-            SkillCooldown(id, TestSkillDictionary[id].AttackCooldown);
+            AllSkillDictionary[id].IsAttackReady = false;
+            SkillCooldown(id, AllSkillDictionary[id].AttackCooldown);
             isAnimationPlay = true;
         }
 
         private void PoisonSporesAttackSkill(int id)
         {
             Debug.Log("POISONAttackSkill");
-            SetNavMeshAgent(_bossModel.BossCurrentTarget.transform.position, 0f);
+            //SetNavMeshAgent(_bossModel.BossCurrentTarget.transform.position, 0f);
+            _bossModel.BossTransform.rotation = _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
             _bossModel.BossAnimator.Play("PoisonAttack", 0, 0f);
-            TestSkillDictionary[id].IsAttackReady = false;
-            SkillCooldown(id, TestSkillDictionary[id].AttackCooldown);
+            AllSkillDictionary[id].IsAttackReady = false;
+            SkillCooldown(id, AllSkillDictionary[id].AttackCooldown);
             isAnimationPlay = true;
             CreateSpores();
         }
@@ -289,7 +304,7 @@ namespace BeastHunter
             {
                 if (list.Count != 0)
                 {
-                    list[0].GetComponent<Rigidbody>().AddForce((_bossModel.LeftFoot.position - _bossModel.BossCurrentPosition) * force, ForceMode.Impulse);
+                    //  list[0].GetComponent<Rigidbody>().AddForce((_bossModel.LeftFoot.position - _bossModel.BossCurrentPosition) * force, ForceMode.Impulse);
                 }
             }
         }
@@ -373,18 +388,18 @@ namespace BeastHunter
 
         private void SkillCooldown(int skillId, float coolDownTime)
         {
-            if (!TestSkillDictionary[skillId].IsCooldownStart & !TestSkillDictionary[skillId].IsAttackReady)
+            if (!AllSkillDictionary[skillId].IsCooldownStart & !AllSkillDictionary[skillId].IsAttackReady)
             {
                 TimeRemaining currentSkill = new TimeRemaining(() => SetReadySkill(skillId), coolDownTime);
                 currentSkill.AddTimeRemaining(coolDownTime);
-                TestSkillDictionary[skillId].IsCooldownStart = true;
+                AllSkillDictionary[skillId].IsCooldownStart = true;
             }
         }
 
         private void SetReadySkill(int id)
         {
-            TestSkillDictionary[id].IsAttackReady = true;
-            TestSkillDictionary[id].IsCooldownStart = false;
+            AllSkillDictionary[id].IsAttackReady = true;
+            AllSkillDictionary[id].IsCooldownStart = false;
         }
 
         private bool OnHitBoxFilter(Collider hitedObject)
@@ -449,8 +464,7 @@ namespace BeastHunter
 
         private void TargetOnPlayer()
         {
-            var targetRotation = _bossData.GetTargetRotation(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position);
-           _bossModel.BossTransform.rotation = _bossData.RotateTo(_bossModel.BossTransform.rotation, targetRotation, ANGLE_SPEED);
+            _bossModel.BossTransform.rotation =  _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, ANGLE_SPEED);
         }
 
         #region IDealDamage

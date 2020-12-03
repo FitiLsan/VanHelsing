@@ -11,7 +11,7 @@ namespace BeastHunter
 
         public const float ANGLE_TARGET_RANGE = 20f;
         public const float DISTANCE_TO_START_ATTACK = 5f;
-
+        private const float TRIGGER_VIEW_INCREASE = 70f;
         private const float SPEED_COUNT_FRAME = 0.15f;
         private const float TIME_TO_NORMILIZE_WEAK_POINT = 5f;
 
@@ -78,6 +78,7 @@ namespace BeastHunter
                 CheckDirection();
                 HungerCheck();
                 GetTargetCurrentPosition();
+                CheckCurrentState();
             }          
         }
 
@@ -133,6 +134,19 @@ namespace BeastHunter
 
             _stateMachine._model.BossAnimator.SetFloat("Speed", _stateMachine._model.CurrentSpeed);
         }
+
+        private void CheckCurrentState()
+        {
+            if(_stateMachine.CurrentState.IsBattleState)
+            {
+                _stateMachine._model.BossSphereCollider.radius = TRIGGER_VIEW_INCREASE;
+            }
+            else
+            {
+                _stateMachine._model.BossSphereCollider.radius = _bossData._bossSettings.SphereColliderRadius;
+            }
+        }
+
 
         private void HungerCheck()
         {

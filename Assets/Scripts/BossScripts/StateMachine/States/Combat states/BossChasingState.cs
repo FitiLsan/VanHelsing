@@ -8,7 +8,7 @@ namespace BeastHunter
         #region Constants
 
         private const float DISTANCE_TO_START_ATTACK = 4f;
-        private const float TRIGGER_VIEW_INCREASE = 5f;
+        private const float TRIGGER_VIEW_INCREASE = 50f;
         private const float FORCE_ATTACK_TIME_MIN = 3f;
         private const float FORCE_ATTACK_TIME_MAX = 10f;
 
@@ -43,10 +43,10 @@ namespace BeastHunter
         {
             Debug.Log($"current State CHASING initialise");
             CanExit = false;
-            CanBeOverriden = true;    
+            CanBeOverriden = true;
+            IsBattleState = true;
             _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.RunSpeed;
             _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK;
-            _stateMachine._model.BossSphereCollider.radius += TRIGGER_VIEW_INCREASE;
             _stateMachine._model.BossAnimator.Play("MovingState");
             _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
         }
@@ -60,7 +60,6 @@ namespace BeastHunter
 
         public override void OnExit()
         {
-            _stateMachine._model.BossSphereCollider.radius -= TRIGGER_VIEW_INCREASE;
         }
 
         public override void OnTearDown()

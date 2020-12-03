@@ -80,8 +80,7 @@ namespace BeastHunter
 
         private void RotateTo()
         {
-            var targetRotation = _stateMachine._model.BossData.GetTargetRotation(_stateMachine._model.BossTransform.position, _target);
-           _stateMachine._model.BossTransform.rotation =  _stateMachine._model.BossData.RotateTo(_stateMachine._model.BossTransform.rotation, targetRotation , ANGLE_SPEED);
+            _bossModel.BossTransform.rotation = _stateMachine._model.BossData.RotateTo(_stateMachine._model.BossTransform, _stateMachine._model.BossCurrentTarget.transform , ANGLE_SPEED);
         }
 
         #endregion
