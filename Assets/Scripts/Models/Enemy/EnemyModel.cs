@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public abstract class EnemyModel : IDoSmth, ITakeDamage
+    public abstract class EnemyModel : ITakeDamage
     {
         #region Fields
 
@@ -23,12 +23,6 @@
 
         #endregion
 
-
-        #region IDoSmth
-
-        public abstract void DoSmth(string how);
-
-        #endregion
 
         #region ITakeDamge
 
