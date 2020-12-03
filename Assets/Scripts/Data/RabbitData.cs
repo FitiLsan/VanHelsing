@@ -114,7 +114,7 @@ namespace BeastHunter
                 case BehaviourState.Returning:
                     {
                         Return(rabbit);
-                        var moveDistance = RabbitStats.RunningRadius / RabbitData.STOP_RETURNING_DISTANCE_FACTOR;
+                        var moveDistance = RabbitStats.RunningRadius / STOP_RETURNING_DISTANCE_FACTOR;
                         if ((rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).sqrMagnitude < moveDistance * moveDistance)
                         {
                             rabbit.RabbitState = BehaviourState.Roaming;
@@ -210,7 +210,8 @@ namespace BeastHunter
             }
 
             //var triggers = _physicsService.GetObjectsInRadius(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer);
-            var triggers = Physics.OverlapSphere(transform.position, BaseStats.MainStats.ViewRadius, LayerManager.DefaultLayer);//change layer!!
+            var triggers = Physics.OverlapSphere(transform.position, BaseStats.MainStats.ViewRadius,
+                LayerMask.GetMask(LayerMask.LayerToName(LayerManager.DefaultLayer), LayerMask.LayerToName(LayerManager.PlayerLayer)));
             var result = false;
             foreach (Collider target in triggers)
             {

@@ -226,11 +226,6 @@ namespace BeastHunter
 
         #region Methods
 
-        public override void DoSmth(string how)
-        {
-
-        }
-
         public override void OnAwake()
         {
             BossStateMachine.OnAwake();

@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 
@@ -9,6 +11,7 @@ namespace BeastHunter
     {
         #region Fields
 
+        [SerializeField] private string _locationDataPath;
         [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _startDialogueDataPath;
@@ -40,6 +43,7 @@ namespace BeastHunter
         [SerializeField] private string _hellHoundDataPath;
 
         private static Data _instance;
+        private static LocationData _locationData;
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
@@ -79,6 +83,18 @@ namespace BeastHunter
                     _instance = Resources.Load<Data> ("Data/" + typeof (Data).Name);
                 }
                 return _instance;
+            }
+        }
+
+        public static LocationData LocationData
+        {
+            get
+            {
+                if (_locationData == null)
+                {
+                    _locationData = Resources.Load<LocationData>("Data/" + Instance._locationDataPath);
+                }
+                return _locationData;
             }
         }
 
@@ -396,8 +412,8 @@ namespace BeastHunter
 
         #region Methods
 
-        private static T Load<T> (string resourcesPath) where T : Object =>
-            Resources.Load<T> (Path.ChangeExtension (resourcesPath, null));
+        private static T Load<T> (string resourcesPath) where T : UnityEngine.Object =>
+            Resources.Load<T>(Path.ChangeExtension(resourcesPath, null));
 
         #endregion
     }
