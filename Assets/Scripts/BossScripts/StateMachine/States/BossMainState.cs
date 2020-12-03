@@ -77,6 +77,7 @@ namespace BeastHunter
                // HealthCheck();
                 CheckDirection();
                 HungerCheck();
+                GetTargetCurrentPosition();
             }          
         }
 
@@ -191,7 +192,7 @@ namespace BeastHunter
                     _stateMachine._model.FoodList.Remove(enteredObject.gameObject);
                 }
             }
-            if (interactableObject == InteractableObjectType.Player)
+            if (interactableObject == InteractableObjectType.Player & !enteredObject.isTrigger)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
             }
@@ -223,7 +224,12 @@ namespace BeastHunter
                 _stateMachine._model.BossTransform.position).normalized;
             TargetRotation = Quaternion.LookRotation(_targetDirection);
         }
-
+        
+        public Vector3? GetTargetCurrentPosition()
+        {     
+           return _bossModel.BossCurrentTarget?.transform.position;
+        }
+    
         private void OnPlayerSneakingHandler(OnPlayerSneakingEventClass eventClass)
         {
             if (eventClass.IsSneaking)

@@ -36,8 +36,7 @@ namespace BeastHunter
         private const int RAGE_OF_FOREST_ATTACK_ID = 3;
         private const float RAGE_OF_FOREST_ATTACK_RANGE_MIN = -1f;
         private const float RAGE_OF_FOREST_ATTACK_RANGE_MAX = -1f;
-        private const float RAGE_OF_FOREST_ATTACK_DURATION = 10f;
-        private const float RAGE_OF_FOREST_ATTACK_COOLDOWN = 30f; //120
+        private const float RAGE_OF_FOREST_ATTACK_COOLDOWN = 10f; //120
 
         private const int POISON_SPORES_ATTACK_ID = 4;
         private const float POISON_SPORES_ATTACK_RANGE_MIN = 10f;
@@ -109,7 +108,6 @@ namespace BeastHunter
 
         public override void Initialise()
         {
-            Debug.Log($"current State ATTACK initialise");
             CanExit = false;
             CanBeOverriden = true;
             IsBattleState = true;
@@ -222,7 +220,7 @@ namespace BeastHunter
         {
             Debug.Log("StompAttackSkill");
             _bossModel.BossAnimator.Play("BossStompAttack", 0, 0f);
-            var TimeRem = new TimeRemaining(() => _bossModel.leftStompEffect.Play(true), 0.65f);
+            var TimeRem = new TimeRemaining(() => StompShockWave(), 0.65f);
             TimeRem.AddTimeRemaining(0.65f);
 
             TestSkillDictionary[id].IsAttackReady = false;
@@ -233,7 +231,7 @@ namespace BeastHunter
         private void RageOfForestAttackSkill(int id)
         {
             Debug.Log("RAGEAttackSkill");
-            SetNavMeshAgent(_bossModel.BossCurrentTarget.transform.position, 5f);
+            SetNavMeshAgent((Vector3)_mainState.GetTargetCurrentPosition(), 5f);
             _bossModel.BossAnimator.Play("BossRageAttack", 0, 0f);
 
             TurnOnHitBoxTrigger(_bossModel.RightHandBehavior, PART_OF_NONE_ATTACK_TIME_RIGHT);
@@ -243,8 +241,7 @@ namespace BeastHunter
 
             TestSkillDictionary[id].IsAttackReady = false;
             SkillCooldown(id, TestSkillDictionary[id].AttackCooldown);
-            _currentAttackTime = RAGE_OF_FOREST_ATTACK_DURATION;
-          //  isAnimationPlay = true;
+            isAnimationPlay = true;
         }
 
         private void PoisonSporesAttackSkill(int id)
@@ -271,14 +268,29 @@ namespace BeastHunter
             for (var j = 1; j <= shortDistance + 3; j++)
             {
                 float horizontalOffset = UnityEngine.Random.Range(-2f, 2f);
-                if (j%2==0)
+                if (j % 2 == 0)
                 {
                     horizontalOffset *= -1;
                 }
                 var multPos = shortVector * j + new Vector3(horizontalOffset, 0, 0);
                 var groundedPosition = Services.SharedInstance.PhysicsService.GetGroundedPosition(bossPos + multPos, 20f);
-                var TimeRem = new TimeRemaining(() =>GameObject.Destroy(GameObject.Instantiate(_bossModel.SporePrefab, groundedPosition, Quaternion.identity), 5f), j * 0.1f);
+                var TimeRem = new TimeRemaining(() => GameObject.Destroy(GameObject.Instantiate(_bossModel.SporePrefab, groundedPosition, Quaternion.identity), 5f), j * 0.1f);
                 TimeRem.AddTimeRemaining(j * 0.1f);
+            }
+        }
+
+        // stomp shockwave
+        private void StompShockWave()
+        {
+            _bossModel.leftStompEffect.Play(true);
+            var force = 5f;
+            var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.LeftFoot.position, 20f, "Player");
+            foreach(var obj in list)
+            {
+                if (list.Count != 0)
+                {
+                    list[0].GetComponent<Rigidbody>().AddForce((_bossModel.LeftFoot.position - _bossModel.BossCurrentPosition) * force, ForceMode.Impulse);
+                }
             }
         }
 
@@ -395,7 +407,6 @@ namespace BeastHunter
                     CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
                         _context.CharacterModel.PlayerBehavior.Stats));
                 hitBox.IsInteractable = false;
-               // TurnOnHitBoxCollider(_bossModel.LeftHandCollider, 0.2f, false);
             }
         }
 
@@ -407,7 +418,6 @@ namespace BeastHunter
                     CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
                         _context.CharacterModel.PlayerBehavior.Stats));
                 hitBox.IsInteractable = false;
-               // TurnOnHitBoxCollider(_bossModel.RightHandCollider, 0.2f, false);
             }
         }
 

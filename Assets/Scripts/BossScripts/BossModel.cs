@@ -56,6 +56,7 @@ namespace BeastHunter
         public float CurrentStamina;
         public GameObject Lair;
         public GameObject BossCurrentTarget;
+        public Vector3 BossCurrentPosition;
         public GameObject SporePrefab;
         public GameObject StompPufPrefab;
         public ParticleSystem leftStompEffect;

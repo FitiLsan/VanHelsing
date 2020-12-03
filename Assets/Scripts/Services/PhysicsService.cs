@@ -158,11 +158,10 @@ namespace BeastHunter
             return result;
         }
 
-        public List<GameObject> GetObjectsInRadiusByTag(Vector3 position, float radius, string tagName)
+        public List<GameObject> GetObjectsInRadiusByTag(Vector3 position, float radius, string tagName, int layerMask = LayerManager.DEFAULT_LAYER)
         {
             Collider[] collidedObjectsByTag = new Collider[200];
-            var layer = LayerManager.DefaultLayer;
-            int colliderCount = Physics.OverlapSphereNonAlloc(position, radius, collidedObjectsByTag, layer);
+            int colliderCount = Physics.OverlapSphereNonAlloc(position, radius, collidedObjectsByTag);
             List <GameObject> colliderListByTag = new List<GameObject>(); 
             for (int i = 0; i < colliderCount; i++)
             {
