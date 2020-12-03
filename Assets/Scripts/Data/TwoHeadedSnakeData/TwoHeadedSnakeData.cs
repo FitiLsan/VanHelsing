@@ -2,17 +2,14 @@
 
 namespace BeastHunter
 {
-
     [CreateAssetMenu(fileName = "NewModel", menuName = "CreateData/TwoHeadedSnakeData", order = 9)]
-    public class TwoHeadedSnakeData : EnemyData
+    public sealed class TwoHeadedSnakeData : EnemyData
     {
-
         #region Fields
 
 
 
         #endregion
-
 
         #region Methods
 

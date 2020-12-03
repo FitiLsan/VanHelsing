@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1877c6f8cbc38094597364f0ee647f3b, type: 3}
+  m_Name: TwoHeadedSnakeData
+  m_EditorClassIdentifier: 
+  BaseStats:
+    MainStats:
+      _maxHealth: 0
+      _enemyType: 0
+      _viewRadius: 0
+      _viewAngle: 0
+      _healthPoints: 0
+      _physicalPower: 0
+      _physicalDamageResistance: 0
+      _stunProbabilityResistance: 0
+    AttackList: []
+    DefenceStats:
+      _baseDefense: 0
+    Prefab: {fileID: 100084, guid: cd7bad76e4db2044582c1d409245bf92, type: 3}

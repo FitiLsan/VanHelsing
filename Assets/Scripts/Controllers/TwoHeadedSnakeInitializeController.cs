@@ -17,6 +17,12 @@ namespace BeastHunter
         public override void OnAwake()
         {
             var TwoHeadedSnakeData = Data.TwoHeadedSnakeData;
+            Debug.Log(Data.TwoHeadedSnakeData == null);
+            //if (TwoHeadedSnakeData.BaseStats.Prefab == null)
+            //{
+            //    TwoHeadedSnakeData.BaseStats.Prefab = Resources.Load<GameObject>("Amphisbaena_04");
+            //}
+
             GameObject instance = GameObject.Instantiate(TwoHeadedSnakeData.BaseStats.Prefab);
             TwoHeadedSnakeModel twoHeadedSnake = new TwoHeadedSnakeModel(instance, TwoHeadedSnakeData);
             _context.NpcModels.Add(instance.GetInstanceID(), twoHeadedSnake);

@@ -38,7 +38,7 @@ namespace BeastHunter
         [SerializeField] private string _materialsDataPath;
         [SerializeField] private string _torchObjectPath;
         [SerializeField] private string _hellHoundDataPath;
-        [SerializeField] private string _twoHeadedSnakePath;
+        [SerializeField] private string _twoHeadedSnakeDataPath;
 
         private static Data _instance;
         private static CharacterData _characterData;
@@ -399,8 +399,9 @@ namespace BeastHunter
             {
                 if (_twoHeadedSnakeData == null)
                 {
-                    _twoHeadedSnakeData = Resources.Load<TwoHeadedSnakeData>("Data/" + Instance._twoHeadedSnakePath);
+                    _twoHeadedSnakeData = Resources.Load<TwoHeadedSnakeData>("Data/" + Instance._twoHeadedSnakeDataPath);
                 }
+                Debug.Log( $"Data: {_twoHeadedSnakeData == null}" );
                 return _twoHeadedSnakeData;
             }
         }

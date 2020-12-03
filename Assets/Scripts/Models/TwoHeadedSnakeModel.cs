@@ -9,7 +9,7 @@ namespace BeastHunter
 
         #region Fields
 
-
+        private TwoHeadedSnakeData _twoHeadedSnakeData;
 
         #endregion
 
@@ -35,32 +35,35 @@ namespace BeastHunter
 
         public override void OnAwake()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void Execute()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override EnemyStats GetStats()
         {
-            throw new NotImplementedException();
+            return _twoHeadedSnakeData.BaseStats;
         }
 
         public override void OnTearDown()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void DoSmth(string how)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void TakeDamage(Damage damage)
         {
-            throw new NotImplementedException();
+            if (!IsDead)
+            {
+                _twoHeadedSnakeData.TakeDamage(this, damage);
+            }
         }
 
         #endregion
