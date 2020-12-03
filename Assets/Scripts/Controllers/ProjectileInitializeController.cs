@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class ProjectileInitializeController : MonoBehaviour
+    public sealed class ProjectileInitializeController
     {
         #region Field
 

@@ -12,46 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f20e4aa9fdc574644af01edec8581912, type: 3}
   m_Name: BossFeasts
   m_EditorClassIdentifier: 
-  HandType: 2
-  Type: 1
-  InWhichHand: 3
-  WeaponImage: {fileID: 0}
-  SimpleAttacks:
-  - Name: From right
+  _handType: 2
+  _type: 1
+  _inWhichHand: 3
+  _weaponImage: {fileID: 0}
+  _simpleAttacks:
+  - Name: 0
+    AnimationName: BossFeastsAttack_0
     AttackDamage:
-      PhysicalDamage: 16
-      StunProbability: 0.321
+      PhysicalDamage: 15
+      StunProbability: 0
     WeaponItem: {fileID: 11400000, guid: 922074f103d5fed419615bb5887430ca, type: 2}
     AttackType: 2
     AttackTime: 1.5
     AttackStaminaCost: 0
-  - Name: From left
+  - Name: 1
+    AnimationName: BossFeastsAttack_1
     AttackDamage:
-      PhysicalDamage: 17.4
-      StunProbability: 0.374
+      PhysicalDamage: 15
+      StunProbability: 0
     WeaponItem: {fileID: 11400000, guid: 922074f103d5fed419615bb5887430ca, type: 2}
     AttackType: 1
     AttackTime: 1.5
     AttackStaminaCost: 0
-  SpecialAttacks: []
-  CurrentAttack:
-    Name: From left
-    AttackDamage:
-      PhysicalDamage: 17.4
-      StunProbability: 0.374
-    WeaponItem: {fileID: 11400000, guid: 922074f103d5fed419615bb5887430ca, type: 2}
-    AttackType: 1
-    AttackTime: 1.5
-    AttackStaminaCost: 0
-  WeaponName: Boss feasts
-  SimpleAttackAnimationPrefix: BossFeasts
-  SpecialAttackAnimationPrefix: 
-  StrafeAndDodgePostfix: 
-  GettingAnimationName: 
-  RemovingAnimationName: 
-  TotalTimeToGet: 0
-  TimeBeforeGrab: 0
-  TotalTimeToRemove: 0
-  TimeBeforeLetGo: 0
+  _specialAttacks: []
+  _weaponName: Boss feasts
+  _simpleAttackAnimationPrefix: BossFeasts
+  _specialAttackAnimationPrefix: 
+  _strafeAnimationPostfix: 
+  _dodgeAnimationPostfix: 
+  _gettingAnimationPostfix: 
+  _holdingAnimationPostfix: 
+  _removingAnimationPostfix: 
+  _totalTimeToGet: 0
+  _timeBeforeGrab: 0
+  _totalTimeToRemove: 0
+  _timeBeforeLetGo: 0
   LeftActualWeapon: {fileID: 11400000, guid: 922074f103d5fed419615bb5887430ca, type: 2}
   RightActualWeapon: {fileID: 11400000, guid: 922074f103d5fed419615bb5887430ca, type: 2}

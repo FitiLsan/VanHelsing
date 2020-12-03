@@ -8,9 +8,9 @@ namespace BeastHunter
     {
         #region Fields
 
-        [SerializeField] private InteractableObjectType _type;
-        private Action<int, Damage> _onTakeDamageHandler;
-        private Action<int, InteractableObjectBehavior, Damage> _onDealDamageHandler;
+        [SerializeField] protected InteractableObjectType _type;
+        protected Action<int, Damage> _onTakeDamageHandler;
+        protected Action<int, InteractableObjectBehavior, Damage> _onDealDamageHandler;
 
         #endregion
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
+
 namespace BeastHunter
 {
     public abstract class WeaponData : ScriptableObject
@@ -9,48 +10,73 @@ namespace BeastHunter
 
         public Action<ITrigger, Collider> OnHit;
 
-        public WeaponHandType HandType;
-        public WeaponType Type;
-        public HandsEnum InWhichHand;
+        [SerializeField] protected WeaponHandType _handType;
+        [SerializeField] protected WeaponType _type;
+        [SerializeField] protected HandsEnum _inWhichHand;
 
-        public Sprite WeaponImage;
-        public AttackModel[] SimpleAttacks;
-        public AttackModel[] SpecialAttacks;
-        public AttackModel CurrentAttack;
+        [SerializeField] protected Sprite _weaponImage;
+        [SerializeField] protected AttackModel[] _simpleAttacks;
+        [SerializeField] protected AttackModel[] _specialAttacks;
 
-        public string WeaponName;
-        public string SimpleAttackAnimationPrefix;
-        public string SpecialAttackAnimationPrefix;
-        public string StrafeAndDodgePostfix;
-
-        public string GettingAnimationName;
-        public string RemovingAnimationName;
+        [SerializeField] protected string _weaponName;
+        [SerializeField] protected string _simpleAttackAnimationPrefix;
+        [SerializeField] protected string _specialAttackAnimationPrefix;
+        [SerializeField] protected string _strafeAnimationPostfix;
+        [SerializeField] protected string _dodgeAnimationPostfix;
+        [SerializeField] protected string _gettingAnimationPostfix;
+        [SerializeField] protected string _holdingAnimationPostfix;
+        [SerializeField] protected string _removingAnimationPostfix;
 
         [Tooltip("Time needed to get the weapon between 1 and 10.")]
         [Range(0.0f, 10.0f)]
-        public float TotalTimeToGet;
+        [SerializeField] protected float _totalTimeToGet;
 
         [Tooltip("Time before character grabs the weapon between 1 and 10.")]
         [Range(0.0f, 10.0f)]
-        public float TimeBeforeGrab;
+        [SerializeField] protected float _timeBeforeGrab;
 
         [Tooltip("Time needed to remove the weapon between 1 and 10.")]
         [Range(0.0f, 10.0f)]
-        public float TotalTimeToRemove;
+        [SerializeField] protected float _totalTimeToRemove;
 
         [Tooltip("Time before character lets go the weapon between 1 and 10.")]
         [Range(0.0f, 10.0f)]
-        public float TimeBeforeLetGo;
+        [SerializeField] protected float _timeBeforeLetGo;
 
-        private int _currentSimpleAttackIndex;
-        private int _currentSpecialAttackIndex;
+        protected GameContext _context;
+        private int _currentSimpleAttackIndex = 0;
+        private int _currentSpecialAttackIndex = 0;
 
         #endregion
 
 
         #region Properties
 
+        public WeaponHandType HandType => _handType;
+        public WeaponType Type => _type;
+        public HandsEnum InWhichHand => _inWhichHand;
+
+        public Sprite WeaponImage => _weaponImage;
+        public AttackModel[] SimpleAttacks => _simpleAttacks;
+        public AttackModel[] SpecialAttacks => _specialAttacks;
+        public AttackModel CurrentAttack { get; private set; }
+
+        public string WeaponName => _weaponName;
+        public string SimpleAttackAnimationPrefix => _simpleAttackAnimationPrefix;
+        public string SpecialAttackAnimationPrefix => _specialAttackAnimationPrefix;
+        public string StrafeAnimationPostfix => _strafeAnimationPostfix;
+        public string DodgeAnimationPostfix => _dodgeAnimationPostfix;
+        public string GettingAnimationPostfix => _gettingAnimationPostfix;
+        public string HoldingAnimationPostfix => _holdingAnimationPostfix;
+        public string RemovingAnimationPostfix => _removingAnimationPostfix;
+
+        public float TotalTimeToGet => _totalTimeToGet;
+        public float TimeBeforeGrab => _timeBeforeGrab;
+        public float TotalTImeToRemove => _totalTimeToRemove;
+        public float TimeBeforeLetGo => _timeBeforeLetGo;
+
         public bool IsInHands { get; private set; }
+        public bool IsCurrentAttackSpecial { get; private set; }
 
         public int CurrentSimpleAttackIndex
         {
@@ -60,7 +86,7 @@ namespace BeastHunter
             }
             private set
             {
-                if(value >= SimpleAttacks.Length)
+                if(value >= _simpleAttacks.Length)
                 {
                     _currentSimpleAttackIndex = 0;
                 }
@@ -79,7 +105,7 @@ namespace BeastHunter
             }
             private set
             {
-                if (value >= SpecialAttacks.Length)
+                if (value >= _specialAttacks.Length)
                 {
                     _currentSpecialAttackIndex = 0;
                 }
@@ -96,6 +122,11 @@ namespace BeastHunter
 
 
         #region Methods
+
+        public virtual void Init(GameContext context)
+        {
+            if (_context == null) _context = context;
+        }
 
         public virtual void MakeSimpleAttack(out int currentAttackIntex, Transform bodyTransform)
         {

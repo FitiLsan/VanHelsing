@@ -6,7 +6,6 @@
 
         protected readonly InputModel _inputModel;
         protected readonly CharacterModel _characterModel;
-        protected readonly CharacterAnimationController _animationController;
         protected readonly CharacterStateMachine _stateMachine;
         protected readonly EventManager _eventManager;
 
@@ -15,6 +14,7 @@
 
         #region Properties
 
+        public CharacterStatesEnum StateName { get; protected set; }
         public CharacterBaseState NextState { get; set; }
 
         public bool IsActive { get; private set; }
@@ -31,7 +31,6 @@
             _stateMachine = stateMachine;
             _characterModel = context.CharacterModel;
             _inputModel = context.InputModel;
-            _animationController = _stateMachine.AnimationController;
             _eventManager = Services.SharedInstance.EventManager;
         }
 

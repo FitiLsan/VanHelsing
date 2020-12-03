@@ -151,7 +151,7 @@ namespace BeastHunter
         public bool Filter(Collider collider)
         {
             return !collider.isTrigger
-                && collider.GetComponentInChildren<PlayerBehavior>() != null;
+                && collider.GetComponentInChildren<InteractableObjectBehavior>()?.Type == InteractableObjectType.Player;
         }
 
         public void OnDetectionEnemy(Collider collider, HellHoundModel model)

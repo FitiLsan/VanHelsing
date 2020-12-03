@@ -17,11 +17,11 @@ MonoBehaviour:
       type: 3}
     _instanceName: Player
     _instanceTag: Player
+    _headObjectPath: PuppetMaster/Hips/Spine_02/Head
     _instanceLayer: 8
     _characterAnimator: {fileID: 9100000, guid: 71768c8e0d54fb34396989829cda6ca1,
       type: 2}
     _beginningApplyRootMotion: 0
-    _instantiatePosition: {x: 10, y: 2, z: 10}
     _instantiateDirection: -40
     _rigitbodyMass: 10
     _rigitbodyDrag: 0
@@ -50,11 +50,30 @@ MonoBehaviour:
     _directionChangeLag: 0.194
     _animatorBaseSpeed: 1
     _timeToContinueMovingAfterStop: 1
-    _strafeDirectionChangeSpeed: 0.02
+    _aimingDirectionChangeSpeed: 20.1
     _jumpTime: 1.96
     _slideTime: 1.3
     _rollTime: 0.9
     _dodgingTime: 0
+  _characterAnimationData:
+    _movementAnimationName: Movement
+    _strafingAnimationName: Strafe
+    _slidingForwardAnimationName: SlideForward
+    _longDodgeAnimationName: JumpForward
+    _shortDodgeAnimationName: Dodge
+    _trapPlacingAnimationName: TrapPlacing
+    _xAxisAnimatorParameterName: AxisX
+    _yAxisAnimatorParameterName: AxisY
+    _movementSpeedAnimatorParameterName: MoveSpeed
+    _xMouseAxisAnimatorParameterName: MouseAxisX
+    _crouchLevelAnimatorParameterName: CrouchLevel
+    _xDodgeAxisAnimatorParameterName: DodgeAxisX
+    _yDodgeAxisAnimatorParameterName: DodgeAxisY
+    _aimingLookToWeightIK: 1
+    _aimingLookToBodyWeightIK: 0.5
+    _aimingLookToHeadWeightIK: 1
+    _aimingLookToEyesWeightIK: 1
+    _aimingLookToClampWeightIK: 0.506
   _characterStatsSettings:
     _maxHealth: 0
     _enemyType: 0

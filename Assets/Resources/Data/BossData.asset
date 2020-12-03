@@ -24,7 +24,6 @@ MonoBehaviour:
     _instanceTag: Enemy
     _instanceLayer: 11
     _bossAnimator: {fileID: 9100000, guid: 14d982f6bf8adfd409a952a432e6ba01, type: 2}
-    _instantiatePosition: {x: 490, y: 24, z: 520}
     _instantiateDirection: -40
     _rigitbodyMass: 1
     _rigitbodyDrag: 0
@@ -51,6 +50,8 @@ MonoBehaviour:
     MainStats:
       _maxHealth: 100
       _enemyType: 5
+      _viewRadius: 0
+      _viewAngle: 0
       _healthPoints: 100
       _physicalPower: 0.76
       _physicalDamageResistance: 0.818

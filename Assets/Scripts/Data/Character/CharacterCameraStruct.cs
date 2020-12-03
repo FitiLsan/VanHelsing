@@ -26,6 +26,16 @@ namespace BeastHunter
         [Tooltip("Freelook camera blend time between 0 and 10.")]
         [SerializeField] private float _characterFreelookCameraBlendTime;
 
+        [Tooltip("Character free look knocked down camera.")]
+        [SerializeField] private CinemachineFreeLook _characterKnockedDownCamera;
+
+        [Tooltip("Character knocked down camera name.")]
+        [SerializeField] private string _characterKnockedDownCameraName;
+
+        [Range(0.0f, 10.0f)]
+        [Tooltip("Knocked down camera blend time between 0 and 10.")]
+        [SerializeField] private float _characterKnockedDownCameraBlendTime;
+
         [Tooltip("Character target camera.")]
         [SerializeField] private CinemachineVirtualCamera _characterTargetCamera;
 
@@ -44,14 +54,14 @@ namespace BeastHunter
         [SerializeField] private float _cameraTargetHeight;
 
         [Tooltip("Character dialog camera.")]
-        [SerializeField] private CinemachineVirtualCamera _characterDialogCamera;
+        [SerializeField] private CinemachineVirtualCamera _characterAimingCamera;
 
         [Tooltip("Character dialog camera name.")]
-        [SerializeField] private string _characterDialogCameraName;
+        [SerializeField] private string _characterAimingCameraName;
 
         [Range(0.0f, 10.0f)]
         [Tooltip("Dialog camera blend time between 0 and 10.")]
-        [SerializeField] private float _characterDialogCameraBlendTime;
+        [SerializeField] private float _characterAimingCameraBlendTime;
 
         [Header("Lens Settings")]
 
@@ -492,123 +502,140 @@ namespace BeastHunter
 
         [Header("Lens Settings")]
 
-        [Header("Dialog camera Settings")]
+        [Header("Aiming camera Settings")]
 
-        [Tooltip("Dialog camera field of view between 1 and 179.")]
+        [Tooltip("Aiming camera field of view between 1 and 179.")]
         [Range(0.0f, 179.0f)]
-        [SerializeField] private float _dialogCameraFieldOfView;
+        [SerializeField] private float _aimingCameraFieldOfView;
 
-        [Tooltip("Dialog camera near clip plane between 0 and 10 000.")]
+        [Tooltip("Aiming camera near clip plane between 0 and 10 000.")]
         [Range(0.0f, 10000.0f)]
-        [SerializeField] private float _dialogCameraNearClipPlane;
+        [SerializeField] private float _aimingCameraNearClipPlane;
 
-        [Tooltip("Dialog camera far clip plane between 0 and 10 000.")]
+        [Tooltip("Aiming camera far clip plane between 0 and 10 000.")]
         [Range(0.0f, 10000.0f)]
-        [SerializeField] private float _dialogCameraFarClipPlane;
+        [SerializeField] private float _aimingCameraFarClipPlane;
 
-        [Tooltip("Dialog camera dutch between -180 and 180.")]
+        [Tooltip("Aiming camera dutch between -180 and 180.")]
         [Range(-180.0f, 180.0f)]
-        [SerializeField] private float _dialogCameraDutch;
+        [SerializeField] private float _aimingCameraDutch;
 
         [Header("Transposer/composer settings")]
 
-        [Tooltip("Dialog camera follow offset X between -10 and 10.")]
+        [Tooltip("Aiming camera follow offset X between -10 and 10.")]
         [Range(-10.0f, 10.0f)]
-        [SerializeField] private float _dialogCameraFollowOffsetX;
+        [SerializeField] private float _aimingCameraFollowOffsetX;
 
-        [Tooltip("Dialog camera follow offset Y between -10 and 10.")]
+        [Tooltip("Aiming camera follow offset Y between -10 and 10.")]
         [Range(-10.0f, 10.0f)]
-        [SerializeField] private float _dialogCameraFollowOffsetY;
+        [SerializeField] private float _aimingCameraFollowOffsetY;
 
-        [Tooltip("Dialog camera follow offset Z between -10 and 10.")]
+        [Tooltip("Aiming camera follow offset Z between -10 and 10.")]
         [Range(-10.0f, 10.0f)]
-        [SerializeField] private float _dialogCameraFollowOffsetZ;
+        [SerializeField] private float _aimingCameraFollowOffsetZ;
 
-        [Tooltip("Dialog camera X damping between 0 and 20.")]
+        [Tooltip("Aiming camera X damping between 0 and 20.")]
         [Range(0.0f, 20.0f)]
-        [SerializeField] private float _dialogCameraDampingX;
+        [SerializeField] private float _aimingCameraDampingX;
 
-        [Tooltip("Dialog camera Y damping between 0 and 20.")]
+        [Tooltip("Aiming camera Y damping between 0 and 20.")]
         [Range(0.0f, 20.0f)]
-        [SerializeField] private float _dialogCameraDampingY;
+        [SerializeField] private float _aimingCameraDampingY;
 
-        [Tooltip("Dialog camera Z damping between 0 and 20.")]
+        [Tooltip("Aiming camera Z damping between 0 and 20.")]
         [Range(0.0f, 20.0f)]
-        [SerializeField] private float _dialogCameraDampingZ;
+        [SerializeField] private float _aimingCameraDampingZ;
 
-        [Tooltip("Dialog camera pitch damping between 0 and 20.")]
+        [Tooltip("Aiming camera pitch damping between 0 and 20.")]
         [Range(0.0f, 20.0f)]
-        [SerializeField] private float _dialogCameraPitchDamping;
+        [SerializeField] private float _aimingCameraPitchDamping;
 
-        [Tooltip("Dialog camera yaw damping between 0 and 20.")]
+        [Tooltip("Aiming camera yaw damping between 0 and 20.")]
         [Range(0.0f, 20.0f)]
-        [SerializeField] private float _dialogCameraYawDamping;
+        [SerializeField] private float _aimingCameraYawDamping;
 
-        [Tooltip("Dialog camera roll damping between 0 and 20.")]
+        [Tooltip("Aiming camera roll damping between 0 and 20.")]
         [Range(0.0f, 20.0f)]
-        [SerializeField] private float _dialogCameraRollDamping;
+        [SerializeField] private float _aimingCameraRollDamping;
 
         [Space(10)]
 
-        [Tooltip("Dialog camera tracked object offset X between -10 and 10.")]
+        [Tooltip("Aiming camera tracked object offset X between -10 and 10.")]
         [Range(-10.0f, 10.0f)]
-        [SerializeField] private float _dialogCameraTrackedOffsetX;
+        [SerializeField] private float _aimingCameraTrackedOffsetX;
 
-        [Tooltip("Dialog camera tracked object offset Y between -10 and 10.")]
+        [Tooltip("Aiming camera tracked object offset Y between -10 and 10.")]
         [Range(-10.0f, 10.0f)]
-        [SerializeField] private float _dialogCameraTrackedOffsetY;
+        [SerializeField] private float _aimingCameraTrackedOffsetY;
 
-        [Tooltip("Dialog camera tracked object offset Z between -10 and 10.")]
+        [Tooltip("Aiming camera tracked object offset Z between -10 and 10.")]
         [Range(-10.0f, 10.0f)]
-        [SerializeField] private float _dialogCameraTrackedOffsetZ;
+        [SerializeField] private float _aimingCameraTrackedOffsetZ;
 
-        [Tooltip("Dialog camera look ahead time between 0 and 10.")]
+        [Tooltip("Aiming camera look ahead time between 0 and 10.")]
         [Range(0.0f, 10.0f)]
-        [SerializeField] private float _dialogCameraLookaheadTime;
+        [SerializeField] private float _aimingCameraLookaheadTime;
 
-        [Tooltip("Dialog camera lookahead smoothing between 0 and 10.")]
+        [Tooltip("Aiming camera lookahead smoothing between 0 and 10.")]
         [Range(3.0f, 30.0f)]
-        [SerializeField] private float _dialogCameraLookaheadSmoothing;
+        [SerializeField] private float _aimingCameraLookaheadSmoothing;
 
-        [Tooltip("Dialog camera horizontal damping between 0 and 20.")]
+        [Tooltip("Aiming camera horizontal damping between 0 and 20.")]
         [Range(0.0f, 20.0f)]
-        [SerializeField] private float _dialogCameraHorizontalDamping;
+        [SerializeField] private float _aimingCameraHorizontalDamping;
 
-        [Tooltip("Dialog camera vertical damping between 0 and 20.")]
+        [Tooltip("Aiming camera vertical damping between 0 and 20.")]
         [Range(0.0f, 20.0f)]
-        [SerializeField] private float _dialogCameraVerticalDamping;
+        [SerializeField] private float _aimingCameraVerticalDamping;
 
-        [Tooltip("Dialog camera screen X between 0 and 1.")]
+        [Tooltip("Aiming camera screen X between 0 and 1.")]
         [Range(0.0f, 1.0f)]
-        [SerializeField] private float _dialogCameraScreenX;
+        [SerializeField] private float _aimingCameraScreenX;
 
-        [Tooltip("Dialog camera screen Y between 0 and 1.")]
+        [Tooltip("Aiming camera screen Y between 0 and 1.")]
         [Range(0.0f, 1.0f)]
-        [SerializeField] private float _dialogCameraScreenY;
+        [SerializeField] private float _aimingCameraScreenY;
 
-        [Tooltip("Dialog camera danger zone width between 0 and 1.")]
+        [Tooltip("Aiming camera danger zone width between 0 and 1.")]
         [Range(0.0f, 1.0f)]
-        [SerializeField] private float _dialogCameraDeadZoneWidth;
+        [SerializeField] private float _aimingCameraDeadZoneWidth;
 
-        [Tooltip("Dialog camera danger zone height between 0 and 1.")]
+        [Tooltip("Aiming camera danger zone height between 0 and 1.")]
         [Range(0.0f, 1.0f)]
-        [SerializeField] private float _dialogCameraDeadZoneHeight;
+        [SerializeField] private float _aimingCameraDeadZoneHeight;
 
-        [Tooltip("Dialog camera soft zone width between 0 and 1.")]
+        [Tooltip("Aiming camera soft zone width between 0 and 1.")]
         [Range(0.0f, 1.0f)]
-        [SerializeField] private float _dialogCameraSoftZoneWidth;
+        [SerializeField] private float _aimingCameraSoftZoneWidth;
 
-        [Tooltip("Dialog camera soft zone height between 0 and 1.")]
+        [Tooltip("Aiming camera soft zone height between 0 and 1.")]
         [Range(0.0f, 1.0f)]
-        [SerializeField] private float _dialogCameraSoftZoneHeight;
+        [SerializeField] private float _aimingCameraSoftZoneHeight;
 
-        [Tooltip("Dialog camera bias X between 0 and 1.")]
+        [Tooltip("Aiming camera bias X between 0 and 1.")]
         [Range(-0.5f, 0.5f)]
-        [SerializeField] private float _dialogCameraBiasX;
+        [SerializeField] private float _aimingCameraBiasX;
 
-        [Tooltip("Dialog camera bias Y between 0 and 1.")]
+        [Tooltip("Aiming camera bias Y between 0 and 1.")]
         [Range(-0.5f, 0.5f)]
-        [SerializeField] private float _dialogCameraBiasY;
+        [SerializeField] private float _aimingCameraBiasY;
+
+        [Header("Camera target settings")]
+
+        [Tooltip("Camera target object forward movement distace")]
+        [SerializeField] private float _cameraTargetForwardMovementDistance;
+
+        [Tooltip("Camera target object horizontal movement speed")]
+        [SerializeField] private float _cameraTargetSpeedX;
+
+        [Tooltip("Camera target object vertical movement speed")]
+        [SerializeField] private float _cameraTargetSpeedY;
+
+        [Tooltip("Camera target object minimal and maximal horizontal movement distance")]
+        [SerializeField] private Vector2 _cameraTargetDistanceMoveX;
+
+        [Tooltip("Camera target object minimal and maximal vertical movement distance")]
+        [SerializeField] private Vector2 _cameraTargetDistanceMoveY;
 
         #endregion
 
@@ -617,18 +644,23 @@ namespace BeastHunter
 
         public Camera CharacterCamera => _characterCamera;
         public CinemachineFreeLook CharacterFreelookCamera => _characterFreelookCamera;
+        public CinemachineFreeLook CharacterKnockedDownCamera => _characterKnockedDownCamera;
         public CinemachineVirtualCamera CharacterTargetCamera => _characterTargetCamera;
-        public CinemachineVirtualCamera CharacterDialogCamera => _characterDialogCamera;
+        public CinemachineVirtualCamera CharacterAimingCamera => _characterAimingCamera;
+        public Vector2 CameraTargetDistanceMoveX => _cameraTargetDistanceMoveX;
+        public Vector2 CameraTargetDistanceMoveY => _cameraTargetDistanceMoveY;
 
         public string CharacterCameraName => _characterCameraName;
         public string CharacterFreelookCameraName => _characterFreelookCameraName;
+        public string CharacterKnockedDownCameraName => _characterKnockedDownCameraName;
         public string CharacterTargetCameraName => _characterTargetCameraName;
         public string CameraTargetName => _cameraTargetName;
-        public string CharacterDialogCameraName => _characterDialogCameraName;
+        public string CharacterAimingCameraName => _characterAimingCameraName;
 
         public float CharacterFreelookCameraBlendTime => _characterFreelookCameraBlendTime;
+        public float CharacterKnockedDownCameraBlendTime => _characterKnockedDownCameraBlendTime;
         public float CharacterTargetCameraBlendTime => _characterTargetCameraBlendTime;
-        public float CHaracterDialogCameraBlendTIme => _characterDialogCameraBlendTime;
+        public float CHaracterAimingCameraBlendTIme => _characterAimingCameraBlendTime;
         public float CameraTargetHeight => _cameraTargetHeight;
 
         public float FreeLookFieldOfView => _freeLookFieldOfView;
@@ -744,34 +776,38 @@ namespace BeastHunter
         public float TargetCameraBiasX => _targetCameraBiasX;
         public float TargetCameraBiasY => _targetCameraBiasY;
 
-        public float DialogCameraFieldOfView => _dialogCameraFieldOfView;
-        public float DialogCameraNearClipPlane => _dialogCameraNearClipPlane;
-        public float DialogCameraFarClipPlane => _dialogCameraFarClipPlane;
-        public float DialogCameraDutch => _dialogCameraDutch;
-        public float DialogCameraFollowOffsetX => _dialogCameraFollowOffsetX;
-        public float DialogCameraFollowOffsetY => _dialogCameraFollowOffsetY;
-        public float DialogCameraFollowOffsetZ => _dialogCameraFollowOffsetZ;
-        public float DialogCameraDampingX => _dialogCameraDampingX;
-        public float DialogCameraDampingY => _dialogCameraDampingY;
-        public float DialogCameraDampingZ => _dialogCameraDampingZ;
-        public float DialogCameraPitchDamping => _dialogCameraPitchDamping;
-        public float DialogCameraYawDamping => _dialogCameraYawDamping;
-        public float DialogCameraRollDamping => _dialogCameraRollDamping;
-        public float DialogCameraTrackedOffsetX => _dialogCameraTrackedOffsetX;
-        public float DialogCameraTrackedOffsetY => _dialogCameraTrackedOffsetY;
-        public float DialogCameraTrackedOffsetZ => _dialogCameraTrackedOffsetZ;
-        public float DialogCameraLookaheadTime => _dialogCameraLookaheadTime;
-        public float DialogCameraLookaheadSmoothing => _dialogCameraLookaheadSmoothing;
-        public float DialogCameraHorizontalDamping => _dialogCameraHorizontalDamping;
-        public float DialogCameraVerticalDamping => _dialogCameraVerticalDamping;
-        public float DialogCameraScreenX => _dialogCameraScreenX;
-        public float DialogCameraScreenY => _dialogCameraScreenY;
-        public float DialogCameraDeadZoneWidth => _dialogCameraDeadZoneWidth;
-        public float DialogCameraDeadZoneHeight => _dialogCameraDeadZoneHeight;
-        public float DialogCameraSoftZoneWidth => _dialogCameraSoftZoneWidth;
-        public float DialogCameraSoftZoneHeight => _dialogCameraSoftZoneHeight;
-        public float DialogCameraBiasX => _dialogCameraBiasX;
-        public float DialogCameraBiasY => _dialogCameraBiasY;
+        public float AimingCameraFieldOfView => _aimingCameraFieldOfView;
+        public float AimingCameraNearClipPlane => _aimingCameraNearClipPlane;
+        public float AimingCameraFarClipPlane => _aimingCameraFarClipPlane;
+        public float AimingCameraDutch => _aimingCameraDutch;
+        public float AimingCameraFollowOffsetX => _aimingCameraFollowOffsetX;
+        public float AimingCameraFollowOffsetY => _aimingCameraFollowOffsetY;
+        public float AimingCameraFollowOffsetZ => _aimingCameraFollowOffsetZ;
+        public float AimingCameraDampingX => _aimingCameraDampingX;
+        public float AimingCameraDampingY => _aimingCameraDampingY;
+        public float AimingCameraDampingZ => _aimingCameraDampingZ;
+        public float AimingCameraPitchDamping => _aimingCameraPitchDamping;
+        public float AimingCameraYawDamping => _aimingCameraYawDamping;
+        public float AimingCameraRollDamping => _aimingCameraRollDamping;
+        public float AimingCameraTrackedOffsetX => _aimingCameraTrackedOffsetX;
+        public float AimingCameraTrackedOffsetY => _aimingCameraTrackedOffsetY;
+        public float AimingCameraTrackedOffsetZ => _aimingCameraTrackedOffsetZ;
+        public float AimingCameraLookaheadTime => _aimingCameraLookaheadTime;
+        public float AimingCameraLookaheadSmoothing => _aimingCameraLookaheadSmoothing;
+        public float AimingCameraHorizontalDamping => _aimingCameraHorizontalDamping;
+        public float AimingCameraVerticalDamping => _aimingCameraVerticalDamping;
+        public float AimingCameraScreenX => _aimingCameraScreenX;
+        public float AimingCameraScreenY => _aimingCameraScreenY;
+        public float AimingCameraDeadZoneWidth => _aimingCameraDeadZoneWidth;
+        public float AimingCameraDeadZoneHeight => _aimingCameraDeadZoneHeight;
+        public float AimingCameraSoftZoneWidth => _aimingCameraSoftZoneWidth;
+        public float AimingCameraSoftZoneHeight => _aimingCameraSoftZoneHeight;
+        public float AimingCameraBiasX => _aimingCameraBiasX;
+        public float AimingCameraBiasY => _aimingCameraBiasY;
+
+        public float CameraTargetForwardMovementDistance => _cameraTargetForwardMovementDistance;
+        public float CameraTargetSpeedX => _cameraTargetSpeedX;
+        public float CameraTargetSpeedY => _cameraTargetSpeedY;
 
         #endregion
 
@@ -995,46 +1031,67 @@ namespace BeastHunter
             _targetCameraBiasX = targetComposer.m_BiasX;
             _targetCameraBiasY = targetComposer.m_BiasY;
 
-            _dialogCameraFieldOfView = dialogCamera.m_Lens.FieldOfView;
-            _dialogCameraNearClipPlane = dialogCamera.m_Lens.NearClipPlane;
-            _dialogCameraFarClipPlane = dialogCamera.m_Lens.FarClipPlane;
-            _dialogCameraDutch = dialogCamera.m_Lens.Dutch;
-            _dialogCameraFollowOffsetX = dialogTransposer.m_FollowOffset.x;
-            _dialogCameraFollowOffsetY = dialogTransposer.m_FollowOffset.y;
-            _dialogCameraFollowOffsetZ = dialogTransposer.m_FollowOffset.z;
-            _dialogCameraDampingX = dialogTransposer.m_XDamping;
-            _dialogCameraDampingY = dialogTransposer.m_YDamping;
-            _dialogCameraDampingZ = dialogTransposer.m_ZDamping;
-            _dialogCameraPitchDamping = dialogTransposer.m_PitchDamping;
-            _dialogCameraYawDamping = dialogTransposer.m_YawDamping;
-            _dialogCameraRollDamping = dialogTransposer.m_RollDamping;
-            _dialogCameraTrackedOffsetX = dialogComposer.m_TrackedObjectOffset.x;
-            _dialogCameraTrackedOffsetY = dialogComposer.m_TrackedObjectOffset.y;
-            _dialogCameraTrackedOffsetZ = dialogComposer.m_TrackedObjectOffset.z;
-            _dialogCameraLookaheadTime = dialogComposer.m_LookaheadTime;
-            _dialogCameraLookaheadSmoothing = dialogComposer.m_LookaheadSmoothing;
-            _dialogCameraHorizontalDamping = dialogComposer.m_HorizontalDamping;
-            _dialogCameraVerticalDamping = dialogComposer.m_VerticalDamping;
-            _dialogCameraScreenX = dialogComposer.m_ScreenX;
-            _dialogCameraScreenY = dialogComposer.m_ScreenY;
-            _dialogCameraDeadZoneWidth = dialogComposer.m_DeadZoneWidth;
-            _dialogCameraDeadZoneHeight = dialogComposer.m_DeadZoneHeight;
-            _dialogCameraSoftZoneWidth = dialogComposer.m_SoftZoneWidth;
-            _dialogCameraSoftZoneHeight = dialogComposer.m_SoftZoneHeight;
-            _dialogCameraBiasX = dialogComposer.m_BiasX;
-            _dialogCameraBiasY = dialogComposer.m_BiasY;
+            _aimingCameraFieldOfView = dialogCamera.m_Lens.FieldOfView;
+            _aimingCameraNearClipPlane = dialogCamera.m_Lens.NearClipPlane;
+            _aimingCameraFarClipPlane = dialogCamera.m_Lens.FarClipPlane;
+            _aimingCameraDutch = dialogCamera.m_Lens.Dutch;
+            _aimingCameraFollowOffsetX = dialogTransposer.m_FollowOffset.x;
+            _aimingCameraFollowOffsetY = dialogTransposer.m_FollowOffset.y;
+            _aimingCameraFollowOffsetZ = dialogTransposer.m_FollowOffset.z;
+            _aimingCameraDampingX = dialogTransposer.m_XDamping;
+            _aimingCameraDampingY = dialogTransposer.m_YDamping;
+            _aimingCameraDampingZ = dialogTransposer.m_ZDamping;
+            _aimingCameraPitchDamping = dialogTransposer.m_PitchDamping;
+            _aimingCameraYawDamping = dialogTransposer.m_YawDamping;
+            _aimingCameraRollDamping = dialogTransposer.m_RollDamping;
+            _aimingCameraTrackedOffsetX = dialogComposer.m_TrackedObjectOffset.x;
+            _aimingCameraTrackedOffsetY = dialogComposer.m_TrackedObjectOffset.y;
+            _aimingCameraTrackedOffsetZ = dialogComposer.m_TrackedObjectOffset.z;
+            _aimingCameraLookaheadTime = dialogComposer.m_LookaheadTime;
+            _aimingCameraLookaheadSmoothing = dialogComposer.m_LookaheadSmoothing;
+            _aimingCameraHorizontalDamping = dialogComposer.m_HorizontalDamping;
+            _aimingCameraVerticalDamping = dialogComposer.m_VerticalDamping;
+            _aimingCameraScreenX = dialogComposer.m_ScreenX;
+            _aimingCameraScreenY = dialogComposer.m_ScreenY;
+            _aimingCameraDeadZoneWidth = dialogComposer.m_DeadZoneWidth;
+            _aimingCameraDeadZoneHeight = dialogComposer.m_DeadZoneHeight;
+            _aimingCameraSoftZoneWidth = dialogComposer.m_SoftZoneWidth;
+            _aimingCameraSoftZoneHeight = dialogComposer.m_SoftZoneHeight;
+            _aimingCameraBiasX = dialogComposer.m_BiasX;
+            _aimingCameraBiasY = dialogComposer.m_BiasY;
         }
 
-        public Camera CreateCharacterCamera()
+        public Camera CreateCharacterCamera(Transform parent = null)
         {
-            Camera characterCamera = GameObject.Instantiate(CharacterCamera);
+            Camera characterCamera;
+
+            if (parent == null)
+            {
+                characterCamera = GameObject.Instantiate(CharacterCamera, parent);
+            }
+            else
+            {
+                characterCamera = GameObject.Instantiate(CharacterCamera);
+            }
+            
             characterCamera.name = CharacterCameraName;
             return characterCamera;
         }
 
-        public CinemachineFreeLook CreateCharacterFreelookCamera(Transform followTransform, Transform lookAtTransform)
+        public CinemachineFreeLook CreateCharacterFreelookCamera(Transform followTransform, Transform lookAtTransform, 
+            Transform parent = null)
         {
-            CinemachineFreeLook characterFreelookCamera = GameObject.Instantiate(CharacterFreelookCamera);
+            CinemachineFreeLook characterFreelookCamera;
+
+            if(parent == null)
+            {
+                characterFreelookCamera = GameObject.Instantiate(CharacterFreelookCamera);
+            }
+            else
+            {
+                characterFreelookCamera = GameObject.Instantiate(CharacterFreelookCamera, parent);
+            }
+                                       
             characterFreelookCamera.name = CharacterFreelookCameraName;
 
             characterFreelookCamera.Follow = followTransform;
@@ -1103,9 +1160,42 @@ namespace BeastHunter
             return characterFreelookCamera;
         }
 
-        public CinemachineVirtualCamera CreateCharacterTargetCamera(Transform followTransform, Transform lookAtTransform)
+        public CinemachineFreeLook CreateCharacterKnockedDownCamera(Transform followTransform, Transform lookAtTransform, 
+            Transform parent = null)
         {
-            CinemachineVirtualCamera characterTargetCamera = GameObject.Instantiate(CharacterTargetCamera);
+            CinemachineFreeLook characterKnockedDownCamera;
+
+            if(parent == null)
+            {
+                characterKnockedDownCamera = GameObject.Instantiate(CharacterFreelookCamera);
+            }
+            else
+            {
+                characterKnockedDownCamera = GameObject.Instantiate(CharacterFreelookCamera, parent);
+            }
+
+            characterKnockedDownCamera.name = CharacterKnockedDownCameraName;
+
+            characterKnockedDownCamera.Follow = followTransform;
+            characterKnockedDownCamera.LookAt = lookAtTransform;
+
+            return characterKnockedDownCamera;
+        }
+
+        public CinemachineVirtualCamera CreateCharacterTargetCamera(Transform followTransform, Transform lookAtTransform, 
+            Transform parent = null)
+        {
+            CinemachineVirtualCamera characterTargetCamera;
+
+            if(parent == null)
+            {
+                characterTargetCamera = GameObject.Instantiate(CharacterTargetCamera);
+            }
+            else
+            {
+                characterTargetCamera = GameObject.Instantiate(CharacterTargetCamera, parent);
+            }
+
             characterTargetCamera.name = CharacterTargetCameraName;
 
             characterTargetCamera.Follow = followTransform;
@@ -1152,53 +1242,64 @@ namespace BeastHunter
             return characterTargetCamera;
         }
 
-        public CinemachineVirtualCamera CreateCharacterDialogCamera(Transform followTransform, Transform lookAtTransform)
+        public CinemachineVirtualCamera CreateCharacterAimingCamera(Transform followTransform, Transform lookAtTransform, 
+            Transform parent = null)
         {
-            CinemachineVirtualCamera characterDialogCamera = GameObject.Instantiate(CharacterDialogCamera);
-            characterDialogCamera.name = CharacterDialogCameraName;
+            CinemachineVirtualCamera characterAimingCamera;
 
-            characterDialogCamera.Follow = followTransform;
-            characterDialogCamera.LookAt = lookAtTransform;
+            if(parent == null)
+            {
+                characterAimingCamera = GameObject.Instantiate(CharacterAimingCamera);
+            }
+            else
+            {
+                characterAimingCamera = GameObject.Instantiate(CharacterAimingCamera, parent);
+            }
 
-            characterDialogCamera.m_Lens.FieldOfView = DialogCameraFieldOfView;
-            characterDialogCamera.m_Lens.NearClipPlane = DialogCameraNearClipPlane;
-            characterDialogCamera.m_Lens.FarClipPlane = DialogCameraFarClipPlane;
-            characterDialogCamera.m_Lens.Dutch = DialogCameraDutch;
+            characterAimingCamera.name = CharacterAimingCameraName;
 
-            CinemachineTransposer dialogTransposer = characterDialogCamera.
+            characterAimingCamera.Follow = followTransform;
+            characterAimingCamera.LookAt = lookAtTransform;
+
+            characterAimingCamera.m_Lens.FieldOfView = AimingCameraFieldOfView;
+            characterAimingCamera.m_Lens.NearClipPlane = AimingCameraNearClipPlane;
+            characterAimingCamera.m_Lens.FarClipPlane = AimingCameraFarClipPlane;
+            characterAimingCamera.m_Lens.Dutch = AimingCameraDutch;
+
+            CinemachineTransposer aimingTransposer = characterAimingCamera.
                 GetCinemachineComponent<CinemachineTransposer>();
 
-            dialogTransposer.m_FollowOffset.x = DialogCameraFollowOffsetX;
-            dialogTransposer.m_FollowOffset.y = DialogCameraFollowOffsetY;
-            dialogTransposer.m_FollowOffset.z = DialogCameraFollowOffsetZ;
+            aimingTransposer.m_FollowOffset.x = AimingCameraFollowOffsetX;
+            aimingTransposer.m_FollowOffset.y = AimingCameraFollowOffsetY;
+            aimingTransposer.m_FollowOffset.z = AimingCameraFollowOffsetZ;
 
-            dialogTransposer.m_XDamping = DialogCameraDampingX;
-            dialogTransposer.m_YDamping = DialogCameraDampingY;
-            dialogTransposer.m_ZDamping = DialogCameraDampingZ;
-            dialogTransposer.m_PitchDamping = DialogCameraPitchDamping;
-            dialogTransposer.m_YawDamping = DialogCameraYawDamping;
-            dialogTransposer.m_RollDamping = DialogCameraRollDamping;
+            aimingTransposer.m_XDamping = AimingCameraDampingX;
+            aimingTransposer.m_YDamping = AimingCameraDampingY;
+            aimingTransposer.m_ZDamping = AimingCameraDampingZ;
+            aimingTransposer.m_PitchDamping = AimingCameraPitchDamping;
+            aimingTransposer.m_YawDamping = AimingCameraYawDamping;
+            aimingTransposer.m_RollDamping = AimingCameraRollDamping;
 
-            CinemachineComposer dialogComposer = characterDialogCamera.
+            CinemachineComposer aimingComposer = characterAimingCamera.
                 GetCinemachineComponent<CinemachineComposer>();
 
-            dialogComposer.m_TrackedObjectOffset.x = DialogCameraTrackedOffsetX;
-            dialogComposer.m_TrackedObjectOffset.y = DialogCameraTrackedOffsetY;
-            dialogComposer.m_TrackedObjectOffset.z = DialogCameraTrackedOffsetZ;
-            dialogComposer.m_LookaheadTime = DialogCameraLookaheadTime;
-            dialogComposer.m_LookaheadSmoothing = DialogCameraLookaheadSmoothing;
-            dialogComposer.m_HorizontalDamping = DialogCameraHorizontalDamping;
-            dialogComposer.m_VerticalDamping = DialogCameraVerticalDamping;
-            dialogComposer.m_ScreenX = DialogCameraScreenX;
-            dialogComposer.m_ScreenY = DialogCameraScreenY;
-            dialogComposer.m_DeadZoneWidth = DialogCameraDeadZoneWidth;
-            dialogComposer.m_DeadZoneHeight = DialogCameraDeadZoneHeight;
-            dialogComposer.m_SoftZoneWidth = DialogCameraSoftZoneWidth;
-            dialogComposer.m_SoftZoneHeight = DialogCameraSoftZoneHeight;
-            dialogComposer.m_BiasX = DialogCameraBiasX;
-            dialogComposer.m_BiasY = DialogCameraBiasY;
+            aimingComposer.m_TrackedObjectOffset.x = AimingCameraTrackedOffsetX;
+            aimingComposer.m_TrackedObjectOffset.y = AimingCameraTrackedOffsetY;
+            aimingComposer.m_TrackedObjectOffset.z = AimingCameraTrackedOffsetZ;
+            aimingComposer.m_LookaheadTime = AimingCameraLookaheadTime;
+            aimingComposer.m_LookaheadSmoothing = AimingCameraLookaheadSmoothing;
+            aimingComposer.m_HorizontalDamping = AimingCameraHorizontalDamping;
+            aimingComposer.m_VerticalDamping = AimingCameraVerticalDamping;
+            aimingComposer.m_ScreenX = AimingCameraScreenX;
+            aimingComposer.m_ScreenY = AimingCameraScreenY;
+            aimingComposer.m_DeadZoneWidth = AimingCameraDeadZoneWidth;
+            aimingComposer.m_DeadZoneHeight = AimingCameraDeadZoneHeight;
+            aimingComposer.m_SoftZoneWidth = AimingCameraSoftZoneWidth;
+            aimingComposer.m_SoftZoneHeight = AimingCameraSoftZoneHeight;
+            aimingComposer.m_BiasX = AimingCameraBiasX;
+            aimingComposer.m_BiasY = AimingCameraBiasY;
 
-            return characterDialogCamera;
+            return characterAimingCamera;
         }
 
         #endregion
