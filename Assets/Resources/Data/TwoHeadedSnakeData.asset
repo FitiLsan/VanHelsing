@@ -25,6 +25,19 @@ MonoBehaviour:
     AttackList: []
     DefenceStats:
       _baseDefense: 0
-    Prefab: {fileID: 0}
-  twoHeadedSnakeStats:
-    InstantiatePosition: {x: 500, y: 2, z: 500}
+    Prefab: {fileID: 100084, guid: cd7bad76e4db2044582c1d409245bf92, type: 3}
+  twoHeadedSnakeSettings:
+    _instantiatePosition: {x: 470, y: 2, z: 470}
+    _rigitbodyMass: 2
+    _rigitbodyDrag: 0
+    _rigitbodyAngularDrag: 0.5
+    _isRigitbodyKinematic: 1
+    _capsuleColliderCenter: {x: 0, y: 0.75, z: 0.2}
+    _capsuleColliderRadius: 0.2
+    _capsuleColliderHeight: 1.5
+    _sphereColliderCenter: {x: 0, y: 0.75, z: 0.2}
+    _sphereColliderRadius: 7
+    _sphereColliderRadiusIncrease: 1
+    _sphereColliderRadiusDecrease: 2
+    _navMeshAcceleration: 0
+    _navMeshAgentTypeIndex: 3

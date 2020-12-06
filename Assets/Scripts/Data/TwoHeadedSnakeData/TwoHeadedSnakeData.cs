@@ -8,7 +8,7 @@ namespace BeastHunter
 
         #region Fields
 
-        public TwoHeadedSnakeStats twoHeadedSnakeStats;
+        public TwoHeadedSnakeSettings twoHeadedSnakeSettings;
 
         #endregion
 
@@ -16,7 +16,7 @@ namespace BeastHunter
 
         public void Act(TwoHeadedSnakeModel twoHeadedSnake)
         {
-           twoHeadedSnakeStats.InstantiatePosition = new Vector3(0,0,0);
+           
         }
 
         #endregion

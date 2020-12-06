@@ -11,77 +11,84 @@ namespace BeastHunter
         #region Fields
 
         private TwoHeadedSnakeData _twoHeadedSnakeData;
-
+        
         #endregion
 
 
         #region Properties
 
-        public CapsuleCollider THSnakeCapsuleCollider { get; }
-        public SphereCollider THSnakeSphereCollider { get; }
-        public Rigidbody THSnakeRigitbody { get; }
-        public NavMeshAgent THSnakeNavAgent { get; }
+        public CapsuleCollider TwoHeadedSnakeCapsuleCollider { get; }
+        public SphereCollider TwoHeadedSnakeSphereCollider { get; }
+        public Rigidbody TwoHeadedSnakeRigitbody { get; }
+        public NavMeshAgent TwoHeadedSnakeNavAgent { get; }
+
+        public TwoHeadedSnakeData TwoHeadedSnakeData { get; }
+        public TwoHeadedSnakeSettings TwoHeadedSnakeSettings { get; }
         #endregion
 
 
         #region ClassLifeCycle
 
-        public TwoHeadedSnakeModel(GameObject prefab, TwoHeadedSnakeData twoHeadedSnakeData, Vector3 groundPosition)
+        public TwoHeadedSnakeModel(GameObject prefab, TwoHeadedSnakeData twoHeadedSnakeData, Vector3 spawnPosition)
         {
+            TwoHeadedSnakeData = twoHeadedSnakeData;
+            TwoHeadedSnakeSettings = TwoHeadedSnakeData.twoHeadedSnakeSettings;
 
             if (prefab.GetComponent<Rigidbody>() != null)
             {
-                THSnakeRigitbody = prefab.GetComponent<Rigidbody>();
+                TwoHeadedSnakeRigitbody = prefab.GetComponent<Rigidbody>();
             }
             else
             {
-                THSnakeRigitbody = prefab.AddComponent<Rigidbody>();
-                THSnakeRigitbody.freezeRotation = true;
-                THSnakeRigitbody.mass = 1f;
-                THSnakeRigitbody.drag = 0.0f;
-                THSnakeRigitbody.angularDrag = 0.0f;
+                TwoHeadedSnakeRigitbody = prefab.AddComponent<Rigidbody>();
+                TwoHeadedSnakeRigitbody.freezeRotation = true;
+                TwoHeadedSnakeRigitbody.mass = TwoHeadedSnakeSettings.RigitbodyMass;
+                TwoHeadedSnakeRigitbody.drag = TwoHeadedSnakeSettings.RigitbodyDrag;
+                TwoHeadedSnakeRigitbody.angularDrag = TwoHeadedSnakeSettings.RigitbodyAngularDrag;
             }
 
-            THSnakeRigitbody.isKinematic = true;
+            TwoHeadedSnakeRigitbody.isKinematic = TwoHeadedSnakeSettings.IsRigitbodyKinematic;
 
             if (prefab.GetComponent<CapsuleCollider>() != null)
             {
-                THSnakeCapsuleCollider = prefab.GetComponent<CapsuleCollider>();
+                TwoHeadedSnakeCapsuleCollider = prefab.GetComponent<CapsuleCollider>();
             }
             else
             {
-                THSnakeCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
-                THSnakeCapsuleCollider.center = new Vector3(0f,0.75f,0.2f);
-                THSnakeCapsuleCollider.radius = 0.2f;
-                THSnakeCapsuleCollider.height = 1.5f;
+                TwoHeadedSnakeCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
+                TwoHeadedSnakeCapsuleCollider.center = TwoHeadedSnakeSettings.CapsuleColliderCenter;
+                TwoHeadedSnakeCapsuleCollider.radius = TwoHeadedSnakeSettings.CapsuleColliderRadius;
+                TwoHeadedSnakeCapsuleCollider.height = TwoHeadedSnakeSettings.CapsuleColliderHeight;
             }
 
-            THSnakeCapsuleCollider.transform.position = groundPosition;
+            TwoHeadedSnakeCapsuleCollider.transform.position = spawnPosition;
 
             if (prefab.GetComponent<SphereCollider>() != null)
             {
-                THSnakeSphereCollider = prefab.GetComponent<SphereCollider>();
-                THSnakeSphereCollider.isTrigger = true;
+                TwoHeadedSnakeSphereCollider = prefab.GetComponent<SphereCollider>();
+                TwoHeadedSnakeSphereCollider.isTrigger = true;
             }
             else
             {
-                THSnakeSphereCollider = prefab.AddComponent<SphereCollider>();
-                THSnakeSphereCollider.center = new Vector3(0f, 0.75f, 0.0f);
-                THSnakeSphereCollider.radius = 7f;
-                THSnakeSphereCollider.isTrigger = true;
+                TwoHeadedSnakeSphereCollider = prefab.AddComponent<SphereCollider>();
+                TwoHeadedSnakeSphereCollider.center = TwoHeadedSnakeSettings.SphereColliderCenter;
+                TwoHeadedSnakeSphereCollider.radius = TwoHeadedSnakeSettings.SphereColliderRadius;
+                TwoHeadedSnakeSphereCollider.isTrigger = true;
             }
 
             if (prefab.GetComponent<NavMeshAgent>() != null)
             {
-                THSnakeNavAgent = prefab.GetComponent<NavMeshAgent>();
+                TwoHeadedSnakeNavAgent = prefab.GetComponent<NavMeshAgent>();
             }
             else
             {
-                THSnakeNavAgent = prefab.AddComponent<NavMeshAgent>();
+                TwoHeadedSnakeNavAgent = prefab.AddComponent<NavMeshAgent>();
+                
             }
 
-            THSnakeNavAgent.agentTypeID = 1;
+            TwoHeadedSnakeNavAgent.acceleration = TwoHeadedSnakeSettings.NavMeshAcceleration;
 
+            TwoHeadedSnakeNavAgent.agentTypeID = GetAgentTypeIDByIndex(TwoHeadedSnakeSettings.NavMeshAgentTypeIndex);
 
         }
 
@@ -121,6 +128,35 @@ namespace BeastHunter
             {
                 _twoHeadedSnakeData.TakeDamage(this, damage);
             }
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private int GetAgentTypeIDByIndex(int agentIndex)
+        {
+            int agentTypeCount = NavMesh.GetSettingsCount();
+            int agentTypeID = NavMesh.GetSettingsByIndex(agentIndex).agentTypeID;
+
+            if (agentIndex > agentTypeCount - 1)
+            {
+                Debug.Log($"Nav Mesh Agent Type Index #{agentIndex} not exist," +
+                          $" max index = #{agentTypeCount - 1}. Nav Mesh Agent Type Index" +
+                          $" changed to #0 ");
+
+                agentIndex = 0;
+                agentTypeID = NavMesh.GetSettingsByIndex(agentIndex).agentTypeID;
+
+                Debug.Log($"Agent type name \"{NavMesh.GetSettingsNameFromID(agentTypeID)}\"" +
+                          $" - index #{agentIndex}");
+                return agentTypeID;
+            }
+
+            agentTypeID = NavMesh.GetSettingsByIndex(agentIndex).agentTypeID;
+            Debug.Log($"Agent type name \"{NavMesh.GetSettingsNameFromID(agentTypeID)}\"" +
+                      $" - index #{agentIndex}");
+            return agentTypeID;
         }
 
         #endregion
