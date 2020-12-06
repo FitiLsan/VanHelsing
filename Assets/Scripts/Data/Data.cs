@@ -401,7 +401,6 @@ namespace BeastHunter
                 {
                     _twoHeadedSnakeData = Resources.Load<TwoHeadedSnakeData>("Data/" + Instance._twoHeadedSnakeDataPath);
                 }
-                Debug.Log( $"Data: {_twoHeadedSnakeData == null}" );
                 return _twoHeadedSnakeData;
             }
         }
