@@ -60,7 +60,6 @@ namespace BeastHunter
         private readonly Services _services;
         private readonly CharacterModel _characterModel;
         private readonly InputModel _inputModel;
-        private readonly CharacterAnimationController _animationController;
         private readonly PuppetMaster _puppetController;
 
         private GameObject _weaponWheelUI;
@@ -112,7 +111,6 @@ namespace BeastHunter
             _services = Services.SharedInstance;
             _characterModel = _context.CharacterModel;
             _inputModel = _context.InputModel;
-            _animationController = stateMachine.AnimationController;
             _puppetController = _characterModel.PuppetMaster;
             _speedArray = new float[5] { 0f, 0f, 0f, 0f, 0f};
 
@@ -158,6 +156,7 @@ namespace BeastHunter
             _services.EventManager.StartListening(InputEventTypes.RunStop, OnStopRunHandler);
             _services.EventManager.StartListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
             _services.EventManager.StartListening(InputEventTypes.Use, OnUseHandler);
+            _services.EventManager.StartListening(InputEventTypes.WeaponRemove, OnWeaponChangeHandler);
 
             OnWeaponWheelOpen += OpenWeaponWheel;
             OnWeaponWheelClose += CloseWeaponWheel;
@@ -166,9 +165,19 @@ namespace BeastHunter
             OnTrapPlace += _services.TrapService.PlaceTrap;
             OnUse += UseInteractiveObject;
 
+            _characterModel.CurrentWeaponData.Subscribe(OnWeaponChangeHandler);
+
+            MessageBroker.Default.Receive<OnPlayerReachHidePlaceEventClass>().Subscribe(EnableHiding);
+
             _characterModel.PlayerBehavior.OnFilterHandler += OnTriggerFilter;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterSomething;
             _characterModel.PlayerBehavior.OnTriggerExitHandler += OnTriggerExitSomething;
+            _characterModel.BehaviorFall.OnPostActivate += () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.KnockedDown]);
+            _characterModel.BehaviorPuppet.OnPostActivate += () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.GettingUp]);
+            _characterModel.BehaviorPuppet.onRegainBalance.unityEvent.AddListener(() => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]));
         }
 
         #endregion
@@ -181,8 +190,8 @@ namespace BeastHunter
             GroundCheck();
             MovementCheck();
             SpeedCheck();
-            AnimationCheck();
             ControlWeaponWheel();
+            Debug.Log(_stateMachine.CurrentState);
         }
 
         #endregion
@@ -211,6 +220,7 @@ namespace BeastHunter
             _services.EventManager.StopListening(InputEventTypes.RunStop, OnStopRunHandler);
             _services.EventManager.StopListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
             _services.EventManager.StopListening(InputEventTypes.Use, OnUseHandler);
+            _services.EventManager.StopListening(InputEventTypes.WeaponRemove, OnWeaponChangeHandler);
 
             OnWeaponWheelOpen -= OpenWeaponWheel;
             OnWeaponWheelClose -= CloseWeaponWheel;
@@ -219,9 +229,17 @@ namespace BeastHunter
             OnTrapPlace -= _services.TrapService.PlaceTrap;
             OnUse -= UseInteractiveObject;
 
+            _characterModel.CurrentWeaponData.Dispose();
+
             _characterModel.PlayerBehavior.OnFilterHandler -= OnTriggerFilter;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterSomething;
             _characterModel.PlayerBehavior.OnTriggerExitHandler -= OnTriggerExitSomething;
+            _characterModel.BehaviorFall.OnPostActivate -= () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.KnockedDown]);
+            _characterModel.BehaviorPuppet.OnPostActivate -= () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.GettingUp]);
+            _characterModel.BehaviorPuppet.onRegainBalance.unityEvent.RemoveListener(() => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]));
         }
 
         #endregion
@@ -364,6 +382,22 @@ namespace BeastHunter
             OnUse?.Invoke();
         }
 
+        private void OnWeaponChangeHandler()
+        {
+            OnWeaponChange?.Invoke();
+        }
+
+        private void OnWeaponChangeHandler(WeaponData newWeapon)
+        {
+            if (_stateMachine.CurrentState == _stateMachine.CharacterStates[CharacterStatesEnum.Aiming] &&
+                newWeapon?.Type != WeaponType.Shooting)
+            {
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
+            }
+
+            newWeapon?.Init(_context);
+        }
+
         #endregion
 
 
@@ -436,7 +470,7 @@ namespace BeastHunter
                     MessageBroker.Default.Publish(new OnBossWeakPointHittedEventClass { WeakPointCollider = enemy });
                 }
 
-                DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.CurrentWeaponData,
+                DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.CurrentWeaponData.Value,
                     _characterModel.CharacterStatsSettings, _context.NpcModels[GetParent(enemyBehavior.transform).
                         GetInstanceID()].GetStats().MainStats));
                 hitBox.IsInteractable = false;
@@ -447,13 +481,6 @@ namespace BeastHunter
 
 
         #region InFrameMethods
-
-        private void AnimationCheck()
-        {
-            _animationController.UpdateAnimationParameters(_context.InputModel.InputAxisX,
-                _context.InputModel.InputAxisY, _characterModel.CharacterRigitbody.velocity.y, _characterModel.CurrentSpeed, 
-                    _characterModel.AnimationSpeed);
-        }
 
         private void GroundCheck()
         {
@@ -521,7 +548,7 @@ namespace BeastHunter
             {
                 if (_closestWeaponOnWheel.WeaponData != null)
                 {
-                    if (_closestWeaponOnWheel.WeaponData != _characterModel.CurrentWeaponData)
+                    if (_closestWeaponOnWheel.WeaponData != _characterModel.CurrentWeaponData.Value)
                     {
                         OnWeaponChange?.Invoke();
                         GetWeapon(_closestWeaponOnWheel.WeaponData);
@@ -644,49 +671,36 @@ namespace BeastHunter
                 Image[] images = item.GetComponentsInChildren<Image>();
                 RectTransform[] rects = item.GetComponentsInChildren<RectTransform>();
 
-                if (doActivate)
+                if (doActivate && item.IsNotEmpty)
                 {
+                    images[0].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_PARENT_IMAGE_DEDICATED_ALFA);
+                    images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_DEDICATED_ALFA);
+
+                    rects[0].localScale = new Vector3(WEAPON_WHEEL_IMAGE_DEDICATED_SCALE,
+                        WEAPON_WHEEL_IMAGE_DEDICATED_SCALE, 1f);
+                    rects[1].localScale = new Vector3(WEAPON_WHEEL_IMAGE_DEDICATED_SCALE,
+                        WEAPON_WHEEL_IMAGE_DEDICATED_SCALE, 1f);
+
                     if (item.WeaponData != null)
                     {
-                        images[0].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_PARENT_IMAGE_DEDICATED_ALFA);
-                        images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_DEDICATED_ALFA);
-
-                        rects[0].localScale = new Vector3(WEAPON_WHEEL_IMAGE_DEDICATED_SCALE,
-                            WEAPON_WHEEL_IMAGE_DEDICATED_SCALE, 1f);
-                        rects[1].localScale = new Vector3(WEAPON_WHEEL_IMAGE_DEDICATED_SCALE,
-                            WEAPON_WHEEL_IMAGE_DEDICATED_SCALE, 1f);
-
                         _weaponWheelText.text = item.WeaponData.WeaponName;
                     }
-                    else
+                    else if(item.TrapData != null)
                     {
-                        rects[0].localScale = new Vector3(WEAPON_WHEEL_IMAGE_DEDICATED_SCALE,
-                            WEAPON_WHEEL_IMAGE_DEDICATED_SCALE, 1f);
-                        rects[1].localScale = new Vector3(WEAPON_WHEEL_IMAGE_DEDICATED_SCALE,
-                            WEAPON_WHEEL_IMAGE_DEDICATED_SCALE, 1f);
+                        _weaponWheelText.text = item.TrapData.TrapStruct.TrapName;
                     }
                 }
-                else
+                else if(item.IsNotEmpty)
                 {
-                    if (item.WeaponData != null)
-                    {
-                        images[0].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_ALFA);
-                        images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
+                    images[0].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_ALFA);
+                    images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
 
-                        rects[0].localScale = new Vector3(WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE,
-                            WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE, 1f);
-                        rects[1].localScale = new Vector3(WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_SCALE,
-                            WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE, 1f);
+                    rects[0].localScale = new Vector3(WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE,
+                        WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE, 1f);
+                    rects[1].localScale = new Vector3(WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_SCALE,
+                        WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE, 1f);
 
-                        _weaponWheelText.text = string.Empty;
-                    }
-                    else
-                    {
-                        rects[0].localScale = new Vector3(WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE,
-                            WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE, 1f);
-                        rects[1].localScale = new Vector3(WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_SCALE,
-                            WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE, 1f);
-                    }
+                    _weaponWheelText.text = string.Empty;
                 }
             }
         }
@@ -787,11 +801,22 @@ namespace BeastHunter
 
                     if (isStrafing)
                     {
-                        _characterModel.CharacterTransform.LookAt(_characterModel.ClosestEnemy.transform.position);
+                        _characterModel.CharacterTransform?.LookAt(_characterModel.ClosestEnemy.transform.position);                         
                         CurrentAngle = _characterModel.CharacterTransform.eulerAngles.y;
                     }
                 }
 
+                _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle,
+                    -_targetAngleVelocity * Time.fixedDeltaTime);
+            }
+        }
+
+        public void RotateCharacterAimimng()
+        {
+            if (_characterModel.IsGrounded)
+            {
+                _targetAngleVelocity = Mathf.SmoothStep(_targetAngleVelocity, 0, ANGULAR_VELOCITY_FADE_SPEED);
+                CurrentAngle = _characterModel.CharacterTransform.eulerAngles.y + _inputModel.MouseInputX * _characterModel.CharacterCommonSettings.AimingDirectionChangeSpeed * Time.deltaTime;
                 _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle,
                     -_targetAngleVelocity * Time.fixedDeltaTime);
             }
@@ -914,6 +939,21 @@ namespace BeastHunter
                     interactiveObjectModel.InteractiveObjectData.Interact(interactiveObjectModel);
                 }
             }
+        }
+
+        private void EnableHiding(OnPlayerReachHidePlaceEventClass onPlayerHideEvent)
+        {
+            if (onPlayerHideEvent.CanHide && _stateMachine.CurrentState == _stateMachine.
+                CharacterStates[CharacterStatesEnum.Sneaking])
+            {
+                _characterModel.PlayerBehavior.EnableHiding(true);
+            }
+            else
+            {
+                _characterModel.PlayerBehavior.EnableHiding(false);
+            }
+
+            _characterModel.IsInHidingPlace = onPlayerHideEvent.CanHide;
         }
 
         #endregion

@@ -32,7 +32,7 @@ namespace BeastHunter
             _onHitBoxHit = onHitBoxHit;
             onWeaponChange += RemoveWeapon;
 
-            _characterModel.CurrentWeaponData = _weaponData;
+            _characterModel.CurrentWeaponData.Value = _weaponData;
             CreateWeapon(weaponData);
         }
 
@@ -108,7 +108,7 @@ namespace BeastHunter
                     case HandsEnum.Right:
 
                         _characterModel.CurrentWeaponRight = GameObject.Instantiate(newWeaponData.
-                            LeftActualWeapon.WeaponPrefab);
+                            RightActualWeapon.WeaponPrefab);
                         _characterModel.WeaponBehaviorRight = _characterModel.CurrentWeaponRight.
                             GetComponentInChildren<WeaponHitBoxBehavior>();
 
@@ -119,7 +119,7 @@ namespace BeastHunter
                         }
 
                         _characterModel.PuppetMaster.propMuscles[(int)(HandsEnum.Right) - 1].
-                            currentProp = _characterModel.CurrentWeaponLeft.GetComponent<PuppetMasterProp>();
+                            currentProp = _characterModel.CurrentWeaponRight.GetComponent<PuppetMasterProp>();
                         break;
                     case HandsEnum.Both:
 
@@ -160,7 +160,7 @@ namespace BeastHunter
 
         private void RemoveWeapon()
         {
-            if (_characterModel.CurrentWeaponData != null)
+            if (_characterModel.CurrentWeaponData.Value != null)
             {
                 if (_characterModel.CurrentWeaponLeft != null)
                 {
@@ -186,13 +186,13 @@ namespace BeastHunter
                     GameObject.Destroy(_characterModel.CurrentWeaponRight, 0.1f); // TO REFACTOR
                 }
 
-                if (_characterModel.CurrentWeaponData.Type == WeaponType.Shooting)
+                if (_characterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting)
                 {
-                    _characterModel.CurrentWeaponData.OnHit -= _onHitBoxHit;
+                    _characterModel.CurrentWeaponData.Value.OnHit -= _onHitBoxHit;
                 }
             }
 
-            _characterModel.CurrentWeaponData = null;
+            _characterModel.CurrentWeaponData.Value = null;
             _characterModel.CurrentWeaponLeft = null;
             _characterModel.CurrentWeaponRight = null;
         }

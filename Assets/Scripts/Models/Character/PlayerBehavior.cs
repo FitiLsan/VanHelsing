@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UniRx;
 
 
 namespace BeastHunter
@@ -8,8 +9,8 @@ namespace BeastHunter
         #region Fields
 
         private Animator _animatorController;
-        private CharacterModel _characterModel;
-        private Vector3 _lookAtTarget;
+        private CharacterAnimationData _animationData;
+        private bool _doAim;
 
         #endregion
 
@@ -19,30 +20,43 @@ namespace BeastHunter
         private void Start()
         {
             _animatorController = gameObject.GetComponent<Animator>();
+            _animationData = Data.CharacterData.CharacterAnimationData;
+            _doAim = false;
+            Services.SharedInstance.CameraService.CurrentActiveCamera.Subscribe(EnableAiming);
         }
 
         private void OnAnimatorIK(int layerIndex)
         {
-            if (_lookAtTarget != null && _lookAtTarget != Vector3.zero)
+            if (_doAim)
             {
-                _animatorController.SetLookAtPosition(_lookAtTarget+Vector3.up*1.5f);
-                _animatorController.SetLookAtWeight(1f, 0.5f, 1f, 1f, 1f);
+                _animatorController.SetLookAtPosition(Services.SharedInstance.CameraService.CameraDynamicTarget.position);
+                _animatorController.SetLookAtWeight(
+                    _animationData.AimingLookToWeightIK, _animationData.AimingLookToBodyWeightIK, 
+                        _animationData.AimingLookToHeadWeightIK, _animationData.AimingLookToEyesWeightIK, 
+                            _animationData.AimingLookToClampWeightIK);
             }
         }
 
-        #endregion
-
-
-        #region Methods
-
-        public void SetModel(CharacterModel model)
+        private void OnDestroy()
         {
-            _characterModel = model;
+            Services.SharedInstance.CameraService.CurrentActiveCamera.Dispose();
         }
 
-        public void SetLookAtTarget(Vector3 target)
+        private void EnableAiming(Cinemachine.CinemachineVirtualCameraBase currentCamera)
         {
-            _lookAtTarget = target;
+            _doAim = currentCamera == Services.SharedInstance.CameraService.CharacterAimingCamera;
+        }
+
+        public void EnableHiding(bool isHiding)
+        {
+            if (isHiding)
+            {
+                _type = InteractableObjectType.None;
+            }
+            else
+            {
+                _type = InteractableObjectType.Player;
+            }
         }
 
         #endregion

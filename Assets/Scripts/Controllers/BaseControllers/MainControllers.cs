@@ -30,19 +30,22 @@ namespace BeastHunter
             //Add(new DialogueSystemInitializeController(context));
             //Add(new StartDialogueInitializeController(context));
             //Add(new QuestInitializeController(context));
+            Add(new HideBushInitializeController(context));
             Add(new HellHoundInitializeController(context));
         }
 
         private void AddControllers(GameContext context)
         {
             Add(new EnemyController(context));
-            //Add(new TargetController(context));
+
+            //Add(new GiantMudCrabController(context));
             Add(new InputController(context));
             Add(new TimeRemainingController(context));
             Add(new CharacterController(context));
-            Add(new TrapController(context));
-            Add(new InteractiveObjectController(context));
+            Add(new CharacterAnimationController(context));
+            Add(new TrapController(context));          
 
+            Add(new InteractiveObjectController(context));
             //Add(new DialogueSystemController(context));
             //Add(new StartDialogueController(context));
             //Add(new DialogueTriggerController(context));

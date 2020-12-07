@@ -41,6 +41,7 @@ namespace BeastHunter
         [SerializeField] private string _materialsDataPath;
         [SerializeField] private string _torchObjectPath;
         [SerializeField] private string _hellHoundDataPath;
+        [SerializeField] private string _hideBushDataPath;
 
         private static Data _instance;
         private static LocationData _locationData;
@@ -71,6 +72,7 @@ namespace BeastHunter
         private static MaterialsData _materialsData;
         private static TorchData _torchObjectData;
         private static HellHoundData _hellHoundData;
+        private static HideBushData _hideBushData;
 
         #endregion
 
@@ -404,6 +406,18 @@ namespace BeastHunter
                     _hellHoundData = Resources.Load<HellHoundData>("Data/" + Instance._hellHoundDataPath);
                 }
                 return _hellHoundData;
+            }
+        }
+
+        public static HideBushData HideBushData
+        {
+            get
+            {
+                if (_hideBushData == null)
+                {
+                    _hideBushData = Resources.Load<HideBushData>("Data/" + Instance._hideBushDataPath);
+                }
+                return _hideBushData;
             }
         }
 

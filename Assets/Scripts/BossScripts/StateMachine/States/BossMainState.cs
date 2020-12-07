@@ -52,7 +52,7 @@ namespace BeastHunter
             MessageBroker.Default.Receive<OnBossStunnedEventClass>().Subscribe(OnBossStunnedHandler);
             MessageBroker.Default.Receive<OnBossHittedEventClass>().Subscribe(OnBossHittedHandler);
             MessageBroker.Default.Receive<OnBossWeakPointHittedEventClass>().Subscribe(MakeWeakPointBurst);
-            MessageBroker.Default.Receive<OnPlayerSneakingEventClass>().Subscribe(OnPlayerSneakingHandler);
+            MessageBroker.Default.Receive<OnPlayerHideEventClass>().Subscribe(OnPlayerReachHidePlaceHandler);
         }
 
         public override void Initialise()
@@ -134,7 +134,7 @@ namespace BeastHunter
 
         private bool OnFilterHandler(Collider tagObject)
         {
-            return !tagObject.isTrigger && tagObject.CompareTag(TagManager.PLAYER);
+            return tagObject.GetComponent<InteractableObjectBehavior>()?.Type == InteractableObjectType.Player;
         }
 
         private void OnTriggerEnterHandler(ITrigger thisdObject, Collider enteredObject)
@@ -199,16 +199,15 @@ namespace BeastHunter
             }
         }
 
-        private void OnPlayerSneakingHandler(OnPlayerSneakingEventClass eventClass)
+        private void OnPlayerReachHidePlaceHandler(OnPlayerHideEventClass eventClass)
         {
-            if (eventClass.IsSneaking)
+            if (!eventClass.IsHiding)
             {
-                _stateMachine._model.BossSphereCollider.radius /= 
-                    _stateMachine._model.BossSettings.SphereColliderRadiusDecreace;
-            }
-            else
-            {
-                _stateMachine._model.BossSphereCollider.radius = _stateMachine._model.BossSettings.SphereColliderRadius;
+                _stateMachine._model.BossSphereCollider.enabled = false;
+
+                TimeRemaining enableBossTrigger = new TimeRemaining(() => _stateMachine._model.
+                    BossSphereCollider.enabled = true, 0f);
+                enableBossTrigger.AddTimeRemaining(0f);
             }
         }
 

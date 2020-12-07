@@ -38,8 +38,8 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: AttackLeft
-    descriptiveName: "\u0410\u0442\u0430\u043A\u0430 \u0441\u043B\u0435\u0432\u0430"
+    m_Name: Attack
+    descriptiveName: "\u0410\u0442\u0430\u043A\u0430"
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
@@ -54,8 +54,8 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: AttackRight
-    descriptiveName: "\u0410\u0442\u0430\u043A\u0430 \u0441\u043F\u0440\u0430\u0432\u0430"
+    m_Name: AimTarget
+    descriptiveName: Aiming and targeting
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
@@ -70,25 +70,8 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: AlternativeFire
-    descriptiveName: "\u0410\u043B\u044C\u0442\u0435\u0440\u043D\u0430\u0442\u0438\u0432\u043D\u0430\u044F
-      \u0430\u0442\u0430\u043A\u0430"
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 
-    altNegativeButton: 
-    altPositiveButton: mouse 2
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
     m_Name: Jump
-    descriptiveName: "\u041F\u0440\u044B\u0436\u043E\u043A"
+    descriptiveName: jumping
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: space
@@ -183,86 +166,6 @@ InputManager:
     axis: 1
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Fire1
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: joystick button 0
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Fire2
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: joystick button 1
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Fire3
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: joystick button 2
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Jump2
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: joystick button 3
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Submit
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: return
-    altNegativeButton: 
-    altPositiveButton: joystick button 0
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
     m_Name: Submit
     descriptiveName: 
     descriptiveNegativeName: 
@@ -312,7 +215,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Sprint
-    descriptiveName: "\u0423\u0441\u043A\u043E\u0440\u0435\u043D\u0438\u0435\\\u0411\u0435\u0433"
+    descriptiveName: sprint/run
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: left shift
@@ -327,24 +230,8 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Dodge
-    descriptiveName: "\u0423\u043A\u043B\u043E\u043D\u0435\u043D\u0438\u0435"
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: left alt
-    altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
     m_Name: Inventory
-    descriptiveName: "\u0418\u043D\u0432\u0435\u043D\u0442\u0430\u0440\u044C"
+    descriptiveName: inventory
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: i
@@ -359,108 +246,11 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Battle Exit
-    descriptiveName: "\u0412\u044B\u0445\u043E\u0434 \u0438\u0437 \u0431\u043E\u044F"
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: t
-    altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Target lock
-    descriptiveName: "\u0417\u0430\u0445\u0432\u0430\u0442 \u0446\u0435\u043B\u0438"
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: z
-    altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: CenterCamera
-    descriptiveName: "\u0426\u0435\u043D\u0442\u0440\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435
-      \u043A\u0430\u043C\u0435\u0440\u044B"
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: h
-    altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Roll
-    descriptiveName: "\u041A\u0443\u0432\u044B\u0440\u043E\u043A"
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: left ctrl
-    altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
     m_Name: Use
-    descriptiveName: "\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C"
+    descriptiveName: press to use
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: e
-    altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Block
-    descriptiveName: block
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 
-    altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Dance
-    descriptiveName: dance
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: m
     altNegativeButton: 
     altPositiveButton: joystick button 1
     gravity: 1000
@@ -552,38 +342,6 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: PlaceTrap1
-    descriptiveName: PlaceTrap1
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 9
-    altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: PlaceTrap2
-    descriptiveName: PlaceTrap2
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 0
-    altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
     m_Name: TimeSkip
     descriptiveName: TimeSkip
     descriptiveNegativeName: 
@@ -637,6 +395,22 @@ InputManager:
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: b
+    altNegativeButton: 
+    altPositiveButton: joystick button 2
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: WeaponRemove
+    descriptiveName: removes weapon
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: x
     altNegativeButton: 
     altPositiveButton: joystick button 2
     gravity: 1000

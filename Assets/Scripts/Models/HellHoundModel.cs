@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
 
 namespace BeastHunter
 {
@@ -129,11 +129,6 @@ namespace BeastHunter
 
 
         #region EnemyModel
-
-        public override void DoSmth(string how)
-        {
-            hellHoundData.Do(how);
-        }
 
         public override void Execute()
         {
