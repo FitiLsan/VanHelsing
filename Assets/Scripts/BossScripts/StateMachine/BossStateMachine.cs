@@ -26,6 +26,7 @@ namespace BeastHunter
         public Action OnAfterStateChange { get; private set; }
 
         public BossMainState _mainState { get; private set; }
+        public BossSkills BossSkills { get; private set; }
 
         #endregion
 
@@ -38,6 +39,7 @@ namespace BeastHunter
             _model = model;
 
             _mainState = new BossMainState(this);
+            BossSkills = new BossSkills(this);
 
             States = new Dictionary<BossStatesEnum, BossBaseState>();
             States.Add(BossStatesEnum.Idle, new BossIdleState(this));

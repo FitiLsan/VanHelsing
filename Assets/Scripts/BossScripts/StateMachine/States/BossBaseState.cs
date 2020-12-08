@@ -17,6 +17,8 @@
         public bool CanBeOverriden { get; protected set; }
         public bool CurrentStateType { get; protected set; }
         public bool IsBattleState { get; protected set; }
+        public float CurrentAttackTime { get; protected set; }
+        public bool isAnimationPlay { get;  set; }
 
         #endregion
 
