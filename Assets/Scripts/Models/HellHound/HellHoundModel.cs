@@ -27,7 +27,6 @@ namespace BeastHunter
         public Animator Animator { get; }
         public GameObject HellHound { get; }
         public NavMeshAgent NavMeshAgent { get; }
-        public Rigidbody Rigidbody { get; }
         public Transform Transform { get; }
         public Collider AttackCollider { get; }
         public InteractableObjectBehavior WeaponIO { get; }
@@ -50,8 +49,7 @@ namespace BeastHunter
             Transform = HellHound.transform;
             BehaviourState = HellHoundData.BehaviourState.None;
 
-            Rigidbody = HellHound.GetComponent<Rigidbody>();
-            SpawnPoint = Rigidbody.position;
+            SpawnPoint = Transform.position;
 
             Animator = HellHound.GetComponent<Animator>();
             Animator.SetFloat("JumpSpeedRate", hellHoundData.Stats.JumpingSpeedRate);
