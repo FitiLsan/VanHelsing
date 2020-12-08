@@ -837,7 +837,7 @@ namespace BeastHunter
             {
                 _onDeadMsg?.Invoke();
                 hellHoundModel.Animator.SetTrigger("Dead");
-                hellHoundModel.NavMeshAgent.enabled = false;
+                hellHoundModel.Clean();
             }
 
             if (hellHoundModel.ChasingTarget == null

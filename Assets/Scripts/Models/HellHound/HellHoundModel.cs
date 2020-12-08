@@ -103,6 +103,26 @@ namespace BeastHunter
         private void OnAttackStateEnter() => _hellHoundData.OnAttackStateEnter(this);
         private void OnAttackStateExit() => _hellHoundData.OnAttackStateExit(this);
 
+        public void Clean()
+        {
+            NavMeshAgent.enabled = false;
+            Object.Destroy(_detectionSphere);
+            Object.Destroy(AttackCollider);
+            ChasingTarget = null;
+
+            for (int i = 0; i < _attackStates.Length; i++)
+            {
+                _attackStates[i].OnStateEnterHandler -= OnAttackStateEnter;
+                _attackStates[i].OnStateExitHandler -= OnAttackStateExit;
+            }
+
+            for (int i = 0; i < _interactableObjects.Length; i++)
+            {
+                Object.Destroy(_interactableObjects[i]);
+            }
+            _interactableObjects = null;
+        }
+
         #endregion
 
 
