@@ -4,12 +4,20 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public class StompSplashAttackSkill : BaseSkill
+    public class StompSplashAttackSkill : BossBaseSkill
     {
         private const float DELAY_HAND_TRIGGER = 0.2f;
 
-        public StompSplashAttackSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BaseSkill> skillDictionary, BossStateMachine stateMachine) 
+        public StompSplashAttackSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
             : base(Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
+        {
+        }
+
+        public StompSplashAttackSkill(AttackStateSkillsSettings attackStateSkillsSettings, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(attackStateSkillsSettings, skillDictionary, stateMachine)
+        {
+        }
+
+        public StompSplashAttackSkill((int, float, float, float, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
         }
 

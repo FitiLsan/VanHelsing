@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public abstract class BaseSkill
+    public abstract class BossBaseSkill
     {
         #region Fields
 
@@ -15,23 +15,41 @@ namespace BeastHunter
         private float _attackCooldown;
         private bool _isCooldownStart;
         private bool _isAttackReady;
+
         protected BossModel _bossModel;
         protected WeaponHitBoxBehavior _currenTriggertHand;
         protected Collider _currenColliderHand;
-        protected Dictionary<int, BaseSkill> _skillDictionary;
+        protected Dictionary<int, BossBaseSkill> _skillDictionary;
         protected BossStateMachine _stateMachine;
 
         #endregion
 
         #region ClassLifeCycle
 
-        public BaseSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BaseSkill> skillDictionary, BossStateMachine stateMachine)
+        public BossBaseSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
         {
             _attackId = Id;
             _attackRangeMin = RangeMin;
             _attackRangeMax = RangeMax;
             _attackCooldown = Cooldown;
             _isAttackReady = IsReady;
+            _stateMachine = stateMachine;
+            _bossModel = stateMachine._model;
+            _skillDictionary = skillDictionary;
+        }
+
+        public BossBaseSkill (AttackStateSkillsSettings attackStateSkillsSettings, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        {
+
+        }
+
+        public BossBaseSkill ((int, float, float, float, bool)skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        {
+            _attackId = skillInfo.Item1;
+            _attackRangeMin = skillInfo.Item2;
+            _attackRangeMax = skillInfo.Item3;
+            _attackCooldown = skillInfo.Item4;
+            _isAttackReady = skillInfo.Item5;
             _stateMachine = stateMachine;
             _bossModel = stateMachine._model;
             _skillDictionary = skillDictionary;

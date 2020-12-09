@@ -17,14 +17,11 @@ namespace BeastHunter
         private const float ANGLE_TARGET_RANGE_MIN = 20f;
         private const float DISTANCE_TO_START_ATTACK = 4f;
         private const float DELAY_HAND_TRIGGER = 0.2f;
-
-
+        private const float ANIMATION_DELAY = 0.2f;
 
         private const int DEFAULT_ATTACK_ID = 0;
 
         #endregion
-
-
 
 
         #region Fields
@@ -33,12 +30,6 @@ namespace BeastHunter
         private Quaternion _toRotation;
 
         private int _skillId;
-
-        private bool _isDefaultAttackReady = true;
-        private bool _isHorizontalFistAttackReady = false;
-        private bool _isStompSplashAttackReady = false;
-        private bool _isRageOfForestAttackReady = false;
-        private bool _isPoisonSporesAttackReady = false;
 
         private Dictionary<int,int> _readySkillDictionary = new Dictionary<int, int>();
 
@@ -73,9 +64,9 @@ namespace BeastHunter
             base.CurrentAttackTime = 1.5f;
             SetNavMeshAgent(_bossModel.BossTransform.position, 0);
 
-            for (var i = 0; i < _stateMachine.BossSkills._attackStateSkillDictionary.Count; i++)
+            for (var i = 0; i < _stateMachine.BossSkills.AttackStateSkillDictionary.Count; i++)
             {
-                _stateMachine.BossSkills._attackStateSkillDictionary[i].SkillCooldown(_stateMachine.BossSkills._attackStateSkillDictionary[i].AttackId, _stateMachine.BossSkills._attackStateSkillDictionary[i].AttackCooldown);
+                _stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillCooldown(_stateMachine.BossSkills.AttackStateSkillDictionary[i].AttackId, _stateMachine.BossSkills.AttackStateSkillDictionary[i].AttackCooldown);
             }
             ChoosingAttackSkill();
         }
@@ -103,11 +94,11 @@ namespace BeastHunter
             var j = 0;
 
 
-            for (var i = 0; i < _stateMachine.BossSkills._attackStateSkillDictionary.Count; i++)
+            for (var i = 0; i < _stateMachine.BossSkills.AttackStateSkillDictionary.Count; i++)
             {
-                if (_stateMachine.BossSkills._attackStateSkillDictionary[i].IsAttackReady)
+                if (_stateMachine.BossSkills.AttackStateSkillDictionary[i].IsAttackReady)
                 {
-                    if (CheckDistance(_stateMachine.BossSkills._attackStateSkillDictionary[i].AttackRangeMin, _stateMachine.BossSkills._attackStateSkillDictionary[i].AttackRangeMax))
+                    if (CheckDistance(_stateMachine.BossSkills.AttackStateSkillDictionary[i].AttackRangeMin, _stateMachine.BossSkills.AttackStateSkillDictionary[i].AttackRangeMax))
                     {
                         _readySkillDictionary.Add(j, i);
                         j++;
@@ -131,14 +122,14 @@ namespace BeastHunter
                 _skillId = DEFAULT_ATTACK_ID;
             }
 
-            _stateMachine.BossSkills._attackStateSkillDictionary[_skillId].UseSkill(_skillId);
+            _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId].UseSkill(_skillId);
         }
 
         private void CheckNextMove()
         {
             if (isAnimationPlay)
             {
-                base.CurrentAttackTime = _bossModel.BossAnimator.GetCurrentAnimatorStateInfo(0).length + 0.2f;
+                base.CurrentAttackTime = _bossModel.BossAnimator.GetCurrentAnimatorStateInfo(0).length + ANIMATION_DELAY;
                 isAnimationPlay = false;
             }
 
@@ -156,13 +147,11 @@ namespace BeastHunter
         private bool CheckDirection()
         {
             var isNear = _bossData.CheckIsLookAtTarget(_bossModel.BossTransform.rotation, _mainState.TargetRotation, ANGLE_TARGET_RANGE_MIN);
-
             if (!isNear)
             {
                 CheckTargetDirection();
                 TargetOnPlayer();
             }
-
             return isNear;
         }
 
@@ -185,7 +174,7 @@ namespace BeastHunter
             _bossModel.LeftHandCollider.enabled = false;
             _bossModel.RightHandCollider.enabled = false;
 
-            if (!_bossModel.IsDead && CheckDirection()) //&& CheckDistance())
+            if (!_bossModel.IsDead && CheckDirection())
             {
                 ChoosingAttackSkill();
             }
@@ -196,19 +185,6 @@ namespace BeastHunter
             _bossModel.BossNavAgent.SetDestination(targetPosition);
             _bossModel.BossNavAgent.speed = speed;
         }
-
-        private void TurnOnHitBoxTrigger(WeaponHitBoxBehavior hitBox, float delayTime)
-        {
-            //TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.IsInteractable = true, _currentAttackTime * delayTime);
-            //enableHitBox.AddTimeRemaining(_currentAttackTime * delayTime);
-        }
-
-        private void TurnOnHitBoxCollider(Collider hitBox, float delayTime, bool isOn = true)
-        {
-            TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.enabled = isOn, CurrentAttackTime * delayTime);
-            enableHitBox.AddTimeRemaining(CurrentAttackTime * delayTime);
-        }
-
 
         private bool OnHitBoxFilter(Collider hitedObject)
         {         
@@ -230,6 +206,8 @@ namespace BeastHunter
                     CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
                         _context.CharacterModel.PlayerBehavior.Stats));
                 hitBox.IsInteractable = false;
+                _bossModel.LeftHandCollider.enabled = false;
+                
             }
         }
 
@@ -241,6 +219,7 @@ namespace BeastHunter
                     CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
                         _context.CharacterModel.PlayerBehavior.Stats));
                 hitBox.IsInteractable = false;
+                _bossModel.RightHandCollider.enabled = false;
             }
         }
 
