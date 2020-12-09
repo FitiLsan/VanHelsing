@@ -30,6 +30,8 @@
         QuestJournalCreated,
         QuestJournalOpened,
         QuestUpdated,
+        BestiaryCreated,
+        BestiaryOpened,
         AnswerButtonClicked
     }
 }

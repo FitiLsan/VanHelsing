@@ -20,6 +20,9 @@ namespace BeastHunter
         [Tooltip("Character instance tag.")]
         [SerializeField] private string _instanceTag;
 
+        [Tooltip("Character head object path")]
+        [SerializeField] private string _headObjectPath;
+
         [Tooltip("Character instance layer.")]
         [SerializeField] private int _instanceLayer;
 
@@ -28,9 +31,6 @@ namespace BeastHunter
 
         [Tooltip("Character animator beginning apply root motion.")]
         [SerializeField] private bool _beginningApplyRootMotion;
-
-        [Tooltip("Vector 3 prefab position on the scene")]
-        [SerializeField] private Vector3 _instantiatePosition;
 
         [Tooltip("Prefab direction on the scene")]
         [SerializeField] private float _instantiateDirection;
@@ -150,9 +150,9 @@ namespace BeastHunter
 
         [Header("Character battle settings")]
 
-        [Tooltip("Character strafe direction change speed between 0 and 50.")]
+        [Tooltip("Character aiming direction change speed between 0 and 50.")]
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float _strafeDirectionChangeSpeed;
+        [SerializeField] private float _aimingDirectionChangeSpeed;
 
         [Tooltip("Actual rolling time between 0 and 10.")]
         [Range(0.0f, 10.0f)]
@@ -181,12 +181,12 @@ namespace BeastHunter
 
         public PhysicMaterial CapsuleColliderPhysicMaterial => _capsuleColliderPhysicMaterial;
 
-        public Vector3 InstantiatePosition => _instantiatePosition;
         public Vector3 CapsuleColliderCenter => _capsuleColliderCenter;
         public Vector3 SphereColliderCenter => _sphereColliderCenter;
 
         public string InstanceName => _instanceName;
         public string InstanceTag => _instanceTag;
+        public string HeadObjectPath => _headObjectPath;
         public int InstanceLayer => _instanceLayer;
 
         public float InstantiateDirection => _instantiateDirection;
@@ -217,7 +217,7 @@ namespace BeastHunter
         public float AnimatorBaseSpeed => _animatorBaseSpeed;
         public float TImeToContinueMovingAfterStop => _timeToContinueMovingAfterStop;
 
-        public float StrafeDirectionChangeSpeed => _strafeDirectionChangeSpeed;
+        public float AimingDirectionChangeSpeed => _aimingDirectionChangeSpeed;
         public float JumpTime => _jumpTime;
         public float SlideTime => _slideTime;
         public float RollingTime => _rollTime;

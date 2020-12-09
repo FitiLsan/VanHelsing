@@ -9,6 +9,7 @@ namespace BeastHunter
 
         public DeadState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Dead;
             IsTargeting = false;
             IsAttacking = false;
         }

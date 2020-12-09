@@ -8,8 +8,6 @@ namespace BeastHunter
     {
         #region Fields
 
-        private readonly GameContext _context;
-
         private float _timeToPlaceTrap;
         private float _timeForTrapToAppear;
         private float _exitTIme;
@@ -22,7 +20,7 @@ namespace BeastHunter
 
         public TrapPlacingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
-            _context = context;
+            StateName = CharacterStatesEnum.TrapPlacing;
             IsTargeting = false;
             IsAttacking = false;
         }
@@ -70,7 +68,6 @@ namespace BeastHunter
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
-            _animationController.PlayTrapPlacingAnimation();
             _exitTIme = _timeToPlaceTrap;
             _isTrapSet = false;
         }

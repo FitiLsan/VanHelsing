@@ -9,6 +9,7 @@ namespace BeastHunter
     {
         #region Fields
 
+        [SerializeField] private string _trapName;
         [SerializeField] private GameObject _trapPrefabInHands;
         [SerializeField] private GameObject _trapPrefabProjection;
         [SerializeField] private Damage _trapDamage;
@@ -22,12 +23,13 @@ namespace BeastHunter
         [SerializeField] private float _timeToDestroyAfterActivation;
 
         [SerializeField] private int _chargeAmount;
-        
+
         #endregion
 
 
         #region Properties
 
+        public string TrapName => _trapName;
         public GameObject TrapPrefabInHands => _trapPrefabInHands;
         public GameObject TrapPrefabProjection => _trapPrefabProjection;
         public Damage TrapDamage => _trapDamage;
