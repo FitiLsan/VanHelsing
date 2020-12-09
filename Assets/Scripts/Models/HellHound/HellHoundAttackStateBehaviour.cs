@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
+    /// <summary>tracking the start and end of animations (script is attached to animations)</summary>
     class HellHoundAttackStateBehaviour : StateMachineBehaviour
     {
         public event Action OnStateEnterHandler;

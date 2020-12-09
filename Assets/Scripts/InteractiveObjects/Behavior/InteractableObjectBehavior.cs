@@ -23,6 +23,7 @@ namespace BeastHunter
         public Predicate<Collider> OnFilterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerEnterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerExitHandler { get; set; }
+        public Action<InteractableObjectBehavior, Collision> OnCollisionEnterHandler { get; set; }
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
 
         public bool IsInteractable { get; set; }
@@ -45,6 +46,14 @@ namespace BeastHunter
             if (OnFilterHandler != null && OnFilterHandler.Invoke(other))
             {
                 OnTriggerExitHandler?.Invoke(this, other);
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (OnFilterHandler != null && OnFilterHandler.Invoke(collision.collider))
+            {
+                OnCollisionEnterHandler?.Invoke(this, collision);
             }
         }
 
