@@ -17,6 +17,9 @@ namespace BeastHunter
         [Tooltip("Spore prefab.")]
         [SerializeField] private GameObject _sporePrefab;
 
+        [Tooltip("Ruler.")]
+        [SerializeField] private GameObject _ruler;
+
         [Tooltip("StompFuf prefab.")]
         [SerializeField] private GameObject _stompPuf;
 
@@ -148,6 +151,7 @@ namespace BeastHunter
 
         public GameObject Prefab => _prefab;
         public GameObject SporePrefab => _sporePrefab;
+        public GameObject Ruler => _ruler;
         public GameObject StompPuf => _stompPuf;
 
         public RuntimeAnimatorController BossAnimator => _bossAnimator;

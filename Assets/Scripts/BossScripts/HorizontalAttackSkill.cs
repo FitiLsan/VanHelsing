@@ -24,6 +24,7 @@ namespace BeastHunter
         public override void UseSkill(int id)
         {
             Debug.Log("HorizontalAttackSkill");
+            _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
             var attackDirection = UnityEngine.Random.Range(0, 2);
             _bossModel.BossAnimator.Play($"BossFeastsAttack_{attackDirection}", 0, 0f);
             switch (attackDirection)

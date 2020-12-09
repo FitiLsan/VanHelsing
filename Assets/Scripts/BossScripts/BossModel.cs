@@ -58,6 +58,7 @@ namespace BeastHunter
         public GameObject BossCurrentTarget;
         public Vector3 BossCurrentPosition;
         public GameObject SporePrefab;
+        public GameObject Ruler;
         public GameObject StompPufPrefab;
         public ParticleSystem leftStompEffect;
         public ParticleSystem rightStompEffect;
@@ -250,6 +251,8 @@ namespace BeastHunter
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
             CurrentHealth = BossStats.MainStats.HealthPoints;
             SporePrefab = BossSettings.SporePrefab;
+            Ruler = BossSettings.Ruler;
+            GameObject.Instantiate(Ruler, BossTransform.position+Vector3.up, Quaternion.identity, BossTransform);
 
         }
 

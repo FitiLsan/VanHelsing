@@ -10,12 +10,13 @@ namespace BeastHunter
     {
         #region PrivateData
 
-        public AttackStateSkillsSettings AttackStateSkills;
+        public AttackStateSkillsSettings AttackStateSkillsSettings;
 
         #endregion
         private BossStateMachine _stateMachine;
-        public Dictionary<int, BossBaseSkill> AttackStateSkillDictionary { get; private set; } = new Dictionary<int, BossBaseSkill>();
-        public Dictionary<int, int> _readyAttackSkillDictionary { get; private set; } = new Dictionary<int, int>();
+
+        public Dictionary<int, BossBaseSkill> AttackStateSkillDictionary { get; private set; }
+        public Dictionary<int, BossBaseSkill> DefenceStateSkillDictionary { get; private set; }
 
         public BossBaseSkill DefaultSkill { get; private set; }
         public BossBaseSkill HorizontalAttackSkill { get; private set; }
@@ -27,12 +28,17 @@ namespace BeastHunter
         public BossSkills(BossStateMachine stateMachine)
         {
             _stateMachine = stateMachine;
-            AttackStateSkills = _stateMachine._model.BossData.AttackStateSkills;
-            DefaultSkill = new DefaultSkill(AttackStateSkills.GetDefaultSkillInfo() , AttackStateSkillDictionary, _stateMachine);
-            HorizontalAttackSkill = new HorizontalAttackSkill(AttackStateSkills.GetHorizontalSkillInfo(), AttackStateSkillDictionary, _stateMachine);
-            StompSplashSkill = new StompSplashAttackSkill(AttackStateSkills.GetStompSplashSkillInfo(), AttackStateSkillDictionary, _stateMachine);
-            RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkills.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
-            PoisonSporesSkill = new PoisonSporesAttackSkill(AttackStateSkills.GetPoisonSporesSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+
+            AttackStateSkillDictionary = new Dictionary<int, BossBaseSkill>();
+            DefenceStateSkillDictionary = new Dictionary<int, BossBaseSkill>();
+         
+            AttackStateSkillsSettings = _stateMachine._model.BossData.AttackStateSkills;
+
+            DefaultSkill = new DefaultSkill(AttackStateSkillsSettings.GetDefaultSkillInfo() , AttackStateSkillDictionary, _stateMachine);
+            HorizontalAttackSkill = new HorizontalAttackSkill(AttackStateSkillsSettings.GetHorizontalSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            StompSplashSkill = new StompSplashAttackSkill(AttackStateSkillsSettings.GetStompSplashSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkillsSettings.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            PoisonSporesSkill = new PoisonSporesAttackSkill(AttackStateSkillsSettings.GetPoisonSporesSkillInfo(), AttackStateSkillDictionary, _stateMachine);
 
             AttackStateSkillDictionary.Add(DefaultSkill.AttackId, DefaultSkill);
             AttackStateSkillDictionary.Add(HorizontalAttackSkill.AttackId, HorizontalAttackSkill);
