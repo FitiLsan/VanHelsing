@@ -11,8 +11,10 @@ namespace BeastHunter
         #region PrivateData
 
         public AttackStateSkillsSettings AttackStateSkillsSettings;
+        public DefenceStateSkillsSettings DefenceStateSkillsSettings;
 
         #endregion
+
         private BossStateMachine _stateMachine;
 
         public Dictionary<int, BossBaseSkill> AttackStateSkillDictionary { get; private set; }
@@ -24,6 +26,11 @@ namespace BeastHunter
         public BossBaseSkill RageOfForestSkill { get; private set; }
         public BossBaseSkill PoisonSporesSkill { get; private set; }
 
+        public BossBaseSkill SelfHealSkill { get; private set; }
+        public BossBaseSkill HardBarkSkill { get; private set; }
+        public BossBaseSkill CanibalHealingSkill { get; private set; }
+        public BossBaseSkill CallOfForestSkill { get; private set; }
+
 
         public BossSkills(BossStateMachine stateMachine)
         {
@@ -33,6 +40,7 @@ namespace BeastHunter
             DefenceStateSkillDictionary = new Dictionary<int, BossBaseSkill>();
          
             AttackStateSkillsSettings = _stateMachine._model.BossData.AttackStateSkills;
+            DefenceStateSkillsSettings = _stateMachine._model.BossData.DefenceStateSkills;
 
             DefaultSkill = new DefaultSkill(AttackStateSkillsSettings.GetDefaultSkillInfo() , AttackStateSkillDictionary, _stateMachine);
             HorizontalAttackSkill = new HorizontalAttackSkill(AttackStateSkillsSettings.GetHorizontalSkillInfo(), AttackStateSkillDictionary, _stateMachine);

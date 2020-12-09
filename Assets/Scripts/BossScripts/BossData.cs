@@ -12,6 +12,7 @@ namespace BeastHunter
         public BossSettings _bossSettings;
         public EnemyStats _bossStats;
         public AttackStateSkillsSettings AttackStateSkills;
+        public DefenceStateSkillsSettings DefenceStateSkills;
 
         #endregion
 

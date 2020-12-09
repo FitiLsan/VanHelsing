@@ -22,7 +22,6 @@ namespace BeastHunter
         {
         }
 
-
         public override void UseSkill(int id)
         {
             Debug.Log("DefaultAttackSkill");
