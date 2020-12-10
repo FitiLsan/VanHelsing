@@ -49,9 +49,15 @@ namespace BeastHunter
         [Range(0.0f, 20.0f)]
         [SerializeField] private float _sphereColliderRadius = 10.0f;
 
-        [Header("Prefab nav mesh settings")]
+        [Header("NavMeshAgent settings")]
         [Tooltip("Default: 2.0")]
         [SerializeField] private float _maxRoamingSpeed = 2.0f;
+        [Tooltip("Default: 50.0")]
+        [SerializeField] private float _maxChasingSpeed = 50.0f;
+        [Tooltip("Default: 1.0")]
+        [SerializeField] private float _stoppingDistance = 1.0f ;
+        [Tooltip("Default: 450.0")]
+        [SerializeField] private float _angularSpeed = 450.0f;
 
         [Tooltip("Acceleration between 0 and 20.")]
         [Range(0.0f, 20.0f)]
@@ -105,6 +111,9 @@ namespace BeastHunter
         public float SphereColliderRadius => _sphereColliderRadius;
 
         public float MaxRoamingSpeed => _maxRoamingSpeed;
+        public float MaxChasingSpeed => _maxChasingSpeed;
+        public float StoppingDistance => _stoppingDistance;
+        public float AngularSpeed => _angularSpeed;
         public float NavMeshAcceleration => _navMeshAcceleration;
         public int NavMeshAgentTypeIndex => _navMeshAgentTypeIndex;
 

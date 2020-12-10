@@ -27,7 +27,7 @@ MonoBehaviour:
       _baseDefense: 0
     Prefab: {fileID: 100084, guid: cd7bad76e4db2044582c1d409245bf92, type: 3}
   settings:
-    _instantiatePosition: {x: 470, y: 2, z: 470}
+    _instantiatePosition: {x: 450, y: 2, z: 450}
     _rigitbodyMass: 1
     _rigitbodyDrag: 0
     _rigitbodyAngularDrag: 0.5
@@ -38,7 +38,7 @@ MonoBehaviour:
     _sphereColliderRadius: 20
     _maxRoamingSpeed: 2
     _navMeshAcceleration: 10
-    _navMeshAgentTypeIndex: 0
+    _navMeshAgentTypeIndex: 1
     _wanderingRadius: 50
     _roamingChance: 100
     _idlingMinTime: 5
@@ -46,3 +46,4 @@ MonoBehaviour:
     _restingChance: 20
     _restingMinTime: 30
     _restingMaxTime: 60
+    _debugMessages: 1

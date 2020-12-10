@@ -93,7 +93,9 @@ namespace BeastHunter
             NavMeshAgent.speed = Settings.MaxRoamingSpeed;
             NavMeshAgent.acceleration = Settings.NavMeshAcceleration;
             NavMeshAgent.agentTypeID = GetAgentTypeIDByIndex(Settings.NavMeshAgentTypeIndex);
-
+            NavMeshAgent.stoppingDistance = Settings.StoppingDistance;
+            NavMeshAgent.angularSpeed = Settings.AngularSpeed;
+            
             Animator = TwoHeadedSnake.GetComponent<Animator>();
 
             _interactableObjects = TwoHeadedSnake.GetComponentsInChildren<InteractableObjectBehavior>();

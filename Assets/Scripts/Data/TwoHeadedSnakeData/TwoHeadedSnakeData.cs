@@ -88,9 +88,8 @@ namespace BeastHunter
         {
 
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
-           // model.Animator.SetFloat("RotateDirection", rotateDirection);
-            //model.Animator.SetFloat("MovementSpeed", model.NavMeshAgent.velocity.sqrMagnitude);
-
+            model.Animator.SetFloat("Velosity", model.NavMeshAgent.velocity.sqrMagnitude);
+            Debug.Log($"Snake Velosity = {model.NavMeshAgent.velocity.sqrMagnitude}");
             switch (model.behaviourState)
             {
                 case BehaviourState.None:
@@ -124,6 +123,36 @@ namespace BeastHunter
                         model.behaviourState = ChangeState(BehaviourState.None, model);
                     }
                     break;
+                case BehaviourState.Idling:
+
+                    model.Timer -= Time.deltaTime;
+                    if (model.Timer <= 0)
+                    {
+                        model.behaviourState = ChangeState(BehaviourState.None, model);
+                    }
+
+                    break;
+                case BehaviourState.Resting:
+
+                    model.Timer -= Time.deltaTime;
+                    if (model.Timer <= 0)
+                    {
+                        model.behaviourState = ChangeState(BehaviourState.None, model);
+                    }
+
+                    break;
+                case BehaviourState.Chasing:
+
+                    if (model.ChasingTarget == null)
+                    {
+                        model.behaviourState = ChangeState(BehaviourState.None, model);
+                    }
+                    else
+                    {
+                        model.NavMeshAgent.SetDestination(model.ChasingTarget.position);
+                    }
+
+                    break;
                 default:
                     break;
 
@@ -142,7 +171,7 @@ namespace BeastHunter
         {
             OnDetectionEnemyMsg?.Invoke(collider.name);
             model.ChasingTarget = collider.transform;
-            //model.behaviourState = ChangeState(BehaviourState.Chasing, model);
+            model.behaviourState = ChangeState(BehaviourState.Chasing, model);
         }
         public void OnLostEnemy(Collider collider, TwoHeadedSnakeModel model)
         {
@@ -175,9 +204,6 @@ namespace BeastHunter
                 case BehaviourState.Chasing:
                     break;
 
-                case BehaviourState.JumpingBack:
-                    break;
-
                 case BehaviourState.BattleCircling:
                     // model.Animator.SetBool("BattleCircling", false);
                     break;
@@ -205,16 +231,10 @@ namespace BeastHunter
 
                 case BehaviourState.Idling:
                     return SetIdlingState(ref model.Timer);
-                    
 
                 case BehaviourState.Chasing:
-                    //return SetChasingState(model.NavMeshAgent);
-                    return BehaviourState.Chasing;
-
-                case BehaviourState.JumpingBack:
-                   // return SetJumpingBackState(model.NavMeshAgent, model.Animator, model.Rigidbody);
-                   return BehaviourState.JumpingBack;
-
+                    return SetChasingState(model.NavMeshAgent);
+                
                 case BehaviourState.BattleCircling:
                    // return SetBattleCirclingState(model.NavMeshAgent, model.Animator, model.ChasingTarget.position, ref model.Timer);
                    return BehaviourState.BattleCircling;
@@ -224,8 +244,7 @@ namespace BeastHunter
                     return BehaviourState.Escaping;
 
                 case BehaviourState.Resting:
-                    //return SetRestingState(model.Animator, ref model.Timer);
-                    return BehaviourState.Resting;
+                    return SetRestingState(model.Animator, ref model.Timer);
 
                 case BehaviourState.Searching:
                    // return SetSearchingState(model.NavMeshAgent, model.SpawnPoint, ref model.Timer);
@@ -249,6 +268,9 @@ namespace BeastHunter
         private BehaviourState SetRoamingState(NavMeshAgent navMeshAgent, Vector3 spawnPoint, ref float timer)
         {
             RoamingStateMsg?.Invoke();
+
+            navMeshAgent.speed = settings.MaxRoamingSpeed;
+            navMeshAgent.acceleration = settings.NavMeshAcceleration;
 
             Vector3 navMeshPoint;
             bool isSetDestination = false;
@@ -274,7 +296,29 @@ namespace BeastHunter
             return BehaviourState.Roaming;
         }
 
+        private BehaviourState SetRestingState(Animator animator, ref float timer)
+        {
+            RestingStateMsg?.Invoke();
 
+            timer = Random.Range(settings.RestingMinTime, settings.RestingMaxTime);
+            RestingTimerMsg?.Invoke(timer);
+
+           //Resting animation
+
+            return BehaviourState.Resting;
+        }
+
+        private BehaviourState SetChasingState(NavMeshAgent navMeshAgent)
+        {
+            ChasingStateMsg?.Invoke();
+
+            navMeshAgent.updateRotation = true;
+            navMeshAgent.stoppingDistance = settings.StoppingDistance;
+            navMeshAgent.acceleration = settings.NavMeshAcceleration;
+            navMeshAgent.speed = settings.MaxChasingSpeed;
+
+            return BehaviourState.Chasing;
+        }
         #endregion
 
 
@@ -344,6 +388,7 @@ namespace BeastHunter
                 OnHitEnemyMsg = (enemy) => Debug.Log("The snake is deal damage to " + enemy);
                 OnDetectionEnemyMsg = (colliderName) => Debug.Log("The snake noticed " + colliderName);
                 OnLostSightEnemyMsg = () => Debug.Log("The snake lost sight of the target");
+                
             }
         }
 
