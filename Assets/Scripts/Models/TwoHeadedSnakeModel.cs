@@ -18,6 +18,7 @@ namespace BeastHunter
         public TwoHeadedSnakeData.BehaviourState behaviourState;
         public Transform ChasingTarget;
         public float Timer;
+        public bool IsAttacking;
 
         public float RotatePosition1;
         public float RotatePosition2;
@@ -107,6 +108,10 @@ namespace BeastHunter
 
             _detectionSphere = _detectionSphereIO.GetComponent<SphereCollider>();
             _detectionSphere.radius = Settings.SphereColliderRadius;
+
+            CurrentHealth = _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
+            IsDead = false;
+
         }
 
         #endregion
@@ -121,7 +126,11 @@ namespace BeastHunter
 
         public override void Execute()
         {
-            _twoHeadedSnakeData.Act(this);
+            if (!IsDead)
+            {
+                _twoHeadedSnakeData.Act(this);
+            }
+            
         }
 
         public override EnemyStats GetStats()

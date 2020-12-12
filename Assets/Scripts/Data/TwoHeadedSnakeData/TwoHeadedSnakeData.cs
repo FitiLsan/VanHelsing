@@ -32,7 +32,6 @@ namespace BeastHunter
         private Action RoamingStateMsg;
         private Action RestingStateMsg;
         private Action ChasingStateMsg;
-        private Action BackJumpingStateMsg;
         private Action BattleCirclingStateMsg;
         private Action SearchingStateMsg;
         private Action EscapingStateMsg;
@@ -89,7 +88,7 @@ namespace BeastHunter
 
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
             model.Animator.SetFloat("Velosity", model.NavMeshAgent.velocity.sqrMagnitude);
-            Debug.Log($"Snake Velosity = {model.NavMeshAgent.velocity.sqrMagnitude}");
+            
             switch (model.behaviourState)
             {
                 case BehaviourState.None:
@@ -149,7 +148,50 @@ namespace BeastHunter
                     }
                     else
                     {
-                        model.NavMeshAgent.SetDestination(model.ChasingTarget.position);
+                        if (CurrentHealthPercent(model.CurrentHealth) < settings.PercentEscapeHealth && !model.IsAttacking)
+                        {
+                            model.behaviourState = ChangeState(BehaviourState.Escaping, model);
+                        }
+                        else
+                        {
+                            model.NavMeshAgent.SetDestination(model.ChasingTarget.position);
+                        }
+                        
+                    }
+
+                    break;
+                case BehaviourState.Escaping:
+
+                    if (model.NavMeshAgent.remainingDistance <= model.NavMeshAgent.stoppingDistance)
+                    {
+                        if (model.ChasingTarget == null)
+                        {
+                            model.behaviourState = ChangeState(BehaviourState.None, model);
+                        }
+                        else
+                        {
+                            Vector3 navMeshPoint;
+                            bool isSetDestination = false;
+
+                            for (int i = 0; i < 100; i++)
+                            {
+                                if (!RandomBorderCircleNavMeshPoint(model.ChasingTarget.position, settings.EscapeDistance, settings.EscapeDistance * 2, out navMeshPoint))
+                                {
+                                    Debug.LogError(this + ": not found NavMesh in case BehaviourState.Escaping");
+                                    model.behaviourState = ChangeState(BehaviourState.Chasing, model);
+                                    break;
+                                }
+
+                                isSetDestination = model.NavMeshAgent.SetDestination(navMeshPoint);
+                                if (isSetDestination) break;
+                            }
+
+                            if (!isSetDestination)
+                            {
+                                Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Escaping");
+                                model.behaviourState = ChangeState(BehaviourState.Chasing, model);
+                            }
+                        }
                     }
 
                     break;
@@ -212,6 +254,7 @@ namespace BeastHunter
                     break;
 
                 case BehaviourState.Resting:
+                    //Need a Resting animation
                     //model.Animator.SetTrigger("RestingEnd");
                     break;
 
@@ -240,8 +283,7 @@ namespace BeastHunter
                    return BehaviourState.BattleCircling;
 
                 case BehaviourState.Escaping:
-                    // return SetEscapingState(model.NavMeshAgent, model.ChasingTarget.position);
-                    return BehaviourState.Escaping;
+                    return SetEscapingState(model.NavMeshAgent, model.ChasingTarget.position);
 
                 case BehaviourState.Resting:
                     return SetRestingState(model.Animator, ref model.Timer);
@@ -319,6 +361,40 @@ namespace BeastHunter
 
             return BehaviourState.Chasing;
         }
+
+        private BehaviourState SetEscapingState(NavMeshAgent navMeshAgent, Vector3 chasingTargetPosition)
+        {
+            EscapingStateMsg?.Invoke();
+
+            navMeshAgent.speed = settings.EscapingSpeed;
+            navMeshAgent.stoppingDistance = 0;
+            navMeshAgent.updateRotation = true;
+
+            Vector3 navMeshPoint;
+            bool isSetDestination = false;
+
+            for (int i = 0; i < 100; i++)
+            {
+                if (!RandomBorderCircleNavMeshPoint(chasingTargetPosition, settings.EscapeDistance, settings.EscapeDistance * 2, out navMeshPoint))
+                {
+                    Debug.LogError(this + ": not found NavMesh in SetEscapingState method");
+                    return SetChasingState(navMeshAgent);
+                }
+
+                isSetDestination = navMeshAgent.SetDestination(navMeshPoint);
+                if (isSetDestination) break;
+            }
+
+            if (!isSetDestination)
+            {
+                Debug.LogError(this + ": impossible to reach the destination point in SetEscapingState method");
+                return SetChasingState(navMeshAgent);
+            }
+
+            return BehaviourState.Escaping;
+        }
+
+
         #endregion
 
 
@@ -336,6 +412,35 @@ namespace BeastHunter
             rotatePosition2 = transform.rotation.eulerAngles.y;
             return rotatePosition2 - rotatePosition1;
         }
+
+        /// <summary>Searches for a random NavMesh point on the boundary of a circle. If successful saves it to out variable</summary>
+        /// <param name="center">center of circle</param>
+        /// <param name="radius">radius of circle</param>
+        /// <param name="searchDistance">the length of the ray that searches for NavMesh</param>
+        /// <param name="navMeshPoint">out parameter for save the found NavMesh point</param>
+        /// <returns>true if successful</returns>
+        private bool RandomBorderCircleNavMeshPoint(Vector3 center, float radius, float searchDistance, out Vector3 navMeshPoint)
+        {
+            navMeshPoint = default;
+            NavMeshHit navMeshHit;
+            Vector3 randomPoint;
+            Vector2 randomPoint2D;
+            Vector2 center2D = new Vector2(center.x, center.z);
+
+            for (int i = 0; i < 100; i++)
+            {
+                randomPoint2D = new Vector2(Random.value - 0.5f, Random.value - 0.5f).normalized * radius + center2D;
+                randomPoint = new Vector3(randomPoint2D.x, center.y, randomPoint2D.y);
+
+                if (NavMesh.SamplePosition(randomPoint, out navMeshHit, searchDistance, NavMesh.AllAreas))
+                {
+                    navMeshPoint = navMeshHit.position;
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         /// <summary>Searches for a random NavMesh point inside sphere. If successful saves it to out variable</summary>
         /// <param name="center">center of sphere</param>
@@ -361,6 +466,12 @@ namespace BeastHunter
             return false;
         }
 
+        /// <summary>Current health in percent</summary>
+        private float CurrentHealthPercent(float currentHealth)
+        {
+            return currentHealth * 100 / BaseStats.MainStats.MaxHealth;
+        }
+
         /// <summary>Subscribes to message delegates</summary>
         /// <param name="switcher">on/off debug messages</param>
         private void DebugMessages(bool switcher)
@@ -372,7 +483,7 @@ namespace BeastHunter
                 RoamingStateMsg = () => Debug.Log("The snake is roaming");
                 RestingStateMsg = () => Debug.Log("The snake is resting");
                 ChasingStateMsg = () => Debug.Log("The snake is chasing");
-                BackJumpingStateMsg = () => Debug.Log("The snake is jumping back");
+                
                 BattleCirclingStateMsg = () => Debug.Log("The snake is battle circling");
                 SearchingStateMsg = () => Debug.Log("The snake is searching");
                 EscapingStateMsg = () => Debug.Log("The snake is escaping");
@@ -381,7 +492,7 @@ namespace BeastHunter
                 AttackJumpingMsg = () => Debug.Log("The snake is jumping attack");
                 AttackDirectMsg = () => Debug.Log("The snake is attacking direct");
                 AttackBottomMsg = () => Debug.Log("The snake is attacking bottom");
-                OnDeadMsg = () => Debug.Log("Hell hound is dead");
+                OnDeadMsg = () => Debug.Log("Snake is dead");
                 IdlingTimerMsg = (timer) => Debug.Log("Idling time = " + timer);
                 RestingTimerMsg = (timer) => Debug.Log("Resting timer = " + timer);
                 SearchingTimerMsg = (timer) => Debug.Log("Searching timer = " + timer);
@@ -393,5 +504,35 @@ namespace BeastHunter
         }
 
         #endregion
+
+
+        #region EnemyData
+
+        public override void TakeDamage(EnemyModel model, Damage damage)
+        {
+            TwoHeadedSnakeModel twoHeadedSnakeModel = model as TwoHeadedSnakeModel;
+            base.TakeDamage(model, damage);
+
+            TakingDamageMsg?.Invoke();
+            twoHeadedSnakeModel.Animator.SetTrigger("TakeDamage");
+
+            if (model.IsDead)
+            {
+                OnDeadMsg?.Invoke();
+                twoHeadedSnakeModel.Animator.SetTrigger("Dead");
+                twoHeadedSnakeModel.NavMeshAgent.enabled = false;
+            }
+
+            if (twoHeadedSnakeModel.ChasingTarget == null
+                && (twoHeadedSnakeModel.behaviourState == BehaviourState.Roaming
+                    || twoHeadedSnakeModel.behaviourState == BehaviourState.Idling
+                    || twoHeadedSnakeModel.behaviourState == BehaviourState.Resting))
+            {
+                twoHeadedSnakeModel.behaviourState = ChangeState(BehaviourState.Searching, twoHeadedSnakeModel);
+            }
+        }
+
+        #endregion
     }
+
 }

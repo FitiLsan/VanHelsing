@@ -73,6 +73,15 @@ namespace BeastHunter
         [Tooltip("How often will the dog walk. Default: 75.0")]
         [SerializeField] private float _roamingChance = 75.0f;
 
+        [Header("Escape setting")]
+        [Tooltip("Default: 3")]
+        [SerializeField] private float _escapingSpeed = 3.0f;
+        [Tooltip("between 5 and 50. Default: 30")]
+        [Range(5.0f, 100.0f)]
+        [SerializeField] private float _percentEscapeHealth = 30.0f;
+        [Tooltip("Default: 50")]
+        [SerializeField] private float _escapeDistance = 50.0f;
+
         [Header("Idling setting")]
         [Tooltip("Default: 5.0")]
         [SerializeField] private float _idlingMinTime = 5.0f;
@@ -127,8 +136,12 @@ namespace BeastHunter
         public float RestingMinTime => _restingMinTime;
         public float RestingMaxTime => _restingMaxTime;
 
+        public float EscapingSpeed =>_escapingSpeed;
+        public float PercentEscapeHealth => _percentEscapeHealth;
+        public float EscapeDistance => _escapeDistance;
 
         public bool DebugMessages => _debugMessages;
+
         #endregion
     }
 }
