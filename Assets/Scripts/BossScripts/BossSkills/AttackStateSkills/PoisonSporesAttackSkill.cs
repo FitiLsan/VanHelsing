@@ -14,10 +14,6 @@ namespace BeastHunter
         {
         }
 
-        public PoisonSporesAttackSkill(AttackStateSkillsSettings attackStateSkillsSettings, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(attackStateSkillsSettings, skillDictionary, stateMachine)
-        {
-        }
-
         public PoisonSporesAttackSkill((int, float, float, float, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
         }
@@ -25,18 +21,13 @@ namespace BeastHunter
         public override void UseSkill(int id)
         {
             Debug.Log("POISONAttackSkill");
-            //SetNavMeshAgent(_bossModel.BossCurrentTarget.transform.position, 0f);
             _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
             _bossModel.BossAnimator.Play("PoisonAttack", 0, 0f);
             CreateSpores();
 
             TurnOnHitBoxTrigger(_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
 
-            _skillDictionary[id].IsAttackReady = false;
-
-            SkillCooldown(id, _skillDictionary[id].AttackCooldown);
-
-            _stateMachine.CurrentState.isAnimationPlay = true;
+            ReloadSkill(id);
         }
 
         private void CreateSpores()

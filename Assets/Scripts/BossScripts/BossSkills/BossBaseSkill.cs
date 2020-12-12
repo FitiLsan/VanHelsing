@@ -38,11 +38,6 @@ namespace BeastHunter
             _skillDictionary = skillDictionary;
         }
 
-        public BossBaseSkill (AttackStateSkillsSettings attackStateSkillsSettings, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
-        {
-
-        }
-
         public BossBaseSkill ((int, float, float, float, bool)skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
         {
             _attackId = skillInfo.Item1;
@@ -126,6 +121,13 @@ namespace BeastHunter
         {
             _bossModel.BossNavAgent.SetDestination(targetPosition);
             _bossModel.BossNavAgent.speed = speed;
+        }
+
+        protected virtual void ReloadSkill(int id)
+        {
+            _skillDictionary[id].IsAttackReady = false;
+            SkillCooldown(id, _skillDictionary[id].AttackCooldown);
+            _stateMachine.CurrentState.isAnimationPlay = true;
         }
     }
 }

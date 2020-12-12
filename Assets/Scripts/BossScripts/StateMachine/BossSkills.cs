@@ -42,6 +42,8 @@ namespace BeastHunter
             AttackStateSkillsSettings = _stateMachine._model.BossData.AttackStateSkills;
             DefenceStateSkillsSettings = _stateMachine._model.BossData.DefenceStateSkills;
 
+            #region AttackState
+
             DefaultSkill = new DefaultSkill(AttackStateSkillsSettings.GetDefaultSkillInfo() , AttackStateSkillDictionary, _stateMachine);
             HorizontalAttackSkill = new HorizontalAttackSkill(AttackStateSkillsSettings.GetHorizontalSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             StompSplashSkill = new StompSplashAttackSkill(AttackStateSkillsSettings.GetStompSplashSkillInfo(), AttackStateSkillDictionary, _stateMachine);
@@ -53,6 +55,22 @@ namespace BeastHunter
             AttackStateSkillDictionary.Add(StompSplashSkill.AttackId, StompSplashSkill);
             AttackStateSkillDictionary.Add(RageOfForestSkill.AttackId, RageOfForestSkill);
             AttackStateSkillDictionary.Add(PoisonSporesSkill.AttackId, PoisonSporesSkill);
+
+            #endregion
+
+            #region DefenceState
+
+            SelfHealSkill = new SelfHealSkill(DefenceStateSkillsSettings.GetSelfHealSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
+            HardBarkSkill = new HardBark(DefenceStateSkillsSettings.GetHardBarkSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
+            CallOfForestSkill = new CallOfForest(DefenceStateSkillsSettings.GetCallOfForestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
+            CanibalHealingSkill = new CanibalHealingSkill (DefenceStateSkillsSettings.GetCanibalHealingSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
+
+            DefenceStateSkillDictionary.Add(SelfHealSkill.AttackId, SelfHealSkill);
+            DefenceStateSkillDictionary.Add(HardBarkSkill.AttackId, HardBarkSkill);
+            DefenceStateSkillDictionary.Add(CallOfForestSkill.AttackId, CallOfForestSkill);
+            DefenceStateSkillDictionary.Add(CanibalHealingSkill.AttackId, CanibalHealingSkill);
+
+            #endregion
         }
     }
 }

@@ -1,7 +1,14 @@
-﻿namespace BeastHunter
+﻿using UnityEngine;
+
+namespace BeastHunter
 {
     public abstract class BossBaseState
     {
+        protected const float ANGLE_SPEED = 150f;
+        protected const float ANGLE_TARGET_RANGE_MIN = 20f;
+        protected const int DEFAULT_ATTACK_ID = 0;
+        protected const float DISTANCE_TO_START_ATTACK = 4f;
+
         #region Fields
 
         protected BossStateMachine _stateMachine;
@@ -47,6 +54,65 @@
         public abstract void OnExit();
 
         public abstract void OnTearDown();
+
+        protected virtual void SetNavMeshAgent(Vector3 targetPosition, float speed)
+        {
+            _bossModel.BossNavAgent.SetDestination(targetPosition);
+            _bossModel.BossNavAgent.speed = speed;
+        }
+
+        protected bool CheckDirection()
+        {
+            var isNear = _bossData.CheckIsLookAtTarget(_bossModel.BossTransform.rotation, _mainState.TargetRotation, ANGLE_TARGET_RANGE_MIN);
+            if (!isNear)
+            {
+                CheckTargetDirection();
+                TargetOnPlayer();
+            }
+            return isNear;
+        }
+
+        protected void CheckTargetDirection()
+        {
+            Vector3 heading = _bossModel.BossCurrentTarget.transform.position -
+                _bossModel.BossTransform.position;
+
+            int directionNumber = _bossData.AngleDirection(
+                _bossModel.BossTransform.forward, heading, _bossModel.BossTransform.up);
+
+            switch (directionNumber)
+            {
+                case -1:
+                    _bossModel.BossAnimator.Play("TurningLeftState", 0, 0f);
+                    break;
+                case 0:
+                    _bossModel.BossAnimator.Play("IdleState", 0, 0f);
+                    break;
+                case 1:
+                    _bossModel.BossAnimator.Play("TurningRightState", 0, 0f);
+                    break;
+                default:
+                    _bossModel.BossAnimator.Play("IdleState", 0, 0f);
+                    break;
+            }
+        }
+
+
+        protected void TargetOnPlayer()
+        {
+            _bossModel.BossTransform.rotation = _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, ANGLE_SPEED);
+        }
+
+        protected bool CheckDistance(float distanceRangeMin, float distanceRangeMax)
+        {
+            if (distanceRangeMin == -1)
+            {
+                return true;
+            }
+
+            bool isNear = _bossData.CheckIsNearTarget(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position, distanceRangeMin, distanceRangeMax);
+            return isNear;
+        }
 
         #endregion
     }

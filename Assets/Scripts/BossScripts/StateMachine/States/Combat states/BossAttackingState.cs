@@ -9,17 +9,13 @@ namespace BeastHunter
     public class BossAttackingState : BossBaseState, IDealDamage
     {
         #region Constants
-
-        private const float LOOK_TO_TARGET_SPEED = 1f;
-        private const float PART_OF_NONE_ATTACK_TIME_LEFT = 0.15f;
-        private const float PART_OF_NONE_ATTACK_TIME_RIGHT = 0.3f;
-        private const float ANGLE_SPEED = 150f;
-        private const float ANGLE_TARGET_RANGE_MIN = 20f;
-        private const float DISTANCE_TO_START_ATTACK = 4f;
+        //private const float ANGLE_SPEED = 150f;
+        //private const float ANGLE_TARGET_RANGE_MIN = 20f;
+        //private const float DISTANCE_TO_START_ATTACK = 4f;
         private const float DELAY_HAND_TRIGGER = 0.2f;
         private const float ANIMATION_DELAY = 0.2f;
 
-        private const int DEFAULT_ATTACK_ID = 0;
+        //private const int DEFAULT_ATTACK_ID = 0;
 
         #endregion
 
@@ -144,27 +140,18 @@ namespace BeastHunter
             }
         }
 
-        private bool CheckDirection()
-        {
-            var isNear = _bossData.CheckIsLookAtTarget(_bossModel.BossTransform.rotation, _mainState.TargetRotation, ANGLE_TARGET_RANGE_MIN);
-            if (!isNear)
-            {
-                CheckTargetDirection();
-                TargetOnPlayer();
-            }
-            return isNear;
-        }
 
-        private bool CheckDistance(float distanceRangeMin, float distanceRangeMax)
-        {
-            if(distanceRangeMin == -1)
-            {
-                return true;
-            }
 
-            bool isNear = _bossData.CheckIsNearTarget(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position, distanceRangeMin, distanceRangeMax);
-            return isNear;
-        }
+        //private bool CheckDistance(float distanceRangeMin, float distanceRangeMax)
+        //{
+        //    if (distanceRangeMin == -1)
+        //    {
+        //        return true;
+        //    }
+
+        //    bool isNear = _bossData.CheckIsNearTarget(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position, distanceRangeMin, distanceRangeMax);
+        //    return isNear;
+        //}
 
         private void DecideNextMove()
         {
@@ -178,12 +165,6 @@ namespace BeastHunter
             {
                 ChoosingAttackSkill();
             }
-        }
-
-        private void SetNavMeshAgent(Vector3 targetPosition, float speed)
-        {
-            _bossModel.BossNavAgent.SetDestination(targetPosition);
-            _bossModel.BossNavAgent.speed = speed;
         }
 
         private bool OnHitBoxFilter(Collider hitedObject)
@@ -223,36 +204,36 @@ namespace BeastHunter
             }
         }
 
-        private void CheckTargetDirection()
-        {
-            Vector3 heading = _bossModel.BossCurrentTarget.transform.position -
-                _bossModel.BossTransform.position;
+        //private void CheckTargetDirection()
+        //{
+        //    Vector3 heading = _bossModel.BossCurrentTarget.transform.position -
+        //        _bossModel.BossTransform.position;
 
-            int directionNumber = _bossData.AngleDirection(
-                _bossModel.BossTransform.forward, heading, _bossModel.BossTransform.up);
+        //    int directionNumber = _bossData.AngleDirection(
+        //        _bossModel.BossTransform.forward, heading, _bossModel.BossTransform.up);
 
-            switch (directionNumber)
-            {
-                case -1:
-                    _bossModel.BossAnimator.Play("TurningLeftState", 0, 0f);
-                    break;
-                case 0:
-                    _bossModel.BossAnimator.Play("IdleState", 0, 0f);
-                    break;
-                case 1:
-                    _bossModel.BossAnimator.Play("TurningRightState", 0, 0f);
-                    break;
-                default:
-                    _bossModel.BossAnimator.Play("IdleState", 0, 0f);
-                    break;
-            }
-        }
+        //    switch (directionNumber)
+        //    {
+        //        case -1:
+        //            _bossModel.BossAnimator.Play("TurningLeftState", 0, 0f);
+        //            break;
+        //        case 0:
+        //            _bossModel.BossAnimator.Play("IdleState", 0, 0f);
+        //            break;
+        //        case 1:
+        //            _bossModel.BossAnimator.Play("TurningRightState", 0, 0f);
+        //            break;
+        //        default:
+        //            _bossModel.BossAnimator.Play("IdleState", 0, 0f);
+        //            break;
+        //    }
+        //}
 
 
-        private void TargetOnPlayer()
-        {
-            _bossModel.BossTransform.rotation =  _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, ANGLE_SPEED);
-        }
+        //private void TargetOnPlayer()
+        //{
+        //    _bossModel.BossTransform.rotation =  _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, ANGLE_SPEED);
+        //}
 
         #region IDealDamage
 

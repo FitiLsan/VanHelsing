@@ -7,10 +7,7 @@ namespace BeastHunter
 {
     public class SelfHealSkill : BossBaseSkill
     {
-        public SelfHealSkill(AttackStateSkillsSettings attackStateSkillsSettings, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
-            : base(attackStateSkillsSettings, skillDictionary, stateMachine)
-        {
-        }
+        private float _healPower = 10f;
 
         public SelfHealSkill((int, float, float, float, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
             : base(skillInfo, skillDictionary, stateMachine)
@@ -24,8 +21,17 @@ namespace BeastHunter
 
         public override void UseSkill(int id)
         {
-            Debug.Log(" AttackSkill");
+            Debug.Log(" SelfHeal Skill");
+            SetNavMeshAgent(_bossModel.BossTransform.position, 0);
             _bossModel.BossAnimator.Play($"SelfHeal", 0, 0f);
+            Heal();
+            ReloadSkill(id);
         }
+
+        private void Heal()
+        {
+            _stateMachine._model.CurrentHealth += _healPower * Time.deltaTime;
+        }
+        
     }
 }

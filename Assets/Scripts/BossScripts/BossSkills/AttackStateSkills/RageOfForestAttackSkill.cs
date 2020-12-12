@@ -13,10 +13,6 @@ namespace BeastHunter
         {
         }
 
-        public RageOfForestAttackSkill(AttackStateSkillsSettings attackStateSkillsSettings, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(attackStateSkillsSettings, skillDictionary, stateMachine)
-        {
-        }
-
         public RageOfForestAttackSkill((int, float, float, float, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
         }
@@ -34,11 +30,7 @@ namespace BeastHunter
             TurnOnHitBoxTrigger(_bossModel.LeftHandBehavior, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
             TurnOnHitBoxCollider(_bossModel.LeftHandCollider, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
 
-            _skillDictionary[id].IsAttackReady = false;
-
-            SkillCooldown(id, _skillDictionary[id].AttackCooldown);
-
-            _stateMachine.CurrentState.isAnimationPlay = true;
+            ReloadSkill(id);
         }
 
     }

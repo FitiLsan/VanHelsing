@@ -13,10 +13,6 @@ namespace BeastHunter
         {
         }
 
-        public StompSplashAttackSkill(AttackStateSkillsSettings attackStateSkillsSettings, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(attackStateSkillsSettings, skillDictionary, stateMachine)
-        {
-        }
-
         public StompSplashAttackSkill((int, float, float, float, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
         }
@@ -30,11 +26,7 @@ namespace BeastHunter
 
             TurnOnHitBoxTrigger(_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
 
-            _skillDictionary[id].IsAttackReady = false;
-
-            SkillCooldown(id, _skillDictionary[id].AttackCooldown);
-
-            _stateMachine.CurrentState.isAnimationPlay = true;
+            ReloadSkill(id);
         }
 
         private void StompShockWave()
@@ -49,6 +41,7 @@ namespace BeastHunter
                     //  list[0].GetComponent<Rigidbody>().AddForce((_bossModel.LeftFoot.position - _bossModel.BossCurrentPosition) * force, ForceMode.Impulse);
                 }
             }
+
         }
     }
 }

@@ -74,7 +74,7 @@ namespace BeastHunter
             if (!_stateMachine._model.IsDead)
             {
                 SpeedCheck();
-               // HealthCheck();
+                HealthCheck();
                 CheckDirection();
                 HungerCheck();
                 GetTargetCurrentPosition();
@@ -114,6 +114,14 @@ namespace BeastHunter
             if (!_stateMachine._model.IsDead)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Patroling);
+            }
+        }
+
+        private void HealthCheck()
+        {
+            if (_bossModel.CurrentHealth <= _bossData._bossStats.MainStats.MaxHealth / 2)
+            {
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
             }
         }
 
