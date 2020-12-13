@@ -66,18 +66,38 @@ namespace BeastHunter
         [Tooltip("Agent types index, min: 0, max: agent count")]
         [SerializeField] private int _navMeshAgentTypeIndex = 0;
 
+        [Header("Damage")]
+        [SerializeField] private float _physicalDamage;
+        [SerializeField] private float _stunProbability;
+
+        [Header("Attacks")]
+        [Tooltip("The speed at which the snake will turn towards the player during attacks. Default: 0.01")]
+        [SerializeField]  private float _attacksTurnSpeed = 0.01f;
+        [Tooltip("The maximum distance from which the snake will try to attack direct. Default: 3")]
+        [SerializeField] private float _tailAttackDistance = 5.0f;
+        [Tooltip("The maximum distance from which the snake will try to attack direct. Default: 3")]
+        [SerializeField] private float _twinHeadAttackDistance = 4.0f;
+        [Tooltip("Default: 3")]
+        [SerializeField] private float _attackCooldown = 3.0f;
+        
         [Header("Roaming setting")]
-        [Tooltip("The radius the dog will move away from the spawn point. Default: 50.0")]
+        [Tooltip("The radius the snake will move away from the spawn point. Default: 50.0")]
         [SerializeField] private float _wanderingRadius = 50.0f;
 
-        [Tooltip("How often will the dog walk. Default: 75.0")]
+        [Tooltip("How often will the snake walk. Default: 75.0")]
         [SerializeField] private float _roamingChance = 75.0f;
+
+        [Header("Chasing")]
+        [Tooltip("Turn rate near target. Default: 0.05")]
+        [SerializeField] private float _chasingTurnSpeedNearTarget = 0.05f;
+        [Tooltip("Distance at which ChasingTurnSpeedNearTarget starts to operate. Default: 8.0")]
+        [SerializeField] private float _chasingTurnDistanceNearTarget = 8.0f;
 
         [Header("Escape setting")]
         [Tooltip("Default: 3")]
         [SerializeField] private float _escapingSpeed = 3.0f;
         [Tooltip("between 5 and 50. Default: 30")]
-        [Range(5.0f, 100.0f)]
+        [Range(5.0f, 50.0f)]
         [SerializeField] private float _percentEscapeHealth = 30.0f;
         [Tooltip("Default: 50")]
         [SerializeField] private float _escapeDistance = 50.0f;
@@ -139,6 +159,16 @@ namespace BeastHunter
         public float EscapingSpeed =>_escapingSpeed;
         public float PercentEscapeHealth => _percentEscapeHealth;
         public float EscapeDistance => _escapeDistance;
+
+        public float PhysicalDamage => _physicalDamage;
+        public float StunProbability => _stunProbability;
+
+        public float AttacksTurnSpeed => _attacksTurnSpeed;
+        public float TailAttackDistance => _tailAttackDistance;
+        public float TwinHeadAttackDistance => _twinHeadAttackDistance;
+        public float AttackCooldown => _attackCooldown; 
+        public float ChasingTurnSpeedNearTarget => _chasingTurnSpeedNearTarget;
+        public float ChasingTurnDistanceNearTarget => _chasingTurnDistanceNearTarget;
 
         public bool DebugMessages => _debugMessages;
 

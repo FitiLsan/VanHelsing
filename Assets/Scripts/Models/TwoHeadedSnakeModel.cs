@@ -14,14 +14,18 @@ namespace BeastHunter
         private InteractableObjectBehavior[] _interactableObjects;
         private InteractableObjectBehavior _detectionSphereIO;
         private SphereCollider _detectionSphere;
+        private TwoHeadedSnakeAttackStateBehaviour[] _attackStates;
 
         public TwoHeadedSnakeData.BehaviourState behaviourState;
-        public Transform ChasingTarget;
-        public float Timer;
-        public bool IsAttacking;
+        public Transform chasingTarget;
 
-        public float RotatePosition1;
-        public float RotatePosition2;
+        public float timer;
+        public float attackCoolDownTimer;
+
+        public bool isAttacking;
+
+        public float rotatePosition1;
+        public float rotatePosition2;
 
         #endregion
 
@@ -29,7 +33,7 @@ namespace BeastHunter
         #region Properties
 
         public CapsuleCollider CapsuleCollider { get; }
-        public Rigidbody Rigitbody { get; }
+        public Rigidbody Rigidbody { get; }
         public NavMeshAgent NavMeshAgent { get; }
 
         public TwoHeadedSnakeSettings Settings { get; }
@@ -37,6 +41,7 @@ namespace BeastHunter
         public Vector3 SpawnPoint;
         public Animator Animator { get; }
         public Transform Transform { get; }
+        public Collider AttackCollider { get; }
         #endregion
 
 
@@ -48,24 +53,25 @@ namespace BeastHunter
             Settings = _twoHeadedSnakeData.settings;
             TwoHeadedSnake = prefab;
             SpawnPoint = spawnPosition;
+            attackCoolDownTimer = 0;
 
             Transform = TwoHeadedSnake.transform;
             behaviourState = TwoHeadedSnakeData.BehaviourState.None;
 
             if (TwoHeadedSnake.GetComponent<Rigidbody>() != null)
             {
-                Rigitbody = TwoHeadedSnake.GetComponent<Rigidbody>();
+                Rigidbody = TwoHeadedSnake.GetComponent<Rigidbody>();
             }
             else
             {
-                Rigitbody = TwoHeadedSnake.AddComponent<Rigidbody>();
-                Rigitbody.freezeRotation = true;
-                Rigitbody.mass = Settings.RigitbodyMass;
-                Rigitbody.drag = Settings.RigitbodyDrag;
-                Rigitbody.angularDrag = Settings.RigitbodyAngularDrag;
+                Rigidbody = TwoHeadedSnake.AddComponent<Rigidbody>();
+                Rigidbody.freezeRotation = true;
+                Rigidbody.mass = Settings.RigitbodyMass;
+                Rigidbody.drag = Settings.RigitbodyDrag;
+                Rigidbody.angularDrag = Settings.RigitbodyAngularDrag;
             }
 
-            Rigitbody.isKinematic = Settings.IsRigitbodyKinematic;
+            Rigidbody.isKinematic = Settings.IsRigitbodyKinematic;
 
             if (TwoHeadedSnake.GetComponent<CapsuleCollider>() != null)
             {
@@ -108,6 +114,13 @@ namespace BeastHunter
 
             _detectionSphere = _detectionSphereIO.GetComponent<SphereCollider>();
             _detectionSphere.radius = Settings.SphereColliderRadius;
+
+            _attackStates = Animator.GetBehaviours<TwoHeadedSnakeAttackStateBehaviour>();
+            for (int i = 0; i < _attackStates.Length; i++)
+            {
+                _attackStates[i].OnStateEnterHandler += OnAttackStateEnter;
+                _attackStates[i].OnStateExitHandler += OnAttackStateExit;
+            }
 
             CurrentHealth = _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
             IsDead = false;
@@ -164,7 +177,9 @@ namespace BeastHunter
         private bool Filter(Collider collider) => _twoHeadedSnakeData.Filter(collider);
         private void OnDetectionEnemy(ITrigger trigger, Collider collider) => _twoHeadedSnakeData.OnDetectionEnemy(collider, this);
         private void OnLostEnemy(ITrigger trigger, Collider collider) => _twoHeadedSnakeData.OnLostEnemy(collider, this);
-
+        private void OnHitEnemy(ITrigger trigger, Collider collider) => _twoHeadedSnakeData.OnHitEnemy(collider, this);
+        private void OnAttackStateEnter() => _twoHeadedSnakeData.OnAttackStateEnter(this);
+        private void OnAttackStateExit() => _twoHeadedSnakeData.OnAttackStateExit(this);
         #endregion
 
 

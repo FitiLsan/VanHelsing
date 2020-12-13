@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseStats:
     MainStats:
-      _maxHealth: 0
+      _maxHealth: 500
       _enemyType: 0
       _viewRadius: 0
       _viewAngle: 0
@@ -38,12 +38,23 @@ MonoBehaviour:
     _sphereColliderRadius: 10
     _maxRoamingSpeed: 2
     _maxChasingSpeed: 4
-    _stoppingDistance: 2
+    _stoppingDistance: 3
     _angularSpeed: 550
     _navMeshAcceleration: 10
     _navMeshAgentTypeIndex: 1
+    _physicalDamage: 0
+    _stunProbability: 0
+    _attacksTurnSpeed: 0.5
+    _tailAttackDistance: 8
+    _twinHeadAttackDistance: 8
+    _attackCooldown: 2
     _wanderingRadius: 50
     _roamingChance: 75
+    _chasingTurnSpeedNearTarget: 0.1
+    _chasingTurnDistanceNearTarget: 10
+    _escapingSpeed: 3
+    _percentEscapeHealth: 30
+    _escapeDistance: 50
     _idlingMinTime: 5
     _idlingMaxTime: 10
     _restingChance: 20
