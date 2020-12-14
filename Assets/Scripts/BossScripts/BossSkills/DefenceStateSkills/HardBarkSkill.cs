@@ -28,7 +28,7 @@ namespace BeastHunter
 
         private void CreateBark()
         {
-            //buffSeriveces
+          //BuffService
         }
         
     }
