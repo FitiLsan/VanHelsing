@@ -74,6 +74,7 @@ namespace BeastHunter
             WeaponIO.OnTriggerEnterHandler = OnHitEnemy;
 
             AttackCollider = WeaponIO.GetComponent<BoxCollider>();
+            
             AttackCollider.enabled = false;
 
             NavMeshAgent = HellHound.GetComponent<NavMeshAgent>();

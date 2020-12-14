@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -170,7 +171,6 @@ namespace BeastHunter
                                     SmoothTurn(model.chasingTarget.position - model.Transform.position, model.Transform.forward, settings.AttacksTurnSpeed) :
                                     SmoothTurn(model.chasingTarget.position - model.Transform.position, model.Transform.forward, settings.ChasingTurnSpeedNearTarget);
                                 
-                                //model.Transform.LookAt(model.chasingTarget.transform);
                             }
 
                             if (!model.isAttacking)
@@ -261,19 +261,25 @@ namespace BeastHunter
             if (enemy != null) enemy.TakeDamageEvent(damage);
             else Debug.LogError(this + " not found enemy InteractableObjectBehavior");
 
-            model.AttackCollider.enabled = false;
+
+            SwitcherColladers(model.TailAttackColliders, false);
+            SwitcherColladers(model.TwinHeadAttackColliders, false);
         }
 
         public void OnAttackStateEnter(TwoHeadedSnakeModel model)
         {
+            
             model.isAttacking = true;
-            //model.AttackCollider.enabled = true;
+            SwitcherColladers(model.TailAttackColliders, true);
+            SwitcherColladers(model.TwinHeadAttackColliders, true);
         }
 
         public void OnAttackStateExit(TwoHeadedSnakeModel model)
         {
+            
             model.isAttacking = false;
-            //model.AttackCollider.enabled = false;
+            SwitcherColladers(model.TailAttackColliders, false);
+            SwitcherColladers(model.TwinHeadAttackColliders, false);
         }
         #endregion
 
@@ -610,6 +616,16 @@ namespace BeastHunter
                 OnLostSightEnemyMsg = () => Debug.Log("The snake lost sight of the target");
                 
             }
+        }
+
+        private void SwitcherColladers(Collider[] colliders, bool enableSwitcher)
+        {
+
+            foreach (var collider in colliders)
+            {
+                collider.enabled = enableSwitcher;
+            }
+
         }
 
         #endregion

@@ -77,8 +77,8 @@ namespace BeastHunter
         [SerializeField] private float _tailAttackDistance = 5.0f;
         [Tooltip("The maximum distance from which the snake will try to attack direct. Default: 3")]
         [SerializeField] private float _twinHeadAttackDistance = 4.0f;
-        [Tooltip("Default: 3")]
-        [SerializeField] private float _attackCooldown = 3.0f;
+        [Tooltip("Default: 2")]
+        [SerializeField] private float _attackCooldown = 2.0f;
         
         [Header("Roaming setting")]
         [Tooltip("The radius the snake will move away from the spawn point. Default: 50.0")]

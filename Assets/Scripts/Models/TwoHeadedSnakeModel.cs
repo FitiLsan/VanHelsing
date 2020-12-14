@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,11 +11,16 @@ namespace BeastHunter
 
         #region Fields
 
+        private int HEAD_COLLIDER_COUNT = 2;
+        private int TAIL_COLLIDER_COUNT = 4;
+
         private TwoHeadedSnakeData _twoHeadedSnakeData;
         private InteractableObjectBehavior[] _interactableObjects;
         private InteractableObjectBehavior _detectionSphereIO;
         private SphereCollider _detectionSphere;
         private TwoHeadedSnakeAttackStateBehaviour[] _attackStates;
+        private Collider[] _tailAttackColliders;
+        private Collider[] _twinHeadAttackColliders;
 
         public TwoHeadedSnakeData.BehaviourState behaviourState;
         public Transform chasingTarget;
@@ -41,7 +47,9 @@ namespace BeastHunter
         public Vector3 SpawnPoint;
         public Animator Animator { get; }
         public Transform Transform { get; }
-        public Collider AttackCollider { get; }
+        public InteractableObjectBehavior [] WeaponsIO { get; }
+        public Collider[] TailAttackColliders { get => _tailAttackColliders; }
+        public Collider[] TwinHeadAttackColliders { get => _twinHeadAttackColliders; }
         #endregion
 
 
@@ -114,6 +122,16 @@ namespace BeastHunter
 
             _detectionSphere = _detectionSphereIO.GetComponent<SphereCollider>();
             _detectionSphere.radius = Settings.SphereColliderRadius;
+
+            WeaponsIO = TwoHeadedSnake.GetComponentsInChildren<WeaponHitBoxBehavior>();
+          
+            for (int i = 0; i < WeaponsIO.Length; i++)
+            {
+                WeaponsIO[i].OnFilterHandler = Filter;
+                WeaponsIO[i].OnTriggerEnterHandler = OnHitEnemy;
+            }
+
+            AddAttackColliderCollection(WeaponsIO);
 
             _attackStates = Animator.GetBehaviours<TwoHeadedSnakeAttackStateBehaviour>();
             for (int i = 0; i < _attackStates.Length; i++)
@@ -209,7 +227,7 @@ namespace BeastHunter
                       $" - index #{agentIndex}");
             return agentTypeID;
         }
-
+        
         private InteractableObjectBehavior GetInteractableObject(InteractableObjectType type)
         {
             for (int i = 0; i < _interactableObjects.Length; i++)
@@ -220,6 +238,38 @@ namespace BeastHunter
             return null;
         }
 
+        private void AddAttackColliderCollection(InteractableObjectBehavior[] weaponBehaviors)
+        {
+            _twinHeadAttackColliders = new Collider[HEAD_COLLIDER_COUNT];
+            _tailAttackColliders = new Collider[TAIL_COLLIDER_COUNT];
+            
+            int headCountIndex = 0;
+            int tailCountIndex = 0;
+
+            for (int i = 0; i < weaponBehaviors.Length; i++)
+            {
+
+                if (weaponBehaviors[i].name == "Bone14" || weaponBehaviors[i].name == "Bone14(mirrored)")
+                {
+                   
+                    _twinHeadAttackColliders[headCountIndex] = weaponBehaviors[i].GetComponent<BoxCollider>();
+                    _twinHeadAttackColliders[headCountIndex].enabled = false;
+                    headCountIndex++;
+
+                }
+                else 
+                {
+                   
+                    _tailAttackColliders[tailCountIndex] = weaponBehaviors[i].GetComponent<BoxCollider>();
+                    _tailAttackColliders[tailCountIndex].enabled = false;
+                    tailCountIndex++;
+
+                }
+
+            }
+
+         
+        }
         #endregion
 
     }
