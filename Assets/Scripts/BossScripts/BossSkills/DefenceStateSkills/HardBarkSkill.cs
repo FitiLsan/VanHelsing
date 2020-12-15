@@ -17,6 +17,10 @@ namespace BeastHunter
         {
         }
 
+        public override void StopSkill()
+        {
+        }
+
         public override void UseSkill(int id)
         {
             Debug.Log("Hard Bark Skill");

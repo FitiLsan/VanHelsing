@@ -89,6 +89,8 @@ namespace BeastHunter
 
         public abstract void UseSkill(int id);
 
+        public abstract void StopSkill();
+
         public virtual void StartCooldown(int skillId, float coolDownTime)
         {
             if (!_skillDictionary[skillId].IsCooldownStart & !_skillDictionary[skillId].IsSkillReady)

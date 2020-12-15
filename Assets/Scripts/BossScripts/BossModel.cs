@@ -231,12 +231,18 @@ namespace BeastHunter
             BarkBuffEffectPrefab = BossSettings.BarkBuffEffect;
             CallOfForestEffectPrefab = BossSettings.CallOfForestEffect;
 
-            GameObject _healAura = GameObject.Instantiate(HealAuraPrefab,BossTransform.position, Quaternion.identity, BossTransform);
-            healAura = healAura.GetComponent<ParticleSystem>();
-            GameObject _barkBuffEffect = GameObject.Instantiate(BarkBuffEffectPrefab, BossTransform.position, Quaternion.identity, BossTransform);
+            GameObject _healAura = GameObject.Instantiate(HealAuraPrefab, BossTransform.position, Quaternion.identity, BossTransform);
+            healAura = _healAura.GetComponent<ParticleSystem>();
+            // _healAura.SetActive(false);
+            healAura.Stop();
+            GameObject _barkBuffEffect = GameObject.Instantiate(BarkBuffEffectPrefab, BossTransform.position, BarkBuffEffectPrefab.transform.rotation , BossTransform);
             barkBuffEffect = _barkBuffEffect.GetComponent<ParticleSystem>();
-            GameObject _callOfForestEffect = GameObject.Instantiate(CallOfForestEffectPrefab, BossTransform.position, Quaternion.identity, BossTransform);
+            // _barkBuffEffect.SetActive(false);
+            barkBuffEffect.Stop();
+            GameObject _callOfForestEffect = GameObject.Instantiate(CallOfForestEffectPrefab, BossTransform.position + new Vector3(-0.65f, 5, 1), Quaternion.identity, BossTransform);
             callOfForestEffect = _callOfForestEffect.GetComponent<ParticleSystem>();
+            //   _callOfForestEffect.SetActive(false);
+            callOfForestEffect.Stop();
 
 
             GameObject leftFootStompPuf = GameObject.Instantiate(StompPufPrefab, LeftFoot.position, LeftFoot.rotation, LeftFoot);

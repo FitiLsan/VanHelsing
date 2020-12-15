@@ -33,5 +33,9 @@ namespace BeastHunter
             ReloadSkill(id);
         }
 
+        public override void StopSkill()
+        {
+        }
+
     }
 }

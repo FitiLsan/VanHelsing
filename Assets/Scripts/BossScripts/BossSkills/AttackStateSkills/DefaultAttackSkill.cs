@@ -42,5 +42,9 @@ namespace BeastHunter
 
             _stateMachine.CurrentState.isAnimationPlay = true;
         }
+
+        public override void StopSkill()
+        {
+        }
     }
 }

@@ -51,5 +51,8 @@ namespace BeastHunter
                 TimeRem.AddTimeRemaining(j * 0.1f);
             }
         }
+        public override void StopSkill()
+        {
+        }
     }
 }

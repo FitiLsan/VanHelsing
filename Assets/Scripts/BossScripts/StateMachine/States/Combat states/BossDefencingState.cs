@@ -62,7 +62,7 @@ namespace BeastHunter
 
         public override void OnExit()
         {
-
+            CurrentSkill?.StopSkill();
         }
 
         public override void OnTearDown()
@@ -104,7 +104,8 @@ namespace BeastHunter
                 _skillId = DEFAULT_ATTACK_ID;
             }
 
-            _stateMachine.BossSkills.DefenceStateSkillDictionary[_skillId].UseSkill(_skillId);
+            CurrentSkill = _stateMachine.BossSkills.DefenceStateSkillDictionary[_skillId];
+            CurrentSkill.UseSkill(_skillId);
             isAnySkillUsed = true;
         }
 
@@ -115,6 +116,8 @@ namespace BeastHunter
             {
                 base.CurrentAttackTime = _bossModel.BossAnimator.GetCurrentAnimatorStateInfo(0).length + ANIMATION_DELAY;
                 isAnimationPlay = false;
+                //TimeRemaining timeRemaining = new TimeRemaining(() => CurrentSkill.StopSkill(), CurrentAttackTime);
+                //timeRemaining.AddTimeRemaining();
             }
 
             if (base.CurrentAttackTime > 0)
@@ -124,7 +127,8 @@ namespace BeastHunter
             }
             if (base.CurrentAttackTime <= 0)
             {
-                if(!isAnimationPlay & isAnySkillUsed)
+                CurrentSkill?.StopSkill();
+                if (!isAnimationPlay & isAnySkillUsed)
                 {
                    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
                     return;

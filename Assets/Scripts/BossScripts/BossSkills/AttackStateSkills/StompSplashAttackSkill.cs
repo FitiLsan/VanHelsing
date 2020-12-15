@@ -43,5 +43,8 @@ namespace BeastHunter
             }
 
         }
+        public override void StopSkill()
+        {
+        }
     }
 }

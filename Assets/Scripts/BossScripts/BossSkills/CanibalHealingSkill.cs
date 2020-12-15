@@ -29,6 +29,10 @@ namespace BeastHunter
             ReloadSkill(id);
         }
 
+        public override void StopSkill()
+        {
+        }
+
         private void CatchTarget()
         {
             var catchlist = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.BossTransform.position, _catchRadius, "Tree");

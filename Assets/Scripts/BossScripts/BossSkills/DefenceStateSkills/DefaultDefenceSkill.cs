@@ -19,6 +19,11 @@ namespace BeastHunter
         {
         }
 
+        public override void StopSkill()
+        {
+         
+        }
+
         public override void UseSkill(int id)
         {
             Debug.Log("Default Defence Skilll");

@@ -20,6 +20,11 @@ namespace BeastHunter
         {
         }
 
+        public override void StopSkill()
+        {
+            
+        }
+
         public override void UseSkill(int id)
         {
             Debug.Log("Call of Forest Skill");

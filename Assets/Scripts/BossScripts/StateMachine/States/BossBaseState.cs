@@ -27,6 +27,7 @@ namespace BeastHunter
         public float CurrentAttackTime { get; protected set; }
         public bool isAnimationPlay { get;  set; }
         public bool isAnySkillUsed { get; protected set; }
+        public BossBaseSkill CurrentSkill { get; protected set; }
 
         #endregion
 

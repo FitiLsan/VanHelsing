@@ -19,6 +19,11 @@ namespace BeastHunter
         {
         }
 
+        public override void StopSkill()
+        {
+            _bossModel.healAura.Stop();
+        }
+
         public override void UseSkill(int id)
         {
             Debug.Log(" SelfHeal Skill");
@@ -27,6 +32,8 @@ namespace BeastHunter
             _bossModel.healAura.Play(true);
             TimeRemaining timeRemaining = new TimeRemaining(() => Heal(), 0.5f, true);
             timeRemaining.AddTimeRemaining(0.5f);
+
+            
             //Heal();
             ReloadSkill(id);
         }
