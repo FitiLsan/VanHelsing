@@ -174,11 +174,6 @@ namespace BeastHunter
             
         }
 
-        public override void DoSmth(string how)
-        {
-            _twoHeadedSnakeData.Do(how);
-        }
-
         public override void TakeDamage(Damage damage)
         {
             if (!IsDead)

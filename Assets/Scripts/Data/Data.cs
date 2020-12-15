@@ -419,9 +419,14 @@ namespace BeastHunter
             {
                 if (_twoHeadedSnakeData == null)
                 {
-                    _twoHeadedSnakeData = Resources.Load<TwoHeadedSnakeData>("Data/" + Instance._twoHeadedSnakeDataPath);
+                    _twoHeadedSnakeData =
+                        Resources.Load<TwoHeadedSnakeData>("Data/" + Instance._twoHeadedSnakeDataPath);
                 }
+
                 return _twoHeadedSnakeData;
+            }
+        }
+
         public static BouldersData BoulderObjectData
         {
             get
