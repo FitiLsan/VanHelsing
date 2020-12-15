@@ -26,6 +26,7 @@ namespace BeastHunter
         public bool IsBattleState { get; protected set; }
         public float CurrentAttackTime { get; protected set; }
         public bool isAnimationPlay { get;  set; }
+        public bool isAnySkillUsed { get; protected set; }
 
         #endregion
 

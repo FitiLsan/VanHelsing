@@ -60,8 +60,17 @@ namespace BeastHunter
         public GameObject SporePrefab;
         public GameObject Ruler;
         public GameObject StompPufPrefab;
+        public GameObject HealAuraPrefab;
+        public GameObject BarkBuffEffectPrefab;
+        public GameObject CallOfForestEffectPrefab;
+
+
         public ParticleSystem leftStompEffect;
         public ParticleSystem rightStompEffect;
+        public ParticleSystem healAura;
+        public ParticleSystem barkBuffEffect;
+        public ParticleSystem callOfForestEffect;
+
 
         #endregion
 
@@ -218,6 +227,17 @@ namespace BeastHunter
             RightHandBehavior.IsInteractable = false;
 
             StompPufPrefab = BossSettings.StompPuf;
+            HealAuraPrefab = BossSettings.HealAura;
+            BarkBuffEffectPrefab = BossSettings.BarkBuffEffect;
+            CallOfForestEffectPrefab = BossSettings.CallOfForestEffect;
+
+            GameObject _healAura = GameObject.Instantiate(HealAuraPrefab,BossTransform.position, Quaternion.identity, BossTransform);
+            healAura = healAura.GetComponent<ParticleSystem>();
+            GameObject _barkBuffEffect = GameObject.Instantiate(BarkBuffEffectPrefab, BossTransform.position, Quaternion.identity, BossTransform);
+            barkBuffEffect = _barkBuffEffect.GetComponent<ParticleSystem>();
+            GameObject _callOfForestEffect = GameObject.Instantiate(CallOfForestEffectPrefab, BossTransform.position, Quaternion.identity, BossTransform);
+            callOfForestEffect = _callOfForestEffect.GetComponent<ParticleSystem>();
+
 
             GameObject leftFootStompPuf = GameObject.Instantiate(StompPufPrefab, LeftFoot.position, LeftFoot.rotation, LeftFoot);
             leftStompEffect = leftFootStompPuf.GetComponent<ParticleSystem>();
@@ -314,7 +334,10 @@ namespace BeastHunter
 
             if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.HealthPoints / 2)
             {
-                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
+                {
+                    BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                }
             }
 
             if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.HealthPoints * 0.1f)
@@ -329,6 +352,10 @@ namespace BeastHunter
             {
                 //currentState.15%Damage();
                 Debug.Log("Hit 18% hp");
+                if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
+                {
+                    BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                }
             }
         }
 

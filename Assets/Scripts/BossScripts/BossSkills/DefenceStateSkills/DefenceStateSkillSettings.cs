@@ -9,6 +9,22 @@ namespace BeastHunter
     {
         #region Fields
 
+        [Header("[Default Defence]")]
+
+        [Tooltip("Skill ID")]
+        [SerializeField] private int _defaultDefenceSkillId;
+        [Tooltip("Skill Range Min")]
+        [Range(-1.0f, 30.0f)]
+        [SerializeField] private float _defaultDefenceSkillRangeMin;
+        [Tooltip("Skill Range Max")]
+        [Range(-1.0f, 30.0f)]
+        [SerializeField] private float _defaultDefenceSkillRangeMax;
+        [Tooltip("Skill Cooldown")]
+        [Range(0.0f, 200.0f)]
+        [SerializeField] private float _defaultDefenceSkillCooldown;
+        [Tooltip("Skill Ready")]
+        [SerializeField] private bool _defaultDefenceSkillReady;
+
         [Header("[Self Heal]")]
 
         [Tooltip("Skill ID")]
@@ -79,6 +95,12 @@ namespace BeastHunter
 
         #region Properties
 
+        public int DefaultDefenceSkillId => _defaultDefenceSkillId;
+        public float DefaultDefenceSkillRangeMin => _defaultDefenceSkillRangeMin;
+        public float DefaultDefenceSkillRangeMax => _defaultDefenceSkillRangeMax;
+        public float DefaultDefenceSkillCooldown => _defaultDefenceSkillCooldown;
+        public bool DefaultDefenceSkillReady => _defaultDefenceSkillReady;
+
         public int SelfHealSkillId => _selfHealSkillId;
         public float SelfHealSkillRangeMin => _selfHealSkillRangeMin;
         public float SelfHealSkillRangeMax => _selfHealSkillRangeMax;
@@ -107,6 +129,12 @@ namespace BeastHunter
 
 
         #region Methods
+
+        public (int, float, float, float, bool) GetDefaultDefencelSkillInfo()
+        {
+            var tuple = (DefaultDefenceSkillId, DefaultDefenceSkillRangeMin, DefaultDefenceSkillRangeMax, DefaultDefenceSkillCooldown, DefaultDefenceSkillReady);
+            return tuple;
+        }
 
         public (int, float, float, float, bool) GetSelfHealSkillInfo()
         {

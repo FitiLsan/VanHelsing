@@ -9,12 +9,12 @@ namespace BeastHunter
     {
         #region Fields
 
-        private int _attackId;
-        private float _attackRangeMin;
-        private float _attackRangeMax;
-        private float _attackCooldown;
+        private int _skillId;
+        private float _skillRangeMin;
+        private float _skillRangeMax;
+        private float _skillCooldown;
         private bool _isCooldownStart;
-        private bool _isAttackReady;
+        private bool _isSkillReady;
 
         protected BossModel _bossModel;
         protected WeaponHitBoxBehavior _currenTriggertHand;
@@ -28,11 +28,11 @@ namespace BeastHunter
 
         public BossBaseSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
         {
-            _attackId = Id;
-            _attackRangeMin = RangeMin;
-            _attackRangeMax = RangeMax;
-            _attackCooldown = Cooldown;
-            _isAttackReady = IsReady;
+            _skillId = Id;
+            _skillRangeMin = RangeMin;
+            _skillRangeMax = RangeMax;
+            _skillCooldown = Cooldown;
+            _isSkillReady = IsReady;
             _stateMachine = stateMachine;
             _bossModel = stateMachine._model;
             _skillDictionary = skillDictionary;
@@ -40,11 +40,11 @@ namespace BeastHunter
 
         public BossBaseSkill ((int, float, float, float, bool)skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
         {
-            _attackId = skillInfo.Item1;
-            _attackRangeMin = skillInfo.Item2;
-            _attackRangeMax = skillInfo.Item3;
-            _attackCooldown = skillInfo.Item4;
-            _isAttackReady = skillInfo.Item5;
+            _skillId = skillInfo.Item1;
+            _skillRangeMin = skillInfo.Item2;
+            _skillRangeMax = skillInfo.Item3;
+            _skillCooldown = skillInfo.Item4;
+            _isSkillReady = skillInfo.Item5;
             _stateMachine = stateMachine;
             _bossModel = stateMachine._model;
             _skillDictionary = skillDictionary;
@@ -54,23 +54,23 @@ namespace BeastHunter
 
         #region Properties
 
-        public int AttackId => _attackId;
+        public int SkillId => _skillId;
 
-        public float AttackRangeMin => _attackRangeMin;
+        public float SkillRangeMin => _skillRangeMin;
 
-        public float AttackRangeMax => _attackRangeMax;
+        public float SkillRangeMax => _skillRangeMax;
 
-        public float AttackCooldown => _attackCooldown;
+        public float SkillCooldown => _skillCooldown;
 
-        public bool IsAttackReady
+        public bool IsSkillReady
         {
             get
             {
-                return _isAttackReady;
+                return _isSkillReady;
             }
             set
             {
-                _isAttackReady = value;
+                _isSkillReady = value;
             }
         }
 
@@ -89,9 +89,9 @@ namespace BeastHunter
 
         public abstract void UseSkill(int id);
 
-        public virtual void SkillCooldown(int skillId, float coolDownTime)
+        public virtual void StartCooldown(int skillId, float coolDownTime)
         {
-            if (!_skillDictionary[skillId].IsCooldownStart & !_skillDictionary[skillId].IsAttackReady)
+            if (!_skillDictionary[skillId].IsCooldownStart & !_skillDictionary[skillId].IsSkillReady)
             {
                 TimeRemaining currentSkill = new TimeRemaining(() => SetReadySkill(skillId), coolDownTime);
                 currentSkill.AddTimeRemaining(coolDownTime);
@@ -101,7 +101,7 @@ namespace BeastHunter
 
         private void SetReadySkill(int id)
         {
-            _skillDictionary[id].IsAttackReady = true;
+            _skillDictionary[id].IsSkillReady = true;
             _skillDictionary[id].IsCooldownStart = false;
         }
 
@@ -125,8 +125,8 @@ namespace BeastHunter
 
         protected virtual void ReloadSkill(int id)
         {
-            _skillDictionary[id].IsAttackReady = false;
-            SkillCooldown(id, _skillDictionary[id].AttackCooldown);
+            _skillDictionary[id].IsSkillReady = false;
+            StartCooldown(id, _skillDictionary[id].SkillCooldown);
             _stateMachine.CurrentState.isAnimationPlay = true;
         }
     }

@@ -40,17 +40,19 @@ namespace BeastHunter
 
         public override void Initialise()
         {
+            _bossModel.CurrentHealth = 49;
             CanExit = false;
             CanBeOverriden = true;
             IsBattleState = true;
-            base.CurrentAttackTime = 1.5f;
+            isAnySkillUsed = false;
+            base.CurrentAttackTime = 0f;
             SetNavMeshAgent(_bossModel.BossTransform.position, 0);
 
             for (var i = 0; i < _stateMachine.BossSkills.DefenceStateSkillDictionary.Count; i++)
             {
-                _stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillCooldown(_stateMachine.BossSkills.DefenceStateSkillDictionary[i].AttackId, _stateMachine.BossSkills.DefenceStateSkillDictionary[i].AttackCooldown);
+                _stateMachine.BossSkills.DefenceStateSkillDictionary[i].StartCooldown(_stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillId, _stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillCooldown);
             }
-            ChoosingDefenceSkill();
+         //   ChoosingDefenceSkill();
         }
 
         public override void OnAwake()
@@ -76,9 +78,9 @@ namespace BeastHunter
 
             for (var i = 0; i < _stateMachine.BossSkills.DefenceStateSkillDictionary.Count; i++)
             {
-                if (_stateMachine.BossSkills.DefenceStateSkillDictionary[i].IsAttackReady)
+                if (_stateMachine.BossSkills.DefenceStateSkillDictionary[i].IsSkillReady)
                 {
-                    if (CheckDistance(_stateMachine.BossSkills.DefenceStateSkillDictionary[i].AttackRangeMin, _stateMachine.BossSkills.DefenceStateSkillDictionary[i].AttackRangeMax))
+                    if (CheckDistance(_stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillRangeMin, _stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillRangeMax))
                     {
                         _readySkillDictionary.Add(j, i);
                         j++;
@@ -103,6 +105,7 @@ namespace BeastHunter
             }
 
             _stateMachine.BossSkills.DefenceStateSkillDictionary[_skillId].UseSkill(_skillId);
+            isAnySkillUsed = true;
         }
 
 
@@ -121,6 +124,11 @@ namespace BeastHunter
             }
             if (base.CurrentAttackTime <= 0)
             {
+                if(!isAnimationPlay & isAnySkillUsed)
+                {
+                   _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
+                    return;
+                }
                 DecideNextMove();
             }
         }

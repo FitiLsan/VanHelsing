@@ -57,14 +57,14 @@ namespace BeastHunter
             CanExit = false;
             CanBeOverriden = true;
             IsBattleState = true;
-            base.CurrentAttackTime = 1.5f;
+            base.CurrentAttackTime = 0f;
             SetNavMeshAgent(_bossModel.BossTransform.position, 0);
 
             for (var i = 0; i < _stateMachine.BossSkills.AttackStateSkillDictionary.Count; i++)
             {
-                _stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillCooldown(_stateMachine.BossSkills.AttackStateSkillDictionary[i].AttackId, _stateMachine.BossSkills.AttackStateSkillDictionary[i].AttackCooldown);
+                _stateMachine.BossSkills.AttackStateSkillDictionary[i].StartCooldown(_stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillId, _stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillCooldown);
             }
-            ChoosingAttackSkill();
+          //  ChoosingAttackSkill();
         }
 
         public override void Execute()
@@ -92,9 +92,9 @@ namespace BeastHunter
 
             for (var i = 0; i < _stateMachine.BossSkills.AttackStateSkillDictionary.Count; i++)
             {
-                if (_stateMachine.BossSkills.AttackStateSkillDictionary[i].IsAttackReady)
+                if (_stateMachine.BossSkills.AttackStateSkillDictionary[i].IsSkillReady)
                 {
-                    if (CheckDistance(_stateMachine.BossSkills.AttackStateSkillDictionary[i].AttackRangeMin, _stateMachine.BossSkills.AttackStateSkillDictionary[i].AttackRangeMax))
+                    if (CheckDistance(_stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillRangeMin, _stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillRangeMax))
                     {
                         _readySkillDictionary.Add(j, i);
                         j++;

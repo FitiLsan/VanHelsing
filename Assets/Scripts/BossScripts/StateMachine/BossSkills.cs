@@ -20,12 +20,13 @@ namespace BeastHunter
         public Dictionary<int, BossBaseSkill> AttackStateSkillDictionary { get; private set; }
         public Dictionary<int, BossBaseSkill> DefenceStateSkillDictionary { get; private set; }
 
-        public BossBaseSkill DefaultSkill { get; private set; }
+        public BossBaseSkill DefaultAttackSkill { get; private set; }
         public BossBaseSkill HorizontalAttackSkill { get; private set; }
         public BossBaseSkill StompSplashSkill { get; private set; }
         public BossBaseSkill RageOfForestSkill { get; private set; }
         public BossBaseSkill PoisonSporesSkill { get; private set; }
 
+        public BossBaseSkill DefaultDefenceSkill { get; private set; }
         public BossBaseSkill SelfHealSkill { get; private set; }
         public BossBaseSkill HardBarkSkill { get; private set; }
         public BossBaseSkill CanibalHealingSkill { get; private set; }
@@ -44,31 +45,33 @@ namespace BeastHunter
 
             #region AttackState
 
-            DefaultSkill = new DefaultSkill(AttackStateSkillsSettings.GetDefaultSkillInfo() , AttackStateSkillDictionary, _stateMachine);
+            DefaultAttackSkill = new DefaultAttackSkill(AttackStateSkillsSettings.GetDefaultSkillInfo() , AttackStateSkillDictionary, _stateMachine);
             HorizontalAttackSkill = new HorizontalAttackSkill(AttackStateSkillsSettings.GetHorizontalSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             StompSplashSkill = new StompSplashAttackSkill(AttackStateSkillsSettings.GetStompSplashSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkillsSettings.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             PoisonSporesSkill = new PoisonSporesAttackSkill(AttackStateSkillsSettings.GetPoisonSporesSkillInfo(), AttackStateSkillDictionary, _stateMachine);
 
-            AttackStateSkillDictionary.Add(DefaultSkill.AttackId, DefaultSkill);
-            AttackStateSkillDictionary.Add(HorizontalAttackSkill.AttackId, HorizontalAttackSkill);
-            AttackStateSkillDictionary.Add(StompSplashSkill.AttackId, StompSplashSkill);
-            AttackStateSkillDictionary.Add(RageOfForestSkill.AttackId, RageOfForestSkill);
-            AttackStateSkillDictionary.Add(PoisonSporesSkill.AttackId, PoisonSporesSkill);
+            AttackStateSkillDictionary.Add(DefaultAttackSkill.SkillId, DefaultAttackSkill);
+            AttackStateSkillDictionary.Add(HorizontalAttackSkill.SkillId, HorizontalAttackSkill);
+            AttackStateSkillDictionary.Add(StompSplashSkill.SkillId, StompSplashSkill);
+            AttackStateSkillDictionary.Add(RageOfForestSkill.SkillId, RageOfForestSkill);
+            AttackStateSkillDictionary.Add(PoisonSporesSkill.SkillId, PoisonSporesSkill);
 
             #endregion
 
             #region DefenceState
 
+            DefaultDefenceSkill = new DefaultDefenceSkill(DefenceStateSkillsSettings.GetDefaultDefencelSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             SelfHealSkill = new SelfHealSkill(DefenceStateSkillsSettings.GetSelfHealSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             HardBarkSkill = new HardBark(DefenceStateSkillsSettings.GetHardBarkSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             CallOfForestSkill = new CallOfForest(DefenceStateSkillsSettings.GetCallOfForestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             CanibalHealingSkill = new CanibalHealingSkill (DefenceStateSkillsSettings.GetCanibalHealingSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
 
-            DefenceStateSkillDictionary.Add(SelfHealSkill.AttackId, SelfHealSkill);
-            DefenceStateSkillDictionary.Add(HardBarkSkill.AttackId, HardBarkSkill);
-            DefenceStateSkillDictionary.Add(CallOfForestSkill.AttackId, CallOfForestSkill);
-            DefenceStateSkillDictionary.Add(CanibalHealingSkill.AttackId, CanibalHealingSkill);
+            DefenceStateSkillDictionary.Add(DefaultDefenceSkill.SkillId, DefaultDefenceSkill);
+            DefenceStateSkillDictionary.Add(SelfHealSkill.SkillId, SelfHealSkill);
+            DefenceStateSkillDictionary.Add(HardBarkSkill.SkillId, HardBarkSkill);
+            DefenceStateSkillDictionary.Add(CallOfForestSkill.SkillId, CallOfForestSkill);
+            DefenceStateSkillDictionary.Add(CanibalHealingSkill.SkillId, CanibalHealingSkill);
 
             #endregion
         }

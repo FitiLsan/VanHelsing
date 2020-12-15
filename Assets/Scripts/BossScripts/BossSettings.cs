@@ -23,6 +23,15 @@ namespace BeastHunter
         [Tooltip("StompFuf prefab.")]
         [SerializeField] private GameObject _stompPuf;
 
+        [Tooltip("StompFuf prefab.")]
+        [SerializeField] private GameObject _healAura;
+
+        [Tooltip("StompFuf prefab.")]
+        [SerializeField] private GameObject _BarkBuffEffect;
+
+        [Tooltip("StompFuf prefab.")]
+        [SerializeField] private GameObject _callOfForestEffect;
+
         [Tooltip("Boss instance name.")]
         [SerializeField] private string _instanceName;
 
@@ -153,6 +162,10 @@ namespace BeastHunter
         public GameObject SporePrefab => _sporePrefab;
         public GameObject Ruler => _ruler;
         public GameObject StompPuf => _stompPuf;
+
+        public GameObject HealAura => _healAura;
+        public GameObject BarkBuffEffect => _BarkBuffEffect;
+        public GameObject CallOfForestEffect => _callOfForestEffect;
 
         public RuntimeAnimatorController BossAnimator => _bossAnimator;
 

@@ -74,7 +74,7 @@ namespace BeastHunter
             if (!_stateMachine._model.IsDead)
             {
                 SpeedCheck();
-                HealthCheck();
+               // HealthCheck();
                 CheckDirection();
                 HungerCheck();
                 GetTargetCurrentPosition();
