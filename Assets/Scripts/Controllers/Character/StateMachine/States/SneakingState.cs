@@ -35,6 +35,7 @@ namespace BeastHunter
 
         public SneakingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Sneaking;
             IsTargeting = false;
             IsAttacking = false;
         }
@@ -87,13 +88,10 @@ namespace BeastHunter
             _crouchLevel = ZERO_CROUCH_LEVEL;
             _crouchLevelForAnimation = _crouchLevel;
             _isMoving = _inputModel.IsInputMove;
-            _animationController.PlayMovementAnimation();
-            MessageBroker.Default.Publish(new OnPlayerSneakingEventClass { IsSneaking = true });
         }
 
         public override void OnExit(CharacterBaseState nextState = null)
         {
-            MessageBroker.Default.Publish(new OnPlayerSneakingEventClass { IsSneaking = false });
             base.OnExit(nextState);
         }
 
@@ -133,7 +131,7 @@ namespace BeastHunter
             _crouchLevelForAnimation = Mathf.SmoothStep(_crouchLevelForAnimation, _targetCrouchLevelForAnimation,
                 POSE_CHANGE_SPEED);
 
-            _animationController.SetCrouchLevel(_crouchLevelForAnimation);
+            _characterModel.CharacterAnimationModel.CrouchLevel = _crouchLevelForAnimation;
         }
 
         private void ExitState()
@@ -154,6 +152,8 @@ namespace BeastHunter
             {
                 _crouchLevel = FULL_CROUCH_LEVEL;
                 CharacterPose = CharacterPositionEnum.Sneaking;
+                if (_characterModel.IsInHidingPlace) _characterModel.PlayerBehavior.EnableHiding(true);
+                MessageBroker.Default.Publish(new OnPlayerHideEventClass(true));
             }
             else
             {
@@ -167,6 +167,8 @@ namespace BeastHunter
             {
                 _crouchLevel = ZERO_CROUCH_LEVEL;
                 CharacterPose = CharacterPositionEnum.Standing;
+                _characterModel.PlayerBehavior.EnableHiding(false);
+                MessageBroker.Default.Publish(new OnPlayerHideEventClass(false));
             }
             else
             {

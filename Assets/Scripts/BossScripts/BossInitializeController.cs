@@ -17,40 +17,17 @@ namespace BeastHunter
 
         public override void OnAwake()
         {
-            var locationData = Resources.Load<LocationData>("Data/LocationData");
-            var spawnPoint = locationData.BossSpawnData.SpawnPoint; 
-
+            var locationData = Data.LocationData;
             var bossData = Data.BossData;
 
-            Vector3 groundedInstancePosition = GetGroundedPosition(spawnPoint);
-
-            //Vector3 instantiatePosition = bossData._bossSettings.InstantiatePosition;
-            //Vector3 groundedInstancePosition = GetGroundedPosition(instantiatePosition);
+            var spawnPoint = locationData.BossSpawnPosition; 
+            Vector3 groundedInstancePosition = Services.SharedInstance.PhysicsService.GetGroundedPosition(spawnPoint);
 
             GameObject instance = GameObject.Instantiate(bossData._bossSettings.Prefab);
-            //BossModel boss = new BossModel(instance, bossData, groundedInstancePosition, _context);
-            BossModel boss = new BossModel(instance, bossData, spawnPoint, _context);
+            BossModel boss = new BossModel(instance, bossData, groundedInstancePosition, _context);
+            //BossModel boss = new BossModel(instance, bossData, spawnPoint, _context);
 
             _context.NpcModels.Add(instance.GetInstanceID(), boss);
-        }
-
-        #endregion
-
-
-        #region Methods
-
-        private Vector3 GetGroundedPosition(Vector3 startPosition)
-        {
-            Vector3 groundedPosition = new Vector3();
-
-            bool isGroundBelow = Services.SharedInstance.PhysicsService.FindGround(startPosition, out groundedPosition);
-
-            if (!isGroundBelow)
-            {
-                throw new System.Exception("Ground is above object's position!");
-            }
-
-            return groundedPosition;
         }
 
         #endregion

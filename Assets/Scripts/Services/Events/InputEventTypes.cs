@@ -8,13 +8,9 @@
         RunStart,
         RunStop,
         Jump,
-        BattleExit,
-        Dodge,
-        TargetLock,
         Attack,
         Aim,
         Use,
-        Dance,
         Cancel,
         NumberOne,
         NumberTwo,
@@ -22,8 +18,6 @@
         NumberFour,
         Inventory,
         QuestJournal = 29,
-        PlaceTrap1,
-        PlaceTrap2,
         Sneak,
         TimeSkipMenu,
         WeaponWheelOpen,
@@ -31,7 +25,8 @@
         AimStart,
         AimEnd,
         ButtonsInfoMenu,
-        Bestiary
+        Bestiary,
+        WeaponRemove,
     }
 }
 

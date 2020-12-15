@@ -23,7 +23,8 @@ namespace BeastHunter
             Prefab = prefab;
             InteractiveObjectData = data;
 
-            if(Prefab.transform.TryFind(data.CanvasObjectName, out Transform canvasObject))
+            if(!data.CanvasObjectName.Equals("") && Prefab.transform.
+                TryFind(data.CanvasObjectName, out Transform canvasObject))
             {
                 CanvasObject = canvasObject;
                 CanvasObject.gameObject.SetActive(false);

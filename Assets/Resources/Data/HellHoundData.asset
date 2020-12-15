@@ -19,7 +19,7 @@ MonoBehaviour:
       _viewRadius: 0
       _viewAngle: 0
       _healthPoints: 0
-      _physicalPower: 0
+      _physicalPower: 2.27
       _physicalDamageResistance: 0
       _stunProbabilityResistance: 0
     AttackList: []
@@ -27,48 +27,50 @@ MonoBehaviour:
       _baseDefense: 0
     Prefab: {fileID: 7253339370346634, guid: 0221e3a4b68cc0b4da68fd85936de268, type: 3}
   Stats:
-    DebugMessages: 1
-    WanderingRadius: 50
-    DetectionRadius: 30
-    RoamingChance: 75
-    JumpingSpeedRate: 1.2
-    PhysicalDamage: 0
-    StunProbability: 0
-    AttacksTurnSpeed: 0.5
-    AttackDirectDistance: 1.5
-    AttackBottomDistance: 1.25
-    AttackJumpMaxDistance: 3
-    AttackJumpMinDistance: 2.5
-    IdlingMinTime: 5
-    IdlingMaxTime: 10
-    RestingChance: 20
-    RestingMinTime: 30
-    RestingMaxTime: 60
-    EscapeDistance: 50
-    PercentEscapeHealth: 30
-    EscapingSpeed: 7
-    SearchingTime: 45
-    SearchingSpeed: 5
-    BackJumpDistance: 1
-    BackJumpLength: 1.5
-    BackJumpSpeed: 5
-    BackJumpAnimationSpeedRate: 2
-    BackJumpAnimationIntensity: 0.5
-    BattleCirclingRadius: 3
-    BattleCirclingSpeed: 3
-    BattleCirclingMinTime: 1
-    BattleCirclingMaxTime: 3
-    BattleCirclingMaxDistance: 5
-    ChasingTurnSpeedNearTarget: 0.1
-    ChasingTurnDistanceNearTarget: 3
-    ChasingBraking: 0
-    ChasingBrakingSpeedRate: 0.5
-    ChasingBrakingMinSpeed: 2
-    ChasingBrakingMaxDistance: 6
-    ChasingBrakingMinDistance: 2
-    MaxRoamingSpeed: 1
-    MaxChasingSpeed: 10
-    AngularSpeed: 450
-    Acceleration: 10
-    StoppingDistance: 1
-    BaseOffsetByY: 0
+    _debugMessages: 0
+    _wanderingRadius: 50
+    _detectionRadius: 30
+    _roamingChance: 75
+    _jumpingSpeedRate: 1.2
+    _physicalDamage: 2.52
+    _stunProbability: 0
+    _attacksTurnSpeed: 0.5
+    _attackDirectDistance: 1.5
+    _attackBottomDistance: 1.25
+    _attackJumpMaxDistance: 3.5
+    _attackJumpMinDistance: 2.5
+    _attackJumpSpeed: 10
+    _attackJumpCooldown: 2
+    _idlingMinTime: 5
+    _idlingMaxTime: 10
+    _restingChance: 20
+    _restingMinTime: 30
+    _restingMaxTime: 60
+    _escapeDistance: 50
+    _percentEscapeHealth: 30
+    _escapingSpeed: 7
+    _searchingTime: 45
+    _searchingSpeed: 5
+    _backJumpDistance: 1
+    _backJumpLength: 1.5
+    _backJumpSpeed: 5
+    _backJumpAnimationSpeedRate: 2
+    _backJumpAnimationIntensity: 0.5
+    _battleCirclingRadius: 3
+    _battleCirclingSpeed: 3
+    _battleCirclingMinTime: 1
+    _battleCirclingMaxTime: 3
+    _battleCirclingMaxDistance: 5
+    _chasingTurnSpeedNearTarget: 0.1
+    _chasingTurnDistanceNearTarget: 3
+    _chasingBraking: 0
+    _chasingBrakingSpeedRate: 0.5
+    _chasingBrakingMinSpeed: 2
+    _chasingBrakingMaxDistance: 6
+    _chasingBrakingMinDistance: 2
+    _maxRoamingSpeed: 1
+    _maxChasingSpeed: 10
+    _angularSpeed: 450
+    _acceleration: 20
+    _stoppingDistance: 1
+    _baseOffsetByY: 0

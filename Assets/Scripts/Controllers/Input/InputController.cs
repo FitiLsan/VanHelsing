@@ -33,10 +33,12 @@ namespace BeastHunter
         public void OnAwake()
         {
             _characterModel = _context.CharacterModel;
-            _inputModel.InputAxisX = 0;
-            _inputModel.InputAxisY = 0;
-            _inputModel.InputTotalAxisX = 0;
-            _inputModel.InputTotalAxisY = 0;
+            _inputModel.MouseInputX = 0f;
+            _inputModel.MouseInputY = 0f;
+            _inputModel.InputAxisX = 0f;
+            _inputModel.InputAxisY = 0f;
+            _inputModel.InputTotalAxisX = 0f;
+            _inputModel.InputTotalAxisY = 0f;
             _inputModel.IsInputMove = false;
             _inputModel.IsInputRun = false;
 
@@ -50,13 +52,9 @@ namespace BeastHunter
             _inputModel.inputOnButtonDown.Add("NO_BUTTON_8", InputEventTypes.AimEnd);
 
             _inputModel.inputOnButtonDown.Add("Jump", InputEventTypes.Jump);
-            _inputModel.inputOnButtonDown.Add("Battle Exit", InputEventTypes.BattleExit);
-            _inputModel.inputOnButtonDown.Add("Dodge", InputEventTypes.Dodge);
-            _inputModel.inputOnButtonDown.Add("Target lock", InputEventTypes.TargetLock);
-            _inputModel.inputOnButtonDown.Add("AttackLeft", InputEventTypes.Attack);
-            _inputModel.inputOnButtonDown.Add("AttackRight", InputEventTypes.Aim);
+            _inputModel.inputOnButtonDown.Add("Attack", InputEventTypes.Attack);
+            _inputModel.inputOnButtonDown.Add("AimTarget", InputEventTypes.Aim);
             _inputModel.inputOnButtonDown.Add("Use", InputEventTypes.Use);
-            _inputModel.inputOnButtonDown.Add("Dance", InputEventTypes.Dance);
             _inputModel.inputOnButtonDown.Add("Cancel", InputEventTypes.Cancel);
             _inputModel.inputOnButtonDown.Add("NumberOne", InputEventTypes.NumberOne);
             _inputModel.inputOnButtonDown.Add("NumberTwo", InputEventTypes.NumberTwo);
@@ -64,12 +62,11 @@ namespace BeastHunter
             _inputModel.inputOnButtonDown.Add("NumberFour", InputEventTypes.NumberFour);
             _inputModel.inputOnButtonDown.Add("Inventory", InputEventTypes.Inventory);
             _inputModel.inputOnButtonDown.Add("QuestJournal", InputEventTypes.QuestJournal);
-            _inputModel.inputOnButtonDown.Add("PlaceTrap1", InputEventTypes.PlaceTrap1);
-            _inputModel.inputOnButtonDown.Add("PlaceTrap2", InputEventTypes.PlaceTrap2);
             _inputModel.inputOnButtonDown.Add("Sneak", InputEventTypes.Sneak);
             _inputModel.inputOnButtonDown.Add("TimeSkip", InputEventTypes.TimeSkipMenu);
             _inputModel.inputOnButtonDown.Add("ButtonsInfo", InputEventTypes.ButtonsInfoMenu);
             _inputModel.inputOnButtonDown.Add("Bestiary", InputEventTypes.Bestiary);
+            _inputModel.inputOnButtonDown.Add("WeaponRemove", InputEventTypes.WeaponRemove);
         }
 
         #endregion
@@ -95,7 +92,7 @@ namespace BeastHunter
             _inputModel.InputAxisY = Input.GetAxis("Vertical");
             _inputModel.IsInputMove = (_inputModel.InputAxisX != 0 || _inputModel.InputAxisY != 0) ? true : false;
             _inputModel.IsInputRun = Input.GetButton("Sprint");
-            _inputModel.IsInputAim = Input.GetButton("AttackRight");
+            _inputModel.IsInputAim = Input.GetButton("AimTarget");
             _inputModel.IsInputWeaponChoise = Input.GetButton("WeaponWheel");
 
             CheckAxisTotal();

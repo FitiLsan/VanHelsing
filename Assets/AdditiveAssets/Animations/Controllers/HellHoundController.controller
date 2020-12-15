@@ -278,13 +278,13 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -6730444006725842311}
-    m_Position: {x: 30, y: 340, z: 0}
+    m_Position: {x: -170, y: 340, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3097839228600183484}
     m_Position: {x: 30, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8189294859359404585}
-    m_Position: {x: 30, y: 480, z: 0}
+    m_Position: {x: 250, y: 340, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -374,6 +374,18 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-3955501837084633589
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 910a565025b2132488485ae9a5c50aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1101 &-3608850821932113321
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -413,7 +425,7 @@ AnimatorState:
   - {fileID: 1572425537117838555}
   - {fileID: -7865333754298530706}
   m_StateMachineBehaviours:
-  - {fileID: -184639381144082709}
+  - {fileID: -989704727991059164}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -465,6 +477,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1929084887329477501}
+  - {fileID: 7442694038729129292}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -522,7 +535,7 @@ AnimatorState:
   - {fileID: 2234767813930935326}
   - {fileID: -1421913589139065363}
   m_StateMachineBehaviours:
-  - {fileID: 1616378485259466970}
+  - {fileID: -417552366433697505}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -665,6 +678,18 @@ BlendTree:
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 0
+--- !u!114 &-989704727991059164
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 910a565025b2132488485ae9a5c50aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!206 &-797176494073049702
 BlendTree:
   m_ObjectHideFlags: 1
@@ -702,6 +727,18 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-417552366433697505
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 910a565025b2132488485ae9a5c50aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!206 &-410596325011914081
 BlendTree:
   m_ObjectHideFlags: 1
@@ -1009,7 +1046,7 @@ AnimatorState:
   - {fileID: -4631806823409539163}
   - {fileID: -465420440417033795}
   m_StateMachineBehaviours:
-  - {fileID: -7451060248251247465}
+  - {fileID: -3955501837084633589}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -1380,6 +1417,31 @@ AnimatorStateTransition:
   m_TransitionOffset: 0
   m_ExitTime: 0.78571486
   m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1101 &7442694038729129292
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Dead
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 8189294859359404585}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1

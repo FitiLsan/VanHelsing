@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 
@@ -9,6 +11,7 @@ namespace BeastHunter
     {
         #region Fields
 
+        [SerializeField] private string _locationDataPath;
         [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _startDialogueDataPath;
@@ -39,8 +42,11 @@ namespace BeastHunter
         [SerializeField] private string _torchObjectPath;
         [SerializeField] private string _hellHoundDataPath;
         [SerializeField] private string _twoHeadedSnakeDataPath;
+        [SerializeField] private string _bouldersObjectPath;
+        [SerializeField] private string _hideBushDataPath;
 
         private static Data _instance;
+        private static LocationData _locationData;
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
@@ -69,6 +75,8 @@ namespace BeastHunter
         private static TorchData _torchObjectData;
         private static HellHoundData _hellHoundData;
         private static TwoHeadedSnakeData _twoHeadedSnakeData;
+        private static BouldersData _bouldersObjectData;
+        private static HideBushData _hideBushData;
 
         #endregion
 
@@ -81,6 +89,18 @@ namespace BeastHunter
                     _instance = Resources.Load<Data> ("Data/" + typeof (Data).Name);
                 }
                 return _instance;
+            }
+        }
+
+        public static LocationData LocationData
+        {
+            get
+            {
+                if (_locationData == null)
+                {
+                    _locationData = Resources.Load<LocationData>("Data/" + Instance._locationDataPath);
+                }
+                return _locationData;
             }
         }
 
@@ -402,6 +422,27 @@ namespace BeastHunter
                     _twoHeadedSnakeData = Resources.Load<TwoHeadedSnakeData>("Data/" + Instance._twoHeadedSnakeDataPath);
                 }
                 return _twoHeadedSnakeData;
+        public static BouldersData BoulderObjectData
+        {
+            get
+            {
+                if (_bouldersObjectData == null)
+                {
+                    _bouldersObjectData = Load<BouldersData>("Data/" + Instance._bouldersObjectPath);
+                }
+                return _bouldersObjectData;
+            }
+        }
+
+        public static HideBushData HideBushData
+        {
+            get
+            {
+                if (_hideBushData == null)
+                {
+                    _hideBushData = Resources.Load<HideBushData>("Data/" + Instance._hideBushDataPath);
+                }
+                return _hideBushData;
             }
         }
 
@@ -410,8 +451,8 @@ namespace BeastHunter
 
         #region Methods
 
-        private static T Load<T> (string resourcesPath) where T : Object =>
-            Resources.Load<T> (Path.ChangeExtension (resourcesPath, null));
+        private static T Load<T> (string resourcesPath) where T : UnityEngine.Object =>
+            Resources.Load<T>(Path.ChangeExtension(resourcesPath, null));
 
         #endregion
     }
