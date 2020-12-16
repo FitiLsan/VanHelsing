@@ -18,13 +18,12 @@ namespace BeastHunter
         [SerializeField] private string _aimingAnimationPostfix;
         [SerializeField] private string _reloadAnimationPostfix;
 
-        private ParticleSystem _particleSystem;
-
         #endregion
 
 
         #region Properties
 
+        public ParticleSystem ParticleSystem { get; private set; }
         public ProjectileData ProjectileData => _projectileData;
         public int MagazineSize => _magazineSize;
         public float HitDistance => _hitDistance;
@@ -53,7 +52,7 @@ namespace BeastHunter
         {
             base.Init(objectOnScene);
 
-            _particleSystem = objectOnScene.GetComponentInChildren<ParticleSystem>();
+            ParticleSystem = objectOnScene.GetComponentInChildren<ParticleSystem>();
         }
 
         public override void TakeWeapon()
@@ -78,14 +77,13 @@ namespace BeastHunter
         {
             base.MakeSimpleAttack(out currentAttackIntex, bodyTransform);
 
-            Shoot(_particleSystem.transform.position, _particleSystem.transform.forward * HitDistance, 
-                CurrentAttack.AttackType);
+            Shoot(ParticleSystem.transform.position, (ParticleSystem.transform.forward) * HitDistance, CurrentAttack.AttackType);
         }
 
         public void Shoot(Vector3 gunPosition, Vector3 forwardDirection, HandsEnum inWhichHand)
         {
             new ProjectileInitializeController(_context, _projectileData, gunPosition, forwardDirection, ForceMode.Impulse);
-            _particleSystem.Play();
+            ParticleSystem.Play();
         }
 
         #endregion

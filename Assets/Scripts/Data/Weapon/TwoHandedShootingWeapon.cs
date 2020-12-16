@@ -113,7 +113,8 @@ namespace BeastHunter
                     break;
             }
 
-            Shoot(gunsPosition, forwardVector * HitDistance, CurrentAttack.AttackType);
+            Shoot(gunsPosition, Services.SharedInstance.CameraService.CharacterCamera.transform.forward * 
+                HitDistance, CurrentAttack.AttackType);
         }
 
         public void Shoot(Vector3 gunPosition, Vector3 forwardDirection, HandsEnum inWhichHand)

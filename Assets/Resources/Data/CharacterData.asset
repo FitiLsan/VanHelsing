@@ -40,6 +40,8 @@ MonoBehaviour:
     _inBattleRunSpeed: 4
     _sneakWalkSpeed: 1
     _sneakRunSpeed: 2
+    _aimWalkSpeed: 1
+    _aimRunSpeed: 2
     _groundCheckHeight: 1.2
     _accelerationLag: 0.1
     _decelerationLag: 0.098
@@ -47,6 +49,8 @@ MonoBehaviour:
     _inBattleDecelerationLag: 0.022
     _sneakAccelerationLag: 0.11
     _sneakDecelerationLag: 0.13
+    _aimAccelerationLag: 0.028
+    _aimDecelerationLag: 0.022
     _directionChangeLag: 0.194
     _animatorBaseSpeed: 1
     _timeToContinueMovingAfterStop: 1
@@ -70,10 +74,10 @@ MonoBehaviour:
     _xDodgeAxisAnimatorParameterName: DodgeAxisX
     _yDodgeAxisAnimatorParameterName: DodgeAxisY
     _aimingLookToWeightIK: 1
-    _aimingLookToBodyWeightIK: 0.5
+    _aimingLookToBodyWeightIK: 1
     _aimingLookToHeadWeightIK: 1
     _aimingLookToEyesWeightIK: 1
-    _aimingLookToClampWeightIK: 0.506
+    _aimingLookToClampWeightIK: 1
   _characterStatsSettings:
     _maxHealth: 0
     _enemyType: 0

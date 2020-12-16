@@ -87,6 +87,7 @@ namespace BeastHunter
         private float _weaponWheelDistance;
 
         private bool _isWeaponWheelOpen;
+        private bool _isCurrentWeaponWithProjectile;
 
         #endregion
 
@@ -191,7 +192,6 @@ namespace BeastHunter
             MovementCheck();
             SpeedCheck();
             ControlWeaponWheel();
-            Debug.Log(_stateMachine.CurrentState);
         }
 
         #endregion
@@ -713,6 +713,17 @@ namespace BeastHunter
         public void GetWeapon(WeaponData weaponData)
         {
             new InitializeWeaponController(_context, weaponData, OnHitBoxFilter, OnHitBoxHit, ref OnWeaponChange);
+
+            if(weaponData is OneHandedShootingWeapon oneHandedWeapon)
+            {
+                _isCurrentWeaponWithProjectile = oneHandedWeapon.ProjectileData != null;
+            }
+            else if(weaponData is TwoHandedShootingWeapon twoHandedWeapon)
+            {
+                _isCurrentWeaponWithProjectile = twoHandedWeapon.ProjectileData != null;
+            }
+
+            _services.CameraService.UpdateWeaponProjectileExistence(_isCurrentWeaponWithProjectile);
         }
 
         public void GetTrap(TrapData trapData)
@@ -915,6 +926,37 @@ namespace BeastHunter
                 _speedChangeLag);
         }
 
+        public void CountSpeedAiming()
+        {
+            if (_inputModel.IsInputMove)
+            {
+                if (_inputModel.IsInputRun)
+                {
+                    _targetSpeed = _characterModel.CharacterCommonSettings.AimRunSpeed;
+                }
+                else
+                {
+                    _targetSpeed = _characterModel.CharacterCommonSettings.AimWalkSpeed;
+                }
+            }
+            else
+            {
+                _targetSpeed = 0;
+            }
+
+            if (_characterModel.CurrentSpeed < _targetSpeed)
+            {
+                _speedChangeLag = _characterModel.CharacterCommonSettings.AimAccelerationLag;
+            }
+            else
+            {
+                _speedChangeLag = _characterModel.CharacterCommonSettings.AimDecelerationLag;
+            }
+
+            MovementSpeed = Mathf.SmoothDamp(_characterModel.CurrentSpeed, _targetSpeed, ref _currentVelocity,
+                _speedChangeLag);
+        }
+
         #endregion
 
 
@@ -954,6 +996,19 @@ namespace BeastHunter
             }
 
             _characterModel.IsInHidingPlace = onPlayerHideEvent.CanHide;
+        }
+
+        #endregion
+
+
+        #region WeaponAiming
+
+        public void UpdateAimingDotsForProjectile()
+        {
+            if (_isCurrentWeaponWithProjectile)
+            {
+                _services.CameraService.DrawAimLine();
+            }
         }
 
         #endregion

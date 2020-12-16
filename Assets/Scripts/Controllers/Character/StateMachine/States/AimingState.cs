@@ -22,7 +22,7 @@ namespace BeastHunter
             IsAttacking = false;
             _baseAnimationSpeed = _characterModel.CharacterCommonSettings.AnimatorBaseSpeed;
             _animationSpeedWhileRun = _characterModel.CharacterCommonSettings.
-                InBattleRunSpeed / _characterModel.CharacterCommonSettings.InBattleWalkSpeed;
+                AimRunSpeed / _characterModel.CharacterCommonSettings.AimWalkSpeed;
         }
 
         #endregion
@@ -32,9 +32,10 @@ namespace BeastHunter
 
         public void Updating()
         {
-            _stateMachine.BackState.CountSpeedStrafing();
+            _stateMachine.BackState.CountSpeedAiming();
             ControlMovement();
             ControlAimingTarget();
+            _stateMachine.BackState.UpdateAimingDotsForProjectile();
         }
 
         #endregion
@@ -77,11 +78,14 @@ namespace BeastHunter
             {
                 _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
             }
+
+            Services.SharedInstance.CameraService.StartDrawAimLine();
         }
 
         public override void OnExit(CharacterBaseState nextState = null)
         {
             _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
+            Services.SharedInstance.CameraService.StopDrawAimLine();
 
             base.OnExit();
         }

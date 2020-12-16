@@ -29,10 +29,11 @@ namespace BeastHunter
 
         public void Updating()
         {
-            _stateMachine.BackState.CountSpeedStrafing();
+            _stateMachine.BackState.CountSpeedAiming();
             ControlMovement();
             ControlAimingTarget();
             CountExtiTime();
+            _stateMachine.BackState.UpdateAimingDotsForProjectile();
         }
 
         #endregion

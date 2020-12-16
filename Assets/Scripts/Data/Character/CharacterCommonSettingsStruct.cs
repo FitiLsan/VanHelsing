@@ -108,6 +108,14 @@ namespace BeastHunter
         [Range(0.0f, 20.0f)]
         [SerializeField] private float _sneakRunSpeed;
 
+        [Tooltip("Walk speed while aiming value between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _aimWalkSpeed;
+
+        [Tooltip("Run speed while aiming value between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _aimRunSpeed;
+
         [Tooltip("Ground check height under character between 0 and 2.")]
         [Range(0.0f, 2.0f)]
         [SerializeField] private float _groundCheckHeight;
@@ -135,6 +143,14 @@ namespace BeastHunter
         [Tooltip("Character deceleraton lag while sneaking between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _sneakDecelerationLag;
+
+        [Tooltip("Character acceleration lag while aiming between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _aimAccelerationLag;
+
+        [Tooltip("Character deceleraton lag while aiming between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _aimDecelerationLag;
 
         [Tooltip("Character direction change lag between 0 and 1.")]
         [Range(0.0f, 1.0f)]
@@ -206,6 +222,8 @@ namespace BeastHunter
         public float InBattleRunSpeed => _inBattleRunSpeed;
         public float SneakWalkSpeed => _sneakWalkSpeed;
         public float SneakRunSpeed => _sneakRunSpeed;
+        public float AimWalkSpeed => _aimWalkSpeed;
+        public float AimRunSpeed => _aimRunSpeed;
         public float GroundCheckHeight => _groundCheckHeight;
         public float AccelerationLag => _accelerationLag;
         public float DecelerationLag => _decelerationLag;
@@ -213,6 +231,8 @@ namespace BeastHunter
         public float InBattleDecelerationLag => _inBattleDecelerationLag;
         public float SneakAccelerationLag => _sneakAccelerationLag;
         public float SneakDecelerationLag => _sneakDecelerationLag;
+        public float AimAccelerationLag => _aimAccelerationLag;
+        public float AimDecelerationLag => _aimDecelerationLag;
         public float DirectionChangeLag => _directionChangeLag;
         public float AnimatorBaseSpeed => _animatorBaseSpeed;
         public float TImeToContinueMovingAfterStop => _timeToContinueMovingAfterStop;

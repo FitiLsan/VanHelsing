@@ -504,6 +504,12 @@ namespace BeastHunter
 
         [Header("Aiming camera Settings")]
 
+        [Tooltip("Aim canvas prefab")]
+        [SerializeField] private GameObject _aimCanvasPrefab;
+
+        [Tooltip("Aim target cross prefab")]
+        [SerializeField] private GameObject _aimProjectileLinePrefab;
+
         [Tooltip("Aiming camera field of view between 1 and 179.")]
         [Range(0.0f, 179.0f)]
         [SerializeField] private float _aimingCameraFieldOfView;
@@ -649,6 +655,8 @@ namespace BeastHunter
         public CinemachineVirtualCamera CharacterAimingCamera => _characterAimingCamera;
         public Vector2 CameraTargetDistanceMoveX => _cameraTargetDistanceMoveX;
         public Vector2 CameraTargetDistanceMoveY => _cameraTargetDistanceMoveY;
+        public GameObject AimCanvasPrefab => _aimCanvasPrefab;
+        public GameObject AimProjectileLinePrefab => _aimProjectileLinePrefab;
 
         public string CharacterCameraName => _characterCameraName;
         public string CharacterFreelookCameraName => _characterFreelookCameraName;
