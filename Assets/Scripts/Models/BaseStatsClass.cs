@@ -33,6 +33,10 @@ namespace BeastHunter
         [Range(0.0f, 10.0f)]
         [SerializeField] private float _physicalPower;
 
+        [Tooltip("Magical power between 0 and 10.")]
+        [Range(0.0f, 10.0f)]
+        [SerializeField] private float _magicalPower;
+
         [Tooltip("Physical damage resistance between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _physicalDamageResistance;
@@ -40,6 +44,10 @@ namespace BeastHunter
         [Tooltip("Stun resistance between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _stunProbabilityResistance;
+
+        [Tooltip("Fire resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _fireDamageResistance;
         //OBSOLETE
 
         #endregion
@@ -55,8 +63,10 @@ namespace BeastHunter
 
         //OBSOLETE
         public float PhysicalPower => _physicalPower;
+        public float MagicalPower => _magicalPower;
         public float PhysicalResistance => _physicalDamageResistance;
         public float StunResistance => _stunProbabilityResistance;
+        public float FireResistance => _fireDamageResistance;
         //OBSOLETE
 
         #endregion

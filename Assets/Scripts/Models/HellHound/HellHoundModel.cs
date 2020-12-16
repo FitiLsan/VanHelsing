@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using Extensions;
-
+using System.Collections.Generic;
 
 namespace BeastHunter
 {
@@ -11,7 +11,6 @@ namespace BeastHunter
 
         private HellHoundData _hellHoundData;
         private InteractableObjectBehavior[] _interactableObjects;
-        private InteractableObjectBehavior _detectionSphereIO;
         private SphereCollider _detectionSphere;
         private HellHoundAttackStateBehaviour[] _attackStates;
 
@@ -58,7 +57,7 @@ namespace BeastHunter
 
             _interactableObjects = HellHound.GetComponentsInChildren<InteractableObjectBehavior>();
 
-            _detectionSphereIO = _interactableObjects.GetInteractableObjectByType(InteractableObjectType.Sphere);
+            InteractableObjectBehavior _detectionSphereIO = _interactableObjects.GetInteractableObjectByType(InteractableObjectType.Sphere);
             _detectionSphereIO.OnFilterHandler = Filter;
             _detectionSphereIO.OnTriggerEnterHandler = OnDetectionEnemy;
             _detectionSphereIO.OnTriggerExitHandler = OnLostEnemy;
@@ -67,7 +66,7 @@ namespace BeastHunter
             if (_detectionSphere == null) Debug.LogError(this + " not found SphereCollider in DetectionSphere gameobject");
             else _detectionSphere.radius = hellHoundData.Stats.DetectionRadius;
 
-            WeaponIO = HellHound.GetComponentInChildren<WeaponHitBoxBehavior>();
+            WeaponIO = _interactableObjects.GetInteractableObjectByType(InteractableObjectType.HitBox);
             WeaponIO.OnFilterHandler = Filter;
             WeaponIO.OnTriggerEnterHandler = OnHitEnemy;
 
@@ -87,6 +86,15 @@ namespace BeastHunter
                 _attackStates[i].OnStateExitHandler += OnAttackStateExit;
             }
 
+            List <InteractableObjectBehavior> hitBoxesIO = _interactableObjects.GetInteractableObjectsByType(InteractableObjectType.Enemy);
+            for (int i = 0; i < hitBoxesIO.Count; i++)
+            {
+                if (hitBoxesIO[i].gameObject.TryGetComponent(out CapsuleCollider collider) && collider.enabled)
+                {
+                    hitBoxesIO[i].SetTakeDamageEvent(OnTakeDamage);
+                }
+            }
+
             CurrentHealth = _hellHoundData.BaseStats.MainStats.MaxHealth;
             IsDead = false;
         }
@@ -102,6 +110,7 @@ namespace BeastHunter
         private void OnHitEnemy(ITrigger trigger, Collider collider) => _hellHoundData.OnHitEnemy(collider, this);
         private void OnAttackStateEnter() => _hellHoundData.OnAttackStateEnter(this);
         private void OnAttackStateExit() => _hellHoundData.OnAttackStateExit(this);
+        private void OnTakeDamage(int id, Damage damage) => TakeDamage(damage);
 
         public void Clean()
         {

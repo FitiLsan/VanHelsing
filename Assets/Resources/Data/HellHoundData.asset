@@ -20,20 +20,24 @@ MonoBehaviour:
       _viewAngle: 0
       _healthPoints: 0
       _physicalPower: 2.27
+      _magicalPower: 0
       _physicalDamageResistance: 0
       _stunProbabilityResistance: 0
+      _fireDamageResistance: 0
     AttackList: []
     DefenceStats:
       _baseDefense: 0
     Prefab: {fileID: 7253339370346634, guid: 0221e3a4b68cc0b4da68fd85936de268, type: 3}
   Stats:
     _debugMessages: 0
+    _damage:
+      PhysicalDamage: 2.52
+      StunProbability: 0
+      FireDamage: 0
     _wanderingRadius: 50
     _detectionRadius: 30
     _roamingChance: 75
     _jumpingSpeedRate: 1.2
-    _physicalDamage: 2.52
-    _stunProbability: 0
     _attacksTurnSpeed: 0.5
     _attackDirectDistance: 1.5
     _attackBottomDistance: 1.25
