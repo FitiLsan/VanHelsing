@@ -191,7 +191,7 @@ namespace BeastHunter
             MovementCheck();
             SpeedCheck();
             ControlWeaponWheel();
-            Debug.Log(_stateMachine.CurrentState);
+            //Debug.Log(_stateMachine.CurrentState);
         }
 
         #endregion
@@ -252,6 +252,7 @@ namespace BeastHunter
             if (!_characterModel.IsDead && !_characterModel.IsDodging)
             {
                 _currentHealth -= damage.PhysicalDamage;
+                _currentHealth -= damage.FireDamage;
 
                 float stunProbability = UnityEngine.Random.Range(0f, 1f);
 

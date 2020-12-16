@@ -19,6 +19,9 @@ namespace BeastHunter
         [Range(0.0f, 1.0f)]
         public float StunProbability;
 
+        [Tooltip("Fire Damage")]
+        public float FireDamage;
+
         #endregion
     }
 }

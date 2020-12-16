@@ -1,16 +1,18 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using UnityEngine;
 
 
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "BouldersData", menuName = "CreateData/SimpleInteractiveObjects/BouldersData", order = 0)]
-    public sealed class BouldersData : SimpleInteractiveObjectData
+    public sealed class BouldersData : SimpleInteractiveObjectData, IDealDamage
     {
         #region SerializeFields
 
         [Header("BouldersData")]
         [SerializeField] private bool _debugMessages;
+        [SerializeField] private Damage _damage;
         [SerializeField] private Vector3 _prefabPosition;
         [SerializeField] private Vector3 _prefabEulers;
         [SerializeField] private float _prefabOffsetY;
@@ -22,10 +24,6 @@ namespace BeastHunter
         [SerializeField] private float _timeToDestroyAfterHit;
         [Tooltip("The speed at which the boulder deals damage. Default: 2.0")]
         [SerializeField] private float _hitSpeed;
-
-        [Header("Damage")]
-        [SerializeField] private float _physicalDamage;
-        [SerializeField] private float _stunProbability;
 
         [Header("Rigidbody")]
         [Tooltip("Default: 40.0")]
@@ -215,18 +213,11 @@ namespace BeastHunter
                 if (collision.relativeVelocity.sqrMagnitude > _sqrHitSpeed && _timeToDeactivate - model.Timer > CHECK_COLLISION_TIME)
                 {
                     model.DestroyInfoDictionary[objectBehaviorID] = true;
-
-                    InteractableObjectBehavior enemy = collision.collider.gameObject.GetComponent<InteractableObjectBehavior>();
-                    Damage damage = new Damage()
-                    {
-                        PhysicalDamage = _physicalDamage,
-                        StunProbability = _stunProbability
-                    };
+                    InteractableObjectBehavior enemy = collision.collider.GetComponent<InteractableObjectBehavior>();
 
                     if (enemy != null)
                     {
-                        enemy.TakeDamageEvent(damage);
-                        _dealDamageMsg?.Invoke(enemy.ToString());
+                        DealDamage(enemy, _damage);
                     }
                     else
                     {
@@ -261,6 +252,21 @@ namespace BeastHunter
                 _collisionMsg = (gameobject) => Debug.Log("Boulder collision with " + gameobject);
                 _destroyAfterHitMsg = () => Debug.Log("Boulder will destroy after " + _timeToDestroyAfterHit + " sec");
             }
+        }
+
+        #endregion
+
+
+        #region IDealDamage
+
+        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
+        {
+            Damage countDamage = Services.SharedInstance.AttackService
+                .CountDamage(damage, enemy.transform.GetMainParent().gameObject.GetInstanceID());
+
+            _dealDamageMsg?.Invoke(enemy.ToString());
+            enemy.TakeDamageEvent(countDamage);
+
         }
 
         #endregion

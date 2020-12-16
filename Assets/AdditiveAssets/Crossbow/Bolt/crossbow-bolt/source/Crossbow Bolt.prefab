@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 4997095319601549914}
   - component: {fileID: 4901859190825863715}
   - component: {fileID: 7983457219584209870}
+  - component: {fileID: 2157417662697169121}
   m_Layer: 0
   m_Name: Crossbow Bolt
   m_TagString: Untagged
@@ -154,6 +155,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &2157417662697169121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3660602131783454729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca8c0632839b858468e5195b7c0fc210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 13
 --- !u!1 &6967032618397368027
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -7,7 +8,7 @@ namespace BeastHunter
 {
 
     [CreateAssetMenu(fileName = "NewHellHound", menuName = "CreateData/HellHound", order = 2)]
-    public sealed class HellHoundData : EnemyData
+    public sealed class HellHoundData : EnemyData, IDealDamage
     {
         #region PrivateData
 
@@ -39,7 +40,7 @@ namespace BeastHunter
         private Action _battleCirclingStateMsg;
         private Action _searchingStateMsg;
         private Action _escapingStateMsg;
-        private Action _takingDamageMsg;
+        private Action<float> _takingDamageMsg;
         private Action _jumpingMsg;
         private Action _attackJumpingMsg;
         private Action _attackDirectMsg;
@@ -98,8 +99,13 @@ namespace BeastHunter
 
         public bool Filter(Collider collider)
         {
-            return !collider.isTrigger
-                && collider.GetComponentInChildren<InteractableObjectBehavior>()?.Type == InteractableObjectType.Player;
+            if (!collider.isTrigger)
+            {
+                InteractableObjectBehavior behaviorIO = collider.GetComponent<InteractableObjectBehavior>();
+                return behaviorIO != null
+                    && (behaviorIO.Type == InteractableObjectType.Player || collider.CompareTag(TagManager.PLAYER));
+            }
+            return false;
         }
 
         public void OnDetectionEnemy(Collider collider, HellHoundModel model)
@@ -120,17 +126,16 @@ namespace BeastHunter
 
         public void OnHitEnemy(Collider collider, HellHoundModel model)
         {
-            Damage damage = new Damage()
+            InteractableObjectBehavior enemy = collider.GetComponent<InteractableObjectBehavior>();
+
+            if (enemy != null)
             {
-                PhysicalDamage = Stats.PhysicalDamage,
-                StunProbability = Stats.StunProbability
-            };
-
-            InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();
-            _onHitEnemyMsg?.Invoke(enemy);
-
-            if (enemy != null) enemy.TakeDamageEvent(damage);
-            else Debug.LogError(this + " not found enemy InteractableObjectBehavior");
+                DealDamage(enemy, Stats.Damage);
+            }
+            else
+            {
+                Debug.LogError(this + " not found enemy InteractableObjectBehavior");
+            }
 
             model.AttackCollider.enabled = false;
         }
@@ -803,7 +808,7 @@ namespace BeastHunter
                 _battleCirclingStateMsg = () => Debug.Log("The dog is battle circling");
                 _searchingStateMsg = () => Debug.Log("The dog is searching");
                 _escapingStateMsg = () => Debug.Log("The dog is escaping");
-                _takingDamageMsg = () => Debug.Log("The dog is taking damage");
+                _takingDamageMsg = (health) => Debug.Log("The dog is taking damage. CurrentHealth = " + health);
                 _jumpingMsg = () => Debug.Log("The dog is jumping");
                 _attackJumpingMsg = () => Debug.Log("The dog is jumping attack");
                 _attackDirectMsg = () => Debug.Log("The dog is attacking direct");
@@ -830,7 +835,7 @@ namespace BeastHunter
             HellHoundModel hellHoundModel = model as HellHoundModel;
             base.TakeDamage(model, damage);
 
-            _takingDamageMsg?.Invoke();
+            _takingDamageMsg?.Invoke(model.CurrentHealth);
             hellHoundModel.Animator.SetTrigger("TakeDamage");
 
             if (model.IsDead)
@@ -847,6 +852,20 @@ namespace BeastHunter
             {
                 hellHoundModel.BehaviourState = SetState(BehaviourState.Searching, hellHoundModel);
             }
+        }
+
+        #endregion
+
+
+        #region IDealDamage
+
+        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
+        {
+            Damage countDamage = Services.SharedInstance.AttackService
+                .CountDamage(damage, BaseStats.MainStats, enemy.transform.GetMainParent().gameObject.GetInstanceID());
+
+            _onHitEnemyMsg?.Invoke(enemy);
+            enemy.TakeDamageEvent(countDamage);
         }
 
         #endregion

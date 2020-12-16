@@ -15,5 +15,6 @@
         PickableObject  = 10,
         ActiveObject    = 11,
         Trap            = 12,
+        Fire            = 13,
     }
 }

@@ -12,14 +12,13 @@ namespace BeastHunter
 
         public override bool FilterCollision(Collision touchedCollider)
         {
-            return touchedCollider.transform.GetMainParent().GetComponentInChildren<InteractableObjectBehavior>()?.
+            return touchedCollider.collider.GetComponent<InteractableObjectBehavior>()?.
                 Type != InteractableObjectType.Player;
         }
 
         public override void HitProjectile(IProjectile projectileInterface, Collision touchedCollider)
         {
-            bool isHittedEnemy = touchedCollider.transform.GetMainParent().gameObject.
-                TryGetComponent(out InteractableObjectBehavior touchedBehavior);
+            bool isHittedEnemy = touchedCollider.transform.gameObject.TryGetComponent(out InteractableObjectBehavior touchedBehavior);
 
             if (isHittedEnemy)
             {
@@ -36,8 +35,7 @@ namespace BeastHunter
                 }
 
                 Context.NpcModels[touchedCollider.transform.GetMainParent().gameObject.GetInstanceID()].TakeDamage(Services.
-                    SharedInstance.AttackService.CountDamage(ProjectileDamage, Context.NpcModels[touchedCollider.
-                        transform.GetMainParent().gameObject.GetInstanceID()].GetStats().MainStats));
+                    SharedInstance.AttackService.CountDamage(ProjectileDamage, touchedCollider.transform.GetMainParent().gameObject.GetInstanceID()));
                 StackInObject(projectileInterface, touchedCollider, true);
             }
             else
