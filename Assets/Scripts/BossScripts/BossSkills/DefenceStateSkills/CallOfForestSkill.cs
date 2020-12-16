@@ -10,7 +10,7 @@ namespace BeastHunter
         private float _callRadius = 50f;
         private GameObject MutationTreePrefab;
 
-        public CallOfForest((int, float, float, float, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
+        public CallOfForest((int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
             : base(skillInfo, skillDictionary, stateMachine)
         {
         }
@@ -22,7 +22,7 @@ namespace BeastHunter
 
         public override void StopSkill()
         {
-            
+            _bossModel.callOfForestEffect.Stop();
         }
 
         public override void UseSkill(int id)
@@ -30,6 +30,7 @@ namespace BeastHunter
             Debug.Log("Call of Forest Skill");
             SetNavMeshAgent(_bossModel.BossTransform.position, 0);
             _bossModel.BossAnimator.Play($"CallOfForest", 0, 0f);
+            _bossModel.callOfForestEffect.Play();
             Call();
             ReloadSkill(id);
         }

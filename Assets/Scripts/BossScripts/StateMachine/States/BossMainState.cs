@@ -31,6 +31,10 @@ namespace BeastHunter
         private float _speedCountTime;
         private float _hungerCountTime = HUNGER_TIME;
 
+        private float _timer = 7f;
+        private int _hitPerTime = 0;
+        private float _damagePerTime;
+
         #endregion
 
         #region Properties
@@ -74,12 +78,13 @@ namespace BeastHunter
             if (!_stateMachine._model.IsDead)
             {
                 SpeedCheck();
-               // HealthCheck();
+                // HealthCheck();
                 CheckDirection();
                 HungerCheck();
                 GetTargetCurrentPosition();
                 CheckCurrentState();
-            }          
+                HitCounter();
+            }
         }
 
         public override void OnExit()
@@ -97,6 +102,7 @@ namespace BeastHunter
         {
             if (!_stateMachine._model.IsDead)
             {
+                _hitPerTime++;
               //  _stateMachine.SetCurrentStateOverride(BossStatesEnum.Hitted);
             }
         }
@@ -119,9 +125,48 @@ namespace BeastHunter
 
         private void HealthCheck()
         {
-            if (_bossModel.CurrentHealth <= _bossData._bossStats.MainStats.MaxHealth / 2)
+            Debug.Log($"Health{_bossModel.CurrentHealth}");
+        }
+
+        private void HitCounter()
+        {
+            if (_hitPerTime > 0)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                _timer -= Time.deltaTime;
+            }
+
+            if (_timer <= 0)
+            {
+                if (_hitPerTime >= 3)
+                {
+                    _stateMachine.BossSkills.HardBarkSkill.SwitchAllowed(true);
+                    if (!_stateMachine.CurrentState.isAnimationPlay)
+                    {
+                      //  _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.MainSkillDictionary[SkillDictionaryEnum.DefenceStateSkillDictionary], 2);
+                    }
+                }
+
+                DamageCounterReset();
+            }
+        }
+
+        private void DamageCounterReset()
+        {
+            _timer = 7f;
+            _hitPerTime = 0;
+        }
+
+        public void DamageCounter(Damage damage)
+        {
+            _damagePerTime += damage.PhysicalDamage;
+
+            if (_damagePerTime >= 20)
+            {
+                if (_stateMachine.CurrentState.isAnySkillUsed && _stateMachine.CurrentState.CurrentSkill.CanInterrupt)
+                {
+                    CurrentSkillStop();
+                }
+                _damagePerTime = 0;
             }
         }
 

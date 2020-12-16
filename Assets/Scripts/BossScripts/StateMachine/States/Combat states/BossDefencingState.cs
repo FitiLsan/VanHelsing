@@ -40,7 +40,7 @@ namespace BeastHunter
 
         public override void Initialise()
         {
-            _bossModel.CurrentHealth = 49;
+            _bossModel.CurrentHealth = 450;
             CanExit = false;
             CanBeOverriden = true;
             IsBattleState = true;
@@ -52,7 +52,6 @@ namespace BeastHunter
             {
                 _stateMachine.BossSkills.DefenceStateSkillDictionary[i].StartCooldown(_stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillId, _stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillCooldown);
             }
-         //   ChoosingDefenceSkill();
         }
 
         public override void OnAwake()
@@ -126,7 +125,8 @@ namespace BeastHunter
 
             }
             if (base.CurrentAttackTime <= 0)
-            {
+            {                                      
+               // isAnySkillUsed = false;
                 CurrentSkill?.StopSkill();
                 if (!isAnimationPlay & isAnySkillUsed)
                 {

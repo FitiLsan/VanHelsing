@@ -9,7 +9,7 @@ namespace BeastHunter
     {
         private float _healPower = 10f;
 
-        public DefaultDefenceSkill((int, float, float, float, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
+        public DefaultDefenceSkill((int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
             : base(skillInfo, skillDictionary, stateMachine)
         {
         }

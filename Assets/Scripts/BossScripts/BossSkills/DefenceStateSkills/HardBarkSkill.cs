@@ -7,7 +7,9 @@ namespace BeastHunter
 {
     public class HardBark : BossBaseSkill
     {
-        public HardBark((int, float, float, float, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
+        private bool _isAllowed;
+
+        public HardBark((int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
             : base(skillInfo, skillDictionary, stateMachine)
         {
         }
@@ -19,21 +21,40 @@ namespace BeastHunter
 
         public override void StopSkill()
         {
+            
         }
 
         public override void UseSkill(int id)
         {
-            Debug.Log("Hard Bark Skill");
-            SetNavMeshAgent(_bossModel.BossTransform.position, 0);
-            _bossModel.BossAnimator.Play($"HardBark", 0, 0f);
-            CreateBark();
-            ReloadSkill(id);
+            if (_isAllowed && _skillDictionary[id].IsSkillReady)
+            {
+                Debug.Log("Hard Bark Skill");
+                SetNavMeshAgent(_bossModel.BossTransform.position, 0);
+                _bossModel.BossAnimator.Play($"HardBark", 0, 0f);
+
+                SwitchBark(true);
+
+                DelayCall(() => SwitchBark(false), 15f, out var call);
+                ReloadSkill(id);
+                SwitchAllowed(false);
+            }
         }
 
-        private void CreateBark()
+        private void SwitchBark(bool isOn)
         {
-          //BuffService
+            if (isOn)
+            {
+                _bossModel.barkBuffEffect.Play();
+                //BuffService + def  - attackSpeed
+            }
+            else
+            {
+                _bossModel.barkBuffEffect.Stop();
+            }
+        }     
+        internal override void SwitchAllowed(bool isOn)
+        {
+            _isAllowed = isOn;
         }
-        
     }
 }

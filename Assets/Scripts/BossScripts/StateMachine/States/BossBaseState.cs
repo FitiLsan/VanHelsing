@@ -116,6 +116,13 @@ namespace BeastHunter
             return isNear;
         }
 
+        protected void CurrentSkillStop()
+        {
+            _stateMachine.CurrentState.isAnySkillUsed = false;
+            _stateMachine.CurrentState.CurrentAttackTime = 0;
+            _stateMachine.CurrentState.CurrentSkill.StopSkill();
+        }
+
         #endregion
     }
 }

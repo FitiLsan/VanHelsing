@@ -131,33 +131,33 @@ namespace BeastHunter
 
         #region Methods
 
-        public (int, float, float, float, bool) GetDefaultSkillInfo()
+        public (int, float, float, float, bool, bool) GetDefaultSkillInfo()
         {
-            var tuple = (DefaultSkillId, DefaultSkillRangeMin, DefaultSkillRangeMax, DefaultSkillCooldown, DefaultSkillReady);
+            var tuple = (DefaultSkillId, DefaultSkillRangeMin, DefaultSkillRangeMax, DefaultSkillCooldown, DefaultSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool) GetHorizontalSkillInfo()
+        public (int, float, float, float, bool, bool) GetHorizontalSkillInfo()
         {
-            var tuple = ( HorizontalSkillId,  HorizontalSkillRangeMin,  HorizontalSkillRangeMax,  HorizontalSkillCooldown,  HorizontalSkillReady);
+            var tuple = ( HorizontalSkillId,  HorizontalSkillRangeMin,  HorizontalSkillRangeMax,  HorizontalSkillCooldown,  HorizontalSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool) GetStompSplashSkillInfo()
+        public (int, float, float, float, bool, bool) GetStompSplashSkillInfo()
         {
-            var tuple = (StompSplashSkillId, StompSplashSkillRangeMin, StompSplashSkillRangeMax, StompSplashSkillCooldown, StompSplashSkillReady);
+            var tuple = (StompSplashSkillId, StompSplashSkillRangeMin, StompSplashSkillRangeMax, StompSplashSkillCooldown, StompSplashSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool) GetRageOfForestSkillInfo()
+        public (int, float, float, float, bool, bool) GetRageOfForestSkillInfo()
         {
-            var tuple = (RageOfForestSkillId, RageOfForestSkillRangeMin, RageOfForestSkillRangeMax, RageOfForestSkillCooldown, RageOfForestSkillReady);
+            var tuple = (RageOfForestSkillId, RageOfForestSkillRangeMin, RageOfForestSkillRangeMax, RageOfForestSkillCooldown, RageOfForestSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool) GetPoisonSporesSkillInfo()
+        public (int, float, float, float, bool, bool) GetPoisonSporesSkillInfo()
         {
-            var tuple = (PoisonSporesSkillId, PoisonSporesSkillRangeMin, PoisonSporesSkillRangeMax, PoisonSporesSkillCooldown, PoisonSporesSkillReady);
+            var tuple = (PoisonSporesSkillId, PoisonSporesSkillRangeMin, PoisonSporesSkillRangeMax, PoisonSporesSkillCooldown, PoisonSporesSkillReady, false);
             return tuple;
         }
 

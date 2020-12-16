@@ -191,7 +191,7 @@ namespace BeastHunter
             WeaponData = Data.BossFeasts;
 
             var leftFist = new GameObject("[LeftFist]");
-            GameObject leftHandFist = GameObject.Instantiate(leftFist,LeftHand.position, LeftHand.rotation, LeftHand);
+            GameObject leftHandFist = GameObject.Instantiate(leftFist, LeftHand.position, LeftHand.rotation, LeftHand);
             GameObject.Destroy(leftFist);
             SphereCollider LeftHandTrigger = leftHandFist.AddComponent<SphereCollider>();
             LeftHandCollider = leftHandFist.AddComponent<SphereCollider>();
@@ -233,15 +233,14 @@ namespace BeastHunter
 
             GameObject _healAura = GameObject.Instantiate(HealAuraPrefab, BossTransform.position, Quaternion.identity, BossTransform);
             healAura = _healAura.GetComponent<ParticleSystem>();
-            // _healAura.SetActive(false);
             healAura.Stop();
-            GameObject _barkBuffEffect = GameObject.Instantiate(BarkBuffEffectPrefab, BossTransform.position, BarkBuffEffectPrefab.transform.rotation , BossTransform);
+
+            GameObject _barkBuffEffect = GameObject.Instantiate(BarkBuffEffectPrefab, BossTransform.position, BarkBuffEffectPrefab.transform.rotation, BossTransform);
             barkBuffEffect = _barkBuffEffect.GetComponent<ParticleSystem>();
-            // _barkBuffEffect.SetActive(false);
             barkBuffEffect.Stop();
+
             GameObject _callOfForestEffect = GameObject.Instantiate(CallOfForestEffectPrefab, BossTransform.position + new Vector3(-0.65f, 5, 1), Quaternion.identity, BossTransform);
             callOfForestEffect = _callOfForestEffect.GetComponent<ParticleSystem>();
-            //   _callOfForestEffect.SetActive(false);
             callOfForestEffect.Stop();
 
 
@@ -278,7 +277,7 @@ namespace BeastHunter
             CurrentHealth = BossStats.MainStats.HealthPoints;
             SporePrefab = BossSettings.SporePrefab;
             Ruler = BossSettings.Ruler;
-            GameObject.Instantiate(Ruler, BossTransform.position+Vector3.up, Quaternion.identity, BossTransform);
+            GameObject.Instantiate(Ruler, BossTransform.position + Vector3.up, Quaternion.identity, BossTransform);
 
         }
 
@@ -324,6 +323,7 @@ namespace BeastHunter
             }
             DamageCheck(damage.PhysicalDamage);
             HealthCheck();
+            BossStateMachine._mainState.DamageCounter(damage);
         }
 
         public override void OnTearDown()
@@ -338,7 +338,7 @@ namespace BeastHunter
                 BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Dead);
             }
 
-            if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.HealthPoints / 2)
+            if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.MaxHealth)// / 2)
             {
                 if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
                 {
@@ -348,7 +348,7 @@ namespace BeastHunter
 
             if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.HealthPoints * 0.1f)
             {
-                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
+               // BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
             }
         }
 

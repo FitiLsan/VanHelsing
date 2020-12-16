@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace BeastHunter
         private float _skillCooldown;
         private bool _isCooldownStart;
         private bool _isSkillReady;
+        private bool _canInterrupt;
 
         protected BossModel _bossModel;
         protected WeaponHitBoxBehavior _currenTriggertHand;
@@ -38,13 +40,14 @@ namespace BeastHunter
             _skillDictionary = skillDictionary;
         }
 
-        public BossBaseSkill ((int, float, float, float, bool)skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        public BossBaseSkill ((int, float, float, float, bool, bool)skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
         {
             _skillId = skillInfo.Item1;
             _skillRangeMin = skillInfo.Item2;
             _skillRangeMax = skillInfo.Item3;
             _skillCooldown = skillInfo.Item4;
             _isSkillReady = skillInfo.Item5;
+            _canInterrupt = skillInfo.Item6;
             _stateMachine = stateMachine;
             _bossModel = stateMachine._model;
             _skillDictionary = skillDictionary;
@@ -85,6 +88,9 @@ namespace BeastHunter
                 _isCooldownStart = value;
             }
         }
+
+        public bool CanInterrupt => _canInterrupt;
+
         #endregion
 
         public abstract void UseSkill(int id);
@@ -125,11 +131,23 @@ namespace BeastHunter
             _bossModel.BossNavAgent.speed = speed;
         }
 
+        internal virtual void SwitchAllowed(bool v)
+        {
+            
+        }
+
         protected virtual void ReloadSkill(int id)
         {
             _skillDictionary[id].IsSkillReady = false;
             StartCooldown(id, _skillDictionary[id].SkillCooldown);
             _stateMachine.CurrentState.isAnimationPlay = true;
+        }
+
+        protected virtual void DelayCall(Action action, float delayTime, out TimeRemaining delayCall, bool isRepete=false)
+        {
+            TimeRemaining timeRemaining = new TimeRemaining(() => action(), delayTime, isRepete);
+            timeRemaining.AddTimeRemaining(delayTime);
+            delayCall = timeRemaining;
         }
     }
 }

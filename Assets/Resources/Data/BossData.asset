@@ -63,9 +63,9 @@ MonoBehaviour:
     _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
   _bossStats:
     MainStats:
-      _maxHealth: 100
+      _maxHealth: 1000
       _enemyType: 5
-      _healthPoints: 100
+      _healthPoints: 1000
       _physicalPower: 0.76
       _physicalDamageResistance: 0.818
       _stunProbabilityResistance: 0
@@ -110,6 +110,7 @@ MonoBehaviour:
     _selfHealSkillRangeMax: -1
     _selfHealSkillCooldown: 10
     _selfHealSkillReady: 1
+    _selfHealSkillCanInterrupt: 1
     _hardBarkSkillId: 2
     _hardBarkSkillRangeMin: -1
     _hardBarkSkillRangeMax: -1

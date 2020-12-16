@@ -17,6 +17,7 @@ namespace BeastHunter
 
         private BossStateMachine _stateMachine;
 
+        public Dictionary<SkillDictionaryEnum, Dictionary<int, BossBaseSkill>> MainSkillDictionary { get; private set; }
         public Dictionary<int, BossBaseSkill> AttackStateSkillDictionary { get; private set; }
         public Dictionary<int, BossBaseSkill> DefenceStateSkillDictionary { get; private set; }
 
@@ -37,11 +38,15 @@ namespace BeastHunter
         {
             _stateMachine = stateMachine;
 
-            AttackStateSkillDictionary = new Dictionary<int, BossBaseSkill>();
-            DefenceStateSkillDictionary = new Dictionary<int, BossBaseSkill>();
-         
             AttackStateSkillsSettings = _stateMachine._model.BossData.AttackStateSkills;
             DefenceStateSkillsSettings = _stateMachine._model.BossData.DefenceStateSkills;
+
+            MainSkillDictionary = new Dictionary<SkillDictionaryEnum, Dictionary<int, BossBaseSkill>>();
+            AttackStateSkillDictionary = new Dictionary<int, BossBaseSkill>();
+            DefenceStateSkillDictionary = new Dictionary<int, BossBaseSkill>();
+
+            MainSkillDictionary.Add(SkillDictionaryEnum.AttackStateSkillDictionary, AttackStateSkillDictionary);
+            MainSkillDictionary.Add(SkillDictionaryEnum.DefenceStateSkillDictionary, DefenceStateSkillDictionary);
 
             #region AttackState
 
@@ -74,6 +79,13 @@ namespace BeastHunter
             DefenceStateSkillDictionary.Add(CanibalHealingSkill.SkillId, CanibalHealingSkill);
 
             #endregion
+
+
+        }
+
+        public void ForceUseSkill(Dictionary<int,BossBaseSkill> dic, int skillId)
+        {
+            dic[skillId].UseSkill(skillId);
         }
     }
 }
