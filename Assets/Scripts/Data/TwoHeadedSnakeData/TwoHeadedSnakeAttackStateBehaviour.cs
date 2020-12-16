@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    class HellHoundAttackStateBehaviour : StateMachineBehaviour
+    class TwoHeadedSnakeAttackStateBehaviour : StateMachineBehaviour
     {
         public event Action OnStateEnterHandler;
         public event Action OnStateExitHandler;

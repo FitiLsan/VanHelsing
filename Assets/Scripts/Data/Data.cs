@@ -41,6 +41,8 @@ namespace BeastHunter
         [SerializeField] private string _materialsDataPath;
         [SerializeField] private string _torchObjectPath;
         [SerializeField] private string _hellHoundDataPath;
+        [SerializeField] private string _twoHeadedSnakeDataPath;
+        [SerializeField] private string _bouldersObjectPath;
         [SerializeField] private string _hideBushDataPath;
 
         private static Data _instance;
@@ -72,6 +74,8 @@ namespace BeastHunter
         private static MaterialsData _materialsData;
         private static TorchData _torchObjectData;
         private static HellHoundData _hellHoundData;
+        private static TwoHeadedSnakeData _twoHeadedSnakeData;
+        private static BouldersData _bouldersObjectData;
         private static HideBushData _hideBushData;
 
         #endregion
@@ -406,6 +410,32 @@ namespace BeastHunter
                     _hellHoundData = Resources.Load<HellHoundData>("Data/" + Instance._hellHoundDataPath);
                 }
                 return _hellHoundData;
+            }
+        }
+
+        public static TwoHeadedSnakeData TwoHeadedSnakeData
+        {
+            get
+            {
+                if (_twoHeadedSnakeData == null)
+                {
+                    _twoHeadedSnakeData =
+                        Resources.Load<TwoHeadedSnakeData>("Data/" + Instance._twoHeadedSnakeDataPath);
+                }
+
+                return _twoHeadedSnakeData;
+            }
+        }
+
+        public static BouldersData BoulderObjectData
+        {
+            get
+            {
+                if (_bouldersObjectData == null)
+                {
+                    _bouldersObjectData = Load<BouldersData>("Data/" + Instance._bouldersObjectPath);
+                }
+                return _bouldersObjectData;
             }
         }
 
