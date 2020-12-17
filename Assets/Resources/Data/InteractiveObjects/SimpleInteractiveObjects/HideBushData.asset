@@ -15,5 +15,16 @@ MonoBehaviour:
   Prefab: {fileID: 8887241308909666457, guid: d2c24eba1ec7251498d3b76963334500, type: 3}
   _isActivated: 0
   _canvasObjectName: 
+  _debugMessages: 1
+  _damage:
+    PhysicalDamage: 0
+    StunProbability: 0
+    FireDamage: 10
   _prefabPosition: {x: 484, y: 1, z: 485}
   _prefabEulers: {x: 0, y: 0, z: 0}
+  _burningTime: 25
+  _dealDamageCooldown: 1
+  _mainColliderName: MainCollider
+  _normalViewName: NormalView
+  _fireViewName: FireView
+  _burnedViewName: BurnedView

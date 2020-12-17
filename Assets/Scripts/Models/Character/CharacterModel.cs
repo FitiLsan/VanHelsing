@@ -18,6 +18,7 @@ namespace BeastHunter
 
         #region Properties
 
+        public int InstanceID { get; }
         public BaseStatsClass CharacterStats { get; set; }
         public ReactiveProperty<WeaponData> CurrentWeaponData { get; set; }
         public GameObject CurrentWeaponLeft { get; set; }
@@ -70,6 +71,7 @@ namespace BeastHunter
 
         public CharacterModel(GameObject prefab, CharacterData characterData, Vector3 groundPosition)
         {
+            InstanceID = prefab.GetInstanceID();
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData.CharacterCommonSettings;
             CharacterStatsSettings = CharacterData.CharacterStatsSettings;

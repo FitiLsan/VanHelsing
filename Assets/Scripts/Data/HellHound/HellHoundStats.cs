@@ -11,6 +11,9 @@ namespace BeastHunter
 
         [Tooltip("Display debugging messages")]
         [SerializeField] private bool _debugMessages;
+
+        [SerializeField] private Damage _damage;
+
         [Tooltip("The radius the dog will move away from the spawn point. Default: 50.0")]
         [SerializeField] private float _wanderingRadius;
         [Tooltip("Player detection radius. Default: 30.0")]
@@ -19,10 +22,6 @@ namespace BeastHunter
         [SerializeField] private float _roamingChance;
         [Tooltip("Non-attack jump animation speed. Default: 1.2")]
         [SerializeField] private float _jumpingSpeedRate;
-
-        [Header("Damage")]
-        [SerializeField] private float _physicalDamage;
-        [SerializeField] private float _stunProbability;
 
         [Header("Attacks")]
         [Tooltip("The speed at which the dog will turn towards the player during attacks. Default: 0.5")]
@@ -131,13 +130,12 @@ namespace BeastHunter
 
         #region Properties
 
+        public Damage Damage => _damage;
         public bool DebugMessages => _debugMessages;
         public float WanderingRadius => _wanderingRadius;
         public float DetectionRadius => _detectionRadius;
         public float RoamingChance => _roamingChance;
         public float JumpingSpeedRate => _jumpingSpeedRate;
-        public float PhysicalDamage => _physicalDamage;
-        public float StunProbability => _stunProbability;
         public float AttacksTurnSpeed => _attacksTurnSpeed;
         public float AttackDirectDistance => _attackDirectDistance;
         public float AttackBottomDistance => _attackBottomDistance;
