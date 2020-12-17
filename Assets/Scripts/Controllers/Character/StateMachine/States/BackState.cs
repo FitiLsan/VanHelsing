@@ -389,8 +389,9 @@ namespace BeastHunter
 
         private void OnWeaponChangeHandler(WeaponData newWeapon)
         {
-            if (_stateMachine.CurrentState == _stateMachine.CharacterStates[CharacterStatesEnum.Aiming] &&
-                newWeapon?.Type != WeaponType.Shooting)
+            if ((_stateMachine.CurrentState == _stateMachine.CharacterStates[CharacterStatesEnum.Aiming] &&
+                newWeapon?.Type != WeaponType.Shooting) || (_stateMachine.CurrentState == _stateMachine.
+                    CharacterStates[CharacterStatesEnum.Battle] && newWeapon?.Type != WeaponType.Melee))
             {
                 _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
             }

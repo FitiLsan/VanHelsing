@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 225141667}
   - component: {fileID: 225141669}
   - component: {fileID: 225141668}
-  - component: {fileID: 225141670}
   m_Layer: 5
   m_Name: HealthScale
   m_TagString: Untagged
@@ -75,21 +74,6 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &225141670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 225141666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72633f5d0e9113d47b5a90d238518c9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _HealthScaleImage: {fileID: 0}
-  _currentHealthPercent: 0
-  _currentHealth: 0
 --- !u!1 &1868640055366812848
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +194,6 @@ GameObject:
   - component: {fileID: 1868640055513050818}
   - component: {fileID: 1868640055513050828}
   - component: {fileID: 1868640055513050819}
-  - component: {fileID: 609141551784482788}
   m_Layer: 5
   m_Name: StaminaScale
   m_TagString: Untagged
@@ -274,18 +257,3 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &609141551784482788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1868640055513050817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24f3c8855621d1d40a958a38bb7d6afc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scaleImage: {fileID: 0}
-  _currentStaminaPercent: 0
-  _currentStamina: 0

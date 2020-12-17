@@ -11,6 +11,7 @@ namespace BeastHunter
         #region Constants
 
         private float AIM_LINE_DRAW_DISTANCE_STEP = 0.1f;
+        private float AIM_LINE_DRAW_FIRST_STEP_DISTANCE = 1f;
         private int AMOUNT_OF_AIM_LINE_STEPS = 15;
 
         #endregion
@@ -305,7 +306,8 @@ namespace BeastHunter
 
             for (int i = 0; i < AMOUNT_OF_AIM_LINE_STEPS; i++)
             {
-                _aimingDots[i].transform.position = GetAimLinePointPosition(i * AIM_LINE_DRAW_DISTANCE_STEP);
+                _aimingDots[i].transform.position = GetAimLinePointPosition((AIM_LINE_DRAW_FIRST_STEP_DISTANCE + i) * 
+                    AIM_LINE_DRAW_DISTANCE_STEP);
             }
         }
 
