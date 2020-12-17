@@ -233,7 +233,7 @@ namespace BeastHunter
         {
             var interactableObject = enteredObject.GetComponent<InteractableObjectBehavior>().Type;
 
-            if (interactableObject == InteractableObjectType.Player)
+            if (interactableObject == InteractableObjectType.Player & !enteredObject.isTrigger)
             {
                 _bossModel.BossCurrentTarget = enteredObject.gameObject;
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);

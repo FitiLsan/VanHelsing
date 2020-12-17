@@ -149,5 +149,11 @@ namespace BeastHunter
             timeRemaining.AddTimeRemaining(delayTime);
             delayCall = timeRemaining;
         }
+
+        protected virtual void DelayCall(Action action, float delayTime, bool isRepete = false)
+        {
+            TimeRemaining timeRemaining = new TimeRemaining(() => action(), delayTime, isRepete);
+            timeRemaining.AddTimeRemaining(delayTime);
+        }
     }
 }

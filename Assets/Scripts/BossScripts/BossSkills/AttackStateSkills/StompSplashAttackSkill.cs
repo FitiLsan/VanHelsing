@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using RootMotion.Dynamics;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,15 +33,28 @@ namespace BeastHunter
         private void StompShockWave()
         {
             _bossModel.leftStompEffect.Play(true);
-            var force = 5f;
+            var force = 50f;
             var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.LeftFoot.position, 20f, "Player");
-            foreach (var obj in list)
+            if (list.Count != 0)
             {
-                if (list.Count != 0)
-                {
-                    //  list[0].GetComponent<Rigidbody>().AddForce((_bossModel.LeftFoot.position - _bossModel.BossCurrentPosition) * force, ForceMode.Impulse);
-                }
+                var target = list.Find(x => x.name == "Player");
+                var rb = target.GetComponent<Rigidbody>();
+                var pm = target.transform.parent.Find("PuppetMaster").GetComponent<PuppetMaster>();
+
+                pm.state = PuppetMaster.State.Frozen;
+                rb.AddExplosionForce(force, _bossModel.LeftFoot.transform.position, 15f, 1.5f, ForceMode.Impulse);
+                DelayCall(() => pm.state = PuppetMaster.State.Alive, 2f);
+
             }
+
+
+            //foreach (var obj in list)
+            //{
+            //    if (list.Count != 0)
+            //    {
+            //        obj.GetComponent<Rigidbody>().AddForce((_bossModel.LeftFoot.position - _bossModel.BossCurrentPosition) * force, ForceMode.Impulse);
+            //    }
+            //}
 
         }
         public override void StopSkill()
