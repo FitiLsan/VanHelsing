@@ -43,9 +43,11 @@ namespace BeastHunter
 
         private void ExplodeBomb(IProjectile projectileInterface, Collision touchedCollider)
         {
+            Rigidbody bombRigidbody = projectileInterface.GameObject.GetComponent<Rigidbody>();
+            bombRigidbody.velocity = Vector3.zero;
+            bombRigidbody.isKinematic = true;
             projectileInterface.GameObject.GetComponent<ParticleSystem>().Play();
             Destroy(projectileInterface.GameObject.GetComponent<ProjectileBehavior>());
-            Destroy(projectileInterface.GameObject.GetComponent<Rigidbody>());
             Destroy(projectileInterface.GameObject.GetComponent<MeshRenderer>());
             Destroy(projectileInterface.GameObject.GetComponent<Collider>());
             Destroy(projectileInterface.GameObject, 0.5f);

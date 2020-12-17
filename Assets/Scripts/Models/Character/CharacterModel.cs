@@ -41,13 +41,13 @@ namespace BeastHunter
         public PuppetMaster PuppetMaster { get; }
         public BehaviourPuppet BehaviorPuppet { get; }
         public BehaviourFall BehaviorFall { get; }
+        public LineRenderer ProjectileTrajectoryPredict { get; }
 
         public List<Collider> EnemiesInTrigger { get; set; }
         public Collider ClosestEnemy { get; set; }
 
         public float CurrentSpeed { get; set; }
         public float AnimationSpeed { get; set; }
-        public float Health { get; set; }
 
         public bool IsDodging { get; set; }
         public bool IsSneaking { get; set; }
@@ -86,12 +86,12 @@ namespace BeastHunter
             if (CharacterTransform.gameObject.TryGetComponent(out Rigidbody _characterRigitbody))
             {
                 CharacterRigitbody = _characterRigitbody;
-                Debug.Log(_characterRigitbody == null);
             }
             else
             {
                 throw new System.Exception("There is no rigidbody on character prefab");
             }
+
             CharacterRigitbody.mass = CharacterCommonSettings.RigitbodyMass;
             CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
             CharacterRigitbody.angularDrag = CharacterCommonSettings.RigitbodyAngularDrag;
@@ -122,13 +122,22 @@ namespace BeastHunter
             CharacterSphereCollider.radius = CharacterCommonSettings.SphereColliderRadius;
             CharacterSphereCollider.isTrigger = true;
 
-            if (CharacterTransform.gameObject.TryGetComponent(out PlayerBehavior _playerBehavior))
+            if (CharacterTransform.gameObject.TryGetComponent(out PlayerBehavior playerBehavior))
             {
-                PlayerBehavior = _playerBehavior;
+                PlayerBehavior = playerBehavior;
             }
             else
             {
                 throw new System.Exception("There is no player behavior script on character prefab");
+            }
+
+            if (CharacterTransform.gameObject.TryGetComponent(out LineRenderer projectileProjection))
+            {
+                ProjectileTrajectoryPredict = projectileProjection;
+            }
+            else
+            {
+                throw new System.Exception("There is no line renderer on character prefab");
             }
 
             PuppetMaster = prefab.transform.GetChild(1).gameObject.GetComponent<PuppetMaster>();

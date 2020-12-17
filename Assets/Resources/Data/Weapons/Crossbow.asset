@@ -30,7 +30,7 @@ MonoBehaviour:
   _weaponName: Crossbow
   _simpleAttackAnimationPrefix: CrossbowSimpleAttack
   _specialAttackAnimationPrefix: CrossbowSpecialAttack
-  _strafeAnimationPostfix: Strafe
+  _strafeAnimationPostfix: StrafeGun
   _dodgeAnimationPostfix: Dodge
   _gettingAnimationPostfix: CrossbowGetting
   _holdingAnimationPostfix: CrossbowHolding
@@ -42,7 +42,7 @@ MonoBehaviour:
   _actualWeapon: {fileID: 11400000, guid: e2a1624ec5a336945b8c75bb80548e57, type: 2}
   _projectileData: {fileID: 11400000, guid: 2d7680b8cfc58fd45ab7be2e8e6457dc, type: 2}
   _magazineSize: 25
-  _hitDistance: 80
+  _hitDistance: 150
   _timeBetweenShots: 1
   _reloadTime: 10
   _aimingAnimationPostfix: CrossbowAiming

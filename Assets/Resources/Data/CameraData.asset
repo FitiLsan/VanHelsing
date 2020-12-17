@@ -138,20 +138,24 @@ MonoBehaviour:
     _targetCameraSoftZoneHeight: 0
     _targetCameraBiasX: 0
     _targetCameraBiasY: 0
-    _aimingCameraFieldOfView: 40
+    _aimCanvasPrefab: {fileID: 1261407756581847835, guid: 4516dd8390dae034a8e58dee02b4bbbc,
+      type: 3}
+    _aimProjectileLinePrefab: {fileID: 2890280644428487904, guid: 3a80d21ca1e78194c8abdb87e28d79a0,
+      type: 3}
+    _aimingCameraFieldOfView: 27
     _aimingCameraNearClipPlane: 0.1
     _aimingCameraFarClipPlane: 5000
     _aimingCameraDutch: 0
-    _aimingCameraFollowOffsetX: 0.47
-    _aimingCameraFollowOffsetY: 0.22
-    _aimingCameraFollowOffsetZ: -1.5
+    _aimingCameraFollowOffsetX: 0.9
+    _aimingCameraFollowOffsetY: 0
+    _aimingCameraFollowOffsetZ: -2
     _aimingCameraDampingX: 0
     _aimingCameraDampingY: 0
     _aimingCameraDampingZ: 0
     _aimingCameraPitchDamping: 0
     _aimingCameraYawDamping: 0
     _aimingCameraRollDamping: 0
-    _aimingCameraTrackedOffsetX: 0
+    _aimingCameraTrackedOffsetX: 0.5
     _aimingCameraTrackedOffsetY: 0
     _aimingCameraTrackedOffsetZ: 0
     _aimingCameraLookaheadTime: 0
