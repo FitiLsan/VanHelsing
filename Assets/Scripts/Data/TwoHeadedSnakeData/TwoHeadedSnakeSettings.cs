@@ -119,9 +119,12 @@ namespace BeastHunter
         [Header("Debug message")]
         [Tooltip("Display debugging messages")]
         [SerializeField] private bool _debugMessages = false;
+
+        [Header("HP Bar")]
+        [Tooltip("Position HP bar in a prefab")]
+        [SerializeField] private Vector3 _positionHpBar = new Vector3(0.0f, 3.2f, 0.0f);
+
         #endregion
-
-
 
 
         #region Properties
@@ -169,6 +172,8 @@ namespace BeastHunter
         public float AttackCooldown => _attackCooldown; 
         public float ChasingTurnSpeedNearTarget => _chasingTurnSpeedNearTarget;
         public float ChasingTurnDistanceNearTarget => _chasingTurnDistanceNearTarget;
+
+        public Vector3 PositionHpBar => _positionHpBar;
 
         public bool DebugMessages => _debugMessages;
 

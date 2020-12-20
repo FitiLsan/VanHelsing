@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 
 namespace BeastHunter
@@ -11,8 +12,8 @@ namespace BeastHunter
 
         #region Fields
 
-        private int HEAD_COLLIDER_COUNT = 2;
-        private int TAIL_COLLIDER_COUNT = 4;
+        private const int HEAD_COLLIDER_COUNT = 2;
+        private const int TAIL_COLLIDER_COUNT = 4;
 
         private TwoHeadedSnakeData _twoHeadedSnakeData;
         private InteractableObjectBehavior[] _interactableObjects;
@@ -21,6 +22,8 @@ namespace BeastHunter
         private TwoHeadedSnakeAttackStateBehaviour[] _attackStates;
         private Collider[] _tailAttackColliders;
         private Collider[] _twinHeadAttackColliders;
+        private Image _canvasHPImage;
+        private Transform _canvasHPObject;
 
         public TwoHeadedSnakeData.BehaviourState behaviourState;
         public Transform chasingTarget;
@@ -50,6 +53,9 @@ namespace BeastHunter
         public InteractableObjectBehavior [] WeaponsIO { get; }
         public Collider[] TailAttackColliders { get => _tailAttackColliders; }
         public Collider[] TwinHeadAttackColliders { get => _twinHeadAttackColliders; }
+        public Image CanvasHPImage { get => _canvasHPImage; }
+        public Transform CanvesHPObject { get => _canvasHPObject; }
+        
         #endregion
 
 
@@ -57,14 +63,19 @@ namespace BeastHunter
 
         public TwoHeadedSnakeModel(GameObject prefab, TwoHeadedSnakeData twoHeadedSnakeData, Vector3 spawnPosition)
         {
+            
             _twoHeadedSnakeData = twoHeadedSnakeData;
             Settings = _twoHeadedSnakeData.settings;
             TwoHeadedSnake = prefab;
             SpawnPoint = spawnPosition;
             attackCoolDownTimer = 0;
-
+            
             Transform = TwoHeadedSnake.transform;
             behaviourState = TwoHeadedSnakeData.BehaviourState.None;
+
+            _canvasHPObject = prefab.transform.Find("CanvasObject");
+            _canvasHPObject.position = _canvasHPObject.position + Settings.PositionHpBar;
+            _canvasHPImage = _canvasHPObject.GetComponentInChildren<Image>();
 
             if (TwoHeadedSnake.GetComponent<Rigidbody>() != null)
             {
@@ -157,11 +168,19 @@ namespace BeastHunter
 
         public override void Execute()
         {
+
             if (!IsDead)
             {
                 _twoHeadedSnakeData.Act(this);
+                CanvesHPObject.LookAt(Services.SharedInstance.CameraService.CurrentActiveCamera.Value.transform);
+                CanvasHPImage.fillAmount = CurrentHealth / _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
             }
-            
+            else
+            {
+                //CanvasHPImage.fillAmount = 0;
+                CanvesHPObject.gameObject.SetActive(false);
+            }
+
         }
 
         public override EnemyStats GetStats()

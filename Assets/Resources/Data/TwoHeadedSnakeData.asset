@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseStats:
     MainStats:
-      _maxHealth: 500
+      _maxHealth: 300
       _enemyType: 0
       _viewRadius: 0
       _viewAngle: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
     _roamingChance: 75
     _chasingTurnSpeedNearTarget: 0.05
     _chasingTurnDistanceNearTarget: 8
-    _escapingSpeed: 3
+    _escapingSpeed: 2
     _percentEscapeHealth: 30
     _escapeDistance: 50
     _idlingMinTime: 5
@@ -61,3 +61,4 @@ MonoBehaviour:
     _restingMinTime: 5
     _restingMaxTime: 20
     _debugMessages: 1
+    _positionHpBar: {x: 0, y: 2, z: 0}
