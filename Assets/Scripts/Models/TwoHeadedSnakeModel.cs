@@ -14,6 +14,7 @@ namespace BeastHunter
 
         private const int HEAD_COLLIDER_COUNT = 2;
         private const int TAIL_COLLIDER_COUNT = 4;
+        private float HIDE_HP_BAR_TIMER = 2f;
 
         private TwoHeadedSnakeData _twoHeadedSnakeData;
         private InteractableObjectBehavior[] _interactableObjects;
@@ -23,7 +24,13 @@ namespace BeastHunter
         private Collider[] _tailAttackColliders;
         private Collider[] _twinHeadAttackColliders;
         private Image _canvasHPImage;
+        private Image _canvasDamagedBar;
         private Transform _canvasHPObject;
+        private Color _damegedColor;
+        private Color _damegedColorTxt;
+        private Text _canvasImpactDamageTxt;
+        private float _damagedHealthFadeTimer;
+        private float _damagedTxtFameTimer;
 
         public TwoHeadedSnakeData.BehaviourState behaviourState;
         public Transform chasingTarget;
@@ -54,8 +61,11 @@ namespace BeastHunter
         public Collider[] TailAttackColliders { get => _tailAttackColliders; }
         public Collider[] TwinHeadAttackColliders { get => _twinHeadAttackColliders; }
         public Image CanvasHPImage { get => _canvasHPImage; }
+        public Image CanvasDamagedBar { get => _canvasDamagedBar; }
         public Transform CanvesHPObject { get => _canvasHPObject; }
+        public Text CanvasImpactDamageTxt { get => _canvasImpactDamageTxt; }
         
+
         #endregion
 
 
@@ -73,9 +83,7 @@ namespace BeastHunter
             Transform = TwoHeadedSnake.transform;
             behaviourState = TwoHeadedSnakeData.BehaviourState.None;
 
-            _canvasHPObject = prefab.transform.Find("CanvasObject");
-            _canvasHPObject.position = _canvasHPObject.position + Settings.PositionHpBar;
-            _canvasHPImage = _canvasHPObject.GetComponentInChildren<Image>();
+            CustomizationHpBar(prefab);
 
             if (TwoHeadedSnake.GetComponent<Rigidbody>() != null)
             {
@@ -172,14 +180,9 @@ namespace BeastHunter
             if (!IsDead)
             {
                 _twoHeadedSnakeData.Act(this);
-                CanvesHPObject.LookAt(Services.SharedInstance.CameraService.CurrentActiveCamera.Value.transform);
-                CanvasHPImage.fillAmount = CurrentHealth / _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
             }
-            else
-            {
-                //CanvasHPImage.fillAmount = 0;
-                CanvesHPObject.gameObject.SetActive(false);
-            }
+
+            ExecuteHealthBarController();
 
         }
 
@@ -195,9 +198,91 @@ namespace BeastHunter
 
         public override void TakeDamage(Damage damage)
         {
+
+            TakeDamageHealthBarController(damage);
+
             if (!IsDead)
             {
                 _twoHeadedSnakeData.TakeDamage(this, damage);
+                
+            }
+
+            
+        }
+
+        public void ExecuteHealthBarController()
+        {
+
+            if (!IsDead)
+            {
+
+                CanvesHPObject.LookAt(Services.SharedInstance.CameraService.CurrentActiveCamera.Value.transform);
+               
+                CanvasHPImage.fillAmount = CurrentHealth / _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
+                if (_damegedColor.a > 0)
+                {
+                    _damagedHealthFadeTimer -= Time.deltaTime;
+                    if (_damagedHealthFadeTimer < 0)
+                    {
+                        _damegedColor.a -= Settings.FadeAmount * Time.deltaTime;
+                        CanvasDamagedBar.color = _damegedColor;
+                    }
+                }
+
+                if (_damegedColorTxt.a > 0)
+                {
+                    _damagedTxtFameTimer -= Time.deltaTime;
+                    if (_damagedTxtFameTimer < 0)
+                    {
+                        _damegedColorTxt.a -= Settings.TxtFadeAmount * Time.deltaTime;
+                        CanvasImpactDamageTxt.color = _damegedColorTxt;
+                    }
+                }
+            }
+            else
+            {
+                HIDE_HP_BAR_TIMER -= Time.deltaTime;
+                CanvasHPImage.fillAmount = CurrentHealth / _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
+
+                if (_damegedColor.a > 0)
+                {
+                    _damagedHealthFadeTimer -= Time.deltaTime;
+                    if (_damagedHealthFadeTimer < 0)
+                    {
+                        _damegedColor.a -= Settings.FadeAmount * Time.deltaTime;
+                        CanvasDamagedBar.color = _damegedColor;
+                    }
+                }
+
+                if (HIDE_HP_BAR_TIMER < 0)
+                {
+                    CanvesHPObject.gameObject.SetActive(false);
+                }
+                
+            }
+
+        }
+
+        public void TakeDamageHealthBarController(Damage damage)
+        {
+            if (!IsDead)
+            {
+
+                if (_damegedColor.a <= 0)
+                {
+                    CanvasDamagedBar.fillAmount = CanvasHPImage.fillAmount;
+
+                }
+
+                _damegedColor.a = 1f;
+                CanvasDamagedBar.color = _damegedColor;
+                _damagedHealthFadeTimer = Settings.DamegedHealthFadeTimerMax;
+
+                CanvasImpactDamageTxt.text = damage.PhysicalDamage.ToString();
+                _damegedColorTxt.a = 1f;
+                CanvasImpactDamageTxt.color = _damegedColorTxt;
+                _damagedTxtFameTimer = Settings.DamagedTxtFameTimer;
+
             }
         }
 
@@ -284,6 +369,22 @@ namespace BeastHunter
 
          
         }
+
+        private void CustomizationHpBar(GameObject prefab)
+        {
+
+            _canvasHPObject = prefab.transform.Find("CanvasObject");
+            _canvasHPObject.position = _canvasHPObject.position + Settings.PositionHpBar;
+            _canvasHPImage = _canvasHPObject.Find("Canvas").Find("Bar").GetComponent<Image>();
+            _canvasDamagedBar = _canvasHPObject.Find("Canvas").Find("DamegedBar").GetComponent<Image>();
+            _canvasImpactDamageTxt = _canvasHPObject.Find("Canvas").Find("ImpactDamageTxt").GetComponent<Text>();
+            _damegedColor = _canvasDamagedBar.color;
+            _damegedColor.a = 0f;
+            _damegedColorTxt = _canvasImpactDamageTxt.color;
+            _damegedColorTxt.a = 0f;
+            _canvasImpactDamageTxt.color = _damegedColorTxt;
+        }
+
         #endregion
 
     }

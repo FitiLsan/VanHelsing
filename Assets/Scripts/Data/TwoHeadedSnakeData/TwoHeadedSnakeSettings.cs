@@ -123,6 +123,18 @@ namespace BeastHunter
         [Header("HP Bar")]
         [Tooltip("Position HP bar in a prefab")]
         [SerializeField] private Vector3 _positionHpBar = new Vector3(0.0f, 3.2f, 0.0f);
+        [Tooltip("between 0.2 and 1. Default: 1")]
+        [Range(0.2f, 1.0f)]
+        [SerializeField] private float _damegedHealthFadeTimerMax = 1f;
+        [Tooltip("Speed fade amount. Between 1 and 10. Default: 5")]
+        [Range(1f, 10.0f)]
+        [SerializeField] private float _fadeAmount = 5f;
+        [Tooltip("between 0.2 and 1.5. Default: 1")]
+        [Range(0.2f, 1.5f)]
+        private float _damagedTxtFameTimer = 1f;
+        [Tooltip("Speed damage text fade amount. Between 1 and 10. Default: 5")]
+        [Range(1f, 10.0f)]
+        [SerializeField] private float _txtFadeAmount = 5f;
 
         #endregion
 
@@ -174,7 +186,10 @@ namespace BeastHunter
         public float ChasingTurnDistanceNearTarget => _chasingTurnDistanceNearTarget;
 
         public Vector3 PositionHpBar => _positionHpBar;
-
+        public float DamegedHealthFadeTimerMax => _damegedHealthFadeTimerMax;
+        public float FadeAmount => _fadeAmount;
+        public float DamagedTxtFameTimer => _damagedTxtFameTimer;
+        public float TxtFadeAmount => _txtFadeAmount;
         public bool DebugMessages => _debugMessages;
 
         #endregion
