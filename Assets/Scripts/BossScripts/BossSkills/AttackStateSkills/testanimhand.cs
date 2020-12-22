@@ -38,7 +38,9 @@ namespace BeastHunter
             if (Input.GetKeyDown(KeyCode.B))
             {
                 animator.Play("BossCatchAttack_R", 0, 0);
-                interactionSystem.StartInteraction(FullBodyBipedEffector.RightHand, sphere, interrupt);
+                TimeRemaining timeRemaining = new TimeRemaining(() => interactionSystem.StartInteraction(FullBodyBipedEffector.RightHand, sphere, interrupt), 0.2f);
+                timeRemaining.AddTimeRemaining();
+                
             }
             if (Input.GetKeyDown(KeyCode.N))
             {
@@ -61,14 +63,14 @@ namespace BeastHunter
                 sphere.transform.parent = null;
                 
             }
-            //if (Input.GetKeyDown(KeyCode.G))
-            //{
-            //    animator.Play("BossCatchAttack_R", 0, 0);
-            //}
-            //if (Input.GetKeyDown(KeyCode.H))
-            //{
-            //    animator.Play("BossCatchAttack_L", 0, 0);
-            //}
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                interactionSystem.PauseAll();
+            }
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                interactionSystem.ResumeAll();
+            }
         }
         private void OnPickUp(FullBodyBipedEffector effectorType, InteractionObject interactionObject)
         {
