@@ -8,17 +8,16 @@ namespace BeastHunter
     public class testanimhand : MonoBehaviour
     {
         Animator animator;
-        public Transform Rhand;
-        public Transform HandTarget;
         public InteractionSystem interactionSystem; // Reference to the InteractionSystem component on the character
         public InteractionObject sphere; // The object to interact with
         public bool interrupt;
-        public bool isCatch;
+        public FullBodyBipedEffector currentHand;
+        public int ClosestTriggerIndex;
 
         private void Awake()
         {
             animator = GetComponent<Animator>();
-            interactionSystem.OnInteractionPickUp += OnPause;
+            interactionSystem.OnInteractionPickUp += OnPickUp;
             interactionSystem.OnInteractionResume += OnDrop;
 
         }
@@ -31,39 +30,81 @@ namespace BeastHunter
         }
         private void Update()
         {
+
+
+
+            InteractionTriggerUpdate();
+
             if (Input.GetKeyDown(KeyCode.B))
             {
+                animator.Play("BossCatchAttack_R", 0, 0);
                 interactionSystem.StartInteraction(FullBodyBipedEffector.RightHand, sphere, interrupt);
             }
             if (Input.GetKeyDown(KeyCode.N))
             {
+                animator.Play("BossCatch_L", 0, 0);
                 interactionSystem.StartInteraction(FullBodyBipedEffector.LeftHand, sphere, interrupt);
             }
             if (Input.GetKeyDown(KeyCode.V))
             {
-                // interactionSystem.PauseInteraction(FullBodyBipedEffector.RightHand);
-                animator.Play("IdleState", 0, 0);
-                sphere.transform.parent = null;
+                interactionSystem.StopInteraction(currentHand);
                 sphere.GetComponent<Rigidbody>().isKinematic = false;
+                if (currentHand == FullBodyBipedEffector.RightHand)
+                {
+                    animator.Play("IdleState", 0, 0);
+                }
+                if (currentHand == FullBodyBipedEffector.LeftHand)
+                {
+                    animator.Play("IdleState", 0, 0);
+                }
 
+                sphere.transform.parent = null;
+                
             }
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                animator.Play("BossCatchAttack_R", 0, 0);
-            }
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                animator.Play("BossFeastsAttack_1", 0, 0);
-            }
+            //if (Input.GetKeyDown(KeyCode.G))
+            //{
+            //    animator.Play("BossCatchAttack_R", 0, 0);
+            //}
+            //if (Input.GetKeyDown(KeyCode.H))
+            //{
+            //    animator.Play("BossCatchAttack_L", 0, 0);
+            //}
         }
-        private void OnPause(FullBodyBipedEffector effectorType, InteractionObject interactionObject)
+        private void OnPickUp(FullBodyBipedEffector effectorType, InteractionObject interactionObject)
         {
-            animator.Play("Catch_R_Idle", 0, 0);
+            currentHand = effectorType;
+            if (effectorType == FullBodyBipedEffector.LeftHand)
+            {
+                animator.SetFloat("IdleState", 9);
+                animator.Play("Catch_Blend_Idle", 0, 0);
+            }
+            if (effectorType == FullBodyBipedEffector.RightHand)
+            {
+                animator.SetFloat("IdleState", 3);
+                animator.Play("Catch_Blend_Idle", 0, 0);
+            }
+           
             //  sphere.transform.parent = interactionSystem.transform;
         }
         private void OnDrop(FullBodyBipedEffector effectorType, InteractionObject interactionObject)
         {
-            animator.Play("IdleState", 0, 0);
+            animator.SetFloat("IdleState", 6);
+            animator.Play("Catch_Blend_Idle", 0, 0);
+            //animator.Play("IdleState", 0, 0);
+        }
+
+        private void InteractionTriggerUpdate()
+        {
+            ClosestTriggerIndex = interactionSystem.GetClosestTriggerIndex();
+           
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                if (ClosestTriggerIndex == -1)
+                {
+                    return;
+                }
+                interactionSystem.TriggerInteraction(ClosestTriggerIndex, false);
+            }
         }
     }
 }
