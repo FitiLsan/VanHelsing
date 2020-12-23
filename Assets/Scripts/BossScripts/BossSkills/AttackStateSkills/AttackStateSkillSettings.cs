@@ -90,6 +90,22 @@ namespace BeastHunter
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _poisonSporesSkillReady;
 
+        [Header("[Catch Attack]")]
+
+        [Tooltip("Skill ID")]
+        [SerializeField] private int _catchSkillId;
+        [Tooltip("Skill Range Min")]
+        [Range(-1.0f, 30.0f)]
+        [SerializeField] private float _catchSkillRangeMin;
+        [Tooltip("Skill Range Max")]
+        [Range(-1.0f, 30.0f)]
+        [SerializeField] private float _catchSkillRangeMax;
+        [Tooltip("Skill Cooldown")]
+        [Range(0.0f, 200.0f)]
+        [SerializeField] private float _catchSkillCooldown;
+        [Tooltip("Skill Ready")]
+        [SerializeField] private bool _catchSkillReady;
+
         #endregion
 
 
@@ -126,6 +142,13 @@ namespace BeastHunter
         public float PoisonSporesSkillCooldown => _poisonSporesSkillCooldown;
         public bool PoisonSporesSkillReady => _poisonSporesSkillReady;
 
+        public int CatchSkillId => _catchSkillId;
+        public float CatchSkillRangeMin => _catchSkillRangeMin;
+        public float CatchSkillRangeMax => _catchSkillRangeMax;
+        public float CatchSkillCooldown => _catchSkillCooldown;
+        public bool CatchSkillReady => _catchSkillReady;
+        (int, float, float, float, bool) CatchSkillTuple;
+
         #endregion
 
 
@@ -158,6 +181,12 @@ namespace BeastHunter
         public (int, float, float, float, bool, bool) GetPoisonSporesSkillInfo()
         {
             var tuple = (PoisonSporesSkillId, PoisonSporesSkillRangeMin, PoisonSporesSkillRangeMax, PoisonSporesSkillCooldown, PoisonSporesSkillReady, false);
+            return tuple;
+        }
+
+        public (int, float, float, float, bool, bool) GetCatchSkillInfo()
+        {
+            var tuple = (CatchSkillId, CatchSkillRangeMin, CatchSkillRangeMax, CatchSkillCooldown, CatchSkillReady, false);
             return tuple;
         }
 

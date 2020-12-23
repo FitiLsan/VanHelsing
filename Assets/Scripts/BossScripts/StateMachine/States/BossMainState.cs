@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
-
+using RootMotion.FinalIK;
 
 namespace BeastHunter
 {
@@ -84,6 +84,7 @@ namespace BeastHunter
                 GetTargetCurrentPosition();
                 CheckCurrentState();
                 HitCounter();
+                InteractionTriggerUpdate();
             }
         }
 
@@ -307,6 +308,15 @@ namespace BeastHunter
             else
             {
                 _stateMachine._model.BossSphereCollider.radius = _stateMachine._model.BossSettings.SphereColliderRadius;
+            }
+        }
+
+        private void InteractionTriggerUpdate()
+        {
+          _bossModel.ClosestTriggerIndex = _bossModel.InteractionSystem.GetClosestTriggerIndex();
+           if(_bossModel.BossCurrentTarget !=null)
+            {
+                _bossModel.InteractionObject = _bossModel.BossCurrentTarget.GetComponentInChildren<InteractionObject>();
             }
         }
 

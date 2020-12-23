@@ -9,7 +9,7 @@ namespace BeastHunter
     {
         Animator animator;
         public InteractionSystem interactionSystem; // Reference to the InteractionSystem component on the character
-        public InteractionObject sphere; // The object to interact with
+        public InteractionObject target; // The object to interact with
         public bool interrupt;
         public FullBodyBipedEffector currentHand;
         public int ClosestTriggerIndex;
@@ -38,19 +38,19 @@ namespace BeastHunter
             if (Input.GetKeyDown(KeyCode.B))
             {
                 animator.Play("BossCatchAttack_R", 0, 0);
-                TimeRemaining timeRemaining = new TimeRemaining(() => interactionSystem.StartInteraction(FullBodyBipedEffector.RightHand, sphere, interrupt), 0.2f);
+                TimeRemaining timeRemaining = new TimeRemaining(() => interactionSystem.StartInteraction(FullBodyBipedEffector.RightHand, target, interrupt), 0.2f);
                 timeRemaining.AddTimeRemaining();
                 
             }
             if (Input.GetKeyDown(KeyCode.N))
             {
                 animator.Play("BossCatch_L", 0, 0);
-                interactionSystem.StartInteraction(FullBodyBipedEffector.LeftHand, sphere, interrupt);
+                interactionSystem.StartInteraction(FullBodyBipedEffector.LeftHand, target, interrupt);
             }
             if (Input.GetKeyDown(KeyCode.V))
             {
                 interactionSystem.StopInteraction(currentHand);
-                sphere.GetComponent<Rigidbody>().isKinematic = false;
+                target.GetComponent<Rigidbody>().isKinematic = false;
                 if (currentHand == FullBodyBipedEffector.RightHand)
                 {
                     animator.Play("IdleState", 0, 0);
@@ -60,7 +60,7 @@ namespace BeastHunter
                     animator.Play("IdleState", 0, 0);
                 }
 
-                sphere.transform.parent = null;
+                target.transform.parent = null;
                 
             }
             if (Input.GetKeyDown(KeyCode.J))
@@ -98,13 +98,15 @@ namespace BeastHunter
         private void InteractionTriggerUpdate()
         {
             ClosestTriggerIndex = interactionSystem.GetClosestTriggerIndex();
-           
+            target = interactionSystem.GetClosestInteractionObjectInRange();
             if (Input.GetKeyDown(KeyCode.G))
             {
+               
                 if (ClosestTriggerIndex == -1)
                 {
                     return;
                 }
+                
                 interactionSystem.TriggerInteraction(ClosestTriggerIndex, false);
             }
         }

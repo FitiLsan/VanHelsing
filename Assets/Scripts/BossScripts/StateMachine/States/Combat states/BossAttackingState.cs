@@ -1,4 +1,5 @@
 ﻿using RootMotion.Dynamics;
+using RootMotion.FinalIK;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,6 +51,7 @@ namespace BeastHunter
             _bossModel.RightHandBehavior.OnFilterHandler += OnHitBoxFilter;
             _bossModel.LeftHandBehavior.OnTriggerEnterHandler += OnLeftHitBoxHit;
             _bossModel.RightHandBehavior.OnTriggerEnterHandler += OnRightHitBoxHit;
+            _bossModel.InteractionSystem.OnInteractionPickUp += OnPickUp;
         }
 
         public override void Initialise()
@@ -249,6 +251,23 @@ namespace BeastHunter
         }
 
         #endregion
+
+        private void OnPickUp(FullBodyBipedEffector effectorType, InteractionObject interactionObject)
+        {
+            _bossModel.CurrentHand = effectorType;
+            if (effectorType == FullBodyBipedEffector.LeftHand)
+            {
+               _bossModel.BossAnimator.SetFloat("IdleState", 9);
+                _bossModel.BossAnimator.Play("Catch_Blend_Idle", 0, 0);
+            }
+            if (effectorType == FullBodyBipedEffector.RightHand)
+            {
+                _bossModel.BossAnimator.SetFloat("IdleState", 3);
+                _bossModel.BossAnimator.Play("Catch_Blend_Idle", 0, 0);
+            }
+
+            //  sphere.transform.parent = interactionSystem.transform;
+        }
 
         #endregion
     }

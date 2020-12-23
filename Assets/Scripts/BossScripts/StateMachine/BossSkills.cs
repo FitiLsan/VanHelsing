@@ -26,6 +26,7 @@ namespace BeastHunter
         public BossBaseSkill StompSplashSkill { get; private set; }
         public BossBaseSkill RageOfForestSkill { get; private set; }
         public BossBaseSkill PoisonSporesSkill { get; private set; }
+        public BossBaseSkill CatchAttackSkill { get; private set; }
 
         public BossBaseSkill DefaultDefenceSkill { get; private set; }
         public BossBaseSkill SelfHealSkill { get; private set; }
@@ -55,12 +56,14 @@ namespace BeastHunter
             StompSplashSkill = new StompSplashAttackSkill(AttackStateSkillsSettings.GetStompSplashSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkillsSettings.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             PoisonSporesSkill = new PoisonSporesAttackSkill(AttackStateSkillsSettings.GetPoisonSporesSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            CatchAttackSkill = new CatchAttackSkill(AttackStateSkillsSettings.GetCatchSkillInfo(), AttackStateSkillDictionary, _stateMachine);
 
             AttackStateSkillDictionary.Add(DefaultAttackSkill.SkillId, DefaultAttackSkill);
             AttackStateSkillDictionary.Add(HorizontalAttackSkill.SkillId, HorizontalAttackSkill);
             AttackStateSkillDictionary.Add(StompSplashSkill.SkillId, StompSplashSkill);
             AttackStateSkillDictionary.Add(RageOfForestSkill.SkillId, RageOfForestSkill);
             AttackStateSkillDictionary.Add(PoisonSporesSkill.SkillId, PoisonSporesSkill);
+            AttackStateSkillDictionary.Add(CatchAttackSkill.SkillId, CatchAttackSkill);
 
             #endregion
 

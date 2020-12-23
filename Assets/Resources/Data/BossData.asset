@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BossData
   m_EditorClassIdentifier: 
   _bossSettings:
-    _prefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
+    _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b,
+      type: 3}
     _sporePrefab: {fileID: 1739478888274650687, guid: 5b539aacef1d12341abf243ed5fae008,
       type: 3}
     _ruler: {fileID: 840020148945437414, guid: eeb916fe90bdfb64399aa1eefe4321bb, type: 3}
@@ -77,18 +78,18 @@ MonoBehaviour:
     _defaultSkillId: 0
     _defaultSkillRangeMin: 3
     _defaultSkillRangeMax: 5
-    _defaultSkillCooldown: 3
-    _defaultSkillReady: 1
+    _defaultSkillCooldown: 99
+    _defaultSkillReady: 0
     _horizontalSkillId: 1
     _horizontalSkillRangeMin: 3
     _horizontalSkillRangeMax: 5
-    _horizontalSkillCooldown: 4
-    _horizontalSkillReady: 1
+    _horizontalSkillCooldown: 99
+    _horizontalSkillReady: 0
     _stompSplashSkillId: 2
     _stompSplashSkillRangeMin: 0
     _stompSplashSkillRangeMax: 5
-    _stompSplashSkillCooldown: 3
-    _stompSplashSkillReady: 1
+    _stompSplashSkillCooldown: 99
+    _stompSplashSkillReady: 0
     _rageOfForestSkillId: 3
     _rageOfForestSkillRangeMin: 10
     _rageOfForestSkillRangeMax: 30
@@ -99,6 +100,11 @@ MonoBehaviour:
     _poisonSporesSkillRangeMax: 20
     _poisonSporesSkillCooldown: 15
     _poisonSporesSkillReady: 0
+    _catchSkillId: 5
+    _catchSkillRangeMin: 0
+    _catchSkillRangeMax: 5
+    _catchSkillCooldown: 3
+    _catchSkillReady: 1
   DefenceStateSkills:
     _defaultDefenceSkillId: 0
     _defaultDefenceSkillRangeMin: -1

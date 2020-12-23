@@ -2,6 +2,7 @@
 using UnityEngine.AI;
 using UniRx;
 using System.Collections.Generic;
+using RootMotion.FinalIK;
 
 namespace BeastHunter
 {
@@ -64,14 +65,17 @@ namespace BeastHunter
         public GameObject BarkBuffEffectPrefab;
         public GameObject CallOfForestEffectPrefab;
 
-
         public ParticleSystem leftStompEffect;
         public ParticleSystem rightStompEffect;
         public ParticleSystem healAura;
         public ParticleSystem barkBuffEffect;
         public ParticleSystem callOfForestEffect;
 
-
+        public InteractionSystem InteractionSystem;
+        public InteractionObject InteractionObject;
+        public bool interrupt;
+        public FullBodyBipedEffector CurrentHand;
+        public int ClosestTriggerIndex;
         #endregion
 
 
@@ -278,6 +282,8 @@ namespace BeastHunter
             SporePrefab = BossSettings.SporePrefab;
             Ruler = BossSettings.Ruler;
             GameObject.Instantiate(Ruler, BossTransform.position + Vector3.up, Quaternion.identity, BossTransform);
+
+            InteractionSystem = BossTransform.GetComponent<InteractionSystem>();
 
         }
 
