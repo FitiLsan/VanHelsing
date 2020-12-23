@@ -14,8 +14,7 @@ namespace BeastHunter
 
         private const int HEAD_COLLIDER_COUNT = 2;
         private const int TAIL_COLLIDER_COUNT = 4;
-        private float HIDE_HP_BAR_TIMER = 2f;
-
+        
         private TwoHeadedSnakeData _twoHeadedSnakeData;
         private InteractableObjectBehavior[] _interactableObjects;
         private InteractableObjectBehavior _detectionSphereIO;
@@ -23,6 +22,7 @@ namespace BeastHunter
         private TwoHeadedSnakeAttackStateBehaviour[] _attackStates;
         private Collider[] _tailAttackColliders;
         private Collider[] _twinHeadAttackColliders;
+
         private Image _canvasHPImage;
         private Image _canvasDamagedBar;
         private Transform _canvasHPObject;
@@ -31,6 +31,7 @@ namespace BeastHunter
         private Text _canvasImpactDamageTxt;
         private float _damagedHealthFadeTimer;
         private float _damagedTxtFameTimer;
+        private float _hpBarHideTimer;
 
         public TwoHeadedSnakeData.BehaviourState behaviourState;
         public Transform chasingTarget;
@@ -219,6 +220,7 @@ namespace BeastHunter
                 CanvesHPObject.LookAt(Services.SharedInstance.CameraService.CurrentActiveCamera.Value.transform);
                
                 CanvasHPImage.fillAmount = CurrentHealth / _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
+
                 if (_damegedColor.a > 0)
                 {
                     _damagedHealthFadeTimer -= Time.deltaTime;
@@ -241,7 +243,7 @@ namespace BeastHunter
             }
             else
             {
-                HIDE_HP_BAR_TIMER -= Time.deltaTime;
+                _hpBarHideTimer -= Time.deltaTime;
                 CanvasHPImage.fillAmount = CurrentHealth / _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
 
                 if (_damegedColor.a > 0)
@@ -254,7 +256,17 @@ namespace BeastHunter
                     }
                 }
 
-                if (HIDE_HP_BAR_TIMER < 0)
+                if (_damegedColorTxt.a > 0)
+                {
+                    _damagedTxtFameTimer -= Time.deltaTime;
+                    if (_damagedTxtFameTimer < 0)
+                    {
+                        _damegedColorTxt.a -= Settings.TxtFadeAmount * Time.deltaTime;
+                        CanvasImpactDamageTxt.color = _damegedColorTxt;
+                    }
+                }
+
+                if (_hpBarHideTimer < 0)
                 {
                     CanvesHPObject.gameObject.SetActive(false);
                 }
@@ -383,6 +395,7 @@ namespace BeastHunter
             _damegedColorTxt = _canvasImpactDamageTxt.color;
             _damegedColorTxt.a = 0f;
             _canvasImpactDamageTxt.color = _damegedColorTxt;
+            _hpBarHideTimer = Settings.HpBarHideTimer;
         }
 
         #endregion

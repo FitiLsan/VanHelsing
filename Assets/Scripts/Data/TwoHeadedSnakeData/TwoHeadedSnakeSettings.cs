@@ -135,6 +135,9 @@ namespace BeastHunter
         [Tooltip("Speed damage text fade amount. Between 1 and 10. Default: 5")]
         [Range(1f, 10.0f)]
         [SerializeField] private float _txtFadeAmount = 5f;
+        [Tooltip("HP Bar hide timer. Between 1 and 2. Default: 2")]
+        [Range(1f, 2.0f)]
+        [SerializeField] private float _hpBarHideTimer = 2f;
 
         #endregion
 
@@ -190,6 +193,7 @@ namespace BeastHunter
         public float FadeAmount => _fadeAmount;
         public float DamagedTxtFameTimer => _damagedTxtFameTimer;
         public float TxtFadeAmount => _txtFadeAmount;
+        public float HpBarHideTimer => _hpBarHideTimer;
         public bool DebugMessages => _debugMessages;
 
         #endregion
