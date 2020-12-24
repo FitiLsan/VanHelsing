@@ -98,7 +98,7 @@ namespace BeastHunter
         private void InteractionTriggerUpdate()
         {
             ClosestTriggerIndex = interactionSystem.GetClosestTriggerIndex();
-            target = interactionSystem.GetClosestInteractionObjectInRange();
+           
             if (Input.GetKeyDown(KeyCode.G))
             {
                
@@ -106,7 +106,7 @@ namespace BeastHunter
                 {
                     return;
                 }
-                
+                target = interactionSystem.GetClosestInteractionObjectInRange();
                 interactionSystem.TriggerInteraction(ClosestTriggerIndex, false);
             }
         }
