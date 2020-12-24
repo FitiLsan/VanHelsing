@@ -5,7 +5,6 @@ using RootMotion.Dynamics;
 using UniRx;
 using Extensions;
 
-
 namespace BeastHunter
 {
     public sealed class BackState : IAwake, IUpdate, ITearDown, ITakeDamage, IDealDamage
@@ -54,6 +53,7 @@ namespace BeastHunter
         public Action OnTimeSkipOpenClose;
         public Action OnButtonsInfoMenuOpenClose;
         public Action OnUse;
+        public Action OnHealthChange;
 
         private readonly GameContext _context;
         private readonly CharacterStateMachine _stateMachine;
@@ -94,6 +94,9 @@ namespace BeastHunter
 
         private bool _isWeaponWheelOpen;
         private bool _isCurrentWeaponWithProjectile;
+
+        private PlayerHealthBarModel _playerHealthBarModel;
+        private float _currentMaxHealthPercent;
 
         #endregion
 
@@ -148,6 +151,9 @@ namespace BeastHunter
 
             _cameraTransform = _services.CameraService.CharacterCamera.transform;
             CloseWeaponWheel();
+
+            GameObject playerHealthBar = GameObject.Instantiate(Data.PlayerHealthBarData.HealthBarPrefab);
+            _playerHealthBarModel = new PlayerHealthBarModel(playerHealthBar, Data.PlayerHealthBarData);
         }
 
         #endregion
@@ -186,6 +192,7 @@ namespace BeastHunter
             OnWeaponChange += _services.TrapService.RemoveTrap;
             OnTrapPlace += _services.TrapService.PlaceTrap;
             OnUse += UseInteractiveObject;
+            OnHealthChange += HealthBarUpdate;
 
             _characterModel.CurrentWeaponData.Subscribe(OnWeaponChangeHandler);
             _characterModel.CurrentCharacterState.Subscribe(UpdateSpeedCounterByState);
@@ -215,6 +222,9 @@ namespace BeastHunter
             GroundCheck();
             MovementCheck();
             ControlWeaponWheel();
+
+            //FOR DEBUG ONLY!
+            if (Input.GetKeyDown(KeyCode.H)) TestingHealthRestoreToCurrentMaxHealthThreshold();
         }
 
         #endregion
@@ -251,6 +261,7 @@ namespace BeastHunter
             OnWeaponChange -= _services.TrapService.RemoveTrap;
             OnTrapPlace -= _services.TrapService.PlaceTrap;
             OnUse -= UseInteractiveObject;
+            OnHealthChange -= HealthBarUpdate;
 
             _characterModel.CurrentWeaponData.Dispose();
             _characterModel.CurrentCharacterState.Dispose();
@@ -278,6 +289,8 @@ namespace BeastHunter
             {
                 _currentHealth -= damage.PhysicalDamage;
                 _currentHealth -= damage.FireDamage;
+
+                OnHealthChange?.Invoke();
 
                 float stunProbability = UnityEngine.Random.Range(0f, 1f);
 
@@ -319,6 +332,7 @@ namespace BeastHunter
             _lastPosition = _characterModel.CharacterTransform.position;
             _currentPosition = _lastPosition;
             _currentHealth = _characterModel.CharacterData.CharacterStatsSettings.HealthPoints; // TO REFACTOR
+            _currentMaxHealthPercent = _currentHealth * 100 / _characterModel.CharacterCommonSettings.HealthPoints;
         }
 
 
@@ -946,6 +960,22 @@ namespace BeastHunter
             }
 
             _lastAnimationEventType = animationEvent.AnimationEventType;
+
+        #region HealthBar
+
+        private void HealthBarUpdate()
+        {
+            _currentMaxHealthPercent = _playerHealthBarModel.HealthFillUpdate(_currentHealth * 100 / _characterModel.CharacterCommonSettings.HealthPoints);
+        }
+
+        /// <summary>Example method of implementing health restoration to the current max health threshold</summary>
+        private void TestingHealthRestoreToCurrentMaxHealthThreshold()
+        {
+            float restoredHP = 5.0f;
+            _currentHealth = Mathf.Clamp(_currentHealth + restoredHP, 0, _currentMaxHealthPercent);
+            Debug.Log(this + ": Player is healing by " + restoredHP + " HP. Current health = " + _currentHealth + " HP"
+                + "\nNote: \"H\"-button assigned for testing healing up to the current max health threshold");
+            OnHealthChange?.Invoke();
         }
 
         #endregion
