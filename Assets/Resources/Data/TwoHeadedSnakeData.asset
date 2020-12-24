@@ -20,8 +20,10 @@ MonoBehaviour:
       _viewAngle: 0
       _healthPoints: 0
       _physicalPower: 2.61
+      _magicalPower: 0
       _physicalDamageResistance: 0
       _stunProbabilityResistance: 0
+      _fireDamageResistance: 0
     AttackList: []
     DefenceStats:
       _baseDefense: 0
@@ -60,4 +62,4 @@ MonoBehaviour:
     _restingChance: 20
     _restingMinTime: 5
     _restingMaxTime: 20
-    _debugMessages: 1
+    _debugMessages: 0
