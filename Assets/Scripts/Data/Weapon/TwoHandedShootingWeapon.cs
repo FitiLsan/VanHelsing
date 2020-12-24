@@ -10,6 +10,8 @@ namespace BeastHunter
         #region Fields
 
         [SerializeField] private ProjectileData _projectileData;
+        [SerializeField] private Sound _shootingSound;
+        [SerializeField] private Sound _reloadingSound;
         [SerializeField] private int _magazineSize;
 
         [SerializeField] private float _hitDistance;
@@ -19,12 +21,14 @@ namespace BeastHunter
         [SerializeField] private string _aimingAnimationPostfix;
         [SerializeField] private string _reloadAnimationPostfix;
 
-        private WeaponHitBoxBehavior LeftWeaponHitBoxBehavior;
-        private WeaponHitBoxBehavior RightWeaponHitBoxBehavior;
-        private Collider LeftWeaponCollider;
-        private Collider RightWeaponCollider;
-        private ParticleSystem LeftParticleSystem;
-        private ParticleSystem RightParticleSystem;
+        private WeaponHitBoxBehavior _leftWeaponHitBoxBehavior;
+        private WeaponHitBoxBehavior _rightWeaponHitBoxBehavior;
+        private Collider _leftWeaponCollider;
+        private Collider _rightWeaponCollider;
+        private ParticleSystem _leftParticleSystem;
+        private ParticleSystem _rightParticleSystem;
+        private AudioSource _leftAudioSource;
+        private AudioSource _rightAudioSource;
 
         #endregion
 
@@ -32,6 +36,8 @@ namespace BeastHunter
         #region Properties
 
         public ProjectileData ProjectileData => _projectileData;
+        public Sound ShootingSound => _shootingSound;
+        public Sound ReloadingSound => _reloadingSound;
         public int MagazineSize => _magazineSize;
         public float HitDistance => _hitDistance;
         public float TimeBetweenShots => _timeBetweenShots;
@@ -62,18 +68,23 @@ namespace BeastHunter
             if(objectOnSceneLeft != null && 
                 objectOnSceneLeft.GetComponentsInChildren<WeaponHitBoxBehavior>() != null)
             {
-                LeftWeaponHitBoxBehavior = objectOnSceneLeft.GetComponentsInChildren<WeaponHitBoxBehavior>()[0];
-                LeftWeaponCollider = objectOnSceneLeft.GetComponentsInChildren<Collider>()[0];
-                LeftParticleSystem = objectOnSceneLeft.GetComponentInChildren<ParticleSystem>();
+                _leftWeaponHitBoxBehavior = objectOnSceneLeft.GetComponentsInChildren<WeaponHitBoxBehavior>()[0];
+                _leftWeaponCollider = objectOnSceneLeft.GetComponentsInChildren<Collider>()[0];
+                _leftParticleSystem = objectOnSceneLeft.GetComponentInChildren<ParticleSystem>();
+                _leftAudioSource = objectOnSceneLeft.GetComponentInChildren<AudioSource>();
             }
 
             if (objectOnSceneRight != null && 
                 objectOnSceneRight.GetComponentsInChildren<WeaponHitBoxBehavior>() != null)
             {
-                RightWeaponHitBoxBehavior = objectOnSceneRight.GetComponentsInChildren<WeaponHitBoxBehavior>()[0];
-                RightWeaponCollider = objectOnSceneRight.GetComponentsInChildren<Collider>()[0];
-                RightParticleSystem = objectOnSceneRight.GetComponentInChildren<ParticleSystem>();
+                _rightWeaponHitBoxBehavior = objectOnSceneRight.GetComponentsInChildren<WeaponHitBoxBehavior>()[0];
+                _rightWeaponCollider = objectOnSceneRight.GetComponentsInChildren<Collider>()[0];
+                _rightParticleSystem = objectOnSceneRight.GetComponentInChildren<ParticleSystem>();
+                _rightAudioSource = objectOnSceneRight.GetComponentInChildren<AudioSource>();
             }
+
+            _leftAudioSource.PlayOneShot(GettingSound);
+            _rightAudioSource.PlayOneShot(GettingSound);
         }
 
         public override void TakeWeapon()
@@ -96,18 +107,18 @@ namespace BeastHunter
             switch (CurrentAttack.AttackType)
             {
                 case HandsEnum.Left:
-                    gunsPosition = LeftParticleSystem.transform.position;
-                    forwardVector = LeftParticleSystem.transform.forward;
+                    gunsPosition = _leftParticleSystem.transform.position;
+                    forwardVector = _leftParticleSystem.transform.forward;
                     break;
                 case HandsEnum.Right:
-                    gunsPosition = RightParticleSystem.transform.position;
-                    forwardVector = RightParticleSystem.transform.forward;
+                    gunsPosition = _rightParticleSystem.transform.position;
+                    forwardVector = _rightParticleSystem.transform.forward;
                     break;
                 case HandsEnum.Both:
-                    gunsPosition = (LeftParticleSystem.transform.position +
-                    RightParticleSystem.transform.position) / 2;
-                    forwardVector = (LeftParticleSystem.transform.forward +
-                    RightParticleSystem.transform.forward) / 2;
+                    gunsPosition = (_leftParticleSystem.transform.position +
+                    _rightParticleSystem.transform.position) / 2;
+                    forwardVector = (_leftParticleSystem.transform.forward +
+                    _rightParticleSystem.transform.forward) / 2;
                     break;
                 default:
                     break;
@@ -127,14 +138,18 @@ namespace BeastHunter
             switch (inWhichHand)
             {
                 case HandsEnum.Left:
-                    LeftParticleSystem.Play();
+                    _leftParticleSystem.Play();
+                    _leftAudioSource.PlayOneShot(ShootingSound);
                     break;
                 case HandsEnum.Right:
-                    RightParticleSystem.Play();
+                    _rightParticleSystem.Play();
+                    _rightAudioSource.PlayOneShot(ShootingSound);
                     break;
                 case HandsEnum.Both:
-                    LeftParticleSystem.Play();
-                    RightParticleSystem.Play();
+                    _leftParticleSystem.Play();
+                    _rightParticleSystem.Play();
+                    _leftAudioSource.PlayOneShot(ShootingSound);
+                    _rightAudioSource.PlayOneShot(ShootingSound);
                     break;
                 default:
                     break;
@@ -149,31 +164,31 @@ namespace BeastHunter
                     switch (inWhichHand)
                     {
                         case HandsEnum.Left:
-                            if (LeftWeaponHitBoxBehavior != null) LeftWeaponHitBoxBehavior.IsInteractable = true;
+                            if (_leftWeaponHitBoxBehavior != null) _leftWeaponHitBoxBehavior.IsInteractable = true;
                             enemyBehavior.OnTriggerEnterHandler?.Invoke(enemyBehavior as ITrigger, 
-                                LeftWeaponCollider);
-                            OnHit?.Invoke(LeftWeaponHitBoxBehavior as ITrigger, rayHit.collider);                          
+                                _leftWeaponCollider);
+                            OnHit?.Invoke(_leftWeaponHitBoxBehavior as ITrigger, rayHit.collider);                          
                             break;
                         case HandsEnum.Right:
-                            if (RightWeaponHitBoxBehavior != null) RightWeaponHitBoxBehavior.IsInteractable = true;
+                            if (_rightWeaponHitBoxBehavior != null) _rightWeaponHitBoxBehavior.IsInteractable = true;
                             enemyBehavior.OnTriggerEnterHandler?.Invoke(enemyBehavior as ITrigger, 
-                                RightWeaponCollider);
-                            OnHit?.Invoke(RightWeaponHitBoxBehavior as ITrigger, rayHit.collider);
+                                _rightWeaponCollider);
+                            OnHit?.Invoke(_rightWeaponHitBoxBehavior as ITrigger, rayHit.collider);
                             break;
                         case HandsEnum.Both:
-                            if (LeftWeaponHitBoxBehavior != null) LeftWeaponHitBoxBehavior.IsInteractable = true;
-                            if (RightWeaponHitBoxBehavior != null) RightWeaponHitBoxBehavior.IsInteractable = true;
-                            if (LeftWeaponCollider != null)
+                            if (_leftWeaponHitBoxBehavior != null) _leftWeaponHitBoxBehavior.IsInteractable = true;
+                            if (_rightWeaponHitBoxBehavior != null) _rightWeaponHitBoxBehavior.IsInteractable = true;
+                            if (_leftWeaponCollider != null)
                             {
                                 enemyBehavior.OnTriggerEnterHandler?.Invoke(enemyBehavior as ITrigger, 
-                                    LeftWeaponCollider);
-                                OnHit?.Invoke(LeftWeaponHitBoxBehavior as ITrigger, rayHit.collider);
+                                    _leftWeaponCollider);
+                                OnHit?.Invoke(_leftWeaponHitBoxBehavior as ITrigger, rayHit.collider);
                             }
                             else
                             {
                                 enemyBehavior.OnTriggerEnterHandler?.Invoke(enemyBehavior as ITrigger, 
-                                    RightWeaponCollider);
-                                OnHit?.Invoke(RightWeaponHitBoxBehavior as ITrigger, rayHit.collider);
+                                    _rightWeaponCollider);
+                                OnHit?.Invoke(_rightWeaponHitBoxBehavior as ITrigger, rayHit.collider);
                             }
                             break;
                         default:
@@ -181,8 +196,8 @@ namespace BeastHunter
                     }
                 }
 
-                if (LeftWeaponHitBoxBehavior != null) LeftWeaponHitBoxBehavior.IsInteractable = false;
-                if (RightWeaponHitBoxBehavior != null) RightWeaponHitBoxBehavior.IsInteractable = false;
+                if (_leftWeaponHitBoxBehavior != null) _leftWeaponHitBoxBehavior.IsInteractable = false;
+                if (_rightWeaponHitBoxBehavior != null) _rightWeaponHitBoxBehavior.IsInteractable = false;
             }
         }
 

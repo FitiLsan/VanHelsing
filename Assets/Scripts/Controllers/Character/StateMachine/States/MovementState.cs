@@ -29,7 +29,7 @@ namespace BeastHunter
 
         public void Updating()
         {
-            _stateMachine.BackState.CountSpeedDefault();
+            _stateMachine.BackState.CountSpeed();
             ControlMovement();
             CountExitTime();
         }

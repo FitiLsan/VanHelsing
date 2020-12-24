@@ -30,7 +30,7 @@
 
         public void Updating()
         {
-            _stateMachine.BackState.CountSpeedStrafing();
+            _stateMachine.BackState.CountSpeed();
             ControlMovement();
             ClosestEnemyCheck();
         }
@@ -133,7 +133,7 @@
                     }
                 }
 
-                _characterModel.ClosestEnemy = _characterModel.EnemiesInTrigger[closestEnemyIndex];
+                _characterModel.ClosestEnemy.Value = _characterModel.EnemiesInTrigger[closestEnemyIndex];
             }
             else
             {

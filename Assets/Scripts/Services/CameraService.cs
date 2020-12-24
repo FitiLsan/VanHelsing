@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using Cinemachine;
+using System;
 using UniRx;
 
 
 namespace BeastHunter
 {
-    public sealed class CameraService : Service
+    public sealed class CameraService : Service, IDisposable
     {
         #region Constants
 
@@ -205,7 +206,7 @@ namespace BeastHunter
                 case CharacterStatesEnum.TrapPlacing:
                     break;
                 case CharacterStatesEnum.KnockedDown:
-                    //SetActiveCamera(CharacterKnockedDownCamera);
+                    SetActiveCamera(CharacterFreelookCamera);
                     break;
                 case CharacterStatesEnum.GettingUp:
                     break;
@@ -344,6 +345,12 @@ namespace BeastHunter
                     (stepDistance * stepDistance);
         }
 
+        public void Dispose()
+        {
+            _context.CharacterModel.CurrentCharacterState.Dispose();
+            CurrentActiveCamera.Dispose();
+        }
+
 #if (UNITY_EDITOR)
         private void SaveCameraSettings(PlayModeStateChange state)
         {
@@ -354,6 +361,7 @@ namespace BeastHunter
                 EditorApplication.playModeStateChanged -= SaveCameraSettings;
             }
         }
+
 #endif
 
         #endregion
