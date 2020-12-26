@@ -19,9 +19,11 @@ MonoBehaviour:
       _viewRadius: 0
       _viewAngle: 0
       _healthPoints: 0
-      _physicalPower: 0
+      _physicalPower: 2.61
+      _magicalPower: 0
       _physicalDamageResistance: 0
       _stunProbabilityResistance: 0
+      _fireDamageResistance: 0
     AttackList: []
     DefenceStats:
       _baseDefense: 0
@@ -42,7 +44,7 @@ MonoBehaviour:
     _angularSpeed: 550
     _navMeshAcceleration: 10
     _navMeshAgentTypeIndex: 1
-    _physicalDamage: 0
+    _physicalDamage: 4.13
     _stunProbability: 0
     _attacksTurnSpeed: 0.01
     _tailAttackDistance: 8
@@ -60,8 +62,4 @@ MonoBehaviour:
     _restingChance: 20
     _restingMinTime: 5
     _restingMaxTime: 20
-    _debugMessages: 1
-    _positionHpBar: {x: 0, y: 3, z: 0}
-    _damegedHealthFadeTimerMax: 1
-    _fadeAmount: 5
-    _txtFadeAmount: 5
+    _debugMessages: 0

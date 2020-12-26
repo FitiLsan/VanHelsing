@@ -59,6 +59,11 @@ namespace BeastHunter
             }
         }
 
+        public void OnCharacterStep(int animationEventType)
+        {
+            MessageBroker.Default.Publish(new CharacterAnimationEvent((CharacterAnimationEventTypes) animationEventType));
+        }
+
         #endregion
     }
 }

@@ -15,9 +15,20 @@ MonoBehaviour:
   _projectileType: 3
   _projectilePrefab: {fileID: 7580386059147003521, guid: 2c130a988ae70b14eb8469356c2eb023,
     type: 3}
+  _flyingSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
+  _collisionSound:
+    _soundClip: {fileID: 8300000, guid: 0434d177a23579a46a3544db99757e38, type: 3}
+    _volume: 1
+    _pitch: 1
+    _doLoop: 0
   _projectileDamage:
     PhysicalDamage: 27.3
     StunProbability: 0
+    FireDamage: 0
   _isDestroyedAfterInstantiation: 0
   _isDestroyedAfterHit: 0
   _timeToDestroyAfterInstantiation: 0

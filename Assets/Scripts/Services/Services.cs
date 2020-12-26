@@ -15,6 +15,8 @@
         public BuffService BuffService { get; private set; }
         public TimeSkipService TimeSkipService { get; private set; }
         public TrapService TrapService { get; private set; }
+        public NoiseService NoiseService { get; private set; }
+        public AudioService AudioService { get; private set; }
 
         #endregion
 
@@ -32,6 +34,14 @@
             UnityTimeService = new UnityTimeService(contexts);
             TimeSkipService = new TimeSkipService(contexts);
             TrapService = new TrapService(contexts);
+            NoiseService = new NoiseService(contexts);
+            AudioService = new AudioService(contexts);
+        }
+
+        public void Dispose()
+        {
+            CameraService.Dispose();
+            AudioService.Dispose();
         }
 
         #endregion

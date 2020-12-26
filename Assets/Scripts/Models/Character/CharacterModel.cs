@@ -18,6 +18,7 @@ namespace BeastHunter
 
         #region Properties
 
+        public int InstanceID { get; }
         public BaseStatsClass CharacterStats { get; set; }
         public ReactiveProperty<WeaponData> CurrentWeaponData { get; set; }
         public GameObject CurrentWeaponLeft { get; set; }
@@ -28,6 +29,8 @@ namespace BeastHunter
         public ReactiveProperty<CharacterBaseState> CurrentCharacterState { get; set; }
         public ReactiveProperty<CharacterBaseState> PreviousCharacterState { get; set; }
 
+        public AudioSource SpeechAudioSource { get; }
+        public AudioSource MovementAudioSource { get; }
         public CharacterAnimationModel CharacterAnimationModel { get; }
         public Transform CharacterTransform { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
@@ -40,13 +43,13 @@ namespace BeastHunter
         public PuppetMaster PuppetMaster { get; }
         public BehaviourPuppet BehaviorPuppet { get; }
         public BehaviourFall BehaviorFall { get; }
+        public LineRenderer ProjectileTrajectoryPredict { get; }
 
-        public List<Collider> EnemiesInTrigger { get; set; }
-        public Collider ClosestEnemy { get; set; }
+        public ReactiveCollection<Collider> EnemiesInTrigger { get; set; }
+        public ReactiveProperty<Collider> ClosestEnemy { get; set; }
 
         public float CurrentSpeed { get; set; }
         public float AnimationSpeed { get; set; }
-        public float Health { get; set; }
 
         public bool IsDodging { get; set; }
         public bool IsSneaking { get; set; }
@@ -70,6 +73,7 @@ namespace BeastHunter
 
         public CharacterModel(GameObject prefab, CharacterData characterData, Vector3 groundPosition)
         {
+            InstanceID = prefab.GetInstanceID();
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData.CharacterCommonSettings;
             CharacterStatsSettings = CharacterData.CharacterStatsSettings;
@@ -81,15 +85,19 @@ namespace BeastHunter
 
             CharacterStats = CharacterStatsSettings;
 
+            AudioSource[] characterAudioSources = CharacterTransform.gameObject.GetComponentsInChildren<AudioSource>();
+            SpeechAudioSource = characterAudioSources[0];
+            MovementAudioSource = characterAudioSources[1];
+
             if (CharacterTransform.gameObject.TryGetComponent(out Rigidbody _characterRigitbody))
             {
                 CharacterRigitbody = _characterRigitbody;
-                Debug.Log(_characterRigitbody == null);
             }
             else
             {
                 throw new System.Exception("There is no rigidbody on character prefab");
             }
+
             CharacterRigitbody.mass = CharacterCommonSettings.RigitbodyMass;
             CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
             CharacterRigitbody.angularDrag = CharacterCommonSettings.RigitbodyAngularDrag;
@@ -120,22 +128,31 @@ namespace BeastHunter
             CharacterSphereCollider.radius = CharacterCommonSettings.SphereColliderRadius;
             CharacterSphereCollider.isTrigger = true;
 
-            if (CharacterTransform.gameObject.TryGetComponent(out PlayerBehavior _playerBehavior))
+            if (CharacterTransform.gameObject.TryGetComponent(out PlayerBehavior playerBehavior))
             {
-                PlayerBehavior = _playerBehavior;
+                PlayerBehavior = playerBehavior;
             }
             else
             {
                 throw new System.Exception("There is no player behavior script on character prefab");
             }
 
+            if (CharacterTransform.gameObject.TryGetComponent(out LineRenderer projectileProjection))
+            {
+                ProjectileTrajectoryPredict = projectileProjection;
+            }
+            else
+            {
+                throw new System.Exception("There is no line renderer on character prefab");
+            }
+
             PuppetMaster = prefab.transform.GetChild(1).gameObject.GetComponent<PuppetMaster>();
             BehaviorPuppet = prefab.transform.GetChild(0).GetChild(0).gameObject.GetComponent<BehaviourPuppet>();
             BehaviorFall = prefab.transform.GetChild(0).GetChild(1).gameObject.GetComponent<BehaviourFall>();
 
-            EnemiesInTrigger = new List<Collider>();
-
-            ClosestEnemy = null;
+            EnemiesInTrigger = new ReactiveCollection<Collider>();
+            
+            ClosestEnemy = new ReactiveProperty<Collider>();
             IsGrounded = false;
             IsSneaking = false;
             IsEnemyNear = false;
@@ -157,6 +174,7 @@ namespace BeastHunter
             PreviousCharacterState = new ReactiveProperty<CharacterBaseState>();
 
             Services.SharedInstance.CameraService.Initialize(this);
+            Services.SharedInstance.AudioService.Initialize(this);
         }
 
         #endregion
