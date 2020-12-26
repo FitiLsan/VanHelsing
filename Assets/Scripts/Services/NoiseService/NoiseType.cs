@@ -3,7 +3,7 @@
     public enum NoiseType
     {
         None,
-        Explotion,
+        Explosion,
         GlassCrack,
         ObjectFall,
         FireBurning,

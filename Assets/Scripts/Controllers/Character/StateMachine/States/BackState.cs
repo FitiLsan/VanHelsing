@@ -5,6 +5,7 @@ using RootMotion.Dynamics;
 using UniRx;
 using Extensions;
 
+
 namespace BeastHunter
 {
     public sealed class BackState : IAwake, IUpdate, ITearDown, ITakeDamage, IDealDamage
@@ -332,7 +333,7 @@ namespace BeastHunter
             _lastPosition = _characterModel.CharacterTransform.position;
             _currentPosition = _lastPosition;
             _currentHealth = _characterModel.CharacterData.CharacterStatsSettings.HealthPoints; // TO REFACTOR
-            _currentMaxHealthPercent = _currentHealth * 100 / _characterModel.CharacterCommonSettings.HealthPoints;
+            _currentMaxHealthPercent = _currentHealth * 100 / _characterModel.CharacterData.CharacterStatsSettings.HealthPoints;
         }
 
 
@@ -942,14 +943,14 @@ namespace BeastHunter
                 case CharacterAnimationEventTypes.None:
                     break;
                 case CharacterAnimationEventTypes.LeftStep:
-                    if(_lastAnimationEventType != CharacterAnimationEventTypes.LeftStep)
+                    if (_lastAnimationEventType != CharacterAnimationEventTypes.LeftStep)
                     {
                         _characterModel.MovementAudioSource.PlayOneShot(_characterModel.CharacterCommonSettings.
                             StepSounds[0]);
                     }
                     break;
                 case CharacterAnimationEventTypes.RightStep:
-                    if(_lastAnimationEventType != CharacterAnimationEventTypes.RightStep)
+                    if (_lastAnimationEventType != CharacterAnimationEventTypes.RightStep)
                     {
                         _characterModel.MovementAudioSource.PlayOneShot(_characterModel.CharacterCommonSettings.
                             StepSounds[0]);
@@ -960,12 +961,17 @@ namespace BeastHunter
             }
 
             _lastAnimationEventType = animationEvent.AnimationEventType;
+        }
+
+        #endregion
+
 
         #region HealthBar
 
         private void HealthBarUpdate()
         {
-            _currentMaxHealthPercent = _playerHealthBarModel.HealthFillUpdate(_currentHealth * 100 / _characterModel.CharacterCommonSettings.HealthPoints);
+            _currentMaxHealthPercent = _playerHealthBarModel.HealthFillUpdate(_currentHealth * 100 / 
+                _characterModel.CharacterData.CharacterStatsSettings.HealthPoints);
         }
 
         /// <summary>Example method of implementing health restoration to the current max health threshold</summary>

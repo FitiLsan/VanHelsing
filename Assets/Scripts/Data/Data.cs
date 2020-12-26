@@ -464,6 +464,8 @@ namespace BeastHunter
                     _audioData = Resources.Load<AudioData>("Data/" + Instance._audioDataPath);
                 }
                 return _audioData;
+            }
+        }
 
         public static PlayerHealthBarData PlayerHealthBarData
         {
