@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Extensions;
 
 
 namespace BeastHunter
@@ -9,6 +10,9 @@ namespace BeastHunter
         #region Fields
 
         [SerializeField] private ProjectileData _projectileData;
+        [SerializeField] private Sound _shootingSound;
+        [SerializeField] private Sound _reloadingSound;
+
         [SerializeField] private int _magazineSize;
 
         [SerializeField] private float _hitDistance;
@@ -18,6 +22,8 @@ namespace BeastHunter
         [SerializeField] private string _aimingAnimationPostfix;
         [SerializeField] private string _reloadAnimationPostfix;
 
+        private AudioSource _weaponAudioSource;
+
         #endregion
 
 
@@ -25,6 +31,8 @@ namespace BeastHunter
 
         public ParticleSystem ParticleSystem { get; private set; }
         public ProjectileData ProjectileData => _projectileData;
+        public Sound ShootingSound => _shootingSound;
+        public Sound ReloadingSound => _reloadingSound;
         public int MagazineSize => _magazineSize;
         public float HitDistance => _hitDistance;
         public float TimeBetweenShots => _timeBetweenShots;
@@ -53,6 +61,8 @@ namespace BeastHunter
             base.Init(objectOnScene);
 
             ParticleSystem = objectOnScene.GetComponentInChildren<ParticleSystem>();
+            _weaponAudioSource = objectOnScene.GetComponentInChildren<AudioSource>();
+            _weaponAudioSource.PlayOneShot(GettingSound);
         }
 
         public override void TakeWeapon()
@@ -68,7 +78,7 @@ namespace BeastHunter
         public void Reload()
         {
             if (IsInHands)
-            {
+            {             
                 // TODO
             }
         }
@@ -84,6 +94,7 @@ namespace BeastHunter
         {
             new ProjectileInitializeController(_context, _projectileData, gunPosition, forwardDirection, ForceMode.Impulse);
             ParticleSystem.Play();
+            _weaponAudioSource.PlayOneShot(ShootingSound);
         }
 
         #endregion

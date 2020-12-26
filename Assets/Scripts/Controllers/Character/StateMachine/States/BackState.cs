@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
-using System.Linq;
 using RootMotion.Dynamics;
 using UniRx;
+using Extensions;
+
 
 namespace BeastHunter
 {
@@ -61,6 +62,10 @@ namespace BeastHunter
         private readonly CharacterModel _characterModel;
         private readonly InputModel _inputModel;
         private readonly PuppetMaster _puppetController;
+        private readonly CharacterSpeedCounter _standartSpeedCounter;
+        private readonly CharacterSpeedCounter _sneakingSpeedCounter;
+        private readonly CharacterSpeedCounter _battleSpeedCounter;
+        private readonly CharacterSpeedCounter _aimingSpeedCounter;
 
         private GameObject _weaponWheelUI;
         private GameObject _buttonsInfoUI;
@@ -76,10 +81,12 @@ namespace BeastHunter
         private Vector3 _currentPosition;
 
         private Text _weaponWheelText;
+        private CharacterSpeedCounter _activeSpeedCounter;
 
-        private float[] _speedArray;
+        private CharacterAnimationEventTypes _lastAnimationEventType;
+
+        private float _curretSpeed;
         private float _currentHealth;
-        private float _currentBattleIgnoreTime;
         private float _targetAngleVelocity;
         private float _targetSpeed;
         private float _speedChangeLag;
@@ -101,7 +108,6 @@ namespace BeastHunter
         private float CurrentDirecton { get; set; }
         private float AdditionalDirection { get; set; }
         private float CurrentAngle { get; set; }
-        private float MovementSpeed { get; set; }
 
         #endregion
 
@@ -116,7 +122,6 @@ namespace BeastHunter
             _characterModel = _context.CharacterModel;
             _inputModel = _context.InputModel;
             _puppetController = _characterModel.PuppetMaster;
-            _speedArray = new float[5] { 0f, 0f, 0f, 0f, 0f};
 
             _weaponWheelUI = GameObject.Instantiate(Data.UIElementsData.WeaponWheelPrefab);
             _weaponWheelTransform = _weaponWheelUI.transform.
@@ -125,6 +130,23 @@ namespace BeastHunter
                 GetComponentsInChildren<WeaponCircle>();
             _weaponWheelText = _weaponWheelUI.transform.GetComponentInChildren<Text>();
             InitAllWeaponItemsOnWheel();
+
+            _standartSpeedCounter = new CharacterSpeedCounter(_characterModel.CharacterCommonSettings.WalkSpeed, 
+                _characterModel.CharacterCommonSettings.RunSpeed,_characterModel.CharacterCommonSettings.AccelerationLag, 
+                    _characterModel.CharacterCommonSettings.DecelerationLag, 
+                        _characterModel.CharacterCommonSettings.MinimalSpeed);
+            _sneakingSpeedCounter = new CharacterSpeedCounter(_characterModel.CharacterCommonSettings.SneakWalkSpeed,
+                _characterModel.CharacterCommonSettings.SneakRunSpeed, _characterModel.CharacterCommonSettings.
+                    SneakAccelerationLag, _characterModel.CharacterCommonSettings.SneakDecelerationLag,
+                        _characterModel.CharacterCommonSettings.MinimalSpeed);
+            _battleSpeedCounter = new CharacterSpeedCounter(_characterModel.CharacterCommonSettings.InBattleWalkSpeed,
+                _characterModel.CharacterCommonSettings.InBattleRunSpeed, _characterModel.CharacterCommonSettings.
+                    InBattleAccelerationLag, _characterModel.CharacterCommonSettings.InBattleDecelerationLag,
+                        _characterModel.CharacterCommonSettings.MinimalSpeed);
+            _aimingSpeedCounter = new CharacterSpeedCounter(_characterModel.CharacterCommonSettings.AimWalkSpeed,
+                _characterModel.CharacterCommonSettings.AimRunSpeed, _characterModel.CharacterCommonSettings.
+                    AimAccelerationLag, _characterModel.CharacterCommonSettings.AimDecelerationLag,
+                        _characterModel.CharacterCommonSettings.MinimalSpeed);
 
             _buttonsInfoUI = GameObject.Instantiate(Data.UIElementsData.ButtonsInformationPrefab);
 
@@ -174,8 +196,11 @@ namespace BeastHunter
             OnHealthChange += HealthBarUpdate;
 
             _characterModel.CurrentWeaponData.Subscribe(OnWeaponChangeHandler);
+            _characterModel.CurrentCharacterState.Subscribe(UpdateSpeedCounterByState);
+            _characterModel.EnemiesInTrigger.ObserveCountChanged(true).Subscribe(OnEnemiesNear);
 
             MessageBroker.Default.Receive<OnPlayerReachHidePlaceEventClass>().Subscribe(EnableHiding);
+            MessageBroker.Default.Receive<CharacterAnimationEvent>().Subscribe(PlaySoundFromAnimationEvent);
 
             _characterModel.PlayerBehavior.OnFilterHandler += OnTriggerFilter;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler += OnTriggerEnterSomething;
@@ -197,7 +222,6 @@ namespace BeastHunter
         {
             GroundCheck();
             MovementCheck();
-            SpeedCheck();
             ControlWeaponWheel();
 
             //FOR DEBUG ONLY!
@@ -241,6 +265,8 @@ namespace BeastHunter
             OnHealthChange -= HealthBarUpdate;
 
             _characterModel.CurrentWeaponData.Dispose();
+            _characterModel.CurrentCharacterState.Dispose();
+            _characterModel.EnemiesInTrigger.Dispose();
 
             _characterModel.PlayerBehavior.OnFilterHandler -= OnTriggerFilter;
             _characterModel.PlayerBehavior.OnTriggerEnterHandler -= OnTriggerEnterSomething;
@@ -293,18 +319,8 @@ namespace BeastHunter
             if (enemy != null && damage != null)
             {
                 //enemy.TakeDamageEvent(damage); TO REFACTOR
-                _context.NpcModels[GetParent(enemy.transform).GetInstanceID()].TakeDamage(damage);
+                _context.NpcModels[enemy.transform.GetMainParent().gameObject.GetInstanceID()].TakeDamage(damage);
             }
-        }
-
-        private GameObject GetParent(Transform instance)
-        {
-            while (instance.parent != null)
-            {
-                instance = instance.parent;
-            }
-
-            return instance.gameObject;
         }
 
         #endregion
@@ -316,9 +332,8 @@ namespace BeastHunter
         {
             _lastPosition = _characterModel.CharacterTransform.position;
             _currentPosition = _lastPosition;
-            _currentHealth = _characterModel.CharacterCommonSettings.HealthPoints; // TO REFACTOR
-            _currentMaxHealthPercent = _currentHealth * 100 / _characterModel.CharacterCommonSettings.HealthPoints;
-            _currentBattleIgnoreTime = 0; // TO REFACTOR
+            _currentHealth = _characterModel.CharacterData.CharacterStatsSettings.HealthPoints; // TO REFACTOR
+            _currentMaxHealthPercent = _currentHealth * 100 / _characterModel.CharacterData.CharacterStatsSettings.HealthPoints;
         }
 
 
@@ -487,8 +502,8 @@ namespace BeastHunter
                 }
 
                 DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.CurrentWeaponData.Value,
-                    _characterModel.CharacterStatsSettings, _context.NpcModels[GetParent(enemyBehavior.transform).
-                        GetInstanceID()].GetStats().MainStats));
+                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.transform.GetMainParent().
+                        gameObject.GetInstanceID()].GetStats().MainStats));
                 hitBox.IsInteractable = false;
             }
         }
@@ -507,37 +522,6 @@ namespace BeastHunter
         private void MovementCheck()
         {
             _inputModel.IsInputMove = _context.InputModel.IsInputMove;
-        }
-
-        private void AddSpeedToArray(float speed)
-        {
-            for(int index = 0; index < _speedArray.Length - 1; index++)
-            {
-                _speedArray[index] = _speedArray[index + 1];
-            }
-
-            _speedArray[_speedArray.Length - 1] = speed;
-        }
-
-        private float GetAverageSpeed()
-        {
-            return _speedArray.Sum() / _speedArray.Length;
-        }
-
-        private void SpeedCheck()
-        {
-            _currentPosition = _characterModel.CharacterTransform.position;
-
-            if (_currentPosition == _lastPosition)
-            {
-                _characterModel.CurrentSpeed = 0;
-            }
-            else
-            {
-                AddSpeedToArray(Mathf.Sqrt((_currentPosition - _lastPosition).sqrMagnitude) / Time.deltaTime);
-                _characterModel.CurrentSpeed = GetAverageSpeed();
-                _lastPosition = _currentPosition;
-            }
         }
 
         #endregion
@@ -759,7 +743,7 @@ namespace BeastHunter
 
         public void StopCharacter()
         {
-            MovementSpeed = 0f;
+            _characterModel.CurrentSpeed = 0f;
             _targetAngleVelocity = 0f;
             _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle, 0);
         }
@@ -778,12 +762,12 @@ namespace BeastHunter
                         moveDirection *= ANGULAR_MOVE_SPEED_REDUCTION_INDEX;
                     }
 
-                    _characterModel.CharacterData.Move(_characterModel.CharacterTransform, MovementSpeed, 
+                    _characterModel.CharacterData.Move(_characterModel.CharacterTransform, _characterModel.CurrentSpeed, 
                         moveDirection);
                 }
                 else
                 {
-                    _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, MovementSpeed);
+                    _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, _characterModel.CurrentSpeed);
                 }              
             }
         }
@@ -828,7 +812,7 @@ namespace BeastHunter
 
                     if (isStrafing)
                     {
-                        _characterModel.CharacterTransform?.LookAt(_characterModel.ClosestEnemy.transform.position);                         
+                        _characterModel.CharacterTransform?.LookAt(_characterModel.ClosestEnemy.Value.transform.position);                         
                         CurrentAngle = _characterModel.CharacterTransform.eulerAngles.y;
                     }
                 }
@@ -843,134 +827,42 @@ namespace BeastHunter
             if (_characterModel.IsGrounded)
             {
                 _targetAngleVelocity = Mathf.SmoothStep(_targetAngleVelocity, 0, ANGULAR_VELOCITY_FADE_SPEED);
-                CurrentAngle = _characterModel.CharacterTransform.eulerAngles.y + _inputModel.MouseInputX * _characterModel.CharacterCommonSettings.AimingDirectionChangeSpeed * Time.deltaTime;
+                CurrentAngle = _characterModel.CharacterTransform.eulerAngles.y + _inputModel.MouseInputX * 
+                    _characterModel.CharacterCommonSettings.AimingDirectionChangeSpeed * Time.deltaTime;
                 _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle,
                     -_targetAngleVelocity * Time.fixedDeltaTime);
             }
         }
 
-        public void CountSpeedDefault()
+        private void UpdateSpeedCounterByState(CharacterBaseState currentState)
         {
-            if (_inputModel.IsInputMove)
+            switch (currentState?.StateName)
             {
-                if (_inputModel.IsInputRun)
-                {
-                    _targetSpeed = _characterModel.CharacterCommonSettings.RunSpeed;
-                }
-                else
-                {
-                    _targetSpeed = _characterModel.CharacterCommonSettings.WalkSpeed;
-                }
+                case CharacterStatesEnum.Aiming:
+                    _activeSpeedCounter = _aimingSpeedCounter;
+                    break;
+                case CharacterStatesEnum.Idle:
+                    _activeSpeedCounter = _standartSpeedCounter;
+                    break;
+                case CharacterStatesEnum.Movement:
+                    _activeSpeedCounter = _standartSpeedCounter;
+                    break;
+                case CharacterStatesEnum.Sneaking:
+                    _activeSpeedCounter = _sneakingSpeedCounter;
+                    break;
+                case CharacterStatesEnum.Battle:
+                    _activeSpeedCounter = _battleSpeedCounter;
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                _targetSpeed = 0;
-            }
-
-            if (_characterModel.CurrentSpeed < _targetSpeed)
-            {
-                _speedChangeLag = _characterModel.CharacterCommonSettings.AccelerationLag;
-            }
-            else
-            {
-                _speedChangeLag = _characterModel.CharacterCommonSettings.DecelerationLag;
-            }
-
-            MovementSpeed = Mathf.SmoothDamp(_characterModel.CurrentSpeed, _targetSpeed, ref _currentVelocity,
-                _speedChangeLag);
         }
 
-        public void CountSpeedStrafing()
+        public void CountSpeed()
         {
-            if (_inputModel.IsInputMove)
-            {
-                if (_inputModel.IsInputRun)
-                {
-                    _targetSpeed = _characterModel.CharacterCommonSettings.InBattleRunSpeed;
-                }
-                else
-                {
-                    _targetSpeed = _characterModel.CharacterCommonSettings.InBattleWalkSpeed;
-                }
-            }
-            else
-            {
-                _targetSpeed = 0;
-            }
-
-            if (_characterModel.CurrentSpeed < _targetSpeed)
-            {
-                _speedChangeLag = _characterModel.CharacterCommonSettings.InBattleAccelerationLag;
-            }
-            else
-            {
-                _speedChangeLag = _characterModel.CharacterCommonSettings.InBattleDecelerationLag;
-            }
-
-            MovementSpeed = Mathf.SmoothDamp(_characterModel.CurrentSpeed, _targetSpeed, ref _currentVelocity,
-                _speedChangeLag);
-        }
-
-        public void CountSpeedSneaking()
-        {
-            if (_inputModel.IsInputMove)
-            {
-                if (_inputModel.IsInputRun)
-                {
-                    _targetSpeed = _characterModel.CharacterCommonSettings.SneakRunSpeed;
-                }
-                else
-                {
-                    _targetSpeed = _characterModel.CharacterCommonSettings.SneakWalkSpeed;
-                }
-            }
-            else
-            {
-                _targetSpeed = 0;
-            }
-
-            if (_characterModel.CurrentSpeed < _targetSpeed)
-            {
-                _speedChangeLag = _characterModel.CharacterCommonSettings.SneakAccelerationLag;
-            }
-            else
-            {
-                _speedChangeLag = _characterModel.CharacterCommonSettings.SneakDecelerationLag;
-            }
-
-            MovementSpeed = Mathf.SmoothDamp(_characterModel.CurrentSpeed, _targetSpeed, ref _currentVelocity,
-                _speedChangeLag);
-        }
-
-        public void CountSpeedAiming()
-        {
-            if (_inputModel.IsInputMove)
-            {
-                if (_inputModel.IsInputRun)
-                {
-                    _targetSpeed = _characterModel.CharacterCommonSettings.AimRunSpeed;
-                }
-                else
-                {
-                    _targetSpeed = _characterModel.CharacterCommonSettings.AimWalkSpeed;
-                }
-            }
-            else
-            {
-                _targetSpeed = 0;
-            }
-
-            if (_characterModel.CurrentSpeed < _targetSpeed)
-            {
-                _speedChangeLag = _characterModel.CharacterCommonSettings.AimAccelerationLag;
-            }
-            else
-            {
-                _speedChangeLag = _characterModel.CharacterCommonSettings.AimDecelerationLag;
-            }
-
-            MovementSpeed = Mathf.SmoothDamp(_characterModel.CurrentSpeed, _targetSpeed, ref _currentVelocity,
-                _speedChangeLag);
+            _activeSpeedCounter.CountSpeed(_inputModel.IsInputMove, _inputModel.IsInputRun, 
+                ref _curretSpeed, ref _currentVelocity);
+            _characterModel.CurrentSpeed = _curretSpeed;
         }
 
         #endregion
@@ -1030,11 +922,56 @@ namespace BeastHunter
         #endregion
 
 
+        #region AudioMethods
+
+        private void OnEnemiesNear(int quantity)
+        {
+            if(quantity > 0)
+            {
+                _services.AudioService.ChangeAmbientMusic(_services.AudioService.AudioData.AmbientMusicArray[1], 1f, true);
+            }
+            else
+            {
+                _services.AudioService.ChangeAmbientMusic(_services.AudioService.AudioData.AmbientMusicArray[0], 5f, true);
+            }
+        }
+
+        private void PlaySoundFromAnimationEvent(CharacterAnimationEvent animationEvent)
+        {
+            switch (animationEvent.AnimationEventType)
+            {
+                case CharacterAnimationEventTypes.None:
+                    break;
+                case CharacterAnimationEventTypes.LeftStep:
+                    if (_lastAnimationEventType != CharacterAnimationEventTypes.LeftStep)
+                    {
+                        _characterModel.MovementAudioSource.PlayOneShot(_characterModel.CharacterCommonSettings.
+                            StepSounds[0]);
+                    }
+                    break;
+                case CharacterAnimationEventTypes.RightStep:
+                    if (_lastAnimationEventType != CharacterAnimationEventTypes.RightStep)
+                    {
+                        _characterModel.MovementAudioSource.PlayOneShot(_characterModel.CharacterCommonSettings.
+                            StepSounds[0]);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            _lastAnimationEventType = animationEvent.AnimationEventType;
+        }
+
+        #endregion
+
+
         #region HealthBar
 
         private void HealthBarUpdate()
         {
-            _currentMaxHealthPercent = _playerHealthBarModel.HealthFillUpdate(_currentHealth * 100 / _characterModel.CharacterCommonSettings.HealthPoints);
+            _currentMaxHealthPercent = _playerHealthBarModel.HealthFillUpdate(_currentHealth * 100 / 
+                _characterModel.CharacterData.CharacterStatsSettings.HealthPoints);
         }
 
         /// <summary>Example method of implementing health restoration to the current max health threshold</summary>

@@ -54,6 +54,10 @@ namespace BeastHunter
             Destroy(projectileInterface.GameObject.GetComponent<Rigidbody>());
             Destroy(projectileInterface.GameObject.GetComponent<SphereCollider>());
             Destroy(projectileInterface.GameObject.GetComponent<ProjectileBehavior>());
+
+            AudioSource projectileAudioSource = projectileInterface.GameObject.GetComponent<AudioSource>();
+            projectileAudioSource.PlayOneShot(CollisionSound);
+            Destroy(projectileAudioSource, CollisionSound.SoundClip.length);
         }
 
         #endregion

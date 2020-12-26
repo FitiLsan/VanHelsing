@@ -33,7 +33,7 @@ MonoBehaviour:
     _sphereColliderCenter: {x: 0, y: 1, z: 0}
     _sphereColliderRadius: 7.2
     _sphereColliderRadiusIncrease: 1.365
-    _healthPoints: 100
+    _minimalSpeed: 0.05
     _walkSpeed: 4
     _runSpeed: 6
     _inBattleWalkSpeed: 3
@@ -44,7 +44,7 @@ MonoBehaviour:
     _aimRunSpeed: 2
     _groundCheckHeight: 1.2
     _accelerationLag: 0.1
-    _decelerationLag: 0.098
+    _decelerationLag: 0.223
     _inBattleAccelerationLag: 0.028
     _inBattleDecelerationLag: 0.022
     _sneakAccelerationLag: 0.11
@@ -59,6 +59,26 @@ MonoBehaviour:
     _slideTime: 1.3
     _rollTime: 0.9
     _dodgingTime: 0
+    _stepSounds:
+    - _soundClip: {fileID: 8300000, guid: 056d5f1678a18724cac1218362ebe3a6, type: 3}
+      _volume: 1
+      _pitch: 1
+      _doLoop: 0
+    - _soundClip: {fileID: 8300000, guid: dd36d25229f364241a7d2f5e45d4d3eb, type: 3}
+      _volume: 1
+      _pitch: 1
+      _doLoop: 0
+    - _soundClip: {fileID: 8300000, guid: dd36d25229f364241a7d2f5e45d4d3eb, type: 3}
+      _volume: 1
+      _pitch: 1
+      _doLoop: 0
+    _slideSound:
+      _soundClip: {fileID: 0}
+      _volume: 0
+      _pitch: 0
+      _doLoop: 0
+    _standartCharacterMovementMixerVolume: 0
+    _sneakingCharacterMovementMixerVolume: -11.9
   _characterAnimationData:
     _movementAnimationName: Movement
     _strafingAnimationName: Strafe
@@ -79,11 +99,13 @@ MonoBehaviour:
     _aimingLookToEyesWeightIK: 1
     _aimingLookToClampWeightIK: 1
   _characterStatsSettings:
-    _maxHealth: 0
+    _maxHealth: 100
     _enemyType: 0
     _viewRadius: 0
     _viewAngle: 0
-    _healthPoints: 0
+    _healthPoints: 100
     _physicalPower: 2
+    _magicalPower: 0
     _physicalDamageResistance: 0.25
     _stunProbabilityResistance: 0.075
+    _fireDamageResistance: 0

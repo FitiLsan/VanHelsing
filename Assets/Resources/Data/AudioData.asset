@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa1066c7ccb212948a3f68ad75b25cfd, type: 3}
+  m_Name: AudioData
+  m_EditorClassIdentifier: 
+  _mainMixer: {fileID: 24100000, guid: 69106bff814e05a4a803da057d023f8b, type: 2}
+  _characterMovementVolumeName: CharacterMovementVolume
+  _ambienceObjectPrefab: {fileID: 9152678553569508079, guid: fef504e3157838646b0d314825e02025,
+    type: 3}
+  _firstAmbientMusicSourceObjectName: FisrtAmbienceMusicSourse
+  _secondAmbientMusicSourceObjectName: SecondAmbienceMusicSourse
+  _firstAmbientSFXSourceObjectName: FisrtAmbienceSFXSourse
+  _secondAmbientSFXSourceObjectName: SecondAmbienceSFXSourse
+  _ambientMusicArray:
+  - _soundClip: {fileID: 8300000, guid: 52ca28548a5611f4c9acc87008b39562, type: 3}
+    _volume: 0.071
+    _pitch: 1
+    _doLoop: 1
+  - _soundClip: {fileID: 8300000, guid: daea1e09b7fe4ca47bdf296052fd5f76, type: 3}
+    _volume: 0.6
+    _pitch: 1
+    _doLoop: 1
+  _ambientSFXArray:
+  - _soundClip: {fileID: 8300000, guid: b05526619c37e024b812e8542c402daf, type: 3}
+    _volume: 0.5
+    _pitch: 1
+    _doLoop: 1
+  - _soundClip: {fileID: 0}
+    _volume: 0.5
+    _pitch: 1
+    _doLoop: 0

@@ -16,12 +16,23 @@ MonoBehaviour:
   _type: 2
   _inWhichHand: 2
   _weaponImage: {fileID: 21300000, guid: 2681520e8d2b5b6459a4a96f31840525, type: 3}
+  _gettingSound:
+    _soundClip: {fileID: 8300000, guid: 5cd824bcc82c0064694f6d5d0f8ad041, type: 3}
+    _volume: 1
+    _pitch: 1
+    _doLoop: 0
+  _removingSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
   _simpleAttacks:
   - Name: Simple shot
     AnimationName: Shoot
     AttackDamage:
       PhysicalDamage: 3
       StunProbability: 0
+      FireDamage: 0
     WeaponItem: {fileID: 11400000, guid: e2a1624ec5a336945b8c75bb80548e57, type: 2}
     AttackType: 3
     AttackTime: 0.5
@@ -41,6 +52,16 @@ MonoBehaviour:
   _timeBeforeLetGo: 0.5
   _actualWeapon: {fileID: 11400000, guid: e2a1624ec5a336945b8c75bb80548e57, type: 2}
   _projectileData: {fileID: 11400000, guid: 2d7680b8cfc58fd45ab7be2e8e6457dc, type: 2}
+  _shootingSound:
+    _soundClip: {fileID: 8300000, guid: 0f501f0f71d777742bbf117f8cf3adf1, type: 3}
+    _volume: 0.672
+    _pitch: 1
+    _doLoop: 0
+  _reloadingSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
   _magazineSize: 25
   _hitDistance: 150
   _timeBetweenShots: 1

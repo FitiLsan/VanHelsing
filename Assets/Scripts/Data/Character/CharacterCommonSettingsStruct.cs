@@ -80,9 +80,9 @@ namespace BeastHunter
 
         [Header("Movement settings")]
 
-        [Tooltip("Health points between 0 and 100.")]
-        [Range(0.0f, 100.0f)]
-        [SerializeField] private float _healthPoints;
+        [Tooltip("Minimal speed value between 0 and 0.1.")]
+        [Range(0.0f, 0.1f)]
+        [SerializeField] private float _minimalSpeed;
 
         [Tooltip("Walk speed value between 0 and 20.")]
         [Range(0.0f, 20.0f)]
@@ -186,16 +186,29 @@ namespace BeastHunter
         [Range(0.0f, 10.0f)]
         [SerializeField] private float _dodgingTime;
 
+        [Header("Audio settings")]
+
+        [SerializeField] private Sound[] _stepSounds;
+        [SerializeField] private Sound _slideSound;
+
+        [Tooltip("Volume of standart character movement sounds between 0 and 1.")]
+        [Range(-80.0f, 20.0f)]
+        [SerializeField] private float _standartCharacterMovementMixerVolume;
+
+        [Tooltip("Volume of sneaking character movement sounds between 0 and 1.")]
+        [Range(-80.0f, 20.0f)]
+        [SerializeField] private float _sneakingCharacterMovementMixerVolume;
+
         #endregion
 
 
         #region Properties
 
         public GameObject Prefab => _prefab;
-
         public RuntimeAnimatorController CharacterAnimator => _characterAnimator;
-
         public PhysicMaterial CapsuleColliderPhysicMaterial => _capsuleColliderPhysicMaterial;
+        public Sound[] StepSounds => _stepSounds;
+        public Sound SlideSound => _slideSound;
 
         public Vector3 CapsuleColliderCenter => _capsuleColliderCenter;
         public Vector3 SphereColliderCenter => _sphereColliderCenter;
@@ -215,7 +228,7 @@ namespace BeastHunter
         public float SphereColliderRadius => _sphereColliderRadius;
         public float SphereColliderRadiusIncrease => _sphereColliderRadiusIncrease;
 
-        public float HealthPoints => _healthPoints;
+        public float MinimalSpeed => _minimalSpeed;
         public float WalkSpeed => _walkSpeed;
         public float RunSpeed => _runSpeed;
         public float InBattleWalkSpeed => _inBattleWalkSpeed;
@@ -242,6 +255,9 @@ namespace BeastHunter
         public float SlideTime => _slideTime;
         public float RollingTime => _rollTime;
         public float DodgingTime => _dodgingTime;
+
+        public float StandartCharacterMovementMixerVolume => _standartCharacterMovementMixerVolume;
+        public float SneakingCharacterMovementMixerVolume => _sneakingCharacterMovementMixerVolume;
 
         public bool BeginningApplyRootMotion => _beginningApplyRootMotion;
 

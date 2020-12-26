@@ -29,6 +29,8 @@ namespace BeastHunter
         public ReactiveProperty<CharacterBaseState> CurrentCharacterState { get; set; }
         public ReactiveProperty<CharacterBaseState> PreviousCharacterState { get; set; }
 
+        public AudioSource SpeechAudioSource { get; }
+        public AudioSource MovementAudioSource { get; }
         public CharacterAnimationModel CharacterAnimationModel { get; }
         public Transform CharacterTransform { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
@@ -43,8 +45,8 @@ namespace BeastHunter
         public BehaviourFall BehaviorFall { get; }
         public LineRenderer ProjectileTrajectoryPredict { get; }
 
-        public List<Collider> EnemiesInTrigger { get; set; }
-        public Collider ClosestEnemy { get; set; }
+        public ReactiveCollection<Collider> EnemiesInTrigger { get; set; }
+        public ReactiveProperty<Collider> ClosestEnemy { get; set; }
 
         public float CurrentSpeed { get; set; }
         public float AnimationSpeed { get; set; }
@@ -82,6 +84,10 @@ namespace BeastHunter
             CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
 
             CharacterStats = CharacterStatsSettings;
+
+            AudioSource[] characterAudioSources = CharacterTransform.gameObject.GetComponentsInChildren<AudioSource>();
+            SpeechAudioSource = characterAudioSources[0];
+            MovementAudioSource = characterAudioSources[1];
 
             if (CharacterTransform.gameObject.TryGetComponent(out Rigidbody _characterRigitbody))
             {
@@ -144,9 +150,9 @@ namespace BeastHunter
             BehaviorPuppet = prefab.transform.GetChild(0).GetChild(0).gameObject.GetComponent<BehaviourPuppet>();
             BehaviorFall = prefab.transform.GetChild(0).GetChild(1).gameObject.GetComponent<BehaviourFall>();
 
-            EnemiesInTrigger = new List<Collider>();
-
-            ClosestEnemy = null;
+            EnemiesInTrigger = new ReactiveCollection<Collider>();
+            
+            ClosestEnemy = new ReactiveProperty<Collider>();
             IsGrounded = false;
             IsSneaking = false;
             IsEnemyNear = false;
@@ -168,6 +174,7 @@ namespace BeastHunter
             PreviousCharacterState = new ReactiveProperty<CharacterBaseState>();
 
             Services.SharedInstance.CameraService.Initialize(this);
+            Services.SharedInstance.AudioService.Initialize(this);
         }
 
         #endregion

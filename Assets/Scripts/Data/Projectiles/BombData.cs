@@ -7,7 +7,21 @@ namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewBombtData", menuName = "CreateProjectileData/CreateBombData", order = 0)]
     public sealed class BombData : ProjectileData
-    {      
+    {
+        #region Fields
+
+        [SerializeField] private float _explosionHearingDistance;
+
+        #endregion
+
+
+        #region Properties
+
+        public float ExplosionHearingDistance => _explosionHearingDistance;
+
+        #endregion
+
+
         #region Methods
 
         public override bool FilterCollision(Collision touchedCollider)
@@ -35,7 +49,8 @@ namespace BeastHunter
                 }
 
                 Context.NpcModels[touchedCollider.transform.GetMainParent().gameObject.GetInstanceID()].TakeDamage(Services.
-                    SharedInstance.AttackService.CountDamage(ProjectileDamage, touchedCollider.transform.GetMainParent().gameObject.GetInstanceID()));
+                    SharedInstance.AttackService.CountDamage(ProjectileDamage, touchedCollider.transform.GetMainParent().
+                        gameObject.GetInstanceID()));
             }
 
             ExplodeBomb(projectileInterface, touchedCollider);
@@ -43,6 +58,8 @@ namespace BeastHunter
 
         private void ExplodeBomb(IProjectile projectileInterface, Collision touchedCollider)
         {
+            Services.SharedInstance.NoiseService.MakeNoise(new Noise(projectileInterface.GameObject.transform.position,
+                NoiseType.Explosion, ExplosionHearingDistance));
             Rigidbody bombRigidbody = projectileInterface.GameObject.GetComponent<Rigidbody>();
             bombRigidbody.velocity = Vector3.zero;
             bombRigidbody.isKinematic = true;
@@ -50,7 +67,10 @@ namespace BeastHunter
             Destroy(projectileInterface.GameObject.GetComponent<ProjectileBehavior>());
             Destroy(projectileInterface.GameObject.GetComponent<MeshRenderer>());
             Destroy(projectileInterface.GameObject.GetComponent<Collider>());
-            Destroy(projectileInterface.GameObject, 0.5f);
+            AudioSource projectileAudioSource = projectileInterface.GameObject.GetComponent<AudioSource>();
+            projectileAudioSource.PlayOneShot(CollisionSound);
+            Destroy(projectileAudioSource, CollisionSound.SoundClip.length);
+            Destroy(projectileInterface.GameObject, CollisionSound.SoundClip.length);
         }
 
         #endregion

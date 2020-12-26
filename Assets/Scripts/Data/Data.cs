@@ -44,6 +44,7 @@ namespace BeastHunter
         [SerializeField] private string _twoHeadedSnakeDataPath;
         [SerializeField] private string _bouldersObjectPath;
         [SerializeField] private string _hideBushDataPath;
+        [SerializeField] private string _audioDataPath;
         [SerializeField] private string _playerHealthBarDataPath;
 
         private static Data _instance;
@@ -78,6 +79,7 @@ namespace BeastHunter
         private static TwoHeadedSnakeData _twoHeadedSnakeData;
         private static BouldersData _bouldersObjectData;
         private static HideBushData _hideBushData;
+        private static AudioData _audioData;
         private static PlayerHealthBarData _playerHealthBarData;
 
         #endregion
@@ -450,6 +452,18 @@ namespace BeastHunter
                     _hideBushData = Resources.Load<HideBushData>("Data/" + Instance._hideBushDataPath);
                 }
                 return _hideBushData;
+            }
+        }
+
+        public static AudioData AudioData
+        {
+            get
+            {
+                if (_audioData == null)
+                {
+                    _audioData = Resources.Load<AudioData>("Data/" + Instance._audioDataPath);
+                }
+                return _audioData;
             }
         }
 
