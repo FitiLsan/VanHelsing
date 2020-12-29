@@ -41,6 +41,9 @@ namespace BeastHunter
         [Tooltip("Right hand object path")]
         [SerializeField] private string _rightHandObjectPath;
 
+        [Tooltip("Boss right finger path")]
+        [SerializeField] private string _rightFingerPath;
+
         [Tooltip("Left foot object path")]
         [SerializeField] private string _leftFootObjectPath;
 
@@ -178,6 +181,7 @@ namespace BeastHunter
         public string InstanceName => _instanceName;
         public string LeftHandObjectPath => _leftHandObjectPath;
         public string RightHandObjectPath => _rightHandObjectPath;
+        public string RightFingerPath => _rightFingerPath;
         public string LeftFootObjectPath => _leftFootObjectPath;
         public string RightFootObjectPath => _rightFootObjectPath;
 

@@ -65,6 +65,10 @@ namespace BeastHunter
 
         protected bool CheckDirection()
         {
+            if (_bossModel.IsPickUped)
+            {
+                return true;
+            }
             var isNear = _bossData.CheckIsLookAtTarget(_bossModel.BossTransform.rotation, _mainState.TargetRotation, ANGLE_TARGET_RANGE_MIN);
             if (!isNear)
             {

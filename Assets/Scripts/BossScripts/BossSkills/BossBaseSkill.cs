@@ -20,6 +20,7 @@ namespace BeastHunter
 
         protected BossModel _bossModel;
         protected WeaponHitBoxBehavior _currenTriggertHand;
+        protected WeaponHitBoxBehavior _rightFingerTrigger;
         protected Collider _currenColliderHand;
         protected Dictionary<int, BossBaseSkill> _skillDictionary;
         protected BossStateMachine _stateMachine;

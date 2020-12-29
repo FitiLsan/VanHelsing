@@ -27,6 +27,8 @@ namespace BeastHunter
         public BossBaseSkill RageOfForestSkill { get; private set; }
         public BossBaseSkill PoisonSporesSkill { get; private set; }
         public BossBaseSkill CatchAttackSkill { get; private set; }
+        public BossBaseSkill ThrowAttackSkill { get; private set; }
+        public BossBaseSkill FingerAttackSkill { get; private set; }
 
         public BossBaseSkill DefaultDefenceSkill { get; private set; }
         public BossBaseSkill SelfHealSkill { get; private set; }
@@ -57,6 +59,8 @@ namespace BeastHunter
             RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkillsSettings.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             PoisonSporesSkill = new PoisonSporesAttackSkill(AttackStateSkillsSettings.GetPoisonSporesSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             CatchAttackSkill = new CatchAttackSkill(AttackStateSkillsSettings.GetCatchSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            ThrowAttackSkill = new ThrowAttackSkill(AttackStateSkillsSettings.GetThrowSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            FingerAttackSkill = new FingerAttackSkill(AttackStateSkillsSettings.GetFingerSkillInfo(), AttackStateSkillDictionary, _stateMachine);
 
             AttackStateSkillDictionary.Add(DefaultAttackSkill.SkillId, DefaultAttackSkill);
             AttackStateSkillDictionary.Add(HorizontalAttackSkill.SkillId, HorizontalAttackSkill);
@@ -64,6 +68,8 @@ namespace BeastHunter
             AttackStateSkillDictionary.Add(RageOfForestSkill.SkillId, RageOfForestSkill);
             AttackStateSkillDictionary.Add(PoisonSporesSkill.SkillId, PoisonSporesSkill);
             AttackStateSkillDictionary.Add(CatchAttackSkill.SkillId, CatchAttackSkill);
+            AttackStateSkillDictionary.Add(ThrowAttackSkill.SkillId, ThrowAttackSkill);
+            AttackStateSkillDictionary.Add(FingerAttackSkill.SkillId, FingerAttackSkill);
 
             #endregion
 

@@ -1,5 +1,6 @@
 ﻿using RootMotion.Dynamics;
 using RootMotion.FinalIK;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,22 +24,19 @@ namespace BeastHunter
         {
             Debug.Log("CatchtAttackSkill");
             _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
-            InteractionObject target;
-            if(_bossModel.ClosestTriggerIndex!=-1)
-            {
-               _bossModel.InteractionSystem.TriggerInteraction(_bossModel.ClosestTriggerIndex, false, out target);
-            }
-            _stateMachine._context.CharacterModel.BehaviorPuppet.enabled = false;
-            _stateMachine._context.CharacterModel.CharacterRigitbody.isKinematic = true;
-            _stateMachine._context.CharacterModel.PuppetMaster.enabled = false;
-            _stateMachine._context.CharacterModel.CharacterAnimator.enabled = false;
-            _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
 
+            
+            if (_bossModel.ClosestTriggerIndex != -1)
+            {
+                _bossModel.InteractionSystem.TriggerInteraction(_bossModel.ClosestTriggerIndex, false, out _bossModel.CatchTarget);
+                _bossModel.targetParent = _bossModel.InteractionTarget.transform.root.gameObject;
+            }
             ReloadSkill(id);
         }
 
         public override void StopSkill()
         {
+            
         }
     }
 }

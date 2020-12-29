@@ -25,9 +25,9 @@ namespace BeastHunter
 
         private Vector3 _lookDirection;
         private Quaternion _toRotation;
+        
 
         private int _skillId;
-
         private Dictionary<int,int> _readySkillDictionary = new Dictionary<int, int>();
 
         #endregion
@@ -52,6 +52,7 @@ namespace BeastHunter
             _bossModel.LeftHandBehavior.OnTriggerEnterHandler += OnLeftHitBoxHit;
             _bossModel.RightHandBehavior.OnTriggerEnterHandler += OnRightHitBoxHit;
             _bossModel.InteractionSystem.OnInteractionPickUp += OnPickUp;
+            ThrowAttackSkill.HandDrop += OnDrop;
         }
 
         public override void Initialise()
@@ -84,6 +85,8 @@ namespace BeastHunter
             _bossModel.RightHandBehavior.OnFilterHandler -= OnHitBoxFilter;
             _bossModel.LeftHandBehavior.OnTriggerEnterHandler -= OnLeftHitBoxHit;
             _bossModel.RightHandBehavior.OnTriggerEnterHandler -= OnRightHitBoxHit;
+            _bossModel.InteractionSystem.OnInteractionPickUp -= OnPickUp;
+            ThrowAttackSkill.HandDrop -= OnDrop;
         }
 
         private void ChoosingAttackSkill(bool isDefault = false)
@@ -254,6 +257,12 @@ namespace BeastHunter
 
         private void OnPickUp(FullBodyBipedEffector effectorType, InteractionObject interactionObject)
         {
+            Debug.Log("PickUP");
+            _bossModel.IsPickUped = true;
+            _stateMachine._context.CharacterModel.CharacterRigitbody.isKinematic = true;
+            _stateMachine._context.CharacterModel.CharacterAnimator.enabled = false;
+            _stateMachine._context.CharacterModel.PuppetMaster.mode = PuppetMaster.Mode.Disabled;
+
             _bossModel.CurrentHand = effectorType;
             if (effectorType == FullBodyBipedEffector.LeftHand)
             {
@@ -265,8 +274,33 @@ namespace BeastHunter
                 _bossModel.BossAnimator.SetFloat("IdleState", 3);
                 _bossModel.BossAnimator.Play("Catch_Blend_Idle", 0, 0);
             }
+        }
+        
+        private void OnDrop()
+        {
+            Debug.Log("DROP");
+            _stateMachine._context.CharacterModel.CharacterTransform.rotation = Quaternion.Euler(0, 0, 0);
+            _stateMachine._context.CharacterModel.CharacterRigitbody.isKinematic = true;
+            _stateMachine._context.CharacterModel.CharacterAnimator.enabled = false;
+            _stateMachine._context.CharacterModel.PuppetMaster.mode = PuppetMaster.Mode.Disabled;
+            _stateMachine._context.CharacterModel.PuppetMaster.state = PuppetMaster.State.Frozen;
+            TimeRemaining timeRemaining = new TimeRemaining(() => _stateMachine._context.CharacterModel.PuppetMaster.state = PuppetMaster.State.Alive, 1f);
+            timeRemaining.AddTimeRemaining(1f);
 
-            //  sphere.transform.parent = interactionSystem.transform;
+            if (_bossModel.CurrentHand == FullBodyBipedEffector.RightHand)
+            {
+                _bossModel.BossAnimator.Play("IdleState", 0, 0);
+            }
+            if (_bossModel.CurrentHand == FullBodyBipedEffector.LeftHand)
+            {
+                _bossModel.BossAnimator.Play("IdleState", 0, 0);
+            }
+
+            _bossModel.CatchTarget.transform.parent = _bossModel.targetParent.transform;
+
+            //_bossModel.BossAnimator.SetFloat("IdleState", 6);
+            //_bossModel.BossAnimator.Play("Catch_Blend_Idle", 0, 0);
+            _bossModel.IsPickUped = false;
         }
 
         #endregion

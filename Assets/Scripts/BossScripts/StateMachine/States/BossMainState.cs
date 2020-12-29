@@ -262,7 +262,7 @@ namespace BeastHunter
             }
             if (interactableObject == InteractableObjectType.Player & !enteredObject.isTrigger)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
+           //     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
             }
         }
 
@@ -314,10 +314,11 @@ namespace BeastHunter
         private void InteractionTriggerUpdate()
         {
           _bossModel.ClosestTriggerIndex = _bossModel.InteractionSystem.GetClosestTriggerIndex();
-           if(_bossModel.BossCurrentTarget !=null)
-            {
-                _bossModel.InteractionObject = _bossModel.BossCurrentTarget.GetComponentInChildren<InteractionObject>();
-            }
+            _bossModel.InteractionTarget = _bossModel.InteractionSystem.GetClosestInteractionObjectInRange();
+            //if(_bossModel.BossCurrentTarget !=null)
+            // {
+            //     _bossModel.InteractionTarget = _bossModel.BossCurrentTarget.GetComponentInChildren<InteractionObject>();
+            // }
         }
 
         #endregion

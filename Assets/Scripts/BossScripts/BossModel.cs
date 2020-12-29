@@ -20,6 +20,7 @@ namespace BeastHunter
 
         public WeaponHitBoxBehavior LeftHandBehavior { get; set; }
         public WeaponHitBoxBehavior RightHandBehavior { get; set; }
+        public WeaponHitBoxBehavior RightFingerTrigger { get; set; }
         public SphereCollider LeftHandCollider { get; set; }
         public SphereCollider RightHandCollider { get; set; }
 
@@ -51,6 +52,7 @@ namespace BeastHunter
         public bool IsMoving { get; set; }
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
+        public bool IsPickUped { get; set; }
 
         public List<GameObject> FoodList = new List<GameObject>();
         public float MaxStamina = 100f;
@@ -72,10 +74,14 @@ namespace BeastHunter
         public ParticleSystem callOfForestEffect;
 
         public InteractionSystem InteractionSystem;
-        public InteractionObject InteractionObject;
+        public InteractionObject InteractionTarget;
+        public InteractionObject CatchTarget;
+        public GameObject targetParent;
         public bool interrupt;
         public FullBodyBipedEffector CurrentHand;
         public int ClosestTriggerIndex;
+        public AimIK RightHandAimIK;
+
         #endregion
 
 
@@ -172,6 +178,7 @@ namespace BeastHunter
             IsMoving = false;
             IsGrounded = false;
             IsPlayerNear = false;
+            IsPickUped = false;
 
             CurrentSpeed = 0f;
             AnimationSpeed = BossData._bossSettings.AnimatorBaseSpeed;
@@ -229,6 +236,9 @@ namespace BeastHunter
             RightHandBehavior = rightHandFist.AddComponent<WeaponHitBoxBehavior>();
             RightHandBehavior.SetType(InteractableObjectType.HitBox);
             RightHandBehavior.IsInteractable = false;
+            RightFingerTrigger =  BossTransform.Find(BossSettings.RightFingerPath).GetComponent<WeaponHitBoxBehavior>();
+            RightFingerTrigger.SetType(InteractableObjectType.HitBox);
+            RightFingerTrigger.IsInteractable = false;
 
             StompPufPrefab = BossSettings.StompPuf;
             HealAuraPrefab = BossSettings.HealAura;
@@ -284,7 +294,7 @@ namespace BeastHunter
             GameObject.Instantiate(Ruler, BossTransform.position + Vector3.up, Quaternion.identity, BossTransform);
 
             InteractionSystem = BossTransform.GetComponent<InteractionSystem>();
-
+            RightHandAimIK = BossTransform.GetComponent<AimIK>();
         }
 
         #endregion
