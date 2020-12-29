@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 1089479055950577489}
   - component: {fileID: 1089479055950577501}
   - component: {fileID: 1089479055950577500}
+  - component: {fileID: 587616346}
   m_Layer: 0
   m_Name: OAK_TREE_ENT_PBR InteractedSystem
   m_TagString: Untagged
@@ -194,9 +195,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionSystem: {fileID: 1089479055950577501}
   target: {fileID: 0}
+  targetParent: {fileID: 0}
   interrupt: 0
   currentHand: 0
   ClosestTriggerIndex: 0
+  currentTarget: {fileID: 0}
+  puppetMaster: {fileID: 0}
 --- !u!114 &1089479055950577501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -683,6 +687,55 @@ MonoBehaviour:
     spineStiffness: 0.5
     pullBodyVertical: 0.5
     pullBodyHorizontal: 0
+--- !u!114 &587616346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640090349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5013856973b27429d937d256dc082f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fixTransforms: 1
+  solver:
+    IKPosition: {x: 502.769, y: 100.135315, z: 478.8118}
+    IKPositionWeight: 1
+    root: {fileID: 1089479054640020729}
+    target: {fileID: 0}
+    tolerance: 0
+    maxIterations: 4
+    useRotationLimits: 0
+    XY: 0
+    bones:
+    - transform: {fileID: 1089479054640016117}
+      weight: 1
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: -1.2341834, y: 0.000000019073486, z: 0}
+      defaultLocalRotation: {x: 0.62070256, y: 0.04440239, z: 0.0040131337, w: 0.78277755}
+      length: 0
+      sqrMag: 0
+      axis: {x: 0, y: 0, z: 0}
+    - transform: {fileID: 1089479054639947459}
+      weight: 1
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: -0.56484425, y: 0.00000030517577, z: -0.000000076293944}
+      defaultLocalRotation: {x: -0.035671525, y: -0.15385945, z: -0.0054440703, w: 0.9874337}
+      length: 0
+      sqrMag: 0
+      axis: {x: 0, y: 0, z: 0}
+    transform: {fileID: 1089479054639982985}
+    axis: {x: -1, y: -0.6, z: -0.5}
+    poleAxis: {x: 0, y: 0, z: 0}
+    polePosition: {x: 499.6684, y: 102.330376, z: 478.571}
+    poleWeight: 0
+    poleTarget: {fileID: 0}
+    clampWeight: 0
+    clampSmoothing: 2
 --- !u!1 &1089479054640091091
 GameObject:
   m_ObjectHideFlags: 0
@@ -1928,6 +1981,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054639982985}
+  - component: {fileID: 7369616738002547433}
+  - component: {fileID: 7617763137656970912}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ R Finger12
   m_TagString: Untagged
@@ -1949,6 +2004,35 @@ Transform:
   m_Father: {fileID: 1089479054639947459}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7369616738002547433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640162261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c08723c05f94e6445b7b72f09928a1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 6
+  AdditionalDamage:
+    PhysicalDamage: 0
+    StunProbability: 0
+--- !u!135 &7617763137656970912
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640162261}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Center: {x: -0.45, y: 0, z: -0.14}
 --- !u!1 &1089479054640162395
 GameObject:
   m_ObjectHideFlags: 0
