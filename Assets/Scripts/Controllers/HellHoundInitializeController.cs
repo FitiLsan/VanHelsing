@@ -17,12 +17,6 @@ namespace BeastHunter
         public override void OnAwake()
         {
             var hellHoundData = Data.HellHoundData;
-
-            if (hellHoundData.BaseStats.Prefab == null)
-            {
-                hellHoundData.BaseStats.Prefab = Resources.Load<GameObject>("HellHound");
-            }
-
             GameObject instance = Object.Instantiate(hellHoundData.BaseStats.Prefab);
             HellHoundModel hellHound = new HellHoundModel(instance, hellHoundData);
             _context.NpcModels.Add(instance.GetInstanceID(), hellHound);
