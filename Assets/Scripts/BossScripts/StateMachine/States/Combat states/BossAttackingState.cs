@@ -156,7 +156,7 @@ namespace BeastHunter
             _bossModel.LeftHandCollider.enabled = false;
             _bossModel.RightHandCollider.enabled = false;
 
-            if (!_bossModel.IsDead && CheckDirection() && _bossModel.IsPickUped)
+            if (!_bossModel.IsDead && CheckDirection())
             {
                 ChoosingAttackSkill();
             }

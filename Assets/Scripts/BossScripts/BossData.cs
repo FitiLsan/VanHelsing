@@ -71,8 +71,16 @@ namespace BeastHunter
             return isNear;
         }
 
+        public bool CheckIsNearTarget(Vector3 prefabPosition, Vector3 targetPosition, float distanceRange, out float distance)
+        {
+            distance = Mathf.Sqrt((prefabPosition - targetPosition).sqrMagnitude);
+            var isNear = distance <= distanceRange;
+            return isNear;
+        }
+
         public bool CheckIsNearTarget(Vector3 prefabPosition, Vector3 targetPosition, float distanceRangeMin, float distanceRangeMax)
         {
+
             var distance = Mathf.Sqrt((prefabPosition - targetPosition).sqrMagnitude);
             var isNear = distance >= distanceRangeMin & distance <= distanceRangeMax;
 

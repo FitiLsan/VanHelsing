@@ -15,6 +15,7 @@ namespace BeastHunter
         protected BossData _bossData;
         protected BossModel _bossModel;
         protected BossMainState _mainState;
+
         #endregion
 
 
@@ -115,7 +116,7 @@ namespace BeastHunter
             {
                 return true;
             }
-
+            
             bool isNear = _bossData.CheckIsNearTarget(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position, distanceRangeMin, distanceRangeMax);
             return isNear;
         }

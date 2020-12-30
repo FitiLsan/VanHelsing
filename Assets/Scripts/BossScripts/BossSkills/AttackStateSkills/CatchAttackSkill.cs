@@ -22,7 +22,7 @@ namespace BeastHunter
 
         public override void UseSkill(int id)
         {
-            if(_bossModel.IsPickUped)
+            if (_bossModel.IsPickUped)
             {
                 return;
             }
@@ -45,6 +45,7 @@ namespace BeastHunter
                 }
                 _bossModel.targetParent = _bossModel.InteractionTarget.transform.root.gameObject;
             }
+            DelayCall(() => _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.NonStateSkillDictionary, 1), 3f);
             ReloadSkill(id);
         }
 

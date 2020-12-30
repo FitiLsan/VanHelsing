@@ -156,5 +156,10 @@ namespace BeastHunter
             TimeRemaining timeRemaining = new TimeRemaining(() => action(), delayTime, isRepete);
             timeRemaining.AddTimeRemaining(delayTime);
         }
+
+        protected virtual void RotateToTarget ()
+        {
+            _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
+        }
     }
 }

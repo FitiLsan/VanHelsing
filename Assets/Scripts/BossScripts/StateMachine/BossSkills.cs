@@ -38,7 +38,6 @@ namespace BeastHunter
         public BossBaseSkill RageOfForestSkill { get; private set; }
         public BossBaseSkill PoisonSporesSkill { get; private set; }
         public BossBaseSkill CatchAttackSkill { get; private set; }
-        public BossBaseSkill ThrowAttackSkill { get; private set; }
         public BossBaseSkill FingerAttackSkill { get; private set; }
         //defence
         public BossBaseSkill DefaultDefenceSkill { get; private set; }
@@ -56,7 +55,7 @@ namespace BeastHunter
         public BossBaseSkill ResurrectionSkill { get; private set; }
         //non
         public BossBaseSkill TestSkill { get; private set; }
-       
+        public BossBaseSkill ThrowAttackSkill { get; private set; }
 
 
         public BossSkills(BossStateMachine stateMachine)
@@ -99,7 +98,6 @@ namespace BeastHunter
             RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkillsSettings.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             PoisonSporesSkill = new PoisonSporesAttackSkill(AttackStateSkillsSettings.GetPoisonSporesSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             CatchAttackSkill = new CatchAttackSkill(AttackStateSkillsSettings.GetCatchSkillInfo(), AttackStateSkillDictionary, _stateMachine);
-            ThrowAttackSkill = new ThrowAttackSkill(AttackStateSkillsSettings.GetThrowSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             FingerAttackSkill = new FingerAttackSkill(AttackStateSkillsSettings.GetFingerSkillInfo(), AttackStateSkillDictionary, _stateMachine);
 
             AttackStateSkillDictionary.Add(DefaultAttackSkill.SkillId, DefaultAttackSkill);
@@ -108,7 +106,6 @@ namespace BeastHunter
             AttackStateSkillDictionary.Add(RageOfForestSkill.SkillId, RageOfForestSkill);
             AttackStateSkillDictionary.Add(PoisonSporesSkill.SkillId, PoisonSporesSkill);
             AttackStateSkillDictionary.Add(CatchAttackSkill.SkillId, CatchAttackSkill);
-            AttackStateSkillDictionary.Add(ThrowAttackSkill.SkillId, ThrowAttackSkill);
             AttackStateSkillDictionary.Add(FingerAttackSkill.SkillId, FingerAttackSkill);
 
             #endregion
@@ -163,6 +160,8 @@ namespace BeastHunter
             #region  NonStateSkills
 
             TestSkill = new TestAttackSkill(NonStateSkillsSettings.GetTestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
+            ThrowAttackSkill = new ThrowAttackSkill(NonStateSkillsSettings.GetThrowSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            NonStateSkillDictionary.Add(ThrowAttackSkill.SkillId, ThrowAttackSkill);
             NonStateSkillDictionary.Add(TestSkill.SkillId, TestSkill);
 
             #endregion

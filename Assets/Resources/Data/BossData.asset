@@ -108,12 +108,7 @@ MonoBehaviour:
     _catchSkillRangeMax: 5
     _catchSkillCooldown: 30
     _catchSkillReady: 1
-    _throwSkillId: 6
-    _throwSkillRangeMin: -1
-    _throwSkillRangeMax: -1
-    _throwSkillCooldown: 10
-    _throwSkillReady: 0
-    _fingerSkillId: 7
+    _fingerSkillId: 6
     _fingerSkillRangeMin: 5
     _fingerSkillRangeMax: 15.1
     _fingerSkillCooldown: 15
@@ -145,3 +140,38 @@ MonoBehaviour:
     _callOfForestSkillRangeMax: -1
     _callOfForestSkillCooldown: 30
     _callOfForestSkillReady: 1
+  ChasingStateSkills:
+    _vineFishingSkillId: 0
+    _vineFishingSkillRangeMin: 0
+    _vineFishingSkillRangeMax: 0
+    _vineFishingSkillCooldown: 10
+    _vineFishingSkillReady: 1
+  RetreatingStateSkills:
+    _fakeTreeSkillId: 0
+    _fakeTreeSkillRangeMin: 0
+    _fakeTreeSkillRangeMax: 0
+    _fakeTreeSkillCooldown: 0
+    _fakeTreeSkillReady: 0
+  SearchingStateSkills:
+    _bushTriggerSkillId: 0
+    _bushTriggerSkillRangeMin: 0
+    _bushTriggerSkillRangeMax: 0
+    _bushTriggerSkillCooldown: 0
+    _bushTriggerSkillReady: 0
+  DeadStateSkills:
+    _resurrectionSkillId: 0
+    _resurrectionSkillRangeMin: 0
+    _resurrectionSkillRangeMax: 0
+    _resurrectionSkillCooldown: 0
+    _resurrectionSkillReady: 0
+  NonStateSkills:
+    _testSkillId: 0
+    _testSkillRangeMin: 0
+    _testSkillRangeMax: 0
+    _testSkillCooldown: 0
+    _testSkillReady: 0
+    _throwSkillId: 1
+    _throwSkillRangeMin: 0
+    _throwSkillRangeMax: 0
+    _throwSkillCooldown: 10
+    _throwSkillReady: 1

@@ -106,22 +106,6 @@ namespace BeastHunter
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _catchSkillReady;
 
-        [Header("[Throw Attack]")]
-
-        [Tooltip("Skill ID")]
-        [SerializeField] private int _throwSkillId;
-        [Tooltip("Skill Range Min")]
-        [Range(-1.0f, 30.0f)]
-        [SerializeField] private float _throwSkillRangeMin;
-        [Tooltip("Skill Range Max")]
-        [Range(-1.0f, 30.0f)]
-        [SerializeField] private float _throwSkillRangeMax;
-        [Tooltip("Skill Cooldown")]
-        [Range(0.0f, 200.0f)]
-        [SerializeField] private float _throwSkillCooldown;
-        [Tooltip("Skill Ready")]
-        [SerializeField] private bool _throwSkillReady;
-
         [Header("[Finger Attack]")]
 
         [Tooltip("Skill ID")]
@@ -183,12 +167,6 @@ namespace BeastHunter
         public bool CatchSkillReady => _catchSkillReady;
         (int, float, float, float, bool) CatchSkillTuple;
 
-        public int ThrowSkillId => _throwSkillId;
-        public float ThrowSkillRangeMin => _throwSkillRangeMin;
-        public float ThrowSkillRangeMax => _throwSkillRangeMax;
-        public float ThrowSkillCooldown => _throwSkillCooldown;
-        public bool ThrowSkillReady => _throwSkillReady;
-
         public int FingerSkillId => _fingerSkillId;
         public float FingerSkillRangeMin => _fingerSkillRangeMin;
         public float FingerSkillRangeMax => _fingerSkillRangeMax;
@@ -233,12 +211,6 @@ namespace BeastHunter
         public (int, float, float, float, bool, bool) GetCatchSkillInfo()
         {
             var tuple = (CatchSkillId, CatchSkillRangeMin, CatchSkillRangeMax, CatchSkillCooldown, CatchSkillReady, false);
-            return tuple;
-        }
-
-        public (int, float, float, float, bool, bool) GetThrowSkillInfo()
-        {
-            var tuple = (ThrowSkillId, ThrowSkillRangeMin, ThrowSkillRangeMax, ThrowSkillCooldown, ThrowSkillReady, false);
             return tuple;
         }
 
