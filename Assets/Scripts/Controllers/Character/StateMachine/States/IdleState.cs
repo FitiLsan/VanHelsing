@@ -6,6 +6,7 @@
 
         public IdleState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
+            StateName = CharacterStatesEnum.Idle;
             IsTargeting = false;
             IsAttacking = false;
         }
@@ -53,7 +54,6 @@
             base.Initialize();
 
             _stateMachine.BackState.StopCharacter();
-            _animationController.PlayMovementAnimation(); 
         }
 
         #endregion

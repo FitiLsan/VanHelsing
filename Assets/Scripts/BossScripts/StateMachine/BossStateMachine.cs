@@ -43,6 +43,7 @@ namespace BeastHunter
 
             States = new Dictionary<BossStatesEnum, BossBaseState>();
             States.Add(BossStatesEnum.Idle, new BossIdleState(this));
+            States.Add(BossStatesEnum.Moving, new BossMovingState(this));
             States.Add(BossStatesEnum.Patroling, new BossPatrolingState(this));
             States.Add(BossStatesEnum.Eating, new BossEatingState(this));
             States.Add(BossStatesEnum.Resting, new BossRestingState(this));
@@ -79,7 +80,7 @@ namespace BeastHunter
             OnStateChange += OnStateChangeHandler;
             OnAfterStateChange += OnAfterStateChangeHandler;
 
-            SetFirstState(BossStatesEnum.Idle);
+            SetFirstState(_model.MovementPoints.Length > 0 ? BossStatesEnum.Moving : BossStatesEnum.Idle);
         }
 
         public void Execute()

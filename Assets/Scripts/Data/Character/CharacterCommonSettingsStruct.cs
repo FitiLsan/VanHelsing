@@ -20,6 +20,9 @@ namespace BeastHunter
         [Tooltip("Character instance tag.")]
         [SerializeField] private string _instanceTag;
 
+        [Tooltip("Character head object path")]
+        [SerializeField] private string _headObjectPath;
+
         [Tooltip("Character instance layer.")]
         [SerializeField] private int _instanceLayer;
 
@@ -28,9 +31,6 @@ namespace BeastHunter
 
         [Tooltip("Character animator beginning apply root motion.")]
         [SerializeField] private bool _beginningApplyRootMotion;
-
-        [Tooltip("Vector 3 prefab position on the scene")]
-        [SerializeField] private Vector3 _instantiatePosition;
 
         [Tooltip("Prefab direction on the scene")]
         [SerializeField] private float _instantiateDirection;
@@ -80,9 +80,9 @@ namespace BeastHunter
 
         [Header("Movement settings")]
 
-        [Tooltip("Health points between 0 and 100.")]
-        [Range(0.0f, 100.0f)]
-        [SerializeField] private float _healthPoints;
+        [Tooltip("Minimal speed value between 0 and 0.1.")]
+        [Range(0.0f, 0.1f)]
+        [SerializeField] private float _minimalSpeed;
 
         [Tooltip("Walk speed value between 0 and 20.")]
         [Range(0.0f, 20.0f)]
@@ -107,6 +107,14 @@ namespace BeastHunter
         [Tooltip("Run speed while sneaking value between 0 and 20.")]
         [Range(0.0f, 20.0f)]
         [SerializeField] private float _sneakRunSpeed;
+
+        [Tooltip("Walk speed while aiming value between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _aimWalkSpeed;
+
+        [Tooltip("Run speed while aiming value between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _aimRunSpeed;
 
         [Tooltip("Ground check height under character between 0 and 2.")]
         [Range(0.0f, 2.0f)]
@@ -136,6 +144,14 @@ namespace BeastHunter
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _sneakDecelerationLag;
 
+        [Tooltip("Character acceleration lag while aiming between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _aimAccelerationLag;
+
+        [Tooltip("Character deceleraton lag while aiming between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _aimDecelerationLag;
+
         [Tooltip("Character direction change lag between 0 and 1.")]
         [Range(0.0f, 1.0f)]
         [SerializeField] private float _directionChangeLag;
@@ -150,9 +166,9 @@ namespace BeastHunter
 
         [Header("Character battle settings")]
 
-        [Tooltip("Character strafe direction change speed between 0 and 50.")]
+        [Tooltip("Character aiming direction change speed between 0 and 50.")]
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float _strafeDirectionChangeSpeed;
+        [SerializeField] private float _aimingDirectionChangeSpeed;
 
         [Tooltip("Actual rolling time between 0 and 10.")]
         [Range(0.0f, 10.0f)]
@@ -170,23 +186,36 @@ namespace BeastHunter
         [Range(0.0f, 10.0f)]
         [SerializeField] private float _dodgingTime;
 
+        [Header("Audio settings")]
+
+        [SerializeField] private Sound[] _stepSounds;
+        [SerializeField] private Sound _slideSound;
+
+        [Tooltip("Volume of standart character movement sounds between 0 and 1.")]
+        [Range(-80.0f, 20.0f)]
+        [SerializeField] private float _standartCharacterMovementMixerVolume;
+
+        [Tooltip("Volume of sneaking character movement sounds between 0 and 1.")]
+        [Range(-80.0f, 20.0f)]
+        [SerializeField] private float _sneakingCharacterMovementMixerVolume;
+
         #endregion
 
 
         #region Properties
 
         public GameObject Prefab => _prefab;
-
         public RuntimeAnimatorController CharacterAnimator => _characterAnimator;
-
         public PhysicMaterial CapsuleColliderPhysicMaterial => _capsuleColliderPhysicMaterial;
+        public Sound[] StepSounds => _stepSounds;
+        public Sound SlideSound => _slideSound;
 
-        public Vector3 InstantiatePosition => _instantiatePosition;
         public Vector3 CapsuleColliderCenter => _capsuleColliderCenter;
         public Vector3 SphereColliderCenter => _sphereColliderCenter;
 
         public string InstanceName => _instanceName;
         public string InstanceTag => _instanceTag;
+        public string HeadObjectPath => _headObjectPath;
         public int InstanceLayer => _instanceLayer;
 
         public float InstantiateDirection => _instantiateDirection;
@@ -199,13 +228,15 @@ namespace BeastHunter
         public float SphereColliderRadius => _sphereColliderRadius;
         public float SphereColliderRadiusIncrease => _sphereColliderRadiusIncrease;
 
-        public float HealthPoints => _healthPoints;
+        public float MinimalSpeed => _minimalSpeed;
         public float WalkSpeed => _walkSpeed;
         public float RunSpeed => _runSpeed;
         public float InBattleWalkSpeed => _inBattleWalkSpeed;
         public float InBattleRunSpeed => _inBattleRunSpeed;
         public float SneakWalkSpeed => _sneakWalkSpeed;
         public float SneakRunSpeed => _sneakRunSpeed;
+        public float AimWalkSpeed => _aimWalkSpeed;
+        public float AimRunSpeed => _aimRunSpeed;
         public float GroundCheckHeight => _groundCheckHeight;
         public float AccelerationLag => _accelerationLag;
         public float DecelerationLag => _decelerationLag;
@@ -213,15 +244,20 @@ namespace BeastHunter
         public float InBattleDecelerationLag => _inBattleDecelerationLag;
         public float SneakAccelerationLag => _sneakAccelerationLag;
         public float SneakDecelerationLag => _sneakDecelerationLag;
+        public float AimAccelerationLag => _aimAccelerationLag;
+        public float AimDecelerationLag => _aimDecelerationLag;
         public float DirectionChangeLag => _directionChangeLag;
         public float AnimatorBaseSpeed => _animatorBaseSpeed;
         public float TImeToContinueMovingAfterStop => _timeToContinueMovingAfterStop;
 
-        public float StrafeDirectionChangeSpeed => _strafeDirectionChangeSpeed;
+        public float AimingDirectionChangeSpeed => _aimingDirectionChangeSpeed;
         public float JumpTime => _jumpTime;
         public float SlideTime => _slideTime;
         public float RollingTime => _rollTime;
         public float DodgingTime => _dodgingTime;
+
+        public float StandartCharacterMovementMixerVolume => _standartCharacterMovementMixerVolume;
+        public float SneakingCharacterMovementMixerVolume => _sneakingCharacterMovementMixerVolume;
 
         public bool BeginningApplyRootMotion => _beginningApplyRootMotion;
 

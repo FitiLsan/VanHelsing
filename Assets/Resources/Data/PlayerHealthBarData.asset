@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1b67f55cb94f8449d1bb2730068f4a, type: 3}
+  m_Name: PlayerHealthBarData
+  m_EditorClassIdentifier: 
+  _healthBarPrefab: {fileID: 8473342482221787017, guid: e1e2c00393243ef4f9fe0d5150a1d2bd,
+    type: 3}
+  _healthBarPosition: {x: 30, y: 30}
+  _healthBarSize: {x: 700, y: 30}
+  _healthSectionPrefab: {fileID: 8817392077854490855, guid: c65563f5baab9b0469f89b677ff5f87d,
+    type: 3}
+  _distanceBetweenSections: 30
+  _healthSectionsPercentThresholds:
+  - 30
+  - 50
+  - 80
+  - 100

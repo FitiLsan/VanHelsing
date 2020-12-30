@@ -12,13 +12,13 @@ namespace BeastHunter
         {
             base.Place(context, trapModel);
 
-            _context.TrapModels.Add(_currentTrapModel.
-                TrapObjectInFrontOfCharacter.GetInstanceID(), _currentTrapModel);
+            Context.TrapModels.Add(CurrentTrapModel.
+                TrapObjectInFrontOfCharacter.GetInstanceID(), CurrentTrapModel);
 
-            _currentTrapModel.TrapObjectInFrontOfCharacter.GetComponent<Collider>().enabled = true;
-            _currentTrapModel.TrapObjectInFrontOfCharacter.GetComponent<Animator>().enabled = true;
+            CurrentTrapModel.TrapObjectInFrontOfCharacter.GetComponent<Collider>().enabled = true;
+            CurrentTrapModel.TrapObjectInFrontOfCharacter.GetComponent<Animator>().enabled = true;
 
-            TrapBehaviour newTrapBehavior = _currentTrapModel.TrapObjectInFrontOfCharacter.
+            TrapBehaviour newTrapBehavior = CurrentTrapModel.TrapObjectInFrontOfCharacter.
                 GetComponent<TrapBehaviour>();
             newTrapBehavior.enabled = true;
             newTrapBehavior.IsInteractable = true;
@@ -26,7 +26,7 @@ namespace BeastHunter
             newTrapBehavior.OnFilterHandler += OnTriggerFilter;
             newTrapBehavior.OnTriggerEnterHandler += OnTriggerEnterSomething;
 
-            _currentTrapModel.TrapObjectInFrontOfCharacter.GetComponentInChildren<Renderer>().
+            CurrentTrapModel.TrapObjectInFrontOfCharacter.GetComponentInChildren<Renderer>().
                 material = Data.MaterialsData.MetalLockTrapMaterial;
 
             TrapsAmount--;
@@ -46,15 +46,15 @@ namespace BeastHunter
         private void Activate(ITrigger activatedTrapITrigger, Collider other)
         {
             TrapModel activatedTrapModel;
-            _context.TrapModels.TryGetValue(activatedTrapITrigger.GameObject.GetInstanceID(), out activatedTrapModel);
+            Context.TrapModels.TryGetValue(activatedTrapITrigger.GameObject.GetInstanceID(), out activatedTrapModel);
 
             if(activatedTrapITrigger != null)
             {
                 if (activatedTrapModel.ChargeAmount > 0)
                 {
-                    _context.NpcModels[other.gameObject.GetInstanceID()].TakeDamage(
+                    Context.NpcModels[other.gameObject.GetInstanceID()].TakeDamage(
                         Services.SharedInstance.AttackService.CountDamage(TrapStruct.TrapDamage,
-                            _context.NpcModels[other.gameObject.GetInstanceID()].GetStats().MainStats));
+                            Context.NpcModels[other.gameObject.GetInstanceID()].GetStats().MainStats));
 
                     activatedTrapModel.TrapObjectInFrontOfCharacter.GetComponent<Animator>().Play(AnimationName);
                     activatedTrapModel.ChargeAmount--;
@@ -77,7 +77,7 @@ namespace BeastHunter
             activatedTrapBehavior.OnFilterHandler -= OnTriggerFilter;
             activatedTrapBehavior.OnTriggerEnterHandler -= OnTriggerEnterSomething;
 
-            _context.TrapModels.Remove(activatedTrapModel.TrapObjectInFrontOfCharacter.GetInstanceID());
+            Context.TrapModels.Remove(activatedTrapModel.TrapObjectInFrontOfCharacter.GetInstanceID());
             Destroy(activatedTrapModel.TrapObjectInFrontOfCharacter, TrapStruct.TImeToDestroyAfterActivation);
         }
 

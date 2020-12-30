@@ -12,7 +12,6 @@ namespace BeastHunter
         private Services _services;
 
         private CharacterModel _characterModel;
-        private CharacterAnimationController _animationController;
         private CharacterStateMachine _stateMachine;
 
         #endregion
@@ -38,9 +37,7 @@ namespace BeastHunter
             Cursor.lockState = CursorLockMode.Locked;
 
             _characterModel = _context.CharacterModel;
-            _animationController = new CharacterAnimationController(_characterModel.CharacterAnimator);
-
-            _stateMachine = new CharacterStateMachine(_context, _animationController);
+            _stateMachine = new CharacterStateMachine(_context);
             _stateMachine.OnAwake();
             _stateMachine.SetStartState(_stateMachine.CharacterStates[CharacterStatesEnum.Idle]);          
         }

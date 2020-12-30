@@ -7,7 +7,7 @@ namespace BeastHunter
     public sealed class WeaponItem : BaseItem
     {
         #region Fields
-
+         
         public GameObject WeaponPrefab;
         public GameObject WeaponObjectOnScene;
 

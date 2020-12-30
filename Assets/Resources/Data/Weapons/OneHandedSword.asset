@@ -12,53 +12,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a6c2d3e882c0484e9ba4f3065b7c52b, type: 3}
   m_Name: OneHandedSword
   m_EditorClassIdentifier: 
-  HandType: 1
-  Type: 1
-  InWhichHand: 2
-  WeaponImage: {fileID: 21300000, guid: 87206693f5a6a4e4590538396bd8dc43, type: 3}
-  SimpleAttacks:
-  - Name: Simple cutting attack
+  _handType: 1
+  _type: 1
+  _inWhichHand: 2
+  _weaponImage: {fileID: 21300000, guid: 87206693f5a6a4e4590538396bd8dc43, type: 3}
+  _simpleAttacks:
+  - Name: Simple attack 1
+    AnimationName: 1
     AttackDamage:
-      PhysicalDamage: 17.4
+      PhysicalDamage: 10
       StunProbability: 0
     WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
     AttackType: 0
-    AttackTime: 1
+    AttackTime: 1.5
     AttackStaminaCost: 0
-  - Name: Corousel
+  - Name: Simple attack 2
+    AnimationName: 2
     AttackDamage:
-      PhysicalDamage: 16.3
+      PhysicalDamage: 10
       StunProbability: 0
     WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
     AttackType: 0
-    AttackTime: 1
+    AttackTime: 1.5
     AttackStaminaCost: 0
-  - Name: Jump attack
+  - Name: Simple attack 3
+    AnimationName: 3
     AttackDamage:
-      PhysicalDamage: 17.8
+      PhysicalDamage: 10
       StunProbability: 0
     WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
     AttackType: 0
-    AttackTime: 1
+    AttackTime: 1.5
     AttackStaminaCost: 0
-  SpecialAttacks: []
-  CurrentAttack:
-    Name: Corousel
-    AttackDamage:
-      PhysicalDamage: 16.3
-      StunProbability: 0
-    WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
-    AttackType: 0
-    AttackTime: 1
-    AttackStaminaCost: 0
-  WeaponName: One Handed Sword
-  SimpleAttackAnimationPrefix: OneHandedSword
-  SpecialAttackAnimationPrefix: 
-  StrafeAndDodgePostfix: OneHandedSword
-  GettingAnimationName: 
-  RemovingAnimationName: 
-  TotalTimeToGet: 0
-  TimeBeforeGrab: 0
-  TotalTimeToRemove: 0
-  TimeBeforeLetGo: 0
-  ActualWeapon: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
+  _specialAttacks: []
+  _weaponName: One handed sword
+  _simpleAttackAnimationPrefix: OHSwordSimpleAttack
+  _specialAttackAnimationPrefix: OHSwordSpecialAttack
+  _strafeAnimationPostfix: OHSwordStrafe
+  _dodgeAnimationPostfix: OHSwordDodge
+  _gettingAnimationPostfix: OHSwordGetting
+  _holdingAnimationPostfix: None
+  _removingAnimationPostfix: OHSwordRemoving
+  _totalTimeToGet: 2
+  _timeBeforeGrab: 1
+  _totalTimeToRemove: 2
+  _timeBeforeLetGo: 1
+  _actualWeapon: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}

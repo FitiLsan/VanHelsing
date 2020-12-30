@@ -1,0 +1,24 @@
+﻿{
+  "Root": {
+    "Trait": [
+      {
+        "Type": "TextBox",
+        "Setting": "ServerSettings.CurrentConfig.ServerConfiguration.Engine.PacketGenSettings.RemoteAgentAddress",
+        "Hint": "Enter the remote agent's address. Should be a responding http server.",
+        "Label": "Remote agent address:"
+      },
+      {
+        "Type": "TextBox",
+        "Setting": "ServerSettings.CurrentConfig.ServerConfiguration.Engine.PacketGenSettings.AuthUsername",
+        "Label": "Username:",
+        "Attributes": { "MaxChars": 20 }
+      },
+      {
+        "Type": "password",
+        "Setting": "ServerSettings.CurrentConfig.ServerConfiguration.Engine.PacketGenSettings.AuthPassword",
+        "Label": "Password:",
+        "Attributes": { "MaxChars": 20 }
+      }
+    ]
+  }
+}

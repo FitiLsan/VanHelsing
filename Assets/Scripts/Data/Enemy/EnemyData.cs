@@ -21,6 +21,7 @@ namespace BeastHunter
         public virtual void TakeDamage(EnemyModel instance, Damage damage)
         {
             instance.CurrentHealth -= damage.PhysicalDamage;
+            instance.CurrentHealth -= damage.FireDamage;
             if (instance.CurrentHealth <= 0)
             {
                 instance.IsDead = true;

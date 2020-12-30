@@ -4,11 +4,12 @@
 namespace BeastHunter
 {   
     [Serializable]
-    public class AttackModel
+    public sealed class AttackModel
     {
         #region Fields
 
         public string Name;
+        public string AnimationName;
         public Damage AttackDamage;
         public WeaponItem WeaponItem;
         public HandsEnum AttackType;

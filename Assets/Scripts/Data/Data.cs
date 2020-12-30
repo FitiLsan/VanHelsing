@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 
@@ -9,6 +11,7 @@ namespace BeastHunter
     {
         #region Fields
 
+        [SerializeField] private string _locationDataPath;
         [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _startDialogueDataPath;
@@ -22,6 +25,7 @@ namespace BeastHunter
         [SerializeField] private string _cameraDataPath;
         [SerializeField] private string _questIndicatorDataPath;
         [SerializeField] private string _questJournalDataPath;
+        [SerializeField] private string _uiBestiaryDataPath;
         [SerializeField] private string _healthBuffDataPath;
         [SerializeField] private string _staminaBuffDataPath;
         [SerializeField] private string _bossDataPath;
@@ -35,9 +39,16 @@ namespace BeastHunter
         [SerializeField] private string _ironGreavesPath;
         [SerializeField] private string _uiElementsDataPath;
         [SerializeField] private string _materialsDataPath;
+        [SerializeField] private string _torchObjectPath;
+        [SerializeField] private string _hellHoundDataPath;
+        [SerializeField] private string _twoHeadedSnakeDataPath;
+        [SerializeField] private string _bouldersObjectPath;
+        [SerializeField] private string _hideBushDataPath;
+        [SerializeField] private string _audioDataPath;
+        [SerializeField] private string _playerHealthBarDataPath;
 
         private static Data _instance;
-        private static SphereData _sphereData;
+        private static LocationData _locationData;
         private static CharacterData _characterData;
         private static StartDialogueData _startDialogueData;
         private static DialogueSystemData _dialogueSystemData;
@@ -52,6 +63,7 @@ namespace BeastHunter
         private static ClothItem _ironGreaves;
         private static CameraData _cameraData;
         private static QuestJournalData _questJournalData;
+        private static UIBestiaryData _uiBestiaryData;
         private static TemporaryBuffClass _healthBuffData;
         private static TemporaryBuffClass _staminaBuffData;
         private static BossData _bossData;
@@ -62,6 +74,13 @@ namespace BeastHunter
         private static WeakPointData _bossThirdWeakPoint;
         private static UIElementsData _uiElementsData;
         private static MaterialsData _materialsData;
+        private static TorchData _torchObjectData;
+        private static HellHoundData _hellHoundData;
+        private static TwoHeadedSnakeData _twoHeadedSnakeData;
+        private static BouldersData _bouldersObjectData;
+        private static HideBushData _hideBushData;
+        private static AudioData _audioData;
+        private static PlayerHealthBarData _playerHealthBarData;
 
         #endregion
 
@@ -77,12 +96,15 @@ namespace BeastHunter
             }
         }
 
-        public static SphereData SphereData {
-            get {
-                if (_sphereData == null) {
-                    _sphereData = Resources.Load<SphereData> ("Data/" + Instance._sphereDataPath);
+        public static LocationData LocationData
+        {
+            get
+            {
+                if (_locationData == null)
+                {
+                    _locationData = Resources.Load<LocationData>("Data/" + Instance._locationDataPath);
                 }
-                return _sphereData;
+                return _locationData;
             }
         }
 
@@ -239,6 +261,18 @@ namespace BeastHunter
             }
         }
 
+        public static UIBestiaryData UIBestiaryData
+        {
+            get
+            {
+                if(_uiBestiaryData == null)
+                {
+                    _uiBestiaryData = Load<UIBestiaryData>("Data/" + Instance._uiBestiaryDataPath);
+                }
+                return _uiBestiaryData;
+            }
+        }
+
         public static TemporaryBuffClass HealthBuffData
         {
             get
@@ -359,13 +393,99 @@ namespace BeastHunter
             }
         }
 
+        public static TorchData TorchObjectData
+        {
+            get
+            {
+                if (_torchObjectData == null)
+                {
+                    _torchObjectData = Load<TorchData>("Data/" + Instance._torchObjectPath);
+                }
+                return _torchObjectData;
+            }
+        }
+
+        public static HellHoundData HellHoundData
+        {
+            get
+            {
+                if (_hellHoundData == null)
+                {
+                    _hellHoundData = Resources.Load<HellHoundData>("Data/" + Instance._hellHoundDataPath);
+                }
+                return _hellHoundData;
+            }
+        }
+
+        public static TwoHeadedSnakeData TwoHeadedSnakeData
+        {
+            get
+            {
+                if (_twoHeadedSnakeData == null)
+                {
+                    _twoHeadedSnakeData =
+                        Resources.Load<TwoHeadedSnakeData>("Data/" + Instance._twoHeadedSnakeDataPath);
+                }
+
+                return _twoHeadedSnakeData;
+            }
+        }
+
+        public static BouldersData BoulderObjectData
+        {
+            get
+            {
+                if (_bouldersObjectData == null)
+                {
+                    _bouldersObjectData = Load<BouldersData>("Data/" + Instance._bouldersObjectPath);
+                }
+                return _bouldersObjectData;
+            }
+        }
+
+        public static HideBushData HideBushData
+        {
+            get
+            {
+                if (_hideBushData == null)
+                {
+                    _hideBushData = Resources.Load<HideBushData>("Data/" + Instance._hideBushDataPath);
+                }
+                return _hideBushData;
+            }
+        }
+
+        public static AudioData AudioData
+        {
+            get
+            {
+                if (_audioData == null)
+                {
+                    _audioData = Resources.Load<AudioData>("Data/" + Instance._audioDataPath);
+                }
+                return _audioData;
+            }
+        }
+
+        public static PlayerHealthBarData PlayerHealthBarData
+        {
+            get
+            {
+                if (_playerHealthBarData == null)
+                {
+                    _playerHealthBarData = Resources.Load<PlayerHealthBarData>("Data/" + Instance._playerHealthBarDataPath);
+                }
+                return _playerHealthBarData;
+            }
+        }
+
         #endregion
 
 
         #region Methods
 
-        private static T Load<T> (string resourcesPath) where T : Object =>
-            Resources.Load<T> (Path.ChangeExtension (resourcesPath, null));
+        private static T Load<T> (string resourcesPath) where T : UnityEngine.Object =>
+            Resources.Load<T>(Path.ChangeExtension(resourcesPath, null));
 
         #endregion
     }

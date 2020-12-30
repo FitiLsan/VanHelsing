@@ -6,6 +6,13 @@ namespace BeastHunter
 {
     public sealed class CharacterStateMachine
     {
+        #region Fields
+
+        private readonly GameContext _context;
+
+        #endregion
+
+
         #region Properties
 
         public Action<CharacterBaseState, CharacterBaseState> OnBeforeStateChangeHangler { get; set; }
@@ -16,35 +23,36 @@ namespace BeastHunter
 
         public CharacterBaseState PreviousState { get; private set; }
         public CharacterBaseState CurrentState { get; private set; }
-        public BackState BackState { get; private set; }
-
-        public CharacterAnimationController AnimationController { get; private set; }
+        public BackState BackState { get; private set; }       
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public CharacterStateMachine(GameContext context, CharacterAnimationController animationController)
+        public CharacterStateMachine(GameContext context)
         {
+            _context = context;
             CharacterStates = new Dictionary<CharacterStatesEnum, CharacterBaseState>();
             PreviousState = null;
             CurrentState = null;
+            BackState = new BackState(_context, this);
 
-            AnimationController = animationController;
-            BackState = new BackState(context, this);
-
-            CharacterStates.Add(CharacterStatesEnum.Idle, new IdleState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Movement, new MovementState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Sneaking, new SneakingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Attacking, new AttackingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Jumping, new JumpingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Sliding, new SlidingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Battle, new BattleState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Dodging, new DodgingState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.Dead, new DeadState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.TimeSkip, new TimeSkipState(context, this));
-            CharacterStates.Add(CharacterStatesEnum.TrapPlacing, new TrapPlacingState(context, this));
+            CharacterStates.Add(CharacterStatesEnum.Idle, new IdleState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Movement, new MovementState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Sneaking, new SneakingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Attacking, new MeleeAttackingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Jumping, new JumpingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Sliding, new SlidingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Battle, new BattleState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Dodging, new DodgingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Dead, new DeadState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.TimeSkip, new TimeSkipState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.TrapPlacing, new TrapPlacingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Aiming, new AimingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Shooting, new ShootingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.KnockedDown, new KnockedDownState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.GettingUp, new GettingUpState(_context, this));
         }
 
         #endregion
@@ -58,6 +66,7 @@ namespace BeastHunter
             CurrentState = startState;
             BackState.Initialize();
             CurrentState.Initialize();
+            OnAfterStateChange(CurrentState);
         }
 
         public void OnAwake()
@@ -75,7 +84,6 @@ namespace BeastHunter
             BackState.Updating();
 
             if (CurrentState is IUpdate) (CurrentState as IUpdate).Updating();
-            //CustomDebug.Log(CurrentState);
         }
 
         public void OnTearDown()
@@ -156,6 +164,8 @@ namespace BeastHunter
 
         private void OnAfterStateChange(CharacterBaseState currentState)
         {
+            _context.CharacterModel.PreviousCharacterState.Value = PreviousState;
+            _context.CharacterModel.CurrentCharacterState.Value = currentState;          
             OnAfterStateChangeHandler?.Invoke(currentState);
         }
 
