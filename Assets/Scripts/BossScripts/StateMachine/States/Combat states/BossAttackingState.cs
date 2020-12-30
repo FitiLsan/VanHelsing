@@ -148,19 +148,6 @@ namespace BeastHunter
             }
         }
 
-
-
-        //private bool CheckDistance(float distanceRangeMin, float distanceRangeMax)
-        //{
-        //    if (distanceRangeMin == -1)
-        //    {
-        //        return true;
-        //    }
-
-        //    bool isNear = _bossData.CheckIsNearTarget(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position, distanceRangeMin, distanceRangeMax);
-        //    return isNear;
-        //}
-
         private void DecideNextMove()
         {
             SetNavMeshAgent(_bossModel.BossTransform.position, 0);
@@ -169,7 +156,7 @@ namespace BeastHunter
             _bossModel.LeftHandCollider.enabled = false;
             _bossModel.RightHandCollider.enabled = false;
 
-            if (!_bossModel.IsDead && CheckDirection())
+            if (!_bossModel.IsDead && CheckDirection() && _bossModel.IsPickUped)
             {
                 ChoosingAttackSkill();
             }
@@ -237,12 +224,6 @@ namespace BeastHunter
         //    }
         //}
 
-
-        //private void TargetOnPlayer()
-        //{
-        //    _bossModel.BossTransform.rotation =  _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, ANGLE_SPEED);
-        //}
-
         #region IDealDamage
 
         public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
@@ -266,12 +247,12 @@ namespace BeastHunter
             _bossModel.CurrentHand = effectorType;
             if (effectorType == FullBodyBipedEffector.LeftHand)
             {
-               _bossModel.BossAnimator.SetFloat("IdleState", 9);
+               _bossModel.BossAnimator.SetFloat("IdleState", 11);
                 _bossModel.BossAnimator.Play("Catch_Blend_Idle", 0, 0);
             }
             if (effectorType == FullBodyBipedEffector.RightHand)
             {
-                _bossModel.BossAnimator.SetFloat("IdleState", 3);
+                _bossModel.BossAnimator.SetFloat("IdleState", 1);
                 _bossModel.BossAnimator.Play("Catch_Blend_Idle", 0, 0);
             }
         }

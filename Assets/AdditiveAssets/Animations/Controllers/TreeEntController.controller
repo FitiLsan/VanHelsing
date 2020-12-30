@@ -209,7 +209,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ThrowAttack
+  m_Name: ThrowAttack_R
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -578,7 +578,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 9e186f69c132ad24ea5891e30d86a70e, type: 3}
     m_Threshold: 6
-    m_Position: {x: 0, y: 0}
+    m_Position: {x: 0, y: 3}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
@@ -587,7 +587,7 @@ BlendTree:
     m_Motion: {fileID: -2848565028234357991, guid: 7f57d59c740143f4882eb4b019fe314f,
       type: 3}
     m_Threshold: 12
-    m_Position: {x: 0, y: 0}
+    m_Position: {x: 0, y: 7}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
