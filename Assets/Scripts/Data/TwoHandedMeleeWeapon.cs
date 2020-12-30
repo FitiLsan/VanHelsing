@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewWeapon", menuName = "CreateWeapon/CreateTwoHandedMelee", order = 0)]
+    [CreateAssetMenu(fileName = "NewWeapon", menuName = "Character/CreateWeapon/CreateTwoHandedMelee", order = 0)]
     public class TwoHandedMeleeWeapon : TwoHandedWeaponData
     {
         #region ClassLifeCycle

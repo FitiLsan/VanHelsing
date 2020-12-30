@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "BossData")]
+    [CreateAssetMenu(fileName = "BossData", menuName = "Enemy/BossData")]
     public sealed class BossData : ScriptableObject
     {
         #region PrivateData

@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 namespace BeastHunter
 {
 
-    [CreateAssetMenu(fileName = "NewModel", menuName = "CreateData/Rabbit", order = 2)]
+    [CreateAssetMenu(fileName = "NewModel", menuName = "Enemy/RabbitData", order = 2)]
     public sealed class RabbitData : EnemyData
     {
         #region PrivateData

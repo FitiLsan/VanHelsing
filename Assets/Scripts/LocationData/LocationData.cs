@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "NewData", menuName = "CreateData/LocationData", order = 0)]
+[CreateAssetMenu(fileName = "NewData", menuName = "Enemy/LocationData", order = 0)]
 public class LocationData : ScriptableObject
 {
     #region Fields

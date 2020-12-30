@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewMiscellaneous", menuName = "CreateItem/CreateMiscellaneous", order = 0)]
+    [CreateAssetMenu(fileName = "NewMiscellaneous", menuName = "Character/CreateMiscellaneous", order = 0)]
     public class MiscellaneousItem : BaseItem
     {
         #region Fields

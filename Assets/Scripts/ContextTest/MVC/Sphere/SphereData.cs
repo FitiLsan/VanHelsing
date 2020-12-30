@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "NewData", menuName = "CreateData/Sphere", order = 0)]
+[CreateAssetMenu(fileName = "NewData", menuName = "MainData/SphereData", order = 0)]
 public sealed class SphereData : ScriptableObject
 {
     #region Fields

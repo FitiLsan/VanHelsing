@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewTemporaryBuff", menuName = "TemporaryBuff")]
+    [CreateAssetMenu(fileName = "NewTemporaryBuff", menuName = "Effects/TemporaryBuff")]
     public sealed class TemporaryBuffClass : ScriptableObject
     {
         #region Fields

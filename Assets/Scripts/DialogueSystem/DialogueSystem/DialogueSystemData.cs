@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewData", menuName = "CreateData/DialogueSystemData", order = 0)]
+    [CreateAssetMenu(fileName = "NewData", menuName = "Dialogue/DialogueSystemData", order = 0)]
     public sealed class DialogueSystemData : ScriptableObject
     {
         #region Fields

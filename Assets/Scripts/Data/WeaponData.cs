@@ -3,6 +3,7 @@ using System;
 
 namespace BeastHunter
 {
+    [CreateAssetMenu(fileName = "NewData", menuName = "Character/WeaponData", order = 0)]
     public abstract class WeaponData : ScriptableObject
     {
         #region Fields

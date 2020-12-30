@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "BossSkillData")]
+    [CreateAssetMenu(fileName = "BossSkillData", menuName = "Enemy/BossSkillsData")]
     public sealed class BossSkills : ScriptableObject
     {
         #region PrivateData
