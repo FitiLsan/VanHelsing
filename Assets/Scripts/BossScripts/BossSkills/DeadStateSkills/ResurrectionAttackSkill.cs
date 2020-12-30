@@ -20,8 +20,10 @@ namespace BeastHunter
         public override void UseSkill(int id)
         {
             Debug.Log("ResurrectionAttackSkill");
-
-
+            _bossModel.BossAnimator.Play("Resurrection", 0, 0);
+            _bossModel.CurrentHealth = _bossModel.BossData._bossStats.MainStats.MaxHealth / 2;
+            _stateMachine._model.BossNavAgent.enabled = true;
+            _stateMachine._model.IsDead = false ;
             ReloadSkill(id);
         }
 

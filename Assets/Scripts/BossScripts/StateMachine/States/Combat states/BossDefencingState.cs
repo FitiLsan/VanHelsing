@@ -40,7 +40,6 @@ namespace BeastHunter
 
         public override void Initialise()
         {
-            _bossModel.CurrentHealth = 450;
             CanExit = false;
             CanBeOverriden = true;
             IsBattleState = true;

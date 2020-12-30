@@ -67,9 +67,9 @@ MonoBehaviour:
     _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
   _bossStats:
     MainStats:
-      _maxHealth: 500
+      _maxHealth: 100
       _enemyType: 5
-      _healthPoints: 500
+      _healthPoints: 100
       _physicalPower: 0.76
       _physicalDamageResistance: 0.818
       _stunProbabilityResistance: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
     _catchSkillRangeMin: 0
     _catchSkillRangeMax: 5
     _catchSkillCooldown: 30
-    _catchSkillReady: 1
+    _catchSkillReady: 0
     _fingerSkillId: 6
     _fingerSkillRangeMin: 5
     _fingerSkillRangeMax: 15.1
@@ -150,8 +150,9 @@ MonoBehaviour:
     _fakeTreeSkillId: 0
     _fakeTreeSkillRangeMin: 0
     _fakeTreeSkillRangeMax: 0
-    _fakeTreeSkillCooldown: 0
-    _fakeTreeSkillReady: 0
+    _fakeTreeSkillCooldown: 120
+    _fakeTreeSkillReady: 1
+    _fakeTreePrefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
   SearchingStateSkills:
     _bushTriggerSkillId: 0
     _bushTriggerSkillRangeMin: 0
@@ -162,8 +163,8 @@ MonoBehaviour:
     _resurrectionSkillId: 0
     _resurrectionSkillRangeMin: 0
     _resurrectionSkillRangeMax: 0
-    _resurrectionSkillCooldown: 0
-    _resurrectionSkillReady: 0
+    _resurrectionSkillCooldown: 30
+    _resurrectionSkillReady: 1
   NonStateSkills:
     _testSkillId: 0
     _testSkillRangeMin: 0

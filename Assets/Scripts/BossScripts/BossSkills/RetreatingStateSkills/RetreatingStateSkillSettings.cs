@@ -25,7 +25,9 @@ namespace BeastHunter
         [SerializeField] private float _fakeTreeSkillCooldown;
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _fakeTreeSkillReady;
-      
+        [Tooltip("Fake Tree Prefab")]
+        [SerializeField] private GameObject _fakeTreePrefab;
+
         #endregion
 
 
@@ -35,7 +37,8 @@ namespace BeastHunter
         public float FakeTreeSkillRangeMin => _fakeTreeSkillRangeMin;
         public float FakeTreeSkillRangeMax => _fakeTreeSkillRangeMax;
         public float FakeTreeSkillCooldown => _fakeTreeSkillCooldown;
-        public bool FakeTreeSkillReady => _fakeTreeSkillReady;    
+        public bool FakeTreeSkillReady => _fakeTreeSkillReady;
+        public GameObject FakeTreePrefab => _fakeTreePrefab;
 
         #endregion
 

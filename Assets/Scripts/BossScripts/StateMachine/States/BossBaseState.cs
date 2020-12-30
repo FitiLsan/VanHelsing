@@ -60,8 +60,11 @@ namespace BeastHunter
 
         protected virtual void SetNavMeshAgent(Vector3 targetPosition, float speed)
         {
-            _bossModel.BossNavAgent.SetDestination(targetPosition);
-            _bossModel.BossNavAgent.speed = speed;
+            if (_bossModel.BossNavAgent.enabled)
+            {
+                _bossModel.BossNavAgent.SetDestination(targetPosition);
+                _bossModel.BossNavAgent.speed = speed;
+            }
         }
 
         protected bool CheckDirection()

@@ -352,9 +352,10 @@ namespace BeastHunter
             if (CurrentHealth <= 0)
             {
                 BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Dead);
+                return;
             }
 
-            if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.MaxHealth)// / 2)
+            if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.MaxHealth / 2)
             {
                 if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
                 {
@@ -362,15 +363,15 @@ namespace BeastHunter
                 }
             }
 
-            if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.HealthPoints * 0.1f)
+            if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.HealthPoints * 0.2f)
             {
-               // BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
+                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
             }
         }
 
         public void DamageCheck(float damage)
         {
-            if(damage >= BossData._bossStats.MainStats.HealthPoints * 0.18f)
+            if(damage >= BossData._bossStats.MainStats.HealthPoints * 0.2f)
             {
                 //currentState.15%Damage();
                 Debug.Log("Hit 18% hp");
