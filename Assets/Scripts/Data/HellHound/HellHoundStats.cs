@@ -58,7 +58,7 @@ namespace BeastHunter
         [SerializeField] private float _escapeDistance;
         [Tooltip("The percentage of health at which the escape state is enabled. Default: 30.0")]
         [SerializeField] private float _percentEscapeHealth;
-        [Tooltip("The maximum speed at which the dog runs away. Default: 7.0")]
+        [Tooltip("The maximum speed at which the dog runs away. Default: 5.0")]
         [SerializeField] private float _escapingSpeed;
 
         [Header("Searching")]

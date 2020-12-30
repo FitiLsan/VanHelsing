@@ -18,7 +18,7 @@ namespace BeastHunter
 
         protected override void Initialize()
         {
-            GameObject gameobject = Object.Instantiate(Data.BoulderObjectData.Prefab, new Vector3(514.99f, 14.172f, 764.55f), Quaternion.identity);
+            GameObject gameobject = Object.Instantiate(Data.BoulderObjectData.Prefab, Data.BoulderObjectData.PrefabPosition, Quaternion.Euler(Data.BoulderObjectData.PrefabEulers));
             _context.InteractableObjectModels.Add(gameobject.GetInstanceID(), new BouldersModel(gameobject, Data.BoulderObjectData));
         }
 
