@@ -49,9 +49,9 @@ namespace BeastHunter
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
+            _stateMachine.BackState.OnEnemyHealthBar(true);
 
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Kinematic;
-
             switch (_characterModel.CurrentWeaponData.Value.Type)
             {
                 case WeaponType.Melee:

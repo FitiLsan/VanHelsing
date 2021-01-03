@@ -321,21 +321,15 @@ namespace BeastHunter
 
             if (agentIndex > agentTypeCount - 1)
             {
-                Debug.Log($"Nav Mesh Agent Type Index #{agentIndex} not exist," +
-                          $" max index = #{agentTypeCount - 1}. Nav Mesh Agent Type Index" +
-                          $" changed to #0 ");
 
                 agentIndex = 0;
                 agentTypeID = NavMesh.GetSettingsByIndex(agentIndex).agentTypeID;
 
-                Debug.Log($"Agent type name \"{NavMesh.GetSettingsNameFromID(agentTypeID)}\"" +
-                          $" - index #{agentIndex}");
                 return agentTypeID;
             }
 
             agentTypeID = NavMesh.GetSettingsByIndex(agentIndex).agentTypeID;
-            Debug.Log($"Agent type name \"{NavMesh.GetSettingsNameFromID(agentTypeID)}\"" +
-                      $" - index #{agentIndex}");
+ 
             return agentTypeID;
         }
         
