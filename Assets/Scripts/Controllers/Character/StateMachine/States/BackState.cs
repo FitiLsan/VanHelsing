@@ -1021,13 +1021,12 @@ namespace BeastHunter
         {
             if (onEnemyBar)
             {
-                Debug.LogError($"OnEnemyHealthBar - Near if(onEnemyBar) = {onEnemyBar}");
+                
                 if (_characterModel.ClosestEnemy.Value != null)
                 {
-                    Debug.LogError($"OnEnemyHealthBar - Enter if(onEnemyBar) = {onEnemyBar}");
-                    Debug.LogError($"Name target = {_characterModel.ClosestEnemy.Value.gameObject.name}");
-                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.gameObject.GetInstanceID()];
-                    Debug.LogError($"_targetEnemy = {_targetEnemy != null}");
+                   
+                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.GetMainParent().gameObject.GetInstanceID()];
+                    
                     if (!_targetEnemy.IsDead)
                     {
                         _enemyHealthBarModel.EnemyHealthBarObject.SetActive(onEnemyBar);
@@ -1036,7 +1035,7 @@ namespace BeastHunter
                     {
                         _enemyHealthBarModel.EnemyHealthBarObject.SetActive(false);
                     }
-                    Debug.LogError($"OnEnemyHealthBar - exit if(onEnemyBar) = {onEnemyBar}");
+                    
                 }
                 
             }
