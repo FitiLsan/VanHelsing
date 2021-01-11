@@ -10,7 +10,7 @@ namespace BeastHunter
 
         [SerializeField] private DataType _spawningDataType;
         [SerializeField] private EnemyData _spawningEnemyData;
-        [SerializeField] private int _spawningChance;
+        [SerializeField] private float _spawningChance;
 
         #endregion
 
@@ -19,7 +19,7 @@ namespace BeastHunter
 
         public DataType SpawningDataType { get => _spawningDataType; }
         public EnemyData SpawningEnemyData { get => _spawningEnemyData; }
-        public int SpawningChance { get => _spawningChance; }
+        public float SpawningChance { get; set; }
 
         #endregion
     }

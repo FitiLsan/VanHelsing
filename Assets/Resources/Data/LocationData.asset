@@ -12,6 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63798768fe41a44b92f7e80c3f4a681, type: 3}
   m_Name: LocationData
   m_EditorClassIdentifier: 
-  _playerSpawnPosition: {x: 480, y: 2, z: 480}
-  _bossSpawnPosition: {x: 484, y: 2, z: 520}
-  _enemySpawnPointData: []
+  _playerSpawnPosition: {x: 6.01, y: 3, z: -5.88}
+  _bossSpawnPosition: {x: 1.62, y: 3, z: 7.51}
+  _enemySpawnPointData:
+  - _spawnDataList:
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 43398a2c55450574da94b5cc7b25fbca,
+        type: 2}
+      _spawningChance: 100
+    _spawnPoint: {x: -4, y: 3.84, z: -12.38}
+    _spawnRadius: 5.81
+    _numberToSpawn: 5
