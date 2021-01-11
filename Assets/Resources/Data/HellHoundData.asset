@@ -52,7 +52,7 @@ MonoBehaviour:
     _restingMaxTime: 60
     _escapeDistance: 50
     _percentEscapeHealth: 30
-    _escapingSpeed: 5
+    _escapingSpeed: 7
     _searchingTime: 45
     _searchingSpeed: 5
     _backJumpDistance: 1
@@ -72,8 +72,8 @@ MonoBehaviour:
     _chasingBrakingMinSpeed: 2
     _chasingBrakingMaxDistance: 6
     _chasingBrakingMinDistance: 2
-    _maxRoamingSpeed: 0
-    _maxChasingSpeed: 0
+    _maxRoamingSpeed: 1
+    _maxChasingSpeed: 10
     _angularSpeed: 450
     _acceleration: 20
     _stoppingDistance: 1

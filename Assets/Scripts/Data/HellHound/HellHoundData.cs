@@ -202,8 +202,8 @@ namespace BeastHunter
 
                 case BehaviourState.Idling:
 
-                    model.StateTimer -= Time.deltaTime;
-                    if(model.StateTimer <= 0)
+                    model.Timer -= Time.deltaTime;
+                    if(model.Timer <= 0)
                     { 
                         model.BehaviourState = SetState(BehaviourState.None, model);
                     }
@@ -300,10 +300,10 @@ namespace BeastHunter
                         {
                             model.Transform.rotation = SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, Stats.ChasingTurnSpeedNearTarget);
 
-                            model.StateTimer -= Time.deltaTime;
+                            model.Timer -= Time.deltaTime;
                             float sqrDistanceToEnemy = (model.ChasingTarget.position - model.Transform.position).sqrMagnitude;
 
-                            if (model.StateTimer <= 0 || sqrDistanceToEnemy > _sqrBattleCirclingDistance)
+                            if (model.Timer <= 0 || sqrDistanceToEnemy > _sqrBattleCirclingDistance)
                             {
                                 model.BehaviourState = SetState(BehaviourState.Chasing, model);
                             }
@@ -350,7 +350,7 @@ namespace BeastHunter
 
                             if (!isSetDestination)
                             {
-                                Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.Escaping");
+                                Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Escaping");
                                 model.BehaviourState = SetState(BehaviourState.Chasing, model);
                             }
                         }
@@ -360,8 +360,8 @@ namespace BeastHunter
 
                 case BehaviourState.Resting:
 
-                    model.StateTimer -= Time.deltaTime;
-                    if (model.StateTimer <= 0)
+                    model.Timer -= Time.deltaTime;
+                    if (model.Timer <= 0)
                     {
                         model.BehaviourState = SetState(BehaviourState.None, model);
                     }
@@ -390,13 +390,13 @@ namespace BeastHunter
 
                         if (!isSetDestination)
                         {
-                            Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.Searching");
+                            Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Searching");
                             model.BehaviourState = SetState(BehaviourState.Idling, model);
                         }
                     }
 
-                    model.StateTimer -= Time.deltaTime;
-                    if (model.StateTimer <= 0)
+                    model.Timer -= Time.deltaTime;
+                    if (model.Timer <= 0)
                     {
                         model.BehaviourState = SetState(BehaviourState.None, model);
                     }
@@ -455,10 +455,10 @@ namespace BeastHunter
                     return BehaviourState.None;
 
                 case BehaviourState.Roaming:
-                    return SetRoamingState(model.NavMeshAgent, model.SpawnPoint, ref model.StateTimer);
+                    return SetRoamingState(model.NavMeshAgent, model.SpawnPoint, ref model.Timer);
 
                 case BehaviourState.Idling:
-                    return SetIdlingState(ref model.StateTimer);
+                    return SetIdlingState(ref model.Timer);
 
                 case BehaviourState.Chasing:
                     return SetChasingState(model.NavMeshAgent);
@@ -467,22 +467,23 @@ namespace BeastHunter
                     return SetJumpingBackState(model.NavMeshAgent, model.Animator, model.Transform);
 
                 case BehaviourState.BattleCircling:
-                    return SetBattleCirclingState(model.NavMeshAgent, model.Animator, model.ChasingTarget.position, ref model.StateTimer);
+                    return SetBattleCirclingState(model.NavMeshAgent, model.Animator, model.ChasingTarget.position, ref model.Timer);
 
                 case BehaviourState.Escaping:
                     return SetEscapingState(model.NavMeshAgent, model.ChasingTarget.position);
 
                 case BehaviourState.Resting:
-                    return SetRestingState(model.Animator, ref model.StateTimer);
+                    return SetRestingState(model.Animator, ref model.Timer);
 
                 case BehaviourState.Searching:
-                    return SetSearchingState(model.NavMeshAgent, model.SpawnPoint, ref model.StateTimer);
+                    return SetSearchingState(model.NavMeshAgent, model.SpawnPoint, ref model.Timer);
 
                 case BehaviourState.JumpingAttack:
                     return SetJumpingAttackState(model, model.ChasingTarget.position);
 
                 default: return newState;
             }
+
         }
 
         private BehaviourState SetIdlingState(ref float timer)
@@ -520,7 +521,7 @@ namespace BeastHunter
 
             if (!isSetDestination)
             {
-                Debug.LogWarning(this + ": impossible to reach the destination point in SetRoamingState method");
+                Debug.LogError(this + ": impossible to reach the destination point in SetRoamingState method");
                 return SetIdlingState(ref timer);
             }
 
@@ -623,7 +624,7 @@ namespace BeastHunter
 
             if (!isSetDestination)
             {
-                Debug.LogWarning(this + ": impossible to reach the destination point in SetEscapingState method");
+                Debug.LogError(this + ": impossible to reach the destination point in SetEscapingState method");
                 return SetChasingState(navMeshAgent);
             }
 
@@ -657,7 +658,7 @@ namespace BeastHunter
 
             if (!isSetDestination)
             {
-                Debug.LogWarning(this + ": impossible to reach the destination point in SetSearchingState method");
+                Debug.LogError(this + ": impossible to reach the destination point in SetSearchingState method");
                 return SetIdlingState(ref timer);
             }
 
@@ -841,6 +842,7 @@ namespace BeastHunter
             {
                 _onDeadMsg?.Invoke();
                 hellHoundModel.Animator.SetTrigger("Dead");
+                hellHoundModel.Clean();
             }
 
             if (hellHoundModel.ChasingTarget == null

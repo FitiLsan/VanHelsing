@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 
 namespace BeastHunter
@@ -11,9 +12,9 @@ namespace BeastHunter
 
         #region Fields
 
-        private int HEAD_COLLIDER_COUNT = 2;
-        private int TAIL_COLLIDER_COUNT = 4;
-
+        private const int HEAD_COLLIDER_COUNT = 2;
+        private const int TAIL_COLLIDER_COUNT = 4;
+        
         private TwoHeadedSnakeData _twoHeadedSnakeData;
         private InteractableObjectBehavior[] _interactableObjects;
         private InteractableObjectBehavior _detectionSphereIO;
@@ -21,6 +22,16 @@ namespace BeastHunter
         private TwoHeadedSnakeAttackStateBehaviour[] _attackStates;
         private Collider[] _tailAttackColliders;
         private Collider[] _twinHeadAttackColliders;
+
+        private Image _canvasHPImage;
+        private Image _canvasDamagedBar;
+        private Transform _canvasHPObject;
+        private Color _damegedColor;
+        private Color _damegedColorTxt;
+        private Text _canvasImpactDamageTxt;
+        private float _damagedHealthFadeTimer;
+        private float _damagedTxtFameTimer;
+        private float _hpBarHideTimer;
 
         public TwoHeadedSnakeData.BehaviourState behaviourState;
         public Transform chasingTarget;
@@ -50,6 +61,12 @@ namespace BeastHunter
         public InteractableObjectBehavior [] WeaponsIO { get; }
         public Collider[] TailAttackColliders { get => _tailAttackColliders; }
         public Collider[] TwinHeadAttackColliders { get => _twinHeadAttackColliders; }
+        public Image CanvasHPImage { get => _canvasHPImage; }
+        public Image CanvasDamagedBar { get => _canvasDamagedBar; }
+        public Transform CanvesHPObject { get => _canvasHPObject; }
+        public Text CanvasImpactDamageTxt { get => _canvasImpactDamageTxt; }
+        
+
         #endregion
 
 
@@ -57,14 +74,17 @@ namespace BeastHunter
 
         public TwoHeadedSnakeModel(GameObject prefab, TwoHeadedSnakeData twoHeadedSnakeData, Vector3 spawnPosition)
         {
+            
             _twoHeadedSnakeData = twoHeadedSnakeData;
             Settings = _twoHeadedSnakeData.settings;
             TwoHeadedSnake = prefab;
             SpawnPoint = spawnPosition;
             attackCoolDownTimer = 0;
-
+            
             Transform = TwoHeadedSnake.transform;
             behaviourState = TwoHeadedSnakeData.BehaviourState.None;
+
+            CustomizationHpBar(prefab);
 
             if (TwoHeadedSnake.GetComponent<Rigidbody>() != null)
             {
@@ -157,11 +177,14 @@ namespace BeastHunter
 
         public override void Execute()
         {
+
             if (!IsDead)
             {
                 _twoHeadedSnakeData.Act(this);
             }
-            
+
+            ExecuteHealthBarController();
+
         }
 
         public override EnemyStats GetStats()
@@ -176,9 +199,102 @@ namespace BeastHunter
 
         public override void TakeDamage(Damage damage)
         {
+
+            TakeDamageHealthBarController(damage);
+
             if (!IsDead)
             {
                 _twoHeadedSnakeData.TakeDamage(this, damage);
+                
+            }
+
+            
+        }
+
+        public void ExecuteHealthBarController()
+        {
+
+            if (!IsDead)
+            {
+
+                CanvesHPObject.LookAt(Services.SharedInstance.CameraService.CurrentActiveCamera.Value.transform);
+               
+                CanvasHPImage.fillAmount = CurrentHealth / _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
+
+                if (_damegedColor.a > 0)
+                {
+                    _damagedHealthFadeTimer -= Time.deltaTime;
+                    if (_damagedHealthFadeTimer < 0)
+                    {
+                        _damegedColor.a -= Settings.FadeAmount * Time.deltaTime;
+                        CanvasDamagedBar.color = _damegedColor;
+                    }
+                }
+
+                if (_damegedColorTxt.a > 0)
+                {
+                    _damagedTxtFameTimer -= Time.deltaTime;
+                    if (_damagedTxtFameTimer < 0)
+                    {
+                        _damegedColorTxt.a -= Settings.TxtFadeAmount * Time.deltaTime;
+                        CanvasImpactDamageTxt.color = _damegedColorTxt;
+                    }
+                }
+            }
+            else
+            {
+                _hpBarHideTimer -= Time.deltaTime;
+                CanvasHPImage.fillAmount = CurrentHealth / _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
+
+                if (_damegedColor.a > 0)
+                {
+                    _damagedHealthFadeTimer -= Time.deltaTime;
+                    if (_damagedHealthFadeTimer < 0)
+                    {
+                        _damegedColor.a -= Settings.FadeAmount * Time.deltaTime;
+                        CanvasDamagedBar.color = _damegedColor;
+                    }
+                }
+
+                if (_damegedColorTxt.a > 0)
+                {
+                    _damagedTxtFameTimer -= Time.deltaTime;
+                    if (_damagedTxtFameTimer < 0)
+                    {
+                        _damegedColorTxt.a -= Settings.TxtFadeAmount * Time.deltaTime;
+                        CanvasImpactDamageTxt.color = _damegedColorTxt;
+                    }
+                }
+
+                if (_hpBarHideTimer < 0)
+                {
+                    CanvesHPObject.gameObject.SetActive(false);
+                }
+                
+            }
+
+        }
+
+        public void TakeDamageHealthBarController(Damage damage)
+        {
+            if (!IsDead)
+            {
+
+                if (_damegedColor.a <= 0)
+                {
+                    CanvasDamagedBar.fillAmount = CanvasHPImage.fillAmount;
+
+                }
+
+                _damegedColor.a = 1f;
+                CanvasDamagedBar.color = _damegedColor;
+                _damagedHealthFadeTimer = Settings.DamegedHealthFadeTimerMax;
+
+                CanvasImpactDamageTxt.text = damage.PhysicalDamage.ToString();
+                _damegedColorTxt.a = 1f;
+                CanvasImpactDamageTxt.color = _damegedColorTxt;
+                _damagedTxtFameTimer = Settings.DamagedTxtFameTimer;
+
             }
         }
 
@@ -205,21 +321,15 @@ namespace BeastHunter
 
             if (agentIndex > agentTypeCount - 1)
             {
-                Debug.Log($"Nav Mesh Agent Type Index #{agentIndex} not exist," +
-                          $" max index = #{agentTypeCount - 1}. Nav Mesh Agent Type Index" +
-                          $" changed to #0 ");
 
                 agentIndex = 0;
                 agentTypeID = NavMesh.GetSettingsByIndex(agentIndex).agentTypeID;
 
-                Debug.Log($"Agent type name \"{NavMesh.GetSettingsNameFromID(agentTypeID)}\"" +
-                          $" - index #{agentIndex}");
                 return agentTypeID;
             }
 
             agentTypeID = NavMesh.GetSettingsByIndex(agentIndex).agentTypeID;
-            Debug.Log($"Agent type name \"{NavMesh.GetSettingsNameFromID(agentTypeID)}\"" +
-                      $" - index #{agentIndex}");
+ 
             return agentTypeID;
         }
         
@@ -265,6 +375,23 @@ namespace BeastHunter
 
          
         }
+
+        private void CustomizationHpBar(GameObject prefab)
+        {
+
+            _canvasHPObject = prefab.transform.Find("CanvasObject");
+            _canvasHPObject.position = _canvasHPObject.position + Settings.PositionHpBar;
+            _canvasHPImage = _canvasHPObject.Find("Canvas").Find("Bar").GetComponent<Image>();
+            _canvasDamagedBar = _canvasHPObject.Find("Canvas").Find("DamegedBar").GetComponent<Image>();
+            _canvasImpactDamageTxt = _canvasHPObject.Find("Canvas").Find("ImpactDamageTxt").GetComponent<Text>();
+            _damegedColor = _canvasDamagedBar.color;
+            _damegedColor.a = 0f;
+            _damegedColorTxt = _canvasImpactDamageTxt.color;
+            _damegedColorTxt.a = 0f;
+            _canvasImpactDamageTxt.color = _damegedColorTxt;
+            _hpBarHideTimer = Settings.HpBarHideTimer;
+        }
+
         #endregion
 
     }

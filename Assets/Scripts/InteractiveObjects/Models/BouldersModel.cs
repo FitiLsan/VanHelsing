@@ -43,6 +43,7 @@ namespace BeastHunter
                 Rigidbodies[i].mass = data.Mass;
                 Rigidbodies[i].drag = data.Drag;
                 Rigidbodies[i].angularDrag = data.AngularDrag;
+                Rigidbodies[i].mass = data.Mass;
             }
 
             _interactableObjects = prefab.GetComponentsInChildren<InteractableObjectBehavior>();
@@ -82,7 +83,6 @@ namespace BeastHunter
         public void Clean()
         {
             _data = null;
-            DestroyInfoDictionary.Clear();
             DestroyInfoDictionary = null;
 
             if (CanvasObject != null)

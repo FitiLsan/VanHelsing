@@ -21,6 +21,8 @@
 
         public abstract void OnTearDown();
 
+        //public abstract void HealthBarController();
+
         #endregion
 
 
