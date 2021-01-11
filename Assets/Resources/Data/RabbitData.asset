@@ -12,22 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dea14c6996633c46a662ee466e83b72, type: 3}
   m_Name: RabbitData
   m_EditorClassIdentifier: 
-  BaseStats:
-    MainStats:
-      _maxHealth: 10
-      _enemyType: 1
-      _viewRadius: 3
-      _viewAngle: 180
-      _healthPoints: 0
+  _prefab: {fileID: 0}
+  _startStats:
+    PermantnsBuffList: []
+    TemporaryBuffList: []
+    BaseStats:
+      _maximalHealthPoints: 5
+      _currentHealthPoints: 5
+      HealthRegenPerSecond: 0
+      _maximalStaminaPoints: 0
+      _currentStaminaPoints: 0
+      StaminaRegenPerSecond: 0
+      IsDead: 0
+      IsStunned: 0
+    AttackStats:
       _physicalPower: 0
+      _magicalPower: 0
+    DefenceStats:
       _physicalDamageResistance: 0
       _stunProbabilityResistance: 0
-    AttackList: []
-    DefenceStats:
-      _baseDefense: 0
-    Prefab: {fileID: 6850293822335465738, guid: 635352c46b7621145938ab221e63e0d1,
-      type: 3}
+      _fireDamageResistance: 0
   RabbitStats:
+    _viewRadius: 5
+    _viewAngle: 126
     _runningRadius: 10
     _moveSpeed: 0.5
     _jumpHeight: 2

@@ -5,7 +5,7 @@ using System;
 namespace BeastHunter
 {
     [Serializable]
-    public struct CharacterCommonSettingsStruct
+    public struct CharacterCommonSettings
     {
         #region Fields
 

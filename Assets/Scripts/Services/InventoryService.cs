@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace BeastHunter
 {
-    public sealed class InventoryService : Service
+    public sealed class InventoryService : IService
     {
         #region Fields
 
@@ -90,7 +90,7 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public InventoryService(Contexts contexts) : base(contexts)
+        public InventoryService()
         {
             FillDictionary();
             InventoryUI = GameObject.Instantiate(Resources.Load("Canvas")) as GameObject;

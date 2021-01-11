@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public sealed class BuffService : Service
+    public sealed class BuffService : IService
     {
         #region Fields
 
-        private delegate void BuffDelegate(StatsClass stats, float parameter);
+        private delegate void BuffDelegate(Stats stats, float parameter);
         private Dictionary<Buff, BuffDelegate> TemporaryBuffDictionary;
         private Dictionary<Buff, BuffDelegate> PermanentBuffDictionary;
 
@@ -18,7 +18,7 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public BuffService(Contexts contexts) : base(contexts)
+        public BuffService()
         {
             TemporaryBuffDictionary = new Dictionary<Buff, BuffDelegate>();
             PermanentBuffDictionary = new Dictionary<Buff, BuffDelegate>();
@@ -39,58 +39,58 @@ namespace BeastHunter
 
         #region Methods
 
-        public void AddPermanentBuff(StatsClass stats, PermanentBuffClass buff)
+        public void AddPermanentBuff(Stats stats, PermanentBuff buff, BuffHolder buffHolder)
         {
             foreach (var effect in buff.Effects)
             {
                 PermanentBuffDictionary[effect.Buff](stats, effect.Value);
             }
 
-            stats.PermantnsBuffList.Add(buff);
+            buffHolder.PermanentBuffList.Add(buff);
         }
 
-        public void RemovePermanentBuff(StatsClass stats, PermanentBuffClass buff)
+        public void RemovePermanentBuff(Stats stats, PermanentBuff buff, BuffHolder buffHolder)
         {
-            if (stats.PermantnsBuffList.Contains(buff))
+            if (buffHolder.PermanentBuffList.Contains(buff))
             {
                 foreach (var effect in buff.Effects)
                 {
                     PermanentBuffDictionary[effect.Buff](stats, -effect.Value);
                 }
 
-                stats.PermantnsBuffList.Remove(buff);
+                buffHolder.PermanentBuffList.Remove(buff);
             }
             else
             {
                 throw new System.Exception("There is no such buff at that stats list!");
-            }         
+            }
         }
 
-        public void AddTemporaryBuff(StatsClass stats, TemporaryBuffClass buff)
+        public void AddTemporaryBuff(Stats stats, TemporaryBuff buff, BuffHolder buffHolder)
         {
             foreach (var effect in buff.Effects)
             {
                 TemporaryBuffDictionary[effect.Buff](stats, effect.Value);
             }
 
-            stats.TemporaryBuffList.Add(buff);
+            buffHolder.TemporaryBuffList.Add(buff);
 
-            Action laterBuffRemove = () => RemoveTemporaryBuff(stats, buff);
+            Action laterBuffRemove = () => RemoveTemporaryBuff(stats, buff, buffHolder);
 
             TimeRemaining buffRemove = new TimeRemaining(laterBuffRemove, buff.Time);
             buffRemove.AddTimeRemaining(buff.Time);
         }
 
-        public void RemoveTemporaryBuff(StatsClass stats, TemporaryBuffClass buff)
+        public void RemoveTemporaryBuff(Stats stats, TemporaryBuff buff, BuffHolder buffHolder)
         {
-            if (stats.TemporaryBuffList.Contains(buff))
+            if (buffHolder.TemporaryBuffList.Contains(buff))
             {
                 foreach (var effect in buff.Effects)
                 {
                     TemporaryBuffDictionary[effect.Buff](stats, -effect.Value);
                 }
 
-                stats.TemporaryBuffList.Remove(buff);
+                buffHolder.TemporaryBuffList.Remove(buff);
             }
             else
             {
@@ -98,40 +98,40 @@ namespace BeastHunter
             }
         }
 
-        private void HealthRegenBuff(StatsClass stats, float value)
+        private void HealthRegenBuff(Stats stats, float value)
         {
-            stats._healthRegenPerSecond += value;
-            Debug.Log("changed hp regen to " + stats._healthRegenPerSecond);
+            stats.BaseStats.HealthRegenPerSecond += value;
+            Debug.Log("changed hp regen to " + stats.BaseStats.HealthRegenPerSecond);
         }
 
-        private void HealthMaximumBuff(StatsClass stats, float value)
+        private void HealthMaximumBuff(Stats stats, float value)
         {
-            stats._maximalHealthPoints += value;
+            stats.BaseStats.MaximalHealthPoints += value;
 
-            if(stats._currentHealthPoints > stats._maximalHealthPoints)
+            if(stats.BaseStats.CurrentHealthPoints > stats.BaseStats.MaximalHealthPoints)
             {
-                stats._currentHealthPoints = stats._maximalHealthPoints;
+                stats.BaseStats.CurrentHealthPoints = stats.BaseStats.MaximalHealthPoints;
             }
 
-            Debug.Log("changed maximum health to " + stats._maximalHealthPoints);
+            Debug.Log("changed maximum health to " + stats.BaseStats.MaximalHealthPoints);
         }
 
-        private void StaminaRegenBuff(StatsClass stats, float value)
+        private void StaminaRegenBuff(Stats stats, float value)
         {
-            stats._staminaRegenPerSecond += value;
-            Debug.Log("changed stamina regen to " + stats._staminaRegenPerSecond);
+            stats.BaseStats.StaminaRegenPerSecond += value;
+            Debug.Log("changed stamina regen to " + stats.BaseStats.StaminaRegenPerSecond);
         }
 
-        private void StaminaMaximumBuff(StatsClass stats, float value)
+        private void StaminaMaximumBuff(Stats stats, float value)
         {
-            stats._maximalStaminaPoints += value;
+            stats.BaseStats.MaximalStaminaPoints += value;
 
-            if (stats._currentStaminaPoints > stats._maximalStaminaPoints)
+            if (stats.BaseStats.CurrentStaminaPoints > stats.BaseStats.MaximalStaminaPoints)
             {
-                stats._currentStaminaPoints = stats._maximalStaminaPoints;
+                stats.BaseStats.CurrentStaminaPoints = stats.BaseStats.MaximalStaminaPoints;
             }
 
-            Debug.Log("changed maximum stamina to " + stats._maximalStaminaPoints);
+            Debug.Log("changed maximum stamina to " + stats.BaseStats.MaximalStaminaPoints);
         }
 
         #endregion

@@ -46,7 +46,7 @@ namespace BeastHunter
             base.Initialize();
 
             _rollTime = _characterModel.CharacterData.CharacterCommonSettings.RollingTime;
-            _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
+            _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Kinematic;
             _characterModel.IsDodging = true;
         }
 

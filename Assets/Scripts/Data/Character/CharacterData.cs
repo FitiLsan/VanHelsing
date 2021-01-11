@@ -8,9 +8,9 @@ namespace BeastHunter
     {
         #region Fields
 
-        [SerializeField] private CharacterCommonSettingsStruct _characterCommonSettings;
+        [SerializeField] private CharacterCommonSettings _characterCommonSettings;
         [SerializeField] private CharacterAnimationData _characterAnimationData;
-        [SerializeField] private BaseStatsClass _characterStatsSettings;
+        [SerializeField] private Stats _characterStatsSettings;
 
         private Vector3 _movementVector;
 
@@ -19,9 +19,9 @@ namespace BeastHunter
 
         #region Fields
 
-        public CharacterCommonSettingsStruct CharacterCommonSettings => _characterCommonSettings;
+        public CharacterCommonSettings CharacterCommonSettings => _characterCommonSettings;
         public CharacterAnimationData CharacterAnimationData => _characterAnimationData;
-        public BaseStatsClass CharacterStatsSettings => _characterStatsSettings;
+        public Stats CharacterStatsSettings => _characterStatsSettings;
 
         #endregion
 

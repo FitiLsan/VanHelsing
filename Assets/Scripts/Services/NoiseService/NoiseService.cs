@@ -3,17 +3,8 @@
 
 namespace BeastHunter
 {
-    public sealed class NoiseService : Service
+    public sealed class NoiseService : IService
     {
-        #region ClassLifeCycle
-
-        public NoiseService(Contexts contexts) : base(contexts)
-        {
-        }
-
-        #endregion
-
-
         #region Methods
 
         public void MakeNoise(Noise noise)

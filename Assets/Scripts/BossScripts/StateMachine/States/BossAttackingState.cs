@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using Extensions;
 
 
 namespace BeastHunter
 {
-    public class BossAttackingState : BossBaseState, IDealDamage
+    public class BossAttackingState : BossBaseState
     {
         #region Constants
 
@@ -134,7 +135,7 @@ namespace BeastHunter
             _stateMachine._model.LeftWeaponBehavior.IsInteractable = false;
             _stateMachine._model.RightWeaponBehavior.IsInteractable = false;
 
-            if (!_stateMachine._model.IsDead && CheckDirection() && CheckDistance())
+            if (!_stateMachine._model.CurrentStats.BaseStats.IsDead && CheckDirection() && CheckDistance())
             {
                 Initialise();
             }
@@ -156,9 +157,9 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
-                    CountDamage(_stateMachine._model.WeaponData, _stateMachine._model.BossStats.MainStats, _stateMachine.
-                        _context.CharacterModel.CharacterStats));
+                Services.SharedInstance.AttackService.CountAndDealDamage(_stateMachine._model.WeaponData.CurrentAttack.
+                    AttackDamage, enemy.transform.GetMainParent().gameObject.GetInstanceID(), _stateMachine._model.
+                        CurrentStats, _stateMachine._model.WeaponData);
                 hitBox.IsInteractable = false;
             }
         }
@@ -167,25 +168,12 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
-                    CountDamage(_stateMachine._model.WeaponData, _stateMachine._model.BossStats.MainStats, _stateMachine.
-                        _context.CharacterModel.CharacterStats));
+                Services.SharedInstance.AttackService.CountAndDealDamage(_stateMachine. _model.WeaponData.CurrentAttack.
+                    AttackDamage, enemy.transform.GetMainParent().gameObject.GetInstanceID(), _stateMachine._model.
+                        CurrentStats, _stateMachine._model.WeaponData);
                 hitBox.IsInteractable = false;
             }
         }
-
-
-        #region IDealDamage
-
-        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
-        {
-            if (enemy != null && damage != null)
-            {
-                enemy.TakeDamageEvent(damage);
-            }
-        }
-
-        #endregion
 
         #endregion
     }

@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using Extensions;
 using System;
 
+
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "HideBushData", menuName = "CreateData/SimpleInteractiveObjects/HideBushData", order = 0)]
-    public sealed class HideBushData : SimpleInteractiveObjectData, IDealDamage
+    public sealed class HideBushData : SimpleInteractiveObjectData
     {
         #region SerializeFields
 
@@ -158,7 +159,6 @@ namespace BeastHunter
             if (model.BurningTimer <= 0)
             {
                 _burnedMsg?.Invoke();
-
                 model.IsBurning = false;
                 model.DamageObjects.Clear();
                 model.Burnt.SetActive(true);
@@ -175,7 +175,8 @@ namespace BeastHunter
                     int gameObjectID = behaviorIO.transform.GetMainParent().GetInstanceID();
                     if (!damageDone.Contains(gameObjectID)) //to avoid causing double damage to the object in the case of multiple colliders with behaviorIO
                     {
-                        DealDamage(behaviorIO, _damage);
+                        _dealDamageMsg?.Invoke(behaviorIO.gameObject.ToString());
+                        Services.SharedInstance.AttackService.CountAndDealDamage(_damage, gameObjectID);
                         damageDone.Add(gameObjectID);
                     }
                 }
@@ -208,20 +209,6 @@ namespace BeastHunter
                 _removeDamageListMsg = (entity) => Debug.Log(entity + " removed from bush deal damage list");
                 _dealDamageMsg = (entity) => Debug.Log("Burning bush deal damage to " + entity);
             }
-        }
-
-        #endregion
-
-
-        #region IDealDamage
-
-        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
-        {
-            Damage countDamage = Services.SharedInstance.AttackService
-                .CountDamage(damage, enemy.transform.GetMainParent().gameObject.GetInstanceID());
-
-            _dealDamageMsg?.Invoke(enemy.gameObject.ToString());
-            enemy.TakeDamageEvent(countDamage);
         }
 
         #endregion

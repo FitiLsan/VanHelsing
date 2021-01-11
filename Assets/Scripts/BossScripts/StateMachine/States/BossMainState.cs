@@ -63,7 +63,7 @@ namespace BeastHunter
 
         public override void Execute()
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_stateMachine._model.CurrentStats.BaseStats.IsDead)
             {
                 SpeedCheck();
                 HealthCheck();
@@ -84,7 +84,7 @@ namespace BeastHunter
 
         private void OnBossHittedHandler(OnBossHittedEventClass eventClass)
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_stateMachine._model.CurrentStats.BaseStats.IsDead)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Hitted);
             }
@@ -92,7 +92,7 @@ namespace BeastHunter
 
         private void OnBossStunnedHandler(OnBossStunnedEventClass eventClass)
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_stateMachine._model.CurrentStats.BaseStats.IsDead)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Stunned);
             }         
@@ -100,7 +100,7 @@ namespace BeastHunter
 
         private void OnPlayerDieHandler(OnPlayerDieEventCLass eventClass)
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_stateMachine._model.CurrentStats.BaseStats.IsDead)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Patroling);
             }
@@ -126,7 +126,7 @@ namespace BeastHunter
 
         private void HealthCheck()
         {
-            if (_stateMachine._model.CurrentHealth <= 0)
+            if (_stateMachine._model.CurrentStats.BaseStats.CurrentHealthPoints <= 0)
             {
                 _stateMachine.SetCurrentStateAnyway(BossStatesEnum.Dead);
             }
@@ -158,7 +158,7 @@ namespace BeastHunter
             eventClass.WeakPointCollider.gameObject.GetComponent<ParticleSystem>().Play();
             _stateMachine._model.TakeDamage(Services.SharedInstance.AttackService.CountDamage(
                 eventClass.WeakPointCollider.GetComponent<HitBoxBehavior>().AdditionalDamage, 
-                    _stateMachine._model.GetStats().MainStats));
+                    _stateMachine._model.ObjectOnScene.GetInstanceID()));
             eventClass.WeakPointCollider.GetComponent<Light>().color = Color.red;
             eventClass.WeakPointCollider.enabled = false;
 

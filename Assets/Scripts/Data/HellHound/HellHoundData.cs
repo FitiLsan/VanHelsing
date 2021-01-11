@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
+
 namespace BeastHunter
 {
 
     [CreateAssetMenu(fileName = "NewHellHound", menuName = "CreateData/HellHound", order = 2)]
-    public sealed class HellHoundData : EnemyData, IDealDamage
+    public sealed class HellHoundData : EnemyData
     {
         #region PrivateData
 
@@ -130,7 +131,9 @@ namespace BeastHunter
 
             if (enemy != null)
             {
-                DealDamage(enemy, Stats.Damage);
+                Services.SharedInstance.AttackService.CountAndDealDamage(Stats.Damage, collider.transform.GetMainParent().gameObject.GetInstanceID(),
+                    StartStats);
+                _onHitEnemyMsg?.Invoke(enemy);
             }
             else
             {
@@ -152,7 +155,12 @@ namespace BeastHunter
             model.AttackCollider.enabled = false;
         }
 
-        public void Act(HellHoundModel model)
+        public override void Act(EnemyModel model)
+        {
+            Execute(model as HellHoundModel);
+        }
+
+        private void Execute(HellHoundModel model)
         {
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
             model.Animator.SetFloat("RotateDirection", rotateDirection);
@@ -203,8 +211,8 @@ namespace BeastHunter
                 case BehaviourState.Idling:
 
                     model.Timer -= Time.deltaTime;
-                    if(model.Timer <= 0)
-                    { 
+                    if (model.Timer <= 0)
+                    {
                         model.BehaviourState = SetState(BehaviourState.None, model);
                     }
 
@@ -218,7 +226,7 @@ namespace BeastHunter
                     }
                     else
                     {
-                        if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
+                        if (CurrentHealthPercent(model.CurrentStats.BaseStats.CurrentHealthPoints) < Stats.PercentEscapeHealth && !model.IsAttacking)
                         {
                             model.BehaviourState = SetState(BehaviourState.Escaping, model);
                         }
@@ -252,7 +260,7 @@ namespace BeastHunter
                                 {
                                     AttackDirect(model.Animator);
                                 }
-                                else if (model.JumpingAttackTimer <= 0 && 
+                                else if (model.JumpingAttackTimer <= 0 &&
                                     sqrDistanceToEnemy < _sqrAttackJumpMaxDistance && sqrDistanceToEnemy > _sqrAttackJumpMinDistance)
                                 {
                                     model.BehaviourState = SetState(BehaviourState.JumpingAttack, model);
@@ -266,7 +274,7 @@ namespace BeastHunter
                 case BehaviourState.JumpingAttack:
 
                     if (!model.IsAttacking)
-                    { 
+                    {
                         model.BehaviourState = SetState(BehaviourState.Chasing, model);
                         model.JumpingAttackTimer = Stats.AttackJumpCooldown;
                     }
@@ -292,7 +300,7 @@ namespace BeastHunter
                     }
                     else
                     {
-                        if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
+                        if (CurrentHealthPercent(model.CurrentStats.BaseStats.CurrentHealthPoints) < Stats.PercentEscapeHealth && !model.IsAttacking)
                         {
                             model.BehaviourState = SetState(BehaviourState.Escaping, model);
                         }
@@ -355,7 +363,7 @@ namespace BeastHunter
                             }
                         }
                     }
-                    
+
                     break;
 
                 case BehaviourState.Resting:
@@ -710,7 +718,7 @@ namespace BeastHunter
         /// <summary>Current health in percent</summary>
         private float CurrentHealthPercent(float currentHealth)
         {
-            return currentHealth * 100 / BaseStats.MainStats.MaxHealth;
+            return currentHealth * 100 / StartStats.BaseStats.MaximalHealthPoints;
         }
 
         /// <summary>Get the direction of the turn</summary>
@@ -835,10 +843,10 @@ namespace BeastHunter
             HellHoundModel hellHoundModel = model as HellHoundModel;
             base.TakeDamage(model, damage);
 
-            _takingDamageMsg?.Invoke(model.CurrentHealth);
+            _takingDamageMsg?.Invoke(model.CurrentStats.BaseStats.CurrentHealthPoints);
             hellHoundModel.Animator.SetTrigger("TakeDamage");
 
-            if (model.IsDead)
+            if (model.CurrentStats.BaseStats.IsDead)
             {
                 _onDeadMsg?.Invoke();
                 hellHoundModel.Animator.SetTrigger("Dead");
@@ -852,20 +860,6 @@ namespace BeastHunter
             {
                 hellHoundModel.BehaviourState = SetState(BehaviourState.Searching, hellHoundModel);
             }
-        }
-
-        #endregion
-
-
-        #region IDealDamage
-
-        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
-        {
-            Damage countDamage = Services.SharedInstance.AttackService
-                .CountDamage(damage, BaseStats.MainStats, enemy.transform.GetMainParent().gameObject.GetInstanceID());
-
-            _onHitEnemyMsg?.Invoke(enemy);
-            enemy.TakeDamageEvent(countDamage);
         }
 
         #endregion

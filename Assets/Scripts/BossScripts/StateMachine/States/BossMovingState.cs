@@ -79,7 +79,7 @@ namespace BeastHunter
             _isWaiting = false;
             _waitingTime = 0f;
             _lastAnimationState = MovementStep.DEFAULT_ANIMATION_STATE;
-            _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
+            _stateMachine._model.BossNavAgent.speed = _stateMachine._model.ThisBossData.BossSettings.WalkSpeed;
             _stateMachine._model.BossAnimator.Play(_lastAnimationState);
             _waitingTimer = new TimeRemaining(() => _isWaiting = false, _waitingTime);
             _stuckTimer = new TimeRemaining(() => _isTargetSet = false, STUCK_TIME_COUNT);

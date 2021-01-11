@@ -25,7 +25,7 @@ namespace BeastHunter
             CanExit = false;
             CanBeOverriden = false;
             _stateMachine._model.BossNavAgent.enabled = false;
-            _stateMachine._model.IsDead = true;
+            _stateMachine._model.CurrentStats.BaseStats.IsDead = true;
             _stateMachine._model.BossAnimator.Play("DeadState", 0, 0f);
             _stateMachine._model.BossCapsuleCollider.center = Vector3.zero;
             _stateMachine._model.BossCapsuleCollider.height = 1f;

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+
 
 namespace BeastHunter
 {
@@ -34,22 +34,19 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public RabbitModel(GameObject prefab, RabbitData rabbitData)
+        public RabbitModel(GameObject objectOnScene, RabbitData data) : base(objectOnScene, data)
         {
-            if (prefab.GetComponent<Rigidbody>() != null)
+            if (objectOnScene.GetComponent<Rigidbody>() != null)
             {
-                RabbitData = rabbitData;
-                Rabbit = prefab;
-                RabbitTransform = prefab.transform;
-                RabbitRigidbody = prefab.GetComponent<Rigidbody>();
-                RabbitStartPosition = prefab.transform.position;
-
-                CurrentHealth = rabbitData.BaseStats.MainStats.MaxHealth;
-                IsDead = false;
+                RabbitData = data;
+                Rabbit = objectOnScene;
+                RabbitTransform = objectOnScene.transform;
+                RabbitRigidbody = objectOnScene.GetComponent<Rigidbody>();
+                RabbitStartPosition = objectOnScene.transform.position;
 
                 DangerousObjects = new List<Transform>();
-                NextCoord = rabbitData.RandomNextCoord(RabbitTransform, RabbitStartPosition, DangerousObjects);
-                if (rabbitData.RabbitStats.CanIdle)
+                NextCoord = data.RandomNextCoord(RabbitTransform, RabbitStartPosition, DangerousObjects);
+                if (data.RabbitStats.CanIdle)
                 {
                     RabbitState = RabbitData.BehaviourState.Idling;
                 }
@@ -64,41 +61,12 @@ namespace BeastHunter
             }
         }
 
-
-
-        #endregion
-
-
-        #region NpcModel
-
-        public override void OnAwake()
-        {
-           
-        }
-
-        public override void Execute()
-        {
-            if (!IsDead)
-            {
-                RabbitData.Act(this);
-            }
-        }
-
-        public override EnemyStats GetStats()
-        {
-            return RabbitData.BaseStats;
-        }
-
         public override void TakeDamage(Damage damage)
         {
-            if (!IsDead)
+            if (!CurrentStats.BaseStats.IsDead)
             {
                 RabbitData.TakeDamage(this, damage);
             }
-        }
-
-        public override void OnTearDown()
-        {
         }
 
         #endregion

@@ -12,8 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f161af36797e6e478e36cd9c678073d, type: 3}
   m_Name: BossData
   m_EditorClassIdentifier: 
+  _prefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
+  _startStats:
+    PermantnsBuffList: []
+    TemporaryBuffList: []
+    BaseStats:
+      _maximalHealthPoints: 500
+      _currentHealthPoints: 500
+      HealthRegenPerSecond: 0
+      _maximalStaminaPoints: 0
+      _currentStaminaPoints: 0
+      StaminaRegenPerSecond: 0
+      IsDead: 0
+      IsStunned: 0
+    AttackStats:
+      _physicalPower: 50
+      _magicalPower: 0
+    DefenceStats:
+      _physicalDamageResistance: 0.4
+      _stunProbabilityResistance: 0.2
+      _fireDamageResistance: 0
   _bossSettings:
-    _prefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
     _instanceName: Boss
     _leftHandObjectPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
       Spine1/OAK_TEE_ENT_ L Clavicle/OAK_TEE_ENT_ L UpperArm/OAK_TEE_ENT_ L Forearm/OAK_TEE_ENT_
@@ -46,19 +65,5 @@ MonoBehaviour:
     _leftHandHitBoxCenter: {x: -1, y: 0, z: 0}
     _rightHandHitBoxRadius: 1
     _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
-  _bossStats:
-    MainStats:
-      _maxHealth: 100
-      _enemyType: 5
-      _viewRadius: 0
-      _viewAngle: 0
-      _healthPoints: 100
-      _physicalPower: 0.76
-      _physicalDamageResistance: 0.818
-      _stunProbabilityResistance: 0
-    AttackList: []
-    DefenceStats:
-      _baseDefense: 0
-    Prefab: {fileID: 0}
   _movementPrefab: {fileID: 3608412240235365698, guid: 780860c28e2fd0e4b83fcab9bb4061b7,
     type: 3}

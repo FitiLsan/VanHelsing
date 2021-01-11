@@ -5,14 +5,14 @@ using UnityEngine.Events;
 
 namespace BeastHunter
 {
-    public sealed class EventManager : Service
+    public sealed class EventManager : IService
     {
         #region Fileds
 
         private Dictionary<GameEventTypes, GameEvent> _eventDictionary;
         private Dictionary<InputEventTypes, UnityEvent> _inputDictionary;
 
-        public EventManager(Contexts contexts) : base(contexts)
+        public EventManager()
         {
             Init();
         }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 
@@ -19,9 +17,6 @@ namespace BeastHunter
         private InteractableObjectBehavior _detectionSphereIO;
         private SphereCollider _detectionSphere;
         private TwoHeadedSnakeAttackStateBehaviour[] _attackStates;
-        private Collider[] _tailAttackColliders;
-        private Collider[] _twinHeadAttackColliders;
-
         public TwoHeadedSnakeData.BehaviourState behaviourState;
         public Transform chasingTarget;
 
@@ -41,25 +36,26 @@ namespace BeastHunter
         public CapsuleCollider CapsuleCollider { get; }
         public Rigidbody Rigidbody { get; }
         public NavMeshAgent NavMeshAgent { get; }
-
         public TwoHeadedSnakeSettings Settings { get; }
         public GameObject TwoHeadedSnake { get; }
         public Vector3 SpawnPoint;
         public Animator Animator { get; }
         public Transform Transform { get; }
         public InteractableObjectBehavior [] WeaponsIO { get; }
-        public Collider[] TailAttackColliders { get => _tailAttackColliders; }
-        public Collider[] TwinHeadAttackColliders { get => _twinHeadAttackColliders; }
+        public Collider[] TailAttackColliders { get; private set; }
+        public Collider[] TwinHeadAttackColliders { get; private set; }
+
         #endregion
 
 
         #region ClassLifeCycle
 
-        public TwoHeadedSnakeModel(GameObject prefab, TwoHeadedSnakeData twoHeadedSnakeData, Vector3 spawnPosition)
+        public TwoHeadedSnakeModel(GameObject objectOnScene, TwoHeadedSnakeData data, Vector3 spawnPosition) : 
+            base(objectOnScene, data)
         {
-            _twoHeadedSnakeData = twoHeadedSnakeData;
+            _twoHeadedSnakeData = data;
             Settings = _twoHeadedSnakeData.settings;
-            TwoHeadedSnake = prefab;
+            TwoHeadedSnake = objectOnScene;
             SpawnPoint = spawnPosition;
             attackCoolDownTimer = 0;
 
@@ -139,10 +135,6 @@ namespace BeastHunter
                 _attackStates[i].OnStateEnterHandler += OnAttackStateEnter;
                 _attackStates[i].OnStateExitHandler += OnAttackStateExit;
             }
-
-            CurrentHealth = _twoHeadedSnakeData.BaseStats.MainStats.MaxHealth;
-            IsDead = false;
-
         }
 
         #endregion
@@ -150,33 +142,9 @@ namespace BeastHunter
 
         #region NpcModel
 
-        public override void OnAwake()
-        {
-            
-        }
-
-        public override void Execute()
-        {
-            if (!IsDead)
-            {
-                _twoHeadedSnakeData.Act(this);
-            }
-            
-        }
-
-        public override EnemyStats GetStats()
-        {
-            return _twoHeadedSnakeData.BaseStats;
-        }
-
-        public override void OnTearDown()
-        {
-            
-        }
-
         public override void TakeDamage(Damage damage)
         {
-            if (!IsDead)
+            if (!CurrentStats.BaseStats.IsDead)
             {
                 _twoHeadedSnakeData.TakeDamage(this, damage);
             }
@@ -193,6 +161,7 @@ namespace BeastHunter
         private void OnHitEnemy(ITrigger trigger, Collider collider) => _twoHeadedSnakeData.OnHitEnemy(collider, this);
         private void OnAttackStateEnter() => _twoHeadedSnakeData.OnAttackStateEnter(this);
         private void OnAttackStateExit() => _twoHeadedSnakeData.OnAttackStateExit(this);
+
         #endregion
 
 
@@ -235,37 +204,33 @@ namespace BeastHunter
 
         private void AddAttackColliderCollection(InteractableObjectBehavior[] weaponBehaviors)
         {
-            _twinHeadAttackColliders = new Collider[HEAD_COLLIDER_COUNT];
-            _tailAttackColliders = new Collider[TAIL_COLLIDER_COUNT];
+            TwinHeadAttackColliders = new Collider[HEAD_COLLIDER_COUNT];
+            TailAttackColliders = new Collider[TAIL_COLLIDER_COUNT];
             
             int headCountIndex = 0;
             int tailCountIndex = 0;
 
             for (int i = 0; i < weaponBehaviors.Length; i++)
             {
-
                 if (weaponBehaviors[i].name == "Bone14" || weaponBehaviors[i].name == "Bone14(mirrored)")
                 {
                    
-                    _twinHeadAttackColliders[headCountIndex] = weaponBehaviors[i].GetComponent<BoxCollider>();
-                    _twinHeadAttackColliders[headCountIndex].enabled = false;
+                    TwinHeadAttackColliders[headCountIndex] = weaponBehaviors[i].GetComponent<BoxCollider>();
+                    TwinHeadAttackColliders[headCountIndex].enabled = false;
                     headCountIndex++;
 
                 }
                 else 
                 {
                    
-                    _tailAttackColliders[tailCountIndex] = weaponBehaviors[i].GetComponent<BoxCollider>();
-                    _tailAttackColliders[tailCountIndex].enabled = false;
+                    TailAttackColliders[tailCountIndex] = weaponBehaviors[i].GetComponent<BoxCollider>();
+                    TailAttackColliders[tailCountIndex].enabled = false;
                     tailCountIndex++;
 
                 }
-
-            }
-
-         
+            }      
         }
-        #endregion
 
+        #endregion
     }
 }

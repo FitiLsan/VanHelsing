@@ -23,22 +23,22 @@
 
         #region Methods
 
-        public void Initialize(Contexts contexts)
+        public void InitializeGameServices(GameContext context)
         {
-            PhysicsService = new PhysicsService(contexts);
-            InventoryService = new InventoryService(contexts);
-            AttackService = new AttackService(contexts);
-            CameraService = new CameraService(contexts);
-            EventManager = new EventManager(contexts);
-            BuffService = new BuffService(contexts);
-            UnityTimeService = new UnityTimeService(contexts);
-            TimeSkipService = new TimeSkipService(contexts);
-            TrapService = new TrapService(contexts);
-            NoiseService = new NoiseService(contexts);
-            AudioService = new AudioService(contexts);
+            PhysicsService = new PhysicsService();
+            InventoryService = new InventoryService();
+            AttackService = new AttackService(context);
+            CameraService = new CameraService(context);
+            EventManager = new EventManager();
+            BuffService = new BuffService();
+            UnityTimeService = new UnityTimeService();
+            TimeSkipService = new TimeSkipService();
+            TrapService = new TrapService(context);
+            NoiseService = new NoiseService();
+            AudioService = new AudioService(context);
         }
 
-        public void Dispose()
+        public void DisposeGameServices()
         {
             CameraService.Dispose();
             AudioService.Dispose();

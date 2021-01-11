@@ -4,18 +4,11 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public sealed class UnityTimeService : Service
+    public sealed class UnityTimeService : IService
     {
         #region Fields
 
         private int _deltaTimeResetFrame;
-
-        #endregion
-        
-
-        #region ClassLifeCycles
-
-        public UnityTimeService(Contexts contexts) : base(contexts) { }
 
         #endregion
 

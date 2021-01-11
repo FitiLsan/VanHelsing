@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
+
 
 namespace BeastHunter
 {
@@ -90,9 +90,13 @@ namespace BeastHunter
 
         #region Methods
 
-        public void Act(TwoHeadedSnakeModel model)
+        public override void Act(EnemyModel enemyModel)
         {
+            Execute(enemyModel as TwoHeadedSnakeModel);
+        }
 
+        public void Execute(TwoHeadedSnakeModel model)
+        {
             float rotateDirection = GetRotateDirection(model.Transform, ref model.rotatePosition1, ref model.rotatePosition2);
             model.Animator.SetFloat("Velosity", model.NavMeshAgent.velocity.sqrMagnitude);
             
@@ -155,7 +159,8 @@ namespace BeastHunter
                     }
                     else
                     {
-                        if (CurrentHealthPercent(model.CurrentHealth) < settings.PercentEscapeHealth && !model.isAttacking)
+                        if (CurrentHealthPercent(model.CurrentStats.BaseStats.CurrentHealthPoints) < settings.
+                            PercentEscapeHealth && !model.isAttacking)
                         {
                             model.behaviourState = ChangeState(BehaviourState.Escaping, model);
                         }
@@ -584,7 +589,7 @@ namespace BeastHunter
         /// <summary>Current health in percent</summary>
         private float CurrentHealthPercent(float currentHealth)
         {
-            return currentHealth * 100 / BaseStats.MainStats.MaxHealth;
+            return currentHealth * 100 / StartStats.BaseStats.MaximalHealthPoints;
         }
 
         /// <summary>Subscribes to message delegates</summary>
@@ -620,12 +625,10 @@ namespace BeastHunter
 
         private void SwitcherColladers(Collider[] colliders, bool enableSwitcher)
         {
-
             foreach (var collider in colliders)
             {
                 collider.enabled = enableSwitcher;
             }
-
         }
 
         #endregion
@@ -641,7 +644,7 @@ namespace BeastHunter
             TakingDamageMsg?.Invoke();
             twoHeadedSnakeModel.Animator.SetTrigger("TakeDamage");
 
-            if (model.IsDead)
+            if (model.CurrentStats.BaseStats.IsDead)
             {
                 OnDeadMsg?.Invoke();
                 twoHeadedSnakeModel.Animator.SetTrigger("Dead");
@@ -659,5 +662,4 @@ namespace BeastHunter
 
         #endregion
     }
-
 }

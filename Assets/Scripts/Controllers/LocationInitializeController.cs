@@ -53,7 +53,7 @@ namespace BeastHunter
 
                 var dataType = spawnEnemyData.SpawningDataType;
                 var enemyData = spawnEnemyData.SpawningEnemyData;
-                var gameObject = enemyData.BaseStats.Prefab;
+                var gameObject = enemyData.Prefab;
                 var spawnPoint = spawnPointData.SpawnPoint;
                 var radius = spawnPointData.SpawnRadius;
 

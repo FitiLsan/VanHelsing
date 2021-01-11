@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BeastHunter
 {
-    public sealed class PhysicsService : Service
+    public sealed class PhysicsService : IService
     {
         #region Fields
 
@@ -20,7 +20,7 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public PhysicsService(Contexts contexts) : base(contexts)
+        public PhysicsService()
         {
             _collidedObjects = new Collider[COLLIDER_OBJECT_SIZE];
             _castBuffer = new RaycastHit[64];

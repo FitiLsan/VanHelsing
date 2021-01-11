@@ -23,7 +23,7 @@ namespace BeastHunter
             var spawnPoint = locationData.BossSpawnPosition; 
             Vector3 groundedInstancePosition = Services.SharedInstance.PhysicsService.GetGroundedPosition(spawnPoint);
 
-            GameObject instance = GameObject.Instantiate(bossData._bossSettings.Prefab);
+            GameObject instance = GameObject.Instantiate(bossData.Prefab);
             BossModel boss = new BossModel(instance, bossData, groundedInstancePosition, _context);
             //BossModel boss = new BossModel(instance, bossData, spawnPoint, _context);
 

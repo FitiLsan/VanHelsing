@@ -11,9 +11,6 @@ namespace BeastHunter
 
         [Header("Scene information fields")]
 
-        [Tooltip("Boss prefab.")]
-        [SerializeField] private GameObject _prefab;
-
         [Tooltip("Boss instance name.")]
         [SerializeField] private string _instanceName;
 
@@ -130,8 +127,6 @@ namespace BeastHunter
 
 
         #region Properties
-
-        public GameObject Prefab => _prefab;
 
         public RuntimeAnimatorController BossAnimator => _bossAnimator;
 

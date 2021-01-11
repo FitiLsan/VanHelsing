@@ -17,7 +17,7 @@ namespace BeastHunter
         void Start()
         {
             GameContext context = new GameContext();
-            Services.SharedInstance.Initialize(context);
+            Services.SharedInstance.InitializeGameServices(context);
 
             _activeController = new GameSystemsController(context);
             _activeController.Initialize();
@@ -41,7 +41,7 @@ namespace BeastHunter
         private void OnDestroy()
         {
             _activeController.TearDown();
-            Services.SharedInstance.Dispose();
+            Services.SharedInstance.DisposeGameServices();
         }
 
         #endregion

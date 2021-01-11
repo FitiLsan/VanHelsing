@@ -27,16 +27,31 @@ namespace BeastHunter
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
-            _characterModel.IsDead = true;
-            _characterModel.CharacterTransform.tag = TagManager.NPC;
+            _characterModel.CurrentStats.BaseStats.IsDead = true;
+
             MessageBroker.Default.Publish(new OnPlayerDieEventCLass());
 
-            if(_characterModel.CurrentWeaponData != null)
+            LoseWeapon();
+            DisablePhysics();
+        }
+
+        #endregion
+
+
+        #region Methods
+
+        private void LoseWeapon()
+        {
+            if (_characterModel.CurrentWeaponData != null)
             {
                 _characterModel.PuppetMaster.propMuscles[0].currentProp = null;
                 _characterModel.PuppetMaster.propMuscles[1].currentProp = null;
             }
+        }
 
+        private void DisablePhysics()
+        {
+            _characterModel.CharacterRigitbody.isKinematic = true;
             _characterModel.PuppetMaster.state = RootMotion.Dynamics.PuppetMaster.State.Dead;
         }
 

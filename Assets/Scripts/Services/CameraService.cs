@@ -7,7 +7,7 @@ using UniRx;
 
 namespace BeastHunter
 {
-    public sealed class CameraService : Service, IDisposable
+    public sealed class CameraService : IService, IDisposable
     {
         #region Constants
 
@@ -63,9 +63,9 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public CameraService(Contexts contexts) : base(contexts)
+        public CameraService(GameContext context)
         {
-            _context = contexts as GameContext;
+            _context = context;
             _cameraData = Data.CameraData;
 
 #if (UNITY_EDITOR)
@@ -110,8 +110,8 @@ namespace BeastHunter
                 InstantiateDirection, 0);
             CharacterFreelookCamera = _cameraData._cameraSettings.CreateCharacterFreelookCamera(_cameraStaticTarget.
                 transform, _cameraStaticTarget.transform);
-            CharacterKnockedDownCamera = _cameraData._cameraSettings.CreateCharacterKnockedDownCamera(_cameraStaticTarget.
-                transform, _cameraStaticTarget.transform);
+            CharacterKnockedDownCamera = _cameraData._cameraSettings.CreateCharacterKnockedDownCamera(characterModel.
+                PuppetMaster.transform.GetChild(0), characterModel.PuppetMaster.transform.GetChild(0));
             CharacterTargetCamera = _cameraData._cameraSettings.CreateCharacterTargetCamera(_cameraStaticTarget.
                 transform, _cameraStaticTarget.transform);
             CharacterAimingCamera = _cameraData._cameraSettings.CreateCharacterAimingCamera(_cameraStaticTarget.
@@ -146,27 +146,6 @@ namespace BeastHunter
                 PreviousActiveCamera = CurrentActiveCamera.Value;
                 CurrentActiveCamera.Value = newCamera;
                 SetAllCamerasEqual();
-
-                float blendTime = 0f;
-
-                if (CurrentActiveCamera.Value == CharacterFreelookCamera)
-                {
-                    blendTime = _cameraData._cameraSettings.CharacterFreelookCameraBlendTime;
-                }
-                else if (CurrentActiveCamera.Value == CharacterKnockedDownCamera)
-                {
-                    blendTime = _cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime;
-                }
-                else if (CurrentActiveCamera.Value == CharacterTargetCamera)
-                {
-                    blendTime = _cameraData._cameraSettings.CharacterTargetCameraBlendTime;
-                }
-                else if (CurrentActiveCamera.Value == CharacterAimingCamera)
-                {
-                    blendTime = _cameraData._cameraSettings.CHaracterAimingCameraBlendTIme;
-                }
-
-                SetBlendTime(blendTime);
                 CurrentActiveCamera.Value.Priority++;
             }
         }
@@ -176,39 +155,42 @@ namespace BeastHunter
             switch (currentState?.StateName)
             {
                 case CharacterStatesEnum.Aiming:
+                    SetBlendTime(_cameraData._cameraSettings.CharacterAimingCameraBlendTIme);
                     SetActiveCamera(CharacterAimingCamera);
                     GetWeaponShootTransform();
                     break;
-                case CharacterStatesEnum.Attacking:                 
-                    break;
-                case CharacterStatesEnum.Shooting:                
-                    break;
                 case CharacterStatesEnum.Battle:
+                    SetBlendTime(_cameraData._cameraSettings.CharacterTargetCameraBlendTime);
                     SetActiveCamera(CharacterTargetCamera);
                     break;
                 case CharacterStatesEnum.Dead:
-                    SetActiveCamera(CharacterFreelookCamera);
-                    break;
-                case CharacterStatesEnum.Dodging:
+                    GetKnockedDownCameraToFreeLookPosition();
+                    SetBlendTime(_cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime);
+                    SetActiveCamera(CharacterKnockedDownCamera);
                     break;
                 case CharacterStatesEnum.Idle:
+                    SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
                     SetActiveCamera(CharacterFreelookCamera);
-                    break;
-                case CharacterStatesEnum.Jumping:
                     break;
                 case CharacterStatesEnum.Movement:
+                    if (_context.CharacterModel.PreviousCharacterState.Value.StateName == CharacterStatesEnum.Battle)
+                    {
+                        SetBlendTime(0f);
+                    }
+                    else
+                    {
+                        SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
+                    }
                     SetActiveCamera(CharacterFreelookCamera);
-                    break;
-                case CharacterStatesEnum.Sliding:
-                    break;
-                case CharacterStatesEnum.Sneaking:
-                    break;
-                case CharacterStatesEnum.TrapPlacing:
                     break;
                 case CharacterStatesEnum.KnockedDown:
-                    SetActiveCamera(CharacterFreelookCamera);
+                    GetKnockedDownCameraToFreeLookPosition();
+                    SetBlendTime(_cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime);
+                    SetActiveCamera(CharacterKnockedDownCamera);
                     break;
                 case CharacterStatesEnum.GettingUp:
+                    SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
+                    SetActiveCamera(CharacterFreelookCamera);
                     break;
                 default:
                     break;
@@ -232,6 +214,12 @@ namespace BeastHunter
         {
             CharacterFreelookCamera.m_XAxis.m_MaxSpeed = 0f;
             CharacterFreelookCamera.m_YAxis.m_MaxSpeed = 0f;
+        }
+
+        public void GetKnockedDownCameraToFreeLookPosition()
+        {
+            CharacterKnockedDownCamera.m_XAxis.Value = CharacterFreelookCamera.m_XAxis.Value;
+            CharacterKnockedDownCamera.m_YAxis.Value = CharacterFreelookCamera.m_YAxis.Value;
         }
 
         public void UnlockFreeLookCamera()
@@ -361,7 +349,6 @@ namespace BeastHunter
                 EditorApplication.playModeStateChanged -= SaveCameraSettings;
             }
         }
-
 #endif
 
         #endregion

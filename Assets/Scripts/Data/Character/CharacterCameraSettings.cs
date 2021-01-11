@@ -6,9 +6,11 @@ using UnityEngine;
 namespace BeastHunter
 {
     [Serializable]
-    public struct CharacterCameraStruct
+    public struct CharacterCameraSettings
     {
         #region Fields
+
+        [Header("Main cameras settings")]
 
         [Tooltip("Character camera.")]
         [SerializeField] private Camera _characterCamera;
@@ -64,6 +66,7 @@ namespace BeastHunter
         [SerializeField] private float _characterAimingCameraBlendTime;
 
         [Header("Lens Settings")]
+        [Header("Character free look camera settings")]
 
         [Tooltip("Free look field of view between 1 and 179.")]
         [Range(0.0f, 179.0f)]
@@ -668,7 +671,7 @@ namespace BeastHunter
         public float CharacterFreelookCameraBlendTime => _characterFreelookCameraBlendTime;
         public float CharacterKnockedDownCameraBlendTime => _characterKnockedDownCameraBlendTime;
         public float CharacterTargetCameraBlendTime => _characterTargetCameraBlendTime;
-        public float CHaracterAimingCameraBlendTIme => _characterAimingCameraBlendTime;
+        public float CharacterAimingCameraBlendTIme => _characterAimingCameraBlendTime;
         public float CameraTargetHeight => _cameraTargetHeight;
 
         public float FreeLookFieldOfView => _freeLookFieldOfView;
@@ -1168,28 +1171,6 @@ namespace BeastHunter
             return characterFreelookCamera;
         }
 
-        public CinemachineFreeLook CreateCharacterKnockedDownCamera(Transform followTransform, Transform lookAtTransform, 
-            Transform parent = null)
-        {
-            CinemachineFreeLook characterKnockedDownCamera;
-
-            if(parent == null)
-            {
-                characterKnockedDownCamera = GameObject.Instantiate(CharacterFreelookCamera);
-            }
-            else
-            {
-                characterKnockedDownCamera = GameObject.Instantiate(CharacterFreelookCamera, parent);
-            }
-
-            characterKnockedDownCamera.name = CharacterKnockedDownCameraName;
-
-            characterKnockedDownCamera.Follow = followTransform;
-            characterKnockedDownCamera.LookAt = lookAtTransform;
-
-            return characterKnockedDownCamera;
-        }
-
         public CinemachineVirtualCamera CreateCharacterTargetCamera(Transform followTransform, Transform lookAtTransform, 
             Transform parent = null)
         {
@@ -1308,6 +1289,42 @@ namespace BeastHunter
             aimingComposer.m_BiasY = AimingCameraBiasY;
 
             return characterAimingCamera;
+        }
+
+        public CinemachineFreeLook CreateCharacterKnockedDownCamera(Transform followTransform, Transform lookAtTransform,
+            Transform parent = null)
+        {
+            CinemachineFreeLook characterKnockeDownCamera;
+
+            if (parent == null)
+            {
+                characterKnockeDownCamera = GameObject.Instantiate(CharacterKnockedDownCamera);
+            }
+            else
+            {
+                characterKnockeDownCamera = GameObject.Instantiate(CharacterKnockedDownCamera, parent);
+            }
+
+            characterKnockeDownCamera.name = CharacterKnockedDownCameraName;
+
+            characterKnockeDownCamera.Follow = followTransform;
+            characterKnockeDownCamera.LookAt = lookAtTransform;
+
+            for (var rig = 0; rig < 3; rig++)
+            {
+                CinemachineVirtualCamera cinemachineRig = characterKnockeDownCamera.GetRig(rig);
+                cinemachineRig.LookAt = lookAtTransform;
+            }
+
+            CinemachineCollider colliderFromCamera = characterKnockeDownCamera.GetComponent<CinemachineCollider>();
+            colliderFromCamera.m_MinimumDistanceFromTarget = ColliderMinDistanceFromTarget;
+            colliderFromCamera.m_AvoidObstacles = IsColliderAvoidingObstacles;
+            colliderFromCamera.m_DistanceLimit = ColliderDistanceLimit;
+            colliderFromCamera.m_CameraRadius = ColliderCameraRadius;
+            colliderFromCamera.m_Damping = ColliderDamping;
+            colliderFromCamera.m_OptimalTargetDistance = ColliderOptimalTargetDistance;
+
+            return characterKnockeDownCamera;
         }
 
         #endregion

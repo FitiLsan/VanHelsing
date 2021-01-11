@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using Extensions;
 using System.Collections.Generic;
 
+
 namespace BeastHunter
 {
     public sealed class HellHoundModel : EnemyModel
@@ -29,10 +30,10 @@ namespace BeastHunter
         public Transform Transform { get; }
         public Collider AttackCollider { get; }
         public InteractableObjectBehavior WeaponIO { get; }
-        public float JumpingAttackTimer { get; set; }
         public HellHoundData.BehaviourState BehaviourState { get; set; }
         public Vector3 SpawnPoint { get; }
         public Transform ChasingTarget { get; set; }
+        public float JumpingAttackTimer { get; set; }
         public bool IsAttacking { get; set; }
 
         #endregion
@@ -40,10 +41,10 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public HellHoundModel(GameObject gameObject, HellHoundData hellHoundData)
+        public HellHoundModel(GameObject objectOnScene, HellHoundData data) : base(objectOnScene, data)
         {
-            _hellHoundData = hellHoundData;
-            HellHound = gameObject;
+            _hellHoundData = data;
+            HellHound = objectOnScene;
 
             Transform = HellHound.transform;
             BehaviourState = HellHoundData.BehaviourState.None;
@@ -51,9 +52,9 @@ namespace BeastHunter
             SpawnPoint = Transform.position;
 
             Animator = HellHound.GetComponent<Animator>();
-            Animator.SetFloat("JumpSpeedRate", hellHoundData.Stats.JumpingSpeedRate);
-            Animator.SetFloat("JumpBackSpeedRate", hellHoundData.Stats.BackJumpAnimationSpeedRate);
-            Animator.SetFloat("JumpBackIntensity", hellHoundData.Stats.BackJumpAnimationIntensity);
+            Animator.SetFloat("JumpSpeedRate", _hellHoundData.Stats.JumpingSpeedRate);
+            Animator.SetFloat("JumpBackSpeedRate", _hellHoundData.Stats.BackJumpAnimationSpeedRate);
+            Animator.SetFloat("JumpBackIntensity", _hellHoundData.Stats.BackJumpAnimationIntensity);
 
             _interactableObjects = HellHound.GetComponentsInChildren<InteractableObjectBehavior>();
 
@@ -64,7 +65,7 @@ namespace BeastHunter
 
             _detectionSphere = _detectionSphereIO.GetComponent<SphereCollider>();
             if (_detectionSphere == null) Debug.LogError(this + " not found SphereCollider in DetectionSphere gameobject");
-            else _detectionSphere.radius = hellHoundData.Stats.DetectionRadius;
+            else _detectionSphere.radius = _hellHoundData.Stats.DetectionRadius;
 
             WeaponIO = _interactableObjects.GetInteractableObjectByType(InteractableObjectType.HitBox);
             WeaponIO.OnFilterHandler = Filter;
@@ -74,10 +75,10 @@ namespace BeastHunter
             AttackCollider.enabled = false;
 
             NavMeshAgent = HellHound.GetComponent<NavMeshAgent>();
-            NavMeshAgent.angularSpeed = hellHoundData.Stats.AngularSpeed;
-            NavMeshAgent.acceleration = hellHoundData.Stats.Acceleration;
-            NavMeshAgent.stoppingDistance = hellHoundData.Stats.StoppingDistance;
-            NavMeshAgent.baseOffset = hellHoundData.Stats.BaseOffsetByY;
+            NavMeshAgent.angularSpeed = _hellHoundData.Stats.AngularSpeed;
+            NavMeshAgent.acceleration = _hellHoundData.Stats.Acceleration;
+            NavMeshAgent.stoppingDistance = _hellHoundData.Stats.StoppingDistance;
+            NavMeshAgent.baseOffset = _hellHoundData.Stats.BaseOffsetByY;
 
             _attackStates = Animator.GetBehaviours<HellHoundAttackStateBehaviour>();
             for (int i = 0; i < _attackStates.Length; i++)
@@ -94,9 +95,6 @@ namespace BeastHunter
                     hitBoxesIO[i].SetTakeDamageEvent(OnTakeDamage);
                 }
             }
-
-            CurrentHealth = _hellHoundData.BaseStats.MainStats.MaxHealth;
-            IsDead = false;
         }
 
         #endregion
@@ -132,43 +130,14 @@ namespace BeastHunter
             _interactableObjects = null;
         }
 
-        #endregion
-
-
-        #region EnemyModel
-
-        public override void Execute()
-        {
-            if (!IsDead)
-            {
-                _hellHoundData.Act(this);
-            }
-        }
-
-        public override EnemyStats GetStats()
-        {
-            return _hellHoundData.BaseStats;
-        }
-
-        public override void OnAwake()
-        {
-            
-        }
-
-        public override void OnTearDown()
-        {
-            
-        }
-
         public override void TakeDamage(Damage damage)
         {
-            if (!IsDead)
+            if (!CurrentStats.BaseStats.IsDead)
             {
                 _hellHoundData.TakeDamage(this, damage);
             }
         }
 
         #endregion
-
     }
 }

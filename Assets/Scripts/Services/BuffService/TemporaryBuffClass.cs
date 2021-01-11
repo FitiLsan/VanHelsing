@@ -4,7 +4,7 @@
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewTemporaryBuff", menuName = "TemporaryBuff")]
-    public sealed class TemporaryBuffClass : ScriptableObject
+    public sealed class TemporaryBuff : ScriptableObject
     {
         #region Fields
 

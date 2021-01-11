@@ -5,7 +5,7 @@ using UniRx;
 
 namespace BeastHunter
 {
-    public sealed class BossModel : EnemyModel
+    public sealed class BossModel : EnemyModel, IAwake, ITearDown
     {
         #region Properties
 
@@ -31,9 +31,8 @@ namespace BeastHunter
         public Rigidbody BossRigitbody { get; }
         public NavMeshAgent BossNavAgent { get; }
         public BossBehavior BossBehavior { get; }
-        public BossData BossData { get; }
+        public BossData ThisBossData { get; }
         public BossSettings BossSettings { get; }
-        public EnemyStats BossStats { get; }
         public BossStateMachine BossStateMachine { get; }
 
         public Animator BossAnimator { get; set; }
@@ -55,12 +54,12 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public BossModel(GameObject prefab, BossData bossData, Vector3 groundPosition, GameContext context)
+        public BossModel(GameObject objectOnScene, EnemyData bossData, Vector3 groundPosition, GameContext context) : 
+            base(objectOnScene, bossData)
         {
-            BossData = bossData;
-            BossSettings = BossData._bossSettings;
-            BossStats = BossData._bossStats;
-            BossTransform = prefab.transform;
+            ThisBossData = bossData as BossData;
+            BossSettings = ThisBossData.BossSettings;
+            BossTransform = objectOnScene.transform;
             BossTransform.rotation = Quaternion.Euler(0, BossSettings.InstantiateDirection, 0);
             BossTransform.name = BossSettings.InstanceName;
             BossTransform.tag = BossSettings.InstanceTag;
@@ -73,28 +72,28 @@ namespace BeastHunter
                 child.gameObject.layer = BossSettings.InstanceLayer;
             }
 
-            if (prefab.GetComponent<Rigidbody>() != null)
+            if (objectOnScene.GetComponent<Rigidbody>() != null)
             {
-                BossRigitbody = prefab.GetComponent<Rigidbody>();
+                BossRigitbody = objectOnScene.GetComponent<Rigidbody>();
             }
             else
             {
-                BossRigitbody = prefab.AddComponent<Rigidbody>();
+                BossRigitbody = objectOnScene.AddComponent<Rigidbody>();
                 BossRigitbody.freezeRotation = true;
                 BossRigitbody.mass = BossSettings.RigitbodyMass;
                 BossRigitbody.drag = BossSettings.RigitbodyDrag;
                 BossRigitbody.angularDrag = BossSettings.RigitbodyAngularDrag;
             }
 
-            BossRigitbody.isKinematic = BossData._bossSettings.IsRigitbodyKinematic;
+            BossRigitbody.isKinematic = ThisBossData.BossSettings.IsRigitbodyKinematic;
 
-            if (prefab.GetComponent<CapsuleCollider>() != null)
+            if (objectOnScene.GetComponent<CapsuleCollider>() != null)
             {
-                BossCapsuleCollider = prefab.GetComponent<CapsuleCollider>();
+                BossCapsuleCollider = objectOnScene.GetComponent<CapsuleCollider>();
             }
             else
             {
-                BossCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
+                BossCapsuleCollider = objectOnScene.AddComponent<CapsuleCollider>();
                 BossCapsuleCollider.center = BossSettings.CapsuleColliderCenter;
                 BossCapsuleCollider.radius = BossSettings.CapsuleColliderRadius;
                 BossCapsuleCollider.height = BossSettings.CapsuleColliderHeight;
@@ -102,41 +101,41 @@ namespace BeastHunter
 
             BossTransform.position = groundPosition;
 
-            if (prefab.GetComponent<SphereCollider>() != null)
+            if (objectOnScene.GetComponent<SphereCollider>() != null)
             {
-                BossSphereCollider = prefab.GetComponent<SphereCollider>();
+                BossSphereCollider = objectOnScene.GetComponent<SphereCollider>();
                 BossSphereCollider.isTrigger = true;
             }
             else
             {
-                BossSphereCollider = prefab.AddComponent<SphereCollider>();
+                BossSphereCollider = objectOnScene.AddComponent<SphereCollider>();
                 BossSphereCollider.center = BossSettings.SphereColliderCenter;
                 BossSphereCollider.radius = BossSettings.SphereColliderRadius;
                 BossSphereCollider.isTrigger = true;
             }
 
-            if (prefab.GetComponent<Animator>() != null)
+            if (objectOnScene.GetComponent<Animator>() != null)
             {
-                BossAnimator = prefab.GetComponent<Animator>();
+                BossAnimator = objectOnScene.GetComponent<Animator>();
             }
             else
             {
-                BossAnimator = prefab.AddComponent<Animator>();
+                BossAnimator = objectOnScene.AddComponent<Animator>();
             }
 
             BossAnimator.runtimeAnimatorController = BossSettings.BossAnimator;
             BossAnimator.applyRootMotion = false;
 
-            if (prefab. GetComponent<BossBehavior>() != null)
+            if (objectOnScene. GetComponent<BossBehavior>() != null)
             {
-                BossBehavior = prefab.GetComponent<BossBehavior>();
+                BossBehavior = objectOnScene.GetComponent<BossBehavior>();
             }
             else
             {
                 throw new System.Exception("Boss has no behavior script");
             }
 
-            GameObject movement = GameObject.Instantiate(BossData._movementPrefab);
+            GameObject movement = GameObject.Instantiate(ThisBossData.MovementPrefab);
             MovementPath movementPath = movement.GetComponent<MovementPath>();
 
             if (!movementPath)
@@ -155,20 +154,20 @@ namespace BeastHunter
             IsPlayerNear = false;
 
             CurrentSpeed = 0f;
-            AnimationSpeed = BossData._bossSettings.AnimatorBaseSpeed;
+            AnimationSpeed = ThisBossData.BossSettings.AnimatorBaseSpeed;
 
             LeftHand = BossTransform.Find(BossSettings.LeftHandObjectPath);
             RightHand = BossTransform.Find(BossSettings.RightHandObjectPath);
 
             AnchorPosition = BossTransform.position;
 
-            if (prefab.GetComponent<NavMeshAgent>() != null)
+            if (objectOnScene.GetComponent<NavMeshAgent>() != null)
             {
-                BossNavAgent = prefab.GetComponent<NavMeshAgent>();
+                BossNavAgent = objectOnScene.GetComponent<NavMeshAgent>();
             }
             else
             {
-                BossNavAgent = prefab.AddComponent<NavMeshAgent>();
+                BossNavAgent = objectOnScene.AddComponent<NavMeshAgent>();
             }
 
             WeaponData = Data.BossFeasts;
@@ -176,8 +175,8 @@ namespace BeastHunter
             GameObject leftHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
                 LeftActualWeapon.WeaponPrefab, LeftHand);
             SphereCollider LeftHandTrigger = leftHandWeapon.GetComponent<SphereCollider>();
-            LeftHandTrigger.radius = BossData._bossSettings.LeftHandHitBoxRadius;
-            LeftHandTrigger.center = BossData._bossSettings.LeftHandHitBoxCenter;
+            LeftHandTrigger.radius = ThisBossData.BossSettings.LeftHandHitBoxRadius;
+            LeftHandTrigger.center = ThisBossData.BossSettings.LeftHandHitBoxCenter;
             LeftHandTrigger.isTrigger = true;
             LeftHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             LeftWeaponBehavior = leftHandWeapon.GetComponent<WeaponHitBoxBehavior>();
@@ -186,8 +185,8 @@ namespace BeastHunter
             GameObject rightHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
                 RightActualWeapon.WeaponPrefab, RightHand);
             SphereCollider RightHandTrigger = rightHandWeapon.GetComponent<SphereCollider>();
-            RightHandTrigger.radius = BossData._bossSettings.RightHandHitBoxRadius;
-            RightHandTrigger.center = BossData._bossSettings.RightHandHitBoxCenter;
+            RightHandTrigger.radius = ThisBossData.BossSettings.RightHandHitBoxRadius;
+            RightHandTrigger.center = ThisBossData.BossSettings.RightHandHitBoxCenter;
             RightHandTrigger.isTrigger = true;
             RightHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             RightWeaponBehavior = rightHandWeapon.GetComponent<WeaponHitBoxBehavior>();
@@ -218,7 +217,26 @@ namespace BeastHunter
             ThirdWeakPointBehavior.AdditionalDamage = ThirdWeakPointData.AdditionalDamage;
 
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
-            CurrentHealth = BossStats.MainStats.HealthPoints;
+        }
+
+        #endregion
+
+
+        #region IAwake
+
+        public void OnAwake()
+        {
+            BossStateMachine.OnAwake();
+        }
+
+        #endregion
+
+
+        #region ITearDown
+
+        public void TearDown()
+        {
+            BossStateMachine.OnTearDown();
         }
 
         #endregion
@@ -226,28 +244,14 @@ namespace BeastHunter
 
         #region Methods
 
-        public override void OnAwake()
-        {
-            BossStateMachine.OnAwake();
-        }
-
-        public override void Execute()
-        {
-            BossStateMachine.Execute();
-        }
-
-        public override EnemyStats GetStats()
-        {
-            return BossStats;
-        }
-
         public override void TakeDamage(Damage damage)
         {
-            CurrentHealth = CurrentHealth < damage.PhysicalDamage ? 0 : CurrentHealth - damage.PhysicalDamage;
+            CurrentStats.BaseStats.CurrentHealthPoints -= damage.GetTotalDamage();
 
-            Debug.Log("Boss recieved: " + damage.PhysicalDamage + " of damage and has: " + CurrentHealth + " of HP");
+            Debug.Log("Boss recieved: " + damage.GetTotalDamage() + " of damage and has: " + 
+                CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
 
-            if (damage.StunProbability > BossData._bossStats.MainStats.StunResistance)
+            if (damage.StunProbability > CurrentStats.DefenceStats.StunProbabilityResistance)
             {
                 MessageBroker.Default.Publish(new OnBossStunnedEventClass());
             }
@@ -255,11 +259,6 @@ namespace BeastHunter
             {
                 MessageBroker.Default.Publish(new OnBossHittedEventClass());
             }
-        }
-
-        public override void OnTearDown()
-        {
-            BossStateMachine.OnTearDown();
         }
 
         #endregion

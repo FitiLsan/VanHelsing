@@ -53,7 +53,10 @@
         {
             base.Initialize();
 
-            _stateMachine.BackState.StopCharacter();
+            if(_stateMachine.PreviousState.StateName != CharacterStatesEnum.GettingUp)
+            {
+                _stateMachine.BackState.StopCharacter();
+            }          
         }
 
         #endregion
