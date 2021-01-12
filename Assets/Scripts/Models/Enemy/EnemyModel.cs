@@ -30,6 +30,8 @@ namespace BeastHunter
             CurrentStats = ThisEnemyData.StartStats.DeepCopy();
         }
 
+        //public abstract void HealthBarController();
+
         #endregion
 
 

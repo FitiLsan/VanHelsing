@@ -97,6 +97,9 @@ namespace BeastHunter
         private bool _isWeaponWheelOpen;
         private bool _isCurrentWeaponWithProjectile;
 
+        private EnemyHealthBarModel _enemyHealthBarModel;
+        private EnemyModel _targetEnemy;
+
         #endregion
 
 
@@ -153,6 +156,7 @@ namespace BeastHunter
 
             GameObject playerHealthBar = GameObject.Instantiate(Data.PlayerHealthBarData.HealthBarPrefab);
             _playerHealthBarModel = new PlayerHealthBarModel(playerHealthBar, Data.PlayerHealthBarData);
+            _enemyHealthBarModel = new EnemyHealthBarModel(playerHealthBar, Data.EnemyHealthBarData);
         }
 
         #endregion
@@ -214,7 +218,7 @@ namespace BeastHunter
             GroundCheck();
             MovementCheck();
             ControlWeaponWheel();
-            Debug.Log(_stateMachine.CurrentState);
+            EnemyHealthBarUpdate();
 
             //FOR DEBUG ONLY!
             if (Input.GetKeyDown(KeyCode.H)) TestingHealthRestoreToCurrentMaxHealthThreshold();
@@ -954,6 +958,64 @@ namespace BeastHunter
                 CurrentStats.BaseStats.CurrentHealthPoints + " HP"
                     + "\nNote: \"H\"-button assigned for testing healing up to the current max health threshold");
             OnHealthChange?.Invoke();
+        }
+
+        #endregion
+
+
+        #region EnemyHealthBar
+
+        private void EnemyHealthBarUpdate()
+        {
+
+            
+            if (_targetEnemy != null)
+            {
+
+                if (!_targetEnemy.IsDead)
+                {
+                    float currentEnemyHealth = _targetEnemy.CurrentHealth;
+                    float maxEnemyHealth = _targetEnemy.GetStats().MainStats.MaxHealth;
+                    _enemyHealthBarModel.CanvasHPImage.fillAmount = currentEnemyHealth / maxEnemyHealth;
+                }
+                else
+                {
+                    _targetEnemy = null;
+                    _enemyHealthBarModel.CanvasHPImage.fillAmount = 0;
+                }
+
+            }
+
+        }
+
+        public void OnEnemyHealthBar(bool onEnemyBar)
+        {
+            if (onEnemyBar)
+            {
+                
+                if (_characterModel.ClosestEnemy.Value != null)
+                {
+                   
+                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.GetMainParent().gameObject.GetInstanceID()];
+                    
+                    if (!_targetEnemy.IsDead)
+                    {
+                        _enemyHealthBarModel.EnemyHealthBarObject.SetActive(onEnemyBar);
+                    }
+                    else
+                    {
+                        _enemyHealthBarModel.EnemyHealthBarObject.SetActive(false);
+                    }
+                    
+                }
+                
+            }
+            else
+            {
+                _targetEnemy = null;
+                _enemyHealthBarModel.EnemyHealthBarObject.SetActive(onEnemyBar);
+            }
+
         }
 
         #endregion

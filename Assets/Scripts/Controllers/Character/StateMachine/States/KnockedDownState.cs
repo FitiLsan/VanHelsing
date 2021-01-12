@@ -41,6 +41,7 @@
 
         public override bool CanBeActivated()
         {
+            _stateMachine.BackState.OnEnemyHealthBar(false);
             return true;
         }
 

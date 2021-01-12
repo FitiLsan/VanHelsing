@@ -35,18 +35,29 @@ namespace BeastHunter
             _factoryList.Add(new CreateRabbitModel());
         }
 
+        private void RemoveSpawnPoints()
+        {
+            var spawnPoints = GameObject.FindGameObjectsWithTag("Spawnpoint"); //TAG MANAGER
+            foreach (var point in spawnPoints)
+            {
+                GameObject.Destroy(point);
+            }
+        }
+
         private void InitializeEnemies(LocationData locationData)
         {
             foreach (var spawnPointData in locationData.EnemySpawnPointData)
             {
-                RecalculateChances(out List<float> newSpawnChances, spawnPointData.SpawnDataList);
-                float chance = Random.Range(0.0f, 1.0f);
+                var chancesSum = spawnPointData.SpawnDataList.Sum(data => data.SpawningChance);
+                if (!Mathf.Approximately(chancesSum, 100.0f))
+                    RecalculateChances(spawnPointData.SpawnDataList, chancesSum);
+                float chance = Random.Range(0.0f, 100.0f);
                 SpawnEntityData spawnEnemyData;
                 int k = 0;
                 float chanceThreshhold = 0;
                 do
                 {
-                    chanceThreshhold += newSpawnChances[k];
+                    chanceThreshhold += spawnPointData.SpawnDataList[k].SpawningChance;
                     spawnEnemyData = spawnPointData.SpawnDataList[k];
                     k++;
                 } while (chance >= chanceThreshhold && k <= spawnPointData.SpawnDataList.Count);
@@ -92,13 +103,14 @@ namespace BeastHunter
             }
         }
 
-        private void RecalculateChances(out List<float> chances, List<SpawnEntityData> spawnDatas)
+        private void RecalculateChances(List<SpawnEntityData> spawnDatas, float sum)
         {
-            chances = new List<float>(spawnDatas.Count());
-            float sum = spawnDatas.Sum(data => data.SpawningChance);
+            //chances = new List<float>(spawnDatas.Count());
+            //float sum = spawnDatas.Sum(data => data.SpawningChance);
             foreach (var data in spawnDatas)
             {
-                chances.Add(data.SpawningChance / sum);
+                //chances.Add(data.SpawningChance / sum);
+                data.SpawningChance /= sum;
             }
         }
 
@@ -110,6 +122,7 @@ namespace BeastHunter
         public void OnAwake()
         {
             var locationData = Data.LocationData;
+            RemoveSpawnPoints();
             InitializeEnemies(locationData);            
         }
 

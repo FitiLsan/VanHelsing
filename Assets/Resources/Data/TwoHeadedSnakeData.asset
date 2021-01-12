@@ -12,24 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1877c6f8cbc38094597364f0ee647f3b, type: 3}
   m_Name: TwoHeadedSnakeData
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 100084, guid: cd7bad76e4db2044582c1d409245bf92, type: 3}
-  _startStats:
-    BaseStats:
-      _maximalHealthPoints: 150
-      _currentHealthPoints: 150
-      HealthRegenPerSecond: 0
-      _maximalStaminaPoints: 0
-      _currentStaminaPoints: 0
-      StaminaRegenPerSecond: 0
-      IsDead: 0
-      IsStunned: 0
-    AttackStats:
-      _physicalPower: 25
-      _magicalPower: 5
+  BaseStats:
+    MainStats:
+      _maxHealth: 300
+      _enemyType: 0
+      _viewRadius: 0
+      _viewAngle: 0
+      _healthPoints: 0
+      _physicalPower: 2.61
+      _magicalPower: 0
+      _physicalDamageResistance: 0
+      _stunProbabilityResistance: 0
+      _fireDamageResistance: 0
+    AttackList: []
     DefenceStats:
-      _physicalDamageResistance: 0.1
-      _stunProbabilityResistance: 0.7
-      _fireDamageResistance: 0.3
+      _baseDefense: 0
+    Prefab: {fileID: 100084, guid: cd7bad76e4db2044582c1d409245bf92, type: 3}
   settings:
     _instantiatePosition: {x: 460, y: 2, z: 460}
     _rigitbodyMass: 1
@@ -56,8 +54,8 @@ MonoBehaviour:
     _roamingChance: 75
     _chasingTurnSpeedNearTarget: 0.05
     _chasingTurnDistanceNearTarget: 8
-    _escapingSpeed: 3
-    _percentEscapeHealth: 30
+    _escapingSpeed: 2
+    _percentEscapeHealth: 5
     _escapeDistance: 50
     _idlingMinTime: 5
     _idlingMaxTime: 10
