@@ -64,7 +64,7 @@ namespace BeastHunter
             MessageBroker.Default.Receive<OnBossStunnedEventClass>().Subscribe(OnBossStunnedHandler);
             MessageBroker.Default.Receive<OnBossHittedEventClass>().Subscribe(OnBossHittedHandler);
             MessageBroker.Default.Receive<OnBossWeakPointHittedEventClass>().Subscribe(MakeWeakPointBurst);
-            MessageBroker.Default.Receive<OnPlayerSneakingEventClass>().Subscribe(OnPlayerSneakingHandler);
+           // MessageBroker.Default.Receive<OnPlayerSneakingEventClass>().Subscribe(OnPlayerSneakingHandler);
         }
 
         public override void Initialise()
@@ -296,19 +296,6 @@ namespace BeastHunter
         public Vector3? GetTargetCurrentPosition()
         {     
            return _bossModel.BossCurrentTarget?.transform.position;
-        }
-    
-        private void OnPlayerSneakingHandler(OnPlayerSneakingEventClass eventClass)
-        {
-            if (eventClass.IsSneaking)
-            {
-                _stateMachine._model.BossSphereCollider.radius /= 
-                    _stateMachine._model.BossSettings.SphereColliderRadiusDecreace;
-            }
-            else
-            {
-                _stateMachine._model.BossSphereCollider.radius = _stateMachine._model.BossSettings.SphereColliderRadius;
-            }
         }
 
         private void InteractionTriggerUpdate()

@@ -54,6 +54,8 @@ namespace BeastHunter
         public bool IsPlayerNear { get; set; }
         public bool IsPickUped { get; set; }
 
+        public MovementPoint[] MovementPoints { get; set; }
+
         public List<GameObject> FoodList = new List<GameObject>();
         public float MaxStamina = 100f;
         public float CurrentStamina;
@@ -170,8 +172,8 @@ namespace BeastHunter
                 BossBehavior = prefab.AddComponent<BossBehavior>();
             }
 
-            BossBehavior.SetType(InteractableObjectType.Enemy);
-            BossBehavior.Stats = BossStats.MainStats;
+          //  BossBehavior.SetType(InteractableObjectType.Enemy);
+         //   BossBehavior.Stats = BossStats.MainStats;
             BossStateMachine = new BossStateMachine(context, this);
 
             Player = null;
@@ -215,7 +217,7 @@ namespace BeastHunter
             LeftHandCollider.enabled = false;
             LeftHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             LeftHandBehavior = leftHandFist.AddComponent<WeaponHitBoxBehavior>();
-            LeftHandBehavior.SetType(InteractableObjectType.HitBox);
+          //  LeftHandBehavior.SetType(InteractableObjectType.HitBox);
             LeftHandBehavior.IsInteractable = false;
 
             var rightFist = new GameObject("[RightFist]");
@@ -234,10 +236,10 @@ namespace BeastHunter
             rb.isKinematic = true;
             rb.mass = 30f;
             RightHandBehavior = rightHandFist.AddComponent<WeaponHitBoxBehavior>();
-            RightHandBehavior.SetType(InteractableObjectType.HitBox);
+        //    RightHandBehavior.SetType(InteractableObjectType.HitBox);
             RightHandBehavior.IsInteractable = false;
             RightFingerTrigger =  BossTransform.Find(BossSettings.RightFingerPath).GetComponent<WeaponHitBoxBehavior>();
-            RightFingerTrigger.SetType(InteractableObjectType.HitBox);
+          //  RightFingerTrigger.SetType(InteractableObjectType.HitBox);
             RightFingerTrigger.IsInteractable = false;
 
             StompPufPrefab = BossSettings.StompPuf;
@@ -302,10 +304,10 @@ namespace BeastHunter
 
         #region Methods
 
-        public override void DoSmth(string how)
-        {
+        //public override void DoSmth(string how)
+        //{
 
-        }
+        //}
 
         public override void OnAwake()
         {
@@ -360,18 +362,20 @@ namespace BeastHunter
                 if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
                 {
                     BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                    return;
                 }
             }
 
             if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.HealthPoints * 0.2f)
             {
                 BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
+                return;
             }
         }
 
         public void DamageCheck(float damage)
         {
-            if(damage >= BossData._bossStats.MainStats.HealthPoints * 0.2f)
+            if (damage >= BossData._bossStats.MainStats.HealthPoints * 0.2f)
             {
                 //currentState.15%Damage();
                 Debug.Log("Hit 18% hp");
@@ -379,6 +383,10 @@ namespace BeastHunter
                 {
                     BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
                 }
+            }
+            else if (!BossStateMachine.CurrentState.IsBattleState)
+            {
+                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
             }
         }
 

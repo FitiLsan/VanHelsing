@@ -9,7 +9,7 @@ namespace BeastHunter
         #region Fields
 
         private const int COLLIDER_OBJECT_SIZE = 20;
-
+        private const float GROUND_CHECK_TOP_VALUE = 10000f;
         private readonly Collider[] _collidedObjects;
         private readonly RaycastHit[] _castBuffer;
         private readonly List<ITrigger> _triggeredObjects;
@@ -93,6 +93,20 @@ namespace BeastHunter
             return groundedPosition;
         }
 
+        public static Vector3 GetGroundedPositionStatic(Vector3 position)
+        {
+            Vector3 groundedPosition = position;
+
+            bool isHit = Physics.Raycast(new Vector3(position.x, GROUND_CHECK_TOP_VALUE, position.z),
+                Vector3.down, out RaycastHit hit);
+
+            if (isHit)
+            {
+                groundedPosition = hit.point;
+            }
+
+            return groundedPosition;
+        }
 
         public List<ITrigger> GetObjectsInRadius(Vector3 position, float radius, int layerMask = LayerManager.DEFAULT_LAYER)
         {

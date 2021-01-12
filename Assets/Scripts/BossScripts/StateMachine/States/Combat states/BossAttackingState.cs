@@ -180,7 +180,7 @@ namespace BeastHunter
             {
                 DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
                     CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
-                        _context.CharacterModel.PlayerBehavior.Stats));
+                        _context.CharacterModel.CharacterStats));
                 hitBox.IsInteractable = false;
                 _bossModel.LeftHandCollider.enabled = false;
                 
@@ -193,7 +193,7 @@ namespace BeastHunter
             {
                 DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
                     CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
-                        _context.CharacterModel.PlayerBehavior.Stats));
+                        _context.CharacterModel.CharacterStats));
                 hitBox.IsInteractable = false;
                 _bossModel.RightHandCollider.enabled = false;
             }
@@ -241,7 +241,6 @@ namespace BeastHunter
             Debug.Log("PickUP");
             _bossModel.IsPickUped = true;
             _stateMachine._context.CharacterModel.CharacterRigitbody.isKinematic = true;
-            _stateMachine._context.CharacterModel.CharacterAnimator.enabled = false;
             _stateMachine._context.CharacterModel.PuppetMaster.mode = PuppetMaster.Mode.Disabled;
 
             _bossModel.CurrentHand = effectorType;
@@ -262,7 +261,7 @@ namespace BeastHunter
             Debug.Log("DROP");
             _stateMachine._context.CharacterModel.CharacterTransform.rotation = Quaternion.Euler(0, 0, 0);
             _stateMachine._context.CharacterModel.CharacterRigitbody.isKinematic = true;
-            _stateMachine._context.CharacterModel.CharacterAnimator.enabled = false;
+           // _stateMachine._context.CharacterModel.CharacterAnimator.enabled = false;
             _stateMachine._context.CharacterModel.PuppetMaster.mode = PuppetMaster.Mode.Disabled;
             _stateMachine._context.CharacterModel.PuppetMaster.state = PuppetMaster.State.Frozen;
             TimeRemaining timeRemaining = new TimeRemaining(() => _stateMachine._context.CharacterModel.PuppetMaster.state = PuppetMaster.State.Alive, 1f);

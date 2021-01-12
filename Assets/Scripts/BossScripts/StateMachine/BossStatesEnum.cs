@@ -4,7 +4,6 @@
     {
         None,
         Idle,
-        Moving,
         Patroling,
         Eating,
         Resting,

@@ -41,9 +41,12 @@ namespace BeastHunter
                 var rb = target.GetComponent<Rigidbody>();
                 var pm = target.transform.parent.Find("PuppetMaster").GetComponent<PuppetMaster>();
 
-                pm.state = PuppetMaster.State.Frozen;
-                rb.AddExplosionForce(force, _bossModel.LeftFoot.transform.position, 15f, 1.5f, ForceMode.Impulse);
-                DelayCall(() => pm.state = PuppetMaster.State.Alive, 2f);
+                if (pm != null && rb != null)
+                {
+                    pm.state = PuppetMaster.State.Frozen;
+                    rb.AddExplosionForce(force, _bossModel.LeftFoot.transform.position, 15f, 1.5f, ForceMode.Impulse);
+                    DelayCall(() => pm.state = PuppetMaster.State.Alive, 2f);
+                }
 
             }
 
