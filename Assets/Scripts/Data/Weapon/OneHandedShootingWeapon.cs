@@ -4,7 +4,7 @@ using Extensions;
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewWeapon", menuName = "CreateWeapon/CreateOneHandedShooting", order = 0)]
+    [CreateAssetMenu(fileName = "NewWeapon", menuName = "Character/CreateWeapon/CreateOneHandedShooting", order = 0)]
     public sealed class OneHandedShootingWeapon : OneHandedWeaponData, IShoot
     {
         #region Fields

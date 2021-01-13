@@ -84,6 +84,10 @@ namespace BeastHunter
 
         protected void CheckTargetDirection()
         {
+            if(_bossModel.BossCurrentTarget==null)
+            {
+                return;
+            }
             Vector3 heading = _bossModel.BossCurrentTarget.transform.position -
                 _bossModel.BossTransform.position;
 
@@ -110,7 +114,10 @@ namespace BeastHunter
 
         protected void TargetOnPlayer()
         {
-            _bossModel.BossTransform.rotation = _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, ANGLE_SPEED);
+            if (_bossModel.BossCurrentTarget != null)
+            {
+                _bossModel.BossTransform.rotation = _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, ANGLE_SPEED);
+            }
         }
 
         protected bool CheckDistance(float distanceRangeMin, float distanceRangeMax)

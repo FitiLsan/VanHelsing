@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewSmallCatapultTrapData", menuName = "CreateTrapData/CreateSmallCatapultData", order = 0)]
+    [CreateAssetMenu(fileName = "NewSmallCatapultTrapData", menuName = "Character/CreateSmallCatapultData", order = 0)]
     public class SmallCatapultTrapData : TrapData
     {
         #region Fields

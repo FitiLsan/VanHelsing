@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 
 namespace BeastHunter
@@ -9,6 +10,7 @@ namespace BeastHunter
     {
         private float _healPower = 55f;
         private TimeRemaining _delayCall;
+        private GameObject _guardPrefab = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 
         public SelfHealSkill((int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
             : base(skillInfo, skillDictionary, stateMachine)
@@ -28,7 +30,7 @@ namespace BeastHunter
             _bossModel.healAura.Play(true);
 
             DelayCall(() => Heal(), 0.5f, out _delayCall, true);
-
+            CreateGuards();
             ReloadSkill(id);
         }
 
@@ -47,6 +49,21 @@ namespace BeastHunter
             {
                 _stateMachine._model.CurrentHealth = maxHealth;
             }
+        }
+        
+        private void CreateGuards()
+        {
+           var GuardCount =  Random.Range(1, 6);
+            for (var i = 0; i < GuardCount; i++)
+            {
+                var x = Random.Range(-8f, 8f);
+                var y = Random.Range(-8f, 8f);
+
+                var guard = GameObject.Instantiate(_guardPrefab, _bossModel.BossTransform.position + new Vector3(x, 0, y), Quaternion.identity);
+                guard.transform.DOMove(_bossModel.BossCurrentTarget.transform.position, 5f); //test
+                GameObject.Destroy(guard, 7f);
+            }
+            
         }
 
     }

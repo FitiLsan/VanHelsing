@@ -42,7 +42,11 @@ namespace BeastHunter
             _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
             _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_EATING;
             _stateMachine._model.BossAnimator.Play("MovingState");
-            _target = _stateMachine._model.BossCurrentTarget.transform.position;
+
+            if (_bossModel.BossCurrentTarget != null)
+            {
+                _target = _bossModel.BossCurrentTarget.transform.position;
+            }
         }
 
         public override void Execute()

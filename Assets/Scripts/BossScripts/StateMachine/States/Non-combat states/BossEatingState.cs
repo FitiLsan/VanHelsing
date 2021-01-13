@@ -59,7 +59,11 @@ namespace BeastHunter
             _stateMachine._model.BossAnimator.Play("MovingState");
             _canEat = false;
             _startEating = false;
-            _target = _stateMachine._model.BossCurrentTarget.transform.position;
+
+            if (_bossModel.BossCurrentTarget != null)
+            {
+                _target = _bossModel.BossCurrentTarget.transform.position;
+            }
         }
 
         public override void Execute()

@@ -17,6 +17,7 @@ namespace BeastHunter
         private bool _isCooldownStart;
         private bool _isSkillReady;
         private bool _canInterrupt;
+        private GameObject _prefab;
 
         protected BossModel _bossModel;
         protected WeaponHitBoxBehavior _currenTriggertHand;
@@ -49,6 +50,20 @@ namespace BeastHunter
             _skillCooldown = skillInfo.Item4;
             _isSkillReady = skillInfo.Item5;
             _canInterrupt = skillInfo.Item6;
+            _stateMachine = stateMachine;
+            _bossModel = stateMachine._model;
+            _skillDictionary = skillDictionary;
+        }
+
+        public BossBaseSkill((int, float, float, float, bool, bool, GameObject) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        {
+            _skillId = skillInfo.Item1;
+            _skillRangeMin = skillInfo.Item2;
+            _skillRangeMax = skillInfo.Item3;
+            _skillCooldown = skillInfo.Item4;
+            _isSkillReady = skillInfo.Item5;
+            _canInterrupt = skillInfo.Item6;
+            _prefab = skillInfo.Item7;
             _stateMachine = stateMachine;
             _bossModel = stateMachine._model;
             _skillDictionary = skillDictionary;
@@ -116,8 +131,8 @@ namespace BeastHunter
 
         protected void TurnOnHitBoxTrigger(WeaponHitBoxBehavior hitBox, float currentAttackTime, float delayTime)
         {
-            //TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.IsInteractable = true, currentAttackTime * delayTime);
-            //enableHitBox.AddTimeRemaining(currentAttackTime * delayTime);
+            TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.IsInteractable = true, currentAttackTime * delayTime);
+            enableHitBox.AddTimeRemaining(currentAttackTime * delayTime);
         }
 
         protected void TurnOnHitBoxCollider(Collider hitBox, float currentAttackTime, float delayTime, bool isOn = true)

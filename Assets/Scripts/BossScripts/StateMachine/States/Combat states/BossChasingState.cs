@@ -52,6 +52,7 @@ namespace BeastHunter
             _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK;
             _stateMachine._model.BossAnimator.Play("MovingState");
             _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
+            StartCooldown();
         }
 
         public override void Execute()
@@ -77,7 +78,7 @@ namespace BeastHunter
 
         private void CheckDistance()
         {
-            if(_bossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _target, DISTANCE_TO_START_ATTACK, out currentDistance ))
+            if (_bossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _target, DISTANCE_TO_START_ATTACK, out currentDistance))
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
             }
@@ -107,7 +108,7 @@ namespace BeastHunter
 
         private void CheckExtraAttack()
         {
-            
+
             _forceAttackTime -= Time.deltaTime;
             if (_forceAttackTime <= 0)
             {
@@ -119,6 +120,14 @@ namespace BeastHunter
                 }
                 _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
+            }
+        }
+
+        private void StartCooldown()
+        {
+            for (var i = 0; i < _stateMachine.BossSkills.ChasingStateSkillDictionary.Count; i++)
+            {
+                _stateMachine.BossSkills.ChasingStateSkillDictionary[i].StartCooldown(_stateMachine.BossSkills.ChasingStateSkillDictionary[i].SkillId, _stateMachine.BossSkills.ChasingStateSkillDictionary[i].SkillCooldown);
             }
         }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "PlayerHealthBarData")]
+    [CreateAssetMenu(fileName = "PlayerHealthBarData", menuName = "Character/CreatePlayerHealthBarData", order = 0)]
     public class PlayerHealthBarData: ScriptableObject
     {
         #region SerializedFields

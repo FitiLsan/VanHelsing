@@ -9,14 +9,15 @@ namespace BeastHunter
     {
         private const float DELAY_HAND_TRIGGER = 0.2f;
 
-        private GameObject _vinePrefab = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        private GameObject _vinePrefab; //GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 
         public VineFishingAttackSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
             : base(Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
         {
         }
-        public VineFishingAttackSkill((int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
+        public VineFishingAttackSkill((int, float, float, float, bool, bool, GameObject) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
+            _vinePrefab = skillInfo.Item7;
         }
 
         public override void UseSkill(int id)

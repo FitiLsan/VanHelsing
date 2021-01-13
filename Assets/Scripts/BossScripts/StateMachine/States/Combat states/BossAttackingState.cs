@@ -67,7 +67,6 @@ namespace BeastHunter
             {
                 _stateMachine.BossSkills.AttackStateSkillDictionary[i].StartCooldown(_stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillId, _stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillCooldown);
             }
-          //  ChoosingAttackSkill();
         }
 
         public override void Execute()
@@ -156,7 +155,7 @@ namespace BeastHunter
             _bossModel.LeftHandCollider.enabled = false;
             _bossModel.RightHandCollider.enabled = false;
 
-            if (!_bossModel.IsDead && CheckDirection())
+            if (!_bossModel.IsDead && CheckDirection() && !_bossModel.IsPickUped)
             {
                 ChoosingAttackSkill();
             }

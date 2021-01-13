@@ -326,6 +326,11 @@ namespace BeastHunter
 
         public override void TakeDamage(Damage damage)
         {
+            if(IsDead)
+            {
+                return;
+            }
+
             CurrentHealth = CurrentHealth < damage.PhysicalDamage ? 0 : CurrentHealth - damage.PhysicalDamage;
 
             Debug.Log("Boss recieved: " + damage.PhysicalDamage + " of damage and has: " + CurrentHealth + " of HP");

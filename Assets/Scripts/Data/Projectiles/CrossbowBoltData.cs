@@ -5,7 +5,7 @@ using Extensions;
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewCrossbowBoltData", menuName = "CreateProjectileData/CreateCrossbowBoltData", order = 0)]
+    [CreateAssetMenu(fileName = "NewCrossbowBoltData", menuName = "Character/CreateProjectileData/CreateCrossbowBoltData", order = 0)]
     public sealed class CrossbowBoltData : ProjectileData
     {
         #region Methods
