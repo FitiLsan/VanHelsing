@@ -245,7 +245,7 @@ namespace BeastHunter
 
         private void Hop(Rigidbody rigidbody, Vector3 direction, float acceleration)
         {
-            Debug.Log(direction + " " + RabbitStats.MoveSpeed + " " + acceleration + " " + RabbitStats.JumpHeight + " " + HOP_FORCE_MULTIPLIER);
+           // Debug.Log(direction + " " + RabbitStats.MoveSpeed + " " + acceleration + " " + RabbitStats.JumpHeight + " " + HOP_FORCE_MULTIPLIER);
             rigidbody.AddForce((direction * RabbitStats.MoveSpeed * acceleration + Vector3.up * RabbitStats.JumpHeight) * HOP_FORCE_MULTIPLIER);
         }
 

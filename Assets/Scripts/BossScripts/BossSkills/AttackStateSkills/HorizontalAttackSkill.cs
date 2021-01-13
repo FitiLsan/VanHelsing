@@ -21,7 +21,7 @@ namespace BeastHunter
         {
             Debug.Log("HorizontalAttackSkill");
             _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
-            var attackDirection = UnityEngine.Random.Range(0, 2);
+            var attackDirection = UnityEngine.Random.Range(0, 4);
             _bossModel.BossAnimator.Play($"BossFeastsAttack_{attackDirection}", 0, 0f);
             switch (attackDirection)
             {
@@ -30,6 +30,14 @@ namespace BeastHunter
                     _currenColliderHand = _bossModel.RightHandCollider;
                     break;
                 case 1:
+                    _currenTriggertHand = _bossModel.LeftHandBehavior;
+                    _currenColliderHand = _bossModel.LeftHandCollider;
+                    break;
+                case 2:
+                    _currenTriggertHand = _bossModel.RightHandBehavior;
+                    _currenColliderHand = _bossModel.RightHandCollider;
+                    break;
+                case 3:
                     _currenTriggertHand = _bossModel.LeftHandBehavior;
                     _currenColliderHand = _bossModel.LeftHandCollider;
                     break;

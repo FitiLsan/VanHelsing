@@ -25,7 +25,7 @@ namespace BeastHunter
             var TimeRem = new TimeRemaining(() => StompShockWave(), 0.65f);
             TimeRem.AddTimeRemaining(0.65f);
 
-            TurnOnHitBoxTrigger(_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
+          //  TurnOnHitBoxTrigger (_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
 
             ReloadSkill(id);
         }

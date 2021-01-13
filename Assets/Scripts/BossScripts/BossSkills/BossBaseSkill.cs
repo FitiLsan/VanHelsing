@@ -131,8 +131,8 @@ namespace BeastHunter
 
         protected void TurnOnHitBoxTrigger(WeaponHitBoxBehavior hitBox, float currentAttackTime, float delayTime)
         {
-            TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.IsInteractable = true, currentAttackTime * delayTime);
-            enableHitBox.AddTimeRemaining(currentAttackTime * delayTime);
+           // TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.IsInteractable = true, currentAttackTime * delayTime);
+           // enableHitBox.AddTimeRemaining(currentAttackTime * delayTime);
         }
 
         protected void TurnOnHitBoxCollider(Collider hitBox, float currentAttackTime, float delayTime, bool isOn = true)

@@ -27,16 +27,21 @@ namespace BeastHunter
             {
                 case 0:
                     _currenTriggertHand = _bossModel.RightHandBehavior;
+                    _currenColliderHand = _bossModel.RightHandCollider;
                     break;
                 case 1:
                     _currenTriggertHand = _bossModel.LeftHandBehavior;
+                    _currenColliderHand = _bossModel.LeftHandCollider;
                     break;
                 default:
                     break;
             }
             TurnOnHitBoxTrigger(_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
+          //  TurnOnHitBoxCollider(_currenColliderHand, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
 
             _skillDictionary[id].IsSkillReady = false;
+        
+
 
             StartCooldown(id, _skillDictionary[id].SkillCooldown);
 

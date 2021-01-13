@@ -25,7 +25,7 @@ namespace BeastHunter
             _bossModel.BossAnimator.Play("PoisonAttack", 0, 0f);
             CreateSpores();
 
-            TurnOnHitBoxTrigger(_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
+         //   TurnOnHitBoxTrigger(_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
 
             ReloadSkill(id);
         }

@@ -3,7 +3,7 @@ using RootMotion.FinalIK;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Random = UnityEngine.Random;
 
 namespace BeastHunter
 {
@@ -25,7 +25,9 @@ namespace BeastHunter
 
         private Vector3 _lookDirection;
         private Quaternion _toRotation;
-        
+        private Damage handDamage = new Damage();
+
+
 
         private int _skillId;
         private Dictionary<int,int> _readySkillDictionary = new Dictionary<int, int>();
@@ -177,9 +179,11 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
-                    CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
-                        _context.CharacterModel.CharacterStats));
+                handDamage.PhysicalDamage = Random.Range(5f, 15f);
+                DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, handDamage);
+
+             //   CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine._context.CharacterModel.CharacterStats));
+
                 hitBox.IsInteractable = false;
                 _bossModel.LeftHandCollider.enabled = false;
                 
@@ -190,38 +194,16 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
-                    CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
-                        _context.CharacterModel.CharacterStats));
+                handDamage.PhysicalDamage = Random.Range(5f, 15f);
+                DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, handDamage);
+
+                //DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
+                //    CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
+                //        _context.CharacterModel.CharacterStats));
                 hitBox.IsInteractable = false;
                 _bossModel.RightHandCollider.enabled = false;
             }
         }
-
-        //private void CheckTargetDirection()
-        //{
-        //    Vector3 heading = _bossModel.BossCurrentTarget.transform.position -
-        //        _bossModel.BossTransform.position;
-
-        //    int directionNumber = _bossData.AngleDirection(
-        //        _bossModel.BossTransform.forward, heading, _bossModel.BossTransform.up);
-
-        //    switch (directionNumber)
-        //    {
-        //        case -1:
-        //            _bossModel.BossAnimator.Play("TurningLeftState", 0, 0f);
-        //            break;
-        //        case 0:
-        //            _bossModel.BossAnimator.Play("IdleState", 0, 0f);
-        //            break;
-        //        case 1:
-        //            _bossModel.BossAnimator.Play("TurningRightState", 0, 0f);
-        //            break;
-        //        default:
-        //            _bossModel.BossAnimator.Play("IdleState", 0, 0f);
-        //            break;
-        //    }
-        //}
 
         #region IDealDamage
 
