@@ -82,6 +82,7 @@ namespace BeastHunter
         public void Clean()
         {
             _data = null;
+            DestroyInfoDictionary.Clear();
             DestroyInfoDictionary = null;
 
             if (CanvasObject != null)

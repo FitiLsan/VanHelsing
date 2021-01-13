@@ -27,7 +27,7 @@ MonoBehaviour:
     AttackList: []
     DefenceStats:
       _baseDefense: 0
-    Prefab: {fileID: 7253339370346634, guid: 0221e3a4b68cc0b4da68fd85936de268, type: 3}
+    Prefab: {fileID: 7253339370346634, guid: 4fddcf59d1236b04ca18b425b5969495, type: 3}
   Stats:
     _debugMessages: 0
     _damage:
@@ -72,8 +72,8 @@ MonoBehaviour:
     _chasingBrakingMinSpeed: 2
     _chasingBrakingMaxDistance: 6
     _chasingBrakingMinDistance: 2
-    _maxRoamingSpeed: 0
-    _maxChasingSpeed: 0
+    _maxRoamingSpeed: 1
+    _maxChasingSpeed: 10
     _angularSpeed: 450
     _acceleration: 20
     _stoppingDistance: 1
