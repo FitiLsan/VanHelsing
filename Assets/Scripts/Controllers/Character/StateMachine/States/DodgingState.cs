@@ -44,7 +44,7 @@ namespace BeastHunter
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize();
-
+            _stateMachine.BackState.OnEnemyHealthBar(true);
             _rollTime = _characterModel.CharacterData.CharacterCommonSettings.RollingTime;
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
             _characterModel.IsDodging = true;

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace BeastHunter
@@ -15,6 +15,7 @@ namespace BeastHunter
         
         #endregion
 
+
         #region Properties
 
         public Vector3 PlayerSpawnPosition { get => _playerSpawnPosition; }
@@ -22,6 +23,16 @@ namespace BeastHunter
         public List<SpawnPointData> EnemySpawnPointData { get => _enemySpawnPointData; }
 
         #endregion
+
+        public void AddEnemySpawnPointData()
+        {
+            _enemySpawnPointData.Add(new SpawnPointData());
+        }
+
+        public void AddEnemySpawnPointData(List<SpawnEntityData> spawnEntityDatas, Vector3 point, float radius, int number)
+        {
+            _enemySpawnPointData.Add(new SpawnPointData(spawnEntityDatas, point, radius, number));
+        }
     }
 
 }

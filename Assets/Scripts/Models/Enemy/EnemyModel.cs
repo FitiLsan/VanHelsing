@@ -23,6 +23,8 @@ namespace BeastHunter
 
         public abstract void OnTearDown();
 
+        //public abstract void HealthBarController();
+
         #endregion
 
 
