@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "Data", menuName = "BossSO")]
+    [CreateAssetMenu(fileName = "Data", menuName = "Enemy/BossSOData")]
     public class BossSOPattern : ScriptableObject
     {
         #region Enums

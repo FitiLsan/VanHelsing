@@ -10,7 +10,6 @@ namespace BeastHunter
 
         private const int COLLIDER_OBJECT_SIZE = 20;
         private const float GROUND_CHECK_TOP_VALUE = 10000f;
-
         private readonly Collider[] _collidedObjects;
         private readonly RaycastHit[] _castBuffer;
         private readonly List<ITrigger> _triggeredObjects;
@@ -70,25 +69,43 @@ namespace BeastHunter
 
             return isHit;
         }
-        
+
+        public Vector3 GetGroundedPosition(Vector3 position, float positionY = Mathf.Infinity)
+        {
+            Vector3 groundedPosition = position;
+
+            bool isHit = Physics.Raycast(new Vector3(position.x, positionY, position.z),
+                Vector3.down, out RaycastHit hit);
+
+            if (isHit)
+            {
+                if (!hit.collider.CompareTag("Player"))
+                {
+                    groundedPosition = hit.point;
+                }
+                else
+                {
+                    groundedPosition = hit.point - new Vector3(0, 2f, 0);
+                    
+                }
+            }
+
+            return groundedPosition;
+        }
+
         public static Vector3 GetGroundedPositionStatic(Vector3 position)
         {
             Vector3 groundedPosition = position;
-                
-            bool isHit = Physics.Raycast(new Vector3(position.x, GROUND_CHECK_TOP_VALUE, position.z), 
+
+            bool isHit = Physics.Raycast(new Vector3(position.x, GROUND_CHECK_TOP_VALUE, position.z),
                 Vector3.down, out RaycastHit hit);
-        
+
             if (isHit)
             {
                 groundedPosition = hit.point;
             }
-        
+
             return groundedPosition;
-        }
-        
-        public Vector3 GetGroundedPosition(Vector3 position)
-        {
-            return GetGroundedPositionStatic(position);
         }
 
         public List<ITrigger> GetObjectsInRadius(Vector3 position, float radius, int layerMask = LayerManager.DEFAULT_LAYER)
@@ -155,11 +172,10 @@ namespace BeastHunter
             return result;
         }
 
-        public List<GameObject> GetObjectsInRadiusByTag(Vector3 position, float radius, string tagName)
+        public List<GameObject> GetObjectsInRadiusByTag(Vector3 position, float radius, string tagName, int layerMask = LayerManager.DEFAULT_LAYER)
         {
             Collider[] collidedObjectsByTag = new Collider[200];
-            var layer = LayerManager.DefaultLayer;
-            int colliderCount = Physics.OverlapSphereNonAlloc(position, radius, collidedObjectsByTag, layer);
+            int colliderCount = Physics.OverlapSphereNonAlloc(position, radius, collidedObjectsByTag);
             List <GameObject> colliderListByTag = new List<GameObject>(); 
             for (int i = 0; i < colliderCount; i++)
             {

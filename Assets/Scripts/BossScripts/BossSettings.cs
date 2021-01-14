@@ -11,6 +11,27 @@ namespace BeastHunter
 
         [Header("Scene information fields")]
 
+        [Tooltip("Boss prefab.")]
+        [SerializeField] private GameObject _prefab;
+
+        [Tooltip("Spore prefab.")]
+        [SerializeField] private GameObject _sporePrefab;
+
+        [Tooltip("Ruler.")]
+        [SerializeField] private GameObject _ruler;
+
+        [Tooltip("StompFuf prefab.")]
+        [SerializeField] private GameObject _stompPuf;
+
+        [Tooltip("StompFuf prefab.")]
+        [SerializeField] private GameObject _healAura;
+
+        [Tooltip("StompFuf prefab.")]
+        [SerializeField] private GameObject _BarkBuffEffect;
+
+        [Tooltip("StompFuf prefab.")]
+        [SerializeField] private GameObject _callOfForestEffect;
+
         [Tooltip("Boss instance name.")]
         [SerializeField] private string _instanceName;
 
@@ -19,6 +40,15 @@ namespace BeastHunter
 
         [Tooltip("Right hand object path")]
         [SerializeField] private string _rightHandObjectPath;
+
+        [Tooltip("Boss right finger path")]
+        [SerializeField] private string _rightFingerPath;
+
+        [Tooltip("Left foot object path")]
+        [SerializeField] private string _leftFootObjectPath;
+
+        [Tooltip("Right foot object path")]
+        [SerializeField] private string _rightFootObjectPath;
 
         [Tooltip("Boss instance tag.")]
         [SerializeField] private string _instanceTag;
@@ -67,8 +97,8 @@ namespace BeastHunter
         [Tooltip("Sphere trigger center position")]
         [SerializeField] private Vector3 _sphereColliderCenter;
 
-        [Tooltip("Sphere trigger radius between 0 and 20.")]
-        [Range(0.0f, 20.0f)]
+        [Tooltip("Sphere trigger radius between 0 and 100.")]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float _sphereColliderRadius;
 
         [Tooltip("Sphere trigger radius increace in battle between 1 and 2.")]
@@ -128,6 +158,15 @@ namespace BeastHunter
 
         #region Properties
 
+        public GameObject Prefab => _prefab;
+        public GameObject SporePrefab => _sporePrefab;
+        public GameObject Ruler => _ruler;
+        public GameObject StompPuf => _stompPuf;
+
+        public GameObject HealAura => _healAura;
+        public GameObject BarkBuffEffect => _BarkBuffEffect;
+        public GameObject CallOfForestEffect => _callOfForestEffect;
+
         public RuntimeAnimatorController BossAnimator => _bossAnimator;
 
         public Vector3 CapsuleColliderCenter => _capsuleColliderCenter;
@@ -138,6 +177,10 @@ namespace BeastHunter
         public string InstanceName => _instanceName;
         public string LeftHandObjectPath => _leftHandObjectPath;
         public string RightHandObjectPath => _rightHandObjectPath;
+        public string RightFingerPath => _rightFingerPath;
+        public string LeftFootObjectPath => _leftFootObjectPath;
+        public string RightFootObjectPath => _rightFootObjectPath;
+
         public string InstanceTag => _instanceTag;
 
         public int InstanceLayer => _instanceLayer;
@@ -165,6 +208,7 @@ namespace BeastHunter
 
         public float LeftHandHitBoxRadius => _leftHandHitBoxRadius;
         public float RightHandHitBoxRadius => _rightHandHitBoxRadius;
+
 
         #endregion
     }

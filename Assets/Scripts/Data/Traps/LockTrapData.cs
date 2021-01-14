@@ -4,7 +4,7 @@ using Extensions;
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewLockTrapData", menuName = "CreateTrapData/CreateTrapLockData", order = 0)]
+    [CreateAssetMenu(fileName = "NewLockTrapData", menuName = "Character/CreateTrapLockData", order = 0)]
     public sealed class LockTrapData : TrapData
     {
         #region Methods

@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "WeakPoint")]
+    [CreateAssetMenu(fileName = "WeakPoint", menuName = "Enemy/BossData")]
     public sealed class WeakPointData : ScriptableObject
     {
         public string Name;

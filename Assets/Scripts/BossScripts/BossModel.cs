@@ -1,22 +1,29 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using UniRx;
-
+using System.Collections.Generic;
+using RootMotion.FinalIK;
 
 namespace BeastHunter
 {
-    public sealed class BossModel : EnemyModel, IAwake, ITearDown
+    public sealed class BossModel : EnemyModel
     {
         #region Properties
 
         public Transform LeftHand { get; }
         public Transform RightHand { get; }
+        public Transform LeftFoot { get; }
+        public Transform RightFoot { get; }
         public Transform BossTransform { get; }
 
         public Vector3 AnchorPosition { get; }
 
-        public WeaponHitBoxBehavior LeftWeaponBehavior { get; set; }
-        public WeaponHitBoxBehavior RightWeaponBehavior { get; set; }
+        public WeaponHitBoxBehavior LeftHandBehavior { get; set; }
+        public WeaponHitBoxBehavior RightHandBehavior { get; set; }
+        public WeaponHitBoxBehavior RightFingerTrigger { get; set; }
+        public SphereCollider LeftHandCollider { get; set; }
+        public SphereCollider RightHandCollider { get; set; }
+
         public WeaponData WeaponData { get; set; }
 
         public WeakPointData FirstWeakPointData { get; set; }
@@ -31,8 +38,9 @@ namespace BeastHunter
         public Rigidbody BossRigitbody { get; }
         public NavMeshAgent BossNavAgent { get; }
         public BossBehavior BossBehavior { get; }
-        public BossData ThisBossData { get; }
+        public BossData BossData { get; }
         public BossSettings BossSettings { get; }
+        public EnemyStats BossStats { get; }
         public BossStateMachine BossStateMachine { get; }
 
         public Animator BossAnimator { get; set; }
@@ -44,22 +52,51 @@ namespace BeastHunter
         public bool IsMoving { get; set; }
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
+        public bool IsPickUped { get; set; }
 
         public MovementPoint[] MovementPoints { get; set; }
-        
-        public bool MovementLoop { get; set; }
+
+        public List<GameObject> FoodList = new List<GameObject>();
+        public float MaxStamina = 100f;
+        public float CurrentStamina;
+        public GameObject Lair;
+        public GameObject BossCurrentTarget;
+        public Vector3 BossCurrentPosition;
+        public GameObject SporePrefab;
+        public GameObject Ruler;
+        public GameObject StompPufPrefab;
+        public GameObject HealAuraPrefab;
+        public GameObject BarkBuffEffectPrefab;
+        public GameObject CallOfForestEffectPrefab;
+
+        public ParticleSystem leftStompEffect;
+        public ParticleSystem rightStompEffect;
+        public ParticleSystem healAura;
+        public ParticleSystem barkBuffEffect;
+        public ParticleSystem callOfForestEffect;
+
+        public InteractionSystem InteractionSystem;
+        public InteractionObject InteractionTarget;
+        public InteractionObject CatchTarget;
+        public GameObject targetParent;
+        public bool interrupt;
+        public FullBodyBipedEffector CurrentHand;
+        public int ClosestTriggerIndex;
+        public AimIK RightHandAimIK;
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public BossModel(GameObject objectOnScene, EnemyData bossData, Vector3 groundPosition, GameContext context) : 
-            base(objectOnScene, bossData)
+        public BossModel(GameObject prefab, BossData bossData, Vector3 groundPosition, GameContext context)
         {
-            ThisBossData = bossData as BossData;
-            BossSettings = ThisBossData.BossSettings;
-            BossTransform = objectOnScene.transform;
+            Lair = GameObject.Find("Lair");
+
+            BossData = bossData;
+            BossSettings = BossData._bossSettings;
+            BossStats = BossData._bossStats;
+            BossTransform = prefab.transform;
             BossTransform.rotation = Quaternion.Euler(0, BossSettings.InstantiateDirection, 0);
             BossTransform.name = BossSettings.InstanceName;
             BossTransform.tag = BossSettings.InstanceTag;
@@ -72,125 +109,161 @@ namespace BeastHunter
                 child.gameObject.layer = BossSettings.InstanceLayer;
             }
 
-            if (objectOnScene.GetComponent<Rigidbody>() != null)
+            if (prefab.GetComponent<Rigidbody>() != null)
             {
-                BossRigitbody = objectOnScene.GetComponent<Rigidbody>();
+                BossRigitbody = prefab.GetComponent<Rigidbody>();
             }
             else
             {
-                BossRigitbody = objectOnScene.AddComponent<Rigidbody>();
+                BossRigitbody = prefab.AddComponent<Rigidbody>();
                 BossRigitbody.freezeRotation = true;
                 BossRigitbody.mass = BossSettings.RigitbodyMass;
                 BossRigitbody.drag = BossSettings.RigitbodyDrag;
                 BossRigitbody.angularDrag = BossSettings.RigitbodyAngularDrag;
             }
 
-            BossRigitbody.isKinematic = ThisBossData.BossSettings.IsRigitbodyKinematic;
+            BossRigitbody.isKinematic = BossData._bossSettings.IsRigitbodyKinematic;
 
-            if (objectOnScene.GetComponent<CapsuleCollider>() != null)
+            if (prefab.GetComponent<CapsuleCollider>() != null)
             {
-                BossCapsuleCollider = objectOnScene.GetComponent<CapsuleCollider>();
+                BossCapsuleCollider = prefab.GetComponent<CapsuleCollider>();
             }
             else
             {
-                BossCapsuleCollider = objectOnScene.AddComponent<CapsuleCollider>();
+                BossCapsuleCollider = prefab.AddComponent<CapsuleCollider>();
                 BossCapsuleCollider.center = BossSettings.CapsuleColliderCenter;
                 BossCapsuleCollider.radius = BossSettings.CapsuleColliderRadius;
                 BossCapsuleCollider.height = BossSettings.CapsuleColliderHeight;
             }
 
-            BossTransform.position = groundPosition;
+            BossCapsuleCollider.transform.position = groundPosition;
 
-            if (objectOnScene.GetComponent<SphereCollider>() != null)
+            if (prefab.GetComponent<SphereCollider>() != null)
             {
-                BossSphereCollider = objectOnScene.GetComponent<SphereCollider>();
+                BossSphereCollider = prefab.GetComponent<SphereCollider>();
                 BossSphereCollider.isTrigger = true;
             }
             else
             {
-                BossSphereCollider = objectOnScene.AddComponent<SphereCollider>();
+                BossSphereCollider = prefab.AddComponent<SphereCollider>();
                 BossSphereCollider.center = BossSettings.SphereColliderCenter;
                 BossSphereCollider.radius = BossSettings.SphereColliderRadius;
                 BossSphereCollider.isTrigger = true;
             }
 
-            if (objectOnScene.GetComponent<Animator>() != null)
+            if (prefab.GetComponent<Animator>() != null)
             {
-                BossAnimator = objectOnScene.GetComponent<Animator>();
+                BossAnimator = prefab.GetComponent<Animator>();
             }
             else
             {
-                BossAnimator = objectOnScene.AddComponent<Animator>();
+                BossAnimator = prefab.AddComponent<Animator>();
             }
 
             BossAnimator.runtimeAnimatorController = BossSettings.BossAnimator;
             BossAnimator.applyRootMotion = false;
 
-            if (objectOnScene. GetComponent<BossBehavior>() != null)
+            if (prefab.GetComponent<BossBehavior>() != null)
             {
-                BossBehavior = objectOnScene.GetComponent<BossBehavior>();
+                BossBehavior = prefab.GetComponent<BossBehavior>();
             }
             else
             {
-                throw new System.Exception("Boss has no behavior script");
+                BossBehavior = prefab.AddComponent<BossBehavior>();
             }
 
-            GameObject movement = GameObject.Instantiate(ThisBossData.MovementPrefab);
-            MovementPath movementPath = movement.GetComponent<MovementPath>();
-
-            if (!movementPath)
-            {
-                movementPath = movement.AddComponent<MovementPath>();
-            }
-            
-            MovementPoints = movementPath.GetPoints().ToArray();
-            MovementLoop = movementPath.Loop;
-
+          //  BossBehavior.SetType(InteractableObjectType.Enemy);
+         //   BossBehavior.Stats = BossStats.MainStats;
             BossStateMachine = new BossStateMachine(context, this);
 
             Player = null;
             IsMoving = false;
             IsGrounded = false;
             IsPlayerNear = false;
+            IsPickUped = false;
 
             CurrentSpeed = 0f;
-            AnimationSpeed = ThisBossData.BossSettings.AnimatorBaseSpeed;
+            AnimationSpeed = BossData._bossSettings.AnimatorBaseSpeed;
 
             LeftHand = BossTransform.Find(BossSettings.LeftHandObjectPath);
             RightHand = BossTransform.Find(BossSettings.RightHandObjectPath);
+            LeftFoot = BossTransform.Find(BossSettings.LeftFootObjectPath);
+            RightFoot = BossTransform.Find(BossSettings.RightFootObjectPath);
 
             AnchorPosition = BossTransform.position;
 
-            if (objectOnScene.GetComponent<NavMeshAgent>() != null)
+            if (prefab.GetComponent<NavMeshAgent>() != null)
             {
-                BossNavAgent = objectOnScene.GetComponent<NavMeshAgent>();
+                BossNavAgent = prefab.GetComponent<NavMeshAgent>();
             }
             else
             {
-                BossNavAgent = objectOnScene.AddComponent<NavMeshAgent>();
+                BossNavAgent = prefab.AddComponent<NavMeshAgent>();
             }
 
             WeaponData = Data.BossFeasts;
 
-            GameObject leftHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
-                LeftActualWeapon.WeaponPrefab, LeftHand);
-            SphereCollider LeftHandTrigger = leftHandWeapon.GetComponent<SphereCollider>();
-            LeftHandTrigger.radius = ThisBossData.BossSettings.LeftHandHitBoxRadius;
-            LeftHandTrigger.center = ThisBossData.BossSettings.LeftHandHitBoxCenter;
+            var leftFist = new GameObject("[LeftFist]");
+            GameObject leftHandFist = GameObject.Instantiate(leftFist, LeftHand.position, LeftHand.rotation, LeftHand);
+            GameObject.Destroy(leftFist);
+            SphereCollider LeftHandTrigger = leftHandFist.AddComponent<SphereCollider>();
+            LeftHandCollider = leftHandFist.AddComponent<SphereCollider>();
+            LeftHandTrigger.radius = BossData._bossSettings.LeftHandHitBoxRadius;
+            LeftHandTrigger.center = BossData._bossSettings.LeftHandHitBoxCenter;
             LeftHandTrigger.isTrigger = true;
+            LeftHandCollider.radius = BossData._bossSettings.LeftHandHitBoxRadius - 0.2f;
+            LeftHandCollider.center = BossData._bossSettings.LeftHandHitBoxCenter;
+            LeftHandCollider.isTrigger = false;
+            LeftHandCollider.enabled = false;
             LeftHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            LeftWeaponBehavior = leftHandWeapon.GetComponent<WeaponHitBoxBehavior>();
-            LeftWeaponBehavior.IsInteractable = false;
+            LeftHandBehavior = leftHandFist.AddComponent<WeaponHitBoxBehavior>();
+          //  LeftHandBehavior.SetType(InteractableObjectType.HitBox);
+            LeftHandBehavior.IsInteractable = false;
 
-            GameObject rightHandWeapon = GameObject.Instantiate((WeaponData as TwoHandedWeaponData).
-                RightActualWeapon.WeaponPrefab, RightHand);
-            SphereCollider RightHandTrigger = rightHandWeapon.GetComponent<SphereCollider>();
-            RightHandTrigger.radius = ThisBossData.BossSettings.RightHandHitBoxRadius;
-            RightHandTrigger.center = ThisBossData.BossSettings.RightHandHitBoxCenter;
+            var rightFist = new GameObject("[RightFist]");
+            GameObject rightHandFist = GameObject.Instantiate(rightFist, RightHand.position, RightHand.rotation, RightHand);
+            GameObject.Destroy(rightFist);
+            SphereCollider RightHandTrigger = rightHandFist.AddComponent<SphereCollider>();
+            RightHandCollider = rightHandFist.AddComponent<SphereCollider>();
+            RightHandTrigger.radius = BossData._bossSettings.RightHandHitBoxRadius;
+            RightHandTrigger.center = BossData._bossSettings.RightHandHitBoxCenter;
             RightHandTrigger.isTrigger = true;
-            RightHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
-            RightWeaponBehavior = rightHandWeapon.GetComponent<WeaponHitBoxBehavior>();
-            RightWeaponBehavior.IsInteractable = false;
+            RightHandCollider.radius = BossData._bossSettings.LeftHandHitBoxRadius - 0.2f;
+            RightHandCollider.center = BossData._bossSettings.LeftHandHitBoxCenter;
+            RightHandCollider.isTrigger = false;
+            RightHandCollider.enabled = false;
+            var rb = rightHandFist.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+            rb.mass = 30f;
+            RightHandBehavior = rightHandFist.AddComponent<WeaponHitBoxBehavior>();
+        //    RightHandBehavior.SetType(InteractableObjectType.HitBox);
+            RightHandBehavior.IsInteractable = false;
+            RightFingerTrigger =  BossTransform.Find(BossSettings.RightFingerPath).GetComponent<WeaponHitBoxBehavior>();
+          //  RightFingerTrigger.SetType(InteractableObjectType.HitBox);
+            RightFingerTrigger.IsInteractable = false;
+
+            StompPufPrefab = BossSettings.StompPuf;
+            HealAuraPrefab = BossSettings.HealAura;
+            BarkBuffEffectPrefab = BossSettings.BarkBuffEffect;
+            CallOfForestEffectPrefab = BossSettings.CallOfForestEffect;
+
+            GameObject _healAura = GameObject.Instantiate(HealAuraPrefab, BossTransform.position, Quaternion.identity, BossTransform);
+            healAura = _healAura.GetComponent<ParticleSystem>();
+            healAura.Stop();
+
+            GameObject _barkBuffEffect = GameObject.Instantiate(BarkBuffEffectPrefab, BossTransform.position, BarkBuffEffectPrefab.transform.rotation, BossTransform);
+            barkBuffEffect = _barkBuffEffect.GetComponent<ParticleSystem>();
+            barkBuffEffect.Stop();
+
+            GameObject _callOfForestEffect = GameObject.Instantiate(CallOfForestEffectPrefab, BossTransform.position + new Vector3(-0.65f, 5, 1), Quaternion.identity, BossTransform);
+            callOfForestEffect = _callOfForestEffect.GetComponent<ParticleSystem>();
+            callOfForestEffect.Stop();
+
+
+            GameObject leftFootStompPuf = GameObject.Instantiate(StompPufPrefab, LeftFoot.position, LeftFoot.rotation, LeftFoot);
+            leftStompEffect = leftFootStompPuf.GetComponent<ParticleSystem>();
+            GameObject rightFootStompPuf = GameObject.Instantiate(StompPufPrefab, RightFoot.position, RightFoot.rotation, RightFoot);
+            rightStompEffect = rightFootStompPuf.GetComponent<ParticleSystem>();
 
             FirstWeakPointData = Data.BossFirstWeakPoint;
             GameObject firstWeakPoint = GameObject.Instantiate(FirstWeakPointData.InstancePrefab,
@@ -217,26 +290,13 @@ namespace BeastHunter
             ThirdWeakPointBehavior.AdditionalDamage = ThirdWeakPointData.AdditionalDamage;
 
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
-        }
+            CurrentHealth = BossStats.MainStats.HealthPoints;
+            SporePrefab = BossSettings.SporePrefab;
+            Ruler = BossSettings.Ruler;
+            GameObject.Instantiate(Ruler, BossTransform.position + Vector3.up, Quaternion.identity, BossTransform);
 
-        #endregion
-
-
-        #region IAwake
-
-        public void OnAwake()
-        {
-            BossStateMachine.OnAwake();
-        }
-
-        #endregion
-
-
-        #region ITearDown
-
-        public void TearDown()
-        {
-            BossStateMachine.OnTearDown();
+            InteractionSystem = BossTransform.GetComponent<InteractionSystem>();
+            RightHandAimIK = BossTransform.GetComponent<AimIK>();
         }
 
         #endregion
@@ -244,20 +304,94 @@ namespace BeastHunter
 
         #region Methods
 
+        //public override void DoSmth(string how)
+        //{
+
+        //}
+
+        public override void OnAwake()
+        {
+            BossStateMachine.OnAwake();
+        }
+
+        public override void Execute()
+        {
+            BossStateMachine.Execute();
+        }
+
+        public override EnemyStats GetStats()
+        {
+            return BossStats;
+        }
+
         public override void TakeDamage(Damage damage)
         {
-            CurrentStats.BaseStats.CurrentHealthPoints -= damage.GetTotalDamage();
+            if(IsDead)
+            {
+                return;
+            }
 
-            Debug.Log("Boss recieved: " + damage.GetTotalDamage() + " of damage and has: " + 
-                CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
+            CurrentHealth = CurrentHealth < damage.PhysicalDamage ? 0 : CurrentHealth - damage.PhysicalDamage;
 
-            if (damage.StunProbability > CurrentStats.DefenceStats.StunProbabilityResistance)
+            Debug.Log("Boss recieved: " + damage.PhysicalDamage + " of damage and has: " + CurrentHealth + " of HP");
+
+            
+            if (damage.StunProbability > BossData._bossStats.MainStats.StunResistance)
             {
                 MessageBroker.Default.Publish(new OnBossStunnedEventClass());
             }
             else
             {
                 MessageBroker.Default.Publish(new OnBossHittedEventClass());
+            }
+            DamageCheck(damage.PhysicalDamage);
+            HealthCheck();
+            BossStateMachine._mainState.DamageCounter(damage);
+        }
+
+        public override void OnTearDown()
+        {
+            BossStateMachine.OnTearDown();
+        }
+
+        public void HealthCheck()
+        {
+            if (CurrentHealth <= 0)
+            {
+                BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Dead);
+                return;
+            }
+
+            if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.MaxHealth / 2)
+            {
+                if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
+                {
+                    BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                    return;
+                }
+            }
+
+            if (BossStateMachine._model.CurrentHealth <= BossStateMachine._model.BossData._bossStats.MainStats.HealthPoints * 0.2f)
+            {
+                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
+                return;
+            }
+        }
+
+        public void DamageCheck(float damage)
+        {
+            if (damage >= BossData._bossStats.MainStats.HealthPoints * 0.2f)
+            {
+                //currentState.15%Damage();
+                Debug.Log("Hit 18% hp");
+                if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
+                {
+                    BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                }
+            }
+            else if (!BossStateMachine.CurrentState.IsBattleState)
+            {
+                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "UIElementsData")]
+    [CreateAssetMenu(fileName = "UIElementsData", menuName = "MainData/UIElementsData", order = 0)]
     public sealed class UIElementsData : ScriptableObject
     {
         #region Fields

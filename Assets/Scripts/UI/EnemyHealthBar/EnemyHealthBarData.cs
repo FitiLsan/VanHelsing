@@ -2,7 +2,7 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "EnemyHealthBarData")]
+    [CreateAssetMenu(fileName = "EnemyHealthBarData", menuName = "Enemy/CreateEnemyHealthBarData", order = 0)]
     public class EnemyHealthBarData : ScriptableObject
     {
         #region SerializedFields

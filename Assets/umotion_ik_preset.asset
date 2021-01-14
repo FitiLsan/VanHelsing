@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1933887728, guid: 448d62fcada76fd4ab5702190add98fd, type: 3}
+  m_Name: umotion_ik_preset
+  m_EditorClassIdentifier: 
+  GeneralSettings:
+    HandleSize: 12.875
+    ExtrudePoleHandles: 1
+  HumanIKHandsSetting:
+    Create: 1
+    LeftTargetPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
+      Spine1/OAK_TEE_ENT_ L Clavicle/OAK_TEE_ENT_ L UpperArm/OAK_TEE_ENT_ L Forearm/OAK_TEE_ENT_
+      L Hand
+    RightTargetPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
+      Spine1/OAK_TEE_ENT_ R Clavicle/OAK_TEE_ENT_ R UpperArm/OAK_TEE_ENT_ R Forearm/OAK_TEE_ENT_
+      R Hand
+    GenericTwistBoneMode: 0
+    PoleTarget: 0
+    ReferenceMode: 0
+    TargetRotationMode: 1
+  HumanIKFeetSetting:
+    Create: 1
+    LeftTargetPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ L Thigh/OAK_TEE_ENT_
+      L Calf/OAK_TEE_ENT_ L Foot
+    RightTargetPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ R Thigh/OAK_TEE_ENT_
+      R Calf/OAK_TEE_ENT_ R Foot
+    GenericTwistBoneMode: 0
+    PoleTarget: 0
+    ReferenceMode: 0
+    TargetRotationMode: 1
+  CustomIKSettings: []
