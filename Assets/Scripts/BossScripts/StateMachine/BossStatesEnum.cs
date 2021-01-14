@@ -4,15 +4,19 @@
     {
         None,
         Idle,
-        Moving,
         Patroling,
-        Chasing,
+        Eating,
+        Resting,
+
+        Moving,
+
         Attacking,
+        Defencing,
+        Chasing,
+        Retreating,
+        Resurrecting,
         Searching,
-        Stunned,
-        Hitted,
-        Targeting,
-        Dead,
+        Dead
     }
 }
 

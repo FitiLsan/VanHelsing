@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "CharacterData")]
+    [CreateAssetMenu(fileName = "CharacterData", menuName = "Character/CharacterData")]
     public sealed class CharacterData : ScriptableObject
     {
         #region Fields

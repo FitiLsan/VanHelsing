@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace BeastHunter 
 {
-    [CreateAssetMenu (fileName = "Data", menuName = "DataTest")]
+    [CreateAssetMenu (fileName = "Data", menuName = "MainData/Data")]
     public sealed class Data : ScriptableObject 
     {
         #region Fields

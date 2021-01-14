@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewData", menuName = "CreateData/QuestIndicator", order = 0)]
+    [CreateAssetMenu(fileName = "NewData", menuName = "Quest/QuestIndicator", order = 0)]
     public sealed class QuestIndicatorData : ScriptableObject
     {
         #region Fields

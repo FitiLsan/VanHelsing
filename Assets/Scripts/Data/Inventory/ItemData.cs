@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewData", menuName = "CreateData/Item", order = 0)]
+    [CreateAssetMenu(fileName = "NewData", menuName = "Character/Item", order = 0)]
     public class ItemData : ScriptableObject
     {
         public Sprite Image;

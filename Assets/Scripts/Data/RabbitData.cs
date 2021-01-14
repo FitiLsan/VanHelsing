@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 namespace BeastHunter
 {
 
-    [CreateAssetMenu(fileName = "NewModel", menuName = "CreateData/Rabbit")]
+    [CreateAssetMenu(fileName = "NewModel", menuName = "Enemy/RabbitData", order = 2)]
     public sealed class RabbitData : EnemyData
     {
         #region PrivateData
@@ -114,7 +114,7 @@ namespace BeastHunter
                 case BehaviourState.Returning:
                     {
                         Return(rabbit);
-                        var moveDistance = RabbitStats.RunningRadius / STOP_RETURNING_DISTANCE_FACTOR;
+                        var moveDistance = RabbitStats.RunningRadius / RabbitData.STOP_RETURNING_DISTANCE_FACTOR;
                         if ((rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).sqrMagnitude < moveDistance * moveDistance)
                         {
                             rabbit.RabbitState = BehaviourState.Roaming;
@@ -210,8 +210,7 @@ namespace BeastHunter
             }
 
             //var triggers = _physicsService.GetObjectsInRadius(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer);
-            var triggers = Physics.OverlapSphere(transform.position, BaseStats.MainStats.ViewRadius,
-                LayerMask.GetMask(LayerMask.LayerToName(LayerManager.DefaultLayer), LayerMask.LayerToName(LayerManager.PlayerLayer)));
+            var triggers = Physics.OverlapSphere(transform.position, BaseStats.MainStats.ViewRadius, LayerManager.DefaultLayer);//change layer!!
             var result = false;
             foreach (Collider target in triggers)
             {
@@ -246,6 +245,7 @@ namespace BeastHunter
 
         private void Hop(Rigidbody rigidbody, Vector3 direction, float acceleration)
         {
+           // Debug.Log(direction + " " + RabbitStats.MoveSpeed + " " + acceleration + " " + RabbitStats.JumpHeight + " " + HOP_FORCE_MULTIPLIER);
             rigidbody.AddForce((direction * RabbitStats.MoveSpeed * acceleration + Vector3.up * RabbitStats.JumpHeight) * HOP_FORCE_MULTIPLIER);
         }
 
@@ -365,7 +365,7 @@ namespace BeastHunter
         #endregion
 
 
-        #region EnemyData
+        #region NpcData
 
         public override void TakeDamage(EnemyModel instance, Damage damage)
         {
