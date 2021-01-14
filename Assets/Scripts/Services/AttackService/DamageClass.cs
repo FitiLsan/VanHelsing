@@ -13,6 +13,7 @@ namespace BeastHunter
 
         [Tooltip("Physical Damage between 0 and 10 0000.")]
         [Range(0.0f, 100000.0f)]
+
         public float PhysicalDamage;
 
         [Tooltip("Stun probability between 0 and 1.")]

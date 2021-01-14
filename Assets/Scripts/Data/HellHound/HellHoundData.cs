@@ -4,12 +4,11 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-
 namespace BeastHunter
 {
 
     [CreateAssetMenu(fileName = "NewHellHound", menuName = "CreateData/HellHound", order = 2)]
-    public sealed class HellHoundData : EnemyData
+    public sealed class HellHoundData : EnemyData, IDealDamage
     {
         #region PrivateData
 
@@ -131,9 +130,7 @@ namespace BeastHunter
 
             if (enemy != null)
             {
-                Services.SharedInstance.AttackService.CountAndDealDamage(Stats.Damage, collider.transform.GetMainParent().gameObject.GetInstanceID(),
-                    StartStats);
-                _onHitEnemyMsg?.Invoke(enemy);
+                DealDamage(enemy, Stats.Damage);
             }
             else
             {
@@ -155,12 +152,7 @@ namespace BeastHunter
             model.AttackCollider.enabled = false;
         }
 
-        public override void Act(EnemyModel model)
-        {
-            Execute(model as HellHoundModel);
-        }
-
-        private void Execute(HellHoundModel model)
+        public void Act(HellHoundModel model)
         {
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
             model.Animator.SetFloat("RotateDirection", rotateDirection);
@@ -210,9 +202,9 @@ namespace BeastHunter
 
                 case BehaviourState.Idling:
 
-                    model.Timer -= Time.deltaTime;
-                    if (model.Timer <= 0)
-                    {
+                    model.StateTimer -= Time.deltaTime;
+                    if(model.StateTimer <= 0)
+                    { 
                         model.BehaviourState = SetState(BehaviourState.None, model);
                     }
 
@@ -226,7 +218,7 @@ namespace BeastHunter
                     }
                     else
                     {
-                        if (CurrentHealthPercent(model.CurrentStats.BaseStats.CurrentHealthPoints) < Stats.PercentEscapeHealth && !model.IsAttacking)
+                        if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
                         {
                             model.BehaviourState = SetState(BehaviourState.Escaping, model);
                         }
@@ -260,7 +252,7 @@ namespace BeastHunter
                                 {
                                     AttackDirect(model.Animator);
                                 }
-                                else if (model.JumpingAttackTimer <= 0 &&
+                                else if (model.JumpingAttackTimer <= 0 && 
                                     sqrDistanceToEnemy < _sqrAttackJumpMaxDistance && sqrDistanceToEnemy > _sqrAttackJumpMinDistance)
                                 {
                                     model.BehaviourState = SetState(BehaviourState.JumpingAttack, model);
@@ -274,7 +266,7 @@ namespace BeastHunter
                 case BehaviourState.JumpingAttack:
 
                     if (!model.IsAttacking)
-                    {
+                    { 
                         model.BehaviourState = SetState(BehaviourState.Chasing, model);
                         model.JumpingAttackTimer = Stats.AttackJumpCooldown;
                     }
@@ -300,7 +292,7 @@ namespace BeastHunter
                     }
                     else
                     {
-                        if (CurrentHealthPercent(model.CurrentStats.BaseStats.CurrentHealthPoints) < Stats.PercentEscapeHealth && !model.IsAttacking)
+                        if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
                         {
                             model.BehaviourState = SetState(BehaviourState.Escaping, model);
                         }
@@ -308,10 +300,10 @@ namespace BeastHunter
                         {
                             model.Transform.rotation = SmoothTurn(model.ChasingTarget.position - model.Transform.position, model.Transform.forward, Stats.ChasingTurnSpeedNearTarget);
 
-                            model.Timer -= Time.deltaTime;
+                            model.StateTimer -= Time.deltaTime;
                             float sqrDistanceToEnemy = (model.ChasingTarget.position - model.Transform.position).sqrMagnitude;
 
-                            if (model.Timer <= 0 || sqrDistanceToEnemy > _sqrBattleCirclingDistance)
+                            if (model.StateTimer <= 0 || sqrDistanceToEnemy > _sqrBattleCirclingDistance)
                             {
                                 model.BehaviourState = SetState(BehaviourState.Chasing, model);
                             }
@@ -358,18 +350,18 @@ namespace BeastHunter
 
                             if (!isSetDestination)
                             {
-                                Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Escaping");
+                                Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.Escaping");
                                 model.BehaviourState = SetState(BehaviourState.Chasing, model);
                             }
                         }
                     }
-
+                    
                     break;
 
                 case BehaviourState.Resting:
 
-                    model.Timer -= Time.deltaTime;
-                    if (model.Timer <= 0)
+                    model.StateTimer -= Time.deltaTime;
+                    if (model.StateTimer <= 0)
                     {
                         model.BehaviourState = SetState(BehaviourState.None, model);
                     }
@@ -398,13 +390,13 @@ namespace BeastHunter
 
                         if (!isSetDestination)
                         {
-                            Debug.LogError(this + ": impossible to reach the destination point in case BehaviourState.Searching");
+                            Debug.LogWarning(this + ": impossible to reach the destination point in case BehaviourState.Searching");
                             model.BehaviourState = SetState(BehaviourState.Idling, model);
                         }
                     }
 
-                    model.Timer -= Time.deltaTime;
-                    if (model.Timer <= 0)
+                    model.StateTimer -= Time.deltaTime;
+                    if (model.StateTimer <= 0)
                     {
                         model.BehaviourState = SetState(BehaviourState.None, model);
                     }
@@ -463,10 +455,10 @@ namespace BeastHunter
                     return BehaviourState.None;
 
                 case BehaviourState.Roaming:
-                    return SetRoamingState(model.NavMeshAgent, model.SpawnPoint, ref model.Timer);
+                    return SetRoamingState(model.NavMeshAgent, model.SpawnPoint, ref model.StateTimer);
 
                 case BehaviourState.Idling:
-                    return SetIdlingState(ref model.Timer);
+                    return SetIdlingState(ref model.StateTimer);
 
                 case BehaviourState.Chasing:
                     return SetChasingState(model.NavMeshAgent);
@@ -475,23 +467,22 @@ namespace BeastHunter
                     return SetJumpingBackState(model.NavMeshAgent, model.Animator, model.Transform);
 
                 case BehaviourState.BattleCircling:
-                    return SetBattleCirclingState(model.NavMeshAgent, model.Animator, model.ChasingTarget.position, ref model.Timer);
+                    return SetBattleCirclingState(model.NavMeshAgent, model.Animator, model.ChasingTarget.position, ref model.StateTimer);
 
                 case BehaviourState.Escaping:
                     return SetEscapingState(model.NavMeshAgent, model.ChasingTarget.position);
 
                 case BehaviourState.Resting:
-                    return SetRestingState(model.Animator, ref model.Timer);
+                    return SetRestingState(model.Animator, ref model.StateTimer);
 
                 case BehaviourState.Searching:
-                    return SetSearchingState(model.NavMeshAgent, model.SpawnPoint, ref model.Timer);
+                    return SetSearchingState(model.NavMeshAgent, model.SpawnPoint, ref model.StateTimer);
 
                 case BehaviourState.JumpingAttack:
                     return SetJumpingAttackState(model, model.ChasingTarget.position);
 
                 default: return newState;
             }
-
         }
 
         private BehaviourState SetIdlingState(ref float timer)
@@ -529,7 +520,7 @@ namespace BeastHunter
 
             if (!isSetDestination)
             {
-                Debug.LogError(this + ": impossible to reach the destination point in SetRoamingState method");
+                Debug.LogWarning(this + ": impossible to reach the destination point in SetRoamingState method");
                 return SetIdlingState(ref timer);
             }
 
@@ -632,7 +623,7 @@ namespace BeastHunter
 
             if (!isSetDestination)
             {
-                Debug.LogError(this + ": impossible to reach the destination point in SetEscapingState method");
+                Debug.LogWarning(this + ": impossible to reach the destination point in SetEscapingState method");
                 return SetChasingState(navMeshAgent);
             }
 
@@ -666,7 +657,7 @@ namespace BeastHunter
 
             if (!isSetDestination)
             {
-                Debug.LogError(this + ": impossible to reach the destination point in SetSearchingState method");
+                Debug.LogWarning(this + ": impossible to reach the destination point in SetSearchingState method");
                 return SetIdlingState(ref timer);
             }
 
@@ -718,7 +709,7 @@ namespace BeastHunter
         /// <summary>Current health in percent</summary>
         private float CurrentHealthPercent(float currentHealth)
         {
-            return currentHealth * 100 / StartStats.BaseStats.MaximalHealthPoints;
+            return currentHealth * 100 / BaseStats.MainStats.MaxHealth;
         }
 
         /// <summary>Get the direction of the turn</summary>
@@ -843,14 +834,13 @@ namespace BeastHunter
             HellHoundModel hellHoundModel = model as HellHoundModel;
             base.TakeDamage(model, damage);
 
-            _takingDamageMsg?.Invoke(model.CurrentStats.BaseStats.CurrentHealthPoints);
+            _takingDamageMsg?.Invoke(model.CurrentHealth);
             hellHoundModel.Animator.SetTrigger("TakeDamage");
 
-            if (model.CurrentStats.BaseStats.IsDead)
+            if (model.IsDead)
             {
                 _onDeadMsg?.Invoke();
                 hellHoundModel.Animator.SetTrigger("Dead");
-                hellHoundModel.Clean();
             }
 
             if (hellHoundModel.ChasingTarget == null
@@ -860,6 +850,20 @@ namespace BeastHunter
             {
                 hellHoundModel.BehaviourState = SetState(BehaviourState.Searching, hellHoundModel);
             }
+        }
+
+        #endregion
+
+
+        #region IDealDamage
+
+        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
+        {
+            Damage countDamage = Services.SharedInstance.AttackService
+                .CountDamage(damage, BaseStats.MainStats, enemy.transform.GetMainParent().gameObject.GetInstanceID());
+
+            _onHitEnemyMsg?.Invoke(enemy);
+            enemy.TakeDamageEvent(countDamage);
         }
 
         #endregion

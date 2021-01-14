@@ -34,6 +34,7 @@ namespace BeastHunter
             Add(new HideBushInitializeController(context));
             Add(new HellHoundInitializeController(context));
             Add(new BouldersInitializeController(context));
+            Add(new FallingTreeInitializeController(context));
         }
 
         private void AddControllers(GameContext context)
