@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "BouldersData", menuName = "CreateData/SimpleInteractiveObjects/BouldersData", order = 0)]
-    public sealed class BouldersData : SimpleInteractiveObjectData, IDealDamage
+    public sealed class BouldersData : SimpleInteractiveObjectData
     {
         #region SerializeFields
 
@@ -217,7 +217,8 @@ namespace BeastHunter
 
                     if (enemy != null)
                     {
-                        DealDamage(enemy, _damage);
+                        Services.SharedInstance.AttackService.CountAndDealDamage(_damage, enemy.transform.
+                            GetMainParent().gameObject.GetInstanceID());
                     }
                     else
                     {
@@ -252,21 +253,6 @@ namespace BeastHunter
                 _collisionMsg = (gameobject) => Debug.Log("Boulder collision with " + gameobject);
                 _destroyAfterHitMsg = () => Debug.Log("Boulder will destroy after " + _timeToDestroyAfterHit + " sec");
             }
-        }
-
-        #endregion
-
-
-        #region IDealDamage
-
-        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
-        {
-            Damage countDamage = Services.SharedInstance.AttackService
-                .CountDamage(damage, enemy.transform.GetMainParent().gameObject.GetInstanceID());
-
-            _dealDamageMsg?.Invoke(enemy.ToString());
-            enemy.TakeDamageEvent(countDamage);
-
         }
 
         #endregion

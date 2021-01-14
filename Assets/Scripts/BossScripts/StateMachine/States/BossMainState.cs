@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
-using RootMotion.FinalIK;
+using Extensions;
 
 namespace BeastHunter
 {
@@ -75,7 +75,7 @@ namespace BeastHunter
 
         public override void Execute()
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
                 SpeedCheck();
                 // HealthCheck();
@@ -101,7 +101,7 @@ namespace BeastHunter
 
         private void OnBossHittedHandler(OnBossHittedEventClass eventClass)
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
                 _hitPerTime++;
               //  _stateMachine.SetCurrentStateOverride(BossStatesEnum.Hitted);
@@ -110,7 +110,7 @@ namespace BeastHunter
 
         private void OnBossStunnedHandler(OnBossStunnedEventClass eventClass)
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
              //   _stateMachine.SetCurrentStateOverride(BossStatesEnum.Stunned);
             }         
@@ -118,7 +118,7 @@ namespace BeastHunter
 
         private void OnPlayerDieHandler(OnPlayerDieEventCLass eventClass)
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Patroling);
             }
@@ -126,7 +126,7 @@ namespace BeastHunter
 
         private void HealthCheck()
         {
-            Debug.Log($"Health{_bossModel.CurrentHealth}");
+            Debug.Log($"Health{_bossModel.CurrentStats.BaseStats.CurrentHealthPoints}");
         }
 
         private void HitCounter()
@@ -269,9 +269,9 @@ namespace BeastHunter
         private void MakeWeakPointBurst(OnBossWeakPointHittedEventClass eventClass)
         {
             eventClass.WeakPointCollider.gameObject.GetComponent<ParticleSystem>().Play();
-            _stateMachine._model.TakeDamage(Services.SharedInstance.AttackService.CountDamage(
-                eventClass.WeakPointCollider.GetComponent<HitBoxBehavior>().AdditionalDamage, 
-                    _stateMachine._model.GetStats().MainStats));
+            Services.SharedInstance.AttackService.CountAndDealDamage(eventClass.WeakPointCollider.
+                GetComponent<HitBoxBehavior>().AdditionalDamage, _bossModel.BossTransform.GetMainParent().
+                    gameObject.GetInstanceID());
             eventClass.WeakPointCollider.GetComponent<Light>().color = Color.red;
             eventClass.WeakPointCollider.enabled = false;
 

@@ -5,7 +5,7 @@ using System;
 namespace BeastHunter
 {
     [Obsolete]
-    public sealed class TimeSkipService : Service
+    public sealed class TimeSkipService : IService
     {
         #region Fields
 
@@ -25,7 +25,7 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public TimeSkipService(Contexts contexts) : base(contexts)
+        public TimeSkipService()
         {
             _timeSkipUI = GameObject.Instantiate(Data.UIElementsData.TimeSkipPrefab);
             CloseTimeSkipMenu();

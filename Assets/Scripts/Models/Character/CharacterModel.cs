@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using RootMotion.Dynamics;
 using Extensions;
 using UniRx;
@@ -18,8 +17,7 @@ namespace BeastHunter
 
         #region Properties
 
-        public int InstanceID { get; }
-        public BaseStatsClass CharacterStats { get; set; }
+        public Stats CurrentStats { get; set; }
         public ReactiveProperty<WeaponData> CurrentWeaponData { get; set; }
         public GameObject CurrentWeaponLeft { get; set; }
         public GameObject CurrentWeaponRight { get; set; }
@@ -38,8 +36,8 @@ namespace BeastHunter
         public Rigidbody CharacterRigitbody { get; }
         public PlayerBehavior PlayerBehavior { get; }
         public CharacterData CharacterData { get; }
-        public CharacterCommonSettingsStruct CharacterCommonSettings { get; }
-        public BaseStatsClass CharacterStatsSettings { get; }
+        public CharacterCommonSettings CharacterCommonSettings { get; }
+        public Stats CharacterStartStats { get; }
         public PuppetMaster PuppetMaster { get; }
         public BehaviourPuppet BehaviorPuppet { get; }
         public BehaviourFall BehaviorFall { get; }
@@ -57,7 +55,6 @@ namespace BeastHunter
 
         public bool IsEnemyNear { get; set; }
         public bool IsInHidingPlace { get; set; }
-        public bool IsDead { get; set; }
         public bool IsWeaponInHands
         {
             get
@@ -65,6 +62,8 @@ namespace BeastHunter
                 return CurrentWeaponLeft != null || CurrentWeaponRight != null;
             }
         }
+
+        public int InstanceID { get; }
 
         #endregion
 
@@ -76,14 +75,13 @@ namespace BeastHunter
             InstanceID = prefab.GetInstanceID();
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData.CharacterCommonSettings;
-            CharacterStatsSettings = CharacterData.CharacterStatsSettings;
+            CharacterStartStats = CharacterData.CharacterStatsSettings;
             CharacterTransform = prefab.transform.GetChild(2).transform;
             CharacterTransform.position = groundPosition;
             CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
             CharacterTransform.name = CharacterCommonSettings.InstanceName;
             CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
-
-            CharacterStats = CharacterStatsSettings;
+            CurrentStats = CharacterStartStats.DeepCopy();
 
             AudioSource[] characterAudioSources = CharacterTransform.gameObject.GetComponentsInChildren<AudioSource>();
             SpeechAudioSource = characterAudioSources[0];
@@ -101,7 +99,6 @@ namespace BeastHunter
             CharacterRigitbody.mass = CharacterCommonSettings.RigitbodyMass;
             CharacterRigitbody.drag = CharacterCommonSettings.RigitbodyDrag;
             CharacterRigitbody.angularDrag = CharacterCommonSettings.RigitbodyAngularDrag;
-            CharacterRigitbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
             if (CharacterTransform.gameObject.TryGetComponent(out CapsuleCollider _characterCapsuleCollider))
             {
@@ -111,6 +108,7 @@ namespace BeastHunter
             {
                 throw new System.Exception("There is no capsule collider on character prefab");
             }
+
             CharacterCapsuleCollider.center = CharacterCommonSettings.CapsuleColliderCenter;
             CharacterCapsuleCollider.radius = CharacterCommonSettings.CapsuleColliderRadius;
             CharacterCapsuleCollider.height = CharacterCommonSettings.CapsuleColliderHeight;
@@ -124,6 +122,7 @@ namespace BeastHunter
             {
                 throw new System.Exception("There is no sphere collider on character prefab");
             }
+
             CharacterSphereCollider.center = CharacterCommonSettings.SphereColliderCenter;
             CharacterSphereCollider.radius = CharacterCommonSettings.SphereColliderRadius;
             CharacterSphereCollider.isTrigger = true;
@@ -157,7 +156,6 @@ namespace BeastHunter
             IsSneaking = false;
             IsEnemyNear = false;
             IsInHidingPlace = false;
-            IsDead = false;
 
             CurrentSpeed = 0;
             AnimationSpeed = CharacterData.CharacterCommonSettings.AnimatorBaseSpeed;

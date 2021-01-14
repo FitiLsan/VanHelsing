@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 namespace BeastHunter
 {
     public class HellHoundInitializeController : EnemyInitializeController
@@ -18,7 +19,8 @@ namespace BeastHunter
         {
             var hellHoundData = Data.HellHoundData;
 
-            GameObject instance = Object.Instantiate(hellHoundData.BaseStats.Prefab);
+            GameObject instance = Object.Instantiate(hellHoundData.Prefab);
+
             HellHoundModel hellHound = new HellHoundModel(instance, hellHoundData);
             _context.NpcModels.Add(instance.GetInstanceID(), hellHound);
 

@@ -19,21 +19,21 @@ MonoBehaviour:
     _characterFreelookCamera: {fileID: 1046887095545056062, guid: ffe73034ef64698439bb105d6f12a131,
       type: 3}
     _characterFreelookCameraName: CharacterFreelookCamera
-    _characterFreelookCameraBlendTime: 2
+    _characterFreelookCameraBlendTime: 0.3
     _characterKnockedDownCamera: {fileID: 1046887095545056062, guid: 2983e325106020e46b654a293ce2d6bd,
       type: 3}
     _characterKnockedDownCameraName: CharacterKnockedDownCamera
-    _characterKnockedDownCameraBlendTime: 2
+    _characterKnockedDownCameraBlendTime: 0.15
     _characterTargetCamera: {fileID: 7502929037863473527, guid: 754e3a8556acf0a43814c84409669089,
       type: 3}
     _characterTargetCameraName: CharacterTargetCamera
     _cameraTargetName: Target
-    _characterTargetCameraBlendTime: 2
+    _characterTargetCameraBlendTime: 0.3
     _cameraTargetHeight: 1.6
     _characterAimingCamera: {fileID: 7502929037863473527, guid: 93d64c43965a1ee4394b13e780d22afa,
       type: 3}
     _characterAimingCameraName: CharacterAimingCamera
-    _characterAimingCameraBlendTime: 2.44
+    _characterAimingCameraBlendTime: 0.3
     _freeLookFieldOfView: 40
     _freeLookNearClipPlane: 0.1
     _freeLookFarClipPlane: 5000
@@ -64,10 +64,10 @@ MonoBehaviour:
     _freeLookTopRigVerticalDamping: 0
     _freeLookTopRigScreenX: 0.5
     _freeLookTopRigScreenY: 0.5
-    _freeLookTopRigDeadZoneWidth: 0.2
+    _freeLookTopRigDeadZoneWidth: 0.045
     _freeLookTopRigDeadZoneHeight: 0.2
-    _freeLookTopRigSoftZoneWidth: 0.299
-    _freeLookTopRigSoftZoneHeight: 0.301
+    _freeLookTopRigSoftZoneWidth: 0.15
+    _freeLookTopRigSoftZoneHeight: 0.25
     _freeLookTopRigBiasX: 0
     _freeLookTopRigBiasY: 0
     _freeLookMiddleRigBodyDampingY: 0
@@ -81,10 +81,10 @@ MonoBehaviour:
     _freeLookMiddleRigVerticalDamping: 0
     _freeLookMiddleRigScreenX: 0.5
     _freeLookMiddleRigScreenY: 0.5
-    _freeLookMiddleRigDeadZoneWidth: 0.2
+    _freeLookMiddleRigDeadZoneWidth: 0.045
     _freeLookMiddleRigDeadZoneHeight: 0.2
-    _freeLookMiddleRigSoftZoneWidth: 0.3
-    _freeLookMiddleRigSoftZoneHeight: 0.3
+    _freeLookMiddleRigSoftZoneWidth: 0.15
+    _freeLookMiddleRigSoftZoneHeight: 0.25
     _freeLookMiddleRigBiasX: 0
     _freeLookMiddleRigBiasY: 0
     _freeLookBottomRigBodyDampingY: 1
@@ -98,10 +98,10 @@ MonoBehaviour:
     _freeLookBottomRigVerticalDamping: 0
     _freeLookBottomRigScreenX: 0.5
     _freeLookBottomRigScreenY: 0.5
-    _freeLookBottomRigDeadZoneWidth: 0.2
+    _freeLookBottomRigDeadZoneWidth: 0.045
     _freeLookBottomRigDeadZoneHeight: 0.2
-    _freeLookBottomRigSoftZoneWidth: 0.3
-    _freeLookBottomRigSoftZoneHeight: 0.3
+    _freeLookBottomRigSoftZoneWidth: 0.15
+    _freeLookBottomRigSoftZoneHeight: 0.25
     _freeLookBottomRigBiasX: 0
     _freeLookBottomRigBiasY: 0
     _colliderMinDistanceFromTarget: 0.1

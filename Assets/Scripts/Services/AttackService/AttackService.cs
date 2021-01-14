@@ -1,23 +1,21 @@
-﻿using System;
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
-    public sealed class AttackService : Service
+    public sealed class AttackService : IService
     {
         #region Fields
 
+        private readonly GameContext _context;
         private Damage _damage;
-        private GameContext _gameContext;
 
         #endregion
 
 
         #region ClassLifeCycles
 
-        public AttackService(Contexts contexts) : base(contexts)
+        public AttackService(GameContext context)
         {
+            _context = context;
             _damage = new Damage();
-            _gameContext = contexts as GameContext;
         }
 
         #endregion
@@ -25,67 +23,96 @@ namespace BeastHunter
 
         #region Methods
 
-        [Obsolete("Should use methods taking receiverID(int)")]
-        public Damage CountDamage(WeaponData weapon, BaseStatsClass dealerStats, BaseStatsClass recieverStats)
+        public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats = new Stats(), WeaponData usedWeapon = null)
         {
-            float weaponWeight = weapon is OneHandedWeaponData ? (weapon as OneHandedWeaponData).ActualWeapon.Weight :
-                (weapon as TwoHandedWeaponData).CurrentAttack.WeaponItem.Weight;
+            Stats receiverStats = _context.CharacterModel.InstanceID == receiverID ?
+                _context.CharacterModel.CurrentStats : _context.NpcModels[receiverID].CurrentStats;
 
-            _damage.PhysicalDamage = weapon.CurrentAttack.AttackDamage.PhysicalDamage * weaponWeight *
-                dealerStats.PhysicalPower * (1 - recieverStats.PhysicalResistance);
-            _damage.StunProbability = weapon.CurrentAttack.AttackDamage.StunProbability - recieverStats.StunResistance > 0 ?
-                weapon.CurrentAttack.AttackDamage.StunProbability - recieverStats.StunResistance : 0;
+            if(usedWeapon == null)
+            {
+                if(dealerStats.Equals(new Stats()))
+                {
+                    _damage.PhysicalDamage = baseDamage.PhysicalDamage *
+                        (1 - receiverStats.DefenceStats.PhysicalDamageResistance);
+                    _damage.StunProbability = baseDamage.StunProbability *
+                        (1 - receiverStats.DefenceStats.StunProbabilityResistance);
+                    _damage.FireDamage = baseDamage.FireDamage *
+                        (1 - receiverStats.DefenceStats.FireDamageResistance);
+                }
+                else
+                {
+                    _damage.PhysicalDamage = (baseDamage.PhysicalDamage + dealerStats.AttackStats.PhysicalPower) *
+                        (1 - receiverStats.DefenceStats.PhysicalDamageResistance);
+                    _damage.StunProbability = baseDamage.StunProbability *
+                        (1 - receiverStats.DefenceStats.StunProbabilityResistance);
+                    _damage.FireDamage = baseDamage.FireDamage *
+                        (1 - receiverStats.DefenceStats.FireDamageResistance);
+                }
+            }
+            else
+            {
+                switch (usedWeapon.Type)
+                {
+                    case WeaponType.Melee:
+
+                        if(dealerStats.Equals(new Stats()))
+                        {
+                            _damage.PhysicalDamage = baseDamage.PhysicalDamage *
+                            (1 - receiverStats.DefenceStats.PhysicalDamageResistance) *
+                                usedWeapon.CurrentAttack.WeaponItem.Weight;
+                            _damage.StunProbability = baseDamage.StunProbability *
+                                (1 - receiverStats.DefenceStats.StunProbabilityResistance) *
+                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
+                            _damage.FireDamage = baseDamage.FireDamage *
+                                (1 - receiverStats.DefenceStats.FireDamageResistance) *
+                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
+                        }
+                        else
+                        {
+                            _damage.PhysicalDamage = (baseDamage.PhysicalDamage + dealerStats.AttackStats.PhysicalPower) *
+                            (1 - receiverStats.DefenceStats.PhysicalDamageResistance) *
+                                usedWeapon.CurrentAttack.WeaponItem.Weight;
+                            _damage.StunProbability = baseDamage.StunProbability *
+                                (1 - receiverStats.DefenceStats.StunProbabilityResistance) *
+                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
+                            _damage.FireDamage = baseDamage.FireDamage *
+                                (1 - receiverStats.DefenceStats.FireDamageResistance) *
+                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
+                        }
+                        break;
+                    case WeaponType.Shooting:
+                        _damage.PhysicalDamage = baseDamage.PhysicalDamage * 
+                            (1 - receiverStats.DefenceStats.PhysicalDamageResistance);
+                        _damage.StunProbability = baseDamage.StunProbability * 
+                            (1 - receiverStats.DefenceStats.StunProbabilityResistance);
+                        _damage.FireDamage = baseDamage.FireDamage * 
+                            (1 - receiverStats.DefenceStats.FireDamageResistance);
+                        break;
+                    case WeaponType.Throwing:
+                        break;
+                    default:
+                        break;
+                }
+            }
 
             return _damage;
         }
-        
-        [Obsolete("Should use methods taking receiverID(int)")]
-        public Damage CountDamage(Damage weaponDamage, BaseStatsClass dealerStats, BaseStatsClass recieverStats)
-        {
-            _damage.PhysicalDamage = weaponDamage.PhysicalDamage * dealerStats.PhysicalPower * 
-                (1 - recieverStats.PhysicalResistance);
-            _damage.StunProbability = weaponDamage.StunProbability - recieverStats.StunResistance > 0 ?
-                weaponDamage.StunProbability - recieverStats.StunResistance : 0;
 
-            return _damage;
-        }
-        
-        [Obsolete("Should use methods taking receiverID(int)")]
-        public Damage CountDamage(Damage weaponDamage, BaseStatsClass recieverStats)
+        public void DealDamage(Damage countedDamage, int receiverID)
         {
-            _damage.PhysicalDamage = weaponDamage.PhysicalDamage * (1 - recieverStats.PhysicalResistance);
-            _damage.StunProbability = weaponDamage.StunProbability * (1 - recieverStats.StunResistance);
-
-            return _damage;
+            if(receiverID == _context.CharacterModel.InstanceID)
+            {
+                _context.CharacterModel.PlayerBehavior.TakeDamageEvent(countedDamage);
+            }
+            else if(_context.NpcModels.ContainsKey(receiverID))
+            {
+                _context.NpcModels[receiverID].TakeDamage(countedDamage);
+            }
         }
 
-        public Damage CountDamage(Damage weaponDamage, int receiverID)
+        public void CountAndDealDamage(Damage baseDamage, int receiverID, Stats dealerStats = new Stats(), WeaponData usedWeapon = null)
         {
-            BaseStatsClass receiverStats = _gameContext.CharacterModel.InstanceID == receiverID ?
-                _gameContext.CharacterModel.CharacterStats
-                : _gameContext.NpcModels[receiverID].GetStats().MainStats;
-
-            _damage.PhysicalDamage = weaponDamage.PhysicalDamage * (1 - receiverStats.PhysicalResistance);
-            _damage.StunProbability = weaponDamage.StunProbability * (1 - receiverStats.StunResistance);
-            _damage.FireDamage = weaponDamage.FireDamage * (1 - receiverStats.FireResistance);
-
-            return _damage;
-        }
-
-        public Damage CountDamage(Damage weaponDamage, BaseStatsClass dealerStats, int receiverID)
-        {
-            BaseStatsClass receiverStats = _gameContext.CharacterModel.InstanceID == receiverID ?
-                _gameContext.CharacterModel.CharacterStats
-                : _gameContext.NpcModels[receiverID].GetStats().MainStats;
-
-            _damage.PhysicalDamage = weaponDamage.PhysicalDamage * dealerStats.PhysicalPower *
-                (1 - receiverStats.PhysicalResistance);
-            _damage.StunProbability = weaponDamage.StunProbability - receiverStats.StunResistance > 0 ?
-                weaponDamage.StunProbability - receiverStats.StunResistance : 0;
-            _damage.FireDamage = weaponDamage.FireDamage * dealerStats.MagicalPower *
-                (1 - receiverStats.FireResistance);
-
-            return _damage;
+            DealDamage(CountDamage(baseDamage, receiverID, dealerStats, usedWeapon), receiverID);
         }
 
         #endregion

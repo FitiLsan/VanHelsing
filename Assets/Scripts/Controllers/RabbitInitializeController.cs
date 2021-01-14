@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 namespace BeastHunter
 {
     public class RabbitInitializeController : EnemyInitializeController
@@ -17,7 +18,7 @@ namespace BeastHunter
         public override void OnAwake()
         {
             var RabbitData = Data.RabbitData;
-            GameObject instance = GameObject.Instantiate(RabbitData.BaseStats.Prefab);
+            GameObject instance = GameObject.Instantiate(RabbitData.Prefab);
             RabbitModel rabbit = new RabbitModel(instance, RabbitData);
             _context.NpcModels.Add(instance.GetInstanceID(), rabbit);
 

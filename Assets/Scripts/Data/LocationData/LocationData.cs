@@ -12,7 +12,7 @@ namespace BeastHunter
         [SerializeField] private Vector3 _playerSpawnPosition;
         [SerializeField] private Vector3 _bossSpawnPosition;
         [SerializeField] private List<SpawnPointData> _enemySpawnPointData;
-        
+
         #endregion
 
 
@@ -34,5 +34,4 @@ namespace BeastHunter
             _enemySpawnPointData.Add(new SpawnPointData(spawnEntityDatas, point, radius, number));
         }
     }
-
 }

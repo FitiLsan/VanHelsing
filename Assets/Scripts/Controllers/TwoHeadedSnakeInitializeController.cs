@@ -21,7 +21,7 @@ namespace BeastHunter
 
             var spawnPoint = TwoHeadedSnakeData.settings.InstantiatePosition;
 
-            GameObject instance = GameObject.Instantiate(TwoHeadedSnakeData.BaseStats.Prefab);
+            GameObject instance = GameObject.Instantiate(TwoHeadedSnakeData.Prefab);
             TwoHeadedSnakeModel twoHeadedSnake = new TwoHeadedSnakeModel(instance, TwoHeadedSnakeData, spawnPoint);
             _context.NpcModels.Add(instance.GetInstanceID(), twoHeadedSnake);
 

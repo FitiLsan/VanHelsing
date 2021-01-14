@@ -37,6 +37,7 @@ namespace BeastHunter
             _interactables = new List<IInteractable>();
 
             NpcModels = new Dictionary<int, EnemyModel>();
+            TrapModels = new Dictionary<int, TrapModel>();
             InteractableObjectModels = new Dictionary<int, BaseInteractiveObjectModel>();
         }
 

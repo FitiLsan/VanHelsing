@@ -10,7 +10,6 @@ namespace BeastHunter
 
         [SerializeField] protected InteractableObjectType _type;
         protected Action<int, Damage> _onTakeDamageHandler;
-        protected Action<int, InteractableObjectBehavior, Damage> _onDealDamageHandler;
 
         #endregion
 
@@ -85,32 +84,6 @@ namespace BeastHunter
             if (action != null)
             {
                 _onTakeDamageHandler -= action;
-            }
-        }
-
-        #endregion
-
-
-        #region DealDamage
-
-        public void SetDealDamageEvent(Action<int, InteractableObjectBehavior, Damage> action)
-        {
-            if (action != null)
-            {
-                _onDealDamageHandler += action;
-            }
-        }
-
-        public void DealDamageEvent(InteractableObjectBehavior enemy, Damage damage)
-        {
-            _onDealDamageHandler?.Invoke(GameObject.GetInstanceID(), enemy, damage);
-        }
-
-        public void DeleteDealDamageEvent(Action<int, InteractableObjectBehavior, Damage> action)
-        {
-            if (action != null)
-            {
-                _onDealDamageHandler -= action;
             }
         }
 

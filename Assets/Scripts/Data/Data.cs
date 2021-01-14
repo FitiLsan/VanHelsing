@@ -12,11 +12,9 @@ namespace BeastHunter
         #region Fields
 
         [SerializeField] private string _locationDataPath;
-        [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
-        [SerializeField] private string _giantMudCrabDataPath;
         [SerializeField] private string _rabbitDataPath;
         [SerializeField] private string _feastPath;
         [SerializeField] private string _bossFeastsPath;
@@ -66,8 +64,8 @@ namespace BeastHunter
         private static CameraData _cameraData;
         private static QuestJournalData _questJournalData;
         private static UIBestiaryData _uiBestiaryData;
-        private static TemporaryBuffClass _healthBuffData;
-        private static TemporaryBuffClass _staminaBuffData;
+        private static TemporaryBuff _healthBuffData;
+        private static TemporaryBuff _staminaBuffData;
         private static BossData _bossData;
         private static TrapData _trapData;
         private static TrapData _trapData2;
@@ -277,25 +275,25 @@ namespace BeastHunter
             }
         }
 
-        public static TemporaryBuffClass HealthBuffData
+        public static TemporaryBuff HealthBuffData
         {
             get
             {
                 if (_healthBuffData == null)
                 {
-                    _healthBuffData = Load<TemporaryBuffClass>("Data/" + Instance._healthBuffDataPath);
+                    _healthBuffData = Load<TemporaryBuff>("Data/" + Instance._healthBuffDataPath);
                 }
                 return _healthBuffData;
             }
         }
 
-        public static TemporaryBuffClass StaminaBuffData
+        public static TemporaryBuff StaminaBuffData
         {
             get
             {
                 if (_staminaBuffData == null)
                 {
-                    _staminaBuffData = Load<TemporaryBuffClass>("Data/" + Instance._staminaBuffDataPath);
+                    _staminaBuffData = Load<TemporaryBuff>("Data/" + Instance._staminaBuffDataPath);
                 }
                 return _staminaBuffData;
             }

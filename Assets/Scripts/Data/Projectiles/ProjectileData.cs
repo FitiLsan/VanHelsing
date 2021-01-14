@@ -31,8 +31,6 @@ namespace BeastHunter
         public Sound CollisionSound => _collisionSound;
         public Damage ProjectileDamage => _projectileDamage;
 
-        protected GameContext Context { get; private set; }
-
         public bool IsDestroyedAfterInstantiation => _isDestroyedAfterInstantiation;
         public bool IsDestroyedAfterHit => _isDestroyedAfterHit;
         public float TimeToDestroyAfterInstantiation => _timeToDestroyAfterInstantiation;
@@ -44,9 +42,8 @@ namespace BeastHunter
 
         #region Methods
 
-        public virtual void Launch(GameContext context, Vector3 position, Vector3 forceVector, ForceMode forceMode)
+        public virtual void Launch(Vector3 position, Vector3 forceVector, ForceMode forceMode)
         {
-            Context = context;
             GameObject newProjectile = GameObject.Instantiate(ProjectilePrefab, position, Quaternion.identity);
             newProjectile.transform.LookAt(newProjectile.transform.position + forceVector);
             newProjectile.GetComponentInChildren<SphereCollider>().radius = ProjectileColliderSize;

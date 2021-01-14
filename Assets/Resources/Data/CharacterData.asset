@@ -99,13 +99,19 @@ MonoBehaviour:
     _aimingLookToEyesWeightIK: 1
     _aimingLookToClampWeightIK: 1
   _characterStatsSettings:
-    _maxHealth: 100
-    _enemyType: 0
-    _viewRadius: 0
-    _viewAngle: 0
-    _healthPoints: 100
-    _physicalPower: 2
-    _magicalPower: 0
-    _physicalDamageResistance: 0.25
-    _stunProbabilityResistance: 0.075
-    _fireDamageResistance: 0
+    BaseStats:
+      _maximalHealthPoints: 100
+      _currentHealthPoints: 100
+      HealthRegenPerSecond: 0
+      _maximalStaminaPoints: 0
+      _currentStaminaPoints: 0
+      StaminaRegenPerSecond: 0
+      IsDead: 0
+      IsStunned: 0
+    AttackStats:
+      _physicalPower: 5
+      _magicalPower: 0
+    DefenceStats:
+      _physicalDamageResistance: 0.05
+      _stunProbabilityResistance: 0.05
+      _fireDamageResistance: 0.05

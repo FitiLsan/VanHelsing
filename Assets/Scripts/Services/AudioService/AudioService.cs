@@ -7,7 +7,7 @@ using UniRx;
 
 namespace BeastHunter
 {
-    public sealed class AudioService : Service, System.IDisposable
+    public sealed class AudioService : IService, System.IDisposable
     {
         #region Fields
 
@@ -38,9 +38,9 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public AudioService(Contexts contexts) : base(contexts)
+        public AudioService(GameContext context)
         {
-            _context = contexts as GameContext;
+            _context = context;
             AudioData = Data.AudioData;
             _ambienceSourceInstance = GameObject.Instantiate(AudioData.AmbienceObjectPrefab);
 

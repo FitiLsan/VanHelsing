@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+
 namespace BeastHunter
 {
 
@@ -52,7 +53,6 @@ namespace BeastHunter
         #region Fields
 
         private PhysicsService _physicsService;
-
         public RabbitStats RabbitStats;
 
         #endregion
@@ -70,73 +70,75 @@ namespace BeastHunter
 
         #region Metods
 
-        public void Act(RabbitModel rabbit)
+        public override void Act(EnemyModel enemyModel)
         {
+            RabbitModel rabbitModel = enemyModel as RabbitModel;
+
             if (_physicsService == null)
             {
                 _physicsService = Services.SharedInstance.PhysicsService;
             }
-            if ((rabbit.RabbitState != BehaviourState.Fleeing) && rabbit.DangerousObjects.Count > 0)
+            if ((rabbitModel.RabbitState != BehaviourState.Fleeing) && rabbitModel.DangerousObjects.Count > 0)
             {
-                rabbit.RabbitState = BehaviourState.Fleeing;
+                rabbitModel.RabbitState = BehaviourState.Fleeing;
             }
-            switch (rabbit.RabbitState)
+            switch (rabbitModel.RabbitState)
             {
                 case BehaviourState.Idling:
                     {
                         Idle();
-                        CheckForEnemiesInFieldOfView(rabbit.RabbitTransform, rabbit.DangerousObjects);
-                        rabbit.TimeElapsedAfterStateChange += Time.deltaTime;
-                        if (rabbit.TimeElapsedAfterStateChange > IDLE_ANIMATION_DURATION && Random.Range(0.0f, 1.0f) > 0.5f)
+                        CheckForEnemiesInFieldOfView(rabbitModel.RabbitTransform, rabbitModel.DangerousObjects);
+                        rabbitModel.TimeElapsedAfterStateChange += Time.deltaTime;
+                        if (rabbitModel.TimeElapsedAfterStateChange > IDLE_ANIMATION_DURATION && Random.Range(0.0f, 1.0f) > 0.5f)
                         {
-                            rabbit.RabbitState = BehaviourState.Roaming; // On idle animation end
-                            rabbit.TimeElapsedAfterStateChange = 0.0f;
+                            rabbitModel.RabbitState = BehaviourState.Roaming; // On idle animation end
+                            rabbitModel.TimeElapsedAfterStateChange = 0.0f;
                         }
 
                         break;
                     }
                 case BehaviourState.Roaming:
                     {
-                        Roam(rabbit);
-                        rabbit.TimeElapsedAfterStateChange += Time.deltaTime;
-                        var distanceFromStart = new Vector2((rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).x, (rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).z);
+                        Roam(rabbitModel);
+                        rabbitModel.TimeElapsedAfterStateChange += Time.deltaTime;
+                        var distanceFromStart = new Vector2((rabbitModel.RabbitTransform.position - rabbitModel.RabbitStartPosition).x, (rabbitModel.RabbitTransform.position - rabbitModel.RabbitStartPosition).z);
                         if (distanceFromStart.sqrMagnitude > RabbitStats.RunningRadius * RabbitStats.RunningRadius)
                         {
-                            rabbit.RabbitState = BehaviourState.Returning;
+                            rabbitModel.RabbitState = BehaviourState.Returning;
                         }
-                        else if (RabbitStats.CanIdle && rabbit.TimeElapsedAfterStateChange > TIME_UNTIL_CAN_CHANGE_STATE && Random.Range(0.0f, 1.0f) > 0.95f)
+                        else if (RabbitStats.CanIdle && rabbitModel.TimeElapsedAfterStateChange > TIME_UNTIL_CAN_CHANGE_STATE && Random.Range(0.0f, 1.0f) > 0.95f)
                         {
-                            rabbit.TimeElapsedAfterStateChange = 0.0f;
-                            rabbit.RabbitState = BehaviourState.Idling;
+                            rabbitModel.TimeElapsedAfterStateChange = 0.0f;
+                            rabbitModel.RabbitState = BehaviourState.Idling;
                         }
                         break;
                     }
                 case BehaviourState.Returning:
                     {
-                        Return(rabbit);
-                        var moveDistance = RabbitStats.RunningRadius / RabbitData.STOP_RETURNING_DISTANCE_FACTOR;
-                        if ((rabbit.RabbitTransform.position - rabbit.RabbitStartPosition).sqrMagnitude < moveDistance * moveDistance)
+                        Return(rabbitModel);
+                        var moveDistance = RabbitStats.RunningRadius / STOP_RETURNING_DISTANCE_FACTOR;
+                        if ((rabbitModel.RabbitTransform.position - rabbitModel.RabbitStartPosition).sqrMagnitude < moveDistance * moveDistance)
                         {
-                            rabbit.RabbitState = BehaviourState.Roaming;
+                            rabbitModel.RabbitState = BehaviourState.Roaming;
                         }
                         break;
                     }
                 case BehaviourState.Fleeing:
                     {
-                        rabbit.TimeElapsedAfterStartFleeing += Time.deltaTime;
-                        if (rabbit.DangerousObjects.Count >= 0)
+                        rabbitModel.TimeElapsedAfterStartFleeing += Time.deltaTime;
+                        if (rabbitModel.DangerousObjects.Count >= 0)
                         {
-                            Flee(rabbit);
+                            Flee(rabbitModel);
                         }
-                        if (rabbit.TimeElapsedAfterStartFleeing > STOP_FLEEING_TIME)
+                        if (rabbitModel.TimeElapsedAfterStartFleeing > STOP_FLEEING_TIME)
                         {
-                            if (rabbit.DangerousObjects.Count > 0)
+                            if (rabbitModel.DangerousObjects.Count > 0)
                             {
-                                rabbit.TimeElapsedAfterStartFleeing = 0;
+                                rabbitModel.TimeElapsedAfterStartFleeing = 0;
                             }
                             else
                             {
-                                rabbit.RabbitState = BehaviourState.Roaming;
+                                rabbitModel.RabbitState = BehaviourState.Roaming;
                             }
                         }
                         break;
@@ -203,21 +205,24 @@ namespace BeastHunter
             for (int i = 0; i < targets.Count; i++)
             {
                 var distToTarget = targets[i].position - transform.position;
-                if (distToTarget.sqrMagnitude > BaseStats.MainStats.ViewRadius)
+                if (distToTarget.sqrMagnitude > RabbitStats.ViewRadius)
                 {
                     targets.RemoveAt(i);
                 }
             }
 
             //var triggers = _physicsService.GetObjectsInRadius(transform.position, RabbitStruct.ViewRadius, LayerManager.DefaultLayer);
-            var triggers = Physics.OverlapSphere(transform.position, BaseStats.MainStats.ViewRadius, LayerManager.DefaultLayer);//change layer!!
+
+            var triggers = Physics.OverlapSphere(transform.position, RabbitStats.ViewRadius,
+                LayerMask.GetMask(LayerMask.LayerToName(LayerManager.DefaultLayer), LayerMask.LayerToName(LayerManager.PlayerLayer)));
+
             var result = false;
             foreach (Collider target in triggers)
             {
                 if (!target.CompareTag(TagManager.RABBIT))
                 {
                     var dirToTarget = target.bounds.center - transform.position;
-                    if (Vector3.Angle(transform.forward, dirToTarget.normalized) < BaseStats.MainStats.ViewAngle)
+                    if (Vector3.Angle(transform.forward, dirToTarget.normalized) < RabbitStats.ViewAngle)
                     {
                         if (!Physics.Raycast(transform.position, dirToTarget.normalized, dirToTarget.magnitude, LayerManager.EnvironmentLayer))
                         {
@@ -318,7 +323,7 @@ namespace BeastHunter
             foreach (var obj in targets)
             {
                 var dir = transform.position - obj.position;
-                dir = dir.normalized * BaseStats.MainStats.ViewRadius * BaseStats.MainStats.ViewRadius / dir.sqrMagnitude;
+                dir = dir.normalized * RabbitStats.ViewRadius * RabbitStats.ViewRadius / dir.sqrMagnitude;
                 sum += dir;
             }
             var result = new Vector2(sum.x, sum.z);
@@ -367,15 +372,15 @@ namespace BeastHunter
 
         #region NpcData
 
-        public override void TakeDamage(EnemyModel instance, Damage damage)
+        public override void TakeDamage(EnemyModel model, Damage damage)
         {
-            base.TakeDamage(instance, damage);
+            base.TakeDamage(model, damage);
             //Debug.Log("Rabbit got " + damage.PhysicalDamage + " damage");
 
-            if (instance.IsDead)
+            if (model.CurrentStats.BaseStats.IsDead)
             {
                 //Debug.Log("You killed a bunny! You monster!");
-                var rabbit = instance as RabbitModel;
+                var rabbit = model as RabbitModel;
                 rabbit.Rabbit.GetComponent<Renderer>().material.color = Color.red;
             }
         }

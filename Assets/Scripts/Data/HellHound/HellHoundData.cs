@@ -6,9 +6,8 @@ using Random = UnityEngine.Random;
 
 namespace BeastHunter
 {
-
     [CreateAssetMenu(fileName = "NewHellHound", menuName = "CreateData/HellHound", order = 2)]
-    public sealed class HellHoundData : EnemyData, IDealDamage
+    public sealed class HellHoundData : EnemyData
     {
         #region PrivateData
 
@@ -88,7 +87,7 @@ namespace BeastHunter
             _sqrChasingTurnDistanceNearTarget = Stats.ChasingTurnDistanceNearTarget * Stats.ChasingTurnDistanceNearTarget;
 
             DebugMessages(Stats.DebugMessages);
-    }
+        }
 
         #endregion
 
@@ -130,7 +129,9 @@ namespace BeastHunter
 
             if (enemy != null)
             {
-                DealDamage(enemy, Stats.Damage);
+                Services.SharedInstance.AttackService.CountAndDealDamage(Stats.Damage, enemy.transform.
+                    GetMainParent().gameObject.GetInstanceID(), model.CurrentStats);
+                _onHitEnemyMsg?.Invoke(enemy);
             }
             else
             {
@@ -152,7 +153,12 @@ namespace BeastHunter
             model.AttackCollider.enabled = false;
         }
 
-        public void Act(HellHoundModel model)
+        public override void Act(EnemyModel enemyModel)
+        {
+            Execute(enemyModel as HellHoundModel);
+        }
+
+        public void Execute(HellHoundModel model)
         {
             float rotateDirection = GetRotateDirection(model.Transform, ref model.RotatePosition1, ref model.RotatePosition2);
             model.Animator.SetFloat("RotateDirection", rotateDirection);
@@ -218,7 +224,7 @@ namespace BeastHunter
                     }
                     else
                     {
-                        if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
+                        if (model.CurrentStats.BaseStats.CurrentHealthPart * 100f < Stats.PercentEscapeHealth && !model.IsAttacking)
                         {
                             model.BehaviourState = SetState(BehaviourState.Escaping, model);
                         }
@@ -292,7 +298,7 @@ namespace BeastHunter
                     }
                     else
                     {
-                        if (CurrentHealthPercent(model.CurrentHealth) < Stats.PercentEscapeHealth && !model.IsAttacking)
+                        if (model.CurrentStats.BaseStats.CurrentHealthPart * 100f < Stats.PercentEscapeHealth && !model.IsAttacking)
                         {
                             model.BehaviourState = SetState(BehaviourState.Escaping, model);
                         }
@@ -706,12 +712,6 @@ namespace BeastHunter
             return Quaternion.LookRotation(newDirection);
         }
 
-        /// <summary>Current health in percent</summary>
-        private float CurrentHealthPercent(float currentHealth)
-        {
-            return currentHealth * 100 / BaseStats.MainStats.MaxHealth;
-        }
-
         /// <summary>Get the direction of the turn</summary>
         /// <param name="transform">HellHoundModel transform</param>
         /// <param name="rotatePosition1">Previous rotation value</param>
@@ -834,10 +834,10 @@ namespace BeastHunter
             HellHoundModel hellHoundModel = model as HellHoundModel;
             base.TakeDamage(model, damage);
 
-            _takingDamageMsg?.Invoke(model.CurrentHealth);
+            _takingDamageMsg?.Invoke(model.CurrentStats.BaseStats.CurrentHealthPoints);
             hellHoundModel.Animator.SetTrigger("TakeDamage");
 
-            if (model.IsDead)
+            if (model.CurrentStats.BaseStats.IsDead)
             {
                 _onDeadMsg?.Invoke();
                 hellHoundModel.Animator.SetTrigger("Dead");
@@ -850,20 +850,6 @@ namespace BeastHunter
             {
                 hellHoundModel.BehaviourState = SetState(BehaviourState.Searching, hellHoundModel);
             }
-        }
-
-        #endregion
-
-
-        #region IDealDamage
-
-        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
-        {
-            Damage countDamage = Services.SharedInstance.AttackService
-                .CountDamage(damage, BaseStats.MainStats, enemy.transform.GetMainParent().gameObject.GetInstanceID());
-
-            _onHitEnemyMsg?.Invoke(enemy);
-            enemy.TakeDamageEvent(countDamage);
         }
 
         #endregion

@@ -8,7 +8,7 @@ using Extensions;
 
 namespace BeastHunter
 {
-    public sealed class BackState : IAwake, IUpdate, ITearDown, ITakeDamage, IDealDamage
+    public sealed class BackState : IAwake, IUpdate, ITearDown
     {
         #region Constants
 
@@ -82,11 +82,11 @@ namespace BeastHunter
 
         private Text _weaponWheelText;
         private CharacterSpeedCounter _activeSpeedCounter;
+        private PlayerHealthBarModel _playerHealthBarModel;
 
         private CharacterAnimationEventTypes _lastAnimationEventType;
 
         private float _curretSpeed;
-        private float _currentHealth;
         private float _targetAngleVelocity;
         private float _targetSpeed;
         private float _speedChangeLag;
@@ -96,11 +96,7 @@ namespace BeastHunter
         private bool _isWeaponWheelOpen;
         private bool _isCurrentWeaponWithProjectile;
 
-        private PlayerHealthBarModel _playerHealthBarModel;
-        private float _currentMaxHealthPercent;
-
         private EnemyHealthBarModel _enemyHealthBarModel;
-
         private EnemyModel _targetEnemy;
 
         #endregion
@@ -173,9 +169,6 @@ namespace BeastHunter
 
             //LockCharAction.LockCharacterMovement += ExitTalkingState;
             //StartDialogueData.StartDialog += SetTalkingState;
-            //GlobalEventsModel.OnBossDie += StopTarget; // TO REFACTOR
-
-            //_services.TrapService.LoadTraps();
 
             _services.EventManager.StartListening(InputEventTypes.MoveStart, OnMoveHandler);
             _services.EventManager.StartListening(InputEventTypes.MoveStop, OnStopHandler);
@@ -212,10 +205,6 @@ namespace BeastHunter
             _characterModel.PlayerBehavior.OnTriggerExitHandler += OnTriggerExitSomething;
             _characterModel.BehaviorFall.OnPostActivate += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.KnockedDown]);
-            _characterModel.BehaviorPuppet.OnPostActivate += () => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.GettingUp]);
-            _characterModel.BehaviorPuppet.onRegainBalance.unityEvent.AddListener(() => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]));
         }
 
         #endregion
@@ -229,6 +218,7 @@ namespace BeastHunter
             MovementCheck();
             ControlWeaponWheel();
             EnemyHealthBarUpdate();
+
             //FOR DEBUG ONLY!
             if (Input.GetKeyDown(KeyCode.H)) TestingHealthRestoreToCurrentMaxHealthThreshold();
         }
@@ -244,7 +234,6 @@ namespace BeastHunter
 
             //LockCharAction.LockCharacterMovement -= ExitTalkingState;
             //StartDialogueData.StartDialog -= SetTalkingState;
-            //GlobalEventsModel.OnBossDie -= StopTarget;
 
             _services.EventManager.StopListening(InputEventTypes.MoveStart, OnMoveHandler);
             _services.EventManager.StopListening(InputEventTypes.MoveStop, OnStopHandler);
@@ -278,10 +267,6 @@ namespace BeastHunter
             _characterModel.PlayerBehavior.OnTriggerExitHandler -= OnTriggerExitSomething;
             _characterModel.BehaviorFall.OnPostActivate -= () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.KnockedDown]);
-            _characterModel.BehaviorPuppet.OnPostActivate -= () => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.GettingUp]);
-            _characterModel.BehaviorPuppet.onRegainBalance.unityEvent.RemoveListener(() => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]));
         }
 
         #endregion
@@ -289,44 +274,26 @@ namespace BeastHunter
 
         #region ITakeDamage
 
-        public void TakeDamage(Damage damage)
+        private void TakeDamage(Damage damage)
         {
-            if (!_characterModel.IsDead && !_characterModel.IsDodging)
+            if (!_characterModel.CurrentStats.BaseStats.IsDead && !_characterModel.IsDodging)
             {
-                _currentHealth -= damage.PhysicalDamage;
-                _currentHealth -= damage.FireDamage;
+                _characterModel.CurrentStats.BaseStats.CurrentHealthPoints -= damage.GetTotalDamage();
 
                 OnHealthChange?.Invoke();
 
                 float stunProbability = UnityEngine.Random.Range(0f, 1f);
 
-                if (_currentHealth <= 0)
+                if (_characterModel.CurrentStats.BaseStats.CurrentHealthPoints <= 0)
                 {
                     _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Dead]);
                 }
 
-                Debug.Log("Player has: " + _currentHealth + " of HP");
+                Debug.Log("Player has: " + _characterModel.CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
             }
         }
 
-        public void TakeDamage(int id, Damage damage)
-        {
-            TakeDamage(damage);
-        }
-
-        #endregion
-
-
-        #region IDealDamage
-
-        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
-        {
-            if (enemy != null && damage != null)
-            {
-                //enemy.TakeDamageEvent(damage); TO REFACTOR
-                _context.NpcModels[enemy.transform.GetMainParent().gameObject.GetInstanceID()].TakeDamage(damage);
-            }
-        }
+        private void TakeDamage(int id, Damage damage) => TakeDamage(damage);
 
         #endregion
 
@@ -337,8 +304,7 @@ namespace BeastHunter
         {
             _lastPosition = _characterModel.CharacterTransform.position;
             _currentPosition = _lastPosition;
-            _currentHealth = _characterModel.CharacterData.CharacterStatsSettings.HealthPoints; // TO REFACTOR
-            _currentMaxHealthPercent = _currentHealth * 100 / _characterModel.CharacterData.CharacterStatsSettings.HealthPoints;
+            HealthBarUpdate();
         }
 
 
@@ -506,9 +472,10 @@ namespace BeastHunter
                     MessageBroker.Default.Publish(new OnBossWeakPointHittedEventClass { WeakPointCollider = enemy });
                 }
 
-                DealDamage(enemyBehavior, _services.AttackService.CountDamage(_characterModel.CurrentWeaponData.Value,
-                    _characterModel.CharacterStatsSettings, _context.NpcModels[enemyBehavior.transform.GetMainParent().
-                        gameObject.GetInstanceID()].GetStats().MainStats));
+                _services.AttackService.CountAndDealDamage(_characterModel.CurrentWeaponData.Value.CurrentAttack.AttackDamage,
+                    enemy.transform.GetMainParent().gameObject.GetInstanceID(), _characterModel.CurrentStats, _characterModel.
+                        CurrentWeaponData.Value);
+
                 hitBox.IsInteractable = false;
             }
         }
@@ -750,7 +717,8 @@ namespace BeastHunter
         {
             _characterModel.CurrentSpeed = 0f;
             _targetAngleVelocity = 0f;
-            _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle, 0);
+            _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0f, CurrentAngle, 0f);
+            _characterModel.CharacterRigitbody.velocity = Vector3.zero;
         }
 
         public void MoveCharacter(bool isStrafing)
@@ -975,17 +943,17 @@ namespace BeastHunter
 
         private void HealthBarUpdate()
         {
-            _currentMaxHealthPercent = _playerHealthBarModel.HealthFillUpdate(_currentHealth * 100 / 
-                _characterModel.CharacterData.CharacterStatsSettings.HealthPoints);
+            _playerHealthBarModel.HealthFillUpdate(_characterModel.CurrentStats.BaseStats.CurrentHealthPart);
         }
 
         /// <summary>Example method of implementing health restoration to the current max health threshold</summary>
         private void TestingHealthRestoreToCurrentMaxHealthThreshold()
         {
             float restoredHP = 5.0f;
-            _currentHealth = Mathf.Clamp(_currentHealth + restoredHP, 0, _currentMaxHealthPercent);
-            Debug.Log(this + ": Player is healing by " + restoredHP + " HP. Current health = " + _currentHealth + " HP"
-                + "\nNote: \"H\"-button assigned for testing healing up to the current max health threshold");
+            _characterModel.CurrentStats.BaseStats.CurrentHealthPoints += restoredHP;
+            Debug.Log(this + ": Player is healing by " + restoredHP + " HP. Current health = " + _characterModel.
+                CurrentStats.BaseStats.CurrentHealthPoints + " HP"
+                    + "\nNote: \"H\"-button assigned for testing healing up to the current max health threshold");
             OnHealthChange?.Invoke();
         }
 
@@ -995,56 +963,46 @@ namespace BeastHunter
         #region EnemyHealthBar
 
         private void EnemyHealthBarUpdate()
-        {
-
-            
+        {         
             if (_targetEnemy != null)
             {
 
-                if (!_targetEnemy.IsDead)
+                if (!_targetEnemy.CurrentStats.BaseStats.IsDead)
                 {
-                    float currentEnemyHealth = _targetEnemy.CurrentHealth;
-                    float maxEnemyHealth = _targetEnemy.GetStats().MainStats.MaxHealth;
-                    _enemyHealthBarModel.CanvasHPImage.fillAmount = currentEnemyHealth / maxEnemyHealth;
+                    _enemyHealthBarModel.CanvasHPImage.fillAmount = _targetEnemy.CurrentStats.BaseStats.CurrentHealthPart;
                 }
                 else
                 {
                     _targetEnemy = null;
-                    _enemyHealthBarModel.CanvasHPImage.fillAmount = 0;
+                    _enemyHealthBarModel.CanvasHPImage.fillAmount = 0f;
                 }
-
             }
-
         }
 
         public void OnEnemyHealthBar(bool onEnemyBar)
         {
             if (onEnemyBar)
-            {
-                
+            {           
                 if (_characterModel.ClosestEnemy.Value != null)
-                {
-                   
-                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.GetMainParent().gameObject.GetInstanceID()];
+                {                  
+                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.GetMainParent().
+                        gameObject.GetInstanceID()];
                     
-                    if (!_targetEnemy.IsDead)
+                    if (!_targetEnemy.CurrentStats.BaseStats.IsDead)
                     {
                         _enemyHealthBarModel.EnemyHealthBarObject.SetActive(onEnemyBar);
                     }
                     else
                     {
                         _enemyHealthBarModel.EnemyHealthBarObject.SetActive(false);
-                    }
-                    
-                }
-                
+                    }                 
+                }             
             }
             else
             {
                 _targetEnemy = null;
                 _enemyHealthBarModel.EnemyHealthBarObject.SetActive(onEnemyBar);
             }
-
         }
 
         #endregion

@@ -30,7 +30,7 @@ namespace BeastHunter
 
         private void InstantiateProjectile(Vector3 position, Vector3 forceVector, ForceMode forceMode)
         {
-            _projectileData.Launch(_context, position, forceVector, forceMode);
+            _projectileData.Launch(position, forceVector, forceMode);
         }
 
         #endregion

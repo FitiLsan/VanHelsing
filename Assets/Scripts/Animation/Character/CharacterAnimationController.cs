@@ -173,6 +173,7 @@ namespace BeastHunter
                 case CharacterStatesEnum.KnockedDown:
                     SetTopBodyAnimationWeigth(0f, 0f);
                     PlayArmsNoneAnimation();
+                    SetRootMotion(true);
                     break;
                 case CharacterStatesEnum.GettingUp:
                     SetRootMotion(true);

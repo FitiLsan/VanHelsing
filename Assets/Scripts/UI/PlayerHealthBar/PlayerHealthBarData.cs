@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "PlayerHealthBarData", menuName = "Character/CreatePlayerHealthBarData", order = 0)]
@@ -29,11 +30,22 @@ namespace BeastHunter
         #region Properties
 
         public GameObject HealthBarPrefab => _healthBarPrefab;
+        public GameObject HealthSectionPrefab => _healthSectionPrefab;
         public Vector2 HealthBarPosition => _healthBarPosition;
         public Vector2 HealthBarSize => _healthBarSize;
-        public GameObject HealthSectionPrefab => _healthSectionPrefab;
+
         public float DistanceBetweenSections => _distanceBetweenSections;
-        public float[] HealthSectionsPercentThresholds { get; private set; }
+        public float[] HealthSectionsPercentThresholds
+        {
+            get
+            {
+                return _healthSectionsPercentThresholds;
+            }
+            private set
+            {
+                _healthSectionsPercentThresholds = value;
+            }
+        } 
 
         #endregion
 

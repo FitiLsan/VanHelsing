@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Extensions;
+
 
 namespace BeastHunter
 {
@@ -6,22 +8,27 @@ namespace BeastHunter
     {
         #region Fields
 
-        public float CurrentHealth;
-
-        public bool IsDead;
+        public Stats CurrentStats;
 
         #endregion
 
 
-        #region Metods
+        #region Properties
 
-        public abstract void OnAwake();
+        public GameObject ObjectOnScene { get; }
+        public EnemyData ThisEnemyData { get; }
 
-        public abstract void Execute();
+        #endregion
 
-        public abstract EnemyStats GetStats();
 
-        public abstract void OnTearDown();
+        #region ClassLifeCycle
+
+        public EnemyModel(GameObject objectOnScene, EnemyData data)
+        {
+            ObjectOnScene = objectOnScene;
+            ThisEnemyData = data;
+            CurrentStats = ThisEnemyData.StartStats.DeepCopy();
+        }
 
         //public abstract void HealthBarController();
 

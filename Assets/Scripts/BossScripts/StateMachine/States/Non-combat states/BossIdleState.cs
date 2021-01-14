@@ -88,7 +88,8 @@ namespace BeastHunter
 
         private void StaminaCheck()
         {
-            if (_stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina & !_stateMachine.CurrentState.IsBattleState)
+            if (_bossModel.CurrentStats.BaseStats.CurrentStaminaPoints >= _bossModel.CurrentStats.BaseStats.
+                MaximalStaminaPoints & !_stateMachine.CurrentState.IsBattleState)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Resting);
             }

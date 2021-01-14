@@ -8,7 +8,7 @@ namespace BeastHunter
     {
         #region FIelds
 
-        public CharacterCameraStruct _cameraSettings;
+        public CharacterCameraSettings _cameraSettings;
 
         #endregion
     }

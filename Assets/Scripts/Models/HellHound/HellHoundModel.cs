@@ -3,14 +3,13 @@ using UnityEngine.AI;
 using Extensions;
 using System.Collections.Generic;
 
+
 namespace BeastHunter
 {
     public sealed class HellHoundModel : EnemyModel
     {
         #region Fields
 
-        private GameObject _prefab;
-        private HellHoundData _hellHoundData;
         private InteractableObjectBehavior[] _interactableObjects;
         private InteractableObjectBehavior _weaponIO;
         private SphereCollider _detectionSphere;
@@ -30,10 +29,10 @@ namespace BeastHunter
         public NavMeshAgent NavMeshAgent { get; }
         public Transform Transform { get; }
         public Collider AttackCollider { get; }
-        public float JumpingAttackTimer { get; set; }
         public HellHoundData.BehaviourState BehaviourState { get; set; }
         public Vector3 SpawnPoint { get; }
         public Transform ChasingTarget { get; set; }
+        public float JumpingAttackTimer { get; set; }
         public bool IsAttacking { get; set; }
 
         #endregion
@@ -41,22 +40,19 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public HellHoundModel(GameObject prefab, HellHoundData hellHoundData)
+        public HellHoundModel(GameObject objectOnScene, HellHoundData data) : base(objectOnScene, data)
         {
-            _hellHoundData = hellHoundData;
-            _prefab = prefab;
-
-            Transform = _prefab.transform;
+            Transform = ObjectOnScene.transform;
             BehaviourState = HellHoundData.BehaviourState.None;
 
             SpawnPoint = Transform.position;
 
-            Animator = _prefab.GetComponent<Animator>();
-            Animator.SetFloat("JumpSpeedRate", hellHoundData.Stats.JumpingSpeedRate);
-            Animator.SetFloat("JumpBackSpeedRate", hellHoundData.Stats.BackJumpAnimationSpeedRate);
-            Animator.SetFloat("JumpBackIntensity", hellHoundData.Stats.BackJumpAnimationIntensity);
+            Animator = ObjectOnScene.GetComponent<Animator>();
+            Animator.SetFloat("JumpSpeedRate", (ThisEnemyData as HellHoundData).Stats.JumpingSpeedRate);
+            Animator.SetFloat("JumpBackSpeedRate", (ThisEnemyData as HellHoundData).Stats.BackJumpAnimationSpeedRate);
+            Animator.SetFloat("JumpBackIntensity", (ThisEnemyData as HellHoundData).Stats.BackJumpAnimationIntensity);
 
-            _interactableObjects = _prefab.GetComponentsInChildren<InteractableObjectBehavior>();
+            _interactableObjects = ObjectOnScene.GetComponentsInChildren<InteractableObjectBehavior>();
 
             InteractableObjectBehavior _detectionSphereIO = _interactableObjects.GetInteractableObjectByType(InteractableObjectType.Sphere);
             _detectionSphereIO.OnFilterHandler = Filter;
@@ -65,7 +61,7 @@ namespace BeastHunter
 
             _detectionSphere = _detectionSphereIO.GetComponent<SphereCollider>();
             if (_detectionSphere == null) Debug.LogError(this + " not found SphereCollider in DetectionSphere gameobject");
-            else _detectionSphere.radius = hellHoundData.Stats.DetectionRadius;
+            else _detectionSphere.radius = (ThisEnemyData as HellHoundData).Stats.DetectionRadius;
 
             _weaponIO = _interactableObjects.GetInteractableObjectByType(InteractableObjectType.HitBox);
             _weaponIO.OnFilterHandler = Filter;
@@ -74,11 +70,11 @@ namespace BeastHunter
             AttackCollider = _weaponIO.GetComponent<BoxCollider>();
             AttackCollider.enabled = false;
 
-            NavMeshAgent = _prefab.GetComponent<NavMeshAgent>();
-            NavMeshAgent.angularSpeed = hellHoundData.Stats.AngularSpeed;
-            NavMeshAgent.acceleration = hellHoundData.Stats.Acceleration;
-            NavMeshAgent.stoppingDistance = hellHoundData.Stats.StoppingDistance;
-            NavMeshAgent.baseOffset = hellHoundData.Stats.BaseOffsetByY;
+            NavMeshAgent = ObjectOnScene.GetComponent<NavMeshAgent>();
+            NavMeshAgent.angularSpeed = (ThisEnemyData as HellHoundData).Stats.AngularSpeed;
+            NavMeshAgent.acceleration = (ThisEnemyData as HellHoundData).Stats.Acceleration;
+            NavMeshAgent.stoppingDistance = (ThisEnemyData as HellHoundData).Stats.StoppingDistance;
+            NavMeshAgent.baseOffset = (ThisEnemyData as HellHoundData).Stats.BaseOffsetByY;
 
             _attackStates = Animator.GetBehaviours<HellHoundAttackStateBehaviour>();
             for (int i = 0; i < _attackStates.Length; i++)
@@ -95,9 +91,6 @@ namespace BeastHunter
                     hitBoxesIO[i].SetTakeDamageEvent(OnTakeDamage);
                 }
             }
-
-            CurrentHealth = _hellHoundData.BaseStats.MainStats.MaxHealth;
-            IsDead = false;
         }
 
         #endregion
@@ -105,12 +98,12 @@ namespace BeastHunter
 
         #region Methods
 
-        private bool Filter(Collider collider) => _hellHoundData.Filter(collider);
-        private void OnDetectionEnemy(ITrigger trigger, Collider collider) => _hellHoundData.OnDetectionEnemy(collider, this);
-        private void OnLostEnemy(ITrigger trigger, Collider collider) => _hellHoundData.OnLostEnemy(collider, this);
-        private void OnHitEnemy(ITrigger trigger, Collider collider) => _hellHoundData.OnHitEnemy(collider, this);
-        private void OnAttackStateEnter() => _hellHoundData.OnAttackStateEnter(this);
-        private void OnAttackStateExit() => _hellHoundData.OnAttackStateExit(this);
+        private bool Filter(Collider collider) => (ThisEnemyData as HellHoundData).Filter(collider);
+        private void OnDetectionEnemy(ITrigger trigger, Collider collider) => (ThisEnemyData as HellHoundData).OnDetectionEnemy(collider, this);
+        private void OnLostEnemy(ITrigger trigger, Collider collider) => (ThisEnemyData as HellHoundData).OnLostEnemy(collider, this);
+        private void OnHitEnemy(ITrigger trigger, Collider collider) => (ThisEnemyData as HellHoundData).OnHitEnemy(collider, this);
+        private void OnAttackStateEnter() => (ThisEnemyData as HellHoundData).OnAttackStateEnter(this);
+        private void OnAttackStateExit() => (ThisEnemyData as HellHoundData).OnAttackStateExit(this);
         private void OnTakeDamage(int id, Damage damage) => TakeDamage(damage);
 
         public void Clean()
@@ -119,7 +112,7 @@ namespace BeastHunter
 
             Object.Destroy(NavMeshAgent);
             Object.Destroy(AttackCollider);
-            Object.Destroy(_prefab.GetComponentInChildren<Rigidbody>());
+            Object.Destroy(ObjectOnScene.GetComponentInChildren<Rigidbody>());
             Object.Destroy(_detectionSphere.gameObject);
 
             for (int i = 0; i < _interactableObjects.Length; i++)
@@ -142,38 +135,11 @@ namespace BeastHunter
 
         #region EnemyModel
 
-        public override void Execute()
-        {
-            if (!IsDead)
-            {
-                _hellHoundData.Act(this);
-            }
-            else if (!_isCleared)
-            {
-                Clean();
-            }
-        }
-
-        public override EnemyStats GetStats()
-        {
-            return _hellHoundData.BaseStats;
-        }
-
-        public override void OnAwake()
-        {
-            
-        }
-
-        public override void OnTearDown()
-        {
-            
-        }
-
         public override void TakeDamage(Damage damage)
         {
-            if (!IsDead)
+            if (!CurrentStats.BaseStats.IsDead)
             {
-                _hellHoundData.TakeDamage(this, damage);
+                (ThisEnemyData as HellHoundData).TakeDamage(this, damage);
             }
         }
 
