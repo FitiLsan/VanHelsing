@@ -12,11 +12,9 @@ namespace BeastHunter
         #region Fields
 
         [SerializeField] private string _locationDataPath;
-        [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
-        [SerializeField] private string _giantMudCrabDataPath;
         [SerializeField] private string _rabbitDataPath;
         [SerializeField] private string _feastPath;
         [SerializeField] private string _bossFeastsPath;

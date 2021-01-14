@@ -66,7 +66,7 @@ namespace BeastHunter
 
         public override bool CanBeActivated()
         {
-            return true;
+            return !_characterModel.CurrentStats.BaseStats.IsDead;
         }
 
         public override void Initialize(CharacterBaseState previousState = null)
@@ -74,6 +74,11 @@ namespace BeastHunter
             base.Initialize(previousState);
             _isRegainedBalace = false;
             _regainBalanceTime = REGAIN_BALANCE_TIME;
+
+            if (!_characterModel.CharacterStartStats.BaseStats.IsDead)
+            {
+                _characterModel.CharacterRigitbody.isKinematic = false;
+            }          
         }
 
         private void RegainBalance()

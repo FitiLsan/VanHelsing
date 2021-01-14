@@ -51,8 +51,8 @@ namespace BeastHunter
 
         private void DisablePhysics()
         {
-            _characterModel.CharacterRigitbody.isKinematic = true;
             _characterModel.PuppetMaster.state = RootMotion.Dynamics.PuppetMaster.State.Dead;
+            _characterModel.CharacterRigitbody.isKinematic = true;
         }
 
         #endregion

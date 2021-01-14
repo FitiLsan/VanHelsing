@@ -44,7 +44,7 @@ namespace BeastHunter
 
         public Camera CharacterCamera { get; private set; }
         public CinemachineFreeLook CharacterFreelookCamera { get; private set; }
-        public CinemachineFreeLook CharacterKnockedDownCamera { get; private set; }
+        //public CinemachineFreeLook CharacterKnockedDownCamera { get; private set; }
         public CinemachineVirtualCamera CharacterTargetCamera { get; private set; }
         public CinemachineVirtualCamera CharacterAimingCamera { get; private set; }
         public CinemachineBrain CameraCinemachineBrain { get; private set; }
@@ -110,8 +110,8 @@ namespace BeastHunter
                 InstantiateDirection, 0);
             CharacterFreelookCamera = _cameraData._cameraSettings.CreateCharacterFreelookCamera(_cameraStaticTarget.
                 transform, _cameraStaticTarget.transform);
-            CharacterKnockedDownCamera = _cameraData._cameraSettings.CreateCharacterKnockedDownCamera(characterModel.
-                PuppetMaster.transform.GetChild(0), characterModel.PuppetMaster.transform.GetChild(0));
+            //CharacterKnockedDownCamera = _cameraData._cameraSettings.CreateCharacterKnockedDownCamera(characterModel.
+            //    PuppetMaster.transform.GetChild(0), characterModel.PuppetMaster.transform.GetChild(0));
             CharacterTargetCamera = _cameraData._cameraSettings.CreateCharacterTargetCamera(_cameraStaticTarget.
                 transform, _cameraStaticTarget.transform);
             CharacterAimingCamera = _cameraData._cameraSettings.CreateCharacterAimingCamera(_cameraStaticTarget.
@@ -164,9 +164,9 @@ namespace BeastHunter
                     SetActiveCamera(CharacterTargetCamera);
                     break;
                 case CharacterStatesEnum.Dead:
-                    GetKnockedDownCameraToFreeLookPosition();
+                    //GetKnockedDownCameraToFreeLookPosition();
                     SetBlendTime(_cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime);
-                    SetActiveCamera(CharacterKnockedDownCamera);
+                    SetActiveCamera(CharacterFreelookCamera);
                     break;
                 case CharacterStatesEnum.Idle:
                     SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
@@ -184,9 +184,9 @@ namespace BeastHunter
                     SetActiveCamera(CharacterFreelookCamera);
                     break;
                 case CharacterStatesEnum.KnockedDown:
-                    GetKnockedDownCameraToFreeLookPosition();
+                    //GetKnockedDownCameraToFreeLookPosition();
                     SetBlendTime(_cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime);
-                    SetActiveCamera(CharacterKnockedDownCamera);
+                    SetActiveCamera(CharacterFreelookCamera);
                     break;
                 case CharacterStatesEnum.GettingUp:
                     SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
@@ -200,7 +200,7 @@ namespace BeastHunter
         private void SetAllCamerasEqual()
         {
             CharacterFreelookCamera.Priority = 0;
-            CharacterKnockedDownCamera.Priority = 0;
+            //CharacterKnockedDownCamera.Priority = 0;
             CharacterTargetCamera.Priority = 0;
             CharacterAimingCamera.Priority = 0;
         }
@@ -216,11 +216,11 @@ namespace BeastHunter
             CharacterFreelookCamera.m_YAxis.m_MaxSpeed = 0f;
         }
 
-        public void GetKnockedDownCameraToFreeLookPosition()
-        {
-            CharacterKnockedDownCamera.m_XAxis.Value = CharacterFreelookCamera.m_XAxis.Value;
-            CharacterKnockedDownCamera.m_YAxis.Value = CharacterFreelookCamera.m_YAxis.Value;
-        }
+        //public void GetKnockedDownCameraToFreeLookPosition()
+        //{
+        //    CharacterKnockedDownCamera.m_XAxis.Value = CharacterFreelookCamera.m_XAxis.Value;
+        //    CharacterKnockedDownCamera.m_YAxis.Value = CharacterFreelookCamera.m_YAxis.Value;
+        //}
 
         public void UnlockFreeLookCamera()
         {

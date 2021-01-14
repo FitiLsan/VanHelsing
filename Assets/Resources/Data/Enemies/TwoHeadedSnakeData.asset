@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1877c6f8cbc38094597364f0ee647f3b, type: 3}
+  m_Name: TwoHeadedSnakeData
+  m_EditorClassIdentifier: 
+  BaseStats:
+    MainStats:
+      _maxHealth: 300
+      _enemyType: 0
+      _viewRadius: 0
+      _viewAngle: 0
+      _healthPoints: 0
+      _physicalPower: 2.61
+      _magicalPower: 0
+      _physicalDamageResistance: 0
+      _stunProbabilityResistance: 0
+      _fireDamageResistance: 0
+    AttackList: []
+    DefenceStats:
+      _baseDefense: 0
+    Prefab: {fileID: 100084, guid: cd7bad76e4db2044582c1d409245bf92, type: 3}
+  settings:
+    _instantiatePosition: {x: 460, y: 2, z: 460}
+    _rigitbodyMass: 1
+    _rigitbodyDrag: 0
+    _rigitbodyAngularDrag: 0.5
+    _isRigitbodyKinematic: 1
+    _capsuleColliderCenter: {x: 0, y: 0.75, z: 0.2}
+    _capsuleColliderRadius: 0.2
+    _capsuleColliderHeight: 1.5
+    _sphereColliderRadius: 10
+    _maxRoamingSpeed: 2
+    _maxChasingSpeed: 4
+    _stoppingDistance: 3
+    _angularSpeed: 550
+    _navMeshAcceleration: 10
+    _navMeshAgentTypeIndex: 1
+    _physicalDamage: 4.13
+    _stunProbability: 0
+    _attacksTurnSpeed: 0.01
+    _tailAttackDistance: 8
+    _twinHeadAttackDistance: 8
+    _attackCooldown: 2
+    _wanderingRadius: 50
+    _roamingChance: 75
+    _chasingTurnSpeedNearTarget: 0.05
+    _chasingTurnDistanceNearTarget: 8
+    _escapingSpeed: 2
+    _percentEscapeHealth: 5
+    _escapeDistance: 50
+    _idlingMinTime: 5
+    _idlingMaxTime: 10
+    _restingChance: 20
+    _restingMinTime: 5
+    _restingMaxTime: 20
+    _debugMessages: 0

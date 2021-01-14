@@ -92,7 +92,6 @@ namespace BeastHunter
         private float _speedChangeLag;
         private float _currentVelocity;
         private float _weaponWheelDistance;
-        private float _currentMaxHealthPart;
 
         private bool _isWeaponWheelOpen;
         private bool _isCurrentWeaponWithProjectile;
@@ -944,9 +943,7 @@ namespace BeastHunter
 
         private void HealthBarUpdate()
         {
-            _currentMaxHealthPart = _characterModel.CurrentStats.BaseStats.CurrentHealthPoints /
-                _characterModel.CurrentStats.BaseStats.MaximalHealthPoints;
-            _playerHealthBarModel.HealthFillUpdate(_currentMaxHealthPart);
+            _playerHealthBarModel.HealthFillUpdate(_characterModel.CurrentStats.BaseStats.CurrentHealthPart);
         }
 
         /// <summary>Example method of implementing health restoration to the current max health threshold</summary>
@@ -966,56 +963,46 @@ namespace BeastHunter
         #region EnemyHealthBar
 
         private void EnemyHealthBarUpdate()
-        {
-
-            
+        {         
             if (_targetEnemy != null)
             {
 
-                if (!_targetEnemy.IsDead)
+                if (!_targetEnemy.CurrentStats.BaseStats.IsDead)
                 {
-                    float currentEnemyHealth = _targetEnemy.CurrentHealth;
-                    float maxEnemyHealth = _targetEnemy.GetStats().MainStats.MaxHealth;
-                    _enemyHealthBarModel.CanvasHPImage.fillAmount = currentEnemyHealth / maxEnemyHealth;
+                    _enemyHealthBarModel.CanvasHPImage.fillAmount = _targetEnemy.CurrentStats.BaseStats.CurrentHealthPart;
                 }
                 else
                 {
                     _targetEnemy = null;
-                    _enemyHealthBarModel.CanvasHPImage.fillAmount = 0;
+                    _enemyHealthBarModel.CanvasHPImage.fillAmount = 0f;
                 }
-
             }
-
         }
 
         public void OnEnemyHealthBar(bool onEnemyBar)
         {
             if (onEnemyBar)
-            {
-                
+            {           
                 if (_characterModel.ClosestEnemy.Value != null)
-                {
-                   
-                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.GetMainParent().gameObject.GetInstanceID()];
+                {                  
+                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.GetMainParent().
+                        gameObject.GetInstanceID()];
                     
-                    if (!_targetEnemy.IsDead)
+                    if (!_targetEnemy.CurrentStats.BaseStats.IsDead)
                     {
                         _enemyHealthBarModel.EnemyHealthBarObject.SetActive(onEnemyBar);
                     }
                     else
                     {
                         _enemyHealthBarModel.EnemyHealthBarObject.SetActive(false);
-                    }
-                    
-                }
-                
+                    }                 
+                }             
             }
             else
             {
                 _targetEnemy = null;
                 _enemyHealthBarModel.EnemyHealthBarObject.SetActive(onEnemyBar);
             }
-
         }
 
         #endregion

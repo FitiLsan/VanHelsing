@@ -94,6 +94,22 @@ namespace BeastHunter
             }
         }
 
+        public float CurrentHealthPart
+        {
+            get
+            {
+                return CurrentHealthPoints / MaximalHealthPoints;
+            }
+        }
+
+        public float CurrentStaminaPart
+        {
+            get
+            {
+                return CurrentStaminaPoints / MaximalStaminaPoints;
+            }
+        }
+
         #endregion
     }
 }

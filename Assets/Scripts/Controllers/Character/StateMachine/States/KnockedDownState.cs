@@ -42,7 +42,7 @@
         public override bool CanBeActivated()
         {
             _stateMachine.BackState.OnEnemyHealthBar(false);
-            return true;
+            return !_characterModel.CurrentStats.BaseStats.IsDead;
         }
 
         public override void Initialize(CharacterBaseState previousState = null)
@@ -51,6 +51,7 @@
             _stateMachine.BackState.StopCharacter();
             _characterModel.CharacterRigitbody.constraints = UnityEngine.RigidbodyConstraints.FreezePositionX | 
                 UnityEngine.RigidbodyConstraints.FreezePositionZ | UnityEngine.RigidbodyConstraints.FreezeRotation;
+            _characterModel.CharacterRigitbody.isKinematic = true;
         }
 
         #endregion

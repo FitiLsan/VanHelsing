@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f161af36797e6e478e36cd9c678073d, type: 3}
+  m_Name: BossData
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
+  _startStats:
+    PermantnsBuffList: []
+    TemporaryBuffList: []
+    BaseStats:
+      _maximalHealthPoints: 500
+      _currentHealthPoints: 500
+      HealthRegenPerSecond: 0
+      _maximalStaminaPoints: 0
+      _currentStaminaPoints: 0
+      StaminaRegenPerSecond: 0
+      IsDead: 0
+      IsStunned: 0
+    AttackStats:
+      _physicalPower: 50
+      _magicalPower: 0
+    DefenceStats:
+      _physicalDamageResistance: 0.4
+      _stunProbabilityResistance: 0.2
+      _fireDamageResistance: 0
+  _bossSettings:
+    _instanceName: Boss
+    _leftHandObjectPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
+      Spine1/OAK_TEE_ENT_ L Clavicle/OAK_TEE_ENT_ L UpperArm/OAK_TEE_ENT_ L Forearm/OAK_TEE_ENT_
+      L Hand
+    _rightHandObjectPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
+      Spine1/OAK_TEE_ENT_ R Clavicle/OAK_TEE_ENT_ R UpperArm/OAK_TEE_ENT_ R Forearm/OAK_TEE_ENT_
+      R Hand
+    _instanceTag: Enemy
+    _instanceLayer: 11
+    _bossAnimator: {fileID: 9100000, guid: 14d982f6bf8adfd409a952a432e6ba01, type: 2}
+    _instantiateDirection: -40
+    _rigitbodyMass: 1
+    _rigitbodyDrag: 0
+    _rigitbodyAngularDrag: 0.5
+    _isRigitbodyKinematic: 1
+    _capsuleColliderCenter: {x: 0, y: 1, z: 0}
+    _capsuleColliderRadius: 0.3
+    _capsuleColliderHeight: 2
+    _sphereColliderCenter: {x: 0, y: 1, z: 0}
+    _sphereColliderRadius: 7
+    _sphereColliderRadiusIncrease: 1
+    _sphereColliderRadiusDecrease: 2
+    _navMeshAcceleration: 1.5
+    _walkSpeed: 1.6
+    _runSpeed: 3.4
+    _groundCheckHeight: 1
+    _directionChangeLag: 0.242
+    _animatorBaseSpeed: 1
+    _leftHandHitBoxRadius: 1
+    _leftHandHitBoxCenter: {x: -1, y: 0, z: 0}
+    _rightHandHitBoxRadius: 1
+    _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
+  _movementPrefab: {fileID: 3608412240235365698, guid: 780860c28e2fd0e4b83fcab9bb4061b7,
+    type: 3}
