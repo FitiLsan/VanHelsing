@@ -66,8 +66,7 @@ namespace BeastHunter
         #region ClassLifeCycles
 
         public TwoHeadedSnakeData()
-        {
-            
+        {          
 
         }
 

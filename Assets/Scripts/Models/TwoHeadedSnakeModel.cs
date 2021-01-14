@@ -12,7 +12,6 @@ namespace BeastHunter
         private int HEAD_COLLIDER_COUNT = 2;
         private int TAIL_COLLIDER_COUNT = 4;
 
-        private TwoHeadedSnakeData _twoHeadedSnakeData;
         private InteractableObjectBehavior[] _interactableObjects;
         private InteractableObjectBehavior _detectionSphereIO;
         private SphereCollider _detectionSphere;
@@ -53,8 +52,7 @@ namespace BeastHunter
         public TwoHeadedSnakeModel(GameObject objectOnScene, TwoHeadedSnakeData data, Vector3 spawnPosition) : 
             base(objectOnScene, data)
         {
-            _twoHeadedSnakeData = data;
-            Settings = _twoHeadedSnakeData.settings;
+            Settings = (ThisEnemyData as TwoHeadedSnakeData).settings;
             TwoHeadedSnake = objectOnScene;
             SpawnPoint = spawnPosition;
             attackCoolDownTimer = 0;
@@ -146,7 +144,7 @@ namespace BeastHunter
         {
             if (!CurrentStats.BaseStats.IsDead)
             {
-                _twoHeadedSnakeData.TakeDamage(this, damage);
+                ThisEnemyData.TakeDamage(this, damage);
             }
         }
 
@@ -155,12 +153,12 @@ namespace BeastHunter
 
         #region Private methods
 
-        private bool Filter(Collider collider) => _twoHeadedSnakeData.Filter(collider);
-        private void OnDetectionEnemy(ITrigger trigger, Collider collider) => _twoHeadedSnakeData.OnDetectionEnemy(collider, this);
-        private void OnLostEnemy(ITrigger trigger, Collider collider) => _twoHeadedSnakeData.OnLostEnemy(collider, this);
-        private void OnHitEnemy(ITrigger trigger, Collider collider) => _twoHeadedSnakeData.OnHitEnemy(collider, this);
-        private void OnAttackStateEnter() => _twoHeadedSnakeData.OnAttackStateEnter(this);
-        private void OnAttackStateExit() => _twoHeadedSnakeData.OnAttackStateExit(this);
+        private bool Filter(Collider collider) => (ThisEnemyData as TwoHeadedSnakeData).Filter(collider);
+        private void OnDetectionEnemy(ITrigger trigger, Collider collider) => (ThisEnemyData as TwoHeadedSnakeData).OnDetectionEnemy(collider, this);
+        private void OnLostEnemy(ITrigger trigger, Collider collider) => (ThisEnemyData as TwoHeadedSnakeData).OnLostEnemy(collider, this);
+        private void OnHitEnemy(ITrigger trigger, Collider collider) => (ThisEnemyData as TwoHeadedSnakeData).OnHitEnemy(collider, this);
+        private void OnAttackStateEnter() => (ThisEnemyData as TwoHeadedSnakeData).OnAttackStateEnter(this);
+        private void OnAttackStateExit() => (ThisEnemyData as TwoHeadedSnakeData).OnAttackStateExit(this);
 
         #endregion
 

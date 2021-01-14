@@ -7,7 +7,7 @@ using UnityEngine;
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "FallingTreeData", menuName = "CreateData/SimpleInteractiveObjects/FallingTreeData", order = 0)]
-    public sealed class FallingTreeData : SimpleInteractiveObjectData, IDealDamage
+    public sealed class FallingTreeData : SimpleInteractiveObjectData
     {
         #region SerializeFields
 
@@ -165,7 +165,9 @@ namespace BeastHunter
             {
                 if (kvp.Value != null && model.Rigidbody.velocity.sqrMagnitude > _sqrHitSpeed)
                 {
-                    DealDamage(kvp.Value, _damage);
+                    Services.SharedInstance.AttackService.CountAndDealDamage(_damage, kvp.Value.transform.
+                        GetMainParent().gameObject.GetInstanceID());
+                    _dealDamageMsg?.Invoke(kvp.Value.ToString());
                     changingDictionaryValues.Add(kvp.Key);
                 }
             }
@@ -216,7 +218,9 @@ namespace BeastHunter
 
             if (model.Rigidbody.velocity.sqrMagnitude > _sqrHitSpeed && model.StayCollisionEntities[entityID] != null)
             {
-                DealDamage(entityIO, _damage);
+                Services.SharedInstance.AttackService.CountAndDealDamage(_damage, entityIO.transform.
+                    GetMainParent().gameObject.GetInstanceID());
+                _dealDamageMsg?.Invoke(entityIO.ToString());
                 //note: set value as null means the entity has already taken damage
                 model.StayCollisionEntities[entityID] = null;
             }
@@ -245,21 +249,6 @@ namespace BeastHunter
                 _deactivateMsg = () => Debug.Log("FallingTree deactivated");
                 _dealDamageMsg = (enemy) => Debug.Log("FallingTree deal damage to " + enemy);
             }
-        }
-
-        #endregion
-
-
-        #region IDealDamage
-
-        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
-        {
-            Damage countDamage = Services.SharedInstance.AttackService
-                .CountDamage(damage, enemy.transform.GetMainParent().gameObject.GetInstanceID());
-
-            _dealDamageMsg?.Invoke(enemy.ToString());
-            enemy.TakeDamageEvent(countDamage);
-
         }
 
         #endregion
