@@ -86,8 +86,8 @@ namespace BeastHunter
 
         private void CheckDistance()
         {
-            if (_stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _target, DISTANCE_TO_START_RESTING) 
-                & _stateMachine._model.CurrentStamina >= _stateMachine._model.MaxStamina)
+            if (_bossModel.BossData.CheckIsNearTarget(_bossModel.BossTransform.position, _target, DISTANCE_TO_START_RESTING) 
+                & _bossModel.CurrentStats.BaseStats.CurrentStaminaPoints >= _bossModel.CurrentStats.BaseStats.MaximalStaminaPoints)
             {
                 _canRest = true;
             }
@@ -103,14 +103,14 @@ namespace BeastHunter
             if (_canRest)
             {
                 Debug.Log("Resting");
-                _stateMachine._model.BossAnimator.Play("RestingState",0,0);
+                _bossModel.BossAnimator.Play("RestingState",0,0);
                 _restingCountTime -= Time.deltaTime;
                 if (_restingCountTime <= 0)
                 {
                     _canRest = false;
                     _restingCountTime = RESTING_TIME;
-                    _stateMachine._model.CurrentStamina = 0;
-                    _stateMachine._model.BossCurrentTarget = null;
+                    _bossModel.CurrentStats.BaseStats.CurrentStaminaPoints = 0f;
+                    _bossModel.BossCurrentTarget = null;
                     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
                 }
             }

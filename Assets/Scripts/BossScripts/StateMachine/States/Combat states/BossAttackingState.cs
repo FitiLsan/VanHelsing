@@ -1,13 +1,14 @@
 ﻿using RootMotion.Dynamics;
 using RootMotion.FinalIK;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Extensions;
+
 
 namespace BeastHunter
 {
-    public class BossAttackingState : BossBaseState, IDealDamage
+    public class BossAttackingState : BossBaseState
     {
         #region Constants
         //private const float ANGLE_SPEED = 150f;
@@ -157,7 +158,7 @@ namespace BeastHunter
             _bossModel.LeftHandCollider.enabled = false;
             _bossModel.RightHandCollider.enabled = false;
 
-            if (!_bossModel.IsDead && CheckDirection() && !_bossModel.IsPickUped)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead && CheckDirection() && !_bossModel.IsPickUped)
             {
                 ChoosingAttackSkill();
             }
@@ -180,7 +181,8 @@ namespace BeastHunter
             if (hitBox.IsInteractable)
             {
                 handDamage.PhysicalDamage = Random.Range(5f, 15f);
-                DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, handDamage);
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
+                    gameObject.GetInstanceID());
 
              //   CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine._context.CharacterModel.CharacterStats));
 
@@ -195,7 +197,8 @@ namespace BeastHunter
             if (hitBox.IsInteractable)
             {
                 handDamage.PhysicalDamage = Random.Range(5f, 15f);
-                DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, handDamage);
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
+                    gameObject.GetInstanceID());
 
                 //DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
                 //    CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
@@ -204,18 +207,6 @@ namespace BeastHunter
                 _bossModel.RightHandCollider.enabled = false;
             }
         }
-
-        #region IDealDamage
-
-        public void DealDamage(InteractableObjectBehavior enemy, Damage damage)
-        {
-            if (enemy != null && damage != null)
-            {
-                enemy.TakeDamageEvent(damage);
-            }
-        }
-
-        #endregion
 
         private void OnPickUp(FullBodyBipedEffector effectorType, InteractionObject interactionObject)
         {

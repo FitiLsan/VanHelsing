@@ -54,9 +54,9 @@ namespace BeastHunter
 
         public override void Initialise()
         {
-            _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
-            _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_EATING;
-            _stateMachine._model.BossAnimator.Play("MovingState");
+            _bossModel.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
+            _bossModel.BossNavAgent.stoppingDistance = DISTANCE_TO_START_EATING;
+            _bossModel.BossAnimator.Play("MovingState");
             _canEat = false;
             _startEating = false;
 
@@ -123,7 +123,7 @@ namespace BeastHunter
             {
                 Debug.Log("Eating");
                 _startEating = true;
-                _stateMachine._model.BossAnimator.Play("EatingState");
+                _bossModel.BossAnimator.Play("EatingState");
                 _eatingCountTime -= Time.deltaTime;
 
                 if(_eatingCountTime<= EATING_TAKE_TIME)
@@ -139,13 +139,12 @@ namespace BeastHunter
                 {
                     _eatingCountTime = EATING_TIME;
                     _targetFood.SetActive(false);
-                    _stateMachine._model.FoodList.Remove(_targetFood);
-                    _stateMachine._model.CurrentStamina += FOOD_POINT;
+                    _bossModel.FoodList.Remove(_targetFood);
+                    _bossModel.CurrentStats.BaseStats.CurrentStaminaPoints += FOOD_POINT;
                     _startEating = false;
                     _setParent = false;
-                    _stateMachine._model.BossCurrentTarget = null;
-                    _stateMachine.SetCurrentState(BossStatesEnum.Idle);
-                    
+                    _bossModel.BossCurrentTarget = null;
+                    _stateMachine.SetCurrentState(BossStatesEnum.Idle);                 
                 }
             }
         }

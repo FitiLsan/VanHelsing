@@ -21,9 +21,9 @@ namespace BeastHunter
         {
             Debug.Log("ResurrectionAttackSkill");
             _bossModel.BossAnimator.Play("Resurrection", 0, 0);
-            _bossModel.CurrentHealth = _bossModel.BossData._bossStats.MainStats.MaxHealth / 2;
-            _stateMachine._model.BossNavAgent.enabled = true;
-            _stateMachine._model.IsDead = false ;
+            _bossModel.CurrentStats.BaseStats.CurrentHealthPoints = _bossModel.CurrentStats.BaseStats.MaximalHealthPoints / 2;
+            _bossModel.BossNavAgent.enabled = true;
+            _bossModel.CurrentStats.BaseStats.IsDead = false ;
             ReloadSkill(id);
         }
 

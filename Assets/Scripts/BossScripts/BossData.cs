@@ -5,12 +5,11 @@ using UnityEngine.AI;
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "BossData", menuName = "Enemy/BossData")]
-    public sealed class BossData : ScriptableObject
+    public sealed class BossData : EnemyData
     {
         #region PrivateData
 
         public BossSettings _bossSettings;
-        public EnemyStats _bossStats;
         public AttackStateSkillsSettings AttackStateSkills;
         public DefenceStateSkillsSettings DefenceStateSkills;
         public ChasingStateSkillsSettings ChasingStateSkills;
@@ -31,6 +30,11 @@ namespace BeastHunter
 
 
         #region Metods
+
+        public override void Act(EnemyModel enemyModel)
+        {
+            (enemyModel as BossModel).BossStateMachine.Execute();
+        }
 
         public void MoveForward(Transform prefabTransform, float moveSpeed)
         {
@@ -80,7 +84,6 @@ namespace BeastHunter
 
         public bool CheckIsNearTarget(Vector3 prefabPosition, Vector3 targetPosition, float distanceRangeMin, float distanceRangeMax)
         {
-
             var distance = Mathf.Sqrt((prefabPosition - targetPosition).sqrMagnitude);
             var isNear = distance >= distanceRangeMin & distance <= distanceRangeMax;
 

@@ -35,9 +35,9 @@ namespace BeastHunter
             CanExit = false;
             CanBeOverriden = true;
             IsBattleState = true;
-            _stateMachine._model.BossNavAgent.enabled = false;
-            _stateMachine._model.IsDead = true;
-            _stateMachine._model.BossAnimator.Play("DeadState", 0, 0f);
+            _bossModel.BossNavAgent.enabled = false;
+            _bossModel.CurrentStats.BaseStats.IsDead = true;
+            _bossModel.BossAnimator.Play("DeadState", 0, 0f);
             //_stateMachine._model.BossCapsuleCollider.center = Vector3.zero;
             //_stateMachine._model.BossCapsuleCollider.height = 1f;
             //_stateMachine._model.FirstWeakPointBehavior.gameObject.SetActive(false);
@@ -80,8 +80,6 @@ namespace BeastHunter
             }
         }
 
-
-
         private void ChoosingAttackSkill()
         {
             _resurrectionDelay -= Time.deltaTime;
@@ -93,7 +91,7 @@ namespace BeastHunter
                         _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.DeadStateSkillDictionary, RESURRECTION_SKILL_ID);
                         return;
                     }
-                    if (_bossModel.IsDead == false)
+                    if (_bossModel.CurrentStats.BaseStats.IsDead == false)
                     {
                         _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
                     }
