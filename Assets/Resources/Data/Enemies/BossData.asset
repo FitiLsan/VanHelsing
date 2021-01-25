@@ -12,6 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f161af36797e6e478e36cd9c678073d, type: 3}
   m_Name: BossData
   m_EditorClassIdentifier: 
+  _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b, type: 3}
+  _startStats:
+    BaseStats:
+      _maximalHealthPoints: 500
+      _currentHealthPoints: 500
+      HealthRegenPerSecond: 0
+      _maximalStaminaPoints: 100
+      _currentStaminaPoints: 100
+      StaminaRegenPerSecond: 0
+      IsDead: 0
+      IsStunned: 0
+    AttackStats:
+      _physicalPower: 50
+      _magicalPower: 0
+    DefenceStats:
+      _physicalDamageResistance: 0.4
+      _stunProbabilityResistance: 0.2
+      _fireDamageResistance: 0
   _bossSettings:
     _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b,
       type: 3}
@@ -64,22 +82,6 @@ MonoBehaviour:
     _leftHandHitBoxCenter: {x: -1, y: 0, z: 0}
     _rightHandHitBoxRadius: 1
     _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
-  _bossStats:
-    MainStats:
-      _maxHealth: 100
-      _enemyType: 5
-      _viewRadius: 0
-      _viewAngle: 0
-      _healthPoints: 100
-      _physicalPower: 0.76
-      _magicalPower: 0
-      _physicalDamageResistance: 0.818
-      _stunProbabilityResistance: 0
-      _fireDamageResistance: 0
-    AttackList: []
-    DefenceStats:
-      _baseDefense: 0
-    Prefab: {fileID: 0}
   AttackStateSkills:
     _defaultSkillId: 0
     _defaultSkillRangeMin: 3
