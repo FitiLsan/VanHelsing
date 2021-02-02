@@ -19,6 +19,8 @@ namespace BeastHunter
         private bool _canLookAt = true;
         private GameObject _catchingBone;
         private GameObject _catchedTarget;
+        private Sequence sequence;
+        private bool _isGrowEnd;
 
         public Transform CatchPoint;
         public float xOffset;
@@ -52,6 +54,15 @@ namespace BeastHunter
             _weight = _fabrik.solver.GetIKPositionWeight();
         }
 
+        private void Start()
+        {
+            transform.position += new Vector3(0, -5.3f, 0);
+            transform.DOLocalMoveY(0, 4f);
+            sequence = DOTween.Sequence();
+            sequence.Append(transform.DOLocalMoveY(0, 4f)).AppendCallback(GrowingEnd);
+            
+        }
+
         private void OnDisable()
         {
             CatchTrigger.CatchedEvent -= OnCatchedEvent;
@@ -60,6 +71,11 @@ namespace BeastHunter
 
         private void Update()
         {
+            if(!_isGrowEnd)
+            {
+                return;
+            }
+            
             RotateToTarget();
 
             _target = _fabrik.solver.target.gameObject;
@@ -152,5 +168,9 @@ namespace BeastHunter
             }
         }
 
+        private void GrowingEnd()
+        {
+            _isGrowEnd = true;
+        }
     }
 }
