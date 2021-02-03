@@ -6,22 +6,12 @@ using UnityEngine;
 public class CatchTrigger : MonoBehaviour
 {
     public static event Action<GameObject,GameObject> CatchedEvent;
-    public static event Action ThrowEvent;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name.Equals("Cylinder"))
+        if (other.tag.Equals("Player"))
         {
             CatchedEvent?.Invoke(gameObject, other.gameObject);
-            //other.transform.SetParent(transform);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.name.Equals("Cylinder"))
-        {
-            ThrowEvent?.Invoke();
         }
     }
 }
