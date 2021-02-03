@@ -15,20 +15,20 @@ MonoBehaviour:
   _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b, type: 3}
   _startStats:
     BaseStats:
-      _maximalHealthPoints: 100
-      _currentHealthPoints: 100
+      _maximalHealthPoints: 500
+      _currentHealthPoints: 500
       HealthRegenPerSecond: 0
-      _maximalStaminaPoints: 0
-      _currentStaminaPoints: 0
+      _maximalStaminaPoints: 100
+      _currentStaminaPoints: 100
       StaminaRegenPerSecond: 0
       IsDead: 0
       IsStunned: 0
     AttackStats:
-      _physicalPower: 0
+      _physicalPower: 50
       _magicalPower: 0
     DefenceStats:
-      _physicalDamageResistance: 0
-      _stunProbabilityResistance: 0
+      _physicalDamageResistance: 0.4
+      _stunProbabilityResistance: 0.2
       _fireDamageResistance: 0
   _bossSettings:
     _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b,
@@ -117,7 +117,7 @@ MonoBehaviour:
     _fingerSkillRangeMin: 10
     _fingerSkillRangeMax: 20
     _fingerSkillCooldown: 7
-    _fingerSkillReady: 1
+    _fingerSkillReady: 0
   DefenceStateSkills:
     _defaultDefenceSkillId: 0
     _defaultDefenceSkillRangeMin: -1
