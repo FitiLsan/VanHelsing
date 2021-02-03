@@ -13,29 +13,44 @@ MonoBehaviour:
   m_Name: LocationData
   m_EditorClassIdentifier: 
   _playerSpawnPositions:
-  - _position: {x: 399.47845, y: 86.43269, z: 181.81989}
-    _eulers: {x: -0, y: 0, z: 0}
-    _scale: {x: 1, y: 1, z: 1}
-  - _position: {x: 468.22552, y: 90.15869, z: 163.23112}
-    _eulers: {x: -0, y: 0, z: 0}
-    _scale: {x: 1, y: 1, z: 1}
-  - _position: {x: 224.05362, y: 96.60294, z: 247.87457}
-    _eulers: {x: -0, y: 0, z: 0}
-    _scale: {x: 1, y: 1, z: 1}
-  - _position: {x: 59.45862, y: 92.698, z: 202.30402}
+  - _position: {x: 398.3659, y: 87.63952, z: 174.16751}
     _eulers: {x: -0, y: 0, z: 0}
     _scale: {x: 1, y: 1, z: 1}
   _bossSpawnPositions:
-  - _position: {x: 411.45, y: 82.11716, z: 212.38}
-    _eulers: {x: -0, y: 0, z: 0}
-    _scale: {x: 1, y: 1, z: 1}
-  - _position: {x: 163.41544, y: 83.19522, z: 406.73404}
-    _eulers: {x: -0, y: 0, z: 0}
-    _scale: {x: 1, y: 1, z: 1}
-  - _position: {x: 181.88278, y: 80.865685, z: 182.80945}
+  - _position: {x: 412.88705, y: 82.8567, z: 220.96916}
     _eulers: {x: -0, y: 0, z: 0}
     _scale: {x: 1, y: 1, z: 1}
   _enemySpawnPointData:
+  - _spawnDataList:
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 43398a2c55450574da94b5cc7b25fbca,
+        type: 2}
+      SpawningChance: 0.33333334
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 53b51f21db0219d4e9d95c5189d3c3d2,
+        type: 2}
+      SpawningChance: 0.33333334
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: a300dd215282c824e872493cb59c8da4,
+        type: 2}
+      SpawningChance: 0.33333334
+    _spawnPosition:
+      _position: {x: 165.77, y: 84.48, z: 242.5}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 43.81
+    _numberToSpawn: 20
+  - _spawnDataList:
+    - _spawningDataType: 4
+      _spawningEnemyData: {fileID: 11400000, guid: 3ec76f01e6e4a2c4880fe9d668b9d605,
+        type: 2}
+      SpawningChance: 1
+    _spawnPosition:
+      _position: {x: 402.93, y: 84.04317, z: 35.63}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 15.04
+    _numberToSpawn: 3
   - _spawnDataList:
     - _spawningDataType: 3
       _spawningEnemyData: {fileID: 11400000, guid: 43398a2c55450574da94b5cc7b25fbca,
@@ -67,17 +82,6 @@ MonoBehaviour:
     _spawnRadius: 10.2
     _numberToSpawn: 2
   - _spawnDataList:
-    - _spawningDataType: 4
-      _spawningEnemyData: {fileID: 11400000, guid: 3ec76f01e6e4a2c4880fe9d668b9d605,
-        type: 2}
-      SpawningChance: 1
-    _spawnPosition:
-      _position: {x: 402.93, y: 84.04317, z: 35.63}
-      _eulers: {x: -0, y: 0, z: 0}
-      _scale: {x: 1, y: 1, z: 1}
-    _spawnRadius: 15.04
-    _numberToSpawn: 3
-  - _spawnDataList:
     - _spawningDataType: 3
       _spawningEnemyData: {fileID: 11400000, guid: 53b51f21db0219d4e9d95c5189d3c3d2,
         type: 2}
@@ -88,25 +92,6 @@ MonoBehaviour:
       _scale: {x: 1, y: 1, z: 1}
     _spawnRadius: 9.37
     _numberToSpawn: 4
-  - _spawnDataList:
-    - _spawningDataType: 3
-      _spawningEnemyData: {fileID: 11400000, guid: 43398a2c55450574da94b5cc7b25fbca,
-        type: 2}
-      SpawningChance: 0.33333334
-    - _spawningDataType: 3
-      _spawningEnemyData: {fileID: 11400000, guid: 53b51f21db0219d4e9d95c5189d3c3d2,
-        type: 2}
-      SpawningChance: 0.33333334
-    - _spawningDataType: 3
-      _spawningEnemyData: {fileID: 11400000, guid: a300dd215282c824e872493cb59c8da4,
-        type: 2}
-      SpawningChance: 0.33333334
-    _spawnPosition:
-      _position: {x: 165.77, y: 84.48, z: 242.5}
-      _eulers: {x: -0, y: 0, z: 0}
-      _scale: {x: 1, y: 1, z: 1}
-    _spawnRadius: 43.81
-    _numberToSpawn: 20
   _interactiveObjectSpawnData:
   - _objectPosition:
       _position: {x: 378.5829, y: 85.00432, z: 165.5507}
@@ -114,19 +99,19 @@ MonoBehaviour:
       _scale: {x: 1, y: 1, z: 1}
     _type: 1
   - _objectPosition:
-      _position: {x: 379.64847, y: 86.04926, z: 169.08}
-      _eulers: {x: -0, y: 0, z: 0}
-      _scale: {x: 1, y: 1, z: 1}
-    _type: 3
-  - _objectPosition:
       _position: {x: 379.40793, y: 85.88804, z: 172.98042}
       _eulers: {x: -0, y: 0, z: 0}
       _scale: {x: 1, y: 1, z: 1}
     _type: 4
   - _objectPosition:
+      _position: {x: 379.64847, y: 86.04926, z: 169.08}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _type: 3
+  - _objectPosition:
       _position: {x: 380.34, y: 85.88804, z: 162.32}
       _eulers: {x: -0, y: 0, z: 0}
       _scale: {x: 1, y: 1, z: 1}
     _type: 2
-  _doRandomizePlayerPosition: 1
-  _doRandomizeBossPosition: 1
+  _doRandomizePlayerPosition: 0
+  _doRandomizeBossPosition: 0
