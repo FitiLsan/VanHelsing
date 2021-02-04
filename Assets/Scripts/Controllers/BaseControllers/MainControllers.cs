@@ -30,9 +30,9 @@ namespace BeastHunter
             //Add(new DialogueSystemInitializeController(context));
             //Add(new StartDialogueInitializeController(context));
             //Add(new QuestInitializeController(context));
-            Add(new TwoHeadedSnakeInitializeController(context));
+            //Add(new TwoHeadedSnakeInitializeController(context));
             Add(new HideBushInitializeController(context));
-            Add(new HellHoundInitializeController(context));
+           // Add(new HellHoundInitializeController(context));
             Add(new BouldersInitializeController(context));
             Add(new FallingTreeInitializeController(context));
         }
