@@ -14,6 +14,8 @@ namespace BeastHunter
 
         [Tooltip("Skill ID")]
         [SerializeField] private int _defaultSkillId;
+        [Tooltip("Is Active")]
+        [SerializeField] private bool _defaultSkillIsActive;
         [Tooltip("Skill Range Min")]
         [Range(-1.0f, 30.0f)]
         [SerializeField] private float _defaultSkillRangeMin;
@@ -30,6 +32,8 @@ namespace BeastHunter
 
         [Tooltip("Skill ID")]
         [SerializeField] private int _horizontalSkillId;
+        [Tooltip("Is Active")]
+        [SerializeField] private bool _horizontalSkillIsActive;
         [Tooltip("Skill Range Min")]
         [Range(-1.0f, 30.0f)]
         [SerializeField] private float _horizontalSkillRangeMin;
@@ -46,6 +50,8 @@ namespace BeastHunter
 
         [Tooltip("Skill ID")]
         [SerializeField] private int _stompSplashSkillId;
+        [Tooltip("Is Active")]
+        [SerializeField] private bool _stompSplashSkillIsActive;
         [Tooltip("Skill Range Min")]
         [Range(-1.0f, 30.0f)]
         [SerializeField] private float _stompSplashSkillRangeMin;
@@ -62,6 +68,8 @@ namespace BeastHunter
 
         [Tooltip("Skill ID")]
         [SerializeField] private int _rageOfForestSkillId;
+        [Tooltip("Is Active")]
+        [SerializeField] private bool _rageOfForestSkillIsActive;
         [Tooltip("Skill Range Min")]
         [Range(-1.0f, 30.0f)]
         [SerializeField] private float _rageOfForestSkillRangeMin;
@@ -78,6 +86,8 @@ namespace BeastHunter
 
         [Tooltip("Skill ID")]
         [SerializeField] private int _poisonSporesSkillId;
+        [Tooltip("Is Active")]
+        [SerializeField] private bool _poisonSporesIsActive;
         [Tooltip("Skill Range Min")]
         [Range(-1.0f, 30.0f)]
         [SerializeField] private float _poisonSporesSkillRangeMin;
@@ -94,6 +104,8 @@ namespace BeastHunter
 
         [Tooltip("Skill ID")]
         [SerializeField] private int _catchSkillId;
+        [Tooltip("Is Active")]
+        [SerializeField] private bool _catchSkillIsActive;
         [Tooltip("Skill Range Min")]
         [Range(-1.0f, 30.0f)]
         [SerializeField] private float _catchSkillRangeMin;
@@ -110,6 +122,8 @@ namespace BeastHunter
 
         [Tooltip("Skill ID")]
         [SerializeField] private int _fingerSkillId;
+        [Tooltip("Is Active")]
+        [SerializeField] private bool _fingerSkillIsActive;
         [Tooltip("Skill Range Min")]
         [Range(-1.0f, 30.0f)]
         [SerializeField] private float _fingerSkillRangeMin;
