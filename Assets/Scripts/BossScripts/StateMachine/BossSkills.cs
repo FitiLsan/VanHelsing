@@ -105,8 +105,8 @@ namespace BeastHunter
             AttackStateSkillDictionary.Add(StompSplashSkill.SkillId, StompSplashSkill);
             AttackStateSkillDictionary.Add(RageOfForestSkill.SkillId, RageOfForestSkill);
             AttackStateSkillDictionary.Add(PoisonSporesSkill.SkillId, PoisonSporesSkill);
-            AttackStateSkillDictionary.Add(CatchAttackSkill.SkillId, CatchAttackSkill);
-            AttackStateSkillDictionary.Add(FingerAttackSkill.SkillId, FingerAttackSkill);
+          //  AttackStateSkillDictionary.Add(CatchAttackSkill.SkillId, CatchAttackSkill);
+          //  AttackStateSkillDictionary.Add(FingerAttackSkill.SkillId, FingerAttackSkill);
 
             #endregion
 
@@ -120,9 +120,9 @@ namespace BeastHunter
 
             DefenceStateSkillDictionary.Add(DefaultDefenceSkill.SkillId, DefaultDefenceSkill);
             DefenceStateSkillDictionary.Add(SelfHealSkill.SkillId, SelfHealSkill);
-            DefenceStateSkillDictionary.Add(HardBarkSkill.SkillId, HardBarkSkill);
-            DefenceStateSkillDictionary.Add(CallOfForestSkill.SkillId, CallOfForestSkill);
-            DefenceStateSkillDictionary.Add(CanibalHealingSkill.SkillId, CanibalHealingSkill);
+          //  DefenceStateSkillDictionary.Add(HardBarkSkill.SkillId, HardBarkSkill);
+         //   DefenceStateSkillDictionary.Add(CallOfForestSkill.SkillId, CallOfForestSkill);
+         //   DefenceStateSkillDictionary.Add(CanibalHealingSkill.SkillId, CanibalHealingSkill);
 
             #endregion
 
@@ -138,7 +138,7 @@ namespace BeastHunter
             #region  RetreatingState
 
             FakeTreeSkill = new FakeTreeAttackSkill(RetreatingStateSkillsSettings.GetFakeTreeSkillInfo(), RetreatingStateSkillDictionary, _stateMachine);
-            RetreatingStateSkillDictionary.Add(FakeTreeSkill.SkillId, FakeTreeSkill);
+           // RetreatingStateSkillDictionary.Add(FakeTreeSkill.SkillId, FakeTreeSkill);
 
             #endregion
 
@@ -153,7 +153,7 @@ namespace BeastHunter
             #region  DeadStateSkills
 
             ResurrectionSkill = new ResurrectionAttackSkill(DeadStateSkillsSettings.GetResurrectionSkillInfo(), DeadStateSkillDictionary, _stateMachine);
-            DeadStateSkillDictionary.Add(ResurrectionSkill.SkillId, ResurrectionSkill);
+          //  DeadStateSkillDictionary.Add(ResurrectionSkill.SkillId, ResurrectionSkill);
             #endregion
 
 
@@ -161,8 +161,8 @@ namespace BeastHunter
 
             TestSkill = new TestAttackSkill(NonStateSkillsSettings.GetTestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             ThrowAttackSkill = new ThrowAttackSkill(NonStateSkillsSettings.GetThrowSkillInfo(), AttackStateSkillDictionary, _stateMachine);
-            NonStateSkillDictionary.Add(ThrowAttackSkill.SkillId, ThrowAttackSkill);
-            NonStateSkillDictionary.Add(TestSkill.SkillId, TestSkill);
+         //   NonStateSkillDictionary.Add(ThrowAttackSkill.SkillId, ThrowAttackSkill);
+         //   NonStateSkillDictionary.Add(TestSkill.SkillId, TestSkill);
 
             #endregion
 

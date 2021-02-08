@@ -84,36 +84,43 @@ MonoBehaviour:
     _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
   AttackStateSkills:
     _defaultSkillId: 0
+    _defaultSkillIsActive: 0
     _defaultSkillRangeMin: 3
     _defaultSkillRangeMax: 5
     _defaultSkillCooldown: 5
     _defaultSkillReady: 1
     _horizontalSkillId: 1
+    _horizontalSkillIsActive: 0
     _horizontalSkillRangeMin: 3
     _horizontalSkillRangeMax: 5
-    _horizontalSkillCooldown: 5
+    _horizontalSkillCooldown: 15
     _horizontalSkillReady: 0
     _stompSplashSkillId: 2
+    _stompSplashSkillIsActive: 0
     _stompSplashSkillRangeMin: 0
     _stompSplashSkillRangeMax: 5
-    _stompSplashSkillCooldown: 10
+    _stompSplashSkillCooldown: 15
     _stompSplashSkillReady: 0
     _rageOfForestSkillId: 3
+    _rageOfForestSkillIsActive: 0
     _rageOfForestSkillRangeMin: 10
     _rageOfForestSkillRangeMax: 30
     _rageOfForestSkillCooldown: 30
     _rageOfForestSkillReady: 0
     _poisonSporesSkillId: 4
+    _poisonSporesIsActive: 0
     _poisonSporesSkillRangeMin: 10
     _poisonSporesSkillRangeMax: 20
     _poisonSporesSkillCooldown: 15
     _poisonSporesSkillReady: 0
     _catchSkillId: 5
+    _catchSkillIsActive: 0
     _catchSkillRangeMin: 0
     _catchSkillRangeMax: 5
     _catchSkillCooldown: 22
     _catchSkillReady: 0
     _fingerSkillId: 6
+    _fingerSkillIsActive: 0
     _fingerSkillRangeMin: 10
     _fingerSkillRangeMax: 20
     _fingerSkillCooldown: 7
@@ -127,7 +134,7 @@ MonoBehaviour:
     _selfHealSkillId: 1
     _selfHealSkillRangeMin: -1
     _selfHealSkillRangeMax: -1
-    _selfHealSkillCooldown: 20
+    _selfHealSkillCooldown: 120
     _selfHealSkillReady: 1
     _selfHealSkillCanInterrupt: 1
     _hardBarkSkillId: 2
@@ -149,7 +156,7 @@ MonoBehaviour:
     _vineFishingSkillId: 0
     _vineFishingSkillRangeMin: 50
     _vineFishingSkillRangeMax: 100
-    _vineFishingSkillCooldown: 10
+    _vineFishingSkillCooldown: 120
     _vineFishingSkillReady: 1
     _vineFishingSkillPrefab: {fileID: 451594414436784737, guid: b0ed713a1062bc54ba292383f4251611,
       type: 3}
