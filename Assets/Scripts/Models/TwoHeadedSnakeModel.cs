@@ -16,16 +16,15 @@ namespace BeastHunter
         private InteractableObjectBehavior _detectionSphereIO;
         private SphereCollider _detectionSphere;
         private TwoHeadedSnakeAttackStateBehaviour[] _attackStates;
-        public TwoHeadedSnakeData.BehaviourState behaviourState;
-        public Transform chasingTarget;
+        public TwoHeadedSnakeData.BehaviourState BehaviourState;
+        public Transform ChasingTarget;
 
         public float timer;
         public float attackCoolDownTimer;
-
-        public bool isAttacking;
-
         public float rotatePosition1;
         public float rotatePosition2;
+
+        public bool isAttacking;
 
         #endregion
 
@@ -37,28 +36,28 @@ namespace BeastHunter
         public NavMeshAgent NavMeshAgent { get; }
         public TwoHeadedSnakeSettings Settings { get; }
         public GameObject TwoHeadedSnake { get; }
-        public Vector3 SpawnPoint;
         public Animator Animator { get; }
         public Transform Transform { get; }
         public InteractableObjectBehavior [] WeaponsIO { get; }
         public Collider[] TailAttackColliders { get; private set; }
         public Collider[] TwinHeadAttackColliders { get; private set; }
+        public Vector3 SpawnPoint { get; private set; }
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public TwoHeadedSnakeModel(GameObject objectOnScene, TwoHeadedSnakeData data, Vector3 spawnPosition) : 
+        public TwoHeadedSnakeModel(GameObject objectOnScene, TwoHeadedSnakeData data) : 
             base(objectOnScene, data)
         {
             Settings = (ThisEnemyData as TwoHeadedSnakeData).settings;
             TwoHeadedSnake = objectOnScene;
-            SpawnPoint = spawnPosition;
             attackCoolDownTimer = 0;
 
             Transform = TwoHeadedSnake.transform;
-            behaviourState = TwoHeadedSnakeData.BehaviourState.None;
+            SpawnPoint = Transform.position;
+            BehaviourState = TwoHeadedSnakeData.BehaviourState.None;
 
             if (TwoHeadedSnake.GetComponent<Rigidbody>() != null)
             {
@@ -86,8 +85,6 @@ namespace BeastHunter
                 CapsuleCollider.radius = Settings.CapsuleColliderRadius;
                 CapsuleCollider.height = Settings.CapsuleColliderHeight;
             }
-
-            CapsuleCollider.transform.position = SpawnPoint;
 
             if (TwoHeadedSnake.GetComponent<NavMeshAgent>() != null)
             {

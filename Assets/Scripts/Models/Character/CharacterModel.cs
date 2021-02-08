@@ -30,6 +30,7 @@ namespace BeastHunter
         public AudioSource SpeechAudioSource { get; }
         public AudioSource MovementAudioSource { get; }
         public CharacterAnimationModel CharacterAnimationModel { get; }
+        public Transform ObjectOnSceneTransform { get; }
         public Transform CharacterTransform { get; }
         public CapsuleCollider CharacterCapsuleCollider { get; }
         public SphereCollider CharacterSphereCollider { get; }
@@ -70,14 +71,17 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public CharacterModel(GameObject prefab, CharacterData characterData, Vector3 groundPosition)
+        public CharacterModel(GameObject objectOnScene, CharacterData characterData, LocationPosition groundedPosition)
         {
-            InstanceID = prefab.GetInstanceID();
+            InstanceID = objectOnScene.GetInstanceID();
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData.CharacterCommonSettings;
             CharacterStartStats = CharacterData.CharacterStatsSettings;
-            CharacterTransform = prefab.transform.GetChild(2).transform;
-            CharacterTransform.position = groundPosition;
+            ObjectOnSceneTransform = objectOnScene.transform;
+            CharacterTransform = objectOnScene.transform.GetChild(2).transform;
+            ObjectOnSceneTransform.position = groundedPosition.Position;
+            ObjectOnSceneTransform.eulerAngles = groundedPosition.Eulers;
+            ObjectOnSceneTransform.localScale = groundedPosition.Scale;
             CharacterTransform.rotation = Quaternion.Euler(0, CharacterCommonSettings.InstantiateDirection, 0);
             CharacterTransform.name = CharacterCommonSettings.InstanceName;
             CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
@@ -145,9 +149,9 @@ namespace BeastHunter
                 throw new System.Exception("There is no line renderer on character prefab");
             }
 
-            PuppetMaster = prefab.transform.GetChild(1).gameObject.GetComponent<PuppetMaster>();
-            BehaviorPuppet = prefab.transform.GetChild(0).GetChild(0).gameObject.GetComponent<BehaviourPuppet>();
-            BehaviorFall = prefab.transform.GetChild(0).GetChild(1).gameObject.GetComponent<BehaviourFall>();
+            PuppetMaster = objectOnScene.transform.GetChild(1).gameObject.GetComponent<PuppetMaster>();
+            BehaviorPuppet = objectOnScene.transform.GetChild(0).GetChild(0).gameObject.GetComponent<BehaviourPuppet>();
+            BehaviorFall = objectOnScene.transform.GetChild(0).GetChild(1).gameObject.GetComponent<BehaviourFall>();
 
             EnemiesInTrigger = new ReactiveCollection<Collider>();
             
