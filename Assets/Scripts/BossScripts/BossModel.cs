@@ -87,7 +87,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public BossModel(GameObject objectOnScene, BossData data, Vector3 groundPosition, GameContext context) : 
+        public BossModel(GameObject objectOnScene, BossData data, LocationPosition position, GameContext context) : 
             base(objectOnScene, data)
         {
             Lair = GameObject.Find("Lair");
@@ -134,7 +134,9 @@ namespace BeastHunter
                 BossCapsuleCollider.height = BossSettings.CapsuleColliderHeight;
             }
 
-            BossCapsuleCollider.transform.position = groundPosition;
+            BossTransform.position = position.Position;
+            BossTransform.eulerAngles = position.Eulers;
+            BossTransform.localScale = position.Scale;
 
             if (objectOnScene.GetComponent<SphereCollider>() != null)
             {

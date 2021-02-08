@@ -381,5 +381,25 @@ namespace Extensions
             }
             return result;
         }
+
+        public static float[] CumulateValues(this float[] array, bool doProgressively = true)
+        {
+            if (doProgressively)
+            {
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = i > 0 ? array[i] + array[i - 1] : array[i];
+                }
+            }
+            else
+            {
+                for (int i = array.Length - 1; i >= 0; i++)
+                {
+                    array[i] = i == array.Length - 1 ? array[i] : array[i] + array[i+1];
+                }
+            }
+
+            return array;
+        }
     }
 }

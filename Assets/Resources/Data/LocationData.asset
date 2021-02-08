@@ -12,6 +12,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63798768fe41a44b92f7e80c3f4a681, type: 3}
   m_Name: LocationData
   m_EditorClassIdentifier: 
-  _playerSpawnPosition: {x: 497.02438, y: 0, z: 438.19373}
-  _bossSpawnPosition: {x: 493.2004, y: 0, z: 513.3574}
-  _enemySpawnPointData: []
+  _playerSpawnPositions:
+  - _position: {x: 541.6754, y: -0.099990845, z: 421.3613}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
+  - _position: {x: 541.6754, y: -0.099990845, z: 521.3613}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
+  - _position: {x: 596.54626, y: -0.1000061, z: 410.32275}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
+  _bossSpawnPositions:
+  - _position: {x: 628.03406, y: -0.099998474, z: 687.5182}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
+  - _position: {x: 448.7721, y: -0.10000229, z: 480.89456}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
+  _enemySpawnPointData:
+  - _spawnDataList:
+    - _spawningDataType: 5
+      _spawningEnemyData: {fileID: 11400000, guid: 97e368d8961de3141850c685d7311516,
+        type: 2}
+      SpawningChance: 0.5
+    - _spawningDataType: 4
+      _spawningEnemyData: {fileID: 11400000, guid: 3ec76f01e6e4a2c4880fe9d668b9d605,
+        type: 2}
+      SpawningChance: 0.5
+    _spawnPosition:
+      _position: {x: 381.71057, y: -0.099998474, z: 817.34344}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 23
+    _numberToSpawn: 1
+  - _spawnDataList:
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 43398a2c55450574da94b5cc7b25fbca,
+        type: 2}
+      SpawningChance: 0.09090909
+    - _spawningDataType: 4
+      _spawningEnemyData: {fileID: 11400000, guid: 3ec76f01e6e4a2c4880fe9d668b9d605,
+        type: 2}
+      SpawningChance: 0.45454547
+    - _spawningDataType: 5
+      _spawningEnemyData: {fileID: 11400000, guid: 97e368d8961de3141850c685d7311516,
+        type: 2}
+      SpawningChance: 0.45454547
+    _spawnPosition:
+      _position: {x: 393.53232, y: -0.1000061, z: 668.33167}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 10
+    _numberToSpawn: 3
+  _interactiveObjectSpawnData:
+  - _objectPosition:
+      _position: {x: 362.4606, y: -0.099990845, z: 599.60693}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _type: 2
+  - _objectPosition:
+      _position: {x: 640.5139, y: -0.099990845, z: 466.08865}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _type: 4
+  - _objectPosition:
+      _position: {x: 523.30457, y: 0.89, z: 433.3106}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _type: 1
+  _doRandomizePlayerPosition: 1
+  _doRandomizeBossPosition: 1
