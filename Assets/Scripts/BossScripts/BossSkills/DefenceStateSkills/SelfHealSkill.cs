@@ -12,15 +12,15 @@ namespace BeastHunter
         private TimeRemaining _delayCall;
         private GameObject _guardPrefab = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 
-        public SelfHealSkill((int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        public SelfHealSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
             : base(skillInfo, skillDictionary, stateMachine)
         {
         }
 
-        public SelfHealSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
-            : base(Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
-        {
-        }
+        //public SelfHealSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        //    : base(Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
+        //{
+        //}
 
         public override void UseSkill(int id)
         {

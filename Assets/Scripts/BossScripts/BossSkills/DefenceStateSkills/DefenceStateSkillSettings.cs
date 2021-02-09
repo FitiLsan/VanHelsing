@@ -11,6 +11,9 @@ namespace BeastHunter
 
         [Header("[Default Defence]")]
 
+
+        [Tooltip("Enable")]
+        [SerializeField] private bool _defaultDefenceSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _defaultDefenceSkillId;
         [Tooltip("Skill Range Min")]
@@ -27,6 +30,9 @@ namespace BeastHunter
 
         [Header("[Hard Bark]")]
 
+
+        [Tooltip("Enable")]
+        [SerializeField] private bool _hardBarkSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _hardBarkSkillId;
         [Tooltip("Skill Range Min")]
@@ -43,6 +49,8 @@ namespace BeastHunter
 
         [Header("[Canibal Healing]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _canibalHealingSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _canibalHealingSkillId;
         [Tooltip("Skill Range Min")]
@@ -59,6 +67,8 @@ namespace BeastHunter
 
         [Header("[Call Of Forest]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _callOfForestSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _callOfForestSkillId;
         [Tooltip("Skill Range Min")]
@@ -79,24 +89,28 @@ namespace BeastHunter
 
         #region Properties
 
+        public bool DefaultDefenceSkillEnable => _defaultDefenceSkillEnable;
         public int DefaultDefenceSkillId => _defaultDefenceSkillId;
         public float DefaultDefenceSkillRangeMin => _defaultDefenceSkillRangeMin;
         public float DefaultDefenceSkillRangeMax => _defaultDefenceSkillRangeMax;
         public float DefaultDefenceSkillCooldown => _defaultDefenceSkillCooldown;
         public bool DefaultDefenceSkillReady => _defaultDefenceSkillReady;
 
+        public bool HardBarkSkillEnable => _hardBarkSkillEnable;
         public int HardBarkSkillId => _hardBarkSkillId;
         public float HardBarkSkillRangeMin => _hardBarkSkillRangeMin;
         public float HardBarkSkillRangeMax => _hardBarkSkillRangeMax;
         public float HardBarkSkillCooldown => _hardBarkSkillCooldown;
         public bool HardBarkSkillReady => _hardBarkSkillReady;
 
+        public bool CanibalHealingSkillEnable => _canibalHealingSkillEnable;
         public int CanibalHealingSkillId => _canibalHealingSkillId;
         public float CanibalHealingSkillRangeMin => _canibalHealingSkillRangeMin;
         public float CanibalHealingSkillRangeMax => _canibalHealingSkillRangeMax;
         public float CanibalHealingSkillCooldown => _canibalHealingSkillCooldown;
         public bool CanibalHealingSkillReady => _canibalHealingSkillReady;
 
+        public bool CallOfForestSkillEnable => _callOfForestSkillEnable;
         public int CallOfForestSkillId => _callOfForestSkillId;
         public float CallOfForestSkillRangeMin => _callOfForestSkillRangeMin;
         public float CallOfForestSkillRangeMax => _callOfForestSkillRangeMax;
@@ -108,27 +122,27 @@ namespace BeastHunter
 
         #region Methods
 
-        public (int, float, float, float, bool, bool) GetDefaultDefencelSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetDefaultDefencelSkillInfo()
         {
-            var tuple = (DefaultDefenceSkillId, DefaultDefenceSkillRangeMin, DefaultDefenceSkillRangeMax, DefaultDefenceSkillCooldown, DefaultDefenceSkillReady , false);
+            var tuple = (DefaultDefenceSkillEnable, DefaultDefenceSkillId, DefaultDefenceSkillRangeMin, DefaultDefenceSkillRangeMax, DefaultDefenceSkillCooldown, DefaultDefenceSkillReady , false);
             return tuple;
         }
 
-        public (int, float, float, float, bool, bool) GetHardBarkSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetHardBarkSkillInfo()
         {
-            var tuple = ( HardBarkSkillId,  HardBarkSkillRangeMin,  HardBarkSkillRangeMax,  HardBarkSkillCooldown,  HardBarkSkillReady, false);
+            var tuple = (HardBarkSkillEnable, HardBarkSkillId,  HardBarkSkillRangeMin,  HardBarkSkillRangeMax,  HardBarkSkillCooldown,  HardBarkSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool, bool) GetCanibalHealingSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetCanibalHealingSkillInfo()
         {
-            var tuple = (CanibalHealingSkillId, CanibalHealingSkillRangeMin, CanibalHealingSkillRangeMax, CanibalHealingSkillCooldown, CanibalHealingSkillReady, false);
+            var tuple = (CanibalHealingSkillEnable, CanibalHealingSkillId, CanibalHealingSkillRangeMin, CanibalHealingSkillRangeMax, CanibalHealingSkillCooldown, CanibalHealingSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool, bool) GetCallOfForestSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetCallOfForestSkillInfo()
         {
-            var tuple = (CallOfForestSkillId, CallOfForestSkillRangeMin, CallOfForestSkillRangeMax, CallOfForestSkillCooldown, CallOfForestSkillReady, false);
+            var tuple = (CallOfForestSkillEnable, CallOfForestSkillId, CallOfForestSkillRangeMin, CallOfForestSkillRangeMax, CallOfForestSkillCooldown, CallOfForestSkillReady, false);
             return tuple;
         }
 

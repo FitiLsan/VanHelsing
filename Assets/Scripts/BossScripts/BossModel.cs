@@ -347,6 +347,14 @@ namespace BeastHunter
                 return;
             }
 
+            if (CurrentStats.BaseStats.CurrentHealthPart <= 0.1f)
+            {
+                var id = 3;
+                BossStateMachine.BossSkills.ForceUseSkill(BossStateMachine.BossSkills.NonStateSkillDictionary, id);
+                //  BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
+                return;
+            }
+
             if (CurrentStats.BaseStats.CurrentHealthPart <= 0.5f)
             {
                 if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
@@ -363,7 +371,7 @@ namespace BeastHunter
 
             if (CurrentStats.BaseStats.CurrentHealthPart <= 0.2f)
             {
-                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
+              //  BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
                 return;
             }
         }
