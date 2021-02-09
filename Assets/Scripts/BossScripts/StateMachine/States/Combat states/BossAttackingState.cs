@@ -125,7 +125,6 @@ namespace BeastHunter
                 _skillId = DEFAULT_ATTACK_ID;
             }
 
-            // _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId].UseSkill(_skillId);
             CurrentSkill = _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId];
             CurrentSkill.UseSkill(_skillId);
             isAnySkillUsed = true;

@@ -351,7 +351,12 @@ namespace BeastHunter
             {
                 if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
                 {
-                    BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                    // BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                    var id = 2;
+                    if (BossStateMachine.BossSkills.NonStateSkillDictionary[id].IsSkillReady)
+                    {
+                        BossStateMachine.BossSkills.ForceUseSkill(BossStateMachine.BossSkills.NonStateSkillDictionary, id);
+                    }
                     return;
                 }
             }
@@ -367,11 +372,10 @@ namespace BeastHunter
         {
             if (damage >= CurrentStats.BaseStats.MaximalHealthPoints * 0.2f)
             {
-                //currentState.15%Damage();
                 Debug.Log("Hit 18% hp");
                 if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
                 {
-                    BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                   // BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
                 }
             }
             else if (!BossStateMachine.CurrentState.IsBattleState)

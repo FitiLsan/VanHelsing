@@ -131,23 +131,17 @@ MonoBehaviour:
     _defaultDefenceSkillRangeMax: -1
     _defaultDefenceSkillCooldown: 5
     _defaultDefenceSkillReady: 1
-    _selfHealSkillId: 1
-    _selfHealSkillRangeMin: -1
-    _selfHealSkillRangeMax: -1
-    _selfHealSkillCooldown: 120
-    _selfHealSkillReady: 1
-    _selfHealSkillCanInterrupt: 1
-    _hardBarkSkillId: 2
+    _hardBarkSkillId: 1
     _hardBarkSkillRangeMin: -1
     _hardBarkSkillRangeMax: -1
     _hardBarkSkillCooldown: 20
     _hardBarkSkillReady: 1
-    _canibalHealingSkillId: 3
+    _canibalHealingSkillId: 2
     _canibalHealingSkillRangeMin: 0
     _canibalHealingSkillRangeMax: 4
     _canibalHealingSkillCooldown: 10
     _canibalHealingSkillReady: 1
-    _callOfForestSkillId: 4
+    _callOfForestSkillId: 3
     _callOfForestSkillRangeMin: -1
     _callOfForestSkillRangeMax: -1
     _callOfForestSkillCooldown: 30
@@ -190,3 +184,9 @@ MonoBehaviour:
     _throwSkillRangeMax: 0
     _throwSkillCooldown: 10
     _throwSkillReady: 1
+    _selfHealSkillId: 2
+    _selfHealSkillRangeMin: -1
+    _selfHealSkillRangeMax: -1
+    _selfHealSkillCooldown: 120
+    _selfHealSkillReady: 0
+    _selfHealSkillCanInterrupt: 1

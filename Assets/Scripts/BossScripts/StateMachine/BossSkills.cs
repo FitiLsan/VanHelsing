@@ -41,7 +41,6 @@ namespace BeastHunter
         public BossBaseSkill FingerAttackSkill { get; private set; }
         //defence
         public BossBaseSkill DefaultDefenceSkill { get; private set; }
-        public BossBaseSkill SelfHealSkill { get; private set; }
         public BossBaseSkill HardBarkSkill { get; private set; }
         public BossBaseSkill CanibalHealingSkill { get; private set; }
         public BossBaseSkill CallOfForestSkill { get; private set; }
@@ -56,6 +55,7 @@ namespace BeastHunter
         //non
         public BossBaseSkill TestSkill { get; private set; }
         public BossBaseSkill ThrowAttackSkill { get; private set; }
+        public BossBaseSkill SelfHealSkill { get; private set; }
 
 
         public BossSkills(BossStateMachine stateMachine)
@@ -105,24 +105,22 @@ namespace BeastHunter
             AttackStateSkillDictionary.Add(StompSplashSkill.SkillId, StompSplashSkill);
             AttackStateSkillDictionary.Add(RageOfForestSkill.SkillId, RageOfForestSkill);
             AttackStateSkillDictionary.Add(PoisonSporesSkill.SkillId, PoisonSporesSkill);
-          //  AttackStateSkillDictionary.Add(CatchAttackSkill.SkillId, CatchAttackSkill);
-          //  AttackStateSkillDictionary.Add(FingerAttackSkill.SkillId, FingerAttackSkill);
+            AttackStateSkillDictionary.Add(CatchAttackSkill.SkillId, CatchAttackSkill);
+            AttackStateSkillDictionary.Add(FingerAttackSkill.SkillId, FingerAttackSkill);
 
             #endregion
 
             #region DefenceState
 
             DefaultDefenceSkill = new DefaultDefenceSkill(DefenceStateSkillsSettings.GetDefaultDefencelSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
-            SelfHealSkill = new SelfHealSkill(DefenceStateSkillsSettings.GetSelfHealSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             HardBarkSkill = new HardBark(DefenceStateSkillsSettings.GetHardBarkSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             CallOfForestSkill = new CallOfForest(DefenceStateSkillsSettings.GetCallOfForestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             CanibalHealingSkill = new CanibalHealingSkill (DefenceStateSkillsSettings.GetCanibalHealingSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
 
             DefenceStateSkillDictionary.Add(DefaultDefenceSkill.SkillId, DefaultDefenceSkill);
-            DefenceStateSkillDictionary.Add(SelfHealSkill.SkillId, SelfHealSkill);
-          //  DefenceStateSkillDictionary.Add(HardBarkSkill.SkillId, HardBarkSkill);
-         //   DefenceStateSkillDictionary.Add(CallOfForestSkill.SkillId, CallOfForestSkill);
-         //   DefenceStateSkillDictionary.Add(CanibalHealingSkill.SkillId, CanibalHealingSkill);
+            DefenceStateSkillDictionary.Add(HardBarkSkill.SkillId, HardBarkSkill);
+            DefenceStateSkillDictionary.Add(CallOfForestSkill.SkillId, CallOfForestSkill);
+            DefenceStateSkillDictionary.Add(CanibalHealingSkill.SkillId, CanibalHealingSkill);
 
             #endregion
 
@@ -138,7 +136,7 @@ namespace BeastHunter
             #region  RetreatingState
 
             FakeTreeSkill = new FakeTreeAttackSkill(RetreatingStateSkillsSettings.GetFakeTreeSkillInfo(), RetreatingStateSkillDictionary, _stateMachine);
-           // RetreatingStateSkillDictionary.Add(FakeTreeSkill.SkillId, FakeTreeSkill);
+            RetreatingStateSkillDictionary.Add(FakeTreeSkill.SkillId, FakeTreeSkill);
 
             #endregion
 
@@ -153,16 +151,20 @@ namespace BeastHunter
             #region  DeadStateSkills
 
             ResurrectionSkill = new ResurrectionAttackSkill(DeadStateSkillsSettings.GetResurrectionSkillInfo(), DeadStateSkillDictionary, _stateMachine);
-          //  DeadStateSkillDictionary.Add(ResurrectionSkill.SkillId, ResurrectionSkill);
+            DeadStateSkillDictionary.Add(ResurrectionSkill.SkillId, ResurrectionSkill);
             #endregion
 
 
             #region  NonStateSkills
 
             TestSkill = new TestAttackSkill(NonStateSkillsSettings.GetTestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
+            SelfHealSkill = new SelfHealSkill(NonStateSkillsSettings.GetSelfHealSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             ThrowAttackSkill = new ThrowAttackSkill(NonStateSkillsSettings.GetThrowSkillInfo(), AttackStateSkillDictionary, _stateMachine);
-         //   NonStateSkillDictionary.Add(ThrowAttackSkill.SkillId, ThrowAttackSkill);
-         //   NonStateSkillDictionary.Add(TestSkill.SkillId, TestSkill);
+
+            NonStateSkillDictionary.Add(TestSkill.SkillId, TestSkill);           
+            NonStateSkillDictionary.Add(ThrowAttackSkill.SkillId, ThrowAttackSkill);
+            NonStateSkillDictionary.Add(SelfHealSkill.SkillId, SelfHealSkill);
+
 
             #endregion
 
