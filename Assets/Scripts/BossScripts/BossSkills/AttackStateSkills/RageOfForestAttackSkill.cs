@@ -19,6 +19,7 @@ namespace BeastHunter
 
         public override void UseSkill(int id)
         {
+            IsSkillUsing = true;
 
             Debug.Log("RAGEAttackSkill");
             _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
@@ -35,6 +36,7 @@ namespace BeastHunter
 
         public override void StopSkill()
         {
+            IsSkillUsing = false;
         }
 
     }

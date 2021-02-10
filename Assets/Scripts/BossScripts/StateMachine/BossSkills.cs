@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -109,32 +110,21 @@ namespace BeastHunter
             AddSkillToDictionary(CatchAttackSkill, AttackStateSkillDictionary);
             AddSkillToDictionary(FingerAttackSkill, AttackStateSkillDictionary);
 
-            //AttackStateSkillDictionary.Add(DefaultAttackSkill.SkillId, DefaultAttackSkill);
-            //AttackStateSkillDictionary.Add(HorizontalAttackSkill.SkillId, HorizontalAttackSkill);
-            //AttackStateSkillDictionary.Add(StompSplashSkill.SkillId, StompSplashSkill);
-            //AttackStateSkillDictionary.Add(RageOfForestSkill.SkillId, RageOfForestSkill);
-            //AttackStateSkillDictionary.Add(PoisonSporesSkill.SkillId, PoisonSporesSkill);
-            //AttackStateSkillDictionary.Add(CatchAttackSkill.SkillId, CatchAttackSkill);
-            //AttackStateSkillDictionary.Add(FingerAttackSkill.SkillId, FingerAttackSkill);
-
             #endregion
 
             #region DefenceState
 
             DefaultDefenceSkill = new DefaultDefenceSkill(DefenceStateSkillsSettings.GetDefaultDefencelSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
+            SelfHealSkill = new SelfHealSkill(DefenceStateSkillsSettings.GetSelfHealSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             HardBarkSkill = new HardBark(DefenceStateSkillsSettings.GetHardBarkSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             CallOfForestSkill = new CallOfForest(DefenceStateSkillsSettings.GetCallOfForestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             CanibalHealingSkill = new CanibalHealingSkill (DefenceStateSkillsSettings.GetCanibalHealingSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
 
             AddSkillToDictionary(DefaultDefenceSkill, DefenceStateSkillDictionary);
+            AddSkillToDictionary(SelfHealSkill, DefenceStateSkillDictionary);
             AddSkillToDictionary(HardBarkSkill, DefenceStateSkillDictionary);
             AddSkillToDictionary(CallOfForestSkill, DefenceStateSkillDictionary);
             AddSkillToDictionary(CanibalHealingSkill, DefenceStateSkillDictionary);
-
-            //DefenceStateSkillDictionary.Add(DefaultDefenceSkill.SkillId, DefaultDefenceSkill);
-            //DefenceStateSkillDictionary.Add(HardBarkSkill.SkillId, HardBarkSkill);
-            //DefenceStateSkillDictionary.Add(CallOfForestSkill.SkillId, CallOfForestSkill);
-            //DefenceStateSkillDictionary.Add(CanibalHealingSkill.SkillId, CanibalHealingSkill);
 
             #endregion
 
@@ -144,8 +134,6 @@ namespace BeastHunter
             VineFishingSkill = new VineFishingAttackSkill(ChasingStateSkillsSettings.GetVineFishingSkillInfo(), ChasingStateSkillDictionary, _stateMachine);
             AddSkillToDictionary(VineFishingSkill, ChasingStateSkillDictionary);
 
-           // ChasingStateSkillDictionary.Add(VineFishingSkill.SkillId, VineFishingSkill);
-
             #endregion
 
 
@@ -153,7 +141,6 @@ namespace BeastHunter
 
             FakeTreeSkill = new FakeTreeAttackSkill(RetreatingStateSkillsSettings.GetFakeTreeSkillInfo(), RetreatingStateSkillDictionary, _stateMachine);
             AddSkillToDictionary(FakeTreeSkill, RetreatingStateSkillDictionary);
-           // RetreatingStateSkillDictionary.Add(FakeTreeSkill.SkillId, FakeTreeSkill);
 
             #endregion
 
@@ -162,7 +149,6 @@ namespace BeastHunter
 
             BushTriggerSkill = new BushTriggerAttackSkill(SearchingStateSkillsSettings.GetBushTriggerSkillInfo(), SearchingStateSkillDictionary, _stateMachine);
             AddSkillToDictionary(BushTriggerSkill, SearchingStateSkillDictionary);
-            //SearchingStateSkillDictionary.Add(BushTriggerSkill.SkillId, BushTriggerSkill);
 
             #endregion
 
@@ -170,7 +156,6 @@ namespace BeastHunter
 
             ResurrectionSkill = new ResurrectionAttackSkill(DeadStateSkillsSettings.GetResurrectionSkillInfo(), DeadStateSkillDictionary, _stateMachine);
             AddSkillToDictionary(ResurrectionSkill, DeadStateSkillDictionary);
-            //DeadStateSkillDictionary.Add(ResurrectionSkill.SkillId, ResurrectionSkill);
 
             #endregion
 
@@ -178,31 +163,34 @@ namespace BeastHunter
             #region  NonStateSkills
 
             TestSkill = new TestAttackSkill(NonStateSkillsSettings.GetTestSkillInfo(), NonStateSkillDictionary, _stateMachine);
-            SelfHealSkill = new SelfHealSkill(NonStateSkillsSettings.GetSelfHealSkillInfo(), NonStateSkillDictionary, _stateMachine);
             ThrowAttackSkill = new ThrowAttackSkill(NonStateSkillsSettings.GetThrowSkillInfo(), NonStateSkillDictionary, _stateMachine);
             RageOfForestSkill = new RageOfForestAttackSkill(NonStateSkillsSettings.GetRageOfForestSkillInfo(), NonStateSkillDictionary, _stateMachine);
 
             AddSkillToDictionary(TestSkill, NonStateSkillDictionary);
-            AddSkillToDictionary(SelfHealSkill, NonStateSkillDictionary);
             AddSkillToDictionary(ThrowAttackSkill, NonStateSkillDictionary);
             AddSkillToDictionary(RageOfForestSkill, NonStateSkillDictionary);
-
-            //NonStateSkillDictionary.Add(TestSkill.SkillId, TestSkill);           
-            //NonStateSkillDictionary.Add(ThrowAttackSkill.SkillId, ThrowAttackSkill);
-            //NonStateSkillDictionary.Add(SelfHealSkill.SkillId, SelfHealSkill);
-
 
             #endregion
 
 
         }
 
-        public void ForceUseSkill(Dictionary<int,BossBaseSkill> dic, int skillId)
+        public void UseSkill(Dictionary<int, BossBaseSkill> dic, int skillId)
         {
-
-            if (dic[skillId].IsEnable)
+            if(dic.ContainsKey(skillId) && dic[skillId].IsSkillReady)
             {
                 dic[skillId].UseSkill(skillId);
+            }
+        }
+        public void ForceUseSkill(Dictionary<int,BossBaseSkill> dic, int skillId)
+        {
+            if (dic.ContainsKey(skillId))
+            {
+                if (!dic[skillId].IsSkillUsing)
+                {
+                    dic[skillId].UseSkill(skillId);
+                    DOVirtual.DelayedCall(4.5f, () => dic[skillId].IsSkillUsing = false);
+                }
             }
             else
             {

@@ -28,6 +28,26 @@ namespace BeastHunter
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _defaultDefenceSkillReady;
 
+        [Header("[Self Heal]")]
+
+        [Tooltip("Enable")]
+        [SerializeField] private bool _selfHealSkillEnable;
+        [Tooltip("Skill ID")]
+        [SerializeField] private int _selfHealSkillId;
+        [Tooltip("Skill Range Min")]
+        [Range(-1.0f, 30.0f)]
+        [SerializeField] private float _selfHealSkillRangeMin;
+        [Tooltip("Skill Range Max")]
+        [Range(-1.0f, 30.0f)]
+        [SerializeField] private float _selfHealSkillRangeMax;
+        [Tooltip("Skill Cooldown")]
+        [Range(0.0f, 200.0f)]
+        [SerializeField] private float _selfHealSkillCooldown;
+        [Tooltip("Skill Ready")]
+        [SerializeField] private bool _selfHealSkillReady;
+        [Tooltip("Skill can Interrupt")]
+        [SerializeField] private bool _selfHealSkillCanInterrupt;
+
         [Header("[Hard Bark]")]
 
 
@@ -96,6 +116,14 @@ namespace BeastHunter
         public float DefaultDefenceSkillCooldown => _defaultDefenceSkillCooldown;
         public bool DefaultDefenceSkillReady => _defaultDefenceSkillReady;
 
+        public bool SelfHealSkillEnable => _selfHealSkillEnable;
+        public int SelfHealSkillId => _selfHealSkillId;
+        public float SelfHealSkillRangeMin => _selfHealSkillRangeMin;
+        public float SelfHealSkillRangeMax => _selfHealSkillRangeMax;
+        public float SelfHealSkillCooldown => _selfHealSkillCooldown;
+        public bool SelfHealSkillReady => _selfHealSkillReady;
+        public bool SelfHealSkillCanInterrupt => _selfHealSkillCanInterrupt;
+
         public bool HardBarkSkillEnable => _hardBarkSkillEnable;
         public int HardBarkSkillId => _hardBarkSkillId;
         public float HardBarkSkillRangeMin => _hardBarkSkillRangeMin;
@@ -125,6 +153,12 @@ namespace BeastHunter
         public (bool, int, float, float, float, bool, bool) GetDefaultDefencelSkillInfo()
         {
             var tuple = (DefaultDefenceSkillEnable, DefaultDefenceSkillId, DefaultDefenceSkillRangeMin, DefaultDefenceSkillRangeMax, DefaultDefenceSkillCooldown, DefaultDefenceSkillReady , false);
+            return tuple;
+        }
+
+        public (bool, int, float, float, float, bool, bool) GetSelfHealSkillInfo()
+        {
+            var tuple = (SelfHealSkillEnable, SelfHealSkillId, SelfHealSkillRangeMin, SelfHealSkillRangeMax, SelfHealSkillCooldown, SelfHealSkillReady, SelfHealSkillCanInterrupt);
             return tuple;
         }
 

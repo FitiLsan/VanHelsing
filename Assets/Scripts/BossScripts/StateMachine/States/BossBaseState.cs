@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace BeastHunter
 {
@@ -15,6 +16,7 @@ namespace BeastHunter
         protected BossData _bossData;
         protected BossModel _bossModel;
         protected BossMainState _mainState;
+        protected BossSkills _bossSkills;
 
         #endregion
 
@@ -41,6 +43,7 @@ namespace BeastHunter
             _bossData = _stateMachine._model.BossData;
             _bossModel = _stateMachine._model;
             _mainState = _stateMachine._mainState;
+            _bossSkills = _stateMachine.BossSkills;
         }
 
         #endregion
@@ -135,7 +138,33 @@ namespace BeastHunter
         {
             _stateMachine.CurrentState.isAnySkillUsed = false;
             _stateMachine.CurrentState.CurrentAttackTime = 0;
-            _stateMachine.CurrentState.CurrentSkill.StopSkill();
+            if (CurrentSkill != null)
+            {
+                _stateMachine.CurrentState.CurrentSkill.StopSkill();
+            }
+        }
+
+        protected virtual void StartCoolDownSkills(Dictionary<int, BossBaseSkill> dic)
+        {
+            foreach (var skill in dic)
+            {
+                dic[skill.Key].StartCooldown(skill.Key, dic[skill.Key].SkillCooldown);
+            }
+        }
+
+        protected virtual void ChooseReadySkills(Dictionary<int, BossBaseSkill> dic, Dictionary<int,int> readyDic, ref int count)
+        {
+            foreach (var skill in dic)
+            {
+                if (dic[skill.Key].IsSkillReady)
+                {
+                    if (CheckDistance(dic[skill.Key].SkillRangeMin, dic[skill.Key].SkillRangeMax))
+                    {
+                        readyDic.Add(count, skill.Key);
+                        count++;
+                    }
+                }
+            }
         }
 
         #endregion

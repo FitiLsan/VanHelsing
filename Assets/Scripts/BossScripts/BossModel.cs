@@ -172,7 +172,7 @@ namespace BeastHunter
                 BossBehavior = objectOnScene.AddComponent<BossBehavior>();
             }
 
-          //  BossBehavior.SetType(InteractableObjectType.Enemy);
+            BossBehavior.SetType(InteractableObjectType.Enemy);
          //   BossBehavior.Stats = BossStats.MainStats;
             BossStateMachine = new BossStateMachine(context, this);
 
@@ -217,7 +217,7 @@ namespace BeastHunter
             LeftHandCollider.enabled = false;
             LeftHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             LeftHandBehavior = leftHandFist.AddComponent<WeaponHitBoxBehavior>();
-          //  LeftHandBehavior.SetType(InteractableObjectType.HitBox);
+            LeftHandBehavior.SetType(InteractableObjectType.HitBox);
             LeftHandBehavior.IsInteractable = false;
 
             var rightFist = new GameObject("[RightFist]");
@@ -236,10 +236,10 @@ namespace BeastHunter
             rb.isKinematic = true;
             rb.mass = 30f;
             RightHandBehavior = rightHandFist.AddComponent<WeaponHitBoxBehavior>();
-        //    RightHandBehavior.SetType(InteractableObjectType.HitBox);
+            RightHandBehavior.SetType(InteractableObjectType.HitBox);
             RightHandBehavior.IsInteractable = false;
             RightFingerTrigger = BossTransform.Find(BossSettings.RightFingerPath).GetComponent<WeaponHitBoxBehavior>();
-          //  RightFingerTrigger.SetType(InteractableObjectType.HitBox);
+            RightFingerTrigger.SetType(InteractableObjectType.HitBox);
             RightFingerTrigger.IsInteractable = false;
 
             StompPufPrefab = BossSettings.StompPuf;
@@ -347,24 +347,19 @@ namespace BeastHunter
                 return;
             }
 
-            if (CurrentStats.BaseStats.CurrentHealthPart <= 0.1f)
-            {
-                var id = 3;
-                BossStateMachine.BossSkills.ForceUseSkill(BossStateMachine.BossSkills.NonStateSkillDictionary, id);
-                //  BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
-                return;
-            }
+            //if (CurrentStats.BaseStats.CurrentHealthPart <= 0.1f)
+            //{
+            //    var id = 3;
+            //    BossStateMachine.BossSkills.ForceUseSkill(BossStateMachine.BossSkills.NonStateSkillDictionary, id);
+            //    //  BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
+            //    return;
+            //}
 
             if (CurrentStats.BaseStats.CurrentHealthPart <= 0.5f)
             {
                 if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
                 {
-                    // BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
-                    var id = 2;
-                    if (BossStateMachine.BossSkills.NonStateSkillDictionary[id].IsSkillReady)
-                    {
-                        BossStateMachine.BossSkills.ForceUseSkill(BossStateMachine.BossSkills.NonStateSkillDictionary, id);
-                    }
+                    BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
                     return;
                 }
             }

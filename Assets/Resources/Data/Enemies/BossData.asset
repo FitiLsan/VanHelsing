@@ -83,7 +83,7 @@ MonoBehaviour:
     _rightHandHitBoxRadius: 1
     _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
   AttackStateSkills:
-    _defaultSkillEnable: 1
+    _defaultSkillEnable: 0
     _defaultSkillId: 0
     _defaultSkillRangeMin: 3
     _defaultSkillRangeMax: 5
@@ -94,14 +94,14 @@ MonoBehaviour:
     _horizontalSkillRangeMin: 3
     _horizontalSkillRangeMax: 5
     _horizontalSkillCooldown: 15
-    _horizontalSkillReady: 0
+    _horizontalSkillReady: 1
     _stompSplashSkillEnable: 1
     _stompSplashSkillId: 2
     _stompSplashSkillRangeMin: 0
     _stompSplashSkillRangeMax: 5
     _stompSplashSkillCooldown: 15
     _stompSplashSkillReady: 0
-    _poisonSporesSkillEnable: 1
+    _poisonSporesSkillEnable: 0
     _poisonSporesSkillId: 3
     _poisonSporesSkillRangeMin: 5
     _poisonSporesSkillRangeMax: 10
@@ -112,14 +112,14 @@ MonoBehaviour:
     _poisonSporesCircleSkillRangeMin: 5
     _poisonSporesCircleSkillRangeMax: 10
     _poisonSporesCircleSkillCooldown: 15
-    _poisonSporesCircleSkillReady: 0
-    _catchSkillEnable: 1
+    _poisonSporesCircleSkillReady: 1
+    _catchSkillEnable: 0
     _catchSkillId: 5
     _catchSkillRangeMin: 0
     _catchSkillRangeMax: 5
     _catchSkillCooldown: 22
     _catchSkillReady: 0
-    _fingerSkillEnable: 1
+    _fingerSkillEnable: 0
     _fingerSkillId: 6
     _fingerSkillRangeMin: 10
     _fingerSkillRangeMax: 20
@@ -132,20 +132,27 @@ MonoBehaviour:
     _defaultDefenceSkillRangeMax: -1
     _defaultDefenceSkillCooldown: 5
     _defaultDefenceSkillReady: 1
+    _selfHealSkillEnable: 1
+    _selfHealSkillId: 1
+    _selfHealSkillRangeMin: -1
+    _selfHealSkillRangeMax: -1
+    _selfHealSkillCooldown: 120
+    _selfHealSkillReady: 1
+    _selfHealSkillCanInterrupt: 1
     _hardBarkSkillEnable: 0
-    _hardBarkSkillId: 1
+    _hardBarkSkillId: 2
     _hardBarkSkillRangeMin: -1
     _hardBarkSkillRangeMax: -1
     _hardBarkSkillCooldown: 20
     _hardBarkSkillReady: 1
     _canibalHealingSkillEnable: 0
-    _canibalHealingSkillId: 2
+    _canibalHealingSkillId: 3
     _canibalHealingSkillRangeMin: 0
     _canibalHealingSkillRangeMax: 4
     _canibalHealingSkillCooldown: 10
     _canibalHealingSkillReady: 1
     _callOfForestSkillEnable: 0
-    _callOfForestSkillId: 3
+    _callOfForestSkillId: 4
     _callOfForestSkillRangeMin: -1
     _callOfForestSkillRangeMax: -1
     _callOfForestSkillCooldown: 30
@@ -194,15 +201,8 @@ MonoBehaviour:
     _throwSkillRangeMax: 0
     _throwSkillCooldown: 10
     _throwSkillReady: 1
-    _selfHealSkillEnable: 1
-    _selfHealSkillId: 2
-    _selfHealSkillRangeMin: -1
-    _selfHealSkillRangeMax: -1
-    _selfHealSkillCooldown: 120
-    _selfHealSkillReady: 1
-    _selfHealSkillCanInterrupt: 1
     _rageOfForestSkillEnable: 1
-    _rageOfForestSkillId: 3
+    _rageOfForestSkillId: 2
     _rageOfForestSkillRangeMin: -1
     _rageOfForestSkillRangeMax: 30
     _rageOfForestSkillCooldown: 30

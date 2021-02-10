@@ -8,7 +8,7 @@ namespace BeastHunter
     public class StompSplashAttackSkill : BossBaseSkill
     {
         private const float DELAY_HAND_TRIGGER = 0.2f;
-
+        private GameObject _target;
         public StompSplashAttackSkill(bool IsEnable, int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
             : base(IsEnable, Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
         {
@@ -37,15 +37,16 @@ namespace BeastHunter
             var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.LeftFoot.position, 20f, "Player");
             if (list.Count != 0)
             {
-                var target = list.Find(x => x.name == "Player");
-                var rb = target.GetComponent<Rigidbody>();
-                var pm = target.transform.parent.Find("PuppetMaster").GetComponent<PuppetMaster>();
+                _target = list.Find(x => x.name == "Player");
+                var rb = _target.GetComponent<Rigidbody>();
+                var pm = _target.transform.parent.Find("PuppetMaster").GetComponent<PuppetMaster>();
 
                 if (pm != null && rb != null)
                 {
                     pm.state = PuppetMaster.State.Frozen;
                     rb.AddExplosionForce(force, _bossModel.LeftFoot.transform.position, 15f, 1.5f, ForceMode.Impulse);
                     DelayCall(() => pm.state = PuppetMaster.State.Alive, 2f);
+                    Damage();
                 }
 
             }
@@ -62,6 +63,12 @@ namespace BeastHunter
         }
         public override void StopSkill()
         {
+        }
+        private void Damage()
+        {
+            var damage = new Damage();
+            damage.PhysicalDamage = Random.Range(15f, 30f);
+            Services.SharedInstance.AttackService.CountAndDealDamage(damage, _target.transform.root.gameObject.GetInstanceID());;
         }
     }
 }

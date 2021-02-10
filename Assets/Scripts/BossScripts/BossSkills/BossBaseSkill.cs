@@ -112,15 +112,22 @@ namespace BeastHunter
 
         public bool CanInterrupt => _canInterrupt;
 
+        public bool IsSkillUsing { get; set; }
         #endregion
 
-        public abstract void UseSkill(int id);
+        public virtual void UseSkill(int id)
+        {
+            IsSkillUsing = true;
+        }
 
-        public abstract void StopSkill();
+        public virtual void StopSkill()
+        {
+            IsSkillUsing = false;
+        }
 
         public virtual void StartCooldown(int skillId, float coolDownTime)
         {
-            if (!_skillDictionary[skillId].IsCooldownStart & !_skillDictionary[skillId].IsSkillReady)
+            if (!_skillDictionary[skillId].IsCooldownStart && !_skillDictionary[skillId].IsSkillReady)
             {
                 TimeRemaining currentSkill = new TimeRemaining(() => SetReadySkill(skillId), coolDownTime);
                 currentSkill.AddTimeRemaining(coolDownTime);
@@ -136,8 +143,8 @@ namespace BeastHunter
 
         protected void TurnOnHitBoxTrigger(WeaponHitBoxBehavior hitBox, float currentAttackTime, float delayTime)
         {
-           // TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.IsInteractable = true, currentAttackTime * delayTime);
-           // enableHitBox.AddTimeRemaining(currentAttackTime * delayTime);
+            TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.IsInteractable = true, currentAttackTime * delayTime);
+            enableHitBox.AddTimeRemaining(currentAttackTime * delayTime);
         }
 
         protected void TurnOnHitBoxCollider(Collider hitBox, float currentAttackTime, float delayTime, bool isOn = true)

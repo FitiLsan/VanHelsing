@@ -20,7 +20,7 @@ namespace BeastHunter
             transform.position += Vector3.down;
             var num = Random.Range(0, sporeList.Count);
             sporeList[num].SetActive(true);
-            transform.DOMoveY(0.6f, 1);
+            transform.DOLocalMoveY(transform.position.y + 0.9f, 1);
         }
 
         private void Update()
@@ -39,7 +39,7 @@ namespace BeastHunter
                 if (!isPuf)
                 {
                     isPuf = true;
-                    transform.DOMoveY(-1f, 5);
+                    transform.DOLocalMoveY(transform.position.y-1f, 5);
                 }
             }
         }

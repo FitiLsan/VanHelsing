@@ -78,7 +78,7 @@ namespace BeastHunter
             if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
                 SpeedCheck();
-                // HealthCheck();
+                HealthCheck();
                 CheckDirection();
                 HungerCheck();
                 GetTargetCurrentPosition();
@@ -126,7 +126,18 @@ namespace BeastHunter
 
         private void HealthCheck()
         {
-            Debug.Log($"Health{_bossModel.CurrentStats.BaseStats.CurrentHealthPoints}");
+           // Debug.Log($"Health{_bossModel.CurrentStats.BaseStats.CurrentHealthPoints}");
+
+            if ( _bossModel.CurrentStats.BaseStats.CurrentHealthPart <= 0.9f)
+            {
+                if (!isAnySkillUsed)
+                {
+                    var id = 2;
+                    CurrentSkill = _stateMachine.BossSkills.NonStateSkillDictionary[id];
+                    _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.NonStateSkillDictionary, id);
+                    return;
+                }
+            }
         }
 
         private void HitCounter()
