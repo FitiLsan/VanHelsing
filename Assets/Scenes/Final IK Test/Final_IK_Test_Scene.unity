@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3698,6 +3698,7 @@ GameObject:
   - component: {fileID: 1025009591}
   - component: {fileID: 1025009590}
   - component: {fileID: 1025009593}
+  - component: {fileID: 1025009594}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3786,6 +3787,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_MaxRayIntersections: 0
+--- !u!114 &1025009594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025009589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8726fc726d10f7e40bc3249282562cb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1026028247
 GameObject:
   m_ObjectHideFlags: 0
@@ -7540,13 +7553,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 919132147557655571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2510a41471c29304a8b847b15de9f1a4, type: 3}
+  m_Script: {fileID: 11500000, guid: ddf862e4cfe6f7b40a8b325cdd4fb487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CatchPoint: {fileID: 2109581852}
+  CatchPoint: {fileID: 0}
   xOffset: 0
-  zOffset: 3
-  time: 1.1
+  zOffset: 0
+  time: 0
 --- !u!135 &919132147557655573
 SphereCollider:
   m_ObjectHideFlags: 0

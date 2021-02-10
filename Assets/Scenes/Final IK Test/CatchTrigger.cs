@@ -3,15 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CatchTrigger : MonoBehaviour
+namespace BeastHunter
 {
-    public static event Action<GameObject,GameObject> CatchedEvent;
-
-    private void OnTriggerEnter(Collider other)
+    public class CatchTrigger : MonoBehaviour
     {
-        if (other.tag.Equals("Player"))
+        public static event Action<GameObject, GameObject> CatchedEvent;
+
+        private void OnTriggerEnter(Collider other)
         {
-            CatchedEvent?.Invoke(gameObject, other.gameObject);
+            if (other.tag.Equals("Player"))
+            {
+                CatchedEvent?.Invoke(gameObject, other.gameObject);
+            }
         }
     }
 }
