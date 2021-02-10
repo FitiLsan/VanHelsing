@@ -19,6 +19,7 @@ namespace BeastHunter
         private bool _flag;
         private bool _canLookAt = true;
         private GameObject _catchedTarget;
+        private GameObject _catchedTargetRoot;
         private Sequence sequence;
         private bool _isGrowEnd;
 
@@ -49,17 +50,15 @@ namespace BeastHunter
             _animator = transform.root.GetComponent<Animator>();
             _root = transform.root;
             _fabrik = transform.root.GetComponent<FABRIK>();
-            _target = _fabrik.solver.target.gameObject;
+          //  _target = _fabrik.solver.target.gameObject;
             _weight = _fabrik.solver.GetIKPositionWeight();
         }
 
         private void Start()
         {
-            transform.position += new Vector3(0, -5.3f, 0);
-            transform.DOLocalMoveY(0, 3f);
-            sequence = DOTween.Sequence();
-            sequence.Append(transform.DOLocalMoveY(0, 4f)).AppendCallback(GrowingEnd);
-            
+           transform.localPosition += new Vector3(0, -5.3f, 0);
+           sequence = DOTween.Sequence();
+           sequence.Append(transform.DOLocalMoveY(transform.position.y + 5.3f, 4f)).AppendCallback(GrowingEnd);
         }
 
         private void OnDisable()
@@ -69,9 +68,11 @@ namespace BeastHunter
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.tag.Equals("Player"))
+            if (other.tag.Equals("Player") && !other.isTrigger)
             {
                 _fabrik.solver.target = other.transform;
+                _target = other.gameObject;
+               // Click();
             }
         }
 
@@ -81,16 +82,13 @@ namespace BeastHunter
             {
                 return;
             }
-            _target = _fabrik.solver.target.gameObject;
 
-            RotateToTarget();
-
-            
-
-            if (Input.GetKeyDown(KeyCode.Space))
+            if(Input.GetKeyDown(KeyCode.P))
             {
                 Click();
             }
+            RotateToTarget();
+
             if (_isCatched)
             {
                 if (!_flag)
@@ -128,9 +126,10 @@ namespace BeastHunter
         {
             var rb = _catchedTarget.GetComponent<Rigidbody>();
             rb.isKinematic = false;
+            _catchedTargetRoot.transform.parent = null;
             rb.AddForce(Vector3.forward * 30f, ForceMode.Impulse);
-            _canLookAt = true;
-            _catchedTarget.transform.parent = null;
+         //   _canLookAt = true;
+            
         }
 
         public void OnCatchedEvent(GameObject bone, GameObject catchedTarget)
@@ -139,12 +138,14 @@ namespace BeastHunter
             {
                 _isCatched = true;
                 _catchedTarget = catchedTarget;
+                _catchedTargetRoot = catchedTarget.transform.root.gameObject;
                 _catchedTarget.GetComponent<Rigidbody>().isKinematic = true;
-                catchedTarget.transform.SetParent(CatchPoint);
+                catchedTarget.transform.root.SetParent(CatchPoint);
                 var pos = new Vector3(CatchPoint.position.x, CatchPoint.position.y, CatchPoint.position.z - zOffset);
-                catchedTarget.transform.position = CatchPoint.position;
+                catchedTarget.transform.root.position = CatchPoint.position;
                 _canLookAt = false;
                 _animator.SetBool("isCatched", _isCatched);
+                //DOVirtual.DelayedCall(3f, Click);
             }
         }
 
@@ -152,8 +153,11 @@ namespace BeastHunter
         {
             if (_canLookAt)
             {
-                var target = new Vector3(_target.transform.position.x, 0, _target.transform.position.z);
-                _root.LookAt(target);               
+                if (_target != null)
+                {
+                    //var target = new Vector3(_target.transform.position.x, 0, _target.transform.position.z);
+                    _root.LookAt(_target.transform);
+                }
             }
         }
 

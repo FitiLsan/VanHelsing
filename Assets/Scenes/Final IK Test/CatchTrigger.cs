@@ -11,7 +11,7 @@ namespace BeastHunter
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.tag.Equals("Player"))
+            if (other.name.Equals("Player") && !other.isTrigger )
             {
                 CatchedEvent?.Invoke(gameObject, other.gameObject);
             }

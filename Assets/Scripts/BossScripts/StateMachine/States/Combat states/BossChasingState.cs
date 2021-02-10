@@ -112,7 +112,9 @@ namespace BeastHunter
             _forceAttackTime -= Time.deltaTime;
             if (_forceAttackTime <= 0)
             {
-                if (currentDistance >= _stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillRangeMax && _stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].IsSkillReady)
+                if (currentDistance >= _bossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillRangeMin &&
+                    currentDistance <= _bossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillRangeMax &&
+                    _bossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].IsSkillReady)
                 {
                     _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.ChasingStateSkillDictionary, VINE_FISHING_ID);
                     _stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].StartCooldown(_stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillId, _stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillCooldown);
