@@ -15,8 +15,8 @@ MonoBehaviour:
   _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b, type: 3}
   _startStats:
     BaseStats:
-      _maximalHealthPoints: 100
-      _currentHealthPoints: 100
+      _maximalHealthPoints: 500
+      _currentHealthPoints: 500
       HealthRegenPerSecond: 0
       _maximalStaminaPoints: 100
       _currentStaminaPoints: 100
@@ -112,14 +112,14 @@ MonoBehaviour:
     _poisonSporesCircleSkillRangeMin: 5
     _poisonSporesCircleSkillRangeMax: 10
     _poisonSporesCircleSkillCooldown: 15
-    _poisonSporesCircleSkillReady: 1
+    _poisonSporesCircleSkillReady: 0
     _catchSkillEnable: 0
     _catchSkillId: 5
     _catchSkillRangeMin: 0
     _catchSkillRangeMax: 5
     _catchSkillCooldown: 22
     _catchSkillReady: 0
-    _fingerSkillEnable: 0
+    _fingerSkillEnable: 1
     _fingerSkillId: 6
     _fingerSkillRangeMin: 10
     _fingerSkillRangeMax: 20
@@ -204,6 +204,6 @@ MonoBehaviour:
     _rageOfForestSkillEnable: 1
     _rageOfForestSkillId: 2
     _rageOfForestSkillRangeMin: -1
-    _rageOfForestSkillRangeMax: 30
-    _rageOfForestSkillCooldown: 30
-    _rageOfForestSkillReady: 0
+    _rageOfForestSkillRangeMax: 15
+    _rageOfForestSkillCooldown: 40
+    _rageOfForestSkillReady: 1

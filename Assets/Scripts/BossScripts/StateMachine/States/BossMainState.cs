@@ -128,7 +128,7 @@ namespace BeastHunter
         {
            // Debug.Log($"Health{_bossModel.CurrentStats.BaseStats.CurrentHealthPoints}");
 
-            if ( _bossModel.CurrentStats.BaseStats.CurrentHealthPart <= 0.9f)
+            if ( _bossModel.CurrentStats.BaseStats.CurrentHealthPart <= 0.1f)
             {
                 if (!isAnySkillUsed)
                 {

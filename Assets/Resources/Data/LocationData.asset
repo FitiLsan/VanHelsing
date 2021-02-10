@@ -16,8 +16,23 @@ MonoBehaviour:
   - _position: {x: 399.47845, y: 86.43269, z: 181.81989}
     _eulers: {x: -0, y: 0, z: 0}
     _scale: {x: 1, y: 1, z: 1}
+  - _position: {x: 468.22552, y: 90.15869, z: 163.23112}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
+  - _position: {x: 224.05362, y: 96.60294, z: 247.87457}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
+  - _position: {x: 59.45862, y: 92.698, z: 202.30402}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
   _bossSpawnPositions:
   - _position: {x: 411.45, y: 82.11716, z: 212.38}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
+  - _position: {x: 163.41544, y: 83.19522, z: 406.73404}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
+  - _position: {x: 181.88278, y: 80.865685, z: 182.80945}
     _eulers: {x: -0, y: 0, z: 0}
     _scale: {x: 1, y: 1, z: 1}
   _enemySpawnPointData:
@@ -62,6 +77,36 @@ MonoBehaviour:
       _scale: {x: 1, y: 1, z: 1}
     _spawnRadius: 15.04
     _numberToSpawn: 3
+  - _spawnDataList:
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 53b51f21db0219d4e9d95c5189d3c3d2,
+        type: 2}
+      SpawningChance: 1
+    _spawnPosition:
+      _position: {x: 73.297775, y: 94.330894, z: 191.11725}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 9.37
+    _numberToSpawn: 4
+  - _spawnDataList:
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 43398a2c55450574da94b5cc7b25fbca,
+        type: 2}
+      SpawningChance: 0.33333334
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 53b51f21db0219d4e9d95c5189d3c3d2,
+        type: 2}
+      SpawningChance: 0.33333334
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: a300dd215282c824e872493cb59c8da4,
+        type: 2}
+      SpawningChance: 0.33333334
+    _spawnPosition:
+      _position: {x: 165.77, y: 84.48, z: 242.5}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 43.81
+    _numberToSpawn: 20
   _interactiveObjectSpawnData:
   - _objectPosition:
       _position: {x: 378.5829, y: 85.00432, z: 165.5507}
@@ -83,5 +128,5 @@ MonoBehaviour:
       _eulers: {x: -0, y: 0, z: 0}
       _scale: {x: 1, y: 1, z: 1}
     _type: 2
-  _doRandomizePlayerPosition: 0
-  _doRandomizeBossPosition: 0
+  _doRandomizePlayerPosition: 1
+  _doRandomizeBossPosition: 1
