@@ -117,5 +117,39 @@ namespace Extensions
 
             return doesComponentExists;
         }
+
+        public static bool HasComponent<T>(this GameObject obj)
+        {
+            bool hasComponent = false;
+
+            if (typeof(T).IsSubclassOf(typeof(Component)))
+            {
+                T component = obj.GetComponent<T>();
+                hasComponent = component != null;
+            }
+            else
+            {
+                throw new System.Exception("Searching type os not a component");
+            }
+
+            return hasComponent;
+        }
+
+        public static bool HasComponentInChildren<T>(this GameObject obj)
+        {
+            bool hasComponent = false;
+
+            if (typeof(T).IsSubclassOf(typeof(Component)))
+            {
+                T component = obj.GetComponentInChildren<T>();
+                hasComponent = component != null;
+            }
+            else
+            {
+                throw new System.Exception("Searching type os not a component");
+            }
+
+            return hasComponent;
+        }
     }
 }
