@@ -10,6 +10,7 @@ namespace BeastHunter
     {
         #region Fields
 
+        private bool _isEnable;
         private int _skillId;
         private float _skillRangeMin;
         private float _skillRangeMax;
@@ -30,8 +31,9 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public BossBaseSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        public BossBaseSkill(bool isEnable, int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
         {
+            _isEnable = isEnable;
             _skillId = Id;
             _skillRangeMin = RangeMin;
             _skillRangeMax = RangeMax;
@@ -42,28 +44,30 @@ namespace BeastHunter
             _skillDictionary = skillDictionary;
         }
 
-        public BossBaseSkill ((int, float, float, float, bool, bool)skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        public BossBaseSkill ((bool, int, float, float, float, bool, bool)skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
         {
-            _skillId = skillInfo.Item1;
-            _skillRangeMin = skillInfo.Item2;
-            _skillRangeMax = skillInfo.Item3;
-            _skillCooldown = skillInfo.Item4;
-            _isSkillReady = skillInfo.Item5;
-            _canInterrupt = skillInfo.Item6;
+            _isEnable = skillInfo.Item1;
+            _skillId = skillInfo.Item2;
+            _skillRangeMin = skillInfo.Item3;
+            _skillRangeMax = skillInfo.Item4;
+            _skillCooldown = skillInfo.Item5;
+            _isSkillReady = skillInfo.Item6;
+            _canInterrupt = skillInfo.Item7;
             _stateMachine = stateMachine;
             _bossModel = stateMachine._model;
             _skillDictionary = skillDictionary;
         }
 
-        public BossBaseSkill((int, float, float, float, bool, bool, GameObject) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        public BossBaseSkill((bool, int, float, float, float, bool, bool, GameObject) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
         {
-            _skillId = skillInfo.Item1;
-            _skillRangeMin = skillInfo.Item2;
-            _skillRangeMax = skillInfo.Item3;
-            _skillCooldown = skillInfo.Item4;
-            _isSkillReady = skillInfo.Item5;
-            _canInterrupt = skillInfo.Item6;
-            _prefab = skillInfo.Item7;
+            _isEnable = skillInfo.Item1;
+            _skillId = skillInfo.Item2;
+            _skillRangeMin = skillInfo.Item3;
+            _skillRangeMax = skillInfo.Item4;
+            _skillCooldown = skillInfo.Item5;
+            _isSkillReady = skillInfo.Item6;
+            _canInterrupt = skillInfo.Item7;
+            _prefab = skillInfo.Item8;
             _stateMachine = stateMachine;
             _bossModel = stateMachine._model;
             _skillDictionary = skillDictionary;
@@ -73,6 +77,7 @@ namespace BeastHunter
 
         #region Properties
 
+        public bool IsEnable => _isEnable;
         public int SkillId => _skillId;
 
         public float SkillRangeMin => _skillRangeMin;
@@ -107,15 +112,22 @@ namespace BeastHunter
 
         public bool CanInterrupt => _canInterrupt;
 
+        public bool IsSkillUsing { get; set; }
         #endregion
 
-        public abstract void UseSkill(int id);
+        public virtual void UseSkill(int id)
+        {
+            IsSkillUsing = true;
+        }
 
-        public abstract void StopSkill();
+        public virtual void StopSkill()
+        {
+            IsSkillUsing = false;
+        }
 
         public virtual void StartCooldown(int skillId, float coolDownTime)
         {
-            if (!_skillDictionary[skillId].IsCooldownStart & !_skillDictionary[skillId].IsSkillReady)
+            if (!_skillDictionary[skillId].IsCooldownStart && !_skillDictionary[skillId].IsSkillReady)
             {
                 TimeRemaining currentSkill = new TimeRemaining(() => SetReadySkill(skillId), coolDownTime);
                 currentSkill.AddTimeRemaining(coolDownTime);
@@ -131,8 +143,8 @@ namespace BeastHunter
 
         protected void TurnOnHitBoxTrigger(WeaponHitBoxBehavior hitBox, float currentAttackTime, float delayTime)
         {
-           // TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.IsInteractable = true, currentAttackTime * delayTime);
-           // enableHitBox.AddTimeRemaining(currentAttackTime * delayTime);
+            TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.IsInteractable = true, currentAttackTime * delayTime);
+            enableHitBox.AddTimeRemaining(currentAttackTime * delayTime);
         }
 
         protected void TurnOnHitBoxCollider(Collider hitBox, float currentAttackTime, float delayTime, bool isOn = true)

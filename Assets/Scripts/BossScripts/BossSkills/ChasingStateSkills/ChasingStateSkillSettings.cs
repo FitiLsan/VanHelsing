@@ -12,6 +12,8 @@ namespace BeastHunter
 
         [Header("[Vine Fishing Attack]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _vineFishingSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _vineFishingSkillId;
         [Tooltip("Skill Range Min")]
@@ -32,7 +34,7 @@ namespace BeastHunter
 
 
         #region Properties
-
+        public bool VineFishingSkillEnable => _vineFishingSkillEnable;
         public int VineFishingSkillId => _vineFishingSkillId;
         public float VineFishingSkillRangeMin => _vineFishingSkillRangeMin;
         public float VineFishingSkillRangeMax => _vineFishingSkillRangeMax;
@@ -45,9 +47,9 @@ namespace BeastHunter
 
         #region Methods
 
-        public (int, float, float, float, bool, bool, GameObject) GetVineFishingSkillInfo()
+        public (bool, int, float, float, float, bool, bool, GameObject) GetVineFishingSkillInfo()
         {
-            var tuple = (VineFishingSkillId, VineFishingSkillRangeMin, VineFishingSkillRangeMax, VineFishingSkillCooldown, VineFishingSkillReady, false, VineFishingSkillPrefab);
+            var tuple = (VineFishingSkillEnable, VineFishingSkillId, VineFishingSkillRangeMin, VineFishingSkillRangeMax, VineFishingSkillCooldown, VineFishingSkillReady, false, VineFishingSkillPrefab);
             return tuple;
         }
         

@@ -12,6 +12,8 @@ namespace BeastHunter
 
         [Header("[Default Attack]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _defaultSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _defaultSkillId;
         [Tooltip("Skill Range Min")]
@@ -28,6 +30,8 @@ namespace BeastHunter
 
         [Header("[Horizontal Attack]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _horizontalSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _horizontalSkillId;
         [Tooltip("Skill Range Min")]
@@ -44,6 +48,8 @@ namespace BeastHunter
 
         [Header("[Stomp Splash]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _stompSplashSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _stompSplashSkillId;
         [Tooltip("Skill Range Min")]
@@ -58,24 +64,10 @@ namespace BeastHunter
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _stompSplashSkillReady;
 
-        [Header("[Rage Of Forest]")]
+        [Header("[Poison Spores Line]")]
 
-        [Tooltip("Skill ID")]
-        [SerializeField] private int _rageOfForestSkillId;
-        [Tooltip("Skill Range Min")]
-        [Range(-1.0f, 30.0f)]
-        [SerializeField] private float _rageOfForestSkillRangeMin;
-        [Range(-1.0f, 30.0f)]
-        [Tooltip("Skill Range Max")]
-        [SerializeField] private float _rageOfForestSkillRangeMax;
-        [Tooltip("Skill Cooldown")]
-        [Range(0.0f, 200.0f)]
-        [SerializeField] private float _rageOfForestSkillCooldown;
-        [Tooltip("Skill Ready")]
-        [SerializeField] private bool _rageOfForestSkillReady;
-
-        [Header("[Poison Spores]")]
-
+        [Tooltip("Enable")]
+        [SerializeField] private bool _poisonSporesSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _poisonSporesSkillId;
         [Tooltip("Skill Range Min")]
@@ -90,8 +82,28 @@ namespace BeastHunter
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _poisonSporesSkillReady;
 
+        [Header("[Poison Spores Circle]")]
+
+        [Tooltip("Enable")]
+        [SerializeField] private bool _poisonSporesCircleSkillEnable;
+        [Tooltip("Skill ID")]
+        [SerializeField] private int _poisonSporesCircleSkillId;
+        [Tooltip("Skill Range Min")]
+        [Range(-1.0f, 30.0f)]
+        [SerializeField] private float _poisonSporesCircleSkillRangeMin;
+        [Range(-1.0f, 30.0f)]
+        [Tooltip("Skill Range Max")]
+        [SerializeField] private float _poisonSporesCircleSkillRangeMax;
+        [Tooltip("Skill Cooldown")]
+        [Range(0.0f, 200.0f)]
+        [SerializeField] private float _poisonSporesCircleSkillCooldown;
+        [Tooltip("Skill Ready")]
+        [SerializeField] private bool _poisonSporesCircleSkillReady;
+
         [Header("[Catch Attack]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _catchSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _catchSkillId;
         [Tooltip("Skill Range Min")]
@@ -108,6 +120,8 @@ namespace BeastHunter
 
         [Header("[Finger Attack]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _fingerSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _fingerSkillId;
         [Tooltip("Skill Range Min")]
@@ -122,51 +136,55 @@ namespace BeastHunter
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _fingerSkillReady;
 
-
-
         #endregion
 
 
         #region Properties
 
+        public bool DefaultSkillEnable => _defaultSkillEnable;
         public int DefaultSkillId => _defaultSkillId;
         public float DefaultSkillRangeMin => _defaultSkillRangeMin;
         public float DefaultSkillRangeMax => _defaultSkillRangeMax;
         public float DefaultSkillCooldown => _defaultSkillCooldown;
         public bool DefaultSkillReady => _defaultSkillReady;
-        (int, float, float, float, bool) DefaultSkillTuple;
 
+        public bool HorizontalSkillEnable => _horizontalSkillEnable;
         public int HorizontalSkillId => _horizontalSkillId;
         public float HorizontalSkillRangeMin => _horizontalSkillRangeMin;
         public float HorizontalSkillRangeMax => _horizontalSkillRangeMax;
         public float HorizontalSkillCooldown => _horizontalSkillCooldown;
         public bool HorizontalSkillReady => _horizontalSkillReady;
 
+        public bool StompSplashSkillEnable => _stompSplashSkillEnable;
         public int StompSplashSkillId => _stompSplashSkillId;
         public float StompSplashSkillRangeMin => _stompSplashSkillRangeMin;
         public float StompSplashSkillRangeMax => _stompSplashSkillRangeMax;
         public float StompSplashSkillCooldown => _stompSplashSkillCooldown;
         public bool StompSplashSkillReady => _stompSplashSkillReady;
 
-        public int RageOfForestSkillId => _rageOfForestSkillId;
-        public float RageOfForestSkillRangeMin => _rageOfForestSkillRangeMin;
-        public float RageOfForestSkillRangeMax => _rageOfForestSkillRangeMax;
-        public float RageOfForestSkillCooldown => _rageOfForestSkillCooldown;
-        public bool RageOfForestSkillReady => _rageOfForestSkillReady;
-
+        public bool PoisonSporesSkillEnable => _poisonSporesSkillEnable;
         public int PoisonSporesSkillId => _poisonSporesSkillId;
         public float PoisonSporesSkillRangeMin => _poisonSporesSkillRangeMin;
         public float PoisonSporesSkillRangeMax => _poisonSporesSkillRangeMax;
         public float PoisonSporesSkillCooldown => _poisonSporesSkillCooldown;
         public bool PoisonSporesSkillReady => _poisonSporesSkillReady;
 
+        public bool PoisonSporesCircleSkillEnable => _poisonSporesCircleSkillEnable;
+        public int PoisonSporesCircleSkillId => _poisonSporesCircleSkillId;
+        public float PoisonSporesCircleSkillRangeMin => _poisonSporesCircleSkillRangeMin;
+        public float PoisonSporesCircleSkillRangeMax => _poisonSporesCircleSkillRangeMax;
+        public float PoisonSporesCircleSkillCooldown => _poisonSporesCircleSkillCooldown;
+        public bool PoisonSporesCircleSkillReady => _poisonSporesCircleSkillReady;
+
+
+        public bool CatchSkillSkillEnable => _catchSkillEnable;
         public int CatchSkillId => _catchSkillId;
         public float CatchSkillRangeMin => _catchSkillRangeMin;
         public float CatchSkillRangeMax => _catchSkillRangeMax;
         public float CatchSkillCooldown => _catchSkillCooldown;
         public bool CatchSkillReady => _catchSkillReady;
-        (int, float, float, float, bool) CatchSkillTuple;
 
+        public bool FignerSkillEnable => _fingerSkillEnable;
         public int FingerSkillId => _fingerSkillId;
         public float FingerSkillRangeMin => _fingerSkillRangeMin;
         public float FingerSkillRangeMax => _fingerSkillRangeMax;
@@ -178,45 +196,45 @@ namespace BeastHunter
 
         #region Methods
 
-        public (int, float, float, float, bool, bool) GetDefaultSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetDefaultSkillInfo()
         {
-            var tuple = (DefaultSkillId, DefaultSkillRangeMin, DefaultSkillRangeMax, DefaultSkillCooldown, DefaultSkillReady, false);
+            var tuple = (DefaultSkillEnable, DefaultSkillId, DefaultSkillRangeMin, DefaultSkillRangeMax, DefaultSkillCooldown, DefaultSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool, bool) GetHorizontalSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetHorizontalSkillInfo()
         {
-            var tuple = (HorizontalSkillId, HorizontalSkillRangeMin, HorizontalSkillRangeMax, HorizontalSkillCooldown, HorizontalSkillReady, false);
+            var tuple = (HorizontalSkillEnable, HorizontalSkillId, HorizontalSkillRangeMin, HorizontalSkillRangeMax, HorizontalSkillCooldown, HorizontalSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool, bool) GetStompSplashSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetStompSplashSkillInfo()
         {
-            var tuple = (StompSplashSkillId, StompSplashSkillRangeMin, StompSplashSkillRangeMax, StompSplashSkillCooldown, StompSplashSkillReady, false);
+            var tuple = (StompSplashSkillEnable, StompSplashSkillId, StompSplashSkillRangeMin, StompSplashSkillRangeMax, StompSplashSkillCooldown, StompSplashSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool, bool) GetRageOfForestSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetPoisonSporesSkillInfo()
         {
-            var tuple = (RageOfForestSkillId, RageOfForestSkillRangeMin, RageOfForestSkillRangeMax, RageOfForestSkillCooldown, RageOfForestSkillReady, false);
+            var tuple = (PoisonSporesSkillEnable, PoisonSporesSkillId, PoisonSporesSkillRangeMin, PoisonSporesSkillRangeMax, PoisonSporesSkillCooldown, PoisonSporesSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool, bool) GetPoisonSporesSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetPoisonSporesCircleSkillInfo()
         {
-            var tuple = (PoisonSporesSkillId, PoisonSporesSkillRangeMin, PoisonSporesSkillRangeMax, PoisonSporesSkillCooldown, PoisonSporesSkillReady, false);
+            var tuple = (PoisonSporesCircleSkillEnable, PoisonSporesCircleSkillId, PoisonSporesCircleSkillRangeMin, PoisonSporesCircleSkillRangeMax, PoisonSporesCircleSkillCooldown, PoisonSporesCircleSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool, bool) GetCatchSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetCatchSkillInfo()
         {
-            var tuple = (CatchSkillId, CatchSkillRangeMin, CatchSkillRangeMax, CatchSkillCooldown, CatchSkillReady, false);
+            var tuple = (CatchSkillSkillEnable, CatchSkillId, CatchSkillRangeMin, CatchSkillRangeMax, CatchSkillCooldown, CatchSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool, bool) GetFingerSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetFingerSkillInfo()
         {
-            var tuple = (FingerSkillId, FingerSkillRangeMin, FingerSkillRangeMax, FingerSkillCooldown, FingerSkillReady, false);
+            var tuple = (FignerSkillEnable, FingerSkillId, FingerSkillRangeMin, FingerSkillRangeMax, FingerSkillCooldown, FingerSkillReady, false);
             return tuple;
         }
         #endregion

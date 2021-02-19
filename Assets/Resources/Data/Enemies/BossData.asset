@@ -83,77 +83,91 @@ MonoBehaviour:
     _rightHandHitBoxRadius: 1
     _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
   AttackStateSkills:
+    _defaultSkillEnable: 0
     _defaultSkillId: 0
     _defaultSkillRangeMin: 3
     _defaultSkillRangeMax: 5
     _defaultSkillCooldown: 5
     _defaultSkillReady: 1
+    _horizontalSkillEnable: 1
     _horizontalSkillId: 1
     _horizontalSkillRangeMin: 3
     _horizontalSkillRangeMax: 5
-    _horizontalSkillCooldown: 5
-    _horizontalSkillReady: 0
+    _horizontalSkillCooldown: 15
+    _horizontalSkillReady: 1
+    _stompSplashSkillEnable: 1
     _stompSplashSkillId: 2
     _stompSplashSkillRangeMin: 0
     _stompSplashSkillRangeMax: 5
-    _stompSplashSkillCooldown: 10
+    _stompSplashSkillCooldown: 15
     _stompSplashSkillReady: 0
-    _rageOfForestSkillId: 3
-    _rageOfForestSkillRangeMin: 10
-    _rageOfForestSkillRangeMax: 30
-    _rageOfForestSkillCooldown: 30
-    _rageOfForestSkillReady: 0
-    _poisonSporesSkillId: 4
-    _poisonSporesSkillRangeMin: 10
-    _poisonSporesSkillRangeMax: 20
+    _poisonSporesSkillEnable: 0
+    _poisonSporesSkillId: 3
+    _poisonSporesSkillRangeMin: 5
+    _poisonSporesSkillRangeMax: 10
     _poisonSporesSkillCooldown: 15
     _poisonSporesSkillReady: 0
+    _poisonSporesCircleSkillEnable: 1
+    _poisonSporesCircleSkillId: 4
+    _poisonSporesCircleSkillRangeMin: 5
+    _poisonSporesCircleSkillRangeMax: 10
+    _poisonSporesCircleSkillCooldown: 15
+    _poisonSporesCircleSkillReady: 0
+    _catchSkillEnable: 0
     _catchSkillId: 5
     _catchSkillRangeMin: 0
     _catchSkillRangeMax: 5
     _catchSkillCooldown: 22
     _catchSkillReady: 0
+    _fingerSkillEnable: 1
     _fingerSkillId: 6
     _fingerSkillRangeMin: 10
     _fingerSkillRangeMax: 20
     _fingerSkillCooldown: 7
     _fingerSkillReady: 0
   DefenceStateSkills:
+    _defaultDefenceSkillEnable: 0
     _defaultDefenceSkillId: 0
     _defaultDefenceSkillRangeMin: -1
     _defaultDefenceSkillRangeMax: -1
     _defaultDefenceSkillCooldown: 5
     _defaultDefenceSkillReady: 1
+    _selfHealSkillEnable: 1
     _selfHealSkillId: 1
     _selfHealSkillRangeMin: -1
     _selfHealSkillRangeMax: -1
-    _selfHealSkillCooldown: 20
+    _selfHealSkillCooldown: 120
     _selfHealSkillReady: 1
     _selfHealSkillCanInterrupt: 1
+    _hardBarkSkillEnable: 0
     _hardBarkSkillId: 2
     _hardBarkSkillRangeMin: -1
     _hardBarkSkillRangeMax: -1
     _hardBarkSkillCooldown: 20
     _hardBarkSkillReady: 1
+    _canibalHealingSkillEnable: 0
     _canibalHealingSkillId: 3
     _canibalHealingSkillRangeMin: 0
     _canibalHealingSkillRangeMax: 4
     _canibalHealingSkillCooldown: 10
     _canibalHealingSkillReady: 1
+    _callOfForestSkillEnable: 0
     _callOfForestSkillId: 4
     _callOfForestSkillRangeMin: -1
     _callOfForestSkillRangeMax: -1
     _callOfForestSkillCooldown: 30
     _callOfForestSkillReady: 1
   ChasingStateSkills:
+    _vineFishingSkillEnable: 1
     _vineFishingSkillId: 0
-    _vineFishingSkillRangeMin: 50
+    _vineFishingSkillRangeMin: 10
     _vineFishingSkillRangeMax: 100
-    _vineFishingSkillCooldown: 10
+    _vineFishingSkillCooldown: 120
     _vineFishingSkillReady: 1
-    _vineFishingSkillPrefab: {fileID: 451594414436784737, guid: b0ed713a1062bc54ba292383f4251611,
+    _vineFishingSkillPrefab: {fileID: 4545837303767770492, guid: d3997e0955628e9479f808f5a1002c94,
       type: 3}
   RetreatingStateSkills:
+    _fakeTreeSkillEnable: 0
     _fakeTreeSkillId: 0
     _fakeTreeSkillRangeMin: 0
     _fakeTreeSkillRangeMax: 0
@@ -161,25 +175,35 @@ MonoBehaviour:
     _fakeTreeSkillReady: 1
     _fakeTreePrefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
   SearchingStateSkills:
+    _bushTriggerSkillEnable: 0
     _bushTriggerSkillId: 0
     _bushTriggerSkillRangeMin: 0
     _bushTriggerSkillRangeMax: 0
     _bushTriggerSkillCooldown: 0
     _bushTriggerSkillReady: 0
   DeadStateSkills:
+    _resurrectionSkillEnable: 0
     _resurrectionSkillId: 0
     _resurrectionSkillRangeMin: 0
     _resurrectionSkillRangeMax: 0
     _resurrectionSkillCooldown: 30
     _resurrectionSkillReady: 1
   NonStateSkills:
+    _testSkillEnable: 0
     _testSkillId: 0
     _testSkillRangeMin: 0
     _testSkillRangeMax: 0
     _testSkillCooldown: 0
     _testSkillReady: 0
+    _throwSkillEnable: 1
     _throwSkillId: 1
     _throwSkillRangeMin: 0
     _throwSkillRangeMax: 0
     _throwSkillCooldown: 10
     _throwSkillReady: 1
+    _rageOfForestSkillEnable: 1
+    _rageOfForestSkillId: 2
+    _rageOfForestSkillRangeMin: -1
+    _rageOfForestSkillRangeMax: 15
+    _rageOfForestSkillCooldown: 40
+    _rageOfForestSkillReady: 1

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Extensions;
-
+using DG.Tweening;
 
 namespace BeastHunter
 {
@@ -65,11 +65,7 @@ namespace BeastHunter
             IsBattleState = true;
             base.CurrentAttackTime = 0f;
             SetNavMeshAgent(_bossModel.BossTransform.position, 0);
-
-            for (var i = 0; i < _stateMachine.BossSkills.AttackStateSkillDictionary.Count; i++)
-            {
-                _stateMachine.BossSkills.AttackStateSkillDictionary[i].StartCooldown(_stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillId, _stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillCooldown);
-            }
+            StartCoolDownSkills(_bossSkills.AttackStateSkillDictionary);
         }
 
         public override void Execute()
@@ -96,20 +92,9 @@ namespace BeastHunter
             _readySkillDictionary.Clear();
             var j = 0;
 
+            ChooseReadySkills(_bossSkills.AttackStateSkillDictionary, _readySkillDictionary, ref j);
 
-            for (var i = 0; i < _stateMachine.BossSkills.AttackStateSkillDictionary.Count; i++)
-            {
-                if (_stateMachine.BossSkills.AttackStateSkillDictionary[i].IsSkillReady)
-                {
-                    if (CheckDistance(_stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillRangeMin, _stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillRangeMax))
-                    {
-                        _readySkillDictionary.Add(j, i);
-                        j++;
-                    }
-                }
-            }
-
-            if(_readySkillDictionary.Count==0 & _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position)>=DISTANCE_TO_START_ATTACK)
+            if (_readySkillDictionary.Count==0 & _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position)>=DISTANCE_TO_START_ATTACK)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
                 return;
@@ -125,10 +110,12 @@ namespace BeastHunter
                 _skillId = DEFAULT_ATTACK_ID;
             }
 
-            // _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId].UseSkill(_skillId);
-            CurrentSkill = _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId];
-            CurrentSkill.UseSkill(_skillId);
-            isAnySkillUsed = true;
+            if (_bossSkills.AttackStateSkillDictionary.ContainsKey(_skillId))
+            {
+                CurrentSkill = _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId];
+                CurrentSkill.UseSkill(_skillId);
+                isAnySkillUsed = true;
+            }
         }
 
         private void CheckNextMove()
@@ -184,7 +171,7 @@ namespace BeastHunter
                 Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
                     gameObject.GetInstanceID());
 
-             //   CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine._context.CharacterModel.CharacterStats));
+              //  CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine._context.CharacterModel.CharacterStats));
 
                 hitBox.IsInteractable = false;
                 _bossModel.LeftHandCollider.enabled = false;

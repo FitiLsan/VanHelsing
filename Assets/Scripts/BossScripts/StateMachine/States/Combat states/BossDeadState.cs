@@ -84,7 +84,7 @@ namespace BeastHunter
         {
             _resurrectionDelay -= Time.deltaTime;
             {
-                if (_resurrectionDelay <= 0)
+                if (_resurrectionDelay <= 0 && _stateMachine.BossSkills.DeadStateSkillDictionary.ContainsKey(RESURRECTION_SKILL_ID))
                 {
                     if (_stateMachine.BossSkills.DeadStateSkillDictionary[RESURRECTION_SKILL_ID].IsSkillReady)
                     {

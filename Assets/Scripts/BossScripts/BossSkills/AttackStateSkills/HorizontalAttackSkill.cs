@@ -7,14 +7,14 @@ namespace BeastHunter
 
     public class HorizontalAttackSkill : BossBaseSkill
     {
-        private const float DELAY_HAND_TRIGGER = 0.2f;
+        private const float DELAY_HAND_TRIGGER = 0.1f;
 
-        public HorizontalAttackSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
-            : base(Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
+        public HorizontalAttackSkill(bool IsEnable, int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
+            : base(IsEnable, Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
         {
         }
 
-        public HorizontalAttackSkill((int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
+        public HorizontalAttackSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
         }
         public override void UseSkill(int id)

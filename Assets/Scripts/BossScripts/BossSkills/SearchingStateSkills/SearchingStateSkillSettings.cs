@@ -12,6 +12,8 @@ namespace BeastHunter
 
         [Header("[Bush Trigger Attack]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _bushTriggerSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _bushTriggerSkillId;
         [Tooltip("Skill Range Min")]
@@ -25,12 +27,13 @@ namespace BeastHunter
         [SerializeField] private float _bushTriggerSkillCooldown;
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _bushTriggerSkillReady;
-      
+
         #endregion
 
 
         #region Properties
 
+        public bool BushTriggerSkillEnable => _bushTriggerSkillEnable;
         public int BushTriggerSkillId => _bushTriggerSkillId;
         public float BushTriggerSkillRangeMin => _bushTriggerSkillRangeMin;
         public float BushTriggerSkillRangeMax => _bushTriggerSkillRangeMax;
@@ -42,9 +45,9 @@ namespace BeastHunter
 
         #region Methods
 
-        public (int, float, float, float, bool, bool) GetBushTriggerSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetBushTriggerSkillInfo()
         {
-            var tuple = (BushTriggerSkillId, BushTriggerSkillRangeMin, BushTriggerSkillRangeMax, BushTriggerSkillCooldown, BushTriggerSkillReady, false);
+            var tuple = (BushTriggerSkillEnable, BushTriggerSkillId, BushTriggerSkillRangeMin, BushTriggerSkillRangeMax, BushTriggerSkillCooldown, BushTriggerSkillReady, false);
             return tuple;
         }
         

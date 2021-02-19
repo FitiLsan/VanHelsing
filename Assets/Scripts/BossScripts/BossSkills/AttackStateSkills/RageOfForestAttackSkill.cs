@@ -8,17 +8,18 @@ namespace BeastHunter
     {
         private const float DELAY_HAND_TRIGGER = 0.2f;
 
-        public RageOfForestAttackSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
-            : base(Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
+        public RageOfForestAttackSkill(bool IsEnable, int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
+            : base(IsEnable, Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
         {
         }
 
-        public RageOfForestAttackSkill((int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
+        public RageOfForestAttackSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
         }
 
         public override void UseSkill(int id)
         {
+            IsSkillUsing = true;
 
             Debug.Log("RAGEAttackSkill");
             _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
@@ -35,6 +36,7 @@ namespace BeastHunter
 
         public override void StopSkill()
         {
+            IsSkillUsing = false;
         }
 
     }

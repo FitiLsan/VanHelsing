@@ -82,6 +82,10 @@ namespace BeastHunter
             {
                 _target = _stateMachine._model.Lair.transform.position;
             }
+            else
+            {
+                _stateMachine.SetCurrentState(BossStatesEnum.Patroling);
+            }
         }
 
         private void CheckDistance()

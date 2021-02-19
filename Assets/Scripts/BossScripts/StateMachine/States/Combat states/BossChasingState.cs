@@ -52,7 +52,7 @@ namespace BeastHunter
             _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK;
             _stateMachine._model.BossAnimator.Play("MovingState");
             _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
-            StartCooldown();
+            StartCoolDownSkills(_bossSkills.ChasingStateSkillDictionary);
         }
 
         public override void Execute()
@@ -112,22 +112,17 @@ namespace BeastHunter
             _forceAttackTime -= Time.deltaTime;
             if (_forceAttackTime <= 0)
             {
-                if (currentDistance >= VINE_FISHING_DISTANCE && _stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].IsSkillReady)
+                if (currentDistance >= _bossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillRangeMin &&
+                    currentDistance <= _bossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillRangeMax &&
+                    _bossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].IsSkillReady)
                 {
                     _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.ChasingStateSkillDictionary, VINE_FISHING_ID);
+                    _stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].StartCooldown(_stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillId, _stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillCooldown);
                     _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
                     return;
                 }
                 _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
-            }
-        }
-
-        private void StartCooldown()
-        {
-            for (var i = 0; i < _stateMachine.BossSkills.ChasingStateSkillDictionary.Count; i++)
-            {
-                _stateMachine.BossSkills.ChasingStateSkillDictionary[i].StartCooldown(_stateMachine.BossSkills.ChasingStateSkillDictionary[i].SkillId, _stateMachine.BossSkills.ChasingStateSkillDictionary[i].SkillCooldown);
             }
         }
 
