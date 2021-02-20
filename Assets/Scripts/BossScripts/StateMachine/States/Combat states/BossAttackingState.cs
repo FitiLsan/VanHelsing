@@ -87,7 +87,7 @@ namespace BeastHunter
             ThrowAttackSkill.HandDrop -= OnDrop;
         }
 
-        private void ChoosingAttackSkill(bool isDefault = false)
+        private void ChoosingAttackSkill()
         {
             _readySkillDictionary.Clear();
             var j = 0;
@@ -100,30 +100,32 @@ namespace BeastHunter
                 return;
             }
 
-            if (!isDefault & _readySkillDictionary.Count!=0)
+            if (_readySkillDictionary.Count!=0)
             {
                 var readyId = UnityEngine.Random.Range(0, _readySkillDictionary.Count);
                 _skillId = _readySkillDictionary[readyId];
             }
             else
             {
-                _skillId = DEFAULT_ATTACK_ID;
+                _skillId = SKIP_ID;
             }
 
             if (_bossSkills.AttackStateSkillDictionary.ContainsKey(_skillId))
             {
                 CurrentSkill = _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId];
                 CurrentSkill.UseSkill(_skillId);
-                isAnySkillUsed = true;
+                IsAnySkillUsed = true;
             }
         }
 
         private void CheckNextMove()
         {
-            if (isAnimationPlay)
+            RotateToTarget();
+
+            if (IsAnimationPlay)
             {
                 base.CurrentAttackTime = _bossModel.BossAnimator.GetCurrentAnimatorStateInfo(0).length + ANIMATION_DELAY;
-                isAnimationPlay = false;
+                IsAnimationPlay = false;
             }
 
             if (base.CurrentAttackTime > 0)
@@ -133,6 +135,7 @@ namespace BeastHunter
             }
             if (base.CurrentAttackTime <= 0)
             {
+                AnimateRotation();
                 DecideNextMove();
             }
         }
@@ -145,7 +148,7 @@ namespace BeastHunter
             _bossModel.LeftHandCollider.enabled = false;
             _bossModel.RightHandCollider.enabled = false;
 
-            if (!_bossModel.CurrentStats.BaseStats.IsDead && CheckDirection() && !_bossModel.IsPickUped)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead  && !IsRotating && !_bossModel.IsPickUped)
             {
                 ChoosingAttackSkill();
             }

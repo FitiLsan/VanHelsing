@@ -37,15 +37,9 @@ namespace BeastHunter
                     break;
             }
             TurnOnHitBoxTrigger(_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
-          //  TurnOnHitBoxCollider(_currenColliderHand, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
+            //  TurnOnHitBoxCollider(_currenColliderHand, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
 
-            _skillDictionary[id].IsSkillReady = false;
-        
-
-
-            StartCooldown(id, _skillDictionary[id].SkillCooldown);
-
-            _stateMachine.CurrentState.isAnimationPlay = true;
+            ReloadSkill(id);
         }
 
         public override void StopSkill()

@@ -168,7 +168,7 @@ namespace BeastHunter
         {
             _skillDictionary[id].IsSkillReady = false;
             StartCooldown(id, _skillDictionary[id].SkillCooldown);
-            _stateMachine.CurrentState.isAnimationPlay = true;
+            _stateMachine.CurrentState.IsAnimationPlay = true;
         }
 
         protected virtual void DelayCall(Action action, float delayTime, out TimeRemaining delayCall, bool isRepete=false)

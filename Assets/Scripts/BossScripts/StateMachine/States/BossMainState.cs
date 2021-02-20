@@ -130,7 +130,7 @@ namespace BeastHunter
 
             if ( _bossModel.CurrentStats.BaseStats.CurrentHealthPart <= 0.1f)
             {
-                if (!isAnySkillUsed)
+                if (!IsAnySkillUsed)
                 {
                     var id = 2;
                     CurrentSkill = _stateMachine.BossSkills.NonStateSkillDictionary[id];
@@ -152,7 +152,7 @@ namespace BeastHunter
                 if (_hitPerTime >= 3)
                 {
                     _stateMachine.BossSkills.HardBarkSkill.SwitchAllowed(true);
-                    if (!_stateMachine.CurrentState.isAnimationPlay)
+                    if (!_stateMachine.CurrentState.IsAnimationPlay)
                     {
                       //  _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.MainSkillDictionary[SkillDictionaryEnum.DefenceStateSkillDictionary], 2);
                     }
@@ -174,7 +174,7 @@ namespace BeastHunter
 
             if (_damagePerTime >= 20)
             {
-                if (_stateMachine.CurrentState.isAnySkillUsed && _stateMachine.CurrentState.CurrentSkill.CanInterrupt)
+                if (_stateMachine.CurrentState.IsAnySkillUsed && _stateMachine.CurrentState.CurrentSkill.CanInterrupt)
                 {
                     CurrentSkillStop();
                 }

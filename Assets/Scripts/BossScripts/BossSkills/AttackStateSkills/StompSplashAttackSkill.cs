@@ -8,7 +8,15 @@ namespace BeastHunter
     public class StompSplashAttackSkill : BossBaseSkill
     {
         private const float DELAY_HAND_TRIGGER = 0.2f;
+        private const float UPWARDS_MODIFIER = 1.5f;
+        private const float DELAY_BEFORE_STANDING = 1.5f;
+        private const float DEFAULT_FORCE = 50f;
+        private const float DELAY_AFTER_ANIM = 0.65f;
+
         private GameObject _target;
+        private float _force;
+        private float _radius;
+        private Rigidbody _rigidBody;
         public StompSplashAttackSkill(bool IsEnable, int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
             : base(IsEnable, Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
         {
@@ -16,50 +24,38 @@ namespace BeastHunter
 
         public StompSplashAttackSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
+            _radius = SkillRangeMax;
         }
 
         public override void UseSkill(int id)
         {
             Debug.Log("StompAttackSkill");
             _bossModel.BossAnimator.Play("BossStompAttack", 0, 0f);
-            var TimeRem = new TimeRemaining(() => StompShockWave(), 0.65f);
-            TimeRem.AddTimeRemaining(0.65f);
-
-          //  TurnOnHitBoxTrigger (_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
-
+            var TimeRem = new TimeRemaining(() => StompShockWave(), DELAY_AFTER_ANIM);
+            TimeRem.AddTimeRemaining(DELAY_AFTER_ANIM);
             ReloadSkill(id);
         }
 
         private void StompShockWave()
         {
             _bossModel.leftStompEffect.Play(true);
-            var force = 50f;
-            var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.LeftFoot.position, 20f, "Player");
+            var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.LeftFoot.position, _radius, "Player");
             if (list.Count != 0)
             {
                 _target = list.Find(x => x.name == "Player");
+
                 var rb = _target.GetComponent<Rigidbody>();
-                var pm = _target.transform.parent.Find("PuppetMaster").GetComponent<PuppetMaster>();
+                var pm = _target.transform.parent.Find("PuppetMaster").GetComponent<PuppetMaster>(); // убрать если PM будет только у игрока
 
                 if (pm != null && rb != null)
                 {
-                    pm.state = PuppetMaster.State.Frozen;
-                    rb.AddExplosionForce(force, _bossModel.LeftFoot.transform.position, 15f, 1.5f, ForceMode.Impulse);
-                    DelayCall(() => pm.state = PuppetMaster.State.Alive, 2f);
+                    pm.state = PuppetMaster.State.Frozen; // Заменить на событие, которое будет менять стейт игроку на "в полете"
+
+                    rb.AddExplosionForce(DEFAULT_FORCE, _bossModel.LeftFoot.transform.position, _radius, UPWARDS_MODIFIER, ForceMode.Impulse);
+                    DelayCall(() => pm.state = PuppetMaster.State.Alive, DELAY_BEFORE_STANDING);
                     Damage();
                 }
-
             }
-
-
-            //foreach (var obj in list)
-            //{
-            //    if (list.Count != 0)
-            //    {
-            //        obj.GetComponent<Rigidbody>().AddForce((_bossModel.LeftFoot.position - _bossModel.BossCurrentPosition) * force, ForceMode.Impulse);
-            //    }
-            //}
-
         }
         public override void StopSkill()
         {

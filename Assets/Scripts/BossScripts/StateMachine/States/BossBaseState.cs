@@ -8,6 +8,7 @@ namespace BeastHunter
         protected const float ANGLE_SPEED = 150f;
         protected const float ANGLE_TARGET_RANGE_MIN = 20f;
         protected const int DEFAULT_ATTACK_ID = 0;
+        protected const int SKIP_ID = -1;
         protected const float DISTANCE_TO_START_ATTACK = 4f;
 
         #region Fields
@@ -27,9 +28,10 @@ namespace BeastHunter
         public bool CanBeOverriden { get; protected set; }
         public bool CurrentStateType { get; protected set; }
         public bool IsBattleState { get; protected set; }
+        public bool IsAnimationPlay { get;  set; }
+        public bool IsRotating { get; private set; }
+        public bool IsAnySkillUsed { get; protected set; }
         public float CurrentAttackTime { get; protected set; }
-        public bool isAnimationPlay { get;  set; }
-        public bool isAnySkillUsed { get; protected set; }
         public BossBaseSkill CurrentSkill { get; protected set; }
 
         #endregion
@@ -77,17 +79,12 @@ namespace BeastHunter
                 return true;
             }
             var isNear = _bossData.CheckIsLookAtTarget(_bossModel.BossTransform.rotation, _mainState.TargetRotation, ANGLE_TARGET_RANGE_MIN);
-            if (!isNear)
-            {
-                CheckTargetDirection();
-                TargetOnPlayer();
-            }
             return isNear;
         }
 
-        protected void CheckTargetDirection()
+        protected void AnimateRotation()
         {
-            if(_bossModel.BossCurrentTarget==null)
+            if(_bossModel.BossCurrentTarget==null || !IsRotating)
             {
                 return;
             }
@@ -96,17 +93,18 @@ namespace BeastHunter
 
             int directionNumber = _bossData.AngleDirection(
                 _bossModel.BossTransform.forward, heading, _bossModel.BossTransform.up);
-
             switch (directionNumber)
             {
                 case -1:
                     _bossModel.BossAnimator.Play("TurningLeftState", 0, 0f);
+                    IsAnimationPlay = true;
                     break;
                 case 0:
                     _bossModel.BossAnimator.Play("IdleState", 0, 0f);
                     break;
                 case 1:
                     _bossModel.BossAnimator.Play("TurningRightState", 0, 0f);
+                    IsAnimationPlay = true;
                     break;
                 default:
                     _bossModel.BossAnimator.Play("IdleState", 0, 0f);
@@ -115,11 +113,16 @@ namespace BeastHunter
         }
 
 
-        protected void TargetOnPlayer()
-        {
-            if (_bossModel.BossCurrentTarget != null)
+        protected void RotateToTarget()
+         {
+            if (_bossModel.BossCurrentTarget != null && !CheckDirection())
             {
+                IsRotating = true;
                 _bossModel.BossTransform.rotation = _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, ANGLE_SPEED);
+            }
+            else
+            {
+                IsRotating = false;
             }
         }
 
@@ -136,7 +139,7 @@ namespace BeastHunter
 
         protected void CurrentSkillStop()
         {
-            _stateMachine.CurrentState.isAnySkillUsed = false;
+            _stateMachine.CurrentState.IsAnySkillUsed = false;
             _stateMachine.CurrentState.CurrentAttackTime = 0;
             if (CurrentSkill != null)
             {
