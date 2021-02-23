@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Extensions;
 
 namespace BeastHunter
 {
@@ -13,6 +14,7 @@ namespace BeastHunter
         public GameObject death;
         private float time;
         private bool isPuf;
+        private float delay = 3f;
 
         private void Start()
         {
@@ -42,6 +44,28 @@ namespace BeastHunter
                     transform.DOLocalMoveY(transform.position.y-1f, 5);
                 }
             }
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            
+            if (other.CompareTag("Player") && !other.isTrigger)
+            {
+                delay -= Time.deltaTime;
+                if (delay <= 0)
+                {
+                    delay = 3f;
+                    Damage(other);
+                }
+            }
+        }
+
+
+        private void Damage(Collider enemy)
+        {
+            Damage poisonDamage = new Damage();
+            poisonDamage.PhysicalDamage = Random.Range(1f, 2f);
+            Services.SharedInstance.AttackService.CountAndDealDamage(poisonDamage, enemy.transform.GetMainParent().gameObject.GetInstanceID());
         }
     }
 }
