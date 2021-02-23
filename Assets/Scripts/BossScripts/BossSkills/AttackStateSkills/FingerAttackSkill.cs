@@ -20,9 +20,7 @@ namespace BeastHunter
         public override void UseSkill(int id)
         {
             Debug.Log("FingerAttackSkill");
-            
-
-           _bossModel.RightHandAimIK.solver.target = _bossModel.BossCurrentTarget.transform;
+            _bossModel.RightHandAimIK.solver.target = _bossModel.BossCurrentTarget.transform;
            _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
             _bossModel.BossAnimator.Play("FingerAttack", 0, 0);
             TurnOnHitBoxTrigger(_bossModel.RightFingerTrigger, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);

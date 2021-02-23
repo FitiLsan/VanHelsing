@@ -52,8 +52,10 @@ namespace BeastHunter
         {
             _bossModel.LeftHandBehavior.OnFilterHandler += OnHitBoxFilter;
             _bossModel.RightHandBehavior.OnFilterHandler += OnHitBoxFilter;
+            _bossModel.RightFingerTrigger.OnFilterHandler += OnHitBoxFilter;
             _bossModel.LeftHandBehavior.OnTriggerEnterHandler += OnLeftHitBoxHit;
             _bossModel.RightHandBehavior.OnTriggerEnterHandler += OnRightHitBoxHit;
+            _bossModel.RightFingerTrigger.OnTriggerEnterHandler += OnRightFingerHitBoxHit;
             _bossModel.InteractionSystem.OnInteractionPickUp += OnPickUp;
             ThrowAttackSkill.HandDrop += OnDrop;
         }
@@ -81,8 +83,10 @@ namespace BeastHunter
         {
             _bossModel.LeftHandBehavior.OnFilterHandler -= OnHitBoxFilter;
             _bossModel.RightHandBehavior.OnFilterHandler -= OnHitBoxFilter;
+            _bossModel.RightFingerTrigger.OnFilterHandler -= OnHitBoxFilter;
             _bossModel.LeftHandBehavior.OnTriggerEnterHandler -= OnLeftHitBoxHit;
             _bossModel.RightHandBehavior.OnTriggerEnterHandler -= OnRightHitBoxHit;
+            _bossModel.RightFingerTrigger.OnTriggerEnterHandler -= OnRightFingerHitBoxHit;
             _bossModel.InteractionSystem.OnInteractionPickUp -= OnPickUp;
             ThrowAttackSkill.HandDrop -= OnDrop;
         }
@@ -195,6 +199,17 @@ namespace BeastHunter
                 //        _context.CharacterModel.CharacterStats));
                 hitBox.IsInteractable = false;
                 _bossModel.RightHandCollider.enabled = false;
+            }
+        }
+
+        private void OnRightFingerHitBoxHit(ITrigger hitBox, Collider enemy)
+        {
+            if (hitBox.IsInteractable)
+            {
+                handDamage.PhysicalDamage = Random.Range(5f, 15f);
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
+                    gameObject.GetInstanceID());
+                hitBox.IsInteractable = false;
             }
         }
 
