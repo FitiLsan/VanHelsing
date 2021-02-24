@@ -3,6 +3,7 @@
 
 namespace BeastHunter
 {
+    [CreateAssetMenu(fileName = "NewData", menuName = "Character/TrapData", order = 0)]
     public abstract class TrapData : ScriptableObject
     {
         #region Fields

@@ -47,7 +47,7 @@ namespace BeastHunter
 
         public void Updating()
         {
-            _stateMachine.BackState.CountSpeedSneaking();
+            _stateMachine.BackState.CountSpeed();
             ControlMovement();
             ControlPose();
             ContolAnimation();

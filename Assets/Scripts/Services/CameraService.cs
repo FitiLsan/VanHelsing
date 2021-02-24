@@ -1,21 +1,41 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using Cinemachine;
+using System;
 using UniRx;
 
 
 namespace BeastHunter
 {
-    public sealed class CameraService : Service
+    public sealed class CameraService : IService, IDisposable
     {
+        #region Constants
+
+        private float AIM_LINE_DRAW_DISTANCE_STEP = 0.1f;
+        private float AIM_LINE_DRAW_FIRST_STEP_DISTANCE = 1f;
+        private int AMOUNT_OF_AIM_LINE_STEPS = 15;
+
+        #endregion
+
+
         #region FIelds
 
         private readonly GameContext _context;
         private CameraData _cameraData;
         private GameObject _cameraDynamicTarget;
         private GameObject _cameraStaticTarget;
+        private GameObject _aimCanvas;
         private Vector3 _staticTargetCenterPosition;
         private Vector3 _dynamicTargetCenterPosition;
+        private Vector3 _shootinWeaponDirection;
+        private Transform _weaponShootTransform;
+        private GameObject[] _aimingDots;
+
+        private float _weaponHitDistance;
+        private float _projectileMass;
+
+        private bool _isAiminDotsVisible;
+        private bool _isCurrentWeaponWithProjectile;
 
         #endregion
 
@@ -24,7 +44,7 @@ namespace BeastHunter
 
         public Camera CharacterCamera { get; private set; }
         public CinemachineFreeLook CharacterFreelookCamera { get; private set; }
-        public CinemachineFreeLook CharacterKnockedDownCamera { get; private set; }
+        //public CinemachineFreeLook CharacterKnockedDownCamera { get; private set; }
         public CinemachineVirtualCamera CharacterTargetCamera { get; private set; }
         public CinemachineVirtualCamera CharacterAimingCamera { get; private set; }
         public CinemachineBrain CameraCinemachineBrain { get; private set; }
@@ -43,9 +63,9 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public CameraService(Contexts contexts) : base(contexts)
+        public CameraService(GameContext context)
         {
-            _context = contexts as GameContext;
+            _context = context;
             _cameraData = Data.CameraData;
 
 #if (UNITY_EDITOR)
@@ -70,16 +90,28 @@ namespace BeastHunter
             _cameraDynamicTarget.name = _cameraData._cameraSettings.CameraTargetName + "Dynamic";
 
             _cameraStaticTarget = GameObject.Instantiate(new GameObject(), characterModel.CharacterTransform);
-            _staticTargetCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight, 0);
+            _staticTargetCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight, 0f);
             _cameraStaticTarget.transform.localPosition = _staticTargetCenterPosition;
             _cameraStaticTarget.name = _cameraData._cameraSettings.CameraTargetName + "Static";
+            _aimCanvas = GameObject.Instantiate(_cameraData._cameraSettings.AimCanvasPrefab);
+            _aimCanvas.SetActive(false);
+
+            _aimingDots = new GameObject[AMOUNT_OF_AIM_LINE_STEPS];
+
+            for (int i = 0; i < AMOUNT_OF_AIM_LINE_STEPS; i++)
+            {
+                _aimingDots[i] = GameObject.Instantiate(_cameraData._cameraSettings.AimProjectileLinePrefab,
+                    _cameraStaticTarget.transform.position, Quaternion.identity);
+            }
+
+            StopDrawAimLine();
 
             CharacterCamera.transform.rotation = Quaternion.Euler(0, characterModel.CharacterCommonSettings.
                 InstantiateDirection, 0);
             CharacterFreelookCamera = _cameraData._cameraSettings.CreateCharacterFreelookCamera(_cameraStaticTarget.
                 transform, _cameraStaticTarget.transform);
-            CharacterKnockedDownCamera = _cameraData._cameraSettings.CreateCharacterKnockedDownCamera(_cameraStaticTarget.
-                transform, _cameraStaticTarget.transform);
+            //CharacterKnockedDownCamera = _cameraData._cameraSettings.CreateCharacterKnockedDownCamera(characterModel.
+            //    PuppetMaster.transform.GetChild(0), characterModel.PuppetMaster.transform.GetChild(0));
             CharacterTargetCamera = _cameraData._cameraSettings.CreateCharacterTargetCamera(_cameraStaticTarget.
                 transform, _cameraStaticTarget.transform);
             CharacterAimingCamera = _cameraData._cameraSettings.CreateCharacterAimingCamera(_cameraStaticTarget.
@@ -93,6 +125,7 @@ namespace BeastHunter
             SetActiveCamera(CharacterFreelookCamera);
 
             characterModel.CurrentCharacterState.Subscribe(UpdateCameraForCharacterState);
+            CurrentActiveCamera.Subscribe(EnableDisableAimTarget);
         }
 
         public void SetActiveCamera(CinemachineVirtualCameraBase newCamera)
@@ -113,27 +146,6 @@ namespace BeastHunter
                 PreviousActiveCamera = CurrentActiveCamera.Value;
                 CurrentActiveCamera.Value = newCamera;
                 SetAllCamerasEqual();
-
-                float blendTime = 0f;
-
-                if (CurrentActiveCamera.Value == CharacterFreelookCamera)
-                {
-                    blendTime = _cameraData._cameraSettings.CharacterFreelookCameraBlendTime;
-                }
-                else if (CurrentActiveCamera.Value == CharacterKnockedDownCamera)
-                {
-                    blendTime = _cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime;
-                }
-                else if (CurrentActiveCamera.Value == CharacterTargetCamera)
-                {
-                    blendTime = _cameraData._cameraSettings.CharacterTargetCameraBlendTime;
-                }
-                else if (CurrentActiveCamera.Value == CharacterAimingCamera)
-                {
-                    blendTime = _cameraData._cameraSettings.CHaracterAimingCameraBlendTIme;
-                }
-
-                SetBlendTime(blendTime);
                 CurrentActiveCamera.Value.Priority++;
             }
         }
@@ -143,38 +155,42 @@ namespace BeastHunter
             switch (currentState?.StateName)
             {
                 case CharacterStatesEnum.Aiming:
+                    SetBlendTime(_cameraData._cameraSettings.CharacterAimingCameraBlendTIme);
                     SetActiveCamera(CharacterAimingCamera);
-                    break;
-                case CharacterStatesEnum.Attacking:                 
-                    break;
-                case CharacterStatesEnum.Shooting:                
+                    GetWeaponShootTransform();
                     break;
                 case CharacterStatesEnum.Battle:
+                    SetBlendTime(_cameraData._cameraSettings.CharacterTargetCameraBlendTime);
                     SetActiveCamera(CharacterTargetCamera);
                     break;
                 case CharacterStatesEnum.Dead:
+                    //GetKnockedDownCameraToFreeLookPosition();
+                    SetBlendTime(_cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime);
                     SetActiveCamera(CharacterFreelookCamera);
-                    break;
-                case CharacterStatesEnum.Dodging:
                     break;
                 case CharacterStatesEnum.Idle:
+                    SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
                     SetActiveCamera(CharacterFreelookCamera);
-                    break;
-                case CharacterStatesEnum.Jumping:
                     break;
                 case CharacterStatesEnum.Movement:
+                    if (_context.CharacterModel.PreviousCharacterState.Value.StateName == CharacterStatesEnum.Battle)
+                    {
+                        SetBlendTime(0f);
+                    }
+                    else
+                    {
+                        SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
+                    }
                     SetActiveCamera(CharacterFreelookCamera);
                     break;
-                case CharacterStatesEnum.Sliding:
-                    break;
-                case CharacterStatesEnum.Sneaking:
-                    break;
-                case CharacterStatesEnum.TrapPlacing:
-                    break;
                 case CharacterStatesEnum.KnockedDown:
-                    //SetActiveCamera(CharacterKnockedDownCamera);
+                    //GetKnockedDownCameraToFreeLookPosition();
+                    SetBlendTime(_cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime);
+                    SetActiveCamera(CharacterFreelookCamera);
                     break;
                 case CharacterStatesEnum.GettingUp:
+                    SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
+                    SetActiveCamera(CharacterFreelookCamera);
                     break;
                 default:
                     break;
@@ -184,7 +200,7 @@ namespace BeastHunter
         private void SetAllCamerasEqual()
         {
             CharacterFreelookCamera.Priority = 0;
-            CharacterKnockedDownCamera.Priority = 0;
+            //CharacterKnockedDownCamera.Priority = 0;
             CharacterTargetCamera.Priority = 0;
             CharacterAimingCamera.Priority = 0;
         }
@@ -200,6 +216,12 @@ namespace BeastHunter
             CharacterFreelookCamera.m_YAxis.m_MaxSpeed = 0f;
         }
 
+        //public void GetKnockedDownCameraToFreeLookPosition()
+        //{
+        //    CharacterKnockedDownCamera.m_XAxis.Value = CharacterFreelookCamera.m_XAxis.Value;
+        //    CharacterKnockedDownCamera.m_YAxis.Value = CharacterFreelookCamera.m_YAxis.Value;
+        //}
+
         public void UnlockFreeLookCamera()
         {
             CharacterFreelookCamera.m_XAxis.m_MaxSpeed = _cameraData._cameraSettings.CharacterFreelookCamera.
@@ -213,9 +235,9 @@ namespace BeastHunter
             _cameraDynamicTarget.transform.localPosition = _dynamicTargetCenterPosition;
         }
 
-        public void SetCameraTargetPosition(Vector3 position, bool isAdded)
+        public void SetCameraTargetPosition(Vector3 position, bool isPositionAdded)
         {
-            if (isAdded)
+            if (isPositionAdded)
             {
                 _cameraDynamicTarget.transform.localPosition = new Vector3(
                     Mathf.Clamp(_cameraDynamicTarget.transform.localPosition.x - position.x * _cameraData._cameraSettings.
@@ -236,7 +258,85 @@ namespace BeastHunter
                         CameraTargetSpeedY * Time.deltaTime, _cameraData._cameraSettings.CameraTargetDistanceMoveY.x,
                             _cameraData._cameraSettings.CameraTargetDistanceMoveY.y),
                     _cameraDynamicTarget.transform.localPosition.z);
-            }          
+            }
+        }
+
+        private void EnableDisableAimTarget(CinemachineVirtualCameraBase currentCamera)
+        {
+            if(currentCamera == CharacterAimingCamera && !_isCurrentWeaponWithProjectile)
+            {
+                _aimCanvas.SetActive(true);
+            }
+            else if(PreviousActiveCamera == CharacterAimingCamera && _aimCanvas.activeSelf)
+            {
+                _aimCanvas.SetActive(false);
+            }
+        }
+
+        private void GetWeaponShootTransform()
+        {
+            if (_context.CharacterModel.CurrentWeaponData.Value is OneHandedShootingWeapon weapon)
+            {
+                _weaponShootTransform = weapon.ParticleSystem.transform;
+                _projectileMass = weapon.ProjectileData.ProjectilePrefab.GetComponent<Rigidbody>().mass;
+                _weaponHitDistance = weapon.HitDistance;
+            }
+            else
+            {
+                _weaponShootTransform = null;
+                _projectileMass = 0f;
+                _weaponHitDistance = 0f;
+            }
+        }
+
+        public void DrawAimLine()
+        {
+            _shootinWeaponDirection = _cameraDynamicTarget.transform.position - _weaponShootTransform.position;
+
+            for (int i = 0; i < AMOUNT_OF_AIM_LINE_STEPS; i++)
+            {
+                _aimingDots[i].transform.position = GetAimLinePointPosition((AIM_LINE_DRAW_FIRST_STEP_DISTANCE + i) * 
+                    AIM_LINE_DRAW_DISTANCE_STEP);
+            }
+        }
+
+        public void StartDrawAimLine()
+        {
+            foreach (var aimDot in _aimingDots)
+            {
+                aimDot.SetActive(true);
+            }
+
+            _isAiminDotsVisible = true;
+        }
+
+        public void StopDrawAimLine()
+        {
+            foreach (var aimDot in _aimingDots)
+            {
+                aimDot.transform.position = Vector3.zero;
+                aimDot.SetActive(false);
+            }
+
+            _isAiminDotsVisible = false;
+        }
+
+        public void UpdateWeaponProjectileExistence(bool isCurrentWeaponWithProjectile)
+        {
+            _isCurrentWeaponWithProjectile = isCurrentWeaponWithProjectile;
+        }
+
+        private Vector3 GetAimLinePointPosition(float stepDistance)
+        {
+            return _weaponShootTransform.position + (_weaponShootTransform.forward.normalized * 
+                (_weaponHitDistance / _projectileMass) * stepDistance) + 0.5f * Physics.gravity * 
+                    (stepDistance * stepDistance);
+        }
+
+        public void Dispose()
+        {
+            _context.CharacterModel.CurrentCharacterState.Dispose();
+            CurrentActiveCamera.Dispose();
         }
 
 #if (UNITY_EDITOR)

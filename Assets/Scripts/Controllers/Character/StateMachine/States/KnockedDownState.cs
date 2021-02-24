@@ -1,6 +1,6 @@
 ﻿namespace BeastHunter
 {
-    public sealed class KnockedDownState : CharacterBaseState
+    public sealed class KnockedDownState : CharacterBaseState, IAwake, ITearDown
     {
         #region ClassLifeCycle
 
@@ -14,11 +14,44 @@
         #endregion
 
 
+        #region IAwake
+
+        public void OnAwake()
+        {
+            _characterModel.BehaviorPuppet.OnPostActivate += () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.GettingUp]);
+        }
+
+
+        #endregion
+
+
+        #region ITearDown
+
+        public void TearDown()
+        {
+            _characterModel.BehaviorPuppet.OnPostActivate -= () => _stateMachine.
+               SetState(_stateMachine.CharacterStates[CharacterStatesEnum.GettingUp]);
+        }
+
+        #endregion
+
+
         #region Methods
 
         public override bool CanBeActivated()
         {
-            return true;
+            _stateMachine.BackState.OnEnemyHealthBar(false);
+            return !_characterModel.CurrentStats.BaseStats.IsDead;
+        }
+
+        public override void Initialize(CharacterBaseState previousState = null)
+        {
+            base.Initialize(previousState);
+            _stateMachine.BackState.StopCharacter();
+            _characterModel.CharacterRigitbody.constraints = UnityEngine.RigidbodyConstraints.FreezePositionX | 
+                UnityEngine.RigidbodyConstraints.FreezePositionZ | UnityEngine.RigidbodyConstraints.FreezeRotation;
+            _characterModel.CharacterRigitbody.isKinematic = true;
         }
 
         #endregion

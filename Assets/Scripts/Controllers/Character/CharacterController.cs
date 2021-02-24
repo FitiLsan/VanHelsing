@@ -49,7 +49,7 @@ namespace BeastHunter
 
         public void Updating()
         {
-            if (!_characterModel.IsDead)
+            if (!_characterModel.CurrentStats.BaseStats.IsDead)
             {
                 _stateMachine.Execute();
             } 

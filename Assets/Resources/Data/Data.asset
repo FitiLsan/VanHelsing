@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: Data
   m_EditorClassIdentifier: 
   _locationDataPath: LocationData
-  _sphereDataPath: SphereData
   _characterDataPath: CharacterData
   _startDialogueDataPath: StartDialogueData
   _dialogueSystemDataPath: DialogueSystemData
-  _giantMudCrabDataPath: GiantMudCrabData
   _rabbitDataPath: RabbitData
   _feastPath: Weapons/Items/FeastWeapon
   _bossFeastsPath: Weapons/BossFeasts
@@ -29,7 +27,7 @@ MonoBehaviour:
   _uiBestiaryDataPath: BestiaryData
   _healthBuffDataPath: Buffs/HealthBuffData
   _staminaBuffDataPath: Buffs/StaminaBuffData
-  _bossDataPath: BossData
+  _bossDataPath: Enemies/BossData
   _trapDataPath: Traps/Trap
   _trapDataPath2: Traps/Trap2
   _bossFirstWeakPointPath: WeakPoints/BossFirstWeakPoint
@@ -41,5 +39,12 @@ MonoBehaviour:
   _uiElementsDataPath: UIElementsData
   _materialsDataPath: MaterialsData
   _torchObjectPath: InteractiveObjects/SimpleInteractiveObjects/TorchData
-  _hellHoundDataPath: HellHoundData
+  _hellHoundDataPath: Enemies/HellHoundData
+  _twoHeadedSnakeDataPath: Enemies/TwoHeadedSnakeData
+  _bouldersObjectPath: InteractiveObjects/SimpleInteractiveObjects/BouldersData
   _hideBushDataPath: InteractiveObjects/SimpleInteractiveObjects/HideBushData
+  _audioDataPath: AudioData
+  _playerHealthBarDataPath: PlayerHealthBarData
+  _fallingTreeDataPath: InteractiveObjects/SimpleInteractiveObjects/FallingTreeData
+  _enemyHealthBarDataPath: EnemyHealthBarData
+  _spawnpointsDataPath: SpawnpointsData

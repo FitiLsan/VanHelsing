@@ -5,21 +5,20 @@ using Extensions;
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewCrossbowBoltData", menuName = "CreateProjectileData/CreateCrossbowBoltData", order = 0)]
+    [CreateAssetMenu(fileName = "NewCrossbowBoltData", menuName = "Character/CreateProjectileData/CreateCrossbowBoltData", order = 0)]
     public sealed class CrossbowBoltData : ProjectileData
     {
         #region Methods
 
         public override bool FilterCollision(Collision touchedCollider)
         {
-            return touchedCollider.transform.GetMainParent().GetComponentInChildren<InteractableObjectBehavior>()?.
+            return touchedCollider.collider.GetComponent<InteractableObjectBehavior>()?.
                 Type != InteractableObjectType.Player;
         }
 
         public override void HitProjectile(IProjectile projectileInterface, Collision touchedCollider)
         {
-            bool isHittedEnemy = touchedCollider.transform.GetMainParent().gameObject.
-                TryGetComponent(out InteractableObjectBehavior touchedBehavior);
+            bool isHittedEnemy = touchedCollider.transform.gameObject.TryGetComponent(out InteractableObjectBehavior touchedBehavior);
 
             if (isHittedEnemy)
             {
@@ -35,9 +34,8 @@ namespace BeastHunter
                         break;
                 }
 
-                Context.NpcModels[touchedCollider.transform.GetMainParent().gameObject.GetInstanceID()].TakeDamage(Services.
-                    SharedInstance.AttackService.CountDamage(ProjectileDamage, Context.NpcModels[touchedCollider.
-                        transform.GetMainParent().gameObject.GetInstanceID()].GetStats().MainStats));
+                Services.SharedInstance.AttackService.CountAndDealDamage(ProjectileDamage,
+                    touchedCollider.transform.GetMainParent().gameObject.GetInstanceID());
                 StackInObject(projectileInterface, touchedCollider, true);
             }
             else
@@ -56,6 +54,10 @@ namespace BeastHunter
             Destroy(projectileInterface.GameObject.GetComponent<Rigidbody>());
             Destroy(projectileInterface.GameObject.GetComponent<SphereCollider>());
             Destroy(projectileInterface.GameObject.GetComponent<ProjectileBehavior>());
+
+            AudioSource projectileAudioSource = projectileInterface.GameObject.GetComponent<AudioSource>();
+            projectileAudioSource.PlayOneShot(CollisionSound);
+            Destroy(projectileAudioSource, CollisionSound.SoundClip.length);
         }
 
         #endregion

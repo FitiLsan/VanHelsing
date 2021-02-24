@@ -1,10 +1,22 @@
-﻿namespace BeastHunter
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+namespace BeastHunter
 {
     public abstract class BossBaseState
     {
+        protected const float ANGLE_SPEED = 150f;
+        protected const float ANGLE_TARGET_RANGE_MIN = 20f;
+        protected const int DEFAULT_ATTACK_ID = 0;
+        protected const float DISTANCE_TO_START_ATTACK = 4f;
+
         #region Fields
 
         protected BossStateMachine _stateMachine;
+        protected BossData _bossData;
+        protected BossModel _bossModel;
+        protected BossMainState _mainState;
+        protected BossSkills _bossSkills;
 
         #endregion
 
@@ -13,6 +25,12 @@
 
         public bool CanExit { get; protected set; }
         public bool CanBeOverriden { get; protected set; }
+        public bool CurrentStateType { get; protected set; }
+        public bool IsBattleState { get; protected set; }
+        public float CurrentAttackTime { get; protected set; }
+        public bool isAnimationPlay { get;  set; }
+        public bool isAnySkillUsed { get; protected set; }
+        public BossBaseSkill CurrentSkill { get; protected set; }
 
         #endregion
 
@@ -22,6 +40,10 @@
         public BossBaseState(BossStateMachine stateMachine)
         {
             _stateMachine = stateMachine;
+            _bossData = _stateMachine._model.BossData;
+            _bossModel = _stateMachine._model;
+            _mainState = _stateMachine._mainState;
+            _bossSkills = _stateMachine.BossSkills;
         }
 
         #endregion
@@ -38,6 +60,112 @@
         public abstract void OnExit();
 
         public abstract void OnTearDown();
+
+        protected virtual void SetNavMeshAgent(Vector3 targetPosition, float speed)
+        {
+            if (_bossModel.BossNavAgent.enabled)
+            {
+                _bossModel.BossNavAgent.SetDestination(targetPosition);
+                _bossModel.BossNavAgent.speed = speed;
+            }
+        }
+
+        protected bool CheckDirection()
+        {
+            if (_bossModel.IsPickUped)
+            {
+                return true;
+            }
+            var isNear = _bossData.CheckIsLookAtTarget(_bossModel.BossTransform.rotation, _mainState.TargetRotation, ANGLE_TARGET_RANGE_MIN);
+            if (!isNear)
+            {
+                CheckTargetDirection();
+                TargetOnPlayer();
+            }
+            return isNear;
+        }
+
+        protected void CheckTargetDirection()
+        {
+            if(_bossModel.BossCurrentTarget==null)
+            {
+                return;
+            }
+            Vector3 heading = _bossModel.BossCurrentTarget.transform.position -
+                _bossModel.BossTransform.position;
+
+            int directionNumber = _bossData.AngleDirection(
+                _bossModel.BossTransform.forward, heading, _bossModel.BossTransform.up);
+
+            switch (directionNumber)
+            {
+                case -1:
+                    _bossModel.BossAnimator.Play("TurningLeftState", 0, 0f);
+                    break;
+                case 0:
+                    _bossModel.BossAnimator.Play("IdleState", 0, 0f);
+                    break;
+                case 1:
+                    _bossModel.BossAnimator.Play("TurningRightState", 0, 0f);
+                    break;
+                default:
+                    _bossModel.BossAnimator.Play("IdleState", 0, 0f);
+                    break;
+            }
+        }
+
+
+        protected void TargetOnPlayer()
+        {
+            if (_bossModel.BossCurrentTarget != null)
+            {
+                _bossModel.BossTransform.rotation = _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, ANGLE_SPEED);
+            }
+        }
+
+        protected bool CheckDistance(float distanceRangeMin, float distanceRangeMax)
+        {
+            if (distanceRangeMin == -1)
+            {
+                return true;
+            }
+            
+            bool isNear = _bossData.CheckIsNearTarget(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position, distanceRangeMin, distanceRangeMax);
+            return isNear;
+        }
+
+        protected void CurrentSkillStop()
+        {
+            _stateMachine.CurrentState.isAnySkillUsed = false;
+            _stateMachine.CurrentState.CurrentAttackTime = 0;
+            if (CurrentSkill != null)
+            {
+                _stateMachine.CurrentState.CurrentSkill.StopSkill();
+            }
+        }
+
+        protected virtual void StartCoolDownSkills(Dictionary<int, BossBaseSkill> dic)
+        {
+            foreach (var skill in dic)
+            {
+                dic[skill.Key].StartCooldown(skill.Key, dic[skill.Key].SkillCooldown);
+            }
+        }
+
+        protected virtual void ChooseReadySkills(Dictionary<int, BossBaseSkill> dic, Dictionary<int,int> readyDic, ref int count)
+        {
+            foreach (var skill in dic)
+            {
+                if (dic[skill.Key].IsSkillReady)
+                {
+                    if (CheckDistance(dic[skill.Key].SkillRangeMin, dic[skill.Key].SkillRangeMax))
+                    {
+                        readyDic.Add(count, skill.Key);
+                        count++;
+                    }
+                }
+            }
+        }
 
         #endregion
     }

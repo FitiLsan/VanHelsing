@@ -1,16 +1,17 @@
 ﻿using System;
 using UnityEngine;
 
+
 namespace BeastHunter
 {
     [Serializable]
-    public sealed class SpawnEntityData //where T:ScriptableObject
+    public sealed class SpawnEntityData
     {
         #region Fields
 
         [SerializeField] private DataType _spawningDataType;
         [SerializeField] private EnemyData _spawningEnemyData;
-        [SerializeField] private float _spawningChance;
+        [SerializeField] public float SpawningChance;
 
         #endregion
 
@@ -19,7 +20,6 @@ namespace BeastHunter
 
         public DataType SpawningDataType { get => _spawningDataType; }
         public EnemyData SpawningEnemyData { get => _spawningEnemyData; }
-        public float SpawningChance { get; set; }
 
         #endregion
     }

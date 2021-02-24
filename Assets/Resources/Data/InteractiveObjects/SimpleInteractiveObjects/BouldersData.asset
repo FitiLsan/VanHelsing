@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 253929a19fd57ab4685842ef59fa99d7, type: 3}
+  m_Name: BouldersData
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 3821023361300054295, guid: 00b8e29ef790ade468d9939de1ffd372, type: 3}
+  _isActivated: 0
+  _canvasObjectName: CanvasObject
+  _debugMessages: 1
+  _damage:
+    PhysicalDamage: 300
+    StunProbability: 0
+    FireDamage: 0
+  _prefabPosition: {x: 514.99, y: 14.172, z: 764.55}
+  _prefabEulers: {x: 0, y: 0, z: 0}
+  _prefabOffsetY: 0.3
+  _pushingForce: 100
+  _timeToDeactivate: 30
+  _timeToDestroyAfterHit: 1
+  _hitSpeed: 2
+  _mass: 40
+  _drag: 0.1
+  _angularDrag: 0.75
+  _bounciness: 0.1

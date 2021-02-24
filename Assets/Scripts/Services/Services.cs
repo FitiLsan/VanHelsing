@@ -15,23 +15,33 @@
         public BuffService BuffService { get; private set; }
         public TimeSkipService TimeSkipService { get; private set; }
         public TrapService TrapService { get; private set; }
+        public NoiseService NoiseService { get; private set; }
+        public AudioService AudioService { get; private set; }
 
         #endregion
 
 
         #region Methods
 
-        public void Initialize(Contexts contexts)
+        public void InitializeGameServices(GameContext context)
         {
-            PhysicsService = new PhysicsService(contexts);
-            InventoryService = new InventoryService(contexts);
-            AttackService = new AttackService(contexts);
-            CameraService = new CameraService(contexts);
-            EventManager = new EventManager(contexts);
-            BuffService = new BuffService(contexts);
-            UnityTimeService = new UnityTimeService(contexts);
-            TimeSkipService = new TimeSkipService(contexts);
-            TrapService = new TrapService(contexts);
+            PhysicsService = new PhysicsService();
+          //  InventoryService = new InventoryService();
+            AttackService = new AttackService(context);
+            CameraService = new CameraService(context);
+            EventManager = new EventManager();
+            BuffService = new BuffService();
+            UnityTimeService = new UnityTimeService();
+            TimeSkipService = new TimeSkipService();
+            TrapService = new TrapService(context);
+            NoiseService = new NoiseService();
+            AudioService = new AudioService(context);
+        }
+
+        public void DisposeGameServices()
+        {
+            CameraService.Dispose();
+            AudioService.Dispose();
         }
 
         #endregion

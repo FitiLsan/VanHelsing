@@ -1,4 +1,6 @@
-﻿namespace BeastHunter
+﻿using UnityEngine;
+
+namespace BeastHunter
 {
     public class BattleState : CharacterBaseState, IUpdate
     {
@@ -30,9 +32,10 @@
 
         public void Updating()
         {
-            _stateMachine.BackState.CountSpeedStrafing();
+            _stateMachine.BackState.CountSpeed();
             ControlMovement();
             ClosestEnemyCheck();
+            
         }
 
         #endregion
@@ -48,10 +51,11 @@
             }
             else
             {
+                
                 ClosestEnemyCheck();
             }
             
-            return _characterModel.ClosestEnemy != null && _characterModel.IsWeaponInHands && _characterModel.
+            return _characterModel.ClosestEnemy.Value != null && _characterModel.IsWeaponInHands && _characterModel.
                 CurrentWeaponData.Value.Type != WeaponType.Shooting;
         }
 
@@ -85,6 +89,7 @@
         {
             base.Initialize();
             _hasCameraControl = true;
+            _stateMachine.BackState.OnEnemyHealthBar(true);
 
             if (_inputModel.IsInputRun)
             {
@@ -95,6 +100,7 @@
         public override void OnExit(CharacterBaseState nextState = null)
         {
             _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
+            _stateMachine.BackState.OnEnemyHealthBar(false);
 
             base.OnExit();
         }
@@ -115,6 +121,8 @@
 
         private void ClosestEnemyCheck()
         {
+
+            
             if (_characterModel.EnemiesInTrigger.Count > 0)
             {
                 float currentDistanceToEnemy = float.PositiveInfinity;
@@ -132,14 +140,17 @@
                         smallestDistanceToEnemy = currentDistanceToEnemy;
                     }
                 }
-
-                _characterModel.ClosestEnemy = _characterModel.EnemiesInTrigger[closestEnemyIndex];
+               
+                _characterModel.ClosestEnemy.Value = _characterModel.EnemiesInTrigger[closestEnemyIndex];
+                
             }
             else
             {
-                _characterModel.ClosestEnemy = null;
+                
+                _characterModel.ClosestEnemy.Value = null;
                 _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
             }
+            
         }
 
         #endregion

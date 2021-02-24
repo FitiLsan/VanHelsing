@@ -9,6 +9,11 @@ namespace BeastHunter
     {
         #region Fields
 
+        [SerializeField] private float _viewRadius;
+
+        [Range(0.0f, 180.0f)]
+        [SerializeField] private float _viewAngle;
+
         [Tooltip("Default: 10")]
         [SerializeField] private float _runningRadius;
 
@@ -25,6 +30,8 @@ namespace BeastHunter
 
         #region Properties
 
+        public float ViewRadius => _viewRadius;
+        public float ViewAngle => _viewAngle;
         public float RunningRadius => _runningRadius;
         public float MoveSpeed => _moveSpeed;
         public float JumpHeight => _jumpHeight;

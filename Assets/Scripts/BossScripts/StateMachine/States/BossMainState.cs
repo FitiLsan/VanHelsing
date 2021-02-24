@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
-
+using Extensions;
 
 namespace BeastHunter
 {
@@ -10,10 +10,12 @@ namespace BeastHunter
         #region Constants
 
         public const float ANGLE_TARGET_RANGE = 20f;
-        public const float DISTANCE_TO_START_ATTACK = 1.5f;
-
+        public const float DISTANCE_TO_START_ATTACK = 5f;
+        private const float TRIGGER_VIEW_INCREASE = 70f;
         private const float SPEED_COUNT_FRAME = 0.15f;
         private const float TIME_TO_NORMILIZE_WEAK_POINT = 5f;
+
+        private const float HUNGER_TIME = 5f;
 
         #endregion
 
@@ -27,6 +29,17 @@ namespace BeastHunter
         private Vector3 _targetDirection;
 
         private float _speedCountTime;
+        private float _hungerCountTime = HUNGER_TIME;
+
+        private float _timer = 7f;
+        private int _hitPerTime = 0;
+        private float _damagePerTime;
+
+        #endregion
+
+        #region Properties
+
+        public bool IsHunger { get; private set; }
 
         #endregion
 
@@ -47,12 +60,11 @@ namespace BeastHunter
             _stateMachine._model.BossBehavior.OnFilterHandler += OnFilterHandler;
             _stateMachine._model.BossBehavior.OnTriggerEnterHandler += OnTriggerEnterHandler;
             _stateMachine._model.BossBehavior.OnTriggerExitHandler += OnTriggerExitHandler;
-
             MessageBroker.Default.Receive<OnPlayerDieEventCLass>().Subscribe(OnPlayerDieHandler);
             MessageBroker.Default.Receive<OnBossStunnedEventClass>().Subscribe(OnBossStunnedHandler);
             MessageBroker.Default.Receive<OnBossHittedEventClass>().Subscribe(OnBossHittedHandler);
             MessageBroker.Default.Receive<OnBossWeakPointHittedEventClass>().Subscribe(MakeWeakPointBurst);
-            MessageBroker.Default.Receive<OnPlayerHideEventClass>().Subscribe(OnPlayerReachHidePlaceHandler);
+           // MessageBroker.Default.Receive<OnPlayerSneakingEventClass>().Subscribe(OnPlayerSneakingHandler);
         }
 
         public override void Initialise()
@@ -63,12 +75,17 @@ namespace BeastHunter
 
         public override void Execute()
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
                 SpeedCheck();
                 HealthCheck();
                 CheckDirection();
-            }          
+                HungerCheck();
+                GetTargetCurrentPosition();
+                CheckCurrentState();
+                HitCounter();
+                InteractionTriggerUpdate();
+            }
         }
 
         public override void OnExit()
@@ -84,25 +101,84 @@ namespace BeastHunter
 
         private void OnBossHittedHandler(OnBossHittedEventClass eventClass)
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Hitted);
+                _hitPerTime++;
+              //  _stateMachine.SetCurrentStateOverride(BossStatesEnum.Hitted);
             }
         }
 
         private void OnBossStunnedHandler(OnBossStunnedEventClass eventClass)
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Stunned);
+             //   _stateMachine.SetCurrentStateOverride(BossStatesEnum.Stunned);
             }         
         }
 
         private void OnPlayerDieHandler(OnPlayerDieEventCLass eventClass)
         {
-            if (!_stateMachine._model.IsDead)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Patroling);
+            }
+        }
+
+        private void HealthCheck()
+        {
+           // Debug.Log($"Health{_bossModel.CurrentStats.BaseStats.CurrentHealthPoints}");
+
+            if ( _bossModel.CurrentStats.BaseStats.CurrentHealthPart <= 0.1f)
+            {
+                if (!isAnySkillUsed)
+                {
+                    var id = 2;
+                    CurrentSkill = _stateMachine.BossSkills.NonStateSkillDictionary[id];
+                    _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.NonStateSkillDictionary, id);
+                    return;
+                }
+            }
+        }
+
+        private void HitCounter()
+        {
+            if (_hitPerTime > 0)
+            {
+                _timer -= Time.deltaTime;
+            }
+
+            if (_timer <= 0)
+            {
+                if (_hitPerTime >= 3)
+                {
+                    _stateMachine.BossSkills.HardBarkSkill.SwitchAllowed(true);
+                    if (!_stateMachine.CurrentState.isAnimationPlay)
+                    {
+                      //  _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.MainSkillDictionary[SkillDictionaryEnum.DefenceStateSkillDictionary], 2);
+                    }
+                }
+
+                DamageCounterReset();
+            }
+        }
+
+        private void DamageCounterReset()
+        {
+            _timer = 7f;
+            _hitPerTime = 0;
+        }
+
+        public void DamageCounter(Damage damage)
+        {
+            _damagePerTime += damage.PhysicalDamage;
+
+            if (_damagePerTime >= 20)
+            {
+                if (_stateMachine.CurrentState.isAnySkillUsed && _stateMachine.CurrentState.CurrentSkill.CanInterrupt)
+                {
+                    CurrentSkillStop();
+                }
+                _damagePerTime = 0;
             }
         }
 
@@ -124,41 +200,89 @@ namespace BeastHunter
             _stateMachine._model.BossAnimator.SetFloat("Speed", _stateMachine._model.CurrentSpeed);
         }
 
-        private void HealthCheck()
+        private void CheckCurrentState()
         {
-            if (_stateMachine._model.CurrentHealth <= 0)
+            if(_stateMachine.CurrentState.IsBattleState)
             {
-                _stateMachine.SetCurrentStateAnyway(BossStatesEnum.Dead);
+                _stateMachine._model.BossSphereCollider.radius = TRIGGER_VIEW_INCREASE;
+            }
+            else
+            {
+                _stateMachine._model.BossSphereCollider.radius = _bossData._bossSettings.SphereColliderRadius;
+            }
+        }
+
+
+        private void HungerCheck()
+        {
+            if (!IsHunger)
+            {
+                _hungerCountTime -= Time.deltaTime;
+                if(_hungerCountTime<=0)
+                {
+                    IsHunger = true;
+                    _hungerCountTime = HUNGER_TIME;
+                }
             }
         }
 
         private bool OnFilterHandler(Collider tagObject)
         {
-            return tagObject.GetComponent<InteractableObjectBehavior>()?.Type == InteractableObjectType.Player;
+            bool isEnemyColliderHit = false;
+            InteractableObjectBehavior interacterBehavior = tagObject.GetComponent<InteractableObjectBehavior>();
+
+            if (interacterBehavior != null)
+            {
+                if( interacterBehavior.Type == InteractableObjectType.Player || interacterBehavior.Type == InteractableObjectType.Food)
+                {
+                    isEnemyColliderHit = true;
+                }
+            }
+            return isEnemyColliderHit;
         }
 
         private void OnTriggerEnterHandler(ITrigger thisdObject, Collider enteredObject)
         {
-            if(thisdObject.Type == InteractableObjectType.Enemy)
+            var interactableObject = enteredObject.GetComponent<InteractableObjectBehavior>().Type;
+
+            if (interactableObject == InteractableObjectType.Player & !enteredObject.isTrigger)
             {
+                _bossModel.BossCurrentTarget = enteredObject.gameObject;
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
-            }         
+            }
+
+            if (interactableObject == InteractableObjectType.Food)
+            {
+                if (!_stateMachine._model.FoodList.Contains(enteredObject.gameObject))
+                {
+                    _stateMachine._model.FoodList.Add(enteredObject.gameObject);
+                }
+            }
         }
 
-        private void OnTriggerExitHandler(ITrigger thisdObject, Collider exitedObject)
+        private void OnTriggerExitHandler(ITrigger thisdObject, Collider enteredObject)
         {
-            if (thisdObject.Type == InteractableObjectType.Enemy)
+            var interactableObject = enteredObject.GetComponent<InteractableObjectBehavior>().Type;
+
+            if (interactableObject == InteractableObjectType.Food)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
+                if (_stateMachine._model.FoodList.Contains(enteredObject.gameObject))
+                {
+                    _stateMachine._model.FoodList.Remove(enteredObject.gameObject);
+                }
+            }
+            if (interactableObject == InteractableObjectType.Player & !enteredObject.isTrigger)
+            {
+           //     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
             }
         }
 
         private void MakeWeakPointBurst(OnBossWeakPointHittedEventClass eventClass)
         {
             eventClass.WeakPointCollider.gameObject.GetComponent<ParticleSystem>().Play();
-            _stateMachine._model.TakeDamage(Services.SharedInstance.AttackService.CountDamage(
-                eventClass.WeakPointCollider.GetComponent<HitBoxBehavior>().AdditionalDamage, 
-                    _stateMachine._model.GetStats().MainStats));
+            Services.SharedInstance.AttackService.CountAndDealDamage(eventClass.WeakPointCollider.
+                GetComponent<HitBoxBehavior>().AdditionalDamage, _bossModel.BossTransform.GetMainParent().
+                    gameObject.GetInstanceID());
             eventClass.WeakPointCollider.GetComponent<Light>().color = Color.red;
             eventClass.WeakPointCollider.enabled = false;
 
@@ -179,36 +303,20 @@ namespace BeastHunter
                 _stateMachine._model.BossTransform.position).normalized;
             TargetRotation = Quaternion.LookRotation(_targetDirection);
         }
-
-        public int AngleDirection(Vector3 forward, Vector3 targetDirection, Vector3 up)
-        {
-            Vector3 perpendicular = Vector3.Cross(forward, targetDirection);
-            float direction = Vector3.Dot(perpendicular, up);
-
-            if (direction > 0f)
-            {
-                return 1;
-            }
-            else if (direction < 0f)
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
+        
+        public Vector3? GetTargetCurrentPosition()
+        {     
+           return _bossModel.BossCurrentTarget?.transform.position;
         }
 
-        private void OnPlayerReachHidePlaceHandler(OnPlayerHideEventClass eventClass)
+        private void InteractionTriggerUpdate()
         {
-            if (!eventClass.IsHiding)
-            {
-                _stateMachine._model.BossSphereCollider.enabled = false;
-
-                TimeRemaining enableBossTrigger = new TimeRemaining(() => _stateMachine._model.
-                    BossSphereCollider.enabled = true, 0f);
-                enableBossTrigger.AddTimeRemaining(0f);
-            }
+          _bossModel.ClosestTriggerIndex = _bossModel.InteractionSystem.GetClosestTriggerIndex();
+            _bossModel.InteractionTarget = _bossModel.InteractionSystem.GetClosestInteractionObjectInRange();
+            //if(_bossModel.BossCurrentTarget !=null)
+            // {
+            //     _bossModel.InteractionTarget = _bossModel.BossCurrentTarget.GetComponentInChildren<InteractionObject>();
+            // }
         }
 
         #endregion

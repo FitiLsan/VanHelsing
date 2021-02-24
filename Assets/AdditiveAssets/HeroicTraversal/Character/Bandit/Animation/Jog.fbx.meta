@@ -1,159 +1,439 @@
 fileFormatVersion: 2
 guid: d9d144aab04d55148833d2a06092f247
-timeCreated: 1462338750
-licenseType: Store
 ModelImporter:
-  serializedVersion: 19
-  fileIDToRecycleName:
-    100000: head1_head
-    100002: head1_neck
-    100004: //RootNode
-    100006: leftArm1_HiResClavical
-    100008: leftArm1_HiResHand
-    100010: leftArm1_HiResLowerArm
-    100012: leftArm1_HiResLowerArmTwist
-    100014: leftArm1_HiResUpperArm
-    100016: leftArm1_HiResUpperArmTwist
-    100018: leftFinger1_Joint1
-    100020: leftFinger1_Joint2
-    100022: leftFinger1_Joint3
-    100024: leftFinger1_MetaCarpel
-    100026: leftFinger2_Joint1
-    100028: leftFinger2_Joint2
-    100030: leftFinger2_Joint3
-    100032: leftFinger2_MetaCarpel
-    100034: leftFinger3_Joint1
-    100036: leftFinger3_Joint2
-    100038: leftFinger3_Joint3
-    100040: leftFinger3_MetaCarpel
-    100042: leftFinger4_Joint1
-    100044: leftFinger4_Joint2
-    100046: leftFinger4_Joint3
-    100048: leftFinger4_MetaCarpel
-    100050: leftLeg1_LoResFoot
-    100052: leftLeg1_LoResLowerLeg
-    100054: leftLeg1_LoResToe
-    100056: leftLeg1_LoResUpperLeg
-    100058: leftThumb1_Joint1
-    100060: leftThumb1_Joint2
-    100062: leftThumb1_Joint3
-    100064: rightArm1_HiResClavical
-    100066: rightArm1_HiResHand
-    100068: rightArm1_HiResLowerArm
-    100070: rightArm1_HiResLowerArmTwist
-    100072: rightArm1_HiResUpperArm
-    100074: rightArm1_HiResUpperArmTwist
-    100076: rightFinger1_Joint1
-    100078: rightFinger1_Joint2
-    100080: rightFinger1_Joint3
-    100082: rightFinger1_MetaCarpel
-    100084: rightFinger2_Joint1
-    100086: rightFinger2_Joint2
-    100088: rightFinger2_Joint3
-    100090: rightFinger2_MetaCarpel
-    100092: rightFinger3_Joint1
-    100094: rightFinger3_Joint2
-    100096: rightFinger3_Joint3
-    100098: rightFinger3_MetaCarpel
-    100100: rightFinger4_Joint1
-    100102: rightFinger4_Joint2
-    100104: rightFinger4_Joint3
-    100106: rightFinger4_MetaCarpel
-    100108: rightLeg1_LoResFoot
-    100110: rightLeg1_LoResLowerLeg
-    100112: rightLeg1_LoResToe
-    100114: rightLeg1_LoResUpperLeg
-    100116: rightThumb1_Joint1
-    100118: rightThumb1_Joint2
-    100120: rightThumb1_Joint3
-    100122: Root
-    100124: spine1_loResSpine1
-    100126: spine1_loResSpine2
-    100128: spine1_loResSpine3
-    100130: TSMGWorldJoint
-    400000: head1_head
-    400002: head1_neck
-    400004: //RootNode
-    400006: leftArm1_HiResClavical
-    400008: leftArm1_HiResHand
-    400010: leftArm1_HiResLowerArm
-    400012: leftArm1_HiResLowerArmTwist
-    400014: leftArm1_HiResUpperArm
-    400016: leftArm1_HiResUpperArmTwist
-    400018: leftFinger1_Joint1
-    400020: leftFinger1_Joint2
-    400022: leftFinger1_Joint3
-    400024: leftFinger1_MetaCarpel
-    400026: leftFinger2_Joint1
-    400028: leftFinger2_Joint2
-    400030: leftFinger2_Joint3
-    400032: leftFinger2_MetaCarpel
-    400034: leftFinger3_Joint1
-    400036: leftFinger3_Joint2
-    400038: leftFinger3_Joint3
-    400040: leftFinger3_MetaCarpel
-    400042: leftFinger4_Joint1
-    400044: leftFinger4_Joint2
-    400046: leftFinger4_Joint3
-    400048: leftFinger4_MetaCarpel
-    400050: leftLeg1_LoResFoot
-    400052: leftLeg1_LoResLowerLeg
-    400054: leftLeg1_LoResToe
-    400056: leftLeg1_LoResUpperLeg
-    400058: leftThumb1_Joint1
-    400060: leftThumb1_Joint2
-    400062: leftThumb1_Joint3
-    400064: rightArm1_HiResClavical
-    400066: rightArm1_HiResHand
-    400068: rightArm1_HiResLowerArm
-    400070: rightArm1_HiResLowerArmTwist
-    400072: rightArm1_HiResUpperArm
-    400074: rightArm1_HiResUpperArmTwist
-    400076: rightFinger1_Joint1
-    400078: rightFinger1_Joint2
-    400080: rightFinger1_Joint3
-    400082: rightFinger1_MetaCarpel
-    400084: rightFinger2_Joint1
-    400086: rightFinger2_Joint2
-    400088: rightFinger2_Joint3
-    400090: rightFinger2_MetaCarpel
-    400092: rightFinger3_Joint1
-    400094: rightFinger3_Joint2
-    400096: rightFinger3_Joint3
-    400098: rightFinger3_MetaCarpel
-    400100: rightFinger4_Joint1
-    400102: rightFinger4_Joint2
-    400104: rightFinger4_Joint3
-    400106: rightFinger4_MetaCarpel
-    400108: rightLeg1_LoResFoot
-    400110: rightLeg1_LoResLowerLeg
-    400112: rightLeg1_LoResToe
-    400114: rightLeg1_LoResUpperLeg
-    400116: rightThumb1_Joint1
-    400118: rightThumb1_Joint2
-    400120: rightThumb1_Joint3
-    400122: Root
-    400124: spine1_loResSpine1
-    400126: spine1_loResSpine2
-    400128: spine1_loResSpine3
-    400130: TSMGWorldJoint
-    7400000: Jog_Fwd
-    7400002: Jog_Fwd_Lean_Rt
-    7400004: Jog_Fwd_Lean_Lf
-    7400006: Jog_Fwd_InPlace
-    7400008: Jog_Fwd_Lean_Rt_InPlace
-    7400010: Jog_Fwd_Lean_Lf_InPlace
-    9500000: //RootNode
+  serializedVersion: 25
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: head1_head
+  - first:
+      1: 100002
+    second: head1_neck
+  - first:
+      1: 100004
+    second: //RootNode
+  - first:
+      1: 100006
+    second: leftArm1_HiResClavical
+  - first:
+      1: 100008
+    second: leftArm1_HiResHand
+  - first:
+      1: 100010
+    second: leftArm1_HiResLowerArm
+  - first:
+      1: 100012
+    second: leftArm1_HiResLowerArmTwist
+  - first:
+      1: 100014
+    second: leftArm1_HiResUpperArm
+  - first:
+      1: 100016
+    second: leftArm1_HiResUpperArmTwist
+  - first:
+      1: 100018
+    second: leftFinger1_Joint1
+  - first:
+      1: 100020
+    second: leftFinger1_Joint2
+  - first:
+      1: 100022
+    second: leftFinger1_Joint3
+  - first:
+      1: 100024
+    second: leftFinger1_MetaCarpel
+  - first:
+      1: 100026
+    second: leftFinger2_Joint1
+  - first:
+      1: 100028
+    second: leftFinger2_Joint2
+  - first:
+      1: 100030
+    second: leftFinger2_Joint3
+  - first:
+      1: 100032
+    second: leftFinger2_MetaCarpel
+  - first:
+      1: 100034
+    second: leftFinger3_Joint1
+  - first:
+      1: 100036
+    second: leftFinger3_Joint2
+  - first:
+      1: 100038
+    second: leftFinger3_Joint3
+  - first:
+      1: 100040
+    second: leftFinger3_MetaCarpel
+  - first:
+      1: 100042
+    second: leftFinger4_Joint1
+  - first:
+      1: 100044
+    second: leftFinger4_Joint2
+  - first:
+      1: 100046
+    second: leftFinger4_Joint3
+  - first:
+      1: 100048
+    second: leftFinger4_MetaCarpel
+  - first:
+      1: 100050
+    second: leftLeg1_LoResFoot
+  - first:
+      1: 100052
+    second: leftLeg1_LoResLowerLeg
+  - first:
+      1: 100054
+    second: leftLeg1_LoResToe
+  - first:
+      1: 100056
+    second: leftLeg1_LoResUpperLeg
+  - first:
+      1: 100058
+    second: leftThumb1_Joint1
+  - first:
+      1: 100060
+    second: leftThumb1_Joint2
+  - first:
+      1: 100062
+    second: leftThumb1_Joint3
+  - first:
+      1: 100064
+    second: rightArm1_HiResClavical
+  - first:
+      1: 100066
+    second: rightArm1_HiResHand
+  - first:
+      1: 100068
+    second: rightArm1_HiResLowerArm
+  - first:
+      1: 100070
+    second: rightArm1_HiResLowerArmTwist
+  - first:
+      1: 100072
+    second: rightArm1_HiResUpperArm
+  - first:
+      1: 100074
+    second: rightArm1_HiResUpperArmTwist
+  - first:
+      1: 100076
+    second: rightFinger1_Joint1
+  - first:
+      1: 100078
+    second: rightFinger1_Joint2
+  - first:
+      1: 100080
+    second: rightFinger1_Joint3
+  - first:
+      1: 100082
+    second: rightFinger1_MetaCarpel
+  - first:
+      1: 100084
+    second: rightFinger2_Joint1
+  - first:
+      1: 100086
+    second: rightFinger2_Joint2
+  - first:
+      1: 100088
+    second: rightFinger2_Joint3
+  - first:
+      1: 100090
+    second: rightFinger2_MetaCarpel
+  - first:
+      1: 100092
+    second: rightFinger3_Joint1
+  - first:
+      1: 100094
+    second: rightFinger3_Joint2
+  - first:
+      1: 100096
+    second: rightFinger3_Joint3
+  - first:
+      1: 100098
+    second: rightFinger3_MetaCarpel
+  - first:
+      1: 100100
+    second: rightFinger4_Joint1
+  - first:
+      1: 100102
+    second: rightFinger4_Joint2
+  - first:
+      1: 100104
+    second: rightFinger4_Joint3
+  - first:
+      1: 100106
+    second: rightFinger4_MetaCarpel
+  - first:
+      1: 100108
+    second: rightLeg1_LoResFoot
+  - first:
+      1: 100110
+    second: rightLeg1_LoResLowerLeg
+  - first:
+      1: 100112
+    second: rightLeg1_LoResToe
+  - first:
+      1: 100114
+    second: rightLeg1_LoResUpperLeg
+  - first:
+      1: 100116
+    second: rightThumb1_Joint1
+  - first:
+      1: 100118
+    second: rightThumb1_Joint2
+  - first:
+      1: 100120
+    second: rightThumb1_Joint3
+  - first:
+      1: 100122
+    second: Root
+  - first:
+      1: 100124
+    second: spine1_loResSpine1
+  - first:
+      1: 100126
+    second: spine1_loResSpine2
+  - first:
+      1: 100128
+    second: spine1_loResSpine3
+  - first:
+      1: 100130
+    second: TSMGWorldJoint
+  - first:
+      4: 400000
+    second: head1_head
+  - first:
+      4: 400002
+    second: head1_neck
+  - first:
+      4: 400004
+    second: //RootNode
+  - first:
+      4: 400006
+    second: leftArm1_HiResClavical
+  - first:
+      4: 400008
+    second: leftArm1_HiResHand
+  - first:
+      4: 400010
+    second: leftArm1_HiResLowerArm
+  - first:
+      4: 400012
+    second: leftArm1_HiResLowerArmTwist
+  - first:
+      4: 400014
+    second: leftArm1_HiResUpperArm
+  - first:
+      4: 400016
+    second: leftArm1_HiResUpperArmTwist
+  - first:
+      4: 400018
+    second: leftFinger1_Joint1
+  - first:
+      4: 400020
+    second: leftFinger1_Joint2
+  - first:
+      4: 400022
+    second: leftFinger1_Joint3
+  - first:
+      4: 400024
+    second: leftFinger1_MetaCarpel
+  - first:
+      4: 400026
+    second: leftFinger2_Joint1
+  - first:
+      4: 400028
+    second: leftFinger2_Joint2
+  - first:
+      4: 400030
+    second: leftFinger2_Joint3
+  - first:
+      4: 400032
+    second: leftFinger2_MetaCarpel
+  - first:
+      4: 400034
+    second: leftFinger3_Joint1
+  - first:
+      4: 400036
+    second: leftFinger3_Joint2
+  - first:
+      4: 400038
+    second: leftFinger3_Joint3
+  - first:
+      4: 400040
+    second: leftFinger3_MetaCarpel
+  - first:
+      4: 400042
+    second: leftFinger4_Joint1
+  - first:
+      4: 400044
+    second: leftFinger4_Joint2
+  - first:
+      4: 400046
+    second: leftFinger4_Joint3
+  - first:
+      4: 400048
+    second: leftFinger4_MetaCarpel
+  - first:
+      4: 400050
+    second: leftLeg1_LoResFoot
+  - first:
+      4: 400052
+    second: leftLeg1_LoResLowerLeg
+  - first:
+      4: 400054
+    second: leftLeg1_LoResToe
+  - first:
+      4: 400056
+    second: leftLeg1_LoResUpperLeg
+  - first:
+      4: 400058
+    second: leftThumb1_Joint1
+  - first:
+      4: 400060
+    second: leftThumb1_Joint2
+  - first:
+      4: 400062
+    second: leftThumb1_Joint3
+  - first:
+      4: 400064
+    second: rightArm1_HiResClavical
+  - first:
+      4: 400066
+    second: rightArm1_HiResHand
+  - first:
+      4: 400068
+    second: rightArm1_HiResLowerArm
+  - first:
+      4: 400070
+    second: rightArm1_HiResLowerArmTwist
+  - first:
+      4: 400072
+    second: rightArm1_HiResUpperArm
+  - first:
+      4: 400074
+    second: rightArm1_HiResUpperArmTwist
+  - first:
+      4: 400076
+    second: rightFinger1_Joint1
+  - first:
+      4: 400078
+    second: rightFinger1_Joint2
+  - first:
+      4: 400080
+    second: rightFinger1_Joint3
+  - first:
+      4: 400082
+    second: rightFinger1_MetaCarpel
+  - first:
+      4: 400084
+    second: rightFinger2_Joint1
+  - first:
+      4: 400086
+    second: rightFinger2_Joint2
+  - first:
+      4: 400088
+    second: rightFinger2_Joint3
+  - first:
+      4: 400090
+    second: rightFinger2_MetaCarpel
+  - first:
+      4: 400092
+    second: rightFinger3_Joint1
+  - first:
+      4: 400094
+    second: rightFinger3_Joint2
+  - first:
+      4: 400096
+    second: rightFinger3_Joint3
+  - first:
+      4: 400098
+    second: rightFinger3_MetaCarpel
+  - first:
+      4: 400100
+    second: rightFinger4_Joint1
+  - first:
+      4: 400102
+    second: rightFinger4_Joint2
+  - first:
+      4: 400104
+    second: rightFinger4_Joint3
+  - first:
+      4: 400106
+    second: rightFinger4_MetaCarpel
+  - first:
+      4: 400108
+    second: rightLeg1_LoResFoot
+  - first:
+      4: 400110
+    second: rightLeg1_LoResLowerLeg
+  - first:
+      4: 400112
+    second: rightLeg1_LoResToe
+  - first:
+      4: 400114
+    second: rightLeg1_LoResUpperLeg
+  - first:
+      4: 400116
+    second: rightThumb1_Joint1
+  - first:
+      4: 400118
+    second: rightThumb1_Joint2
+  - first:
+      4: 400120
+    second: rightThumb1_Joint3
+  - first:
+      4: 400122
+    second: Root
+  - first:
+      4: 400124
+    second: spine1_loResSpine1
+  - first:
+      4: 400126
+    second: spine1_loResSpine2
+  - first:
+      4: 400128
+    second: spine1_loResSpine3
+  - first:
+      4: 400130
+    second: TSMGWorldJoint
+  - first:
+      74: 7400000
+    second: Jog_Fwd
+  - first:
+      74: 7400002
+    second: Jog_Fwd_Lean_Rt
+  - first:
+      74: 7400004
+    second: Jog_Fwd_Lean_Lf
+  - first:
+      74: 7400006
+    second: Jog_Fwd_InPlace
+  - first:
+      74: 7400008
+    second: Jog_Fwd_Lean_Rt_InPlace
+  - first:
+      74: 7400010
+    second: Jog_Fwd_Lean_Lf_InPlace
+  - first:
+      95: 9500000
+    second: //RootNode
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: TSMGWorldJoint/Root
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar to
@@ -171,16 +451,20 @@ ModelImporter:
       animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: Jog_Fwd
       takeName: Take 001
+      internalID: 7400000
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -341,6 +625,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Jog_Fwd_Lean_Rt
       takeName: Take 001
+      internalID: 7400002
       firstFrame: 50
       lastFrame: 72
       wrapMode: 0
@@ -501,6 +786,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Jog_Fwd_Lean_Lf
       takeName: Take 001
+      internalID: 7400004
       firstFrame: 100
       lastFrame: 122
       wrapMode: 0
@@ -661,6 +947,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Jog_Fwd_InPlace
       takeName: Take 001
+      internalID: 7400006
       firstFrame: 150
       lastFrame: 172
       wrapMode: 0
@@ -681,7 +968,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: OnCharacterStep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 2
+        messageOptions: 0
+      - time: 0.5056606
+        functionName: OnCharacterStep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -821,6 +1122,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Jog_Fwd_Lean_Rt_InPlace
       takeName: Take 001
+      internalID: 7400008
       firstFrame: 200
       lastFrame: 222
       wrapMode: 0
@@ -981,6 +1283,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Jog_Fwd_Lean_Lf_InPlace
       takeName: Take 001
+      internalID: 7400010
       firstFrame: 250
       lastFrame: 272
       wrapMode: 0
@@ -1144,13 +1447,22 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -1160,9 +1472,15 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 1
   humanDescription:
+    serializedVersion: 3
     human:
     - boneName: spine1_loResSpine1
       humanName: Hips
@@ -1574,340 +1892,340 @@ ModelImporter:
         modified: 0
     skeleton:
     - name: Bandit(Clone)
+      parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: BanditMesh
+      parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: TSMGWorldJoint
+      parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: Root
+      parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: spine1_loResSpine1
+      parentName: 
       position: {x: -0, y: 0.9863825, z: -0.0115024485}
       rotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftLeg1_LoResUpperLeg
+      parentName: 
       position: {x: 0.09621191, y: -0.058728483, z: 0.03193106}
       rotation: {x: 0.0035296537, y: -0.000000011039426, z: 0.9999938, w: 1.4468512e-10}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftLeg1_LoResLowerLeg
+      parentName: 
       position: {x: -0.37800586, y: 0, z: 0}
       rotation: {x: 0, y: -0.009084568, z: -0, w: 0.99995875}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftLeg1_LoResFoot
+      parentName: 
       position: {x: -0.42120647, y: 0, z: 0}
       rotation: {x: -3.4704724e-16, y: 0.5923259, z: 0.0000000123672335, w: 0.80569845}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftLeg1_LoResToe
+      parentName: 
       position: {x: -0.16519853, y: 0, z: 0}
       rotation: {x: 3.4414374e-16, y: 0.11954485, z: 0.000000031680397, w: 0.9928288}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightLeg1_LoResUpperLeg
+      parentName: 
       position: {x: 0.09621191, y: 0.058728483, z: 0.03193106}
       rotation: {x: 0.0035296537, y: 0.000000007449941, z: 0.9999938, w: -9.763998e-11}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightLeg1_LoResLowerLeg
+      parentName: 
       position: {x: -0.37800586, y: 0, z: 0}
       rotation: {x: 0, y: -0.009084568, z: -0, w: 0.99995875}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightLeg1_LoResFoot
+      parentName: 
       position: {x: -0.42120647, y: 0, z: 0}
       rotation: {x: -2.9939715e-21, y: 0.5923259, z: -2.1687296e-15, w: 0.80569845}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightLeg1_LoResToe
+      parentName: 
       position: {x: -0.16519853, y: 0, z: 0}
       rotation: {x: -2.7290902e-23, y: 0.11954485, z: -3.5564453e-15, w: 0.9928288}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: spine1_loResSpine2
+      parentName: 
       position: {x: -0.17197914, y: 3.818704e-17, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: spine1_loResSpine3
+      parentName: 
       position: {x: -0.17846322, y: 3.9626795e-17, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: head1_neck
+      parentName: 
       position: {x: -0.15838125, y: 3.5167703e-17, z: -0.010586548}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: head1_head
+      parentName: 
       position: {x: -0.07306282, y: -2.2712292e-17, z: -4.440892e-18}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftArm1_HiResClavical
+      parentName: 
       position: {x: -0.027871033, y: -0.08453054, z: -0.008370965}
       rotation: {x: 0, y: 0, z: 0.59415966, w: 0.8043471}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftArm1_HiResUpperArm
+      parentName: 
       position: {x: -0.09584159, y: 0, z: 0}
       rotation: {x: 0.022704227, y: -0.021625767, z: 0.15870455, w: 0.9868281}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftArm1_HiResUpperArmTwist
+      parentName: 
       position: {x: -0.1266042, y: 0, z: 0}
       rotation: {x: -1.01915004e-17, y: 4.1199683e-18, z: -4.1524943e-17, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftArm1_HiResLowerArm
+      parentName: 
       position: {x: -0.1266042, y: 0, z: 0}
       rotation: {x: 0, y: 0.04034305, z: -0, w: 0.9991859}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftArm1_HiResLowerArmTwist
+      parentName: 
       position: {x: -0.12365461, y: 0, z: -4.440892e-18}
       rotation: {x: 0, y: -1.0408341e-17, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftArm1_HiResHand
+      parentName: 
       position: {x: -0.12365461, y: 0, z: -4.440892e-18}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger1_MetaCarpel
+      parentName: 
       position: {x: -0.05143324, y: -0.0075504594, z: -0.027704999}
       rotation: {x: -0.019256951, y: -0.057747617, z: -0.010238932, w: 0.99809295}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger1_Joint1
+      parentName: 
       position: {x: -0.047462787, y: 0, z: -3.330669e-17}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger1_Joint2
+      parentName: 
       position: {x: -0.031641856, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger1_Joint3
+      parentName: 
       position: {x: -0.027692804, y: 2.842171e-16, z: 8.881784e-18}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger2_MetaCarpel
+      parentName: 
       position: {x: -0.05321074, y: -0.0068346146, z: -0.009591245}
       rotation: {x: -0.018807767, y: -0.01558124, z: -0.0110423695, w: 0.99964076}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger2_Joint1
+      parentName: 
       position: {x: -0.047462787, y: 2.842171e-16, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger2_Joint2
+      parentName: 
       position: {x: -0.031641856, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger2_Joint3
+      parentName: 
       position: {x: -0.031641856, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger3_MetaCarpel
+      parentName: 
       position: {x: -0.051261615, y: -0.006129846, z: 0.010492307}
       rotation: {x: -0.01834819, y: 0.024656933, z: -0.01179025, w: 0.9994581}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger3_Joint1
+      parentName: 
       position: {x: -0.047462787, y: 5.684342e-16, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger3_Joint2
+      parentName: 
       position: {x: -0.031641856, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger3_Joint3
+      parentName: 
       position: {x: -0.032727398, y: -2.842171e-16, z: -1.7763568e-17}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger4_MetaCarpel
+      parentName: 
       position: {x: -0.0487409, y: -0.005557187, z: 0.027381076}
       rotation: {x: -0.017703732, y: 0.077107266, z: -0.012737498, w: 0.99678427}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger4_Joint1
+      parentName: 
       position: {x: -0.047462787, y: 8.5265126e-16, z: 8.8817837e-17}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger4_Joint2
+      parentName: 
       position: {x: -0.031641856, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftFinger4_Joint3
+      parentName: 
       position: {x: -0.031641856, y: 0, z: 3.5527136e-17}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftThumb1_Joint1
+      parentName: 
       position: {x: -0.036817774, y: -0.014463796, z: 0.03947111}
       rotation: {x: 0.6450055, y: 0.25843546, z: -0.27548298, w: 0.6642952}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftThumb1_Joint2
+      parentName: 
       position: {x: -0.043170284, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: leftThumb1_Joint3
+      parentName: 
       position: {x: -0.02610453, y: 0, z: 2.842171e-16}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightArm1_HiResClavical
+      parentName: 
       position: {x: -0.027871033, y: 0.08453054, z: -0.008370965}
       rotation: {x: 0.59415966, y: 0.8043471, z: 4.9252058e-17, w: 3.6381786e-17}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightArm1_HiResUpperArm
+      parentName: 
       position: {x: 0.09584159, y: 0, z: 0}
       rotation: {x: 0.02270423, y: -0.021625765, z: 0.15870455, w: 0.9868281}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightArm1_HiResUpperArmTwist
+      parentName: 
       position: {x: 0.1266042, y: 0, z: 0}
       rotation: {x: -4.1850204e-17, y: -1.9298799e-17, z: 2.916504e-17, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightArm1_HiResLowerArm
+      parentName: 
       position: {x: 0.1266042, y: 0, z: 0}
       rotation: {x: 0, y: 0.040343095, z: -0, w: 0.9991859}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightArm1_HiResLowerArmTwist
+      parentName: 
       position: {x: 0.12365461, y: 0, z: -4.440892e-18}
       rotation: {x: 0, y: -1.7347235e-17, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightArm1_HiResHand
+      parentName: 
       position: {x: 0.12365461, y: 0, z: -4.440892e-18}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger1_MetaCarpel
+      parentName: 
       position: {x: 0.05143324, y: 0.0075504594, z: 0.027705025}
       rotation: {x: -0.05774766, y: 0.019256955, z: 0.99809295, w: 0.010238933}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger1_Joint1
+      parentName: 
       position: {x: -0.047462787, y: -1.1368684e-15, z: 2.5313085e-16}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger1_Joint2
+      parentName: 
       position: {x: -0.031641856, y: 0, z: 4.440892e-18}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger1_Joint3
+      parentName: 
       position: {x: -0.027692804, y: 2.842171e-16, z: -1.3322676e-17}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger2_MetaCarpel
+      parentName: 
       position: {x: 0.05321074, y: 0.0068346146, z: 0.009591271}
       rotation: {x: -0.015581283, y: 0.018807769, z: 0.9996407, w: 0.0110423695}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger2_Joint1
+      parentName: 
       position: {x: -0.047462787, y: -8.5265126e-16, z: 2.6201262e-16}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger2_Joint2
+      parentName: 
       position: {x: -0.031641856, y: 0, z: -4.440892e-18}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger2_Joint3
+      parentName: 
       position: {x: -0.031641856, y: 0, z: -4.440892e-18}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger3_MetaCarpel
+      parentName: 
       position: {x: 0.051261615, y: 0.006129846, z: -0.01049228}
       rotation: {x: 0.02465689, y: 0.018348191, z: 0.9994581, w: 0.011790251}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger3_Joint1
+      parentName: 
       position: {x: -0.047462787, y: -5.684342e-16, z: 3.0198067e-16}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger3_Joint2
+      parentName: 
       position: {x: -0.031641856, y: 0, z: 8.881784e-18}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger3_Joint3
+      parentName: 
       position: {x: -0.032727398, y: -2.842171e-16, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger4_MetaCarpel
+      parentName: 
       position: {x: 0.048740905, y: 0.005557187, z: -0.02738105}
       rotation: {x: 0.07710723, y: 0.017703736, z: 0.99678427, w: 0.012737499}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger4_Joint1
+      parentName: 
       position: {x: -0.047462787, y: -8.5265126e-16, z: 2.4868996e-16}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger4_Joint2
+      parentName: 
       position: {x: -0.031641856, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightFinger4_Joint3
+      parentName: 
       position: {x: -0.031641856, y: 0, z: -3.5527136e-17}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightThumb1_Joint1
+      parentName: 
       position: {x: 0.036817778, y: 0.014463796, z: -0.039471082}
       rotation: {x: 0.25843546, y: -0.6450056, z: 0.66429526, w: 0.27548298}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightThumb1_Joint2
+      parentName: 
       position: {x: -0.043170284, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: rightThumb1_Joint3
+      parentName: 
       position: {x: -0.02610453, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -1915,8 +2233,11 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: Root
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 31bc5299503c0fe4db0163e0888f5bc8,
     type: 3}
   animationType: 3

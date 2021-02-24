@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using Extensions;
 
 
 namespace BeastHunter
 {
-    [CreateAssetMenu(fileName = "NewLockTrapData", menuName = "CreateTrapData/CreateTrapLockData", order = 0)]
+    [CreateAssetMenu(fileName = "NewLockTrapData", menuName = "Character/CreateTrapLockData", order = 0)]
     public sealed class LockTrapData : TrapData
     {
         #region Methods
@@ -52,9 +53,8 @@ namespace BeastHunter
             {
                 if (activatedTrapModel.ChargeAmount > 0)
                 {
-                    Context.NpcModels[other.gameObject.GetInstanceID()].TakeDamage(
-                        Services.SharedInstance.AttackService.CountDamage(TrapStruct.TrapDamage,
-                            Context.NpcModels[other.gameObject.GetInstanceID()].GetStats().MainStats));
+                    Services.SharedInstance.AttackService.CountAndDealDamage(TrapStruct.TrapDamage,
+                    other.transform.GetMainParent().gameObject.GetInstanceID());
 
                     activatedTrapModel.TrapObjectInFrontOfCharacter.GetComponent<Animator>().Play(AnimationName);
                     activatedTrapModel.ChargeAmount--;

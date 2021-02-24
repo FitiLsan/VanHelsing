@@ -45,7 +45,7 @@ namespace BeastHunter
         {
             base.Initialize();
             _jumpTime = _characterModel.CharacterData.CharacterCommonSettings.JumpTime;
-            _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Disabled;
+            _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Kinematic;
             _characterModel.IsDodging = true;
         }
 

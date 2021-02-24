@@ -10,7 +10,6 @@ namespace BeastHunter
 
         [SerializeField] protected InteractableObjectType _type;
         protected Action<int, Damage> _onTakeDamageHandler;
-        protected Action<int, InteractableObjectBehavior, Damage> _onDealDamageHandler;
 
         #endregion
 
@@ -23,6 +22,7 @@ namespace BeastHunter
         public Predicate<Collider> OnFilterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerEnterHandler { get; set; }
         public Action<ITrigger, Collider> OnTriggerExitHandler { get; set; }
+        public Action<InteractableObjectBehavior, Collision> OnCollisionEnterHandler { get; set; }
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
 
         public bool IsInteractable { get; set; }
@@ -45,6 +45,14 @@ namespace BeastHunter
             if (OnFilterHandler != null && OnFilterHandler.Invoke(other))
             {
                 OnTriggerExitHandler?.Invoke(this, other);
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (OnFilterHandler != null && OnFilterHandler.Invoke(collision.collider))
+            {
+                OnCollisionEnterHandler?.Invoke(this, collision);
             }
         }
 
@@ -76,32 +84,6 @@ namespace BeastHunter
             if (action != null)
             {
                 _onTakeDamageHandler -= action;
-            }
-        }
-
-        #endregion
-
-
-        #region DealDamage
-
-        public void SetDealDamageEvent(Action<int, InteractableObjectBehavior, Damage> action)
-        {
-            if (action != null)
-            {
-                _onDealDamageHandler += action;
-            }
-        }
-
-        public void DealDamageEvent(InteractableObjectBehavior enemy, Damage damage)
-        {
-            _onDealDamageHandler?.Invoke(GameObject.GetInstanceID(), enemy, damage);
-        }
-
-        public void DeleteDealDamageEvent(Action<int, InteractableObjectBehavior, Damage> action)
-        {
-            if (action != null)
-            {
-                _onDealDamageHandler -= action;
             }
         }
 

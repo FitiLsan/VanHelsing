@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BeastHunter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -360,6 +361,45 @@ namespace Extensions
             }
 
             return index;
+        }
+
+        public static InteractableObjectBehavior GetInteractableObjectByType(this InteractableObjectBehavior[] IOBehaviors, InteractableObjectType type)
+        {
+            for (int i = 0; i < IOBehaviors.Length; i++)
+            {
+                if (IOBehaviors[i].Type == type) return IOBehaviors[i];
+            }
+            return null;
+        }
+
+        public static List<InteractableObjectBehavior> GetInteractableObjectsByType(this InteractableObjectBehavior[] IOBehaviors, InteractableObjectType type)
+        {
+            List<InteractableObjectBehavior> result = new List<InteractableObjectBehavior>();
+            for (int i = 0; i < IOBehaviors.Length; i++)
+            {
+                if (IOBehaviors[i].Type == type) result.Add(IOBehaviors[i]);
+            }
+            return result;
+        }
+
+        public static float[] CumulateValues(this float[] array, bool doProgressively = true)
+        {
+            if (doProgressively)
+            {
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = i > 0 ? array[i] + array[i - 1] : array[i];
+                }
+            }
+            else
+            {
+                for (int i = array.Length - 1; i >= 0; i++)
+                {
+                    array[i] = i == array.Length - 1 ? array[i] : array[i] + array[i+1];
+                }
+            }
+
+            return array;
         }
     }
 }

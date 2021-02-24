@@ -6,17 +6,15 @@ using UnityEngine;
 
 namespace BeastHunter 
 {
-    [CreateAssetMenu (fileName = "Data", menuName = "DataTest")]
+    [CreateAssetMenu (fileName = "Data", menuName = "MainData/Data")]
     public sealed class Data : ScriptableObject 
     {
         #region Fields
 
         [SerializeField] private string _locationDataPath;
-        [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _startDialogueDataPath;
         [SerializeField] private string _dialogueSystemDataPath;
-        [SerializeField] private string _giantMudCrabDataPath;
         [SerializeField] private string _rabbitDataPath;
         [SerializeField] private string _feastPath;
         [SerializeField] private string _bossFeastsPath;
@@ -41,7 +39,14 @@ namespace BeastHunter
         [SerializeField] private string _materialsDataPath;
         [SerializeField] private string _torchObjectPath;
         [SerializeField] private string _hellHoundDataPath;
+        [SerializeField] private string _twoHeadedSnakeDataPath;
+        [SerializeField] private string _bouldersObjectPath;
         [SerializeField] private string _hideBushDataPath;
+        [SerializeField] private string _audioDataPath;
+        [SerializeField] private string _playerHealthBarDataPath;
+        [SerializeField] private string _fallingTreeDataPath;
+        [SerializeField] private string _enemyHealthBarDataPath;
+        [SerializeField] private string _spawnpointsDataPath;
 
         private static Data _instance;
         private static LocationData _locationData;
@@ -60,8 +65,8 @@ namespace BeastHunter
         private static CameraData _cameraData;
         private static QuestJournalData _questJournalData;
         private static UIBestiaryData _uiBestiaryData;
-        private static TemporaryBuffClass _healthBuffData;
-        private static TemporaryBuffClass _staminaBuffData;
+        private static TemporaryBuff _healthBuffData;
+        private static TemporaryBuff _staminaBuffData;
         private static BossData _bossData;
         private static TrapData _trapData;
         private static TrapData _trapData2;
@@ -72,7 +77,14 @@ namespace BeastHunter
         private static MaterialsData _materialsData;
         private static TorchData _torchObjectData;
         private static HellHoundData _hellHoundData;
+        private static TwoHeadedSnakeData _twoHeadedSnakeData;
+        private static BouldersData _bouldersObjectData;
         private static HideBushData _hideBushData;
+        private static AudioData _audioData;
+        private static PlayerHealthBarData _playerHealthBarData;
+        private static FallingTreeData _fallingTreeData;
+        private static EnemyHealthBarData _enemyHealthBarData;
+        private static SpawnpointsData _spawnpointsData;
 
         #endregion
 
@@ -265,25 +277,25 @@ namespace BeastHunter
             }
         }
 
-        public static TemporaryBuffClass HealthBuffData
+        public static TemporaryBuff HealthBuffData
         {
             get
             {
                 if (_healthBuffData == null)
                 {
-                    _healthBuffData = Load<TemporaryBuffClass>("Data/" + Instance._healthBuffDataPath);
+                    _healthBuffData = Load<TemporaryBuff>("Data/" + Instance._healthBuffDataPath);
                 }
                 return _healthBuffData;
             }
         }
 
-        public static TemporaryBuffClass StaminaBuffData
+        public static TemporaryBuff StaminaBuffData
         {
             get
             {
                 if (_staminaBuffData == null)
                 {
-                    _staminaBuffData = Load<TemporaryBuffClass>("Data/" + Instance._staminaBuffDataPath);
+                    _staminaBuffData = Load<TemporaryBuff>("Data/" + Instance._staminaBuffDataPath);
                 }
                 return _staminaBuffData;
             }
@@ -409,6 +421,32 @@ namespace BeastHunter
             }
         }
 
+        public static TwoHeadedSnakeData TwoHeadedSnakeData
+        {
+            get
+            {
+                if (_twoHeadedSnakeData == null)
+                {
+                    _twoHeadedSnakeData =
+                        Resources.Load<TwoHeadedSnakeData>("Data/" + Instance._twoHeadedSnakeDataPath);
+                }
+
+                return _twoHeadedSnakeData;
+            }
+        }
+
+        public static BouldersData BoulderObjectData
+        {
+            get
+            {
+                if (_bouldersObjectData == null)
+                {
+                    _bouldersObjectData = Load<BouldersData>("Data/" + Instance._bouldersObjectPath);
+                }
+                return _bouldersObjectData;
+            }
+        }
+
         public static HideBushData HideBushData
         {
             get
@@ -418,6 +456,66 @@ namespace BeastHunter
                     _hideBushData = Resources.Load<HideBushData>("Data/" + Instance._hideBushDataPath);
                 }
                 return _hideBushData;
+            }
+        }
+
+        public static AudioData AudioData
+        {
+            get
+            {
+                if (_audioData == null)
+                {
+                    _audioData = Resources.Load<AudioData>("Data/" + Instance._audioDataPath);
+                }
+                return _audioData;
+            }
+        }
+
+        public static PlayerHealthBarData PlayerHealthBarData
+        {
+            get
+            {
+                if (_playerHealthBarData == null)
+                {
+                    _playerHealthBarData = Resources.Load<PlayerHealthBarData>("Data/" + Instance._playerHealthBarDataPath);
+                }
+                return _playerHealthBarData;
+            }
+        }
+
+        public static FallingTreeData FallingTreeData
+        {
+            get
+            {
+                if (_fallingTreeData == null)
+                {
+                    _fallingTreeData = Resources.Load<FallingTreeData>("Data/" + Instance._fallingTreeDataPath);
+                }
+                return _fallingTreeData;
+            }
+        }
+
+        public static EnemyHealthBarData EnemyHealthBarData
+        {
+            get
+            {
+                if (_enemyHealthBarData == null)
+                {
+                    _enemyHealthBarData = Resources.Load<EnemyHealthBarData>("Data/" + Instance._enemyHealthBarDataPath);
+                }
+                return _enemyHealthBarData;
+            }
+        }
+
+        public static SpawnpointsData SpawnpointsData
+        {
+            get
+            {
+                if (_spawnpointsData == null)
+                {
+                    _spawnpointsData = Resources.Load<SpawnpointsData>("Data/" + Instance._spawnpointsDataPath);
+                }
+                return _spawnpointsData;
             }
         }
 

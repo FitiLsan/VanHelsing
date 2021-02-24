@@ -12,14 +12,106 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63798768fe41a44b92f7e80c3f4a681, type: 3}
   m_Name: LocationData
   m_EditorClassIdentifier: 
-  _playerSpawnPosition: {x: 6.01, y: 3, z: -5.88}
-  _bossSpawnPosition: {x: 1.62, y: 3, z: 7.51}
+  _playerSpawnPositions:
+  - _position: {x: 398.3659, y: 87.63952, z: 174.16751}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
+  _bossSpawnPositions:
+  - _position: {x: 412.88705, y: 82.8567, z: 220.96916}
+    _eulers: {x: -0, y: 0, z: 0}
+    _scale: {x: 1, y: 1, z: 1}
   _enemySpawnPointData:
   - _spawnDataList:
     - _spawningDataType: 3
       _spawningEnemyData: {fileID: 11400000, guid: 43398a2c55450574da94b5cc7b25fbca,
         type: 2}
-      _spawningChance: 100
-    _spawnPoint: {x: -4, y: 3.84, z: -12.38}
-    _spawnRadius: 5.81
-    _numberToSpawn: 5
+      SpawningChance: 0.33333334
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 53b51f21db0219d4e9d95c5189d3c3d2,
+        type: 2}
+      SpawningChance: 0.33333334
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: a300dd215282c824e872493cb59c8da4,
+        type: 2}
+      SpawningChance: 0.33333334
+    _spawnPosition:
+      _position: {x: 165.77, y: 84.48, z: 242.5}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 43.81
+    _numberToSpawn: 20
+  - _spawnDataList:
+    - _spawningDataType: 4
+      _spawningEnemyData: {fileID: 11400000, guid: 3ec76f01e6e4a2c4880fe9d668b9d605,
+        type: 2}
+      SpawningChance: 1
+    _spawnPosition:
+      _position: {x: 402.93, y: 84.04317, z: 35.63}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 15.04
+    _numberToSpawn: 3
+  - _spawnDataList:
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 43398a2c55450574da94b5cc7b25fbca,
+        type: 2}
+      SpawningChance: 0.33333334
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 53b51f21db0219d4e9d95c5189d3c3d2,
+        type: 2}
+      SpawningChance: 0.33333334
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: a300dd215282c824e872493cb59c8da4,
+        type: 2}
+      SpawningChance: 0.33333334
+    _spawnPosition:
+      _position: {x: 428.35, y: 87.32781, z: 165.46}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 6.12
+    _numberToSpawn: 8
+  - _spawnDataList:
+    - _spawningDataType: 5
+      _spawningEnemyData: {fileID: 11400000, guid: 97e368d8961de3141850c685d7311516,
+        type: 2}
+      SpawningChance: 1
+    _spawnPosition:
+      _position: {x: 409.79868, y: 84.04317, z: 87.717285}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 10.2
+    _numberToSpawn: 2
+  - _spawnDataList:
+    - _spawningDataType: 3
+      _spawningEnemyData: {fileID: 11400000, guid: 53b51f21db0219d4e9d95c5189d3c3d2,
+        type: 2}
+      SpawningChance: 1
+    _spawnPosition:
+      _position: {x: 73.297775, y: 94.330894, z: 191.11725}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _spawnRadius: 9.37
+    _numberToSpawn: 4
+  _interactiveObjectSpawnData:
+  - _objectPosition:
+      _position: {x: 378.5829, y: 85.00432, z: 165.5507}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _type: 1
+  - _objectPosition:
+      _position: {x: 379.40793, y: 85.88804, z: 172.98042}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _type: 4
+  - _objectPosition:
+      _position: {x: 379.64847, y: 86.04926, z: 169.08}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _type: 3
+  - _objectPosition:
+      _position: {x: 380.34, y: 85.88804, z: 162.32}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 1, y: 1, z: 1}
+    _type: 2
+  _doRandomizePlayerPosition: 0
+  _doRandomizeBossPosition: 0

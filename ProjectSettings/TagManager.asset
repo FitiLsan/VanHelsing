@@ -25,6 +25,7 @@ TagManager:
   - Weapon
   - CameraFreelook
   - Hitbox
+  - Food
   - Spawnpoint
   layers:
   - Default
@@ -62,4 +63,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: New Layer
+    uniqueID: 3520070035
     locked: 0

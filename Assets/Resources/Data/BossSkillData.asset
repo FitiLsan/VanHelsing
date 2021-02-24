@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1badb8b2a02815e439f77b0a5b74962d, type: 3}
+  m_Name: BossSkillData
+  m_EditorClassIdentifier: 
+  AttackStateSkills:
+    _defaultSkillId: 0
+    _defaultSkillRangeMin: 3
+    _defaultSkillRangeMax: 5
+    _defaultSkillCooldown: 3
+    _defaultSkillReady: 1
+    _horizontalSkillId: 1
+    _horizontalSkillRangeMin: 3
+    _horizontalSkillRangeMax: 5
+    _horizontalSkillCooldown: 7
+    _horizontalSkillReady: 0
+    _stompSplashSkillId: 2
+    _stompSplashSkillRangeMin: 0
+    _stompSplashSkillRangeMax: 5
+    _stompSplashSkillCooldown: 15
+    _stompSplashSkillReady: 0
+    _rageOfForestSkillId: 3
+    _rageOfForestSkillRangeMin: 10
+    _rageOfForestSkillRangeMax: 30
+    _rageOfForestSkillCooldown: 20
+    _rageOfForestSkillReady: 0
+    _poisonSporesSkillId: 4
+    _poisonSporesSkillRangeMin: 10
+    _poisonSporesSkillRangeMax: 20
+    _poisonSporesSkillCooldown: 15
+    _poisonSporesSkillReady: 0

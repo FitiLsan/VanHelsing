@@ -1,0 +1,209 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f161af36797e6e478e36cd9c678073d, type: 3}
+  m_Name: BossData
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b, type: 3}
+  _startStats:
+    BaseStats:
+      _maximalHealthPoints: 500
+      _currentHealthPoints: 500
+      HealthRegenPerSecond: 0
+      _maximalStaminaPoints: 100
+      _currentStaminaPoints: 100
+      StaminaRegenPerSecond: 0
+      IsDead: 0
+      IsStunned: 0
+    AttackStats:
+      _physicalPower: 50
+      _magicalPower: 0
+    DefenceStats:
+      _physicalDamageResistance: 0.4
+      _stunProbabilityResistance: 0.2
+      _fireDamageResistance: 0
+  _bossSettings:
+    _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b,
+      type: 3}
+    _sporePrefab: {fileID: 1739478888274650687, guid: 5b539aacef1d12341abf243ed5fae008,
+      type: 3}
+    _ruler: {fileID: 840020148945437414, guid: eeb916fe90bdfb64399aa1eefe4321bb, type: 3}
+    _stompPuf: {fileID: 6489853080604144049, guid: 88642e36c52040645a62f7a268884b65,
+      type: 3}
+    _healAura: {fileID: 6809944706259094419, guid: 0a3972e964dcd2b47b2a3bc58d35d554,
+      type: 3}
+    _BarkBuffEffect: {fileID: 100000, guid: 7b56cd9b663f23f429e131a54ec87db0, type: 3}
+    _callOfForestEffect: {fileID: 100002, guid: db50ab1c866680e4bb870bf5eb72dd3d,
+      type: 3}
+    _instanceName: Boss
+    _leftHandObjectPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
+      Spine1/OAK_TEE_ENT_ L Clavicle/OAK_TEE_ENT_ L UpperArm/OAK_TEE_ENT_ L Forearm/OAK_TEE_ENT_
+      L Hand
+    _rightHandObjectPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
+      Spine1/OAK_TEE_ENT_ R Clavicle/OAK_TEE_ENT_ R UpperArm/OAK_TEE_ENT_ R Forearm/OAK_TEE_ENT_
+      R Hand
+    _rightFingerPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_
+      Spine1/OAK_TEE_ENT_ R Clavicle/OAK_TEE_ENT_ R UpperArm/OAK_TEE_ENT_ R Forearm/OAK_TEE_ENT_
+      R Hand/OAK_TEE_ENT_ R Finger1/OAK_TEE_ENT_ R Finger11/OAK_TEE_ENT_ R Finger12
+    _leftFootObjectPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ L Thigh/OAK_TEE_ENT_
+      L Calf/OAK_TEE_ENT_ L Foot
+    _rightFootObjectPath: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ R Thigh/OAK_TEE_ENT_
+      R Calf/OAK_TEE_ENT_ R Foot
+    _instanceTag: Enemy
+    _instanceLayer: 11
+    _bossAnimator: {fileID: 9100000, guid: 14d982f6bf8adfd409a952a432e6ba01, type: 2}
+    _instantiateDirection: -40
+    _rigitbodyMass: 1
+    _rigitbodyDrag: 0
+    _rigitbodyAngularDrag: 0.5
+    _isRigitbodyKinematic: 1
+    _capsuleColliderCenter: {x: 0, y: 1, z: 0}
+    _capsuleColliderRadius: 0.3
+    _capsuleColliderHeight: 2
+    _sphereColliderCenter: {x: 0, y: 1, z: 0}
+    _sphereColliderRadius: 20
+    _sphereColliderRadiusIncrease: 1
+    _sphereColliderRadiusDecrease: 2
+    _navMeshAcceleration: 1.5
+    _walkSpeed: 1.6
+    _runSpeed: 3.4
+    _groundCheckHeight: 1
+    _directionChangeLag: 0.242
+    _animatorBaseSpeed: 1
+    _leftHandHitBoxRadius: 1
+    _leftHandHitBoxCenter: {x: -1, y: 0, z: 0}
+    _rightHandHitBoxRadius: 1
+    _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
+  AttackStateSkills:
+    _defaultSkillEnable: 0
+    _defaultSkillId: 0
+    _defaultSkillRangeMin: 3
+    _defaultSkillRangeMax: 5
+    _defaultSkillCooldown: 5
+    _defaultSkillReady: 1
+    _horizontalSkillEnable: 1
+    _horizontalSkillId: 1
+    _horizontalSkillRangeMin: 3
+    _horizontalSkillRangeMax: 5
+    _horizontalSkillCooldown: 15
+    _horizontalSkillReady: 1
+    _stompSplashSkillEnable: 1
+    _stompSplashSkillId: 2
+    _stompSplashSkillRangeMin: 0
+    _stompSplashSkillRangeMax: 5
+    _stompSplashSkillCooldown: 15
+    _stompSplashSkillReady: 0
+    _poisonSporesSkillEnable: 0
+    _poisonSporesSkillId: 3
+    _poisonSporesSkillRangeMin: 5
+    _poisonSporesSkillRangeMax: 10
+    _poisonSporesSkillCooldown: 15
+    _poisonSporesSkillReady: 0
+    _poisonSporesCircleSkillEnable: 1
+    _poisonSporesCircleSkillId: 4
+    _poisonSporesCircleSkillRangeMin: 5
+    _poisonSporesCircleSkillRangeMax: 10
+    _poisonSporesCircleSkillCooldown: 15
+    _poisonSporesCircleSkillReady: 0
+    _catchSkillEnable: 0
+    _catchSkillId: 5
+    _catchSkillRangeMin: 0
+    _catchSkillRangeMax: 5
+    _catchSkillCooldown: 22
+    _catchSkillReady: 0
+    _fingerSkillEnable: 1
+    _fingerSkillId: 6
+    _fingerSkillRangeMin: 10
+    _fingerSkillRangeMax: 20
+    _fingerSkillCooldown: 7
+    _fingerSkillReady: 0
+  DefenceStateSkills:
+    _defaultDefenceSkillEnable: 0
+    _defaultDefenceSkillId: 0
+    _defaultDefenceSkillRangeMin: -1
+    _defaultDefenceSkillRangeMax: -1
+    _defaultDefenceSkillCooldown: 5
+    _defaultDefenceSkillReady: 1
+    _selfHealSkillEnable: 1
+    _selfHealSkillId: 1
+    _selfHealSkillRangeMin: -1
+    _selfHealSkillRangeMax: -1
+    _selfHealSkillCooldown: 120
+    _selfHealSkillReady: 1
+    _selfHealSkillCanInterrupt: 1
+    _hardBarkSkillEnable: 0
+    _hardBarkSkillId: 2
+    _hardBarkSkillRangeMin: -1
+    _hardBarkSkillRangeMax: -1
+    _hardBarkSkillCooldown: 20
+    _hardBarkSkillReady: 1
+    _canibalHealingSkillEnable: 0
+    _canibalHealingSkillId: 3
+    _canibalHealingSkillRangeMin: 0
+    _canibalHealingSkillRangeMax: 4
+    _canibalHealingSkillCooldown: 10
+    _canibalHealingSkillReady: 1
+    _callOfForestSkillEnable: 0
+    _callOfForestSkillId: 4
+    _callOfForestSkillRangeMin: -1
+    _callOfForestSkillRangeMax: -1
+    _callOfForestSkillCooldown: 30
+    _callOfForestSkillReady: 1
+  ChasingStateSkills:
+    _vineFishingSkillEnable: 1
+    _vineFishingSkillId: 0
+    _vineFishingSkillRangeMin: 10
+    _vineFishingSkillRangeMax: 100
+    _vineFishingSkillCooldown: 120
+    _vineFishingSkillReady: 1
+    _vineFishingSkillPrefab: {fileID: 4545837303767770492, guid: d3997e0955628e9479f808f5a1002c94,
+      type: 3}
+  RetreatingStateSkills:
+    _fakeTreeSkillEnable: 0
+    _fakeTreeSkillId: 0
+    _fakeTreeSkillRangeMin: 0
+    _fakeTreeSkillRangeMax: 0
+    _fakeTreeSkillCooldown: 120
+    _fakeTreeSkillReady: 1
+    _fakeTreePrefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
+  SearchingStateSkills:
+    _bushTriggerSkillEnable: 0
+    _bushTriggerSkillId: 0
+    _bushTriggerSkillRangeMin: 0
+    _bushTriggerSkillRangeMax: 0
+    _bushTriggerSkillCooldown: 0
+    _bushTriggerSkillReady: 0
+  DeadStateSkills:
+    _resurrectionSkillEnable: 0
+    _resurrectionSkillId: 0
+    _resurrectionSkillRangeMin: 0
+    _resurrectionSkillRangeMax: 0
+    _resurrectionSkillCooldown: 30
+    _resurrectionSkillReady: 1
+  NonStateSkills:
+    _testSkillEnable: 0
+    _testSkillId: 0
+    _testSkillRangeMin: 0
+    _testSkillRangeMax: 0
+    _testSkillCooldown: 0
+    _testSkillReady: 0
+    _throwSkillEnable: 1
+    _throwSkillId: 1
+    _throwSkillRangeMin: 0
+    _throwSkillRangeMax: 0
+    _throwSkillCooldown: 10
+    _throwSkillReady: 1
+    _rageOfForestSkillEnable: 1
+    _rageOfForestSkillId: 2
+    _rageOfForestSkillRangeMin: -1
+    _rageOfForestSkillRangeMax: 15
+    _rageOfForestSkillCooldown: 40
+    _rageOfForestSkillReady: 1

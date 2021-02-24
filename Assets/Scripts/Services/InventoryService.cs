@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace BeastHunter
 {
-    public sealed class InventoryService : Service
+    public sealed class InventoryService : IService
     {
         #region Fields
 
@@ -90,7 +90,7 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public InventoryService(Contexts contexts) : base(contexts)
+        public InventoryService()
         {
             FillDictionary();
             InventoryUI = GameObject.Instantiate(Resources.Load("Canvas")) as GameObject;
@@ -130,7 +130,7 @@ namespace BeastHunter
         public void Activate()
         {
             InventoryUI.SetActive(true);
-            PlayerDoll = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath("Assets/AdditiveAssets/PolygonFantasyHeroCharacters/Prefabs/ModularCharacters.prefab", typeof(GameObject)));
+          //  PlayerDoll = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath("Assets/AdditiveAssets/PolygonFantasyHeroCharacters/Prefabs/ModularCharacters.prefab", typeof(GameObject)));
             BuildLists();
             BuildDictionaryMeshes();
             LoadPlayerBase();
@@ -208,7 +208,7 @@ namespace BeastHunter
         {
             ClearUnactiveMeshes();
             ClearMeshes();
-            PrefabUtility.SaveAsPrefabAsset(PlayerDoll, PlayerSavePrefabPath);
+           // PrefabUtility.SaveAsPrefabAsset(PlayerDoll, PlayerSavePrefabPath);
             GameObject.Destroy(PlayerDoll);
             InventoryUI.SetActive(false);
         }

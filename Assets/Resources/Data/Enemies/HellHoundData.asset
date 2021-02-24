@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11b0e2db6f52ccc4e8b52d7e5baebaf6, type: 3}
+  m_Name: HellHoundData
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 7253339370346634, guid: d20103b74c35dbe4884c25259b793b81, type: 3}
+  _startStats:
+    BaseStats:
+      _maximalHealthPoints: 100
+      _currentHealthPoints: 100
+      HealthRegenPerSecond: 0
+      _maximalStaminaPoints: 0
+      _currentStaminaPoints: 0
+      StaminaRegenPerSecond: 0
+      IsDead: 0
+      IsStunned: 0
+    AttackStats:
+      _physicalPower: 10
+      _magicalPower: 2
+    DefenceStats:
+      _physicalDamageResistance: 0.2
+      _stunProbabilityResistance: 0.2
+      _fireDamageResistance: 0.2
+  Stats:
+    _debugMessages: 0
+    _damage:
+      PhysicalDamage: 5
+      StunProbability: 0
+      FireDamage: 0
+    _wanderingRadius: 50
+    _detectionRadius: 30
+    _roamingChance: 75
+    _jumpingSpeedRate: 1.2
+    _attacksTurnSpeed: 0.5
+    _attackDirectDistance: 1.5
+    _attackBottomDistance: 1.25
+    _attackJumpMaxDistance: 3.5
+    _attackJumpMinDistance: 2.5
+    _attackJumpSpeed: 10
+    _attackJumpCooldown: 2
+    _idlingMinTime: 5
+    _idlingMaxTime: 10
+    _restingChance: 20
+    _restingMinTime: 30
+    _restingMaxTime: 60
+    _escapeDistance: 50
+    _percentEscapeHealth: 30
+    _escapingSpeed: 7
+    _searchingTime: 45
+    _searchingSpeed: 5
+    _backJumpDistance: 1
+    _backJumpLength: 1.5
+    _backJumpSpeed: 5
+    _backJumpAnimationSpeedRate: 2
+    _backJumpAnimationIntensity: 0.5
+    _battleCirclingRadius: 3
+    _battleCirclingSpeed: 3
+    _battleCirclingMinTime: 1
+    _battleCirclingMaxTime: 3
+    _battleCirclingMaxDistance: 5
+    _chasingTurnSpeedNearTarget: 0.1
+    _chasingTurnDistanceNearTarget: 3
+    _chasingBraking: 0
+    _chasingBrakingSpeedRate: 0.5
+    _chasingBrakingMinSpeed: 2
+    _chasingBrakingMaxDistance: 6
+    _chasingBrakingMinDistance: 2
+    _maxRoamingSpeed: 1
+    _maxChasingSpeed: 10
+    _angularSpeed: 450
+    _acceleration: 20
+    _stoppingDistance: 1
+    _baseOffsetByY: 0

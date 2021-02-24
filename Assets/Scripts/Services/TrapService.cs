@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public class TrapService : Service
+    public class TrapService : IService
     {
         #region Fields
 
@@ -15,9 +15,9 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public TrapService(Contexts contexts) : base(contexts)
+        public TrapService(GameContext context)
         {
-            _context = contexts as GameContext;
+            _context = context;
         }
 
         #endregion

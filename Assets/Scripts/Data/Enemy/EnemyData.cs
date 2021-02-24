@@ -1,34 +1,40 @@
 ﻿using UnityEngine;
 
+
 namespace BeastHunter
 {
     public abstract class EnemyData : ScriptableObject
     {
         #region Fields
 
-        public EnemyStats BaseStats;
+        [SerializeField] private GameObject _prefab;
+        [SerializeField] private Stats _startStats;
+
+        #endregion
+
+
+        #region Properties
+
+        public GameObject Prefab => _prefab;
+        public Stats StartStats => _startStats;
 
         #endregion
 
 
         #region Methods
 
-        public virtual void Do(string how)
-        {
-            Debug.Log("I did something " + how);
-        }
+        public abstract void Act(EnemyModel enemyModel);
 
         public virtual void TakeDamage(EnemyModel instance, Damage damage)
         {
-            instance.CurrentHealth -= damage.PhysicalDamage;
-            if (instance.CurrentHealth <= 0)
+            instance.CurrentStats.BaseStats.CurrentHealthPoints -= damage.GetTotalDamage();
+
+            if (instance.CurrentStats.BaseStats.CurrentHealthPoints <= 0)
             {
-                instance.IsDead = true;
-                //instance.GetComponent<InteractableObjectBehavior>().enabled = false;
+                instance.CurrentStats.BaseStats.IsDead = true;
             }
         }
 
         #endregion
     }
-
 }

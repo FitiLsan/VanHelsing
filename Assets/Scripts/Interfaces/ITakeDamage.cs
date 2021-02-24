@@ -1,4 +1,6 @@
-﻿namespace BeastHunter
+﻿using UnityEngine;
+
+namespace BeastHunter
 {
     public interface ITakeDamage
     {
