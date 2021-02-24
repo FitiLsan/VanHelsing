@@ -102,14 +102,16 @@ namespace BeastHunter
             {
                 _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.RunSpeed;
                 _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK;
-                _stateMachine._model.BossAnimator.Play("MovingState");
+                if (!_stateMachine._model.BossAnimator.GetCurrentAnimatorStateInfo(0).IsName("MovingState")) //need to release in BossAnimationController
+                {
+                    _stateMachine._model.BossAnimator.Play("MovingState", 0, 0);
+                }
                 CheckExtraAttack();
             }
         }
 
         private void CheckExtraAttack()
         {
-
             _forceAttackTime -= Time.deltaTime;
             if (_forceAttackTime <= 0)
             {
