@@ -15,6 +15,7 @@ namespace BeastHunter
 
         public RageOfForestAttackSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
+            IsNeedRage = true;
         }
 
         public override void UseSkill(int id)

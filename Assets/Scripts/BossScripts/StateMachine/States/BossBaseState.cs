@@ -155,16 +155,20 @@ namespace BeastHunter
             }
         }
 
-        protected virtual void ChooseReadySkills(Dictionary<int, BossBaseSkill> dic, Dictionary<int,int> readyDic, ref int count)
+        protected virtual void ChooseReadySkills(Dictionary<int, BossBaseSkill> dic, Dictionary<int,int> readyDic)
         {
+            var count = 0;
             foreach (var skill in dic)
             {
                 if (dic[skill.Key].IsSkillReady)
                 {
                     if (CheckDistance(dic[skill.Key].SkillRangeMin, dic[skill.Key].SkillRangeMax))
                     {
-                        readyDic.Add(count, skill.Key);
-                        count++;
+                        if(_bossModel.IsRage == dic[skill.Key].IsNeedRage)
+                        {
+                            readyDic.Add(count, skill.Key);
+                            count++;
+                        }
                     }
                 }
             }

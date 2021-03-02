@@ -67,9 +67,8 @@ namespace BeastHunter
         private void ChoosingDefenceSkill(bool isDefault = false)
         {
             _readySkillDictionary.Clear();
-            var j = 0;
 
-            ChooseReadySkills(_bossSkills.DefenceStateSkillDictionary, _readySkillDictionary, ref j);
+            ChooseReadySkills(_bossSkills.DefenceStateSkillDictionary, _readySkillDictionary);
 
 
             if (!isDefault & _readySkillDictionary.Count != 0)

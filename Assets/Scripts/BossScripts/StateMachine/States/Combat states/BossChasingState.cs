@@ -100,8 +100,6 @@ namespace BeastHunter
             }
             if (base.CurrentAttackTime <= 0)
             {
-                _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.RunSpeed;
-                _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK;
                 if (!_stateMachine._model.BossAnimator.GetCurrentAnimatorStateInfo(0).IsName("MovingState")) //need to release in BossAnimationController
                 {
                     _stateMachine._model.BossAnimator.Play("MovingState", 0, 0);
@@ -116,8 +114,7 @@ namespace BeastHunter
             if (_forceAttackTime <= 0)
             {
                 var readyDic = new Dictionary<int, int>();
-                var skillCount = 0;
-                ChooseReadySkills(_bossSkills.ChasingStateSkillDictionary, readyDic, ref skillCount);
+                ChooseReadySkills(_bossSkills.ChasingStateSkillDictionary, readyDic);
 
                 if(readyDic.ContainsKey(VINE_FISHING_ID))
                 {

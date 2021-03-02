@@ -81,6 +81,9 @@ namespace BeastHunter
         public FullBodyBipedEffector CurrentHand;
         public int ClosestTriggerIndex;
         public AimIK RightHandAimIK;
+        public bool IsRage;
+        public ParticleSystem Wisps;
+        
 
         #endregion
 
@@ -295,6 +298,9 @@ namespace BeastHunter
 
             InteractionSystem = BossTransform.GetComponent<InteractionSystem>();
             RightHandAimIK = BossTransform.GetComponent<AimIK>();
+           // RightHandAimIK.solver.IKPositionWeight = 0;
+            Wisps = BossTransform.Find("Wisps").GetComponent<ParticleSystem>();
+            Wisps.maxParticles = 0;
         }
 
         #endregion
@@ -344,6 +350,12 @@ namespace BeastHunter
             if (CurrentStats.BaseStats.CurrentHealthPoints <= 0)
             {
                 BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Dead);
+                return;
+            }
+
+            if (CurrentStats.BaseStats.CurrentHealthPart <= 0.5)
+            {
+                IsRage = true;
                 return;
             }
 

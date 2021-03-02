@@ -94,9 +94,8 @@ namespace BeastHunter
         private void ChoosingAttackSkill()
         {
             _readySkillDictionary.Clear();
-            var j = 0;
 
-            ChooseReadySkills(_bossSkills.AttackStateSkillDictionary, _readySkillDictionary, ref j);
+            ChooseReadySkills(_bossSkills.AttackStateSkillDictionary, _readySkillDictionary);
 
             if (_readySkillDictionary.Count==0 && _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position)>=DISTANCE_TO_START_ATTACK)
             {
@@ -181,7 +180,7 @@ namespace BeastHunter
               //  CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine._context.CharacterModel.CharacterStats));
 
                 hitBox.IsInteractable = false;
-                _bossModel.LeftHandCollider.enabled = false;
+              //  _bossModel.LeftHandCollider.enabled = false;
                 
             }
         }
@@ -198,7 +197,7 @@ namespace BeastHunter
                 //    CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
                 //        _context.CharacterModel.CharacterStats));
                 hitBox.IsInteractable = false;
-                _bossModel.RightHandCollider.enabled = false;
+            //   _bossModel.RightHandCollider.enabled = false;
             }
         }
 
@@ -209,7 +208,7 @@ namespace BeastHunter
                 handDamage.PhysicalDamage = Random.Range(5f, 15f);
                 Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
                     gameObject.GetInstanceID());
-                hitBox.IsInteractable = false;
+              //  hitBox.IsInteractable = false;
             }
         }
 

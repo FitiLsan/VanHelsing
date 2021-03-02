@@ -18,6 +18,7 @@ namespace BeastHunter
         private bool _isCooldownStart;
         private bool _isSkillReady;
         private bool _canInterrupt;
+        private bool _isNeedRage;
         private GameObject _prefab;
 
         protected BossModel _bossModel;
@@ -85,6 +86,8 @@ namespace BeastHunter
         public float SkillRangeMax => _skillRangeMax;
 
         public float SkillCooldown => _skillCooldown;
+
+        public bool IsNeedRage { get; set; }
 
         public bool IsSkillReady
         {

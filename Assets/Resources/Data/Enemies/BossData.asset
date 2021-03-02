@@ -123,8 +123,14 @@ MonoBehaviour:
     _fingerSkillId: 6
     _fingerSkillRangeMin: 10
     _fingerSkillRangeMax: 20
-    _fingerSkillCooldown: 2
+    _fingerSkillCooldown: 6.6
     _fingerSkillReady: 1
+    _rageOfForestSkillEnable: 1
+    _rageOfForestSkillId: 7
+    _rageOfForestSkillRangeMin: 10
+    _rageOfForestSkillRangeMax: 30
+    _rageOfForestSkillCooldown: 30
+    _rageOfForestSkillReady: 1
   DefenceStateSkills:
     _defaultDefenceSkillEnable: 0
     _defaultDefenceSkillId: 0
@@ -201,9 +207,3 @@ MonoBehaviour:
     _throwSkillRangeMax: 0
     _throwSkillCooldown: 10
     _throwSkillReady: 1
-    _rageOfForestSkillEnable: 0
-    _rageOfForestSkillId: 2
-    _rageOfForestSkillRangeMin: -1
-    _rageOfForestSkillRangeMax: 15
-    _rageOfForestSkillCooldown: 40
-    _rageOfForestSkillReady: 1

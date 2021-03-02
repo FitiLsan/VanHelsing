@@ -126,18 +126,19 @@ namespace BeastHunter
 
         private void HealthCheck()
         {
-           // Debug.Log($"Health{_bossModel.CurrentStats.BaseStats.CurrentHealthPoints}");
-
-            if ( _bossModel.CurrentStats.BaseStats.CurrentHealthPart <= 0.1f)
+            if ( _bossModel.CurrentStats.BaseStats.CurrentHealthPart < 1)
             {
-                if (!IsAnySkillUsed)
-                {
-                    var id = 2;
-                    CurrentSkill = _stateMachine.BossSkills.NonStateSkillDictionary[id];
-                    _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.NonStateSkillDictionary, id);
-                    return;
-                }
+                var rate = (1 - _bossModel.CurrentStats.BaseStats.CurrentHealthPart) * 10;
+                Regeneration(rate);
+                var wispCount = (int)rate * 3;
+                _bossModel.Wisps.maxParticles = wispCount;
             }
+        }
+
+        private void Regeneration(float rate)
+        {
+            var _healPower = 1.5f;
+            _bossModel.CurrentStats.BaseStats.CurrentHealthPoints += _healPower * rate * Time.deltaTime;
         }
 
         private void HitCounter()
@@ -196,7 +197,6 @@ namespace BeastHunter
                     SPEED_COUNT_FRAME;
                 _lastPosition = _currentPosition;
             }
-
             _stateMachine._model.BossAnimator.SetFloat("Speed", _stateMachine._model.CurrentSpeed);
         }
 

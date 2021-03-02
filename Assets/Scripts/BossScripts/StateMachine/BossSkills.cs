@@ -101,6 +101,7 @@ namespace BeastHunter
             PoisonSporesCircleSkill = new PoisonSporesCircleAttackSkill(AttackStateSkillsSettings.GetPoisonSporesCircleSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             CatchAttackSkill = new CatchAttackSkill(AttackStateSkillsSettings.GetCatchSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             FingerAttackSkill = new FingerAttackSkill(AttackStateSkillsSettings.GetFingerSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkillsSettings.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
 
             AddSkillToDictionary(DefaultAttackSkill, AttackStateSkillDictionary);
             AddSkillToDictionary(HorizontalAttackSkill, AttackStateSkillDictionary);
@@ -109,6 +110,7 @@ namespace BeastHunter
             AddSkillToDictionary(PoisonSporesCircleSkill, AttackStateSkillDictionary);
             AddSkillToDictionary(CatchAttackSkill, AttackStateSkillDictionary);
             AddSkillToDictionary(FingerAttackSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(RageOfForestSkill, AttackStateSkillDictionary);
 
             #endregion
 
@@ -164,11 +166,8 @@ namespace BeastHunter
 
             TestSkill = new TestAttackSkill(NonStateSkillsSettings.GetTestSkillInfo(), NonStateSkillDictionary, _stateMachine);
             ThrowAttackSkill = new ThrowAttackSkill(NonStateSkillsSettings.GetThrowSkillInfo(), NonStateSkillDictionary, _stateMachine);
-            RageOfForestSkill = new RageOfForestAttackSkill(NonStateSkillsSettings.GetRageOfForestSkillInfo(), NonStateSkillDictionary, _stateMachine);
-
             AddSkillToDictionary(TestSkill, NonStateSkillDictionary);
             AddSkillToDictionary(ThrowAttackSkill, NonStateSkillDictionary);
-            AddSkillToDictionary(RageOfForestSkill, NonStateSkillDictionary);
 
             #endregion
 
