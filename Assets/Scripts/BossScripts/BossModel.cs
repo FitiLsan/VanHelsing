@@ -298,7 +298,7 @@ namespace BeastHunter
 
             InteractionSystem = BossTransform.GetComponent<InteractionSystem>();
             RightHandAimIK = BossTransform.GetComponent<AimIK>();
-           // RightHandAimIK.solver.IKPositionWeight = 0;
+            RightHandAimIK.solver.IKPositionWeight = 0;
             Wisps = BossTransform.Find("Wisps").GetComponent<ParticleSystem>();
             Wisps.maxParticles = 0;
         }
