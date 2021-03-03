@@ -10,8 +10,8 @@ namespace BeastHunter
 
         private const float DISTANCE_TO_START_ATTACK = 4f;
         private const float TRIGGER_VIEW_INCREASE = 50f;
-        private const float FORCE_ATTACK_TIME_MIN = 3f;
-        private const float FORCE_ATTACK_TIME_MAX = 10f;
+        private const float FORCE_ATTACK_TIME_MIN = 1;//3f;
+        private const float FORCE_ATTACK_TIME_MAX = 1;//10f;
         private const float VINE_FISHING_DISTANCE = 10f;
         private const int VINE_FISHING_ID = 0;
         private const float ANIMATION_DELAY = 0.2f;

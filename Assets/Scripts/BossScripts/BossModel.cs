@@ -81,6 +81,7 @@ namespace BeastHunter
         public FullBodyBipedEffector CurrentHand;
         public int ClosestTriggerIndex;
         public AimIK RightHandAimIK;
+        public Transform RightHandAimIKTarget;
         public bool IsRage;
         public ParticleSystem Wisps;
         
@@ -299,6 +300,7 @@ namespace BeastHunter
             InteractionSystem = BossTransform.GetComponent<InteractionSystem>();
             RightHandAimIK = BossTransform.GetComponent<AimIK>();
             RightHandAimIK.solver.IKPositionWeight = 0;
+            RightHandAimIKTarget = new GameObject().transform;
             Wisps = BossTransform.Find("Wisps").GetComponent<ParticleSystem>();
             Wisps.maxParticles = 0;
         }

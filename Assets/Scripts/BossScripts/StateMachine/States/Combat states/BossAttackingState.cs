@@ -208,7 +208,7 @@ namespace BeastHunter
                 handDamage.PhysicalDamage = Random.Range(5f, 15f);
                 Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
                     gameObject.GetInstanceID());
-              //  hitBox.IsInteractable = false;
+                hitBox.IsInteractable = false;
             }
         }
 
