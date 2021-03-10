@@ -7,6 +7,7 @@ namespace BeastHunter {
     public sealed class Data : ScriptableObject {
         #region Fields
 
+        [SerializeField] private string _locationDataPath;
         [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
         [SerializeField] private string _rabbitDataPath;
@@ -15,6 +16,7 @@ namespace BeastHunter {
         [SerializeField] private string _cameraDataPath;
 
         private static Data _instance;
+        private static LocationData _locationData;
         private static SphereData _sphereData;
         private static CharacterData _characterData;
         private static RabbitData _rabbitData;
@@ -33,6 +35,18 @@ namespace BeastHunter {
                     _instance = Resources.Load<Data> ("Data/" + typeof (Data).Name);
                 }
                 return _instance;
+            }
+        }
+
+        public static LocationData LocationData
+        {
+            get
+            {
+                if (_locationData == null)
+                {
+                    _locationData = Resources.Load<LocationData>("Data/" + Instance._locationDataPath);
+                }
+                return _locationData;
             }
         }
 

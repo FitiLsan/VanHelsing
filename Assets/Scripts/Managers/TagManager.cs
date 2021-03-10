@@ -11,6 +11,7 @@
         public const string SPHERE = "Sphere";
         public const string NPC    = "NPC";
         public const string ENEMY  = "Enemy";
+        public const string SPAWNPOINT = "Spawnpoint";
 
         #endregion
     }
