@@ -18,12 +18,7 @@
 
         private void AddInitializeControllers(GameContext context) 
         {
-            //Add<T>(context) where T : EnemyInitializeController
-
-            //Add(new SphereInitilizeController(context));
-            //Add(new IOInitializeController(context));
-            Add(new CharacterInitilizeController(context));
-            Add(new RabbitInitializeController(context));
+            Add(new LocationInitializeController(context));
         }
 
         private void AddControllers(GameContext context)

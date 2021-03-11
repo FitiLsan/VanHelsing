@@ -4,19 +4,27 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public class IOInitializeController : EnemyInitializeController
+    public class IOInitializeController : IAwake
     {
+        #region Fields
+
+        protected GameContext _context;
+
+        #endregion
+
         #region ClassLifeCycles
 
-        public IOInitializeController(GameContext context) : base(context)
-        { }
+        public IOInitializeController(GameContext context)
+        {
+            _context = context;
+        }
 
         #endregion
 
 
         #region IAwake
 
-        public override void OnAwake() // link with LocationData
+        public void OnAwake() // link with LocationData
         {
             var data = Resources.Load<IOData>("Data/IOData");
             GameObject instance = GameObject.Instantiate(data.BaseStats.Prefab);
