@@ -18,6 +18,7 @@ namespace BeastHunter
 
         private bool _isInputMove;
         private bool _isInputRun;
+        private bool _isInputAttack;
         private bool _isInputAim;
         private bool _isInputWeaponChoise;
 
@@ -69,6 +70,30 @@ namespace BeastHunter
                     else
                     {
                         Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.RunStop);
+                    }
+                }
+            }
+        }
+
+        public bool IsInputAttack
+        {
+            get
+            {
+                return _isInputAttack;
+            }
+            set
+            {
+                if (_isInputAttack != value)
+                {
+                    _isInputAttack = value;
+
+                    if (_isInputAttack)
+                    {
+                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.AttackStart);
+                    }
+                    else
+                    {
+                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.AttackEnd);
                     }
                 }
             }

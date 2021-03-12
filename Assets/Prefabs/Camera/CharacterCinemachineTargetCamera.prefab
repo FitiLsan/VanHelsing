@@ -70,6 +70,7 @@ GameObject:
   - component: {fileID: 183103944933393036}
   - component: {fileID: 6332101687035818265}
   - component: {fileID: 3429306577196274037}
+  - component: {fileID: 8915543047349839710}
   m_Layer: 14
   m_Name: cm
   m_TagString: Untagged
@@ -148,3 +149,18 @@ MonoBehaviour:
   m_PitchDamping: 0
   m_YawDamping: 0
   m_RollDamping: 0
+--- !u!114 &8915543047349839710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4309947547169570402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 68b0627ea3d796448b29ab0938f2c240, type: 2}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 0

@@ -107,7 +107,7 @@ namespace BeastHunter
         private void ControlAimingTarget()
         {
             Services.SharedInstance.CameraService.
-                SetCameraTargetPosition(new Vector3(_inputModel.MouseInputX, _inputModel.MouseInputY, 0), true);
+                SetCameraTargetPosition(new Vector3(_inputModel.MouseInputX, -_inputModel.MouseInputY, 0), true);
         }
 
         #endregion

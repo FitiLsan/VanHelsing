@@ -53,6 +53,8 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.Shooting, new ShootingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.KnockedDown, new KnockedDownState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.GettingUp, new GettingUpState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.MidAir, new MidAirState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Hitted, new HittedState(_context, this));
         }
 
         #endregion

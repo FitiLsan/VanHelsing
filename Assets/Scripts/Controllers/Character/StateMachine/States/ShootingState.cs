@@ -52,6 +52,7 @@ namespace BeastHunter
 
             _characterModel.CurrentWeaponData.Value.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
             _exitTime = _characterModel.CurrentWeaponData.Value.CurrentAttack.AttackTime;
+            Services.SharedInstance.CameraService.ShakeAimingCamera(0.5f);
         }
 
         private void ControlMovement()

@@ -4,6 +4,7 @@ using System;
 using RootMotion.Dynamics;
 using UniRx;
 using Extensions;
+using DG.Tweening;
 
 
 namespace BeastHunter
@@ -96,6 +97,7 @@ namespace BeastHunter
         private bool _isWeaponWheelOpen;
         private bool _isCurrentWeaponWithProjectile;
 
+
         private EnemyHealthBarModel _enemyHealthBarModel;
         private EnemyModel _targetEnemy;
 
@@ -131,9 +133,9 @@ namespace BeastHunter
             _weaponWheelText = _weaponWheelUI.transform.GetComponentInChildren<Text>();
             InitAllWeaponItemsOnWheel();
 
-            _standartSpeedCounter = new CharacterSpeedCounter(_characterModel.CharacterCommonSettings.WalkSpeed, 
-                _characterModel.CharacterCommonSettings.RunSpeed,_characterModel.CharacterCommonSettings.AccelerationLag, 
-                    _characterModel.CharacterCommonSettings.DecelerationLag, 
+            _standartSpeedCounter = new CharacterSpeedCounter(_characterModel.CharacterCommonSettings.WalkSpeed,
+                _characterModel.CharacterCommonSettings.RunSpeed, _characterModel.CharacterCommonSettings.AccelerationLag,
+                    _characterModel.CharacterCommonSettings.DecelerationLag,
                         _characterModel.CharacterCommonSettings.MinimalSpeed);
             _sneakingSpeedCounter = new CharacterSpeedCounter(_characterModel.CharacterCommonSettings.SneakWalkSpeed,
                 _characterModel.CharacterCommonSettings.SneakRunSpeed, _characterModel.CharacterCommonSettings.
@@ -176,7 +178,7 @@ namespace BeastHunter
             _services.EventManager.StartListening(InputEventTypes.TimeSkipMenu, OnTimeSkipOpenCloseHandler);
             _services.EventManager.StartListening(InputEventTypes.WeaponWheelOpen, OnWeaponWheelOpenHandler);
             _services.EventManager.StartListening(InputEventTypes.WeaponWheelClose, OnWeaponWheelCloseHandler);
-            _services.EventManager.StartListening(InputEventTypes.Attack, OnAttackHandler);
+            _services.EventManager.StartListening(InputEventTypes.AttackStart, OnAttackHandler);
             _services.EventManager.StartListening(InputEventTypes.AimStart, OnAimHandler);
             _services.EventManager.StartListening(InputEventTypes.Jump, OnJumpHandler);
             _services.EventManager.StartListening(InputEventTypes.RunStart, OnStartRunHandler);
@@ -220,7 +222,12 @@ namespace BeastHunter
             EnemyHealthBarUpdate();
 
             //FOR DEBUG ONLY!
-            if (Input.GetKeyDown(KeyCode.H)) TestingHealthRestoreToCurrentMaxHealthThreshold();
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                Damage damage = new Damage();
+                damage.PhysicalDamage = 15f;
+                TakeDamage(damage);
+            }
         }
 
         #endregion
@@ -241,7 +248,7 @@ namespace BeastHunter
             _services.EventManager.StopListening(InputEventTypes.TimeSkipMenu, OnTimeSkipOpenCloseHandler);
             _services.EventManager.StopListening(InputEventTypes.WeaponWheelOpen, OnWeaponWheelOpenHandler);
             _services.EventManager.StopListening(InputEventTypes.WeaponWheelClose, OnWeaponWheelCloseHandler);
-            _services.EventManager.StopListening(InputEventTypes.Attack, OnAttackHandler);
+            _services.EventManager.StopListening(InputEventTypes.AttackStart, OnAttackHandler);
             _services.EventManager.StopListening(InputEventTypes.AimStart, OnAimHandler);
             _services.EventManager.StopListening(InputEventTypes.Jump, OnJumpHandler);
             _services.EventManager.StopListening(InputEventTypes.RunStart, OnStartRunHandler);
@@ -274,7 +281,7 @@ namespace BeastHunter
 
         #region ITakeDamage
 
-        private void TakeDamage(Damage damage)
+        public void TakeDamage(Damage damage)
         {
             if (!_characterModel.CurrentStats.BaseStats.IsDead && !_characterModel.IsDodging)
             {
@@ -282,14 +289,18 @@ namespace BeastHunter
 
                 OnHealthChange?.Invoke();
 
-                float stunProbability = UnityEngine.Random.Range(0f, 1f);
-
                 if (_characterModel.CurrentStats.BaseStats.CurrentHealthPoints <= 0)
                 {
                     _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Dead]);
                 }
 
-                Debug.Log("Player has: " + _characterModel.CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
+                Debug.LogError("Player has: " + _characterModel.CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
+
+                //if (_stateMachine.CurrentState != _stateMachine.CharacterStates[CharacterStatesEnum.MidAir] &&
+                //    _stateMachine.CurrentState != _stateMachine.CharacterStates[CharacterStatesEnum.KnockedDown])
+                //{
+                //    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Hitted]);                              
+                //}
             }
         }
 
@@ -407,7 +418,7 @@ namespace BeastHunter
 
         private bool OnTriggerFilter(Collider interactedObject)
         {
-            return interactedObject.GetComponentInChildren<InteractableObjectBehavior>() != null && 
+            return interactedObject.GetComponentInChildren<InteractableObjectBehavior>() != null &&
                 !interactedObject.isTrigger;
         }
 
@@ -475,7 +486,6 @@ namespace BeastHunter
                 _services.AttackService.CountAndDealDamage(_characterModel.CurrentWeaponData.Value.CurrentAttack.AttackDamage,
                     enemy.transform.GetMainParent().gameObject.GetInstanceID(), _characterModel.CurrentStats, _characterModel.
                         CurrentWeaponData.Value);
-
                 hitBox.IsInteractable = false;
             }
         }
@@ -618,13 +628,13 @@ namespace BeastHunter
                     item.GetComponentsInChildren<Image>()[1].sprite = item.WeaponData.WeaponImage;
                     images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
                 }
-                else if(item.TrapData != null)
+                else if (item.TrapData != null)
                 {
                     item.GetComponentsInChildren<Image>()[1].sprite = item.TrapData.TrapImage;
                     images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
                 }
                 else
-                {                
+                {
                     images[1].color = new Color(1f, 1f, 1f, 0f);
                 }
 
@@ -657,12 +667,12 @@ namespace BeastHunter
                     {
                         _weaponWheelText.text = item.WeaponData.WeaponName;
                     }
-                    else if(item.TrapData != null)
+                    else if (item.TrapData != null)
                     {
                         _weaponWheelText.text = item.TrapData.TrapStruct.TrapName;
                     }
                 }
-                else if(item.IsNotEmpty)
+                else if (item.IsNotEmpty)
                 {
                     images[0].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_ALFA);
                     images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
@@ -686,11 +696,11 @@ namespace BeastHunter
         {
             new InitializeWeaponController(_context, weaponData, OnHitBoxFilter, OnHitBoxHit, ref OnWeaponChange);
 
-            if(weaponData is OneHandedShootingWeapon oneHandedWeapon)
+            if (weaponData is OneHandedShootingWeapon oneHandedWeapon)
             {
                 _isCurrentWeaponWithProjectile = oneHandedWeapon.ProjectileData != null;
             }
-            else if(weaponData is TwoHandedShootingWeapon twoHandedWeapon)
+            else if (weaponData is TwoHandedShootingWeapon twoHandedWeapon)
             {
                 _isCurrentWeaponWithProjectile = twoHandedWeapon.ProjectileData != null;
             }
@@ -727,21 +737,21 @@ namespace BeastHunter
             {
                 if (isStrafing && _inputModel.IsInputMove)
                 {
-                    Vector3 moveDirection = (Vector3.forward * _inputModel.InputAxisY + Vector3.right * 
+                    Vector3 moveDirection = (Vector3.forward * _inputModel.InputAxisY + Vector3.right *
                         _inputModel.InputAxisX);
 
-                    if(Math.Abs(_inputModel.InputAxisX) + Math.Abs(_inputModel.InputAxisY) == 2)
+                    if (Math.Abs(_inputModel.InputAxisX) + Math.Abs(_inputModel.InputAxisY) == 2)
                     {
                         moveDirection *= ANGULAR_MOVE_SPEED_REDUCTION_INDEX;
                     }
 
-                    _characterModel.CharacterData.Move(_characterModel.CharacterTransform, _characterModel.CurrentSpeed, 
+                    _characterModel.CharacterData.Move(_characterModel.CharacterTransform, _characterModel.CurrentSpeed,
                         moveDirection);
                 }
                 else
                 {
                     _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, _characterModel.CurrentSpeed);
-                }              
+                }
             }
         }
 
@@ -785,7 +795,7 @@ namespace BeastHunter
 
                     if (isStrafing)
                     {
-                        _characterModel.CharacterTransform?.LookAt(_characterModel.ClosestEnemy.Value.transform.position);                         
+                        _characterModel.CharacterTransform?.LookAt(_characterModel.ClosestEnemy.Value.transform.position);
                         CurrentAngle = _characterModel.CharacterTransform.eulerAngles.y;
                     }
                 }
@@ -800,7 +810,7 @@ namespace BeastHunter
             if (_characterModel.IsGrounded)
             {
                 _targetAngleVelocity = Mathf.SmoothStep(_targetAngleVelocity, 0, ANGULAR_VELOCITY_FADE_SPEED);
-                CurrentAngle = _characterModel.CharacterTransform.eulerAngles.y + _inputModel.MouseInputX * 
+                CurrentAngle = _characterModel.CharacterTransform.eulerAngles.y + _inputModel.MouseInputX *
                     _characterModel.CharacterCommonSettings.AimingDirectionChangeSpeed * Time.deltaTime;
                 _characterModel.CharacterTransform.localRotation = Quaternion.Euler(0, CurrentAngle,
                     -_targetAngleVelocity * Time.fixedDeltaTime);
@@ -833,7 +843,7 @@ namespace BeastHunter
 
         public void CountSpeed()
         {
-            _activeSpeedCounter.CountSpeed(_inputModel.IsInputMove, _inputModel.IsInputRun, 
+            _activeSpeedCounter.CountSpeed(_inputModel.IsInputMove, _inputModel.IsInputRun,
                 ref _curretSpeed, ref _currentVelocity);
             _characterModel.CurrentSpeed = _curretSpeed;
         }
@@ -899,7 +909,7 @@ namespace BeastHunter
 
         private void OnEnemiesNear(int quantity)
         {
-            if(quantity > 0)
+            if (quantity > 0)
             {
                 _services.AudioService.ChangeAmbientMusic(_services.AudioService.AudioData.AmbientMusicArray[1], 1f, true);
             }
@@ -911,6 +921,8 @@ namespace BeastHunter
 
         private void PlaySoundFromAnimationEvent(CharacterAnimationEvent animationEvent)
         {
+            int soundNum = 2;
+
             switch (animationEvent.AnimationEventType)
             {
                 case CharacterAnimationEventTypes.None:
@@ -919,20 +931,20 @@ namespace BeastHunter
                     if (_lastAnimationEventType != CharacterAnimationEventTypes.LeftStep)
                     {
                         _characterModel.MovementAudioSource.PlayOneShot(_characterModel.CharacterCommonSettings.
-                            StepSounds[0]);
+                            StepSounds[soundNum]);
                     }
                     break;
                 case CharacterAnimationEventTypes.RightStep:
                     if (_lastAnimationEventType != CharacterAnimationEventTypes.RightStep)
                     {
                         _characterModel.MovementAudioSource.PlayOneShot(_characterModel.CharacterCommonSettings.
-                            StepSounds[0]);
+                            StepSounds[soundNum]);
                     }
                     break;
                 default:
                     break;
             }
-
+            _characterModel.MovementAudioSource.pitch = 1 + UnityEngine.Random.Range(-0.1f, 0.1f);
             _lastAnimationEventType = animationEvent.AnimationEventType;
         }
 
@@ -963,7 +975,7 @@ namespace BeastHunter
         #region EnemyHealthBar
 
         private void EnemyHealthBarUpdate()
-        {         
+        {
             if (_targetEnemy != null)
             {
 
@@ -982,12 +994,12 @@ namespace BeastHunter
         public void OnEnemyHealthBar(bool onEnemyBar)
         {
             if (onEnemyBar)
-            {           
+            {
                 if (_characterModel.ClosestEnemy.Value != null)
-                {                  
+                {
                     _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.GetMainParent().
                         gameObject.GetInstanceID()];
-                    
+
                     if (!_targetEnemy.CurrentStats.BaseStats.IsDead)
                     {
                         _enemyHealthBarModel.EnemyHealthBarObject.SetActive(onEnemyBar);
@@ -995,8 +1007,8 @@ namespace BeastHunter
                     else
                     {
                         _enemyHealthBarModel.EnemyHealthBarObject.SetActive(false);
-                    }                 
-                }             
+                    }
+                }
             }
             else
             {

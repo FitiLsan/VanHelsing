@@ -34,9 +34,6 @@ namespace BeastHunter
             _data = data;
             DestroyInfoDictionary = new Dictionary<int, bool>();
 
-            Services.SharedInstance.PhysicsService.FindGround(Prefab.transform.position, out Vector3 groundPosition);
-            Prefab.transform.position = new Vector3(groundPosition.x, groundPosition.y+_data.PrefabOffsetY, groundPosition.z);
-
             Rigidbodies = prefab.GetComponentsInChildren<Rigidbody>();
             for (int i = 0; i < Rigidbodies.Length; i++)
             {
