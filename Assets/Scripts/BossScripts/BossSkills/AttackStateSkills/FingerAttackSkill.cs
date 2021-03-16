@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +25,8 @@ namespace BeastHunter
             _bossModel.RightHandAimIK.solver.IKPositionWeight = 1f;
            _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
             _bossModel.BossAnimator.Play("FingerAttack", 0, 0);
-            TurnOnHitBoxTrigger(_bossModel.RightFingerTrigger, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
+            DOVirtual.DelayedCall(0.1f, () => _bossModel.RightFingerTrigger.IsInteractable = true);
+           // TurnOnHitBoxTrigger(_bossModel.RightFingerTrigger, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
             DelayCall(() => ResetAimIk(), 2f);
             ReloadSkill(id);
         }

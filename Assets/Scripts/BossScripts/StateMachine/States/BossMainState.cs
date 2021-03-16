@@ -2,6 +2,7 @@
 using UniRx;
 using System;
 using Extensions;
+using DG.Tweening;
 
 namespace BeastHunter
 {
@@ -77,7 +78,7 @@ namespace BeastHunter
         {
             if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
-                SpeedCheck();
+                SpeedCheck2();
                 HealthCheck();
                 CheckDirection();
                 HungerCheck();
@@ -200,6 +201,18 @@ namespace BeastHunter
             _stateMachine._model.BossAnimator.SetFloat("Speed", _stateMachine._model.CurrentSpeed);
         }
 
+        private void SpeedCheck2()
+        {
+            var realSpeed = 0f;
+            if (_bossModel.CurrentSpeed != _bossModel.BossNavAgent.speed)
+            {
+              //currSpeed =  DOVirtual.Float(_bossModel.CurrentSpeed, _bossModel.BossNavAgent.speed, _bossModel.BossNavAgent.acceleration, null);
+              realSpeed =  DOVirtual.EasedValue(_bossModel.CurrentSpeed, _bossModel.BossNavAgent.speed, 0.5f , Ease.InCirc);
+            }
+            _bossModel.CurrentSpeed = realSpeed;
+            _stateMachine._model.BossAnimator.SetFloat("Speed", _bossModel.CurrentSpeed);
+        }
+
         private void CheckCurrentState()
         {
             if(_stateMachine.CurrentState.IsBattleState)
@@ -245,7 +258,7 @@ namespace BeastHunter
         {
             var interactableObject = enteredObject.GetComponent<InteractableObjectBehavior>().Type;
 
-            if (interactableObject == InteractableObjectType.Player & !enteredObject.isTrigger)
+            if (interactableObject == InteractableObjectType.Player && !enteredObject.isTrigger && !_stateMachine.CurrentState.IsBattleState)
             {
                 _bossModel.BossCurrentTarget = enteredObject.gameObject;
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);

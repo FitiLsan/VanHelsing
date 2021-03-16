@@ -123,14 +123,22 @@ MonoBehaviour:
     _fingerSkillId: 6
     _fingerSkillRangeMin: 10
     _fingerSkillRangeMax: 20
-    _fingerSkillCooldown: 2
+    _fingerSkillCooldown: 11
     _fingerSkillReady: 1
     _rageOfForestSkillEnable: 0
     _rageOfForestSkillId: 7
     _rageOfForestSkillRangeMin: 10
     _rageOfForestSkillRangeMax: 30
-    _rageOfForestSkillCooldown: 30
+    _rageOfForestSkillCooldown: 3
     _rageOfForestSkillReady: 1
+    _vineFishingSkillEnable: 0
+    _vineFishingSkillId: 0
+    _vineFishingSkillRangeMin: 30
+    _vineFishingSkillRangeMax: 50
+    _vineFishingSkillCooldown: 20
+    _vineFishingSkillReady: 0
+    _vineFishingSkillPrefab: {fileID: 4545837303767770492, guid: d3997e0955628e9479f808f5a1002c94,
+      type: 3}
   DefenceStateSkills:
     _defaultDefenceSkillEnable: 0
     _defaultDefenceSkillId: 0
@@ -163,15 +171,6 @@ MonoBehaviour:
     _callOfForestSkillRangeMax: -1
     _callOfForestSkillCooldown: 30
     _callOfForestSkillReady: 1
-  ChasingStateSkills:
-    _vineFishingSkillEnable: 0
-    _vineFishingSkillId: 0
-    _vineFishingSkillRangeMin: 10
-    _vineFishingSkillRangeMax: 100
-    _vineFishingSkillCooldown: 15
-    _vineFishingSkillReady: 1
-    _vineFishingSkillPrefab: {fileID: 4545837303767770492, guid: d3997e0955628e9479f808f5a1002c94,
-      type: 3}
   RetreatingStateSkills:
     _fakeTreeSkillEnable: 0
     _fakeTreeSkillId: 0

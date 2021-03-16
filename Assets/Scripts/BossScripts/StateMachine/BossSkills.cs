@@ -102,6 +102,7 @@ namespace BeastHunter
             CatchAttackSkill = new CatchAttackSkill(AttackStateSkillsSettings.GetCatchSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             FingerAttackSkill = new FingerAttackSkill(AttackStateSkillsSettings.GetFingerSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkillsSettings.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            VineFishingSkill = new VineFishingAttackSkill(AttackStateSkillsSettings.GetVineFishingSkillInfo(), AttackStateSkillDictionary, _stateMachine);
 
             AddSkillToDictionary(DefaultAttackSkill, AttackStateSkillDictionary);
             AddSkillToDictionary(HorizontalAttackSkill, AttackStateSkillDictionary);
@@ -111,6 +112,7 @@ namespace BeastHunter
             AddSkillToDictionary(CatchAttackSkill, AttackStateSkillDictionary);
             AddSkillToDictionary(FingerAttackSkill, AttackStateSkillDictionary);
             AddSkillToDictionary(RageOfForestSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(VineFishingSkill, AttackStateSkillDictionary);
 
             #endregion
 
@@ -132,9 +134,6 @@ namespace BeastHunter
 
 
             #region ChasingState
-
-            VineFishingSkill = new VineFishingAttackSkill(ChasingStateSkillsSettings.GetVineFishingSkillInfo(), ChasingStateSkillDictionary, _stateMachine);
-            AddSkillToDictionary(VineFishingSkill, ChasingStateSkillDictionary);
 
             #endregion
 

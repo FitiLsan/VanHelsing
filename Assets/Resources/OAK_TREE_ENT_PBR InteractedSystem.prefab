@@ -1990,6 +1990,7 @@ GameObject:
   - component: {fileID: 1089479054639982985}
   - component: {fileID: 7369616738002547433}
   - component: {fileID: 7617763137656970912}
+  - component: {fileID: 8172482002141162015}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ R Finger12
   m_TagString: Untagged
@@ -2029,6 +2030,19 @@ MonoBehaviour:
     StunProbability: 0
     FireDamage: 0
 --- !u!135 &7617763137656970912
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640162261}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.09
+  m_Center: {x: -0.41, y: -0.03, z: -0.15}
+--- !u!135 &8172482002141162015
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

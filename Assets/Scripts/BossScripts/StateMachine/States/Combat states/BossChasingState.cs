@@ -114,16 +114,11 @@ namespace BeastHunter
             if (_forceAttackTime <= 0)
             {
                 var readyDic = new Dictionary<int, int>();
-                ChooseReadySkills(_bossSkills.ChasingStateSkillDictionary, readyDic);
-
-                if(readyDic.ContainsKey(VINE_FISHING_ID))
+                ChooseReadySkills(_bossSkills.AttackStateSkillDictionary, readyDic);
+                if (readyDic.Count != 0)
                 {
-                    _bossSkills.UseSkill(_bossSkills.ChasingStateSkillDictionary, VINE_FISHING_ID);
-                    _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
-                    return;
+                    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
                 }
-                _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
             }
         }
         #endregion
