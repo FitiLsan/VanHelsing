@@ -5,7 +5,7 @@ namespace BeastHunter
 {
     public abstract class BossBaseState
     {
-        protected const float ANGLE_SPEED = 150f;
+        protected const float ANGLE_SPEED_MULTIPLIER = 10f;
         protected const float ANGLE_TARGET_RANGE_MIN = 20f;
         protected const int DEFAULT_ATTACK_ID = 0;
         protected const int SKIP_ID = -1;
@@ -118,7 +118,7 @@ namespace BeastHunter
             if (_bossModel.BossCurrentTarget != null && !CheckDirection())
             {
                 IsRotating = true;
-                _bossModel.BossTransform.rotation = _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, ANGLE_SPEED);
+                _bossModel.BossTransform.rotation = _bossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, _bossData._bossSettings.RotateSpeed * ANGLE_SPEED_MULTIPLIER);
             }
             else
             {
@@ -132,8 +132,11 @@ namespace BeastHunter
             {
                 return true;
             }
-            
-            bool isNear = _bossData.CheckIsNearTarget(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position, distanceRangeMin, distanceRangeMax);
+            var isNear = false;
+            if (_bossModel.BossCurrentTarget != null)
+            {
+                isNear = _bossData.CheckIsNearTarget(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position, distanceRangeMin, distanceRangeMax);
+            }
             return isNear;
         }
 
@@ -164,11 +167,11 @@ namespace BeastHunter
                 {
                     if (CheckDistance(dic[skill.Key].SkillRangeMin, dic[skill.Key].SkillRangeMax))
                     {
-                        if(_bossModel.IsRage == dic[skill.Key].IsNeedRage)
-                        {
+                       // if(_bossModel.IsRage == dic[skill.Key].IsNeedRage)
+                       // {
                             readyDic.Add(count, skill.Key);
                             count++;
-                        }
+                      //  }
                     }
                 }
             }

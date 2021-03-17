@@ -144,7 +144,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: ded0427ae6e0fdf4ebbaa502cdde64e3, type: 3}
   m_Controller: {fileID: 9100000, guid: 14d982f6bf8adfd409a952a432e6ba01, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -179,9 +179,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.83303833
-  m_Height: 3.6248474
+  m_Height: 3.0796528
   m_Direction: 1
-  m_Center: {x: 0, y: 1.81, z: 0}
+  m_Center: {x: 0, y: 4.417403, z: 0}
 --- !u!114 &1089479055950577489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -810,7 +810,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4300008, guid: ded0427ae6e0fdf4ebbaa502cdde64e3, type: 3}
   m_Bones:
@@ -999,6 +999,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054639947851}
+  - component: {fileID: 3973563563377622948}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ L Thigh
   m_TagString: Untagged
@@ -1021,6 +1022,20 @@ Transform:
   m_Father: {fileID: 1089479054639901243}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &3973563563377622948
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640100789}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24605714
+  m_Height: 1.5811886
+  m_Direction: 0
+  m_Center: {x: -0.6364362, y: 0.000000007334767, z: -0.019029563}
 --- !u!1 &1089479054640102197
 GameObject:
   m_ObjectHideFlags: 0
@@ -1463,6 +1478,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054639901323}
+  - component: {fileID: 1308687714850273262}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ R UpperArm
   m_TagString: Untagged
@@ -1485,6 +1501,20 @@ Transform:
   m_Father: {fileID: 1089479054640014659}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1308687714850273262
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640114713}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.1846069
+  m_Height: 1.5641418
+  m_Direction: 0
+  m_Center: {x: -0.573884, y: -0.061237633, z: -0.0000022613153}
 --- !u!1 &1089479054640115703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,6 +1524,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054639893945}
+  - component: {fileID: 2443071051075357685}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ R Forearm
   m_TagString: Untagged
@@ -1516,6 +1547,20 @@ Transform:
   m_Father: {fileID: 1089479054639901323}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2443071051075357685
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640115703}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.19604206
+  m_Height: 1.350229
+  m_Direction: 0
+  m_Center: {x: -0.5444956, y: 0.036554907, z: -0.004268796}
 --- !u!1 &1089479054640115887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,6 +1816,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054639915767}
+  - component: {fileID: 5468544448994467389}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ L UpperArm
   m_TagString: Untagged
@@ -1793,6 +1839,20 @@ Transform:
   m_Father: {fileID: 1089479054639986433}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5468544448994467389
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640157531}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.18694794
+  m_Height: 1.4835718
+  m_Direction: 0
+  m_Center: {x: -0.83193266, y: -0.028384995, z: -0.043414973}
 --- !u!1 &1089479054640158163
 GameObject:
   m_ObjectHideFlags: 0
@@ -1991,6 +2051,8 @@ GameObject:
   - component: {fileID: 7369616738002547433}
   - component: {fileID: 7617763137656970912}
   - component: {fileID: 8172482002141162015}
+  - component: {fileID: 500810364425967162}
+  - component: {fileID: 4610669311273468202}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ R Finger12
   m_TagString: Untagged
@@ -2055,6 +2117,32 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.09
   m_Center: {x: -0.7767372, y: -0.07657296, z: -0.2222007}
+--- !u!135 &500810364425967162
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640162261}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.09
+  m_Center: {x: -0.17, y: 0.01, z: -0.12}
+--- !u!135 &4610669311273468202
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640162261}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.09
+  m_Center: {x: -0.6, y: -0.09, z: -0.15}
 --- !u!1 &1089479054640162395
 GameObject:
   m_ObjectHideFlags: 0
@@ -2158,6 +2246,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054640013259}
+  - component: {fileID: 1093959524390181966}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ L Calf
   m_TagString: Untagged
@@ -2180,6 +2269,20 @@ Transform:
   m_Father: {fileID: 1089479054639947851}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1093959524390181966
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640165095}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.23052673
+  m_Height: 1.4508172
+  m_Direction: 0
+  m_Center: {x: -0.6152307, y: 0.09902605, z: -0.029341543}
 --- !u!1 &1089479054640165619
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,6 +2354,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054639899321}
+  - component: {fileID: 1399272719168733307}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ L Forearm
   m_TagString: Untagged
@@ -2273,6 +2377,20 @@ Transform:
   m_Father: {fileID: 1089479054639915767}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1399272719168733307
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640166047}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.1866931
+  m_Height: 1.2319082
+  m_Direction: 0
+  m_Center: {x: -0.718832, y: 0.063685104, z: -0.033537567}
 --- !u!1 &1089479054640169091
 GameObject:
   m_ObjectHideFlags: 0
@@ -2642,6 +2760,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054639999331}
+  - component: {fileID: 9066977368133826435}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ R Calf
   m_TagString: Untagged
@@ -2664,6 +2783,20 @@ Transform:
   m_Father: {fileID: 1089479054640019017}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &9066977368133826435
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640182265}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.23687406
+  m_Height: 1.4903647
+  m_Direction: 0
+  m_Center: {x: -0.6393471, y: -0.0000024960723, z: 0.03587574}
 --- !u!1 &1089479054640184121
 GameObject:
   m_ObjectHideFlags: 0
@@ -3316,6 +3449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054640019017}
+  - component: {fileID: 1415437119952920620}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ R Thigh
   m_TagString: Untagged
@@ -3338,6 +3472,20 @@ Transform:
   m_Father: {fileID: 1089479054639901243}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1415437119952920620
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640198647}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.26291266
+  m_Height: 1.7505883
+  m_Direction: 0
+  m_Center: {x: -0.6246669, y: 0.000000026330264, z: 0.054835062}
 --- !u!1 &1089479054640198893
 GameObject:
   m_ObjectHideFlags: 0

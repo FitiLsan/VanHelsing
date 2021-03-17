@@ -97,13 +97,13 @@ namespace BeastHunter
 
             ChooseReadySkills(_bossSkills.AttackStateSkillDictionary, _readySkillDictionary);
 
-            if (_readySkillDictionary.Count==0 && _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position)>=DISTANCE_TO_START_ATTACK)
+            if (_readySkillDictionary.Count == 0 && _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position) >= DISTANCE_TO_START_ATTACK)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
                 return;
             }
 
-            if (_readySkillDictionary.Count!=0)
+            if (_readySkillDictionary.Count != 0)
             {
                 var readyId = UnityEngine.Random.Range(0, _readySkillDictionary.Count);
                 _skillId = _readySkillDictionary[readyId];
@@ -177,8 +177,6 @@ namespace BeastHunter
                 Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
                     gameObject.GetInstanceID());
 
-              //  CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine._context.CharacterModel.CharacterStats));
-
                 hitBox.IsInteractable = false;
               //  _bossModel.LeftHandCollider.enabled = false;
                 
@@ -192,10 +190,6 @@ namespace BeastHunter
                 handDamage.PhysicalDamage = Random.Range(5f, 15f);
                 Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
                     gameObject.GetInstanceID());
-
-                //DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
-                //    CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
-                //        _context.CharacterModel.CharacterStats));
                 hitBox.IsInteractable = false;
             //   _bossModel.RightHandCollider.enabled = false;
             }

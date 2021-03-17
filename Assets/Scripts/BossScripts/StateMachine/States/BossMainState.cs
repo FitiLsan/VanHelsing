@@ -78,7 +78,7 @@ namespace BeastHunter
         {
             if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
-                SpeedCheck2();
+                SpeedCheck();
                 HealthCheck();
                 CheckDirection();
                 HungerCheck();
@@ -186,28 +186,10 @@ namespace BeastHunter
 
         private void SpeedCheck()
         {
-            if (_speedCountTime > 0)
-            {
-                _speedCountTime -= Time.fixedDeltaTime;
-            }
-            else
-            {
-                _speedCountTime = SPEED_COUNT_FRAME;
-                _currentPosition = _stateMachine._model.BossTransform.position;
-                _stateMachine._model.CurrentSpeed = Mathf.Sqrt((_currentPosition - _lastPosition).sqrMagnitude) /
-                    SPEED_COUNT_FRAME;
-                _lastPosition = _currentPosition;
-            }
-            _stateMachine._model.BossAnimator.SetFloat("Speed", _stateMachine._model.CurrentSpeed);
-        }
-
-        private void SpeedCheck2()
-        {
             var realSpeed = 0f;
             if (_bossModel.CurrentSpeed != _bossModel.BossNavAgent.speed)
             {
-              //currSpeed =  DOVirtual.Float(_bossModel.CurrentSpeed, _bossModel.BossNavAgent.speed, _bossModel.BossNavAgent.acceleration, null);
-              realSpeed =  DOVirtual.EasedValue(_bossModel.CurrentSpeed, _bossModel.BossNavAgent.speed, 0.5f , Ease.InCirc);
+              realSpeed =  DOVirtual.EasedValue(_bossModel.CurrentSpeed, _bossModel.BossNavAgent.speed, 0.2f , Ease.InCirc);
             }
             _bossModel.CurrentSpeed = realSpeed;
             _stateMachine._model.BossAnimator.SetFloat("Speed", _bossModel.CurrentSpeed);
@@ -224,7 +206,6 @@ namespace BeastHunter
                 _stateMachine._model.BossSphereCollider.radius = _bossData._bossSettings.SphereColliderRadius;
             }
         }
-
 
         private void HungerCheck()
         {

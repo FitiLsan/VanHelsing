@@ -125,6 +125,10 @@ namespace BeastHunter
         [Range(0.0f, 20.0f)]
         [SerializeField] private float _runSpeed;
 
+        [Tooltip("Rotate speed value between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _rotateSpeed;
+
         [Tooltip("Ground check height under boss between 0 and 2.")]
         [Range(0.0f, 2.0f)]
         [SerializeField] private float _groundCheckHeight;
@@ -202,6 +206,7 @@ namespace BeastHunter
 
         public float WalkSpeed => _walkSpeed;
         public float RunSpeed => _runSpeed;
+        public float RotateSpeed => _rotateSpeed;
         public float GroundCheckHeight => _groundCheckHeight;
         public float DirectionChangeLag => _directionChangeLag;
         public float AnimatorBaseSpeed => _animatorBaseSpeed;
