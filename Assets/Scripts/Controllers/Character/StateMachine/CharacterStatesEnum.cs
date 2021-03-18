@@ -19,6 +19,8 @@
         TrapPlacing,
         KnockedDown,
         GettingUp,
+        MidAir,
+        Hitted,
     }
 }
 

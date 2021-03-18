@@ -37,28 +37,18 @@ namespace BeastHunter
             var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.LeftFoot.position, 20f, "Player");
             if (list.Count != 0)
             {
-                _target = list.Find(x => x.name == "Player");
-                var rb = _target.GetComponent<Rigidbody>();
-                var pm = _target.transform.parent.Find("PuppetMaster").GetComponent<PuppetMaster>();
+                var target = list.Find(x => x.name == "Player");
 
-                if (pm != null && rb != null)
+                if (target != null)
                 {
-                    pm.state = PuppetMaster.State.Frozen;
-                    rb.AddExplosionForce(force, _bossModel.LeftFoot.transform.position, 15f, 1.5f, ForceMode.Impulse);
-                    DelayCall(() => pm.state = PuppetMaster.State.Alive, 2f);
-                    Damage();
+                    _stateMachine._context.CharacterModel.BehaviorPuppet.SetState(BehaviourPuppet.State.Unpinned);
+
+                    foreach (var item in _stateMachine._context.CharacterModel.PuppetMaster.muscles)
+                    {
+                        item.rigidbody.AddExplosionForce(force, _bossModel.LeftFoot.transform.position, 15f, 1.5f, ForceMode.Impulse);
+                    }
                 }
-
             }
-
-
-            //foreach (var obj in list)
-            //{
-            //    if (list.Count != 0)
-            //    {
-            //        obj.GetComponent<Rigidbody>().AddForce((_bossModel.LeftFoot.position - _bossModel.BossCurrentPosition) * force, ForceMode.Impulse);
-            //    }
-            //}
 
         }
         public override void StopSkill()

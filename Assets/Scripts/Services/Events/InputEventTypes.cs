@@ -22,6 +22,8 @@
         TimeSkipMenu,
         WeaponWheelOpen,
         WeaponWheelClose,
+        AttackStart,
+        AttackEnd,
         AimStart,
         AimEnd,
         ButtonsInfoMenu,
