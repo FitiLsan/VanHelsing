@@ -224,9 +224,8 @@ namespace BeastHunter
             //FOR DEBUG ONLY!
             if (Input.GetKeyDown(KeyCode.H))
             {
-                Damage damage = new Damage();
-                damage.PhysicalDamage = 15f;
-                TakeDamage(damage);
+                _characterModel.CurrentStats.BaseStats.CurrentHealthPoints += 15f;
+                OnHealthChange?.Invoke();
             }
         }
 
