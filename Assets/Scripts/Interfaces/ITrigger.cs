@@ -10,6 +10,8 @@ namespace BeastHunter
 
         InteractableObjectType Type { get; }
         GameObject GameObject { get; }
+        float TempDamage { get; set; }
+        
 
         Predicate<Collider> OnFilterHandler { get; set; }
         Action<ITrigger, Collider> OnTriggerEnterHandler { get; set; }

@@ -8,39 +8,40 @@ namespace BeastHunter
 {
     public class SporesController : MonoBehaviour
     {
-        public List<GameObject> sporeList = new List<GameObject>();
-        public GameObject poisonCloud;
-        public GameObject puff;
-        public GameObject death;
-        private float time;
-        private bool isPuf;
-        private float delay = 3f;
+        public List<GameObject> SporeList = new List<GameObject>();
+        public GameObject PoisonCloud;
+        public GameObject Puff;
+        public GameObject Death;
+        private float _time;
+        private bool _isPuf;
+        private float _delay = 3f;
+        private float _damage;
 
         private void Start()
         {
-            time = 5f;
+            _time = 5f;
             transform.position += Vector3.down;
-            var num = Random.Range(0, sporeList.Count);
-            sporeList[num].SetActive(true);
+            var num = Random.Range(0, SporeList.Count);
+            SporeList[num].SetActive(true);
             transform.DOLocalMoveY(transform.position.y + 0.9f, 1);
         }
 
         private void Update()
         {
-            time -= Time.deltaTime;
-            if(time<= 4)
+            _time -= Time.deltaTime;
+            if(_time<= 4)
             {
-                puff.SetActive(true);
+                Puff.SetActive(true);
             }
-            if (time <= 3.5f)
+            if (_time <= 3.5f)
             {
-                poisonCloud.SetActive(true);
+                PoisonCloud.SetActive(true);
             }
-            if (time <= 1.5f)
+            if (_time <= 1.5f)
             {
-                if (!isPuf)
+                if (!_isPuf)
                 {
-                    isPuf = true;
+                    _isPuf = true;
                     transform.DOLocalMoveY(transform.position.y-1f, 5);
                 }
             }
@@ -51,20 +52,23 @@ namespace BeastHunter
             
             if (other.CompareTag("Player") && !other.isTrigger)
             {
-                delay -= Time.deltaTime;
-                if (delay <= 0)
+                _delay -= Time.deltaTime;
+                if (_delay <= 0)
                 {
-                    delay = 3f;
+                    _delay = 3f;
                     Damage(other);
                 }
             }
         }
 
-
+        public void SetDamage(float damage)
+        {
+            _damage = damage;
+        }
         private void Damage(Collider enemy)
         {
             Damage poisonDamage = new Damage();
-            poisonDamage.PhysicalDamage = Random.Range(1f, 2f);
+            poisonDamage.PhysicalDamage = _damage;
             Services.SharedInstance.AttackService.CountAndDealDamage(poisonDamage, enemy.transform.GetMainParent().gameObject.GetInstanceID());
         }
     }

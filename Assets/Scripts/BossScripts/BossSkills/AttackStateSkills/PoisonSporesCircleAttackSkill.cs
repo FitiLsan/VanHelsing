@@ -7,9 +7,9 @@ namespace BeastHunter
 
     public class PoisonSporesCircleAttackSkill : BossBaseSkill
     {
-        private const float DELAY_HAND_TRIGGER = 0.2f;
+        private const float SPORE_LIFE_TIME = 5f;
 
-        public PoisonSporesCircleAttackSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
+        public PoisonSporesCircleAttackSkill((bool, int, float, float, float, bool, bool, GameObject, float) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
         }
 
@@ -27,11 +27,14 @@ namespace BeastHunter
             var bossPos = _bossModel.BossTransform.position;
             for (var j = 0; j < sporeCount; j++)
             {
-                var groundedPosition = Services.SharedInstance.PhysicsService.GetGroundedPosition(CreateCircle(bossPos, radius), bossPos.y+2);
-                Quaternion rot = Quaternion.FromToRotation(Vector3.forward, bossPos - groundedPosition);
+                var groundedPosition = Services.SharedInstance.PhysicsService.GetGroundedPosition(CreateCircle(bossPos, radius), bossPos.y + 2);
+                Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, bossPos - groundedPosition);
 
-                GameObject.Destroy(GameObject.Instantiate(_bossModel.SporePrefab, groundedPosition, rot), 5f);
-        }
+                var spore = GameObject.Instantiate(SkillPrefab, groundedPosition, rotation);
+                spore.GetComponent<SporesController>().SetDamage(SkillDamage);
+                GameObject.Destroy(spore, SPORE_LIFE_TIME);
+                
+            }
         }
         public override void StopSkill()
         {

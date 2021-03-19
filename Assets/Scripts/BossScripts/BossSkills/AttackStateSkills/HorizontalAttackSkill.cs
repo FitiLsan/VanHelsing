@@ -14,7 +14,7 @@ namespace BeastHunter
         {
         }
 
-        public HorizontalAttackSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
+        public HorizontalAttackSkill((bool, int, float, float, float, bool, bool, float) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
         }
         public override void UseSkill(int id)
@@ -36,7 +36,7 @@ namespace BeastHunter
                 default:
                     break;
             }
-            TurnOnHitBoxTrigger(_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
+            TurnOnHitBoxTrigger(_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER, SkillDamage);
             TurnOnHitBoxCollider(_currenColliderHand, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
 
             ReloadSkill(id);

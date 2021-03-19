@@ -26,7 +26,7 @@ namespace BeastHunter
         public Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
 
         public bool IsInteractable { get; set; }
-
+        public float TempDamage { get; set; }
         #endregion
 
 

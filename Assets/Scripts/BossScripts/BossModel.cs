@@ -84,7 +84,10 @@ namespace BeastHunter
         public Transform RightHandAimIKTarget;
         public bool IsRage;
         public ParticleSystem Wisps;
-        
+        public Light EyeLeft;
+        public Light EyeRight;
+        Color notRageColor = new Color(42, 181, 229);
+        Color RageColor = new Color(162, 5, 5);
 
         #endregion
 
@@ -293,7 +296,6 @@ namespace BeastHunter
             ThirdWeakPointBehavior.AdditionalDamage = ThirdWeakPointData.AdditionalDamage;
 
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
-            SporePrefab = BossSettings.SporePrefab;
             Ruler = BossSettings.Ruler;
             GameObject.Instantiate(Ruler, BossTransform.position + Vector3.up, Quaternion.identity, BossTransform);
 
@@ -303,6 +305,9 @@ namespace BeastHunter
             RightHandAimIKTarget = new GameObject().transform;
             Wisps = BossTransform.Find("Wisps").GetComponent<ParticleSystem>();
             Wisps.maxParticles = 0;
+            EyeLeft = BossTransform.Find(BossSettings.LeftEyePath).GetComponentInChildren<Light>();
+            EyeRight = BossTransform.Find(BossSettings.RightEyePath).GetComponentInChildren<Light>();
+
         }
 
         #endregion
@@ -347,6 +352,20 @@ namespace BeastHunter
             BossStateMachine.OnTearDown();
         }
 
+        private void CheckIsRage(bool isRage)
+        {
+            IsRage = isRage;
+            if(IsRage)
+            {
+                EyeLeft.color = Color.red;
+                EyeRight.color = Color.red;
+            }
+            else
+            {
+                EyeLeft.color = Color.blue;
+                EyeRight.color = Color.blue;
+            }
+        }
         public void HealthCheck()
         {
             if (CurrentStats.BaseStats.CurrentHealthPoints <= 0)
@@ -355,9 +374,12 @@ namespace BeastHunter
                 return;
             }
 
-            if (CurrentStats.BaseStats.CurrentHealthPart <= 0.5)
+            if (CurrentStats.BaseStats.CurrentHealthPart <= BossSettings.ActivateRage)
             {
-                IsRage = true;
+                CheckIsRage(true);
+
+
+                DG.Tweening.DOVirtual.DelayedCall(BossSettings.DurationRage, () => CheckIsRage(false));
                 return;
             }
 

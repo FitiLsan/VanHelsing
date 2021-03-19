@@ -97,7 +97,7 @@ namespace BeastHunter
 
             ChooseReadySkills(_bossSkills.AttackStateSkillDictionary, _readySkillDictionary);
 
-            if (_readySkillDictionary.Count == 0 && _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position) >= DISTANCE_TO_START_ATTACK)
+            if (_readySkillDictionary.Count == 0 && _bossModel.BossCurrentTarget!=null && _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position) >= DISTANCE_TO_START_ATTACK)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
                 return;
@@ -173,7 +173,7 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                handDamage.PhysicalDamage = Random.Range(5f, 15f);
+                handDamage.PhysicalDamage = hitBox.TempDamage; //Random.Range(5f, 15f);
                 Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
                     gameObject.GetInstanceID());
 
@@ -187,7 +187,8 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                handDamage.PhysicalDamage = Random.Range(5f, 15f);
+                var hitBoxInfo = (InteractableObjectBehavior)hitBox;
+                handDamage.PhysicalDamage = hitBoxInfo.TempDamage;
                 Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
                     gameObject.GetInstanceID());
                 hitBox.IsInteractable = false;

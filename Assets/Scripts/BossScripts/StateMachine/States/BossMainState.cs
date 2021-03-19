@@ -138,7 +138,7 @@ namespace BeastHunter
 
         private void Regeneration(float rate)
         {
-            var _healPower = 1.5f;
+            var _healPower = _bossModel.CurrentStats.BaseStats.HealthRegenPerSecond;
             _bossModel.CurrentStats.BaseStats.CurrentHealthPoints += _healPower * rate * Time.deltaTime;
         }
 

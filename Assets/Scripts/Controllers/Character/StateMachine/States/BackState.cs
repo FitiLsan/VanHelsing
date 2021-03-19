@@ -463,11 +463,11 @@ namespace BeastHunter
 
         private void OnHitBoxHit(ITrigger hitBox, Collider enemy)
         {
-            if (hitBox.IsInteractable)
+            if (hitBox.IsInteractable && !enemy.isTrigger)
             {
                 InteractableObjectBehavior enemyBehavior = enemy.transform.GetComponent<InteractableObjectBehavior>();
 
-                if (enemyBehavior.Type == InteractableObjectType.WeakHitBox)
+                if (enemyBehavior!=null && enemyBehavior.Type == InteractableObjectType.WeakHitBox)
                 {
                     MessageBroker.Default.Publish(new OnBossWeakPointHittedEventClass { WeakPointCollider = enemy });
                 }

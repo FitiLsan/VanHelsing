@@ -20,6 +20,7 @@ namespace BeastHunter
         private bool _canInterrupt;
         private bool _isNeedRage;
         private GameObject _prefab;
+        private float _damage;
 
         protected BossModel _bossModel;
         protected WeaponHitBoxBehavior _currenTriggertHand;
@@ -45,7 +46,7 @@ namespace BeastHunter
             _skillDictionary = skillDictionary;
         }
 
-        public BossBaseSkill ((bool, int, float, float, float, bool, bool)skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        public BossBaseSkill ((bool, int, float, float, float, bool, bool, float) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
         {
             _isEnable = skillInfo.Item1;
             _skillId = skillInfo.Item2;
@@ -54,6 +55,36 @@ namespace BeastHunter
             _skillCooldown = skillInfo.Item5;
             _isSkillReady = skillInfo.Item6;
             _canInterrupt = skillInfo.Item7;
+            _damage = skillInfo.Item8;
+            _stateMachine = stateMachine;
+            _bossModel = stateMachine._model;
+            _skillDictionary = skillDictionary;
+        }
+        public BossBaseSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        {
+            _isEnable = skillInfo.Item1;
+            _skillId = skillInfo.Item2;
+            _skillRangeMin = skillInfo.Item3;
+            _skillRangeMax = skillInfo.Item4;
+            _skillCooldown = skillInfo.Item5;
+            _isSkillReady = skillInfo.Item6;
+            _canInterrupt = skillInfo.Item7;
+            _stateMachine = stateMachine;
+            _bossModel = stateMachine._model;
+            _skillDictionary = skillDictionary;
+        }
+
+        public BossBaseSkill((bool, int, float, float, float, bool, bool, GameObject, float) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        {
+            _isEnable = skillInfo.Item1;
+            _skillId = skillInfo.Item2;
+            _skillRangeMin = skillInfo.Item3;
+            _skillRangeMax = skillInfo.Item4;
+            _skillCooldown = skillInfo.Item5;
+            _isSkillReady = skillInfo.Item6;
+            _canInterrupt = skillInfo.Item7;
+            _prefab = skillInfo.Item8;
+            _damage = skillInfo.Item9;
             _stateMachine = stateMachine;
             _bossModel = stateMachine._model;
             _skillDictionary = skillDictionary;
@@ -114,8 +145,11 @@ namespace BeastHunter
         }
 
         public bool CanInterrupt => _canInterrupt;
-
+        public GameObject SkillPrefab => _prefab;
         public bool IsSkillUsing { get; set; }
+        public float SkillDamage => _damage;
+
+
         #endregion
 
         public virtual void UseSkill(int id)
@@ -144,8 +178,9 @@ namespace BeastHunter
             _skillDictionary[id].IsCooldownStart = false;
         }
 
-        protected void TurnOnHitBoxTrigger(WeaponHitBoxBehavior hitBox, float currentAttackTime, float delayTime)
+        protected void TurnOnHitBoxTrigger(WeaponHitBoxBehavior hitBox, float currentAttackTime, float delayTime, float Damage)
         {
+            hitBox.TempDamage = Damage;
             TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.IsInteractable = true, currentAttackTime * delayTime);
             enableHitBox.AddTimeRemaining(currentAttackTime * delayTime);
         }

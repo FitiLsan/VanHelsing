@@ -167,11 +167,11 @@ namespace BeastHunter
                 {
                     if (CheckDistance(dic[skill.Key].SkillRangeMin, dic[skill.Key].SkillRangeMax))
                     {
-                       // if(_bossModel.IsRage == dic[skill.Key].IsNeedRage)
-                       // {
+                        if (_bossModel.IsRage == dic[skill.Key].IsNeedRage)
+                        {
                             readyDic.Add(count, skill.Key);
                             count++;
-                      //  }
+                        }
                     }
                 }
             }
