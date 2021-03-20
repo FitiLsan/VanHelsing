@@ -97,7 +97,7 @@ namespace BeastHunter
 
             ChooseReadySkills(_bossSkills.AttackStateSkillDictionary, _readySkillDictionary);
 
-            if (_readySkillDictionary.Count == 0 && _bossModel.BossCurrentTarget!=null && _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position) >= DISTANCE_TO_START_ATTACK)
+            if (_readySkillDictionary.Count == 0 || _bossModel.BossCurrentTarget==null && _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position) >= DISTANCE_TO_START_ATTACK)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
                 return;

@@ -28,6 +28,7 @@ namespace BeastHunter
         public bool CanBeOverriden { get; protected set; }
         public bool CurrentStateType { get; protected set; }
         public bool IsBattleState { get; protected set; }
+
         public bool IsAnimationPlay { get;  set; }
         public bool IsRotating { get; private set; }
         public bool IsAnySkillUsed { get; protected set; }

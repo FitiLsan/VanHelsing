@@ -79,6 +79,7 @@ namespace BeastHunter
             OnStateChange += OnStateChangeHandler;
             OnAfterStateChange += OnAfterStateChangeHandler;
 
+
             //SetFirstState(_model.MovementPoints.Length > 0 ? BossStatesEnum.Moving : BossStatesEnum.Idle);
             SetFirstState(BossStatesEnum.Idle);
         }
@@ -86,8 +87,8 @@ namespace BeastHunter
         public void Execute()
         {
             Debug.Log($"current State {CurrentState}");
-            _mainState.Execute();
             CurrentState.Execute();
+            _mainState.Execute();
         }
 
         public void OnTearDown()
@@ -161,12 +162,12 @@ namespace BeastHunter
 
         public void OnStateChangeHandler()
         {
-
+            
         }
 
         public void OnAfterStateChangeHandler()
         {
-
+            _mainState.CheckCurrentFieldOfView();
         }
 
         #endregion

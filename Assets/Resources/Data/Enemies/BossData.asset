@@ -196,12 +196,15 @@ MonoBehaviour:
     _fakeTreeSkillReady: 1
     _fakeTreePrefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
   SearchingStateSkills:
-    _bushTriggerSkillEnable: 0
-    _bushTriggerSkillId: 0
-    _bushTriggerSkillRangeMin: 0
-    _bushTriggerSkillRangeMax: 0
-    _bushTriggerSkillCooldown: 0
-    _bushTriggerSkillReady: 0
+    _bushTriggerSkillEnable: 1
+    _bushTriggerSkillId: 11
+    _bushTriggerSkillRangeMin: 8.1
+    _bushTriggerSkillRangeMax: 100
+    _bushTriggerSkillCount: 10
+    _bushTriggerSkillCooldown: 1
+    _bushTriggerSkillPrefab: {fileID: 6953022481052749130, guid: 0e78b6ad75e10d7438aaa5b1be181e6c,
+      type: 3}
+    _bushTriggerSkillReady: 1
   DeadStateSkills:
     _resurrectionSkillEnable: 0
     _resurrectionSkillId: 0

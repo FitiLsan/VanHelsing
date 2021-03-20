@@ -4228,7 +4228,7 @@ Light:
   m_GameObject: {fileID: 1744130278747623945}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 2
+  m_Type: 0
   m_Shape: 0
   m_Color: {r: 0.16487186, g: 0.70816404, b: 0.8962264, a: 1}
   m_Intensity: 5
@@ -4265,7 +4265,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -4408,6 +4408,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1501862741291677431, guid: c901b72a353af96419b07b9b4727f859,
         type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501862741291677431, guid: c901b72a353af96419b07b9b4727f859,
+        type: 3}
       propertyPath: m_Color.b
       value: 0.8980392
       objectReference: {fileID: 0}
@@ -4420,6 +4425,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.r
       value: 0.16470589
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501862741291677431, guid: c901b72a353af96419b07b9b4727f859,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501862741291677431, guid: c901b72a353af96419b07b9b4727f859,
+        type: 3}
+      propertyPath: m_DrawHalo
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501862741291677431, guid: c901b72a353af96419b07b9b4727f859,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5718088577182219603, guid: c901b72a353af96419b07b9b4727f859,
         type: 3}

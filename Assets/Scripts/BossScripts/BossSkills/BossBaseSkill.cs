@@ -21,6 +21,7 @@ namespace BeastHunter
         private bool _isNeedRage;
         private GameObject _prefab;
         private float _damage;
+        private int _count;
 
         protected BossModel _bossModel;
         protected WeaponHitBoxBehavior _currenTriggertHand;
@@ -90,6 +91,22 @@ namespace BeastHunter
             _skillDictionary = skillDictionary;
         }
 
+        public BossBaseSkill((bool, int, float, float, float, bool, bool, GameObject, int) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        {
+            _isEnable = skillInfo.Item1;
+            _skillId = skillInfo.Item2;
+            _skillRangeMin = skillInfo.Item3;
+            _skillRangeMax = skillInfo.Item4;
+            _skillCooldown = skillInfo.Item5;
+            _isSkillReady = skillInfo.Item6;
+            _canInterrupt = skillInfo.Item7;
+            _prefab = skillInfo.Item8;
+            _count = skillInfo.Item9;
+            _stateMachine = stateMachine;
+            _bossModel = stateMachine._model;
+            _skillDictionary = skillDictionary;
+        }
+
         public BossBaseSkill((bool, int, float, float, float, bool, bool, GameObject) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
         {
             _isEnable = skillInfo.Item1;
@@ -148,6 +165,7 @@ namespace BeastHunter
         public GameObject SkillPrefab => _prefab;
         public bool IsSkillUsing { get; set; }
         public float SkillDamage => _damage;
+        public int SkillCount => _count;
 
 
         #endregion

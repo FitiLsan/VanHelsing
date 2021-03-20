@@ -83,7 +83,7 @@ namespace BeastHunter
                 CheckDirection();
                 HungerCheck();
                 GetTargetCurrentPosition();
-                CheckCurrentState();
+             //   CheckCurrentFieldOfView();
                 HitCounter();
                 InteractionTriggerUpdate();
             }
@@ -98,6 +98,7 @@ namespace BeastHunter
             _stateMachine._model.BossBehavior.OnFilterHandler -= OnFilterHandler;
             _stateMachine._model.BossBehavior.OnTriggerEnterHandler -= OnTriggerEnterHandler;
             _stateMachine._model.BossBehavior.OnTriggerExitHandler -= OnTriggerExitHandler;
+            _bossModel.BossBehavior.OnTriggerStayHandler -= OnTriggerStayHandler;
         }
 
         private void OnBossHittedHandler(OnBossHittedEventClass eventClass)
@@ -195,11 +196,12 @@ namespace BeastHunter
             _stateMachine._model.BossAnimator.SetFloat("Speed", _bossModel.CurrentSpeed);
         }
 
-        private void CheckCurrentState()
+        public void CheckCurrentFieldOfView()
         {
             if(_stateMachine.CurrentState.IsBattleState)
             {
                 _stateMachine._model.BossSphereCollider.radius = TRIGGER_VIEW_INCREASE;
+                _bossModel.BossBehavior.OnTriggerStayHandler += OnTriggerStayHandler;
             }
             else
             {
@@ -267,7 +269,17 @@ namespace BeastHunter
             }
             if (interactableObject == InteractableObjectType.Player & !enteredObject.isTrigger)
             {
-           //     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
+           //     _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching); TODO
+            }
+        }
+
+        private void OnTriggerStayHandler(ITrigger thisdObject, Collider enteredObject)
+        {
+            var interactableObject = enteredObject.GetComponent<InteractableObjectBehavior>().Type;
+            if (interactableObject == InteractableObjectType.Player && !enteredObject.isTrigger)
+            {
+                _bossModel.BossCurrentTarget = enteredObject.gameObject;
+                _bossModel.BossBehavior.OnTriggerStayHandler -= OnTriggerStayHandler;
             }
         }
 

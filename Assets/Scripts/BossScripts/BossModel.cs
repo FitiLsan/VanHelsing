@@ -86,8 +86,8 @@ namespace BeastHunter
         public ParticleSystem Wisps;
         public Light EyeLeft;
         public Light EyeRight;
-        Color notRageColor = new Color(42, 181, 229);
-        Color RageColor = new Color(162, 5, 5);
+        Color32 notRageColor = new Color32(42, 181, 229, 255);
+        Color32 RageColor = new Color32(162, 5, 5, 255);
 
         #endregion
 
@@ -357,13 +357,11 @@ namespace BeastHunter
             IsRage = isRage;
             if(IsRage)
             {
-                EyeLeft.color = Color.red;
-                EyeRight.color = Color.red;
+                EyeLeft.color = EyeRight.color = RageColor;
             }
             else
             {
-                EyeLeft.color = Color.blue;
-                EyeRight.color = Color.blue;
+                EyeLeft.color = EyeRight.color = notRageColor;
             }
         }
         public void HealthCheck()
