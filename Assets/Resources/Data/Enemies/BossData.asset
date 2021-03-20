@@ -95,14 +95,14 @@ MonoBehaviour:
     _defaultSkillRangeMax: 5
     _defaultSkillCooldown: 2
     _defaultSkillReady: 1
-    _horizontalSkillEnable: 0
+    _horizontalSkillEnable: 1
     _horizontalSkillId: 1
     _horizontalSkillDamage: 7
     _horizontalSkillRangeMin: 3
     _horizontalSkillRangeMax: 5
     _horizontalSkillCooldown: 15
     _horizontalSkillReady: 1
-    _stompSplashSkillEnable: 0
+    _stompSplashSkillEnable: 1
     _stompSplashSkillId: 2
     _stompSkillDamage: 10
     _stompSplashSkillRangeMin: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
     _poisonSporesSkillReady: 1
     _sporeSkillPrefab: {fileID: 1739478888274650687, guid: 5b539aacef1d12341abf243ed5fae008,
       type: 3}
-    _poisonSporesCircleSkillEnable: 0
+    _poisonSporesCircleSkillEnable: 1
     _poisonSporesCircleSkillId: 4
     _poisonSporesCircleSkillDamage: 2
     _poisonSporesCircleSkillRangeMin: 0
@@ -133,14 +133,14 @@ MonoBehaviour:
     _catchSkillRangeMax: 5
     _catchSkillCooldown: 22
     _catchSkillReady: 0
-    _fingerSkillEnable: 0
+    _fingerSkillEnable: 1
     _fingerSkillId: 6
     _fingerSkillDamage: 15
     _fingerSkillRangeMin: 10
     _fingerSkillRangeMax: 20
     _fingerSkillCooldown: 7
     _fingerSkillReady: 1
-    _rageOfForestSkillEnable: 0
+    _rageOfForestSkillEnable: 1
     _rageOfForestSkillId: 7
     _rageOfForestSkillDamage: 6
     _rageOfForestSkillRangeMin: 10
@@ -201,7 +201,7 @@ MonoBehaviour:
     _bushTriggerSkillRangeMin: 8.1
     _bushTriggerSkillRangeMax: 100
     _bushTriggerSkillCount: 10
-    _bushTriggerSkillCooldown: 1
+    _bushTriggerSkillCooldown: 20.2
     _bushTriggerSkillPrefab: {fileID: 6953022481052749130, guid: 0e78b6ad75e10d7438aaa5b1be181e6c,
       type: 3}
     _bushTriggerSkillReady: 1

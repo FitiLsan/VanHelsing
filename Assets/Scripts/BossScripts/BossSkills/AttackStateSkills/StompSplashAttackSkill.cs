@@ -20,7 +20,7 @@ namespace BeastHunter
         {
         }
 
-        public StompSplashAttackSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
+        public StompSplashAttackSkill((bool, int, float, float, float, bool, bool, float) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
             _radius = SkillRangeMax;
         }
@@ -40,7 +40,6 @@ namespace BeastHunter
         private void StompShockWave()
         {
             _bossModel.leftStompEffect.Play(true);
-            var force = 50f;
             var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.LeftFoot.position, 20f, "Player");
             if (list.Count != 0)
             {
@@ -54,7 +53,7 @@ namespace BeastHunter
                     {
                         item.rigidbody.AddExplosionForce(DEFAULT_FORCE, _bossModel.LeftFoot.transform.position, _radius, UPWARDS_MODIFIER, ForceMode.Impulse);
                     }
-                    Damage();
+                   // Damage();
                 }
             }
 
