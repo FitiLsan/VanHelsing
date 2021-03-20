@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21523b5518a203e4ca66e43e4c564188, type: 3}
+  m_Name: Dummy
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 2322493015848615175, guid: 6de034631e63f6f4db0926a1dc00f305, type: 3}
+  _startStats:
+    BaseStats:
+      _maximalHealthPoints: 0
+      _currentHealthPoints: 0
+      HealthRegenPerSecond: 0
+      _maximalStaminaPoints: 0
+      _currentStaminaPoints: 0
+      StaminaRegenPerSecond: 0
+      IsDead: 0
+      IsStunned: 0
+    AttackStats:
+      _physicalPower: 0
+      _magicalPower: 0
+    DefenceStats:
+      _physicalDamageResistance: 0
+      _stunProbabilityResistance: 0
+      _fireDamageResistance: 0
+  _damageTextObject: {fileID: 4412952828577057898, guid: 6d425abeb5520e548a4d642f7687c932,
+    type: 3}
+  _dummyHeight: 2
+  _damageTextTime: 1
+  _damageTextHeight: 1
+  _pushAngle: 25
+  _rotationAngle: 180
+  _pushTime: 0.2
+  _reviveTime: 0.5

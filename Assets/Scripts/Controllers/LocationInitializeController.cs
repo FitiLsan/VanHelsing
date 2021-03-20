@@ -48,6 +48,7 @@ namespace BeastHunter
             _enemiesFactoryList.Add(new CreateRabbitModel());
             _enemiesFactoryList.Add(new CreateHellHoundModel());
             _enemiesFactoryList.Add(new CreateTwoHeadedSnakeModel());
+            _enemiesFactoryList.Add(new CreateDummyModel());
 
             _interactiveObjectsFactoryList.Add(new CreateTorchModel());
             _interactiveObjectsFactoryList.Add(new CreateHideBushModel());
@@ -111,8 +112,10 @@ namespace BeastHunter
                 {
                     Vector3 spawnRadius = new Vector3(Random.Range(-spawnPointData.SpawnRadius, spawnPointData.SpawnRadius), 0,
                         Random.Range(-spawnPointData.SpawnRadius, spawnPointData.SpawnRadius));
-                    GameObject instance = GameObject.Instantiate(enemyData.Prefab, spawnPointData.SpawnPosition.Position +
-                        spawnRadius, Quaternion.identity);
+                    Vector3 spawnPoint = Services.SharedInstance.PhysicsService.GetGroundedPosition(spawnPointData.SpawnPosition.Position +
+                        spawnRadius, 1000f);
+                    GameObject instance = GameObject.Instantiate(enemyData.Prefab, spawnPoint, 
+                        Quaternion.Euler(spawnPointData.SpawnPosition.Eulers));
                     EnemyModel enemy = CreateModel(instance, enemyData);
                     _context.NpcModels.Add(instance.GetInstanceID(), enemy);
                 }
@@ -152,8 +155,10 @@ namespace BeastHunter
 
                 Func<GameObject, SimpleInteractiveObjectData, SimpleInteractiveObjectModel> CreateModel = null;
                 CreateModel = Factory.CreateModel;
-                GameObject instance = GameObject.Instantiate(interactiveObjectData.Prefab, _locationData.
-                    InteractiveObjectSpawnData[i].ObjectPosition.Position, Quaternion.identity);
+                Vector3 spawnPoint = Services.SharedInstance.PhysicsService.GetGroundedPosition(_locationData.
+                    InteractiveObjectSpawnData[i].ObjectPosition.Position, 1000f);
+                GameObject instance = GameObject.Instantiate(interactiveObjectData.Prefab, spawnPoint,
+                    Quaternion.Euler(_locationData.InteractiveObjectSpawnData[i].ObjectPosition.Eulers));
                 SimpleInteractiveObjectModel interactiveObject = CreateModel(instance, interactiveObjectData);
                 _context.InteractableObjectModels.Add(instance.GetInstanceID(), interactiveObject);
             }

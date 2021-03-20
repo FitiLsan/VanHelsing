@@ -92,7 +92,10 @@ namespace BeastHunter
             _inputModel.InputAxisY = Input.GetAxis("Vertical");
             _inputModel.IsInputMove = (_inputModel.InputAxisX != 0 || _inputModel.InputAxisY != 0) ? true : false;
             _inputModel.IsInputRun = Input.GetButton("Sprint");
-            _inputModel.IsInputAim = Input.GetButton("AimTarget");
+            //_inputModel.IsInputAttack = Input.GetAxis("Attack") > 0f;
+            _inputModel.IsInputAttack = Input.GetButtonDown("Attack");
+            //_inputModel.IsInputAim = Input.GetAxis("AimTarget") < 0f;
+            _inputModel.IsInputAim = Input.GetButtonDown("AimTarget");
             _inputModel.IsInputWeaponChoise = Input.GetButton("WeaponWheel");
 
             CheckAxisTotal();
