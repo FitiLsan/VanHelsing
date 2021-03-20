@@ -16,6 +16,7 @@ namespace BeastHunter
         Predicate<Collider> OnFilterHandler { get; set; }
         Action<ITrigger, Collider> OnTriggerEnterHandler { get; set; }
         Action<ITrigger, Collider> OnTriggerExitHandler { get; set; }
+        Action<ITrigger, Collider> OnTriggerStayHandler { get; set; }
         Action<ITrigger, InteractableObjectType> DestroyHandler { get; set; }
 
         #endregion
