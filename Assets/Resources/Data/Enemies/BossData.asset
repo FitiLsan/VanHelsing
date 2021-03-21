@@ -95,18 +95,18 @@ MonoBehaviour:
     _defaultSkillRangeMax: 5
     _defaultSkillCooldown: 2
     _defaultSkillReady: 1
-    _horizontalSkillEnable: 1
+    _horizontalSkillEnable: 0
     _horizontalSkillId: 1
     _horizontalSkillDamage: 7
     _horizontalSkillRangeMin: 3
     _horizontalSkillRangeMax: 5
     _horizontalSkillCooldown: 15
     _horizontalSkillReady: 1
-    _stompSplashSkillEnable: 1
+    _stompSplashSkillEnable: 0
     _stompSplashSkillId: 2
     _stompSkillDamage: 10
     _stompSplashSkillRangeMin: 0
-    _stompSplashSkillRangeMax: 15
+    _stompSplashSkillRangeMax: 10
     _stompSplashSkillCooldown: 15
     _stompSplashSkillReady: 0
     _poisonSporesSkillEnable: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
     _poisonSporesSkillReady: 1
     _sporeSkillPrefab: {fileID: 1739478888274650687, guid: 5b539aacef1d12341abf243ed5fae008,
       type: 3}
-    _poisonSporesCircleSkillEnable: 1
+    _poisonSporesCircleSkillEnable: 0
     _poisonSporesCircleSkillId: 4
     _poisonSporesCircleSkillDamage: 2
     _poisonSporesCircleSkillRangeMin: 0
@@ -133,14 +133,14 @@ MonoBehaviour:
     _catchSkillRangeMax: 5
     _catchSkillCooldown: 22
     _catchSkillReady: 0
-    _fingerSkillEnable: 1
+    _fingerSkillEnable: 0
     _fingerSkillId: 6
     _fingerSkillDamage: 15
     _fingerSkillRangeMin: 10
     _fingerSkillRangeMax: 20
     _fingerSkillCooldown: 7
     _fingerSkillReady: 1
-    _rageOfForestSkillEnable: 1
+    _rageOfForestSkillEnable: 0
     _rageOfForestSkillId: 7
     _rageOfForestSkillDamage: 6
     _rageOfForestSkillRangeMin: 10
@@ -148,11 +148,11 @@ MonoBehaviour:
     _rageOfForestSkillCooldown: 15
     _rageOfForestSkillReady: 1
     _vineFishingSkillEnable: 0
-    _vineFishingSkillId: 0
-    _vineFishingSkillRangeMin: 30
-    _vineFishingSkillRangeMax: 50
+    _vineFishingSkillId: 8
+    _vineFishingSkillRangeMin: 10.3
+    _vineFishingSkillRangeMax: 57
     _vineFishingSkillCooldown: 20
-    _vineFishingSkillReady: 0
+    _vineFishingSkillReady: 1
     _vineFishingSkillPrefab: {fileID: 4545837303767770492, guid: d3997e0955628e9479f808f5a1002c94,
       type: 3}
   DefenceStateSkills:
@@ -184,8 +184,10 @@ MonoBehaviour:
     _callOfForestSkillEnable: 0
     _callOfForestSkillId: 4
     _callOfForestSkillRangeMin: -1
-    _callOfForestSkillRangeMax: -1
+    _callOfForestSkillRangeMax: 60
     _callOfForestSkillCooldown: 30
+    _callOfForestSkillPrefab: {fileID: 127564, guid: c70fe6384f972f04b88cb40dd56cb8b7,
+      type: 3}
     _callOfForestSkillReady: 1
   RetreatingStateSkills:
     _fakeTreeSkillEnable: 0
@@ -201,7 +203,7 @@ MonoBehaviour:
     _bushTriggerSkillRangeMin: 8.1
     _bushTriggerSkillRangeMax: 100
     _bushTriggerSkillCount: 10
-    _bushTriggerSkillCooldown: 20.2
+    _bushTriggerSkillCooldown: 1
     _bushTriggerSkillPrefab: {fileID: 6953022481052749130, guid: 0e78b6ad75e10d7438aaa5b1be181e6c,
       type: 3}
     _bushTriggerSkillReady: 1

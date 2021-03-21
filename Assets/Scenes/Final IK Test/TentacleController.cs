@@ -19,7 +19,7 @@ namespace BeastHunter
         private bool _flag;
         private bool _canLookAt = true;
         private GameObject _catchedTarget;
-        private GameObject _catchedTargetRoot;
+        private Transform _catchedTargetRoot;
         private Sequence sequence;
         private bool _isGrowEnd;
 
@@ -126,7 +126,7 @@ namespace BeastHunter
         {
             var rb = _catchedTarget.GetComponent<Rigidbody>();
             rb.isKinematic = false;
-            _catchedTargetRoot.transform.parent = null;
+            _catchedTargetRoot.SetParent(null);
             rb.AddForce(Vector3.forward * 30f, ForceMode.Impulse);
          //   _canLookAt = true;
             
@@ -134,15 +134,15 @@ namespace BeastHunter
 
         public void OnCatchedEvent(GameObject bone, GameObject catchedTarget)
         {
-            if (_isStartCatch)
+            if (_isStartCatch && !_isCatched)
             {
                 _isCatched = true;
                 _catchedTarget = catchedTarget;
-                _catchedTargetRoot = catchedTarget.transform.root.gameObject;
+                _catchedTargetRoot = catchedTarget.transform.root.transform;
                 _catchedTarget.GetComponent<Rigidbody>().isKinematic = true;
-                catchedTarget.transform.root.SetParent(CatchPoint);
-                var pos = new Vector3(CatchPoint.position.x, CatchPoint.position.y, CatchPoint.position.z - zOffset);
-                catchedTarget.transform.root.position = CatchPoint.position;
+                _catchedTargetRoot.position = CatchPoint.position + new Vector3(0, -1, 0);
+                _catchedTargetRoot.rotation = CatchPoint.rotation;
+                _catchedTargetRoot.SetParent(CatchPoint);
                 _canLookAt = false;
                 _animator.SetBool("isCatched", _isCatched);
                 //DOVirtual.DelayedCall(3f, Click);
