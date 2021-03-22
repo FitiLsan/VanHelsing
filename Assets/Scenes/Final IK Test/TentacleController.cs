@@ -25,6 +25,7 @@ namespace BeastHunter
         private bool _isGrowEnd;
         private PuppetMaster _puppetMaster;
         private bool _usedOnce;
+        private Rigidbody _targetRigidbody;
         public Transform CatchPoint;
         public float xOffset;
         public float zOffset;
@@ -55,6 +56,7 @@ namespace BeastHunter
             _fabrik = transform.root.GetComponent<FABRIK>();
           //  _target = _fabrik.solver.target.gameObject;
             _weight = _fabrik.solver.GetIKPositionWeight();
+
         }
 
         private void Start()
@@ -94,7 +96,8 @@ namespace BeastHunter
 
             if(Input.GetKeyDown(KeyCode.P))
             {
-                Click();
+                AddForceToTarget();
+                //Click();
             }
 
             RotateToTarget();
@@ -135,27 +138,26 @@ namespace BeastHunter
                     Coll.enabled = false;
                 }
                 DOVirtual.DelayedCall(0.83f, SwitchKinematic);
-                DOVirtual.DelayedCall(5f, () =>_usedOnce = false);
             }
         }
 
         private void SwitchKinematic()
         {
-            var rb = _catchedTarget.GetComponent<Rigidbody>();
-
-            rb.isKinematic = false;
+            _targetRigidbody.isKinematic = false;
             _puppetMaster.mode = PuppetMaster.Mode.Active;
             _catchedTarget.SetParent(_catchedTargetRoot);
-        //    rb.AddForce(Vector3.forward * 30f, ForceMode.Impulse);
+            DOVirtual.DelayedCall(0.1f, AddForceToTarget);
+            DOVirtual.DelayedCall(5f, () => _usedOnce = false);
+        }
 
+        private void AddForceToTarget()
+        {
             foreach (var item in _puppetMaster.muscles)
             {
-                item.rigidbody.AddExplosionForce(50, transform.position, 5, 1.5f, ForceMode.Impulse);
-            }
-
-            //   _canLookAt = true;
-
+                item.rigidbody.AddExplosionForce(50, transform.position, 15, 1.5f, ForceMode.Impulse);
+            } 
         }
+
 
         public void OnCatchedEvent(GameObject bone, GameObject catchedTarget)
         {
@@ -168,7 +170,8 @@ namespace BeastHunter
                 _puppetMaster.mode = PuppetMaster.Mode.Kinematic;
 
                 _catchedTarget = _catchedTargetRoot.GetChild(2);
-                _catchedTarget.GetComponent<Rigidbody>().isKinematic = true;
+                _targetRigidbody = _catchedTarget.GetComponent<Rigidbody>();
+                _targetRigidbody.isKinematic = true;
                 _catchedTarget.position = CatchPoint.position + new Vector3(0, -1, 0);
                 _catchedTarget.rotation = CatchPoint.rotation;
                 _catchedTarget.SetParent(CatchPoint);
