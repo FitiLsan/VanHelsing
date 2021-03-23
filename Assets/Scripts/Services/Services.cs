@@ -17,6 +17,7 @@
         public TrapService TrapService { get; private set; }
         public NoiseService NoiseService { get; private set; }
         public AudioService AudioService { get; private set; }
+        public GameContext Context { get; private set; }
 
         #endregion
 
@@ -25,6 +26,7 @@
 
         public void InitializeGameServices(GameContext context)
         {
+            Context = context;
             PhysicsService = new PhysicsService();
           //  InventoryService = new InventoryService();
             AttackService = new AttackService(context);
