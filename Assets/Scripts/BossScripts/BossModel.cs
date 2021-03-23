@@ -265,7 +265,7 @@ namespace BeastHunter
             GameObject _callOfForestEffect = GameObject.Instantiate(CallOfForestEffectPrefab, BossTransform.position + new Vector3(-0.65f, 5, 1), Quaternion.identity, BossTransform);
             callOfForestEffect = _callOfForestEffect.GetComponent<ParticleSystem>();
             callOfForestEffect.Stop();
-            callOfForestEffect.loop = false;
+          
 
             GameObject leftFootStompPuf = GameObject.Instantiate(StompPufPrefab, LeftFoot.position, LeftFoot.rotation, LeftFoot);
             leftStompEffect = leftFootStompPuf.GetComponent<ParticleSystem>();
