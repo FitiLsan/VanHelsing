@@ -13,8 +13,9 @@ namespace BeastHunter
         {
         }
 
-        public RageOfForestAttackSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
+        public RageOfForestAttackSkill((bool, int, float, float, float, bool, bool, float) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
+            IsNeedRage = true;
         }
 
         public override void UseSkill(int id)
@@ -26,9 +27,9 @@ namespace BeastHunter
              SetNavMeshAgent((Vector3)_stateMachine._mainState.GetTargetCurrentPosition(), 5f);
             _bossModel.BossAnimator.Play("BossRageAttack", 0, 0f);
 
-            TurnOnHitBoxTrigger(_bossModel.RightHandBehavior, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
+            TurnOnHitBoxTrigger(_bossModel.RightHandBehavior, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER, SkillDamage);
             TurnOnHitBoxCollider(_bossModel.RightHandCollider, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
-            TurnOnHitBoxTrigger(_bossModel.LeftHandBehavior, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
+            TurnOnHitBoxTrigger(_bossModel.LeftHandBehavior, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER, SkillDamage);
             TurnOnHitBoxCollider(_bossModel.LeftHandCollider, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
 
             ReloadSkill(id);
