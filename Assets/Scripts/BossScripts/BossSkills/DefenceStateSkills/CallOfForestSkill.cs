@@ -41,6 +41,7 @@ namespace BeastHunter
             {
                 TreeMutation(tree);
             }
+            DG.Tweening.DOVirtual.DelayedCall(2f, _bossModel.callOfForestEffect.Stop);
         }
 
         private void TreeMutation(GameObject tree)

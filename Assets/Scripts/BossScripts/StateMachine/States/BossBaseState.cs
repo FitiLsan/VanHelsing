@@ -29,7 +29,7 @@ namespace BeastHunter
         public bool CurrentStateType { get; protected set; }
         public bool IsBattleState { get; protected set; }
 
-        public bool IsAnimationPlay { get;  set; }
+        public bool IsAnimationPlay { get; set; }
         public bool IsRotating { get; private set; }
         public bool IsAnySkillUsed { get; protected set; }
         public float CurrentAttackTime { get; protected set; }
@@ -85,7 +85,7 @@ namespace BeastHunter
 
         protected void AnimateRotation()
         {
-            if(_bossModel.BossCurrentTarget==null || !IsRotating)
+            if (_bossModel.BossCurrentTarget == null || !IsRotating)
             {
                 return;
             }
@@ -115,7 +115,7 @@ namespace BeastHunter
 
 
         protected void RotateToTarget()
-         {
+        {
             if (_bossModel.BossCurrentTarget != null && !CheckDirection())
             {
                 IsRotating = true;
@@ -159,21 +159,19 @@ namespace BeastHunter
             }
         }
 
-        protected virtual void ChooseReadySkills(Dictionary<int, BossBaseSkill> dic, Dictionary<int,int> readyDic)
+        protected virtual void ChooseReadySkills(Dictionary<int, BossBaseSkill> dic, Dictionary<int, int> readyDic)
         {
             var count = 0;
             foreach (var skill in dic)
             {
-                if (dic[skill.Key].IsSkillReady)
+                if (dic[skill.Key].IsSkillReady && CheckDistance(dic[skill.Key].SkillRangeMin, dic[skill.Key].SkillRangeMax))
                 {
-                    if (CheckDistance(dic[skill.Key].SkillRangeMin, dic[skill.Key].SkillRangeMax))
+                    if (dic[skill.Key].IsNeedRage && !_bossModel.IsRage)
                     {
-                        if (_bossModel.IsRage == dic[skill.Key].IsNeedRage)
-                        {
-                            readyDic.Add(count, skill.Key);
-                            count++;
-                        }
+                        continue;
                     }
+                    readyDic.Add(count, skill.Key);
+                    count++;
                 }
             }
         }
