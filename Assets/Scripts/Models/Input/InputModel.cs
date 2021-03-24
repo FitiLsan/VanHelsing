@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿//using System.Collections.Generic;
 
 
 namespace BeastHunter
@@ -7,8 +7,10 @@ namespace BeastHunter
     {
         #region Fields
 
-        public Dictionary<string, InputEventTypes> inputOnButtonDown;
-        
+        public MainInput MainInput;
+
+        //public Dictionary<string, InputEventTypes> inputOnButtonDown;
+
         public float MouseInputX;
         public float MouseInputY;
         public float InputAxisX;
@@ -35,7 +37,7 @@ namespace BeastHunter
             }
             set
             {
-                if(_isInputMove != value)
+                if (_isInputMove != value)
                 {
                     _isInputMove = value;
 
@@ -59,7 +61,7 @@ namespace BeastHunter
             }
             set
             {
-                if(_isInputRun != value)
+                if (_isInputRun != value)
                 {
                     _isInputRun = value;
 
@@ -154,7 +156,7 @@ namespace BeastHunter
 
         public InputModel()
         {
-            inputOnButtonDown = new Dictionary<string, InputEventTypes>();
+            MainInput = new MainInput();
         }
 
         #endregion
