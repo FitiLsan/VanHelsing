@@ -8,21 +8,28 @@ namespace BeastHunter
     public class StompSplashAttackSkill : BossBaseSkill
     {
         private const float DELAY_HAND_TRIGGER = 0.2f;
+        private const float UPWARDS_MODIFIER = 1.5f;
+        private const float DELAY_BEFORE_STANDING = 1.5f;
+        private const float DEFAULT_FORCE = 50f;
+        private const float DELAY_AFTER_ANIM = 0.65f;
+
         private GameObject _target;
+        private float _radius;
         public StompSplashAttackSkill(bool IsEnable, int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
             : base(IsEnable, Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
         {
         }
 
-        public StompSplashAttackSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
+        public StompSplashAttackSkill((bool, int, float, float, float, bool, bool, float) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
+            _radius = SkillRangeMax;
         }
 
         public override void UseSkill(int id)
         {
             Debug.Log("StompAttackSkill");
             _bossModel.BossAnimator.Play("BossStompAttack", 0, 0f);
-            var TimeRem = new TimeRemaining(() => StompShockWave(), 0.65f);
+            var TimeRem = new TimeRemaining(() => StompShockWave(), DELAY_AFTER_ANIM);
             TimeRem.AddTimeRemaining(0.65f);
 
           //  TurnOnHitBoxTrigger (_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
@@ -33,7 +40,6 @@ namespace BeastHunter
         private void StompShockWave()
         {
             _bossModel.leftStompEffect.Play(true);
-            var force = 50f;
             var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.LeftFoot.position, 20f, "Player");
             if (list.Count != 0)
             {
@@ -45,8 +51,9 @@ namespace BeastHunter
 
                     foreach (var item in _stateMachine._context.CharacterModel.PuppetMaster.muscles)
                     {
-                        item.rigidbody.AddExplosionForce(force, _bossModel.LeftFoot.transform.position, 15f, 1.5f, ForceMode.Impulse);
+                        item.rigidbody.AddExplosionForce(DEFAULT_FORCE, _bossModel.LeftFoot.transform.position, _radius, UPWARDS_MODIFIER, ForceMode.Impulse);
                     }
+                   // Damage();
                 }
             }
 

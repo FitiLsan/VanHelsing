@@ -42,6 +42,7 @@ namespace BeastHunter
         public PuppetMaster PuppetMaster { get; }
         public BehaviourPuppet BehaviorPuppet { get; }
         public BehaviourFall BehaviorFall { get; }
+        public LineRenderer ProjectileTrajectoryPredict { get; }
 
         public ReactiveCollection<Collider> EnemiesInTrigger { get; set; }
         public ReactiveProperty<Collider> ClosestEnemy { get; set; }
@@ -138,6 +139,7 @@ namespace BeastHunter
             {
                 throw new System.Exception("There is no player behavior script on character prefab");
             }
+
 
             PuppetMaster = objectOnScene.transform.GetChild(1).gameObject.GetComponent<PuppetMaster>();
             BehaviorPuppet = objectOnScene.transform.GetChild(0).GetChild(0).gameObject.GetComponent<BehaviourPuppet>();

@@ -101,6 +101,10 @@ namespace BeastHunter
             PoisonSporesCircleSkill = new PoisonSporesCircleAttackSkill(AttackStateSkillsSettings.GetPoisonSporesCircleSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             CatchAttackSkill = new CatchAttackSkill(AttackStateSkillsSettings.GetCatchSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             FingerAttackSkill = new FingerAttackSkill(AttackStateSkillsSettings.GetFingerSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkillsSettings.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            VineFishingSkill = new VineFishingAttackSkill(AttackStateSkillsSettings.GetVineFishingSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            BushTriggerSkill = new BushTriggerAttackSkill(SearchingStateSkillsSettings.GetBushTriggerSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            CallOfForestSkill = new CallOfForest(DefenceStateSkillsSettings.GetCallOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
 
             AddSkillToDictionary(DefaultAttackSkill, AttackStateSkillDictionary);
             AddSkillToDictionary(HorizontalAttackSkill, AttackStateSkillDictionary);
@@ -109,6 +113,10 @@ namespace BeastHunter
             AddSkillToDictionary(PoisonSporesCircleSkill, AttackStateSkillDictionary);
             AddSkillToDictionary(CatchAttackSkill, AttackStateSkillDictionary);
             AddSkillToDictionary(FingerAttackSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(RageOfForestSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(VineFishingSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(BushTriggerSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(CallOfForestSkill, AttackStateSkillDictionary);
 
             #endregion
 
@@ -117,22 +125,19 @@ namespace BeastHunter
             DefaultDefenceSkill = new DefaultDefenceSkill(DefenceStateSkillsSettings.GetDefaultDefencelSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             SelfHealSkill = new SelfHealSkill(DefenceStateSkillsSettings.GetSelfHealSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             HardBarkSkill = new HardBark(DefenceStateSkillsSettings.GetHardBarkSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
-            CallOfForestSkill = new CallOfForest(DefenceStateSkillsSettings.GetCallOfForestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
+          //  CallOfForestSkill = new CallOfForest(DefenceStateSkillsSettings.GetCallOfForestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             CanibalHealingSkill = new CanibalHealingSkill (DefenceStateSkillsSettings.GetCanibalHealingSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
 
             AddSkillToDictionary(DefaultDefenceSkill, DefenceStateSkillDictionary);
             AddSkillToDictionary(SelfHealSkill, DefenceStateSkillDictionary);
             AddSkillToDictionary(HardBarkSkill, DefenceStateSkillDictionary);
-            AddSkillToDictionary(CallOfForestSkill, DefenceStateSkillDictionary);
+          //  AddSkillToDictionary(CallOfForestSkill, DefenceStateSkillDictionary);
             AddSkillToDictionary(CanibalHealingSkill, DefenceStateSkillDictionary);
 
             #endregion
 
 
             #region ChasingState
-
-            VineFishingSkill = new VineFishingAttackSkill(ChasingStateSkillsSettings.GetVineFishingSkillInfo(), ChasingStateSkillDictionary, _stateMachine);
-            AddSkillToDictionary(VineFishingSkill, ChasingStateSkillDictionary);
 
             #endregion
 
@@ -147,8 +152,8 @@ namespace BeastHunter
 
             #region   SearchingState
 
-            BushTriggerSkill = new BushTriggerAttackSkill(SearchingStateSkillsSettings.GetBushTriggerSkillInfo(), SearchingStateSkillDictionary, _stateMachine);
-            AddSkillToDictionary(BushTriggerSkill, SearchingStateSkillDictionary);
+           // BushTriggerSkill = new BushTriggerAttackSkill(SearchingStateSkillsSettings.GetBushTriggerSkillInfo(), SearchingStateSkillDictionary, _stateMachine);
+          //  AddSkillToDictionary(BushTriggerSkill, SearchingStateSkillDictionary);
 
             #endregion
 
@@ -164,11 +169,8 @@ namespace BeastHunter
 
             TestSkill = new TestAttackSkill(NonStateSkillsSettings.GetTestSkillInfo(), NonStateSkillDictionary, _stateMachine);
             ThrowAttackSkill = new ThrowAttackSkill(NonStateSkillsSettings.GetThrowSkillInfo(), NonStateSkillDictionary, _stateMachine);
-            RageOfForestSkill = new RageOfForestAttackSkill(NonStateSkillsSettings.GetRageOfForestSkillInfo(), NonStateSkillDictionary, _stateMachine);
-
             AddSkillToDictionary(TestSkill, NonStateSkillDictionary);
             AddSkillToDictionary(ThrowAttackSkill, NonStateSkillDictionary);
-            AddSkillToDictionary(RageOfForestSkill, NonStateSkillDictionary);
 
             #endregion
 

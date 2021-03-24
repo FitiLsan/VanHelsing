@@ -12,10 +12,7 @@ namespace BeastHunter
         [Header("Scene information fields")]
 
         [Tooltip("Boss prefab.")]
-        [SerializeField] private GameObject _prefab;
-
-        [Tooltip("Spore prefab.")]
-        [SerializeField] private GameObject _sporePrefab;
+        [SerializeField] private GameObject _prefab;    
 
         [Tooltip("Ruler.")]
         [SerializeField] private GameObject _ruler;
@@ -61,6 +58,20 @@ namespace BeastHunter
 
         [Tooltip("Prefab direction on the scene")]
         [SerializeField] private float _instantiateDirection;
+
+        [Tooltip("Active Rage value between 0 and 100.")]
+        [Range(0.0f, 100.0f)]
+        [SerializeField] private float _activateRage;
+
+        [Tooltip("Duration Rage value(sec) between 0 and 100.")]
+        [Range(0.0f, 100.0f)]
+        [SerializeField] private float _durationRage;
+
+        [Tooltip("Left Eye Path")]
+        [SerializeField] public string _leftEye;
+
+        [Tooltip("Right Eye Path")]
+        [SerializeField] public string _rightEye;
 
         [Header("Prefab rigitbody information fields")]
 
@@ -125,6 +136,10 @@ namespace BeastHunter
         [Range(0.0f, 20.0f)]
         [SerializeField] private float _runSpeed;
 
+        [Tooltip("Rotate speed value between 0 and 20.")]
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _rotateSpeed;
+
         [Tooltip("Ground check height under boss between 0 and 2.")]
         [Range(0.0f, 2.0f)]
         [SerializeField] private float _groundCheckHeight;
@@ -159,7 +174,6 @@ namespace BeastHunter
         #region Properties
 
         public GameObject Prefab => _prefab;
-        public GameObject SporePrefab => _sporePrefab;
         public GameObject Ruler => _ruler;
         public GameObject StompPuf => _stompPuf;
 
@@ -202,13 +216,17 @@ namespace BeastHunter
 
         public float WalkSpeed => _walkSpeed;
         public float RunSpeed => _runSpeed;
+        public float RotateSpeed => _rotateSpeed;
         public float GroundCheckHeight => _groundCheckHeight;
         public float DirectionChangeLag => _directionChangeLag;
         public float AnimatorBaseSpeed => _animatorBaseSpeed;
 
         public float LeftHandHitBoxRadius => _leftHandHitBoxRadius;
         public float RightHandHitBoxRadius => _rightHandHitBoxRadius;
-
+        public float ActivateRage => _activateRage;
+        public float DurationRage =>_durationRage;
+        public string LeftEyePath => _leftEye;
+        public string RightEyePath => _rightEye;
 
         #endregion
     }

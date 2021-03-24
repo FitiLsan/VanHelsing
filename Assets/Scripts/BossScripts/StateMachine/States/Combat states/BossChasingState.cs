@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 
 namespace BeastHunter
@@ -86,10 +87,10 @@ namespace BeastHunter
 
         private void CheckNextMove()
         {
-            if (isAnimationPlay)
+            if (IsAnimationPlay)
             {
                 base.CurrentAttackTime = _bossModel.BossAnimator.GetCurrentAnimatorStateInfo(0).length + ANIMATION_DELAY;
-                isAnimationPlay = false;
+                IsAnimationPlay = false;
             }
 
             if (base.CurrentAttackTime > 0)
@@ -99,33 +100,27 @@ namespace BeastHunter
             }
             if (base.CurrentAttackTime <= 0)
             {
-                _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.RunSpeed;
-                _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK;
-                _stateMachine._model.BossAnimator.Play("MovingState");
+                if (!_stateMachine._model.BossAnimator.GetCurrentAnimatorStateInfo(0).IsName("MovingState")) //need to release in BossAnimationController
+                {
+                    _stateMachine._model.BossAnimator.Play("MovingState", 0, 0);
+                }
                 CheckExtraAttack();
             }
         }
 
         private void CheckExtraAttack()
         {
-
             _forceAttackTime -= Time.deltaTime;
             if (_forceAttackTime <= 0)
             {
-                if (currentDistance >= _bossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillRangeMin &&
-                    currentDistance <= _bossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillRangeMax &&
-                    _bossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].IsSkillReady)
+                var readyDic = new Dictionary<int, int>();
+                ChooseReadySkills(_bossSkills.AttackStateSkillDictionary, readyDic);
+                if (readyDic.Count != 0)
                 {
-                    _stateMachine.BossSkills.ForceUseSkill(_stateMachine.BossSkills.ChasingStateSkillDictionary, VINE_FISHING_ID);
-                    _stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].StartCooldown(_stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillId, _stateMachine.BossSkills.ChasingStateSkillDictionary[VINE_FISHING_ID].SkillCooldown);
-                    _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
-                    return;
+                    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
                 }
-                _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
             }
         }
-
         #endregion
     }
 }

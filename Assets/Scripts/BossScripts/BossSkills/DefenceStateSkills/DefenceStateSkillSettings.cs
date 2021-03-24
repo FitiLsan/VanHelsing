@@ -94,16 +94,18 @@ namespace BeastHunter
         [Tooltip("Skill Range Min")]
         [Range(-1.0f, 30.0f)]
         [SerializeField] private float _callOfForestSkillRangeMin;
-        [Range(-1.0f, 30.0f)]
+        [Range(-1.0f, 100.0f)]
         [Tooltip("Skill Range Max")]
         [SerializeField] private float _callOfForestSkillRangeMax;
         [Tooltip("Skill Cooldown")]
         [Range(0.0f, 200.0f)]
         [SerializeField] private float _callOfForestSkillCooldown;
+        [Tooltip("Skill Prefab")]
+        [SerializeField] private GameObject _callOfForestSkillPrefab;
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _callOfForestSkillReady;
 
-
+        
         #endregion
 
 
@@ -144,6 +146,8 @@ namespace BeastHunter
         public float CallOfForestSkillRangeMax => _callOfForestSkillRangeMax;
         public float CallOfForestSkillCooldown => _callOfForestSkillCooldown;
         public bool CallOfForestSkillReady => _callOfForestSkillReady;
+        public GameObject CallOfForestSkillPrefab => _callOfForestSkillPrefab;
+
 
         #endregion
 
@@ -174,9 +178,9 @@ namespace BeastHunter
             return tuple;
         }
 
-        public (bool, int, float, float, float, bool, bool) GetCallOfForestSkillInfo()
+        public (bool, int, float, float, float, bool, bool, GameObject) GetCallOfForestSkillInfo()
         {
-            var tuple = (CallOfForestSkillEnable, CallOfForestSkillId, CallOfForestSkillRangeMin, CallOfForestSkillRangeMax, CallOfForestSkillCooldown, CallOfForestSkillReady, false);
+            var tuple = (CallOfForestSkillEnable, CallOfForestSkillId, CallOfForestSkillRangeMin, CallOfForestSkillRangeMax, CallOfForestSkillCooldown, CallOfForestSkillReady, false, CallOfForestSkillPrefab);
             return tuple;
         }
 
