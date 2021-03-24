@@ -22,7 +22,7 @@ namespace Extensions
             {
                 return obj;
             }
-
+            
             var count = obj.childCount;
             for (var i = 0; i < count; ++i)
             {
@@ -83,6 +83,11 @@ namespace Extensions
             var results = new List<T>();
             obj.GetComponentsInChildren(results);
             return results;
+        }
+
+        public static void MoveUp(this Transform obj, float value)
+        {
+            obj.position = obj.position + Vector3.up * value;
         }
     }
 }
