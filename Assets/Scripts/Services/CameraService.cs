@@ -122,7 +122,6 @@ namespace BeastHunter
                 transform, _cameraDynamicTarget.transform);
 
             CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
-            CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenterWaitTime = 0;
 
             _freeLookPerlins = new CinemachineBasicMultiChannelPerlin[3];
 

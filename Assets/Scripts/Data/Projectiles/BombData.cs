@@ -40,7 +40,7 @@ namespace BeastHunter
                 {
                     case InteractableObjectType.Enemy:
                         Services.SharedInstance.AttackService.CountAndDealDamage(ProjectileDamage,
-                            touchedCollider.transform.GetMainParent().gameObject.GetInstanceID());
+                            touchedCollider.transform.root.gameObject.GetInstanceID());
                         break;
                     case InteractableObjectType.WeakHitBox:
                         MessageBroker.Default.Publish(

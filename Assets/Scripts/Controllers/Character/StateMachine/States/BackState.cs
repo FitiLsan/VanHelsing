@@ -4,7 +4,6 @@ using System;
 using RootMotion.Dynamics;
 using UniRx;
 using Extensions;
-using DG.Tweening;
 
 
 namespace BeastHunter
@@ -124,7 +123,7 @@ namespace BeastHunter
             _characterModel = _context.CharacterModel;
             _inputModel = _context.InputModel;
             _puppetController = _characterModel.PuppetMaster;
-
+            
             _weaponWheelUI = GameObject.Instantiate(Data.UIElementsData.WeaponWheelPrefab);
             _weaponWheelTransform = _weaponWheelUI.transform.
                 Find(WEAPON_WHEEL_PANEL_NAME).Find(WEAPON_WHEEL_CYCLE_NAME).transform;
@@ -220,13 +219,6 @@ namespace BeastHunter
             MovementCheck();
             ControlWeaponWheel();
             EnemyHealthBarUpdate();
-
-            //FOR DEBUG ONLY!
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                _characterModel.CurrentStats.BaseStats.CurrentHealthPoints += 15f;
-                OnHealthChange?.Invoke();
-            }
         }
 
         #endregion
@@ -483,7 +475,7 @@ namespace BeastHunter
                 }
 
                 _services.AttackService.CountAndDealDamage(_characterModel.CurrentWeaponData.Value.CurrentAttack.AttackDamage,
-                    enemy.transform.GetMainParent().gameObject.GetInstanceID(), _characterModel.CurrentStats, _characterModel.
+                    enemy.transform.root.gameObject.GetInstanceID(), _characterModel.CurrentStats, _characterModel.
                         CurrentWeaponData.Value);
                 hitBox.IsInteractable = false;
             }
@@ -996,7 +988,7 @@ namespace BeastHunter
             {
                 if (_characterModel.ClosestEnemy.Value != null)
                 {
-                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.GetMainParent().
+                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.root.
                         gameObject.GetInstanceID()];
 
                     if (!_targetEnemy.CurrentStats.BaseStats.IsDead)

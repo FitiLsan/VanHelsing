@@ -81,6 +81,14 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Hold""
+                },
+                {
+                    ""name"": ""MouseLook"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""faa3a3e2-b371-4694-ae9c-c9f1dc7d4131"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold""
                 }
             ],
             ""bindings"": [
@@ -215,6 +223,17 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""action"": ""WeaponWheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ce24872-6adc-49aa-9b15-14cfbe6ea77d"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""MouseLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -270,6 +289,7 @@ public class @MainInput : IInputActionCollection, IDisposable
         m_Player_ButtonsInfo = m_Player.FindAction("ButtonsInfo", throwIfNotFound: true);
         m_Player_Bestiary = m_Player.FindAction("Bestiary", throwIfNotFound: true);
         m_Player_WeaponWheel = m_Player.FindAction("WeaponWheel", throwIfNotFound: true);
+        m_Player_MouseLook = m_Player.FindAction("MouseLook", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -327,6 +347,7 @@ public class @MainInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_ButtonsInfo;
     private readonly InputAction m_Player_Bestiary;
     private readonly InputAction m_Player_WeaponWheel;
+    private readonly InputAction m_Player_MouseLook;
     public struct PlayerActions
     {
         private @MainInput m_Wrapper;
@@ -339,6 +360,7 @@ public class @MainInput : IInputActionCollection, IDisposable
         public InputAction @ButtonsInfo => m_Wrapper.m_Player_ButtonsInfo;
         public InputAction @Bestiary => m_Wrapper.m_Player_Bestiary;
         public InputAction @WeaponWheel => m_Wrapper.m_Player_WeaponWheel;
+        public InputAction @MouseLook => m_Wrapper.m_Player_MouseLook;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -372,6 +394,9 @@ public class @MainInput : IInputActionCollection, IDisposable
                 @WeaponWheel.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponWheel;
                 @WeaponWheel.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponWheel;
                 @WeaponWheel.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponWheel;
+                @MouseLook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseLook;
+                @MouseLook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseLook;
+                @MouseLook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseLook;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -400,6 +425,9 @@ public class @MainInput : IInputActionCollection, IDisposable
                 @WeaponWheel.started += instance.OnWeaponWheel;
                 @WeaponWheel.performed += instance.OnWeaponWheel;
                 @WeaponWheel.canceled += instance.OnWeaponWheel;
+                @MouseLook.started += instance.OnMouseLook;
+                @MouseLook.performed += instance.OnMouseLook;
+                @MouseLook.canceled += instance.OnMouseLook;
             }
         }
     }
@@ -441,5 +469,6 @@ public class @MainInput : IInputActionCollection, IDisposable
         void OnButtonsInfo(InputAction.CallbackContext context);
         void OnBestiary(InputAction.CallbackContext context);
         void OnWeaponWheel(InputAction.CallbackContext context);
+        void OnMouseLook(InputAction.CallbackContext context);
     }
 }
