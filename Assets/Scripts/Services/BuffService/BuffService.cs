@@ -1,25 +1,29 @@
 ﻿using System.Collections.Generic;
 using System;
 using UnityEngine;
-
+using DG.Tweening;
 
 namespace BeastHunter
 {
-    public sealed class BuffService : IService
+    public sealed class BuffService :  IService
     {
         #region Fields
 
         private delegate void BuffDelegate(Stats stats, float parameter);
         private Dictionary<Buff, BuffDelegate> TemporaryBuffDictionary;
         private Dictionary<Buff, BuffDelegate> PermanentBuffDictionary;
+        private GameContext _context;
 
         #endregion
 
 
         #region ClassLifeCycles
 
-        public BuffService()
+        public BuffService(GameContext context)
         {
+
+            _context = context;
+
             TemporaryBuffDictionary = new Dictionary<Buff, BuffDelegate>();
             PermanentBuffDictionary = new Dictionary<Buff, BuffDelegate>();
 
@@ -27,11 +31,15 @@ namespace BeastHunter
             PermanentBuffDictionary.Add(Buff.HealthMaximalAmount, HealthMaximumBuff);
             PermanentBuffDictionary.Add(Buff.StaminaRegenSpeed, StaminaRegenBuff);
             PermanentBuffDictionary.Add(Buff.StaminaMaximalAmount, StaminaMaximumBuff);
+            PermanentBuffDictionary.Add(Buff.CurrentHealthChangeValue, CurrentHealthChangeValue);
+            PermanentBuffDictionary.Add(Buff.SpeedChangeValue, SpeedChangeValue);
 
             TemporaryBuffDictionary.Add(Buff.HealthRegenSpeed, HealthRegenBuff);
             TemporaryBuffDictionary.Add(Buff.HealthMaximalAmount, HealthMaximumBuff);
             TemporaryBuffDictionary.Add(Buff.StaminaRegenSpeed, StaminaRegenBuff);
             TemporaryBuffDictionary.Add(Buff.StaminaMaximalAmount, StaminaMaximumBuff);
+            TemporaryBuffDictionary.Add(Buff.CurrentHealthChangeValue, CurrentHealthChangeValue);
+            TemporaryBuffDictionary.Add(Buff.SpeedChangeValue, SpeedChangeValue);            
         }
 
         #endregion
@@ -39,18 +47,22 @@ namespace BeastHunter
 
         #region Methods
 
-        public void AddPermanentBuff(Stats stats, PermanentBuff buff, BuffHolder buffHolder)
+        public void AddPermanentBuff(int instanceID, PermanentBuff buff)
         {
+            var stats = GetStatsByInstanceID(instanceID);
+            var buffHolder = stats.BuffHolder;
             foreach (var effect in buff.Effects)
             {
                 PermanentBuffDictionary[effect.Buff](stats, effect.Value);
             }
 
-            buffHolder.PermanentBuffList.Add(buff);
+            buffHolder.AddPermanetBuff(buff);
         }
 
-        public void RemovePermanentBuff(Stats stats, PermanentBuff buff, BuffHolder buffHolder)
+        public void RemovePermanentBuff(int instanceID, PermanentBuff buff)
         {
+            var stats = GetStatsByInstanceID(instanceID);
+            var buffHolder = stats.BuffHolder;
             if (buffHolder.PermanentBuffList.Contains(buff))
             {
                 foreach (var effect in buff.Effects)
@@ -66,14 +78,34 @@ namespace BeastHunter
             }
         }
 
-        public void AddTemporaryBuff(Stats stats, TemporaryBuff buff, BuffHolder buffHolder)
+        public void AddTemporaryBuff(int instanceID, TemporaryBuff buff)
         {
+            var stats = GetStatsByInstanceID(instanceID);
+            var buffHolder = stats.BuffHolder;
             foreach (var effect in buff.Effects)
             {
-                TemporaryBuffDictionary[effect.Buff](stats, effect.Value);
+                var modifiedBuffValue = buff.Type.Equals(BuffType.Debuf) ? effect.Value : effect.Value * -1;
+                if (effect.IsTicking)
+                {
+                    var time = buff.Time;
+                    BuffUse(time);
+                }
+                else
+                {
+                    TemporaryBuffDictionary[effect.Buff](stats, modifiedBuffValue);
+                }
+                void BuffUse(float time)
+                {
+                    time--;
+                    if (time < 0)
+                    {
+                        return;
+                    }
+                    TemporaryBuffDictionary[effect.Buff](stats, modifiedBuffValue);
+                    DOVirtual.DelayedCall(1f, () => BuffUse(time));
+                }
             }
-
-            buffHolder.TemporaryBuffList.Add(buff);
+            buffHolder.AddTemporaryBuff(buff);
 
             Action laterBuffRemove = () => RemoveTemporaryBuff(stats, buff, buffHolder);
 
@@ -87,7 +119,12 @@ namespace BeastHunter
             {
                 foreach (var effect in buff.Effects)
                 {
-                    TemporaryBuffDictionary[effect.Buff](stats, -effect.Value);
+                    if (!effect.IsTicking)
+                    {
+                        var modifiedBuffValue = buff.Type.Equals(BuffType.Debuf) ? effect.Value : effect.Value * -1;
+
+                        TemporaryBuffDictionary[effect.Buff](stats, -modifiedBuffValue);
+                    }
                 }
 
                 buffHolder.TemporaryBuffList.Remove(buff);
@@ -108,7 +145,7 @@ namespace BeastHunter
         {
             stats.BaseStats.MaximalHealthPoints += value;
 
-            if(stats.BaseStats.CurrentHealthPoints > stats.BaseStats.MaximalHealthPoints)
+            if (stats.BaseStats.CurrentHealthPoints > stats.BaseStats.MaximalHealthPoints)
             {
                 stats.BaseStats.CurrentHealthPoints = stats.BaseStats.MaximalHealthPoints;
             }
@@ -134,6 +171,25 @@ namespace BeastHunter
             Debug.Log("changed maximum stamina to " + stats.BaseStats.MaximalStaminaPoints);
         }
 
+        private void SpeedChangeValue(Stats stats, float value)
+        {
+            stats.BaseStats.SpeedModifier += value;   
+        }
+
+        private void CurrentHealthChangeValue(Stats stats, float value)
+        {
+            var damage = new Damage();
+            damage.PhysicalDamage = value;
+            Services.SharedInstance.AttackService.CountAndDealDamage(damage, stats.InstanceID);
+        }
+
+
+        public Stats GetStatsByInstanceID(int receiverID)
+        {
+            Stats receiverStats = _context.CharacterModel.InstanceID == receiverID ?
+                _context.CharacterModel.CurrentStats : _context.NpcModels[receiverID].CurrentStats;
+           return receiverStats;
+        }
         #endregion
     }
 }

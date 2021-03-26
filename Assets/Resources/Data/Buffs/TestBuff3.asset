@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ed80e7e67b6fac44938b9de902b200e, type: 3}
-  m_Name: HealthBuffData
+  m_Name: TestBuff3
   m_EditorClassIdentifier: 
-  Name: health buff
+  Name: testbuf3
   Description: 
-  Time: 5
   Type: 0
-  Sprite: {fileID: 0}
-  Effects:
-  - Buff: 1
-    Value: 0.4
+  Sprite: {fileID: 21300000, guid: 6f82c769d51ea504083832377e952d62, type: 3}
+  Effects: []
+  Time: 10

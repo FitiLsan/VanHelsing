@@ -112,6 +112,11 @@ namespace BeastHunter
                                         Random.Range(MINIMAL_TARGET_DISTANCE, MAXIMAL_TARGET_DISTANCE)
                                             + _currentPosition.z));
 
+                if(!_stateMachine._model.BossNavAgent.isOnNavMesh) // DEBUGONLY
+                {
+                    return;
+                }
+                
                 _stateMachine._model.BossNavAgent.CalculatePath(_checkTargetPosition, _path);
 
                 if (_path.status == NavMeshPathStatus.PathComplete)

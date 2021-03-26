@@ -6,6 +6,8 @@
         HealthRegenSpeed,
         StaminaMaximalAmount,
         StaminaRegenSpeed,
+        CurrentHealthChangeValue,
+        SpeedChangeValue
     }
 }
 

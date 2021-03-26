@@ -110,6 +110,9 @@ namespace BeastHunter
             }
         }
 
+        public float SpeedModifier { get; set; } = 0;
+        
+
         #endregion
     }
 }

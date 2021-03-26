@@ -55,7 +55,7 @@ namespace BeastHunter
         public Action OnTimeSkipOpenClose;
         public Action OnButtonsInfoMenuOpenClose;
         public Action OnUse;
-        public Action OnHealthChange;
+        public static Action OnHealthChange;
 
         private readonly GameContext _context;
         private readonly CharacterStateMachine _stateMachine;
@@ -84,6 +84,7 @@ namespace BeastHunter
         private Text _weaponWheelText;
         private CharacterSpeedCounter _activeSpeedCounter;
         private PlayerHealthBarModel _playerHealthBarModel;
+       // private PlayerBuffPanelModel _playerBuffPanelModel;
 
         private CharacterAnimationEventTypes _lastAnimationEventType;
 
@@ -194,6 +195,7 @@ namespace BeastHunter
             OnTrapPlace += _services.TrapService.PlaceTrap;
             OnUse += UseInteractiveObject;
             OnHealthChange += HealthBarUpdate;
+          //  _characterModel.CurrentStats.BuffHolderChanged += BuffPanelUpdate;
 
             _characterModel.CurrentWeaponData.Subscribe(OnWeaponChangeHandler);
             _characterModel.CurrentCharacterState.Subscribe(UpdateSpeedCounterByState);
@@ -263,6 +265,7 @@ namespace BeastHunter
             OnTrapPlace -= _services.TrapService.PlaceTrap;
             OnUse -= UseInteractiveObject;
             OnHealthChange -= HealthBarUpdate;
+          //  _characterModel.CurrentStats.BuffHolderChanged -= BuffPanelUpdate;
 
             _characterModel.CurrentWeaponData.Dispose();
             _characterModel.CurrentCharacterState.Dispose();
@@ -844,7 +847,7 @@ namespace BeastHunter
         {
             _activeSpeedCounter.CountSpeed(_inputModel.IsInputMove, _inputModel.IsInputRun,
                 ref _curretSpeed, ref _currentVelocity);
-            _characterModel.CurrentSpeed = _curretSpeed;
+            _characterModel.CurrentSpeed = Mathf.Clamp(_curretSpeed - _characterModel.CurrentStats.BaseStats.SpeedModifier, 0, float.PositiveInfinity);
         }
 
         #endregion
@@ -955,6 +958,11 @@ namespace BeastHunter
         private void HealthBarUpdate()
         {
             _playerHealthBarModel.HealthFillUpdate(_characterModel.CurrentStats.BaseStats.CurrentHealthPart);
+        }
+
+        private void BuffPanelUpdate(TemporaryBuff temporaryBuff)
+        {
+            //TODO
         }
 
         /// <summary>Example method of implementing health restoration to the current max health threshold</summary>

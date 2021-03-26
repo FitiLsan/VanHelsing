@@ -73,7 +73,6 @@ namespace BeastHunter
 
         public CharacterModel(GameObject objectOnScene, CharacterData characterData, LocationPosition groundedPosition)
         {
-            InstanceID = objectOnScene.GetInstanceID();
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData.CharacterCommonSettings;
             CharacterStartStats = CharacterData.CharacterStatsSettings;
@@ -86,6 +85,9 @@ namespace BeastHunter
             CharacterTransform.name = CharacterCommonSettings.InstanceName;
             CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
             CurrentStats = CharacterStartStats.DeepCopy();
+            InstanceID = CurrentStats.InstanceID = objectOnScene.GetInstanceID();
+            CurrentStats.BuffHolder = new BuffHolder();
+
 
             AudioSource[] characterAudioSources = CharacterTransform.gameObject.GetComponentsInChildren<AudioSource>();
             SpeechAudioSource = characterAudioSources[0];
@@ -146,7 +148,7 @@ namespace BeastHunter
             BehaviorFall = objectOnScene.transform.GetChild(0).GetChild(1).gameObject.GetComponent<BehaviourFall>();
 
             EnemiesInTrigger = new ReactiveCollection<Collider>();
-            
+
             ClosestEnemy = new ReactiveProperty<Collider>();
             IsGrounded = false;
             IsSneaking = false;
@@ -162,7 +164,7 @@ namespace BeastHunter
             CurrentWeaponRight = null;
             CurrentPlacingTrapModel = new ReactiveProperty<TrapModel>();
             CurrentPlacingTrapModel.Value = null;
-            CharacterAnimationModel = new CharacterAnimationModel(CharacterTransform.GetComponent<Animator>(), 
+            CharacterAnimationModel = new CharacterAnimationModel(CharacterTransform.GetComponent<Animator>(),
                 CharacterCommonSettings.CharacterAnimator, CharacterCommonSettings.BeginningApplyRootMotion);
             CurrentCharacterState = new ReactiveProperty<CharacterBaseState>();
             PreviousCharacterState = new ReactiveProperty<CharacterBaseState>();
