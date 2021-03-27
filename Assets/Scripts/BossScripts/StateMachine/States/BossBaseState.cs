@@ -64,15 +64,6 @@ namespace BeastHunter
 
         public abstract void OnTearDown();
 
-        protected virtual void SetNavMeshAgent(Vector3 targetPosition, float speed)
-        {
-            if (_bossModel.BossNavAgent.enabled)
-            {
-                _bossModel.BossNavAgent.SetDestination(targetPosition);
-                _bossModel.BossNavAgent.speed = speed;
-            }
-        }
-
         protected bool CheckDirection()
         {
             if (_bossModel.IsPickUped)

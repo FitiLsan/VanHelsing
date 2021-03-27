@@ -34,7 +34,7 @@ namespace BeastHunter
         private void OnTriggerEnter(Collider other)
         {
             var obj = other.GetComponent<InteractableObjectBehavior>();
-            if (obj != null && obj.Type == InteractableObjectType.Player && !other.isTrigger)
+            if (obj != null && !other.isTrigger &&  obj.Type == InteractableObjectType.Enemy) //obj.Type == InteractableObjectType.Player ||
             {
                 var instanceID = other.transform.root.gameObject.GetInstanceID();
 
@@ -47,6 +47,8 @@ namespace BeastHunter
                     Services.SharedInstance.BuffService.AddPermanentBuff(instanceID, buff as PermanentBuff);
                 }
             }
+         
+
         }
     }
 }

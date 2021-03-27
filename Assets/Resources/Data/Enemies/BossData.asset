@@ -30,6 +30,7 @@ MonoBehaviour:
       _physicalDamageResistance: 0.4
       _stunProbabilityResistance: 0.2
       _fireDamageResistance: 0
+    InstanceID: 0
   _bossSettings:
     _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b,
       type: 3}
@@ -88,28 +89,28 @@ MonoBehaviour:
     _rightHandHitBoxRadius: 1
     _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
   AttackStateSkills:
-    _defaultSkillEnable: 1
+    _defaultSkillEnable: 0
     _defaultSkillId: 0
     _defaultSkillDamage: 5
     _defaultSkillRangeMin: 1
     _defaultSkillRangeMax: 5
     _defaultSkillCooldown: 2
     _defaultSkillReady: 1
-    _horizontalSkillEnable: 1
+    _horizontalSkillEnable: 0
     _horizontalSkillId: 1
     _horizontalSkillDamage: 7
     _horizontalSkillRangeMin: 2
     _horizontalSkillRangeMax: 5
     _horizontalSkillCooldown: 15
     _horizontalSkillReady: 1
-    _stompSplashSkillEnable: 1
+    _stompSplashSkillEnable: 0
     _stompSplashSkillId: 2
     _stompSkillDamage: 10
     _stompSplashSkillRangeMin: 0
     _stompSplashSkillRangeMax: 10
     _stompSplashSkillCooldown: 20
     _stompSplashSkillReady: 0
-    _poisonSporesSkillEnable: 1
+    _poisonSporesSkillEnable: 0
     _poisonSporesSkillId: 3
     _poisonSporesSkillDamage: 1
     _poisonSporesSkillRangeMin: 5
@@ -133,7 +134,7 @@ MonoBehaviour:
     _catchSkillRangeMax: 5
     _catchSkillCooldown: 22
     _catchSkillReady: 0
-    _fingerSkillEnable: 1
+    _fingerSkillEnable: 0
     _fingerSkillId: 6
     _fingerSkillDamage: 15
     _fingerSkillRangeMin: 10
@@ -181,7 +182,7 @@ MonoBehaviour:
     _canibalHealingSkillRangeMax: 4
     _canibalHealingSkillCooldown: 10
     _canibalHealingSkillReady: 1
-    _callOfForestSkillEnable: 1
+    _callOfForestSkillEnable: 0
     _callOfForestSkillId: 9
     _callOfForestSkillRangeMin: -1
     _callOfForestSkillRangeMax: 40
@@ -198,7 +199,7 @@ MonoBehaviour:
     _fakeTreeSkillReady: 1
     _fakeTreePrefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
   SearchingStateSkills:
-    _bushTriggerSkillEnable: 1
+    _bushTriggerSkillEnable: 0
     _bushTriggerSkillId: 10
     _bushTriggerSkillRangeMin: 8.1
     _bushTriggerSkillRangeMax: 60

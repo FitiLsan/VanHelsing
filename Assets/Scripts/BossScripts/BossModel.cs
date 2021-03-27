@@ -45,7 +45,6 @@ namespace BeastHunter
 
         public Animator BossAnimator { get; set; }
         public Collider Player { get; set; }
-
         public float CurrentSpeed { get; set; }
         public float AnimationSpeed { get; set; }
 
@@ -53,6 +52,7 @@ namespace BeastHunter
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
         public bool IsPickUped { get; set; }
+
 
         public MovementPoint[] MovementPoints { get; set; }
 
@@ -98,14 +98,15 @@ namespace BeastHunter
             base(objectOnScene, data)
         {
             Lair = GameObject.Find("Lair");
-
             BossData = data;
             BossSettings = BossData._bossSettings;
+            BossData.BossModel = this;
             BossTransform = objectOnScene.transform;
             BossTransform.rotation = Quaternion.Euler(0, BossSettings.InstantiateDirection, 0);
             BossTransform.name = BossSettings.InstanceName;
             BossTransform.tag = BossSettings.InstanceTag;
             BossTransform.gameObject.layer = BossSettings.InstanceLayer;
+            
 
             Transform[] children = BossTransform.GetComponentsInChildren<Transform>();
 
@@ -180,7 +181,6 @@ namespace BeastHunter
             }
 
             BossBehavior.SetType(InteractableObjectType.Enemy);
-         //   BossBehavior.Stats = BossStats.MainStats;
             BossStateMachine = new BossStateMachine(context, this);
 
             Player = null;
@@ -415,12 +415,19 @@ namespace BeastHunter
                 Debug.Log("Hit 18% hp");
                 if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
                 {
-                   // BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                    // BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
                 }
             }
-            else if (!BossStateMachine.CurrentState.IsBattleState)
+            if (!BossStateMachine.CurrentState.IsBattleState)
             {
-                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
+                if (BossCurrentTarget != null)
+                {
+                    BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
+                }
+                else
+                {
+                  //  BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
+                }
             }
         }
 

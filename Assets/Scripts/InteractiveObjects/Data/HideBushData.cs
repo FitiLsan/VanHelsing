@@ -137,7 +137,7 @@ namespace BeastHunter
             {
                 SetBurningState(model);
             }
-            else
+            else if(!collider.isTrigger)
             {
                 _addDamageListMsg?.Invoke(behaviorIO.gameObject.ToString());
                 model.DamageObjects.Add(behaviorIO);

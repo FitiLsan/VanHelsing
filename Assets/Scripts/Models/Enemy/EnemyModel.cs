@@ -17,6 +17,7 @@ namespace BeastHunter
 
         public GameObject ObjectOnScene { get; }
         public EnemyData ThisEnemyData { get; }
+        public int InstanceID { get; }
 
         #endregion
 
@@ -28,6 +29,8 @@ namespace BeastHunter
             ObjectOnScene = objectOnScene;
             ThisEnemyData = data;
             CurrentStats = ThisEnemyData.StartStats.DeepCopy();
+            InstanceID = CurrentStats.InstanceID = objectOnScene.GetInstanceID();
+            CurrentStats.BuffHolder = new BuffHolder();
         }
 
         //public abstract void HealthBarController();

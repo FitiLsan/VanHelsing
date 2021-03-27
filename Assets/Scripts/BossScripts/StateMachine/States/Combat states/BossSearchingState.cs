@@ -40,8 +40,7 @@ namespace BeastHunter
         {
             CanExit = false;
             CanBeOverriden = true;
-            _stateMachine._model.BossNavAgent.SetDestination(_stateMachine._model.BossTransform.position);
-            _stateMachine._model.BossNavAgent.speed = 0f;
+            _bossData.SetNavMeshAgent(_bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             _stateMachine._model.BossAnimator.Play("SearchingState", 0, 0f);
             _searchingTime = SEARCHING_TIME;
         }

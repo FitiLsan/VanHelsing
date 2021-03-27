@@ -45,7 +45,7 @@ namespace BeastHunter
             IsBattleState = true;
             IsAnySkillUsed = false;
             base.CurrentAttackTime = 0f;
-            SetNavMeshAgent(_bossModel.BossTransform.position, 0);
+            _bossData.SetNavMeshAgent(_bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             StartCoolDownSkills(_bossSkills.DefenceStateSkillDictionary);
         }
 
@@ -124,7 +124,7 @@ namespace BeastHunter
 
         private void DecideNextMove()
         {
-            SetNavMeshAgent(_bossModel.BossTransform.position, 0);
+            _bossData.SetNavMeshAgent(_bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             _bossModel.LeftHandBehavior.IsInteractable = false;
             _bossModel.RightHandBehavior.IsInteractable = false;
             _bossModel.LeftHandCollider.enabled = false;

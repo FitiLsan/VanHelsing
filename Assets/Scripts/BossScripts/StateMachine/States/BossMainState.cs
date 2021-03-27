@@ -35,6 +35,8 @@ namespace BeastHunter
         private float _timer = 7f;
         private int _hitPerTime = 0;
         private float _damagePerTime;
+        private float _realNavAgentSpeed;
+        private float _lastSpeedModifier = -1;
 
         #endregion
 
@@ -65,7 +67,8 @@ namespace BeastHunter
             MessageBroker.Default.Receive<OnBossStunnedEventClass>().Subscribe(OnBossStunnedHandler);
             MessageBroker.Default.Receive<OnBossHittedEventClass>().Subscribe(OnBossHittedHandler);
             MessageBroker.Default.Receive<OnBossWeakPointHittedEventClass>().Subscribe(MakeWeakPointBurst);
-           // MessageBroker.Default.Receive<OnPlayerSneakingEventClass>().Subscribe(OnPlayerSneakingHandler);
+            _bossModel.CurrentStats.BaseStats.SpeedUpdate += OnSpeedUpdate;
+            // MessageBroker.Default.Receive<OnPlayerSneakingEventClass>().Subscribe(OnPlayerSneakingHandler);
         }
 
         public override void Initialise()
@@ -188,12 +191,15 @@ namespace BeastHunter
         private void SpeedCheck()
         {
             var realSpeed = 0f;
+
             if (_bossModel.CurrentSpeed != _bossModel.BossNavAgent.speed)
             {
-              realSpeed =  DOVirtual.EasedValue(_bossModel.CurrentSpeed, _bossModel.BossNavAgent.speed, 0.2f , Ease.InCirc);
+               realSpeed =  DOVirtual.EasedValue(_bossModel.CurrentSpeed, _bossModel.BossNavAgent.speed, 0.2f, Ease.InCirc);
             }
-            _bossModel.CurrentSpeed = realSpeed;
-            _stateMachine._model.BossAnimator.SetFloat("Speed", _bossModel.CurrentSpeed);
+            _bossModel.CurrentSpeed = realSpeed;//Mathf.Clamp(realSpeed - _bossModel.CurrentStats.BaseStats.SpeedModifier, 0, float.PositiveInfinity);
+
+            _bossModel.BossAnimator.SetFloat("Speed", _bossModel.CurrentSpeed);
+
         }
 
         public void CheckCurrentFieldOfView()
@@ -323,6 +329,12 @@ namespace BeastHunter
             // {
             //     _bossModel.InteractionTarget = _bossModel.BossCurrentTarget.GetComponentInChildren<InteractionObject>();
             // }
+        }
+
+        private void OnSpeedUpdate()
+        {
+            var speed = _stateMachine.CurrentState.IsBattleState ? _bossModel.BossSettings.RunSpeed : _bossModel.BossSettings.WalkSpeed;
+            _bossData.SetNavMeshAgentSpeed(_bossModel.BossNavAgent, speed);
         }
 
         #endregion

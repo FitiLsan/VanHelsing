@@ -10,6 +10,7 @@ namespace BeastHunter
         #region PrivateData
 
         public BossSettings _bossSettings;
+        public BossModel BossModel;
         public AttackStateSkillsSettings AttackStateSkills;
         public DefenceStateSkillsSettings DefenceStateSkills;
         public ChasingStateSkillsSettings ChasingStateSkills;
@@ -126,6 +127,22 @@ namespace BeastHunter
             {
                 return 0;
             }
+        }
+
+        public void SetNavMeshAgent(NavMeshAgent bossNavAgent, Vector3 targetPosition, float speed)
+        {
+            SetNavMeshAgentDestination(bossNavAgent, targetPosition);
+            SetNavMeshAgentSpeed(bossNavAgent, speed);
+        }
+
+        public void SetNavMeshAgentDestination(NavMeshAgent bossNavAgent, Vector3 targetPosition)
+        {
+            bossNavAgent.SetDestination(targetPosition);
+        }
+        public void SetNavMeshAgentSpeed(NavMeshAgent bossNavAgent, float speed)
+        {
+            var realSpeed = Mathf.Clamp(speed - BossModel.CurrentStats.BaseStats.SpeedModifier, 0, float.PositiveInfinity);
+            bossNavAgent.speed = realSpeed;
         }
 
         #endregion

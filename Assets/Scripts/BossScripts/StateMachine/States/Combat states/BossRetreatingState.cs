@@ -41,7 +41,7 @@ namespace BeastHunter
             CanExit = false;
             CanBeOverriden = true;
             IsBattleState = true;
-            _stateMachine._model.BossNavAgent.speed = 0;
+            _bossData.SetNavMeshAgentSpeed(_bossModel.BossNavAgent, 0);
             _stateMachine._model.BossAnimator.Play("IdleState");
         }
 

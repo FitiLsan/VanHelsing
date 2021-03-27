@@ -43,15 +43,19 @@ namespace BeastHunter
             if (Bush.activeSelf)
             {
                 var obj = other.GetComponent<InteractableObjectBehavior>();
-                if (obj != null && obj.Type == InteractableObjectType.Player && !other.isTrigger)
+                if (obj != null && !other.isTrigger)
                 {
-                    var bushDamage = new Damage();
-                   // bushDamage.PhysicalDamage = 75f;//Random.Range(33f, 50f);
-                //    Services.SharedInstance.AttackService.CountAndDealDamage(bushDamage, other.transform.GetMainParent().
-                 //       gameObject.GetInstanceID());
+                    if (obj.Type == InteractableObjectType.Player || obj.Type == InteractableObjectType.Enemy)
+                    {
+                        var bushDamage = new Damage();
+                        // bushDamage.PhysicalDamage = 75f;//Random.Range(33f, 50f);
+                        //    Services.SharedInstance.AttackService.CountAndDealDamage(bushDamage, other.transform.GetMainParent().
+                        //       gameObject.GetInstanceID());
 
-                    var instanceID = other.transform.root.gameObject.GetInstanceID();
-                    Services.SharedInstance.BuffService.AddTemporaryBuff(instanceID, Resources.Load("Data/Buffs/BushThornsDebuffData") as TemporaryBuff);
+                        var instanceID = other.transform.root.gameObject.GetInstanceID();
+                        Services.SharedInstance.BuffService.AddTemporaryBuff(instanceID, Resources.Load("Data/Buffs/BushThornsDebuffData") as TemporaryBuff);
+                    }
+
                 }
             }
         }

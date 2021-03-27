@@ -54,7 +54,7 @@ namespace BeastHunter
 
         public override void Initialise()
         {
-            _bossModel.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
+            _bossData.SetNavMeshAgentSpeed(_bossModel.BossNavAgent, _bossData._bossSettings.WalkSpeed);
             _bossModel.BossNavAgent.stoppingDistance = DISTANCE_TO_START_EATING;
             _bossModel.BossAnimator.Play("MovingState");
             _canEat = false;

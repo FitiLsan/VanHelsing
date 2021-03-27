@@ -27,7 +27,7 @@ namespace BeastHunter
         public override void UseSkill(int id)
         {
             Debug.Log("Default Defence Skilll");
-            SetNavMeshAgent(_bossModel.BossTransform.position, 0);
+            _bossData.SetNavMeshAgent(_bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             _bossModel.BossAnimator.Play($"DefaultDefence", 0, 0f);
             Block();
             ReloadSkill(id);
