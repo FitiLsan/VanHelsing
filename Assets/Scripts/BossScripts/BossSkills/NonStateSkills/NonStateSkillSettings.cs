@@ -46,24 +46,6 @@ namespace BeastHunter
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _throwSkillReady;
 
-        [Header("[Rage Of Forest]")]
-
-        [Tooltip("Enable")]
-        [SerializeField] private bool _rageOfForestSkillEnable;
-        [Tooltip("Skill ID")]
-        [SerializeField] private int _rageOfForestSkillId;
-        [Tooltip("Skill Range Min")]
-        [Range(-1.0f, 30.0f)]
-        [SerializeField] private float _rageOfForestSkillRangeMin;
-        [Range(-1.0f, 30.0f)]
-        [Tooltip("Skill Range Max")]
-        [SerializeField] private float _rageOfForestSkillRangeMax;
-        [Tooltip("Skill Cooldown")]
-        [Range(0.0f, 200.0f)]
-        [SerializeField] private float _rageOfForestSkillCooldown;
-        [Tooltip("Skill Ready")]
-        [SerializeField] private bool _rageOfForestSkillReady;
-
         #endregion
 
 
@@ -83,13 +65,6 @@ namespace BeastHunter
         public float ThrowSkillCooldown => _throwSkillCooldown;
         public bool ThrowSkillReady => _throwSkillReady;
 
-        public bool RageOfForestSkillEnable => _rageOfForestSkillEnable;
-        public int RageOfForestSkillId => _rageOfForestSkillId;
-        public float RageOfForestSkillRangeMin => _rageOfForestSkillRangeMin;
-        public float RageOfForestSkillRangeMax => _rageOfForestSkillRangeMax;
-        public float RageOfForestSkillCooldown => _rageOfForestSkillCooldown;
-        public bool RageOfForestSkillReady => _rageOfForestSkillReady;
-
         #endregion
 
 
@@ -107,11 +82,6 @@ namespace BeastHunter
             return tuple;
         }
 
-        public (bool, int, float, float, float, bool, bool) GetRageOfForestSkillInfo()
-        {
-            var tuple = (RageOfForestSkillEnable, RageOfForestSkillId, RageOfForestSkillRangeMin, RageOfForestSkillRangeMax, RageOfForestSkillCooldown, RageOfForestSkillReady, false);
-            return tuple;
-        }
         #endregion
     }
 }

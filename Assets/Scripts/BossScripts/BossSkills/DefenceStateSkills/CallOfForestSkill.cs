@@ -7,10 +7,9 @@ namespace BeastHunter
 {
     public class CallOfForest : BossBaseSkill
     {
-        private float _callRadius = 50f;
-        private GameObject MutationTreePrefab;
+        private float _callRadius;
 
-        public CallOfForest((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
+        public CallOfForest((bool, int, float, float, float, bool, bool, GameObject) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
             : base(skillInfo, skillDictionary, stateMachine)
         {
         }
@@ -31,24 +30,25 @@ namespace BeastHunter
             SetNavMeshAgent(_bossModel.BossTransform.position, 0);
             _bossModel.BossAnimator.Play($"CallOfForest", 0, 0f);
             _bossModel.callOfForestEffect.Play();
-            Call();
+            DG.Tweening.DOVirtual.DelayedCall(3f, Call);
             ReloadSkill(id);
         }
 
         private void Call()
         {
-          var list =  Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.BossTransform.position, _callRadius, "Tree");
+          var list =  Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.BossTransform.position, SkillRangeMax, "Tree");
             foreach (var tree in list)
             {
                 TreeMutation(tree);
             }
+            DG.Tweening.DOVirtual.DelayedCall(2f, _bossModel.callOfForestEffect.Stop);
         }
 
         private void TreeMutation(GameObject tree)
         {
             var currentTreePosition = tree.transform.position;
             tree.SetActive(false);
-            GameObject.Instantiate(MutationTreePrefab, currentTreePosition, Quaternion.identity);
+            GameObject.Instantiate(SkillPrefab, currentTreePosition, Quaternion.identity);
         }
         
     }

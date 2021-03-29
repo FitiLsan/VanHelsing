@@ -35,13 +35,15 @@ namespace BeastHunter
 
                 Image updatableImage = newSection.GetChild(0).GetComponent<Image>();
                 float upperTresholdPart = data.HealthSectionsPercentThresholds[i] / 100f;
-                float sectionSize = upperTresholdPart - previousHealthThreshold / 100f;
+                float sectionSize = upperTresholdPart - previousHealthThreshold;
+
                 _healthSections[i] = new HealthSection(updatableImage, upperTresholdPart, sectionSize);
 
                 float sectionScale = sectionsAmount / (100 / _healthSections[i].SectionSize);
                 newSection.localScale = new Vector3(sectionScale, 1, 1);
 
                 previousHealthThreshold = upperTresholdPart;
+                
             }
         }
 
@@ -65,11 +67,11 @@ namespace BeastHunter
                     _healthSections[i].UpdatableImage.fillAmount = healthPercentForSection / _healthSections[i].SectionSize;
                     currentHealthThreshold = _healthSections[i].UpperTresholdPart;
                 }
-                else if (currentHealthPart < _healthSections[i].LowerHTresholdPart)
+                else if (currentHealthPart <= _healthSections[i].LowerHTresholdPart)
                 {
                     _healthSections[i].UpdatableImage.fillAmount = 0;
                 }
-                else if (currentHealthPart > _healthSections[i].UpperTresholdPart)
+                else if (currentHealthPart >= _healthSections[i].UpperTresholdPart)
                 {
                     _healthSections[i].UpdatableImage.fillAmount = 1;
                 }

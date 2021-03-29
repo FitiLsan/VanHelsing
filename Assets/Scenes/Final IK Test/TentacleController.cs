@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using RootMotion.Dynamics;
 
 namespace BeastHunter
 {
@@ -18,15 +19,18 @@ namespace BeastHunter
         private FABRIK _fabrik;
         private bool _flag;
         private bool _canLookAt = true;
-        private GameObject _catchedTarget;
-        private GameObject _catchedTargetRoot;
+        private Transform _catchedTarget;
+        private Transform _catchedTargetRoot;
         private Sequence sequence;
         private bool _isGrowEnd;
-
+        private PuppetMaster _puppetMaster;
+        private bool _usedOnce;
+        private Rigidbody _targetRigidbody;
         public Transform CatchPoint;
         public float xOffset;
         public float zOffset;
         public float time;
+        public Collider[] colliders;
 
 
         public void OnPointerClick(PointerEventData eventData)
@@ -52,6 +56,7 @@ namespace BeastHunter
             _fabrik = transform.root.GetComponent<FABRIK>();
           //  _target = _fabrik.solver.target.gameObject;
             _weight = _fabrik.solver.GetIKPositionWeight();
+
         }
 
         private void Start()
@@ -68,11 +73,17 @@ namespace BeastHunter
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.tag.Equals("Player") && !other.isTrigger)
+            if (other.tag.Equals("Player") && !other.isTrigger && !_usedOnce)
             {
+
+                foreach (var Coll in colliders)
+                {
+                    Coll.enabled = true;
+                }
+                _canLookAt = true;
                 _fabrik.solver.target = other.transform;
                 _target = other.gameObject;
-               // Click();
+                Click();
             }
         }
 
@@ -85,8 +96,10 @@ namespace BeastHunter
 
             if(Input.GetKeyDown(KeyCode.P))
             {
-                Click();
+                AddForceToTarget();
+                //Click();
             }
+
             RotateToTarget();
 
             if (_isCatched)
@@ -114,56 +127,73 @@ namespace BeastHunter
         {
             if (_isCatched)
             {
-                _animator.SetTrigger("throw");
+
                 _isCatched = false;
+                _animator.SetTrigger("throw");
                 _animator.SetBool("isCatched", _isCatched);
                 _flag = false;
-                DOVirtual.DelayedCall(0.8f, SwitchKinematic);
+
+                foreach (var Coll in colliders )
+                {
+                    Coll.enabled = false;
+                }
+                DOVirtual.DelayedCall(0.83f, SwitchKinematic);
             }
         }
 
         private void SwitchKinematic()
         {
-            var rb = _catchedTarget.GetComponent<Rigidbody>();
-            rb.isKinematic = false;
-            _catchedTargetRoot.transform.parent = null;
-            rb.AddForce(Vector3.forward * 30f, ForceMode.Impulse);
-         //   _canLookAt = true;
-            
+            _targetRigidbody.isKinematic = false;
+            _puppetMaster.mode = PuppetMaster.Mode.Active;
+            _catchedTarget.SetParent(_catchedTargetRoot);
+            DOVirtual.DelayedCall(0.1f, AddForceToTarget);
+            DOVirtual.DelayedCall(5f, () => _usedOnce = false);
         }
+
+        private void AddForceToTarget()
+        {
+            foreach (var item in _puppetMaster.muscles)
+            {
+                item.rigidbody.AddExplosionForce(50, transform.position, 15, 1.5f, ForceMode.Impulse);
+            } 
+        }
+
 
         public void OnCatchedEvent(GameObject bone, GameObject catchedTarget)
         {
-            if (_isStartCatch)
+            if (_isStartCatch && !_isCatched)
             {
                 _isCatched = true;
-                _catchedTarget = catchedTarget;
-                _catchedTargetRoot = catchedTarget.transform.root.gameObject;
-                _catchedTarget.GetComponent<Rigidbody>().isKinematic = true;
-                catchedTarget.transform.root.SetParent(CatchPoint);
-                var pos = new Vector3(CatchPoint.position.x, CatchPoint.position.y, CatchPoint.position.z - zOffset);
-                catchedTarget.transform.root.position = CatchPoint.position;
+                _usedOnce = true;
+                _catchedTargetRoot = catchedTarget.transform.root;
+                _puppetMaster = _catchedTargetRoot.GetComponentInChildren<PuppetMaster>();
+                _puppetMaster.mode = PuppetMaster.Mode.Kinematic;
+
+                _catchedTarget = _catchedTargetRoot.GetChild(2);
+                _targetRigidbody = _catchedTarget.GetComponent<Rigidbody>();
+                _targetRigidbody.isKinematic = true;
+                _catchedTarget.position = CatchPoint.position + new Vector3(0, -1, 0);
+                _catchedTarget.rotation = CatchPoint.rotation;
+                _catchedTarget.SetParent(CatchPoint);
                 _canLookAt = false;
                 _animator.SetBool("isCatched", _isCatched);
-                //DOVirtual.DelayedCall(3f, Click);
+               
+                DOVirtual.DelayedCall(3f, Click);
             }
         }
 
         private void RotateToTarget()
         {
-            if (_canLookAt)
+            if (_target != null && _canLookAt)
             {
-                if (_target != null)
-                {
-                    //var target = new Vector3(_target.transform.position.x, 0, _target.transform.position.z);
-                    _root.LookAt(_target.transform);
-                }
+                var target = new Vector3(_target.transform.position.x, _root.position.y, _target.transform.position.z);
+                _root.LookAt(target);
             }
         }
 
         public void Click()
         {
-            if (!_isCatched)
+            if (!_isCatched && !_isStartCatch)
             {
                 Catch();
             }

@@ -42,7 +42,11 @@
         public override bool CanBeActivated()
         {
             _stateMachine.BackState.OnEnemyHealthBar(false);
-            return !_characterModel.CurrentStats.BaseStats.IsDead;
+            if (!_characterModel.IsGrounded)
+            {
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.MidAir]);
+            }
+            return !_characterModel.CurrentStats.BaseStats.IsDead && _characterModel.IsGrounded;
         }
 
         public override void Initialize(CharacterBaseState previousState = null)
@@ -52,6 +56,9 @@
             _characterModel.CharacterRigitbody.constraints = UnityEngine.RigidbodyConstraints.FreezePositionX | 
                 UnityEngine.RigidbodyConstraints.FreezePositionZ | UnityEngine.RigidbodyConstraints.FreezeRotation;
             _characterModel.CharacterRigitbody.isKinematic = true;
+            Damage damage = new Damage();
+            damage.PhysicalDamage = 10f;
+            _stateMachine.BackState.TakeDamage(damage);
         }
 
         #endregion

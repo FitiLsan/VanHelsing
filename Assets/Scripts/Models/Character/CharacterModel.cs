@@ -140,14 +140,6 @@ namespace BeastHunter
                 throw new System.Exception("There is no player behavior script on character prefab");
             }
 
-            if (CharacterTransform.gameObject.TryGetComponent(out LineRenderer projectileProjection))
-            {
-                ProjectileTrajectoryPredict = projectileProjection;
-            }
-            else
-            {
-                throw new System.Exception("There is no line renderer on character prefab");
-            }
 
             PuppetMaster = objectOnScene.transform.GetChild(1).gameObject.GetComponent<PuppetMaster>();
             BehaviorPuppet = objectOnScene.transform.GetChild(0).GetChild(0).gameObject.GetComponent<BehaviourPuppet>();
