@@ -13,7 +13,7 @@ namespace BeastHunter
 
         private CharacterModel _characterModel;
         private CharacterStateMachine _stateMachine;
-        private EffectReactionController _effectReactionController;
+        private VisualEffectController _effectReactionController;
 
         #endregion
 
@@ -41,7 +41,7 @@ namespace BeastHunter
             _stateMachine = new CharacterStateMachine(_context);
             _stateMachine.OnAwake();
             _stateMachine.SetStartState(_stateMachine.CharacterStates[CharacterStatesEnum.Idle]);
-            _effectReactionController = new EffectReactionController(_context, _characterModel);
+            _effectReactionController = new VisualEffectController(_context, _characterModel);
             _effectReactionController.OnAwake();
             
         }

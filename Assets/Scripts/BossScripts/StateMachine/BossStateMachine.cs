@@ -54,7 +54,8 @@ namespace BeastHunter
             States.Add(BossStatesEnum.Retreating, new BossRetreatingState(this));
             States.Add(BossStatesEnum.Searching, new BossSearchingState(this));
             States.Add(BossStatesEnum.Dead, new BossDeadState(this));
-            States.Add(BossStatesEnum.Resurrecting, new BossResurrectingState(this));         
+            States.Add(BossStatesEnum.Resurrecting, new BossResurrectingState(this));
+            States.Add(BossStatesEnum.Standstill, new BossStandstillState(this));
             
          //   States.Add(BossStatesEnum.Targeting, new BossTargetingState(this));
 
@@ -145,7 +146,7 @@ namespace BeastHunter
             }
         }
 
-        public void SetCurrentStateAnyway(BossStatesEnum name)
+        public void SetCurrentStateAnyway(BossStatesEnum name, BuffEffectType type = BuffEffectType.None)
         {
             if (States.ContainsKey(name))
             {
@@ -155,7 +156,9 @@ namespace BeastHunter
                 LastStateType = CurrentStateType;
                 CurrentStateType = name;
                 CurrentState = States[name];
+                CurrentState.CurrentEffectType = type;
                 CurrentState.Initialise();
+                
                 OnAfterStateChange?.Invoke();
             }
         }

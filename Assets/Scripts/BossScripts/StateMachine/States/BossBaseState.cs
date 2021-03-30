@@ -34,6 +34,7 @@ namespace BeastHunter
         public bool IsAnySkillUsed { get; protected set; }
         public float CurrentAttackTime { get; protected set; }
         public BossBaseSkill CurrentSkill { get; protected set; }
+        public BuffEffectType CurrentEffectType { get; set; }
 
         #endregion
 
@@ -131,7 +132,7 @@ namespace BeastHunter
             }
             return isNear;
         }
-
+        #region Skills
         protected void CurrentSkillStop()
         {
             _stateMachine.CurrentState.IsAnySkillUsed = false;
@@ -166,6 +167,16 @@ namespace BeastHunter
                 }
             }
         }
+        #endregion
+
+        #region EffectReaction
+
+        protected virtual void FireReaction()
+        {
+
+        }
+
+        #endregion
 
         #endregion
     }

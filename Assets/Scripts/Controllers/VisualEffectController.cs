@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public class EffectReactionController
+    public class VisualEffectController
     {
         #region Fields
 
         private GameContext _context;
         private GameObject _effects;
-        private CharacterModel _model; 
+        private CharacterModel _model;  //need baseModel?
         private EnemyModel _enemyModel;
         private Dictionary<string, ParticleSystem> _effectsDic;
 
@@ -19,7 +19,7 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public EffectReactionController(GameContext context, CharacterModel model) // need BaseModel?
+        public VisualEffectController(GameContext context, CharacterModel model) // need BaseModel?
         {
             _context = context;
             _model = model;
@@ -27,7 +27,7 @@ namespace BeastHunter
             _effectsDic = new Dictionary<string, ParticleSystem>();
         }
 
-        public EffectReactionController(GameContext context, EnemyModel model) // need BaseModel?
+        public VisualEffectController(GameContext context, EnemyModel model) // need BaseModel?
         {
             _context = context;
             _enemyModel = model;

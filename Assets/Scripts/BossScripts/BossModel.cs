@@ -43,7 +43,8 @@ namespace BeastHunter
         public BossSettings BossSettings { get; }
         public BossStateMachine BossStateMachine { get; }
 
-        public EffectReactionController BossEffectReactionController { get; }
+        public VisualEffectController VisualEffectController { get; }
+        public EffectReactionController EffectReactionController { get; }
 
         public Animator BossAnimator { get; set; }
         public Collider Player { get; set; }
@@ -185,7 +186,8 @@ namespace BeastHunter
 
             BossBehavior.SetType(InteractableObjectType.Enemy);
             BossStateMachine = new BossStateMachine(context, this);
-            BossEffectReactionController = new EffectReactionController(context, this);
+            VisualEffectController = new VisualEffectController(context, this);
+            EffectReactionController = new EffectReactionController(context, this);
 
             Player = null;
             IsMoving = false;
@@ -323,7 +325,8 @@ namespace BeastHunter
         public void OnAwake()
         {
             BossStateMachine.OnAwake();
-            BossEffectReactionController.OnAwake();
+            VisualEffectController.OnAwake();
+            EffectReactionController.OnAwake();
         }
 
         public override void TakeDamage(Damage damage)
