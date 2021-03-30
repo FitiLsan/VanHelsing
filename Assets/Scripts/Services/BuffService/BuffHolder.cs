@@ -9,6 +9,8 @@ namespace BeastHunter
         #region Fields
         public event Action<TemporaryBuff> TemporaryBuffAdded;
         public event Action<PermanentBuff> PerammentBuffAdded;
+        public event Action<BuffEffectType> BuffEffectEnable;
+        public event Action<BuffEffectType> BuffEffectDisable;
 
         public List<PermanentBuff> PermanentBuffList = new List<PermanentBuff>();
         public List<TemporaryBuff> TemporaryBuffList = new List<TemporaryBuff>();
@@ -17,18 +19,63 @@ namespace BeastHunter
 
         #region Methods
 
-        public void AddPermanetBuff(PermanentBuff buff)
+        public void AddPermanentBuff(PermanentBuff buff)
         {
+            if(PermanentBuffList.Contains(buff))
+            {
+                return;
+            }
+
             PermanentBuffList.Add(buff);
             PerammentBuffAdded?.Invoke(buff);
+            foreach(var effect in buff.Effects)
+            {
+                BuffEffectEnable?.Invoke(effect.BuffEffectType);
+            }
            
         }
 
         public void AddTemporaryBuff(TemporaryBuff buff)
         {
+            if(TemporaryBuffList.Contains(buff))
+            {
+                return;
+            }
             TemporaryBuffList.Add(buff);
             TemporaryBuffAdded?.Invoke(buff);
+            foreach (var effect in buff.Effects)
+            {
+                BuffEffectEnable?.Invoke(effect.BuffEffectType);
+            }
         }
+
+        public void RemovePermanentBuff(PermanentBuff buff)
+        {
+            if (!PermanentBuffList.Contains(buff))
+            {
+                return;
+            }
+            PermanentBuffList.Remove(buff);
+            foreach (var effect in buff.Effects)
+            {
+                BuffEffectDisable?.Invoke(effect.BuffEffectType);
+            }
+        }
+
+        public void RemoveTemporaryBuff(TemporaryBuff buff)
+        {
+            if (!TemporaryBuffList.Contains(buff))
+            {
+                return;
+            }
+            TemporaryBuffList.Remove(buff);
+            foreach (var effect in buff.Effects)
+            {
+                BuffEffectDisable?.Invoke(effect.BuffEffectType);
+            }
+
+        }
+
 
         #endregion
     }

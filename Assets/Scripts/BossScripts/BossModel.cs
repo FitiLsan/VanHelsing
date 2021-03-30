@@ -43,6 +43,8 @@ namespace BeastHunter
         public BossSettings BossSettings { get; }
         public BossStateMachine BossStateMachine { get; }
 
+        public EffectReactionController BossEffectReactionController { get; }
+
         public Animator BossAnimator { get; set; }
         public Collider Player { get; set; }
         public float CurrentSpeed { get; set; }
@@ -52,6 +54,7 @@ namespace BeastHunter
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
         public bool IsPickUped { get; set; }
+        
 
 
         public MovementPoint[] MovementPoints { get; set; }
@@ -106,7 +109,7 @@ namespace BeastHunter
             BossTransform.name = BossSettings.InstanceName;
             BossTransform.tag = BossSettings.InstanceTag;
             BossTransform.gameObject.layer = BossSettings.InstanceLayer;
-            
+            BuffEffectPrefab = BossTransform.Find("Effects").gameObject;
 
             Transform[] children = BossTransform.GetComponentsInChildren<Transform>();
 
@@ -182,6 +185,7 @@ namespace BeastHunter
 
             BossBehavior.SetType(InteractableObjectType.Enemy);
             BossStateMachine = new BossStateMachine(context, this);
+            BossEffectReactionController = new EffectReactionController(context, this);
 
             Player = null;
             IsMoving = false;
@@ -319,6 +323,7 @@ namespace BeastHunter
         public void OnAwake()
         {
             BossStateMachine.OnAwake();
+            BossEffectReactionController.OnAwake();
         }
 
         public override void TakeDamage(Damage damage)

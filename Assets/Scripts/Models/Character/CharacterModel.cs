@@ -65,6 +65,7 @@ namespace BeastHunter
         }
 
         public int InstanceID { get; }
+        public GameObject BuffEffectPrefab { get; private set; }
 
         #endregion
 
@@ -87,6 +88,7 @@ namespace BeastHunter
             CurrentStats = CharacterStartStats.DeepCopy();
             InstanceID = CurrentStats.InstanceID = objectOnScene.GetInstanceID();
             CurrentStats.BuffHolder = new BuffHolder();
+            BuffEffectPrefab = CharacterTransform.Find("Effects").gameObject;
 
 
             AudioSource[] characterAudioSources = CharacterTransform.gameObject.GetComponentsInChildren<AudioSource>();

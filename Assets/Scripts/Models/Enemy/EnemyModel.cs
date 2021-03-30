@@ -17,6 +17,7 @@ namespace BeastHunter
 
         public GameObject ObjectOnScene { get; }
         public EnemyData ThisEnemyData { get; }
+        public GameObject BuffEffectPrefab { get; protected set; }
         public int InstanceID { get; }
 
         #endregion

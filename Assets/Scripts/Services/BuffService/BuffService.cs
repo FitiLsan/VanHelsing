@@ -56,7 +56,7 @@ namespace BeastHunter
                 PermanentBuffDictionary[effect.Buff](stats, effect.Value);
             }
 
-            buffHolder.AddPermanetBuff(buff);
+            buffHolder.AddPermanentBuff(buff);
         }
 
         public void RemovePermanentBuff(int instanceID, PermanentBuff buff)
@@ -70,11 +70,11 @@ namespace BeastHunter
                     PermanentBuffDictionary[effect.Buff](stats, -effect.Value);
                 }
 
-                buffHolder.PermanentBuffList.Remove(buff);
+                buffHolder.RemovePermanentBuff(buff);
             }
             else
             {
-                throw new System.Exception("There is no such buff at that stats list!");
+             //   throw new System.Exception("There is no such buff at that stats list!");
             }
         }
 
@@ -127,11 +127,11 @@ namespace BeastHunter
                     }
                 }
 
-                buffHolder.TemporaryBuffList.Remove(buff);
+                buffHolder.RemoveTemporaryBuff(buff);
             }
             else
             {
-                throw new System.Exception("There is no such buff at that stats list!");
+             //   throw new System.Exception("There is no such buff at that stats list!");
             }
         }
 

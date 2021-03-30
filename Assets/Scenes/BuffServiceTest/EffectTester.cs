@@ -34,21 +34,24 @@ namespace BeastHunter
         private void OnTriggerEnter(Collider other)
         {
             var obj = other.GetComponent<InteractableObjectBehavior>();
-            if (obj != null && !other.isTrigger &&  obj.Type == InteractableObjectType.Enemy) //obj.Type == InteractableObjectType.Player ||
+            if (obj != null && !other.isTrigger)
             {
-                var instanceID = other.transform.root.gameObject.GetInstanceID();
+                if (obj.Type == InteractableObjectType.Player || obj.Type == InteractableObjectType.Enemy)
+                {
+                    var instanceID = other.transform.root.gameObject.GetInstanceID();
 
-                if (buff is TemporaryBuff)
-                {
-                    Services.SharedInstance.BuffService.AddTemporaryBuff(instanceID, buff as TemporaryBuff);
-                }
-                else
-                {
-                    Services.SharedInstance.BuffService.AddPermanentBuff(instanceID, buff as PermanentBuff);
+                    if (buff is TemporaryBuff)
+                    {
+                        Services.SharedInstance.BuffService.AddTemporaryBuff(instanceID, buff as TemporaryBuff);
+                    }
+                    else
+                    {
+                        Services.SharedInstance.BuffService.AddPermanentBuff(instanceID, buff as PermanentBuff);
+                    }
+                    gameObject.SetActive(false);
+                    DG.Tweening.DOVirtual.DelayedCall(3, () => gameObject.SetActive(true));
                 }
             }
-         
-
         }
     }
 }
