@@ -173,6 +173,10 @@ namespace BeastHunter
 
         protected virtual void FireReaction()
         {
+        }
+
+        protected virtual void WaterReaction()
+        {
 
         }
 

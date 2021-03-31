@@ -32,12 +32,15 @@ namespace BeastHunter
             CanExit = false;
             CanBeOverriden = false;
             IsBattleState = true;
-            if (CurrentEffectType == BuffEffectType.Fire)
-                FireReaction();
+            ChooseReaction();
         }
 
         public override void Execute()
         {
+            if (CurrentEffectType == BuffEffectType.None)
+            {
+                _stateMachine.SetCurrentStateAnyway(_stateMachine.LastStateType);
+            }
         }
 
         public override void OnExit()
@@ -49,6 +52,20 @@ namespace BeastHunter
         {
         }
 
+        private void ChooseReaction()
+        {
+            switch (CurrentEffectType)
+            {
+                case BuffEffectType.Fire:
+                    FireReaction();
+                    break;
+                case BuffEffectType.Water:
+                    WaterReaction();
+                    break;
+                default:
+                    break;
+            }
+        }
         protected override void FireReaction()
         {
             var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.BossTransform.position, 500f, "Water");
@@ -59,7 +76,17 @@ namespace BeastHunter
                 _bossData.SetNavMeshAgent(_bossModel.BossNavAgent, list[0].transform.position, _bossModel.BossSettings.RunSpeed);
 
             }
+            else
+            {
+                _bossModel.CheckIsRage(true);
+                _stateMachine.SetCurrentStateAnyway(_stateMachine.LastStateType);
+            }
             base.FireReaction();
+        }
+
+        protected override void WaterReaction()
+        {
+            base.WaterReaction();
         }
         #endregion
     }

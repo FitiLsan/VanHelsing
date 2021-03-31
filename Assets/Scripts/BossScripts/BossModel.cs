@@ -361,13 +361,14 @@ namespace BeastHunter
             BossStateMachine.OnTearDown();
         }
 
-        private void CheckIsRage(bool isRage)
+        public void CheckIsRage(bool isRage)
         {
             IsRage = isRage;
             if(IsRage)
             {
                 EyeLeft.color = EyeRight.color = RageColor;
                 BossAnimator.speed = 1.5f;
+                DG.Tweening.DOVirtual.DelayedCall(BossSettings.DurationRage, () => CheckIsRage(false));
             }
             else
             {
@@ -386,9 +387,6 @@ namespace BeastHunter
             if (CurrentStats.BaseStats.CurrentHealthPart <= BossSettings.ActivateRage)
             {
                 CheckIsRage(true);
-
-
-                DG.Tweening.DOVirtual.DelayedCall(BossSettings.DurationRage, () => CheckIsRage(false));
                 return;
             }
 

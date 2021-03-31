@@ -9,6 +9,8 @@ namespace BeastHunter
         #region Fields
         public event Action<TemporaryBuff> TemporaryBuffAdded;
         public event Action<PermanentBuff> PerammentBuffAdded;
+        public event Action<TemporaryBuff> TemporaryBuffRemoved;
+        public event Action<PermanentBuff> PerammentBuffRemoved;
         public event Action<BuffEffectType> BuffEffectEnable;
         public event Action<BuffEffectType> BuffEffectDisable;
 
@@ -56,6 +58,7 @@ namespace BeastHunter
                 return;
             }
             PermanentBuffList.Remove(buff);
+            PerammentBuffRemoved?.Invoke(buff);
             foreach (var effect in buff.Effects)
             {
                 BuffEffectDisable?.Invoke(effect.BuffEffectType);
@@ -69,6 +72,7 @@ namespace BeastHunter
                 return;
             }
             TemporaryBuffList.Remove(buff);
+            TemporaryBuffRemoved?.Invoke(buff);
             foreach (var effect in buff.Effects)
             {
                 BuffEffectDisable?.Invoke(effect.BuffEffectType);

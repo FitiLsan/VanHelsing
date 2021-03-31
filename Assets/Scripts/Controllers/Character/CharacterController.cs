@@ -13,7 +13,8 @@ namespace BeastHunter
 
         private CharacterModel _characterModel;
         private CharacterStateMachine _stateMachine;
-        private VisualEffectController _effectReactionController;
+        private VisualEffectController _visualEffectController;
+        private EffectReactionController _effectReactionController;
 
         #endregion
 
@@ -41,8 +42,11 @@ namespace BeastHunter
             _stateMachine = new CharacterStateMachine(_context);
             _stateMachine.OnAwake();
             _stateMachine.SetStartState(_stateMachine.CharacterStates[CharacterStatesEnum.Idle]);
-            _effectReactionController = new VisualEffectController(_context, _characterModel);
+            _visualEffectController = new VisualEffectController(_context, _characterModel);
+            _visualEffectController.OnAwake();
+            _effectReactionController = new EffectReactionController(_context, _characterModel);
             _effectReactionController.OnAwake();
+           
             
         }
 
@@ -56,7 +60,7 @@ namespace BeastHunter
             if (!_characterModel.CurrentStats.BaseStats.IsDead)
             {
                 _stateMachine.Execute();
-                _effectReactionController.Execute();
+                _visualEffectController.Execute();
             } 
         }
 
@@ -68,7 +72,7 @@ namespace BeastHunter
         public void TearDown()
         {
             _stateMachine.OnTearDown();
-            _effectReactionController.OnTearDown();
+            _visualEffectController.OnTearDown();
         }
 
         #endregion

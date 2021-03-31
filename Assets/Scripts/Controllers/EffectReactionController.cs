@@ -71,8 +71,11 @@ namespace BeastHunter
             switch(type)
             {
                 case BuffEffectType.Fire:
-                    StartBuffEffect?.Invoke(type);
-                    (_enemyModel as BossModel).BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Standstill, type);
+                    StartBuffEffect?.Invoke(type); //need?
+                    if (_enemyModel != null)
+                    {
+                        (_enemyModel as BossModel).BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Standstill, type);
+                    }
                     break;
                 case BuffEffectType.Blood:
                     break;
@@ -81,12 +84,64 @@ namespace BeastHunter
                 case BuffEffectType.Slow:
                     break;
                 case BuffEffectType.Water:
+                    WaterReaction();
                     break;
             }
         }
         private void EndReaction(BuffEffectType type)
         {
+            switch (type)
+            {
+                case BuffEffectType.Fire:
+                    if (_enemyModel != null)
+                    {
+                        (_enemyModel as BossModel).BossStateMachine.CurrentState.OnExit();
+                    }
+                    break;
+                case BuffEffectType.Blood:
+                    break;
+                case BuffEffectType.Poison:
+                    break;
+                case BuffEffectType.Slow:
+                    break;
+                case BuffEffectType.Water:
+                    WaterReaction();
+                    break;
+            }
+        }
 
+
+        private void WaterReaction()
+        {
+            if (_enemyModel != null)
+            {
+                foreach (var buff in _enemyModel.CurrentStats.BuffHolder.TemporaryBuffList)
+                {
+                    foreach (var effect in buff.Effects)
+                    {
+                        if (effect.BuffEffectType.Equals(BuffEffectType.Fire))
+                        {
+                            _enemyModel.CurrentStats.BuffHolder.RemoveTemporaryBuff(buff);
+                            return;
+                        }
+                    }
+                }
+            }
+            if(_model!=null)
+            {
+                foreach (var buff in _model.CurrentStats.BuffHolder.TemporaryBuffList)
+                {
+                    foreach (var effect in buff.Effects)
+                    {
+                        if (effect.BuffEffectType.Equals(BuffEffectType.Fire))
+                        {
+                            _model.CurrentStats.BuffHolder.RemoveTemporaryBuff(buff);
+                            return;
+                        }
+                    }
+                }
+            }
+            
         }
 
         #endregion
