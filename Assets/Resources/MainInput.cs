@@ -20,11 +20,11 @@ public class @MainInput : IInputActionCollection, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Movement"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""fb7d6fc6-9170-4b39-aa5d-d000eff39d89"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": ""Press""
+                    ""interactions"": """"
                 },
                 {
                     ""name"": ""Attack"",
@@ -48,7 +48,7 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""id"": ""d3946758-7fe1-4723-81f2-93cc157965f5"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold""
+                    ""interactions"": ""Press(behavior=2)""
                 },
                 {
                     ""name"": ""Sneak/Slide"",

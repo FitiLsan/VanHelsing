@@ -1,15 +1,10 @@
-﻿//using System.Collections.Generic;
-
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public sealed class InputModel
     {
         #region Fields
 
         public MainInput MainInput;
-
-        //public Dictionary<string, InputEventTypes> inputOnButtonDown;
 
         public float MouseInputX;
         public float MouseInputY;
