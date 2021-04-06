@@ -8,6 +8,7 @@ namespace BeastHunter
     {
         private Rigidbody _rigidbody;
         private Collider _collider;
+        private FixedJoint _fixedJoint;
         public float _velocityMult;
         public float _angularVelocityMult;
 
@@ -25,7 +26,11 @@ namespace BeastHunter
 
         private void OnCollisionEnter(Collision collision)
         {
-           // transform.SetParent(collision.transform);
+           var targetPoint = Instantiate(new GameObject());
+            targetPoint.transform.SetParent(collision.transform);
+
+             transform.SetParent(targetPoint.transform);          
+
             _collider.enabled = false;
             _rigidbody.isKinematic = true;
         }
