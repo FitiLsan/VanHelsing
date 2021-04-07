@@ -32,6 +32,7 @@ namespace BeastHunter
             CurrentStats = ThisEnemyData.StartStats.DeepCopy();
             InstanceID = CurrentStats.InstanceID = objectOnScene.GetInstanceID();
             CurrentStats.BuffHolder = new BuffHolder();
+            CurrentStats.ItemReactions = ThisEnemyData.ItemReactions;
         }
 
         //public abstract void HealthBarController();

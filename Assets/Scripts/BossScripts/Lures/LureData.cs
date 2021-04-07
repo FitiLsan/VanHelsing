@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BeastHunter
 {
     [CreateAssetMenu(fileName = "NewLureData", menuName = "Enemy/Lures/CreateNewLure", order = 0)]
-    public sealed class LureData : ScriptableObject
+    public class LureData : ScriptableObject
     {
         public GameObject ItemPrefab;
         public string Name;

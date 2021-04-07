@@ -11,14 +11,7 @@ namespace BeastHunter
 
         public BossSettings _bossSettings;
         public BossModel BossModel;
-
-        public AttackStateSkillsSettings AttackStateSkills;
-        public DefenceStateSkillsSettings DefenceStateSkills;
-        public ChasingStateSkillsSettings ChasingStateSkills;
-        public RetreatingStateSkillsSettings RetreatingStateSkills;
-        public SearchingStateSkillsSettings SearchingStateSkills;
-        public DeadStateSkillsSettings DeadStateSkills;
-        public NonStateSkillsSettings NonStateSkills;
+        public BossSkillStruct BossSkills;
 
         #endregion
 

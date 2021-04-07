@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace BeastHunter
 {
     [Serializable]
-    public sealed class Stats
+    public class Stats
     {
         #region Fields
 
@@ -14,6 +13,7 @@ namespace BeastHunter
         public int InstanceID;
         [NonSerialized]
         public BuffHolder BuffHolder;
+        [NonSerialized]
         public ItemReactions ItemReactions;
 
 
@@ -24,8 +24,6 @@ namespace BeastHunter
             BaseStats = new BaseStats();
             AttackStats = new AttackStats();
             DefenceStats = new DefenceStatsClass();
-            ItemReactions = new ItemReactions();
-
         }
     }
 }

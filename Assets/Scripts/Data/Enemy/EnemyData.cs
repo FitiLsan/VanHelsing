@@ -9,6 +9,7 @@ namespace BeastHunter
 
         [SerializeField] private GameObject _prefab;
         [SerializeField] private Stats _startStats;
+        [SerializeField] private ItemReactions _itemReactions;
 
         #endregion
 
@@ -17,6 +18,7 @@ namespace BeastHunter
 
         public GameObject Prefab => _prefab;
         public Stats StartStats => _startStats;
+        public ItemReactions ItemReactions => _itemReactions;
 
         #endregion
 

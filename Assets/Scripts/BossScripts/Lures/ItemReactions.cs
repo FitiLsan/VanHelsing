@@ -6,15 +6,12 @@ using UnityEngine;
 namespace BeastHunter
 {
     [Serializable]
-    public class ItemReactions
+    public struct ItemReactions
     {
-        [SerializeField]
-        public List<LureTypeEnum> ScaryItems = new List<LureTypeEnum>();
-        [SerializeField]
-        public List<LureTypeEnum> AttractiveItems = new List<LureTypeEnum>();
-        [SerializeField]
-        public List<LureSmellTypeEnum> ScarySmell = new List<LureSmellTypeEnum>();
-        [SerializeField]
-        public List<LureSmellTypeEnum> AttractiveSmell = new List<LureSmellTypeEnum>();
+        [Header("Boss Item Reactions")]
+        [SerializeField] private List<LureData> ScaryItems;
+        [SerializeField] private List<LureData> AttractiveItems;
+        [SerializeField] private List<LureSmellTypeEnum> ScarySmell;
+        [SerializeField] private List<LureSmellTypeEnum> AttractiveSmell;
     }
 }

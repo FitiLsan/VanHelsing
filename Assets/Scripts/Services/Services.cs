@@ -29,7 +29,7 @@ namespace BeastHunter
         public void InitializeGameServices(GameContext context)
         {
             PhysicsService = new PhysicsService();
-          //  InventoryService = new InventoryService();
+            InventoryService = new InventoryService();
             AttackService = new AttackService(context);
             CameraService = new CameraService(context);
             EventManager = new EventManager();
