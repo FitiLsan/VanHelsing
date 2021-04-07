@@ -14,12 +14,20 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Use",
+                    "type": "Button",
+                    "id": "a65d95ba-e2ff-4d86-9a2c-babef11054c5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
                     "name": "Attack",
                     "type": "Button",
                     "id": "00b7db60-f2b3-4660-ab89-f50c851ff90e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 },
                 {
                     "name": "Aim",
@@ -27,7 +35,7 @@
                     "id": "5f905a3c-84c4-49b0-940f-1b8b931617e6",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 },
                 {
                     "name": "Run",
@@ -51,7 +59,7 @@
                     "id": "1c78a590-3156-41f1-ab87-54de3ecad34f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 },
                 {
                     "name": "Bestiary",
@@ -67,7 +75,7 @@
                     "id": "ed0de79e-7a4c-42ed-8645-f6d035bf7419",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold"
+                    "interactions": "Press(behavior=2)"
                 },
                 {
                     "name": "MouseLook",
@@ -75,7 +83,71 @@
                     "id": "faa3a3e2-b371-4694-ae9c-c9f1dc7d4131",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": "Hold"
+                    "interactions": ""
+                },
+                {
+                    "name": "NumberOne",
+                    "type": "Button",
+                    "id": "f29dbde1-072b-4c9f-89ff-a012ecb55e2f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "NumberTwo",
+                    "type": "Button",
+                    "id": "ef1ee716-dd89-4196-a4cd-0b7b9b0dc61f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "NumberThree",
+                    "type": "Button",
+                    "id": "0318adc5-b05c-493c-a3ff-a066d6abf983",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "NumberFour",
+                    "type": "Button",
+                    "id": "56507f0d-a0e2-43b7-a2c6-0e03e8332ba2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "4a45336d-8602-4393-b06c-069302b96a2b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Enter",
+                    "type": "Button",
+                    "id": "46550685-f3a5-4892-8fe5-142a2ef2bee6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "WeaponRemove",
+                    "type": "Button",
+                    "id": "edfbec3a-3250-46fa-8b56-188d64db6fd3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "647e8af3-d6b6-41ed-a630-e35b0273ad6c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -170,7 +242,7 @@
                 {
                     "name": "",
                     "id": "007a1269-4a6d-4c48-8b89-24c8eda7013e",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and mouse",
@@ -219,6 +291,105 @@
                     "processors": "",
                     "groups": "Keyboard and mouse",
                     "action": "MouseLook",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d6585d80-827a-42df-a534-ba27353a19f3",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and mouse",
+                    "action": "NumberOne",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "41c65a0e-a4c3-40f5-9d75-05dc72196117",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and mouse",
+                    "action": "NumberTwo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1915d8af-db08-49aa-b6e7-f3368b8011cd",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and mouse",
+                    "action": "NumberThree",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "af1dfc37-7b91-4be1-acea-7708aa02a2ad",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and mouse",
+                    "action": "NumberFour",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79455b0e-30f6-42bd-8073-1d73441ec506",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and mouse",
+                    "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "631bc6ce-f8a5-4cac-b58a-5490d3a0cb9c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and mouse",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b5fd9aad-943b-424d-a709-2fb56746036d",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and mouse",
+                    "action": "Enter",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "52bc05bb-f258-471c-b33a-0eb23e76ff19",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and mouse",
+                    "action": "WeaponRemove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7402df7d-c25d-4d5d-98ef-8c4031d8a2bb",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and mouse",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

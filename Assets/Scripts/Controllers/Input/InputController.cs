@@ -3,11 +3,12 @@
 
 namespace BeastHunter
 {
-    public sealed class InputController : IAwake, ITearDown
+    public sealed class InputController : IAwake, IUpdate, ITearDown
     {
         #region Properties
 
         private readonly GameContext _context;
+        private readonly MainInput _mainInput;
         private InputModel _inputModel;
 
         #endregion
@@ -18,6 +19,7 @@ namespace BeastHunter
         public InputController(GameContext context)
         {
             _context = context;
+            _mainInput = new MainInput();
             _inputModel = new InputModel();
             _context.InputModel = _inputModel;
         }
@@ -25,13 +27,38 @@ namespace BeastHunter
         #endregion
 
 
-        #region OnAwake
+        #region IAwake
 
         public void OnAwake()
         {
-            _inputModel.MainInput.Enable();
-            _inputModel.MainInput.Player.Movement.performed += ctx => GetInputMovement(ctx.ReadValue<Vector2>());
-            _inputModel.MainInput.Player.Run.performed += ctx => GetInputRun(ctx.ReadValueAsButton());
+            _mainInput.Enable();
+            _mainInput.Player.Movement.performed += ctx => GetInputMovement(ctx.ReadValue<Vector2>());
+            _mainInput.Player.Run.performed += ctx => GetInputRun(ctx.ReadValueAsButton());
+            _mainInput.Player.Aim.performed += ctx => _inputModel.OnAim?.Invoke();
+            _mainInput.Player.Attack.performed += ctx => _inputModel.OnAttack?.Invoke();
+            _mainInput.Player.Bestiary.performed += ctx => _inputModel.OnBestiary?.Invoke();
+            _mainInput.Player.ButtonsInfo.performed += ctx => _inputModel.OnButtonsInfo?.Invoke();
+            _mainInput.Player.Cancel.performed += ctx => _inputModel.OnPressCancel?.Invoke();
+            _mainInput.Player.Enter.performed += ctx => _inputModel.OnPressEnter?.Invoke();
+            _mainInput.Player.Jump.performed += ctx => _inputModel.OnJump?.Invoke();
+            _mainInput.Player.NumberFour.performed += ctx => _inputModel.OnPressNumberFour?.Invoke();
+            _mainInput.Player.NumberThree.performed += ctx => _inputModel.OnPressNumberThree?.Invoke();
+            _mainInput.Player.NumberTwo.performed += ctx => _inputModel.OnPressNumberTwo?.Invoke();
+            _mainInput.Player.NumberOne.performed += ctx => _inputModel.OnPressNumberOne?.Invoke();
+            _mainInput.Player.SneakSlide.performed += ctx => _inputModel.OnSneakSlide?.Invoke();
+            _mainInput.Player.Use.performed += ctx => _inputModel.OnUse?.Invoke();
+            _mainInput.Player.WeaponRemove.performed += ctx => _inputModel.OnRemoveWeapon?.Invoke();
+            _mainInput.Player.WeaponWheel.performed += ctx => _inputModel.OnWeaponWheel?.Invoke(ctx.ReadValueAsButton());
+        }
+
+        #endregion
+
+
+        #region IUpdate
+
+        public void Updating()
+        {
+            GetMouseInput(_mainInput.Player.MouseLook.ReadValue<Vector2>());
         }
 
         #endregion
@@ -41,7 +68,9 @@ namespace BeastHunter
 
         public void TearDown()
         {
-            _inputModel.MainInput.Disable();
+            _mainInput.Player.Movement.performed -= ctx => GetInputMovement(ctx.ReadValue<Vector2>());
+            _mainInput.Player.Run.performed -= ctx => GetInputRun(ctx.ReadValueAsButton());
+            _mainInput.Disable();
         }
 
         #endregion
@@ -49,14 +78,20 @@ namespace BeastHunter
 
         #region Methods
 
-        public void GetInputMovement(Vector2 movementVector)
+        private void GetInputMovement(Vector2 movementVector)
         {
             _inputModel.InputAxisX = movementVector.x;
             _inputModel.InputAxisY = movementVector.y;
             CheckAxisTotal();
         }
 
-        public void GetInputRun(bool isPressed)
+        private void GetMouseInput(Vector2 mouseMovementVector)
+        {
+            _inputModel.MouseInputX = mouseMovementVector.x;
+            _inputModel.MouseInputY = mouseMovementVector.y;
+        }
+
+        private void GetInputRun(bool isPressed)
         {
             _inputModel.IsInputRun = isPressed;
         }

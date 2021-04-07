@@ -38,22 +38,8 @@ namespace BeastHunter
 
         #region Fields
 
-        public Action OnMove;
-        public Action OnStop;
-        public Action OnAttack;
-        public Action OnJump;
-        public Action OnSneak;
-        public Action OnAim;
-        public Action OnStartRun;
-        public Action OnStopRun;
-
-        public Action OnWeaponWheelOpen;
-        public Action OnWeaponWheelClose;
         public Action OnWeaponChange;
         public Action OnTrapPlace;
-        public Action OnTimeSkipOpenClose;
-        public Action OnButtonsInfoMenuOpenClose;
-        public Action OnUse;
         public Action OnHealthChange;
 
         private readonly GameContext _context;
@@ -167,31 +153,11 @@ namespace BeastHunter
         public void OnAwake()
         {
             _characterModel.PlayerBehavior.SetTakeDamageEvent(TakeDamage);
-
-            //LockCharAction.LockCharacterMovement += ExitTalkingState;
-            //StartDialogueData.StartDialog += SetTalkingState;
-
-            _services.EventManager.StartListening(InputEventTypes.MoveStart, OnMoveHandler);
-            _services.EventManager.StartListening(InputEventTypes.MoveStop, OnStopHandler);
-            _services.EventManager.StartListening(InputEventTypes.Sneak, OnSneakHandler);
-            _services.EventManager.StartListening(InputEventTypes.TimeSkipMenu, OnTimeSkipOpenCloseHandler);
-            _services.EventManager.StartListening(InputEventTypes.WeaponWheelOpen, OnWeaponWheelOpenHandler);
-            _services.EventManager.StartListening(InputEventTypes.WeaponWheelClose, OnWeaponWheelCloseHandler);
-            _services.EventManager.StartListening(InputEventTypes.AttackStart, OnAttackHandler);
-            _services.EventManager.StartListening(InputEventTypes.AimStart, OnAimHandler);
-            _services.EventManager.StartListening(InputEventTypes.Jump, OnJumpHandler);
-            _services.EventManager.StartListening(InputEventTypes.RunStart, OnStartRunHandler);
-            _services.EventManager.StartListening(InputEventTypes.RunStop, OnStopRunHandler);
-            _services.EventManager.StartListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
-            _services.EventManager.StartListening(InputEventTypes.Use, OnUseHandler);
-            _services.EventManager.StartListening(InputEventTypes.WeaponRemove, OnWeaponChangeHandler);
-
-            OnWeaponWheelOpen += OpenWeaponWheel;
-            OnWeaponWheelClose += CloseWeaponWheel;
-            OnButtonsInfoMenuOpenClose += OpenCloseButtonsInfoMenu;
+            _inputModel.OnWeaponWheel += ControlWeaponWheelOpen;
+            _inputModel.OnButtonsInfo += OpenCloseButtonsInfoMenu;
+            _inputModel.OnUse += UseInteractiveObject;
             OnWeaponChange += _services.TrapService.RemoveTrap;
             OnTrapPlace += _services.TrapService.PlaceTrap;
-            OnUse += UseInteractiveObject;
             OnHealthChange += HealthBarUpdate;
 
             _characterModel.CurrentWeaponData.Subscribe(OnWeaponChangeHandler);
@@ -229,31 +195,11 @@ namespace BeastHunter
         public void TearDown()
         {
             _characterModel.PlayerBehavior.DeleteTakeDamageEvent(TakeDamage);
-
-            //LockCharAction.LockCharacterMovement -= ExitTalkingState;
-            //StartDialogueData.StartDialog -= SetTalkingState;
-
-            _services.EventManager.StopListening(InputEventTypes.MoveStart, OnMoveHandler);
-            _services.EventManager.StopListening(InputEventTypes.MoveStop, OnStopHandler);
-            _services.EventManager.StopListening(InputEventTypes.Sneak, OnSneakHandler);
-            _services.EventManager.StopListening(InputEventTypes.TimeSkipMenu, OnTimeSkipOpenCloseHandler);
-            _services.EventManager.StopListening(InputEventTypes.WeaponWheelOpen, OnWeaponWheelOpenHandler);
-            _services.EventManager.StopListening(InputEventTypes.WeaponWheelClose, OnWeaponWheelCloseHandler);
-            _services.EventManager.StopListening(InputEventTypes.AttackStart, OnAttackHandler);
-            _services.EventManager.StopListening(InputEventTypes.AimStart, OnAimHandler);
-            _services.EventManager.StopListening(InputEventTypes.Jump, OnJumpHandler);
-            _services.EventManager.StopListening(InputEventTypes.RunStart, OnStartRunHandler);
-            _services.EventManager.StopListening(InputEventTypes.RunStop, OnStopRunHandler);
-            _services.EventManager.StopListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
-            _services.EventManager.StopListening(InputEventTypes.Use, OnUseHandler);
-            _services.EventManager.StopListening(InputEventTypes.WeaponRemove, OnWeaponChangeHandler);
-
-            OnWeaponWheelOpen -= OpenWeaponWheel;
-            OnWeaponWheelClose -= CloseWeaponWheel;
-            OnButtonsInfoMenuOpenClose -= OpenCloseButtonsInfoMenu;
+            _inputModel.OnWeaponWheel = null;
+            _inputModel.OnButtonsInfo = null;
+            _inputModel.OnUse = null;
             OnWeaponChange -= _services.TrapService.RemoveTrap;
             OnTrapPlace -= _services.TrapService.PlaceTrap;
-            OnUse -= UseInteractiveObject;
             OnHealthChange -= HealthBarUpdate;
 
             _characterModel.CurrentWeaponData.Dispose();
@@ -319,71 +265,6 @@ namespace BeastHunter
 
 
         #region ActionHandlers
-
-        private void OnMoveHandler()
-        {
-            OnMove?.Invoke();
-        }
-
-        private void OnStopHandler()
-        {
-            OnStop?.Invoke();
-        }
-
-        private void OnJumpHandler()
-        {
-            OnJump?.Invoke();
-        }
-
-        private void OnSneakHandler()
-        {
-            OnSneak?.Invoke();
-        }
-
-        private void OnWeaponWheelOpenHandler()
-        {
-            OnWeaponWheelOpen?.Invoke();
-        }
-
-        private void OnWeaponWheelCloseHandler()
-        {
-            OnWeaponWheelClose?.Invoke();
-        }
-
-        private void OnTimeSkipOpenCloseHandler()
-        {
-            OnTimeSkipOpenClose?.Invoke();
-        }
-
-        private void OnButtonsInfoOpenCloseHandler()
-        {
-            OnButtonsInfoMenuOpenClose?.Invoke();
-        }
-
-        private void OnAttackHandler()
-        {
-            OnAttack?.Invoke();
-        }
-
-        private void OnAimHandler()
-        {
-            OnAim?.Invoke();
-        }
-
-        private void OnStartRunHandler()
-        {
-            OnStartRun?.Invoke();
-        }
-
-        private void OnStopRunHandler()
-        {
-            OnStopRun?.Invoke();
-        }
-
-        private void OnUseHandler()
-        {
-            OnUse?.Invoke();
-        }
 
         private void OnWeaponChangeHandler()
         {
@@ -501,6 +382,18 @@ namespace BeastHunter
 
 
         #region WeaponWheelControls
+
+        private void ControlWeaponWheelOpen(bool doOpen)
+        {
+            if (doOpen)
+            {
+                OpenWeaponWheel();
+            }
+            else
+            {
+                CloseWeaponWheel();
+            }
+        }
 
         private void OpenWeaponWheel()
         {

@@ -27,12 +27,20 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""a65d95ba-e2ff-4d86-9a2c-babef11054c5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""00b7db60-f2b3-4660-ab89-f50c851ff90e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Aim"",
@@ -40,7 +48,7 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""id"": ""5f905a3c-84c4-49b0-940f-1b8b931617e6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Run"",
@@ -64,7 +72,7 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""id"": ""1c78a590-3156-41f1-ab87-54de3ecad34f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Bestiary"",
@@ -80,7 +88,7 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""id"": ""ed0de79e-7a4c-42ed-8645-f6d035bf7419"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold""
+                    ""interactions"": ""Press(behavior=2)""
                 },
                 {
                     ""name"": ""MouseLook"",
@@ -88,7 +96,71 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""id"": ""faa3a3e2-b371-4694-ae9c-c9f1dc7d4131"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": ""Hold""
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""NumberOne"",
+                    ""type"": ""Button"",
+                    ""id"": ""f29dbde1-072b-4c9f-89ff-a012ecb55e2f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""NumberTwo"",
+                    ""type"": ""Button"",
+                    ""id"": ""ef1ee716-dd89-4196-a4cd-0b7b9b0dc61f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""NumberThree"",
+                    ""type"": ""Button"",
+                    ""id"": ""0318adc5-b05c-493c-a3ff-a066d6abf983"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""NumberFour"",
+                    ""type"": ""Button"",
+                    ""id"": ""56507f0d-a0e2-43b7-a2c6-0e03e8332ba2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""4a45336d-8602-4393-b06c-069302b96a2b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Enter"",
+                    ""type"": ""Button"",
+                    ""id"": ""46550685-f3a5-4892-8fe5-142a2ef2bee6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""WeaponRemove"",
+                    ""type"": ""Button"",
+                    ""id"": ""edfbec3a-3250-46fa-8b56-188d64db6fd3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""647e8af3-d6b6-41ed-a630-e35b0273ad6c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -183,7 +255,7 @@ public class @MainInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""007a1269-4a6d-4c48-8b89-24c8eda7013e"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and mouse"",
@@ -234,6 +306,105 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""action"": ""MouseLook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6585d80-827a-42df-a534-ba27353a19f3"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""NumberOne"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41c65a0e-a4c3-40f5-9d75-05dc72196117"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""NumberTwo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1915d8af-db08-49aa-b6e7-f3368b8011cd"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""NumberThree"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""af1dfc37-7b91-4be1-acea-7708aa02a2ad"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""NumberFour"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""79455b0e-30f6-42bd-8073-1d73441ec506"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""631bc6ce-f8a5-4cac-b58a-5490d3a0cb9c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5fd9aad-943b-424d-a709-2fb56746036d"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""Enter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52bc05bb-f258-471c-b33a-0eb23e76ff19"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""WeaponRemove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7402df7d-c25d-4d5d-98ef-8c4031d8a2bb"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -282,6 +453,7 @@ public class @MainInput : IInputActionCollection, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
+        m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
@@ -290,6 +462,14 @@ public class @MainInput : IInputActionCollection, IDisposable
         m_Player_Bestiary = m_Player.FindAction("Bestiary", throwIfNotFound: true);
         m_Player_WeaponWheel = m_Player.FindAction("WeaponWheel", throwIfNotFound: true);
         m_Player_MouseLook = m_Player.FindAction("MouseLook", throwIfNotFound: true);
+        m_Player_NumberOne = m_Player.FindAction("NumberOne", throwIfNotFound: true);
+        m_Player_NumberTwo = m_Player.FindAction("NumberTwo", throwIfNotFound: true);
+        m_Player_NumberThree = m_Player.FindAction("NumberThree", throwIfNotFound: true);
+        m_Player_NumberFour = m_Player.FindAction("NumberFour", throwIfNotFound: true);
+        m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
+        m_Player_Enter = m_Player.FindAction("Enter", throwIfNotFound: true);
+        m_Player_WeaponRemove = m_Player.FindAction("WeaponRemove", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -340,6 +520,7 @@ public class @MainInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Movement;
+    private readonly InputAction m_Player_Use;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_Run;
@@ -348,11 +529,20 @@ public class @MainInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Bestiary;
     private readonly InputAction m_Player_WeaponWheel;
     private readonly InputAction m_Player_MouseLook;
+    private readonly InputAction m_Player_NumberOne;
+    private readonly InputAction m_Player_NumberTwo;
+    private readonly InputAction m_Player_NumberThree;
+    private readonly InputAction m_Player_NumberFour;
+    private readonly InputAction m_Player_Cancel;
+    private readonly InputAction m_Player_Enter;
+    private readonly InputAction m_Player_WeaponRemove;
+    private readonly InputAction m_Player_Jump;
     public struct PlayerActions
     {
         private @MainInput m_Wrapper;
         public PlayerActions(@MainInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
+        public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
         public InputAction @Run => m_Wrapper.m_Player_Run;
@@ -361,6 +551,14 @@ public class @MainInput : IInputActionCollection, IDisposable
         public InputAction @Bestiary => m_Wrapper.m_Player_Bestiary;
         public InputAction @WeaponWheel => m_Wrapper.m_Player_WeaponWheel;
         public InputAction @MouseLook => m_Wrapper.m_Player_MouseLook;
+        public InputAction @NumberOne => m_Wrapper.m_Player_NumberOne;
+        public InputAction @NumberTwo => m_Wrapper.m_Player_NumberTwo;
+        public InputAction @NumberThree => m_Wrapper.m_Player_NumberThree;
+        public InputAction @NumberFour => m_Wrapper.m_Player_NumberFour;
+        public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
+        public InputAction @Enter => m_Wrapper.m_Player_Enter;
+        public InputAction @WeaponRemove => m_Wrapper.m_Player_WeaponRemove;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -373,6 +571,9 @@ public class @MainInput : IInputActionCollection, IDisposable
                 @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
@@ -397,6 +598,30 @@ public class @MainInput : IInputActionCollection, IDisposable
                 @MouseLook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseLook;
                 @MouseLook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseLook;
                 @MouseLook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseLook;
+                @NumberOne.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberOne;
+                @NumberOne.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberOne;
+                @NumberOne.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberOne;
+                @NumberTwo.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberTwo;
+                @NumberTwo.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberTwo;
+                @NumberTwo.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberTwo;
+                @NumberThree.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberThree;
+                @NumberThree.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberThree;
+                @NumberThree.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberThree;
+                @NumberFour.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberFour;
+                @NumberFour.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberFour;
+                @NumberFour.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNumberFour;
+                @Cancel.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCancel;
+                @Cancel.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCancel;
+                @Cancel.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCancel;
+                @Enter.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnter;
+                @Enter.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnter;
+                @Enter.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnter;
+                @WeaponRemove.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponRemove;
+                @WeaponRemove.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponRemove;
+                @WeaponRemove.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponRemove;
+                @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -404,6 +629,9 @@ public class @MainInput : IInputActionCollection, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
+                @Use.started += instance.OnUse;
+                @Use.performed += instance.OnUse;
+                @Use.canceled += instance.OnUse;
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
@@ -428,6 +656,30 @@ public class @MainInput : IInputActionCollection, IDisposable
                 @MouseLook.started += instance.OnMouseLook;
                 @MouseLook.performed += instance.OnMouseLook;
                 @MouseLook.canceled += instance.OnMouseLook;
+                @NumberOne.started += instance.OnNumberOne;
+                @NumberOne.performed += instance.OnNumberOne;
+                @NumberOne.canceled += instance.OnNumberOne;
+                @NumberTwo.started += instance.OnNumberTwo;
+                @NumberTwo.performed += instance.OnNumberTwo;
+                @NumberTwo.canceled += instance.OnNumberTwo;
+                @NumberThree.started += instance.OnNumberThree;
+                @NumberThree.performed += instance.OnNumberThree;
+                @NumberThree.canceled += instance.OnNumberThree;
+                @NumberFour.started += instance.OnNumberFour;
+                @NumberFour.performed += instance.OnNumberFour;
+                @NumberFour.canceled += instance.OnNumberFour;
+                @Cancel.started += instance.OnCancel;
+                @Cancel.performed += instance.OnCancel;
+                @Cancel.canceled += instance.OnCancel;
+                @Enter.started += instance.OnEnter;
+                @Enter.performed += instance.OnEnter;
+                @Enter.canceled += instance.OnEnter;
+                @WeaponRemove.started += instance.OnWeaponRemove;
+                @WeaponRemove.performed += instance.OnWeaponRemove;
+                @WeaponRemove.canceled += instance.OnWeaponRemove;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -462,6 +714,7 @@ public class @MainInput : IInputActionCollection, IDisposable
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
@@ -470,5 +723,13 @@ public class @MainInput : IInputActionCollection, IDisposable
         void OnBestiary(InputAction.CallbackContext context);
         void OnWeaponWheel(InputAction.CallbackContext context);
         void OnMouseLook(InputAction.CallbackContext context);
+        void OnNumberOne(InputAction.CallbackContext context);
+        void OnNumberTwo(InputAction.CallbackContext context);
+        void OnNumberThree(InputAction.CallbackContext context);
+        void OnNumberFour(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
+        void OnEnter(InputAction.CallbackContext context);
+        void OnWeaponRemove(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

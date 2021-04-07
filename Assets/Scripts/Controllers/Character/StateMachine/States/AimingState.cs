@@ -51,22 +51,21 @@ namespace BeastHunter
         protected override void EnableActions()
         {
             base.EnableActions();
-            _stateMachine.BackState.OnAim = () => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
-            _stateMachine.BackState.OnAttack = () => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Shooting]);
-            _stateMachine.BackState.OnStartRun = () => _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
-            _stateMachine.BackState.OnStopRun = () => _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
-            _stateMachine.BackState.OnJump = Dodge;
+
+            _inputModel.OnAim += () => _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
+            _inputModel.OnAttack += () => _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Shooting]);
+            _inputModel.OnRunStart += () => _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
+            _inputModel.OnRunStop += () => _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
+            _inputModel.OnJump += () => Dodge();
         }
 
         protected override void DisableActions()
         {
-            _stateMachine.BackState.OnAim = null;
-            _stateMachine.BackState.OnAttack = null;
-            _stateMachine.BackState.OnStartRun = null;
-            _stateMachine.BackState.OnStopRun = null;
-            _stateMachine.BackState.OnJump = null;
+            _inputModel.OnAim = null;
+            _inputModel.OnAttack = null;
+            _inputModel.OnRunStart = null;
+            _inputModel.OnRunStop = null;
+            _inputModel.OnJump = null;
             base.DisableActions();
         }
 

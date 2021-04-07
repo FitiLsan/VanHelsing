@@ -12,11 +12,6 @@ namespace BeastHunter
             MessageBroker.Default.Publish(noise);
         }
 
-        public void MakeLight(Light light)
-        {
-            MessageBroker.Default.Publish(light);
-        }
-
         public void MakeDrag(Drag drag)
         {
             MessageBroker.Default.Publish(drag);
