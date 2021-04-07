@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BeastHunter
 {
@@ -13,6 +14,7 @@ namespace BeastHunter
         public int InstanceID;
         [NonSerialized]
         public BuffHolder BuffHolder;
+        public ItemReactions ItemReactions;
 
 
 
@@ -22,6 +24,8 @@ namespace BeastHunter
             BaseStats = new BaseStats();
             AttackStats = new AttackStats();
             DefenceStats = new DefenceStatsClass();
+            ItemReactions = new ItemReactions();
+
         }
     }
 }

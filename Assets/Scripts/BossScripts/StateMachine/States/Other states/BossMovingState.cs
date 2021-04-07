@@ -79,7 +79,7 @@ namespace BeastHunter
 
         private void MoveTo()
         {
-            _stateMachine._model.BossData.MoveTo(_stateMachine._model.BossNavAgent, _target, _stateMachine._model.BossData._bossSettings.WalkSpeed);
+            _stateMachine._model.BossData.NavMeshMoveTo(_stateMachine._model.BossNavAgent, _target, _stateMachine._model.BossData._bossSettings.WalkSpeed);
         }
 
         private void RotateTo()

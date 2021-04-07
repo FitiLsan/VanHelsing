@@ -11,6 +11,7 @@ namespace BeastHunter
 
         public BossSettings _bossSettings;
         public BossModel BossModel;
+
         public AttackStateSkillsSettings AttackStateSkills;
         public DefenceStateSkillsSettings DefenceStateSkills;
         public ChasingStateSkillsSettings ChasingStateSkills;
@@ -49,7 +50,7 @@ namespace BeastHunter
             prefabTransform.Translate(_movementVector, Space.Self);
         }
 
-        public void MoveTo(NavMeshAgent agent, Vector3 pointTo, float speed)
+        public void NavMeshMoveTo(NavMeshAgent agent, Vector3 pointTo, float speed)
         {
             if (agent.CalculatePath(pointTo, new NavMeshPath()))
             {

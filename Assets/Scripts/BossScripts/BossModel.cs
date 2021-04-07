@@ -61,6 +61,9 @@ namespace BeastHunter
         public MovementPoint[] MovementPoints { get; set; }
 
         public List<GameObject> FoodList = new List<GameObject>();
+        public List<GameObject> ScaryList = new List<GameObject>();
+        public List<GameObject> InterestedList = new List<GameObject>();
+
         public GameObject Lair;
         public GameObject BossCurrentTarget;
         public Vector3 BossCurrentPosition;
