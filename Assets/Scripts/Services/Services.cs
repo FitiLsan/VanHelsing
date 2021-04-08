@@ -15,7 +15,7 @@
         public BuffService BuffService { get; private set; }
         public TimeSkipService TimeSkipService { get; private set; }
         public TrapService TrapService { get; private set; }
-        public NoiseService NoiseService { get; private set; }
+        public AnnouncementService AnnouncementService { get; private set; }
         public AudioService AudioService { get; private set; }
 
         #endregion
@@ -34,7 +34,7 @@
             UnityTimeService = new UnityTimeService();
             TimeSkipService = new TimeSkipService();
             TrapService = new TrapService(context);
-            NoiseService = new NoiseService();
+            AnnouncementService = new AnnouncementService();
             AudioService = new AudioService(context);
         }
 

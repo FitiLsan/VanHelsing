@@ -54,7 +54,7 @@ namespace BeastHunter
                 if (activatedTrapModel.ChargeAmount > 0)
                 {
                     Services.SharedInstance.AttackService.CountAndDealDamage(TrapStruct.TrapDamage,
-                    other.transform.GetMainParent().gameObject.GetInstanceID());
+                    other.transform.root.gameObject.GetInstanceID());
 
                     activatedTrapModel.TrapObjectInFrontOfCharacter.GetComponent<Animator>().Play(AnimationName);
                     activatedTrapModel.ChargeAmount--;

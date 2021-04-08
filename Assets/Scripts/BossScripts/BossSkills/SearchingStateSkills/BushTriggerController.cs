@@ -47,7 +47,7 @@ namespace BeastHunter
                 {
                     var bushDamage = new Damage();
                     bushDamage.PhysicalDamage = Random.Range(3f, 10f);
-                    Services.SharedInstance.AttackService.CountAndDealDamage(bushDamage, other.transform.GetMainParent().
+                    Services.SharedInstance.AttackService.CountAndDealDamage(bushDamage, other.transform.root.
                         gameObject.GetInstanceID());
                 }
             }
