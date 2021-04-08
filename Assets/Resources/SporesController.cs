@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using Extensions;
+
 
 namespace BeastHunter
 {
@@ -69,7 +69,8 @@ namespace BeastHunter
         {
             Damage poisonDamage = new Damage();
             poisonDamage.PhysicalDamage = _damage;
-            Services.SharedInstance.AttackService.CountAndDealDamage(poisonDamage, enemy.transform.GetMainParent().gameObject.GetInstanceID());
+            Services.SharedInstance.AttackService.CountAndDealDamage(poisonDamage, 
+                enemy.transform.root.gameObject.GetInstanceID());
         }
     }
 }

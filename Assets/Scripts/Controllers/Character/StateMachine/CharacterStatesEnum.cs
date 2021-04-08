@@ -15,6 +15,7 @@
         Dead,       
         Stunned,
         Shooting,
+        Throwing,
         TimeSkip,
         TrapPlacing,
         KnockedDown,

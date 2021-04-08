@@ -130,7 +130,7 @@ namespace BeastHunter
             if (enemy != null)
             {
                 Services.SharedInstance.AttackService.CountAndDealDamage(Stats.Damage, enemy.transform.
-                    GetMainParent().gameObject.GetInstanceID(), model.CurrentStats);
+                    root.gameObject.GetInstanceID(), model.CurrentStats);
                 _onHitEnemyMsg?.Invoke(enemy);
             }
             else
