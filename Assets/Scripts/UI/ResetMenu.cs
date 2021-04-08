@@ -18,10 +18,10 @@ namespace BeastHunter
 
         private void Update()
         {
-            //if (Input.GetKeyDown(KeyCode.Escape))
-            //{
-            //    Switcher();
-            //}
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Switcher();
+            }
         }
 
         public void On()

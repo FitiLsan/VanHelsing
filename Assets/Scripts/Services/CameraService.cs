@@ -122,6 +122,7 @@ namespace BeastHunter
                 transform, _cameraDynamicTarget.transform);
 
             CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
+            CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenterWaitTime = 0;
 
             _freeLookPerlins = new CinemachineBasicMultiChannelPerlin[3];
 
@@ -294,12 +295,6 @@ namespace BeastHunter
                 _projectileMass = weapon.ProjectileData.ProjectilePrefab.GetComponent<Rigidbody>().mass;
                 _weaponHitDistance = weapon.HitDistance;
             }
-            else if(_context.CharacterModel.CurrentWeaponData.Value is OneHandedThrowableWeapon throable)
-            {
-                _weaponShootTransform = throable.ActualWeapon.WeaponObjectOnScene.transform;
-                _projectileMass = throable.ProjectileData.ProjectilePrefab.GetComponent<Rigidbody>().mass;
-                _weaponHitDistance = throable.HitDistance;
-            }
             else
             {
                 _weaponShootTransform = null;
@@ -310,15 +305,12 @@ namespace BeastHunter
 
         public void DrawAimLine()
         {
-            if (_isAiminDotsVisible)
-            {
-                _shootinWeaponDirection = _cameraDynamicTarget.transform.position - _weaponShootTransform.position;
+            _shootinWeaponDirection = _cameraDynamicTarget.transform.position - _weaponShootTransform.position;
 
-                for (int i = 0; i < AMOUNT_OF_AIM_LINE_STEPS; i++)
-                {
-                    _aimingDots[i].transform.position = GetAimLinePointPosition((AIM_LINE_DRAW_FIRST_STEP_DISTANCE + i) *
-                        AIM_LINE_DRAW_DISTANCE_STEP);
-                }
+            for (int i = 0; i < AMOUNT_OF_AIM_LINE_STEPS; i++)
+            {
+                _aimingDots[i].transform.position = GetAimLinePointPosition((AIM_LINE_DRAW_FIRST_STEP_DISTANCE + i) *
+                    AIM_LINE_DRAW_DISTANCE_STEP);
             }
         }
 
@@ -350,19 +342,9 @@ namespace BeastHunter
 
         private Vector3 GetAimLinePointPosition(float stepDistance)
         {
-            if(_context.CharacterModel.CurrentWeaponData.Value.Type == WeaponType.Throwing)
-            {
-                return _weaponShootTransform.position + ((_context.CharacterModel.CharacterTransform.forward.normalized +
-                    _context.CharacterModel.CharacterTransform.up).normalized *
+            return _weaponShootTransform.position + (_weaponShootTransform.forward.normalized *
                 (_weaponHitDistance / _projectileMass) * stepDistance) + 0.5f * Physics.gravity *
                     (stepDistance * stepDistance);
-            }
-            else
-            {
-                return _weaponShootTransform.position + (_weaponShootTransform.forward.normalized *
-                (_weaponHitDistance / _projectileMass) * stepDistance) + 0.5f * Physics.gravity *
-                    (stepDistance * stepDistance);
-            }
         }
 
         public void Dispose()

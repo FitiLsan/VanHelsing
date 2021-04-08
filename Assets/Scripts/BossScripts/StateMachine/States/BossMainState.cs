@@ -293,7 +293,7 @@ namespace BeastHunter
         {
             eventClass.WeakPointCollider.gameObject.GetComponent<ParticleSystem>().Play();
             Services.SharedInstance.AttackService.CountAndDealDamage(eventClass.WeakPointCollider.
-                GetComponent<HitBoxBehavior>().AdditionalDamage, _bossModel.BossTransform.root.
+                GetComponent<HitBoxBehavior>().AdditionalDamage, _bossModel.BossTransform.GetMainParent().
                     gameObject.GetInstanceID());
             eventClass.WeakPointCollider.GetComponent<Light>().color = Color.red;
             eventClass.WeakPointCollider.enabled = false;

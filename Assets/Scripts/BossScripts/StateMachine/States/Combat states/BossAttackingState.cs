@@ -174,7 +174,7 @@ namespace BeastHunter
             if (hitBox.IsInteractable)
             {
                 handDamage.PhysicalDamage = hitBox.TempDamage; //Random.Range(5f, 15f);
-                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
                     gameObject.GetInstanceID());
 
                 hitBox.IsInteractable = false;
@@ -189,7 +189,7 @@ namespace BeastHunter
             {
                 var hitBoxInfo = (InteractableObjectBehavior)hitBox;
                 handDamage.PhysicalDamage = hitBoxInfo.TempDamage;
-                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
                     gameObject.GetInstanceID());
                 hitBox.IsInteractable = false;
             //   _bossModel.RightHandCollider.enabled = false;
@@ -201,7 +201,7 @@ namespace BeastHunter
             if (hitBox.IsInteractable)
             {
                 handDamage.PhysicalDamage = Random.Range(5f, 15f);
-                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
                     gameObject.GetInstanceID());
                 hitBox.IsInteractable = false;
             }

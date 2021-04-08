@@ -17,7 +17,7 @@ namespace BeastHunter
         public BuffService BuffService { get; private set; }
         public TimeSkipService TimeSkipService { get; private set; }
         public TrapService TrapService { get; private set; }
-        public AnnouncementService AnnouncementService { get; private set; }
+        public NoiseService NoiseService { get; private set; }
         public AudioService AudioService { get; private set; }
 
         public GameContext Context { get; private set; }
@@ -37,7 +37,7 @@ namespace BeastHunter
             UnityTimeService = new UnityTimeService();
             TimeSkipService = new TimeSkipService();
             TrapService = new TrapService(context);
-            AnnouncementService = new AnnouncementService();
+            NoiseService = new NoiseService();
             AudioService = new AudioService(context);
             Context = context;
         }

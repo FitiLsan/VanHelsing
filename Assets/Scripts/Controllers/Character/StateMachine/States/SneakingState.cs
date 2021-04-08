@@ -26,6 +26,8 @@ namespace BeastHunter
         private float _crouchLevelForAnimation;
         private float _exitTime;
 
+        private bool _isMoving;
+
         #endregion
 
 
@@ -64,16 +66,18 @@ namespace BeastHunter
         protected override void EnableActions()
         {
             base.EnableActions();
-            _inputModel.OnJump += () => 
-                CharacterPose = CharacterPositionEnum.SneakingToStanding;
-            _inputModel.OnSneakSlide += () => 
-                CharacterPose = CharacterPositionEnum.SneakingToStanding;
+            _stateMachine.BackState.OnMove = () => _isMoving = true;
+            _stateMachine.BackState.OnStop = () => _isMoving = false;
+            _stateMachine.BackState.OnJump = () => CharacterPose = CharacterPositionEnum.SneakingToStanding;
+            _stateMachine.BackState.OnSneak = () => CharacterPose = CharacterPositionEnum.SneakingToStanding;
         }
 
         protected override void DisableActions()
         {
-            _inputModel.OnJump = null;
-            _inputModel.OnSneakSlide = null;
+            _stateMachine.BackState.OnMove = null;
+            _stateMachine.BackState.OnStop = null;
+            _stateMachine.BackState.OnJump = null;
+            _stateMachine.BackState.OnSneak = null;
             base.DisableActions();
         }
 
@@ -83,6 +87,7 @@ namespace BeastHunter
             CharacterPose = CharacterPositionEnum.StandingToSneaking;
             _crouchLevel = ZERO_CROUCH_LEVEL;
             _crouchLevelForAnimation = _crouchLevel;
+            _isMoving = _inputModel.IsInputMove;
         }
 
         public override void OnExit(CharacterBaseState nextState = null)
@@ -92,7 +97,7 @@ namespace BeastHunter
 
         private void ControlMovement()
         {
-            _stateMachine.BackState.RotateCharacter(_inputModel.IsInputMove);
+            _stateMachine.BackState.RotateCharacter(_isMoving);
             _stateMachine.BackState.MoveCharacter(false);
         }
 

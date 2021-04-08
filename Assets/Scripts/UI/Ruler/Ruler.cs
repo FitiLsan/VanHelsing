@@ -56,10 +56,10 @@ namespace BeastHunter
 
         private void Update()
         {
-            //if (Input.GetKeyDown(KeyCode.RightAlt))
-            //{
-            //    NextRange();
-            //}
+            if (Input.GetKeyDown(KeyCode.RightAlt))
+            {
+                NextRange();
+            }
 
         }
     }

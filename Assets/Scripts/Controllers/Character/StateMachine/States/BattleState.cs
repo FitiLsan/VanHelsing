@@ -34,7 +34,8 @@ namespace BeastHunter
         {
             _stateMachine.BackState.CountSpeed();
             ControlMovement();
-            ClosestEnemyCheck();        
+            ClosestEnemyCheck();
+            
         }
 
         #endregion
@@ -44,8 +45,7 @@ namespace BeastHunter
 
         public override bool CanBeActivated()
         {
-            if(_characterModel.CurrentWeaponData.Value?.Type == WeaponType.Shooting ||
-                _characterModel.CurrentWeaponData.Value?.Type == WeaponType.Throwing)
+            if(_characterModel.CurrentWeaponData.Value?.Type == WeaponType.Shooting)
             {
                 _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Aiming]);
             }
@@ -62,24 +62,26 @@ namespace BeastHunter
         protected override void EnableActions()
         {
             base.EnableActions();
-            _inputModel.OnAim += () => _stateMachine.
+            _stateMachine.BackState.OnAim = () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
-            _inputModel.OnAttack += () => _stateMachine.
+            _stateMachine.BackState.OnAttack = () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
-            _inputModel.OnRunStart = () => _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
-            _inputModel.OnRunStop = () => _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
-            _inputModel.OnJump += Dodge;
-            _inputModel.OnWeaponWheel += CheckCameraControl;
+            _stateMachine.BackState.OnStartRun = () => _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
+            _stateMachine.BackState.OnStopRun = () => _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
+            _stateMachine.BackState.OnJump = Dodge;
+            _stateMachine.BackState.OnWeaponWheelOpen += () => _hasCameraControl = false;
+            _stateMachine.BackState.OnWeaponWheelClose += () => _hasCameraControl = true;
         }
 
         protected override void DisableActions()
         {
-            _inputModel.OnAim = null;
-            _inputModel.OnAttack = null;
-            _inputModel.OnRunStart = null;
-            _inputModel.OnRunStop = null;
-            _inputModel.OnJump = null;
-            _inputModel.OnWeaponWheel = null;
+            _stateMachine.BackState.OnAim = null;
+            _stateMachine.BackState.OnAttack = null;
+            _stateMachine.BackState.OnStartRun = null;
+            _stateMachine.BackState.OnStopRun = null;
+            _stateMachine.BackState.OnJump = null;
+            _stateMachine.BackState.OnWeaponWheelOpen -= () => _hasCameraControl = false;
+            _stateMachine.BackState.OnWeaponWheelClose -= () => _hasCameraControl = true;
             base.DisableActions();
         }
 
@@ -116,14 +118,11 @@ namespace BeastHunter
                 _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Dodging]);
             }
         }
-           
-        private void CheckCameraControl(bool isControlLocked)
-        {
-            _hasCameraControl = isControlLocked;
-        }
 
         private void ClosestEnemyCheck()
-        {         
+        {
+
+            
             if (_characterModel.EnemiesInTrigger.Count > 0)
             {
                 float currentDistanceToEnemy = float.PositiveInfinity;
@@ -146,10 +145,12 @@ namespace BeastHunter
                 
             }
             else
-            {            
+            {
+                
                 _characterModel.ClosestEnemy.Value = null;
                 _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
-            }       
+            }
+            
         }
 
         #endregion
