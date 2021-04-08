@@ -26,8 +26,9 @@ namespace BeastHunter
 
         public override bool FilterCollision(Collision touchedCollider)
         {
-            return touchedCollider.collider.GetComponent<InteractableObjectBehavior>()?.
-                Type != InteractableObjectType.Player;
+            InteractableObjectBehavior touched = touchedCollider.collider.transform.root.
+                GetComponentInChildren<InteractableObjectBehavior>();
+            return touched == null || touched.Type != InteractableObjectType.Player;
         }
 
         public override void HitProjectile(IProjectile projectileInterface, Collision touchedCollider)
@@ -56,7 +57,7 @@ namespace BeastHunter
 
         private void ExplodeBomb(IProjectile projectileInterface, Collision touchedCollider)
         {
-            Services.SharedInstance.NoiseService.MakeNoise(new Noise(projectileInterface.GameObject.transform.position,
+            Services.SharedInstance.AnnouncementService.MakeNoise(new Noise(projectileInterface.GameObject.transform.position,
                 NoiseType.Explosion, ExplosionHearingDistance));
             Rigidbody bombRigidbody = projectileInterface.GameObject.GetComponent<Rigidbody>();
             bombRigidbody.velocity = Vector3.zero;
@@ -69,6 +70,8 @@ namespace BeastHunter
             projectileAudioSource.PlayOneShot(CollisionSound);
             Destroy(projectileAudioSource, CollisionSound.SoundClip.length);
             Destroy(projectileInterface.GameObject, CollisionSound.SoundClip.length);
+            Services.SharedInstance.AnnouncementService.MakeNoise(new Noise(projectileInterface.GameObject.transform.position,
+                NoiseType.Explosion, ExplosionHearingDistance));
         }
 
         #endregion

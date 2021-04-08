@@ -12,7 +12,7 @@ namespace BeastHunter
             MessageBroker.Default.Publish(noise);
         }
 
-        public void MakeDrag(Drag drag)
+        public void MakeSmell(Smell drag)
         {
             MessageBroker.Default.Publish(drag);
         }

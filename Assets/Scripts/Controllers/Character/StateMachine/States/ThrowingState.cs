@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 
 namespace BeastHunter
 {
-    public sealed class ShootingState : CharacterBaseState, IUpdate
+    public sealed class ThrowingState : CharacterBaseState, IUpdate
     {
         #region Fields
 
@@ -15,9 +15,9 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public ShootingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
+        public ThrowingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
-            StateName = CharacterStatesEnum.Shooting;
+            StateName = CharacterStatesEnum.Throwing;
             IsTargeting = false;
             IsAttacking = true;
         }
@@ -43,11 +43,7 @@ namespace BeastHunter
 
         public override bool CanBeActivated()
         {
-            if (_characterModel.CurrentWeaponData.Value?.Type == WeaponType.Throwing)
-            {
-                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Throwing]);
-            }
-            return _characterModel.CurrentWeaponData.Value?.Type == WeaponType.Shooting;
+            return _characterModel.CurrentWeaponData.Value?.Type == WeaponType.Throwing;
         }
 
         public override void Initialize(CharacterBaseState previousState = null)
@@ -56,7 +52,6 @@ namespace BeastHunter
 
             _characterModel.CurrentWeaponData.Value.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
             _exitTime = _characterModel.CurrentWeaponData.Value.CurrentAttack.AttackTime;
-            Services.SharedInstance.CameraService.ShakeAimingCamera(0.5f);
         }
 
         private void ControlMovement()
@@ -73,13 +68,13 @@ namespace BeastHunter
 
         private void CountExtiTime()
         {
-            if(_exitTime > 0)
+            if (_exitTime > 0)
             {
                 _exitTime -= Time.deltaTime;
 
-                if(_exitTime <= 0)
+                if (_exitTime <= 0)
                 {
-                    _stateMachine.ReturnState();
+                    _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
                 }
             }
         }

@@ -1,6 +1,6 @@
 namespace BeastHunter
 {
-    public enum DragType
+    public enum SmellType
     {
         None,
         Meat,

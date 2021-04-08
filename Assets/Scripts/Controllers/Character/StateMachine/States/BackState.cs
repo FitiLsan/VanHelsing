@@ -156,6 +156,8 @@ namespace BeastHunter
             _inputModel.OnWeaponWheel += ControlWeaponWheelOpen;
             _inputModel.OnButtonsInfo += OpenCloseButtonsInfoMenu;
             _inputModel.OnUse += UseInteractiveObject;
+            _inputModel.OnRemoveWeapon += () => OnWeaponChange?.Invoke();
+            _inputModel.OnPressNumberOne += () => GetThrowableWeapon(Data.BombData);
             OnWeaponChange += _services.TrapService.RemoveTrap;
             OnTrapPlace += _services.TrapService.PlaceTrap;
             OnHealthChange += HealthBarUpdate;
@@ -198,6 +200,8 @@ namespace BeastHunter
             _inputModel.OnWeaponWheel = null;
             _inputModel.OnButtonsInfo = null;
             _inputModel.OnUse = null;
+            _inputModel.OnRemoveWeapon = null;
+            _inputModel.OnPressNumberOne = null;
             OnWeaponChange -= _services.TrapService.RemoveTrap;
             OnTrapPlace -= _services.TrapService.PlaceTrap;
             OnHealthChange -= HealthBarUpdate;
@@ -576,6 +580,12 @@ namespace BeastHunter
 
         #region WeaponControl
 
+        private void GetThrowableWeapon(OneHandedThrowableWeapon weaponData)
+        {
+            OnWeaponChange?.Invoke();
+            GetWeapon(weaponData);
+        }
+
         public void GetWeapon(WeaponData weaponData)
         {
             new InitializeWeaponController(_context, weaponData, OnHitBoxFilter, OnHitBoxHit, ref OnWeaponChange);
@@ -587,6 +597,10 @@ namespace BeastHunter
             else if (weaponData is TwoHandedShootingWeapon twoHandedWeapon)
             {
                 _isCurrentWeaponWithProjectile = twoHandedWeapon.ProjectileData != null;
+            }
+            else if (weaponData is OneHandedThrowableWeapon)
+            {
+                _isCurrentWeaponWithProjectile = true;
             }
 
             _services.CameraService.UpdateWeaponProjectileExistence(_isCurrentWeaponWithProjectile);

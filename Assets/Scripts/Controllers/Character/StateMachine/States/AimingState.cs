@@ -45,7 +45,8 @@ namespace BeastHunter
 
         public override bool CanBeActivated()
         {
-            return _characterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting;
+            return _characterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting ||
+                _characterModel.CurrentWeaponData.Value.Type == WeaponType.Throwing;
         }
 
         protected override void EnableActions()
