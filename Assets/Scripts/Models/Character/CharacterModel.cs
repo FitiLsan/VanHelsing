@@ -42,7 +42,6 @@ namespace BeastHunter
         public PuppetMaster PuppetMaster { get; }
         public BehaviourPuppet BehaviorPuppet { get; }
         public BehaviourFall BehaviorFall { get; }
-        public LineRenderer ProjectileTrajectoryPredict { get; }
 
         public ReactiveCollection<Collider> EnemiesInTrigger { get; set; }
         public ReactiveProperty<Collider> ClosestEnemy { get; set; }

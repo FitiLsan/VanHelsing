@@ -37,7 +37,7 @@ namespace BeastHunter
             }
 
             Services.SharedInstance.AttackService.CountAndDealDamage(ProjectileDamage,
-                    touchedCollider.transform.GetMainParent().gameObject.GetInstanceID());
+                    touchedCollider.transform.root.gameObject.GetInstanceID());
 
             DestroyProjectile(projectileInterface);
         }

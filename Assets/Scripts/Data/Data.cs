@@ -47,6 +47,7 @@ namespace BeastHunter
         [SerializeField] private string _fallingTreeDataPath;
         [SerializeField] private string _enemyHealthBarDataPath;
         [SerializeField] private string _spawnpointsDataPath;
+        [SerializeField] private string _bombDataPath;
 
         private static Data _instance;
         private static LocationData _locationData;
@@ -85,6 +86,7 @@ namespace BeastHunter
         private static FallingTreeData _fallingTreeData;
         private static EnemyHealthBarData _enemyHealthBarData;
         private static SpawnpointsData _spawnpointsData;
+        private static OneHandedThrowableWeapon _bombData;
 
         #endregion
 
@@ -516,6 +518,18 @@ namespace BeastHunter
                     _spawnpointsData = Resources.Load<SpawnpointsData>("Data/" + Instance._spawnpointsDataPath);
                 }
                 return _spawnpointsData;
+            }
+        }
+
+        public static OneHandedThrowableWeapon BombData
+        {
+            get
+            {
+                if (_bombData == null)
+                {
+                    _bombData = Resources.Load<OneHandedThrowableWeapon>("Data/" + Instance._bombDataPath);
+                }
+                return _bombData;
             }
         }
 

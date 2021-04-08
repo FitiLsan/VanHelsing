@@ -47,25 +47,25 @@ namespace BeastHunter
         protected override void EnableActions()
         {
             base.EnableActions();
-            _stateMachine.BackState.OnStop = StartCountExitTime;
-            _stateMachine.BackState.OnMove = StopCountExitTime;
-            _stateMachine.BackState.OnSneak = () => SneakOrSlide();
-            _stateMachine.BackState.OnAttack = () => _stateMachine.
+            _inputModel.OnStop += StartCountExitTime;
+            _inputModel.OnMove += StopCountExitTime;
+            _inputModel.OnSneakSlide += () => SneakOrSlide();
+            _inputModel.OnAttack += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
-            _stateMachine.BackState.OnJump = () => _stateMachine.
+            _inputModel.OnJump += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Jumping]);
-            _stateMachine.BackState.OnAim = () => _stateMachine.
+            _inputModel.OnAim += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Battle]);
         }
 
         protected override void DisableActions()
         {
-            _stateMachine.BackState.OnStop = null;
-            _stateMachine.BackState.OnMove = null;
-            _stateMachine.BackState.OnSneak = null;
-            _stateMachine.BackState.OnAttack = null;
-            _stateMachine.BackState.OnJump = null;
-            _stateMachine.BackState.OnAim = null;
+            _inputModel.OnStop = null;
+            _inputModel.OnMove = null;
+            _inputModel.OnSneakSlide = null;
+            _inputModel.OnAttack = null;
+            _inputModel.OnJump = null;
+            _inputModel.OnAim = null;
             base.DisableActions();
         }
 

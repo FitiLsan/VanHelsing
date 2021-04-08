@@ -157,7 +157,7 @@ namespace BeastHunter
 
             if (raycastCheck)
             {
-                InteractableObjectBehavior enemyBehavior = rayHit.transform.GetMainParent().GetComponent<InteractableObjectBehavior>();
+                InteractableObjectBehavior enemyBehavior = rayHit.transform.root.GetComponent<InteractableObjectBehavior>();
 
                 if(enemyBehavior != null)
                 {

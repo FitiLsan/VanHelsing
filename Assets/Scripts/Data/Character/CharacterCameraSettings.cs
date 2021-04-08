@@ -1,6 +1,6 @@
 ﻿using System;
-using Cinemachine;
 using UnityEngine;
+using Cinemachine;
 
 
 namespace BeastHunter
@@ -970,8 +970,8 @@ namespace BeastHunter
             CinemachineTransposer dialogTransposer = dialogCamera.GetCinemachineComponent<CinemachineTransposer>();
             CinemachineComposer dialogComposer = dialogCamera.GetCinemachineComponent<CinemachineComposer>();
 
-            _isInvertedAxisX = freeLookCamera.m_XAxis.m_InvertAxis;
-            _isInvertedAxisY = freeLookCamera.m_YAxis.m_InvertAxis;
+            _isInvertedAxisX = freeLookCamera.m_XAxis.m_InvertInput;
+            _isInvertedAxisY = freeLookCamera.m_YAxis.m_InvertInput;
 
             _freeLookSpeedX = freeLookCamera.m_XAxis.m_MaxSpeed;
             _freeLookAccelerationLagX = freeLookCamera.m_XAxis.m_AccelTime;
@@ -1113,12 +1113,12 @@ namespace BeastHunter
             characterFreelookCamera.m_Lens.FarClipPlane = FreeLookFarClipPlane;
             characterFreelookCamera.m_Lens.Dutch = FreeLookDutch;
 
-            characterFreelookCamera.m_XAxis.m_InvertAxis = IsInvertedX;
+            characterFreelookCamera.m_XAxis.m_InvertInput = IsInvertedX;
             characterFreelookCamera.m_XAxis.m_MaxSpeed = CameraSpeedX;
             characterFreelookCamera.m_XAxis.m_AccelTime = CameraAccelerationLagX;
             characterFreelookCamera.m_XAxis.m_DecelTime = CameraDecelerationLagX;
 
-            characterFreelookCamera.m_YAxis.m_InvertAxis = IsInvertedY;
+            characterFreelookCamera.m_YAxis.m_InvertInput = IsInvertedY;
             characterFreelookCamera.m_YAxis.m_MaxSpeed = CameraSpeedY;
             characterFreelookCamera.m_YAxis.m_AccelTime = CameraAccelerationLagY;
             characterFreelookCamera.m_YAxis.m_DecelTime = CameraDecelerationLagY;
