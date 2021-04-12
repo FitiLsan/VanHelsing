@@ -6,7 +6,7 @@ using UniRx;
 
 namespace BeastHunter
 {
-    public sealed class CharacterModel
+    public sealed class CharacterModel: BaseModel
     {
         #region Fields
 

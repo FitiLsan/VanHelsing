@@ -4,7 +4,6 @@ using System;
 using RootMotion.Dynamics;
 using UniRx;
 using Extensions;
-using DG.Tweening;
 
 
 namespace BeastHunter
@@ -39,23 +38,9 @@ namespace BeastHunter
 
         #region Fields
 
-        public Action OnMove;
-        public Action OnStop;
-        public Action OnAttack;
-        public Action OnJump;
-        public Action OnSneak;
-        public Action OnAim;
-        public Action OnStartRun;
-        public Action OnStopRun;
-
-        public Action OnWeaponWheelOpen;
-        public Action OnWeaponWheelClose;
         public Action OnWeaponChange;
         public Action OnTrapPlace;
-        public Action OnTimeSkipOpenClose;
-        public Action OnButtonsInfoMenuOpenClose;
-        public Action OnUse;
-        public static Action OnHealthChange;
+        public Action OnHealthChange;
 
         private readonly GameContext _context;
         private readonly CharacterStateMachine _stateMachine;
@@ -84,7 +69,6 @@ namespace BeastHunter
         private Text _weaponWheelText;
         private CharacterSpeedCounter _activeSpeedCounter;
         private PlayerHealthBarModel _playerHealthBarModel;
-       // private PlayerBuffPanelModel _playerBuffPanelModel;
 
         private CharacterAnimationEventTypes _lastAnimationEventType;
 
@@ -125,7 +109,7 @@ namespace BeastHunter
             _characterModel = _context.CharacterModel;
             _inputModel = _context.InputModel;
             _puppetController = _characterModel.PuppetMaster;
-
+            
             _weaponWheelUI = GameObject.Instantiate(Data.UIElementsData.WeaponWheelPrefab);
             _weaponWheelTransform = _weaponWheelUI.transform.
                 Find(WEAPON_WHEEL_PANEL_NAME).Find(WEAPON_WHEEL_CYCLE_NAME).transform;
@@ -169,33 +153,14 @@ namespace BeastHunter
         public void OnAwake()
         {
             _characterModel.PlayerBehavior.SetTakeDamageEvent(TakeDamage);
-
-            //LockCharAction.LockCharacterMovement += ExitTalkingState;
-            //StartDialogueData.StartDialog += SetTalkingState;
-
-            _services.EventManager.StartListening(InputEventTypes.MoveStart, OnMoveHandler);
-            _services.EventManager.StartListening(InputEventTypes.MoveStop, OnStopHandler);
-            _services.EventManager.StartListening(InputEventTypes.Sneak, OnSneakHandler);
-            _services.EventManager.StartListening(InputEventTypes.TimeSkipMenu, OnTimeSkipOpenCloseHandler);
-            _services.EventManager.StartListening(InputEventTypes.WeaponWheelOpen, OnWeaponWheelOpenHandler);
-            _services.EventManager.StartListening(InputEventTypes.WeaponWheelClose, OnWeaponWheelCloseHandler);
-            _services.EventManager.StartListening(InputEventTypes.AttackStart, OnAttackHandler);
-            _services.EventManager.StartListening(InputEventTypes.AimStart, OnAimHandler);
-            _services.EventManager.StartListening(InputEventTypes.Jump, OnJumpHandler);
-            _services.EventManager.StartListening(InputEventTypes.RunStart, OnStartRunHandler);
-            _services.EventManager.StartListening(InputEventTypes.RunStop, OnStopRunHandler);
-            _services.EventManager.StartListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
-            _services.EventManager.StartListening(InputEventTypes.Use, OnUseHandler);
-            _services.EventManager.StartListening(InputEventTypes.WeaponRemove, OnWeaponChangeHandler);
-
-            OnWeaponWheelOpen += OpenWeaponWheel;
-            OnWeaponWheelClose += CloseWeaponWheel;
-            OnButtonsInfoMenuOpenClose += OpenCloseButtonsInfoMenu;
+            _inputModel.OnWeaponWheel += ControlWeaponWheelOpen;
+            _inputModel.OnButtonsInfo += OpenCloseButtonsInfoMenu;
+            _inputModel.OnUse += UseInteractiveObject;
+            _inputModel.OnRemoveWeapon += () => OnWeaponChange?.Invoke();
+            _inputModel.OnPressNumberOne += () => GetThrowableWeapon(Data.BombData);
             OnWeaponChange += _services.TrapService.RemoveTrap;
             OnTrapPlace += _services.TrapService.PlaceTrap;
-            OnUse += UseInteractiveObject;
             OnHealthChange += HealthBarUpdate;
-          //  _characterModel.CurrentStats.BuffHolderChanged += BuffPanelUpdate;
 
             _characterModel.CurrentWeaponData.Subscribe(OnWeaponChangeHandler);
             _characterModel.CurrentCharacterState.Subscribe(UpdateSpeedCounterByState);
@@ -222,13 +187,6 @@ namespace BeastHunter
             MovementCheck();
             ControlWeaponWheel();
             EnemyHealthBarUpdate();
-
-            //FOR DEBUG ONLY!
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                _characterModel.CurrentStats.BaseStats.CurrentHealthPoints += 15f;
-                OnHealthChange?.Invoke();
-            }
         }
 
         #endregion
@@ -239,33 +197,14 @@ namespace BeastHunter
         public void TearDown()
         {
             _characterModel.PlayerBehavior.DeleteTakeDamageEvent(TakeDamage);
-
-            //LockCharAction.LockCharacterMovement -= ExitTalkingState;
-            //StartDialogueData.StartDialog -= SetTalkingState;
-
-            _services.EventManager.StopListening(InputEventTypes.MoveStart, OnMoveHandler);
-            _services.EventManager.StopListening(InputEventTypes.MoveStop, OnStopHandler);
-            _services.EventManager.StopListening(InputEventTypes.Sneak, OnSneakHandler);
-            _services.EventManager.StopListening(InputEventTypes.TimeSkipMenu, OnTimeSkipOpenCloseHandler);
-            _services.EventManager.StopListening(InputEventTypes.WeaponWheelOpen, OnWeaponWheelOpenHandler);
-            _services.EventManager.StopListening(InputEventTypes.WeaponWheelClose, OnWeaponWheelCloseHandler);
-            _services.EventManager.StopListening(InputEventTypes.AttackStart, OnAttackHandler);
-            _services.EventManager.StopListening(InputEventTypes.AimStart, OnAimHandler);
-            _services.EventManager.StopListening(InputEventTypes.Jump, OnJumpHandler);
-            _services.EventManager.StopListening(InputEventTypes.RunStart, OnStartRunHandler);
-            _services.EventManager.StopListening(InputEventTypes.RunStop, OnStopRunHandler);
-            _services.EventManager.StopListening(InputEventTypes.ButtonsInfoMenu, OnButtonsInfoOpenCloseHandler);
-            _services.EventManager.StopListening(InputEventTypes.Use, OnUseHandler);
-            _services.EventManager.StopListening(InputEventTypes.WeaponRemove, OnWeaponChangeHandler);
-
-            OnWeaponWheelOpen -= OpenWeaponWheel;
-            OnWeaponWheelClose -= CloseWeaponWheel;
-            OnButtonsInfoMenuOpenClose -= OpenCloseButtonsInfoMenu;
+            _inputModel.OnWeaponWheel = null;
+            _inputModel.OnButtonsInfo = null;
+            _inputModel.OnUse = null;
+            _inputModel.OnRemoveWeapon = null;
+            _inputModel.OnPressNumberOne = null;
             OnWeaponChange -= _services.TrapService.RemoveTrap;
             OnTrapPlace -= _services.TrapService.PlaceTrap;
-            OnUse -= UseInteractiveObject;
             OnHealthChange -= HealthBarUpdate;
-          //  _characterModel.CurrentStats.BuffHolderChanged -= BuffPanelUpdate;
 
             _characterModel.CurrentWeaponData.Dispose();
             _characterModel.CurrentCharacterState.Dispose();
@@ -330,71 +269,6 @@ namespace BeastHunter
 
 
         #region ActionHandlers
-
-        private void OnMoveHandler()
-        {
-            OnMove?.Invoke();
-        }
-
-        private void OnStopHandler()
-        {
-            OnStop?.Invoke();
-        }
-
-        private void OnJumpHandler()
-        {
-            OnJump?.Invoke();
-        }
-
-        private void OnSneakHandler()
-        {
-            OnSneak?.Invoke();
-        }
-
-        private void OnWeaponWheelOpenHandler()
-        {
-            OnWeaponWheelOpen?.Invoke();
-        }
-
-        private void OnWeaponWheelCloseHandler()
-        {
-            OnWeaponWheelClose?.Invoke();
-        }
-
-        private void OnTimeSkipOpenCloseHandler()
-        {
-            OnTimeSkipOpenClose?.Invoke();
-        }
-
-        private void OnButtonsInfoOpenCloseHandler()
-        {
-            OnButtonsInfoMenuOpenClose?.Invoke();
-        }
-
-        private void OnAttackHandler()
-        {
-            OnAttack?.Invoke();
-        }
-
-        private void OnAimHandler()
-        {
-            OnAim?.Invoke();
-        }
-
-        private void OnStartRunHandler()
-        {
-            OnStartRun?.Invoke();
-        }
-
-        private void OnStopRunHandler()
-        {
-            OnStopRun?.Invoke();
-        }
-
-        private void OnUseHandler()
-        {
-            OnUse?.Invoke();
-        }
 
         private void OnWeaponChangeHandler()
         {
@@ -486,7 +360,7 @@ namespace BeastHunter
                 }
 
                 _services.AttackService.CountAndDealDamage(_characterModel.CurrentWeaponData.Value.CurrentAttack.AttackDamage,
-                    enemy.transform.GetMainParent().gameObject.GetInstanceID(), _characterModel.CurrentStats, _characterModel.
+                    enemy.transform.root.gameObject.GetInstanceID(), _characterModel.CurrentStats, _characterModel.
                         CurrentWeaponData.Value);
                 hitBox.IsInteractable = false;
             }
@@ -512,6 +386,18 @@ namespace BeastHunter
 
 
         #region WeaponWheelControls
+
+        private void ControlWeaponWheelOpen(bool doOpen)
+        {
+            if (doOpen)
+            {
+                OpenWeaponWheel();
+            }
+            else
+            {
+                CloseWeaponWheel();
+            }
+        }
 
         private void OpenWeaponWheel()
         {
@@ -694,6 +580,12 @@ namespace BeastHunter
 
         #region WeaponControl
 
+        private void GetThrowableWeapon(OneHandedThrowableWeapon weaponData)
+        {
+            OnWeaponChange?.Invoke();
+            GetWeapon(weaponData);
+        }
+
         public void GetWeapon(WeaponData weaponData)
         {
             new InitializeWeaponController(_context, weaponData, OnHitBoxFilter, OnHitBoxHit, ref OnWeaponChange);
@@ -705,6 +597,10 @@ namespace BeastHunter
             else if (weaponData is TwoHandedShootingWeapon twoHandedWeapon)
             {
                 _isCurrentWeaponWithProjectile = twoHandedWeapon.ProjectileData != null;
+            }
+            else if (weaponData is OneHandedThrowableWeapon)
+            {
+                _isCurrentWeaponWithProjectile = true;
             }
 
             _services.CameraService.UpdateWeaponProjectileExistence(_isCurrentWeaponWithProjectile);
@@ -847,7 +743,7 @@ namespace BeastHunter
         {
             _activeSpeedCounter.CountSpeed(_inputModel.IsInputMove, _inputModel.IsInputRun,
                 ref _curretSpeed, ref _currentVelocity);
-            _characterModel.CurrentSpeed = Mathf.Clamp(_curretSpeed - _characterModel.CurrentStats.BaseStats.SpeedModifier, 0, float.PositiveInfinity);
+            _characterModel.CurrentSpeed = _curretSpeed;
         }
 
         #endregion
@@ -960,11 +856,6 @@ namespace BeastHunter
             _playerHealthBarModel.HealthFillUpdate(_characterModel.CurrentStats.BaseStats.CurrentHealthPart);
         }
 
-        private void BuffPanelUpdate(TemporaryBuff temporaryBuff)
-        {
-            //TODO
-        }
-
         /// <summary>Example method of implementing health restoration to the current max health threshold</summary>
         private void TestingHealthRestoreToCurrentMaxHealthThreshold()
         {
@@ -1004,7 +895,7 @@ namespace BeastHunter
             {
                 if (_characterModel.ClosestEnemy.Value != null)
                 {
-                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.GetMainParent().
+                    _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.root.
                         gameObject.GetInstanceID()];
 
                     if (!_targetEnemy.CurrentStats.BaseStats.IsDead)

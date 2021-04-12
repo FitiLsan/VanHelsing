@@ -45,6 +45,7 @@ namespace BeastHunter
 
         public VisualEffectController VisualEffectController { get; }
         public EffectReactionController EffectReactionController { get; }
+        public FeelingController FeelingController { get; }
 
         public Animator BossAnimator { get; set; }
         public Collider Player { get; set; }
@@ -191,6 +192,7 @@ namespace BeastHunter
             BossStateMachine = new BossStateMachine(context, this);
             VisualEffectController = new VisualEffectController(context, this);
             EffectReactionController = new EffectReactionController(context, this);
+            FeelingController = new FeelingController(context, this);
 
             Player = null;
             IsMoving = false;
@@ -330,6 +332,7 @@ namespace BeastHunter
             BossStateMachine.OnAwake();
             VisualEffectController.OnAwake();
             EffectReactionController.OnAwake();
+            FeelingController.OnAwake();
         }
 
         public override void TakeDamage(Damage damage)
@@ -362,6 +365,9 @@ namespace BeastHunter
         public void TearDown()
         {
             BossStateMachine.OnTearDown();
+            VisualEffectController.OnTearDown();
+            EffectReactionController.OnTearDown();
+            FeelingController.OnTearDown();
         }
 
         public void CheckIsRage(bool isRage)

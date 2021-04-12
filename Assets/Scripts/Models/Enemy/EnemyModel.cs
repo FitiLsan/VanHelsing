@@ -4,7 +4,7 @@ using Extensions;
 
 namespace BeastHunter
 {
-    public abstract class EnemyModel : ITakeDamage
+    public abstract class EnemyModel : BaseModel, ITakeDamage
     {
         #region Fields
 

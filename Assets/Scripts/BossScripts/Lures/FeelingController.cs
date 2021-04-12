@@ -11,7 +11,7 @@ namespace BeastHunter
         #region Fields
 
         private GameContext _context;
-        private EnemyModel _enemyModel;
+        private BaseModel _model;
         private IDisposable _noiseSubscribe;
         private IDisposable _smellSubscribe;
 
@@ -21,10 +21,10 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        FeelingController(GameContext context, EnemyModel enemyModel)
+        public FeelingController(GameContext context, BaseModel model)
         {
             _context = context;
-            _enemyModel = enemyModel;
+            _model = model;
         }
 
         #endregion
@@ -34,8 +34,10 @@ namespace BeastHunter
 
         public void OnAwake()
         {
-            _noiseSubscribe = MessageBroker.Default.Receive<Noise>().Subscribe(CatchNoise);
-           // _smellSubscribe = MessageBroker.Default.Receive<Smell>().Subscribe(CatchSmell);
+            //   _noiseSubscribe = MessageBroker.Default.Receive<Noise>().Subscribe(CatchNoise);
+          //  _smellSubscribe = MessageBroker.Default.Receive<Smell>().Subscribe(CatchSmell);
+           _noiseSubscribe = Services.SharedInstance.AnnouncementService.TakeNoise(CatchNoise);
+            _smellSubscribe = Services.SharedInstance.AnnouncementService.TakeSmell(CatchSmell);
         }
         public void Execute()
         {
@@ -49,7 +51,7 @@ namespace BeastHunter
 
         private void CatchNoise(Noise noise)
         {
-            var distance = (_enemyModel as BossModel).BossData.GetTargetDistance((_enemyModel as BossModel).BossCurrentPosition, noise.NoisePointPosition);
+            var distance = (_model as BossModel).BossData.GetTargetDistance((_model as BossModel).BossCurrentPosition, noise.NoisePointPosition);
             if (noise.HearingDistance < distance)
             {
                 return;
@@ -58,6 +60,7 @@ namespace BeastHunter
             switch(noise.Type)
             {
                 case NoiseType.Explosion:
+                    Debug.LogError("explosion spawn");
                     break;
                 case NoiseType.FireBurning:
                     break;
@@ -70,26 +73,31 @@ namespace BeastHunter
             }
         }
 
-        //private void CatchSmell(Smell smell)
-        //{
-        //    var distance = (_enemyModel as BossModel).BossData.GetTargetDistance((_enemyModel as BossModel).BossCurrentPosition, smell.SmellPointPosition);
-        //    if (smell.SmellingDistance < distance)
-        //    {
-        //        return;
-        //    }
+        private void CatchSmell(Smell smell)
+        {
+            var distance = (_model as BossModel).BossData.GetTargetDistance((_model as BossModel).BossCurrentPosition, smell.SmellPointPosition);
+            if (smell.SmellingDistance < distance)
+            {
+                return;
+            }
 
-        //    switch (smell.Type)
-        //    {
-        //        case LureSmellTypeEnum.fungal:
-        //            break;
-        //        case LureSmellTypeEnum.meaty:
-        //            break;
-        //        case LureSmellTypeEnum.smoky:
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
+            switch (smell.Type)
+            {
+                case LureSmellTypeEnum.fungal:
+                    Debug.LogError("Fungal spawn");
+                    var model = (_model as BossModel);
+                    model.BossCurrentTarget = smell.SmellObject;
+                    model.BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Moving);
+                    model.BossData.NavMeshMoveTo(model.BossNavAgent, smell.SmellPointPosition, model.BossSettings.WalkSpeed);
+                    break;
+                case LureSmellTypeEnum.meaty:
+                    break;
+                case LureSmellTypeEnum.smoky:
+                    break;
+                default:
+                    break;
+            }
+        }
 
         #endregion
     }

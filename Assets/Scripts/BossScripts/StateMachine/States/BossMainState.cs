@@ -85,7 +85,6 @@ namespace BeastHunter
                 HealthCheck();
                 CheckDirection();
                 HungerCheck();
-                GetTargetCurrentPosition();
              //   CheckCurrentFieldOfView();
                 HitCounter();
                 InteractionTriggerUpdate();
@@ -316,9 +315,15 @@ namespace BeastHunter
             TargetRotation = Quaternion.LookRotation(_targetDirection);
         }
         
-        public Vector3? GetTargetCurrentPosition()
-        {     
-           return _bossModel.BossCurrentTarget?.transform.position;
+        public Vector3 GetTargetCurrentPosition()
+        {     if (_bossModel.BossCurrentTarget != null)
+            {
+                return _bossModel.BossCurrentTarget.transform.position;
+            }
+            else
+            {
+                return _bossModel.BossTransform.position;
+            }
         }
 
         private void InteractionTriggerUpdate()

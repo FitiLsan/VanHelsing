@@ -57,8 +57,9 @@ namespace BeastHunter
 
         private void ExplodeBomb(IProjectile projectileInterface, Collision touchedCollider)
         {
-            Services.SharedInstance.AnnouncementService.MakeNoise(new Noise(projectileInterface.GameObject.transform.position,
+            Services.SharedInstance.AnnouncementService.MakeNoise(new Noise(projectileInterface.GameObject.transform.position, 
                 NoiseType.Explosion, ExplosionHearingDistance));
+            Services.SharedInstance.AnnouncementService.MakeSmell(new Smell(projectileInterface.GameObject.transform, LureSmellTypeEnum.fungal, 1000f ));
             Rigidbody bombRigidbody = projectileInterface.GameObject.GetComponent<Rigidbody>();
             bombRigidbody.velocity = Vector3.zero;
             bombRigidbody.isKinematic = true;
@@ -70,8 +71,8 @@ namespace BeastHunter
             projectileAudioSource.PlayOneShot(CollisionSound);
             Destroy(projectileAudioSource, CollisionSound.SoundClip.length);
             Destroy(projectileInterface.GameObject, CollisionSound.SoundClip.length);
-            Services.SharedInstance.AnnouncementService.MakeNoise(new Noise(projectileInterface.GameObject.transform.position,
-                NoiseType.Explosion, ExplosionHearingDistance));
+           // Services.SharedInstance.AnnouncementService.MakeNoise(new Noise(projectileInterface.GameObject.transform.position,
+            //    NoiseType.Explosion, ExplosionHearingDistance));
         }
 
         #endregion
