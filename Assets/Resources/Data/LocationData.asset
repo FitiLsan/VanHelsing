@@ -13,45 +13,49 @@ MonoBehaviour:
   m_Name: LocationData
   m_EditorClassIdentifier: 
   _playerSpawnPositions:
-  - _position: {x: 398.3659, y: 87.63952, z: 174.16751}
+  - _position: {x: 444.7812, y: 87.756, z: 156.4504}
     _eulers: {x: -0, y: 0, z: 0}
     _scale: {x: 1, y: 1, z: 1}
   _bossSpawnPositions:
-  - _position: {x: 417.44, y: 83.53, z: 235.57}
+  - _position: {x: 136.99, y: 86.11, z: 229.99068}
     _eulers: {x: -0, y: 0, z: 0}
     _scale: {x: 1, y: 1, z: 1}
-  _enemySpawnPointData:
-  - _spawnDataList:
-    - _spawningDataType: 6
-      _spawningEnemyData: {fileID: 11400000, guid: 3071fb542615d144fa40873b58e5c225,
-        type: 2}
-      SpawningChance: 1
-    _spawnPosition:
-      _position: {x: 405.51, y: 84.48, z: 232.89}
-      _eulers: {x: -0, y: 139.07, z: 0}
-      _scale: {x: 1, y: 1, z: 1}
-    _spawnRadius: 10
-    _numberToSpawn: 3
+  _enemySpawnPointData: []
   _interactiveObjectSpawnData:
   - _objectPosition:
-      _position: {x: 380.34, y: 85.88804, z: 162.32}
+      _position: {x: 108.82283, y: 94.81358, z: 207.57964}
       _eulers: {x: -0, y: 0, z: 0}
-      _scale: {x: 1, y: 1, z: 1}
-    _type: 2
-  - _objectPosition:
-      _position: {x: 379.64847, y: 86.04926, z: 169.08}
-      _eulers: {x: -0, y: 0, z: 0}
-      _scale: {x: 1, y: 1, z: 1}
+      _scale: {x: 0, y: 0, z: 0}
     _type: 3
   - _objectPosition:
-      _position: {x: 379.40793, y: 85.88804, z: 172.98042}
+      _position: {x: 111.692825, y: 96.375, z: 198.20963}
       _eulers: {x: -0, y: 0, z: 0}
-      _scale: {x: 1, y: 1, z: 1}
+      _scale: {x: 0, y: 0, z: 0}
+    _type: 3
+  - _objectPosition:
+      _position: {x: 165.43, y: 82.239395, z: 180.04}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 0, y: 0, z: 0}
+    _type: 2
+  - _objectPosition:
+      _position: {x: 193.13, y: 80.41145, z: 171.18}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 0, y: 0, z: 0}
+    _type: 2
+  - _objectPosition:
+      _position: {x: 164.8, y: 80.731804, z: 194.22}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 0, y: 0, z: 0}
     _type: 4
   - _objectPosition:
-      _position: {x: 378.5829, y: 85.00432, z: 165.5507}
+      _position: {x: 187.58, y: 81.09557, z: 210.37}
       _eulers: {x: -0, y: 0, z: 0}
-      _scale: {x: 1, y: 1, z: 1}
-    _type: 1
+      _scale: {x: 0, y: 0, z: 0}
+    _type: 4
+  - _objectPosition:
+      _position: {x: 145.29, y: 96.271805, z: 277.45}
+      _eulers: {x: -0, y: 0, z: 0}
+      _scale: {x: 0, y: 0, z: 0}
+    _type: 3
   _doRandomizePlayerPosition: 0
   _doRandomizeBossPosition: 0
