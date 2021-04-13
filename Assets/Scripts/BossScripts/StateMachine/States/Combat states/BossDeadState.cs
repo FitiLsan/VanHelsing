@@ -63,10 +63,10 @@ namespace BeastHunter
 
         private void CheckNextMove()
         {
-            if (isAnimationPlay)
+            if (IsAnimationPlay)
             {
                 base.CurrentAttackTime = _bossModel.BossAnimator.GetCurrentAnimatorStateInfo(0).length + ANIMATION_DELAY;
-                isAnimationPlay = false;
+                IsAnimationPlay = false;
             }
 
             if (base.CurrentAttackTime > 0)
@@ -84,7 +84,7 @@ namespace BeastHunter
         {
             _resurrectionDelay -= Time.deltaTime;
             {
-                if (_resurrectionDelay <= 0)
+                if (_resurrectionDelay <= 0 && _stateMachine.BossSkills.DeadStateSkillDictionary.ContainsKey(RESURRECTION_SKILL_ID))
                 {
                     if (_stateMachine.BossSkills.DeadStateSkillDictionary[RESURRECTION_SKILL_ID].IsSkillReady)
                     {

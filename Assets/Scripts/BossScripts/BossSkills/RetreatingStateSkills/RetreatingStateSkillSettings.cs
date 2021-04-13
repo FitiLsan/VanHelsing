@@ -12,6 +12,8 @@ namespace BeastHunter
 
         [Header("[Fake Tree Attack]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _fakeTreeSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _fakeTreeSkillId;
         [Tooltip("Skill Range Min")]
@@ -33,6 +35,7 @@ namespace BeastHunter
 
         #region Properties
 
+        public bool FakeTreeSkillEnable => _fakeTreeSkillEnable;
         public int FakeTreeSkillId => _fakeTreeSkillId;
         public float FakeTreeSkillRangeMin => _fakeTreeSkillRangeMin;
         public float FakeTreeSkillRangeMax => _fakeTreeSkillRangeMax;
@@ -45,9 +48,9 @@ namespace BeastHunter
 
         #region Methods
 
-        public (int, float, float, float, bool, bool) GetFakeTreeSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetFakeTreeSkillInfo()
         {
-            var tuple = (FakeTreeSkillId, FakeTreeSkillRangeMin, FakeTreeSkillRangeMax, FakeTreeSkillCooldown, FakeTreeSkillReady, false);
+            var tuple = (FakeTreeSkillEnable, FakeTreeSkillId, FakeTreeSkillRangeMin, FakeTreeSkillRangeMax, FakeTreeSkillCooldown, FakeTreeSkillReady, false);
             return tuple;
         }
         

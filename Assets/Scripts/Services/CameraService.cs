@@ -3,6 +3,7 @@ using UnityEditor;
 using Cinemachine;
 using System;
 using UniRx;
+using DG.Tweening;
 
 
 namespace BeastHunter
@@ -30,6 +31,9 @@ namespace BeastHunter
         private Vector3 _shootinWeaponDirection;
         private Transform _weaponShootTransform;
         private GameObject[] _aimingDots;
+        private CinemachineBasicMultiChannelPerlin[] _freeLookPerlins;
+        private CinemachineBasicMultiChannelPerlin _targetPerlin;
+        private CinemachineBasicMultiChannelPerlin _aimingPerlin;
 
         private float _weaponHitDistance;
         private float _projectileMass;
@@ -118,7 +122,16 @@ namespace BeastHunter
                 transform, _cameraDynamicTarget.transform);
 
             CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
-            CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenterWaitTime = 0;
+
+            _freeLookPerlins = new CinemachineBasicMultiChannelPerlin[3];
+
+            for (int i = 0; i < _freeLookPerlins.Length; i++)
+            {
+                _freeLookPerlins[i] = CharacterFreelookCamera.GetRig(i).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            }
+
+            _targetPerlin = CharacterTargetCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            _aimingPerlin = CharacterAimingCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
             CurrentActiveCamera = new ReactiveProperty<CinemachineVirtualCameraBase>();
             PreviousActiveCamera = CharacterFreelookCamera;
@@ -241,12 +254,12 @@ namespace BeastHunter
             {
                 _cameraDynamicTarget.transform.localPosition = new Vector3(
                     Mathf.Clamp(_cameraDynamicTarget.transform.localPosition.x - position.x * _cameraData._cameraSettings.
-                        CameraTargetSpeedX * Time.deltaTime, _cameraData._cameraSettings.CameraTargetDistanceMoveX.x, 
+                        CameraTargetSpeedX * Time.deltaTime, _cameraData._cameraSettings.CameraTargetDistanceMoveX.x,
                             _cameraData._cameraSettings.CameraTargetDistanceMoveX.y),
                     Mathf.Clamp(_cameraDynamicTarget.transform.localPosition.y - position.y * _cameraData._cameraSettings.
-                        CameraTargetSpeedY * Time.deltaTime,_cameraData._cameraSettings.CameraTargetDistanceMoveY.x, 
+                        CameraTargetSpeedY * Time.deltaTime, _cameraData._cameraSettings.CameraTargetDistanceMoveY.x,
                             _cameraData._cameraSettings.CameraTargetDistanceMoveY.y),
-                    _cameraDynamicTarget.transform.localPosition.z);              
+                    _cameraDynamicTarget.transform.localPosition.z);
             }
             else
             {
@@ -263,11 +276,11 @@ namespace BeastHunter
 
         private void EnableDisableAimTarget(CinemachineVirtualCameraBase currentCamera)
         {
-            if(currentCamera == CharacterAimingCamera && !_isCurrentWeaponWithProjectile)
+            if (currentCamera == CharacterAimingCamera && !_isCurrentWeaponWithProjectile)
             {
                 _aimCanvas.SetActive(true);
             }
-            else if(PreviousActiveCamera == CharacterAimingCamera && _aimCanvas.activeSelf)
+            else if (PreviousActiveCamera == CharacterAimingCamera && _aimCanvas.activeSelf)
             {
                 _aimCanvas.SetActive(false);
             }
@@ -281,6 +294,12 @@ namespace BeastHunter
                 _projectileMass = weapon.ProjectileData.ProjectilePrefab.GetComponent<Rigidbody>().mass;
                 _weaponHitDistance = weapon.HitDistance;
             }
+            else if(_context.CharacterModel.CurrentWeaponData.Value is OneHandedThrowableWeapon throable)
+            {
+                _weaponShootTransform = throable.ActualWeapon.WeaponObjectOnScene.transform;
+                _projectileMass = throable.ProjectileData.ProjectilePrefab.GetComponent<Rigidbody>().mass;
+                _weaponHitDistance = throable.HitDistance;
+            }
             else
             {
                 _weaponShootTransform = null;
@@ -291,12 +310,15 @@ namespace BeastHunter
 
         public void DrawAimLine()
         {
-            _shootinWeaponDirection = _cameraDynamicTarget.transform.position - _weaponShootTransform.position;
-
-            for (int i = 0; i < AMOUNT_OF_AIM_LINE_STEPS; i++)
+            if (_isAiminDotsVisible)
             {
-                _aimingDots[i].transform.position = GetAimLinePointPosition((AIM_LINE_DRAW_FIRST_STEP_DISTANCE + i) * 
-                    AIM_LINE_DRAW_DISTANCE_STEP);
+                _shootinWeaponDirection = _cameraDynamicTarget.transform.position - _weaponShootTransform.position;
+
+                for (int i = 0; i < AMOUNT_OF_AIM_LINE_STEPS; i++)
+                {
+                    _aimingDots[i].transform.position = GetAimLinePointPosition((AIM_LINE_DRAW_FIRST_STEP_DISTANCE + i) *
+                        AIM_LINE_DRAW_DISTANCE_STEP);
+                }
             }
         }
 
@@ -328,15 +350,121 @@ namespace BeastHunter
 
         private Vector3 GetAimLinePointPosition(float stepDistance)
         {
-            return _weaponShootTransform.position + (_weaponShootTransform.forward.normalized * 
-                (_weaponHitDistance / _projectileMass) * stepDistance) + 0.5f * Physics.gravity * 
+            if(_context.CharacterModel.CurrentWeaponData.Value.Type == WeaponType.Throwing)
+            {
+                return _weaponShootTransform.position + ((_context.CharacterModel.CharacterTransform.forward.normalized +
+                    _context.CharacterModel.CharacterTransform.up).normalized *
+                (_weaponHitDistance / _projectileMass) * stepDistance) + 0.5f * Physics.gravity *
                     (stepDistance * stepDistance);
+            }
+            else
+            {
+                return _weaponShootTransform.position + (_weaponShootTransform.forward.normalized *
+                (_weaponHitDistance / _projectileMass) * stepDistance) + 0.5f * Physics.gravity *
+                    (stepDistance * stepDistance);
+            }
         }
 
         public void Dispose()
         {
             _context.CharacterModel.CurrentCharacterState.Dispose();
             CurrentActiveCamera.Dispose();
+        }
+
+        public void ShakeCurrentCamera(float power)
+        {
+            if(CurrentActiveCamera.Value == CharacterFreelookCamera)
+            {
+                ShakeFreeLookCamera(power);
+            }
+            else if(CurrentActiveCamera.Value == CharacterAimingCamera)
+            {
+                ShakeAimingCamera(power);
+            }
+            else if(CurrentActiveCamera.Value == CharacterTargetCamera)
+            {
+                ShakeTargetCamera(power);
+            }
+        }
+
+        public void ShakeAimingCamera(float power)
+        {
+            _aimingPerlin.m_AmplitudeGain = power;
+            DOVirtual.DelayedCall(Time.deltaTime, DecreaceAimingCameraShake);
+        }
+
+        public void DecreaceAimingCameraShake()
+        {
+            if (_aimingPerlin.m_AmplitudeGain > 0f)
+            {
+                _aimingPerlin.m_AmplitudeGain -= Time.deltaTime * 2f;
+
+                if (_aimingPerlin.m_AmplitudeGain > 0f)
+                {
+                    DOVirtual.DelayedCall(Time.deltaTime, DecreaceAimingCameraShake);
+                }
+                else
+                {
+                    _aimingPerlin.m_AmplitudeGain = 0f;
+                }
+            }
+        }
+
+        public void ShakeTargetCamera(float power)
+        {
+            _targetPerlin.m_AmplitudeGain = power;
+            DOVirtual.DelayedCall(Time.deltaTime, DecreaceTargetCameraShake);
+        }
+
+        public void DecreaceTargetCameraShake()
+        {
+            if(_targetPerlin.m_AmplitudeGain > 0f)
+            {
+                _targetPerlin.m_AmplitudeGain -= Time.deltaTime * 2f;
+
+                if(_targetPerlin.m_AmplitudeGain > 0f)
+                {
+                    DOVirtual.DelayedCall(Time.deltaTime, DecreaceTargetCameraShake);
+                }
+                else
+                {
+                    _targetPerlin.m_AmplitudeGain = 0f;
+                }
+            }
+        }
+
+        public void ShakeFreeLookCamera(float power)
+        {
+            foreach (var item in _freeLookPerlins)
+            {
+                item.m_AmplitudeGain = power;
+            }
+
+            DOVirtual.DelayedCall(Time.deltaTime, DecreaceFreeLookShake);
+        }
+
+        public void DecreaceFreeLookShake()
+        {
+            bool hasShake = false;
+
+            foreach (var item in _freeLookPerlins)
+            {
+                if(item.m_AmplitudeGain > 0f)
+                {
+                    item.m_AmplitudeGain -= Time.deltaTime * 2f;
+                    
+                    if(item.m_AmplitudeGain > 0f)
+                    {
+                        hasShake = true;
+                    }
+                    else
+                    {
+                        item.m_AmplitudeGain = 0f;
+                    }
+                }
+            }
+
+            if(hasShake) DOVirtual.DelayedCall(Time.deltaTime, DecreaceFreeLookShake);
         }
 
 #if (UNITY_EDITOR)

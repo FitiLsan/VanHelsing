@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 
 namespace BeastHunter
@@ -7,8 +7,26 @@ namespace BeastHunter
     {
         #region Fields
 
-        public Dictionary<string, InputEventTypes> inputOnButtonDown;
-        
+        public Action OnMove;
+        public Action OnStop;
+        public Action OnRunStart;
+        public Action OnRunStop;
+        public Action OnAttack;
+        public Action OnUse;
+        public Action<bool> OnWeaponWheel;
+        public Action OnRemoveWeapon;
+        public Action OnAim;
+        public Action OnSneakSlide;
+        public Action OnJump;
+        public Action OnPressNumberOne;
+        public Action OnPressNumberTwo;
+        public Action OnPressNumberThree;
+        public Action OnPressNumberFour;
+        public Action OnBestiary;
+        public Action OnButtonsInfo;
+        public Action OnPressEnter;
+        public Action OnPressCancel;
+
         public float MouseInputX;
         public float MouseInputY;
         public float InputAxisX;
@@ -18,6 +36,7 @@ namespace BeastHunter
 
         private bool _isInputMove;
         private bool _isInputRun;
+        private bool _isInputAttack;
         private bool _isInputAim;
         private bool _isInputWeaponChoise;
 
@@ -34,17 +53,17 @@ namespace BeastHunter
             }
             set
             {
-                if(_isInputMove != value)
+                if (_isInputMove != value)
                 {
                     _isInputMove = value;
 
                     if (_isInputMove)
                     {
-                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.MoveStart);
+                        OnMove?.Invoke();
                     }
                     else
                     {
-                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.MoveStop);
+                        OnStop?.Invoke();
                     }
                 }
             }
@@ -58,78 +77,20 @@ namespace BeastHunter
             }
             set
             {
-                if(_isInputRun != value)
+                if (_isInputRun != value)
                 {
                     _isInputRun = value;
 
                     if (_isInputRun)
                     {
-                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.RunStart);
+                        OnRunStart?.Invoke();
                     }
                     else
                     {
-                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.RunStop);
+                        OnRunStop?.Invoke();
                     }
                 }
             }
-        }
-
-        public bool IsInputAim
-        {
-            get
-            {
-                return _isInputAim;
-            }
-            set
-            {
-                if (_isInputAim != value)
-                {
-                    _isInputAim = value;
-
-                    if (_isInputAim)
-                    {
-                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.AimStart);
-                    }
-                    else
-                    {
-                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.AimEnd);
-                    }
-                }
-            }
-        }
-
-        public bool IsInputWeaponChoise
-        {
-            get
-            {
-                return _isInputWeaponChoise;
-            }
-            set
-            {
-                if (_isInputWeaponChoise != value)
-                {
-                    _isInputWeaponChoise = value;
-
-                    if (_isInputWeaponChoise)
-                    {
-                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.WeaponWheelOpen);
-                    }
-                    else
-                    {
-                        Services.SharedInstance.EventManager.TriggerEvent(InputEventTypes.WeaponWheelClose);
-                    }
-                }
-            }
-        }
-
-        #endregion
-
-
-        #region ClassLifeCycle
-
-        public InputModel()
-        {
-            inputOnButtonDown = new Dictionary<string, InputEventTypes>();
         }
 
         #endregion

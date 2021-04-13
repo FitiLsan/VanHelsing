@@ -172,7 +172,7 @@ namespace BeastHunter
                 HashSet<int> damageDone = new HashSet<int>();
                 foreach (InteractableObjectBehavior behaviorIO in model.DamageObjects)
                 {
-                    int gameObjectID = behaviorIO.transform.GetMainParent().gameObject.GetInstanceID();
+                    int gameObjectID = behaviorIO.transform.root.gameObject.GetInstanceID();
                     if (!damageDone.Contains(gameObjectID)) //to avoid causing double damage to the object in the case of multiple colliders with behaviorIO
                     {
                         _dealDamageMsg?.Invoke(behaviorIO.gameObject.ToString());

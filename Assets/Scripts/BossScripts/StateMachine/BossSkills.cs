@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,13 +37,12 @@ namespace BeastHunter
         public BossBaseSkill DefaultAttackSkill { get; private set; }
         public BossBaseSkill HorizontalAttackSkill { get; private set; }
         public BossBaseSkill StompSplashSkill { get; private set; }
-        public BossBaseSkill RageOfForestSkill { get; private set; }
         public BossBaseSkill PoisonSporesSkill { get; private set; }
+        public BossBaseSkill PoisonSporesCircleSkill { get; private set; }
         public BossBaseSkill CatchAttackSkill { get; private set; }
         public BossBaseSkill FingerAttackSkill { get; private set; }
         //defence
         public BossBaseSkill DefaultDefenceSkill { get; private set; }
-        public BossBaseSkill SelfHealSkill { get; private set; }
         public BossBaseSkill HardBarkSkill { get; private set; }
         public BossBaseSkill CanibalHealingSkill { get; private set; }
         public BossBaseSkill CallOfForestSkill { get; private set; }
@@ -56,7 +57,8 @@ namespace BeastHunter
         //non
         public BossBaseSkill TestSkill { get; private set; }
         public BossBaseSkill ThrowAttackSkill { get; private set; }
-
+        public BossBaseSkill SelfHealSkill { get; private set; }
+        public BossBaseSkill RageOfForestSkill { get; private set; }
 
         public BossSkills(BossStateMachine stateMachine)
         {
@@ -95,18 +97,26 @@ namespace BeastHunter
             DefaultAttackSkill = new DefaultAttackSkill(AttackStateSkillsSettings.GetDefaultSkillInfo() , AttackStateSkillDictionary, _stateMachine);
             HorizontalAttackSkill = new HorizontalAttackSkill(AttackStateSkillsSettings.GetHorizontalSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             StompSplashSkill = new StompSplashAttackSkill(AttackStateSkillsSettings.GetStompSplashSkillInfo(), AttackStateSkillDictionary, _stateMachine);
-            RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkillsSettings.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             PoisonSporesSkill = new PoisonSporesAttackSkill(AttackStateSkillsSettings.GetPoisonSporesSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            PoisonSporesCircleSkill = new PoisonSporesCircleAttackSkill(AttackStateSkillsSettings.GetPoisonSporesCircleSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             CatchAttackSkill = new CatchAttackSkill(AttackStateSkillsSettings.GetCatchSkillInfo(), AttackStateSkillDictionary, _stateMachine);
             FingerAttackSkill = new FingerAttackSkill(AttackStateSkillsSettings.GetFingerSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            RageOfForestSkill = new RageOfForestAttackSkill(AttackStateSkillsSettings.GetRageOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            VineFishingSkill = new VineFishingAttackSkill(AttackStateSkillsSettings.GetVineFishingSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            BushTriggerSkill = new BushTriggerAttackSkill(SearchingStateSkillsSettings.GetBushTriggerSkillInfo(), AttackStateSkillDictionary, _stateMachine);
+            CallOfForestSkill = new CallOfForest(DefenceStateSkillsSettings.GetCallOfForestSkillInfo(), AttackStateSkillDictionary, _stateMachine);
 
-            AttackStateSkillDictionary.Add(DefaultAttackSkill.SkillId, DefaultAttackSkill);
-            AttackStateSkillDictionary.Add(HorizontalAttackSkill.SkillId, HorizontalAttackSkill);
-            AttackStateSkillDictionary.Add(StompSplashSkill.SkillId, StompSplashSkill);
-            AttackStateSkillDictionary.Add(RageOfForestSkill.SkillId, RageOfForestSkill);
-            AttackStateSkillDictionary.Add(PoisonSporesSkill.SkillId, PoisonSporesSkill);
-            AttackStateSkillDictionary.Add(CatchAttackSkill.SkillId, CatchAttackSkill);
-            AttackStateSkillDictionary.Add(FingerAttackSkill.SkillId, FingerAttackSkill);
+            AddSkillToDictionary(DefaultAttackSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(HorizontalAttackSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(StompSplashSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(PoisonSporesSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(PoisonSporesCircleSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(CatchAttackSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(FingerAttackSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(RageOfForestSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(VineFishingSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(BushTriggerSkill, AttackStateSkillDictionary);
+            AddSkillToDictionary(CallOfForestSkill, AttackStateSkillDictionary);
 
             #endregion
 
@@ -115,22 +125,19 @@ namespace BeastHunter
             DefaultDefenceSkill = new DefaultDefenceSkill(DefenceStateSkillsSettings.GetDefaultDefencelSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             SelfHealSkill = new SelfHealSkill(DefenceStateSkillsSettings.GetSelfHealSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             HardBarkSkill = new HardBark(DefenceStateSkillsSettings.GetHardBarkSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
-            CallOfForestSkill = new CallOfForest(DefenceStateSkillsSettings.GetCallOfForestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
+          //  CallOfForestSkill = new CallOfForest(DefenceStateSkillsSettings.GetCallOfForestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
             CanibalHealingSkill = new CanibalHealingSkill (DefenceStateSkillsSettings.GetCanibalHealingSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
 
-            DefenceStateSkillDictionary.Add(DefaultDefenceSkill.SkillId, DefaultDefenceSkill);
-            DefenceStateSkillDictionary.Add(SelfHealSkill.SkillId, SelfHealSkill);
-            DefenceStateSkillDictionary.Add(HardBarkSkill.SkillId, HardBarkSkill);
-            DefenceStateSkillDictionary.Add(CallOfForestSkill.SkillId, CallOfForestSkill);
-            DefenceStateSkillDictionary.Add(CanibalHealingSkill.SkillId, CanibalHealingSkill);
+            AddSkillToDictionary(DefaultDefenceSkill, DefenceStateSkillDictionary);
+            AddSkillToDictionary(SelfHealSkill, DefenceStateSkillDictionary);
+            AddSkillToDictionary(HardBarkSkill, DefenceStateSkillDictionary);
+          //  AddSkillToDictionary(CallOfForestSkill, DefenceStateSkillDictionary);
+            AddSkillToDictionary(CanibalHealingSkill, DefenceStateSkillDictionary);
 
             #endregion
 
 
             #region ChasingState
-
-            VineFishingSkill = new VineFishingAttackSkill(ChasingStateSkillsSettings.GetVineFishingSkillInfo(), ChasingStateSkillDictionary, _stateMachine);
-            ChasingStateSkillDictionary.Add(VineFishingSkill.SkillId, VineFishingSkill);
 
             #endregion
 
@@ -138,40 +145,68 @@ namespace BeastHunter
             #region  RetreatingState
 
             FakeTreeSkill = new FakeTreeAttackSkill(RetreatingStateSkillsSettings.GetFakeTreeSkillInfo(), RetreatingStateSkillDictionary, _stateMachine);
-            RetreatingStateSkillDictionary.Add(FakeTreeSkill.SkillId, FakeTreeSkill);
+            AddSkillToDictionary(FakeTreeSkill, RetreatingStateSkillDictionary);
 
             #endregion
 
 
             #region   SearchingState
 
-            BushTriggerSkill = new BushTriggerAttackSkill(SearchingStateSkillsSettings.GetBushTriggerSkillInfo(), SearchingStateSkillDictionary, _stateMachine);
-            SearchingStateSkillDictionary.Add(BushTriggerSkill.SkillId, BushTriggerSkill);
+           // BushTriggerSkill = new BushTriggerAttackSkill(SearchingStateSkillsSettings.GetBushTriggerSkillInfo(), SearchingStateSkillDictionary, _stateMachine);
+          //  AddSkillToDictionary(BushTriggerSkill, SearchingStateSkillDictionary);
 
             #endregion
 
             #region  DeadStateSkills
 
             ResurrectionSkill = new ResurrectionAttackSkill(DeadStateSkillsSettings.GetResurrectionSkillInfo(), DeadStateSkillDictionary, _stateMachine);
-            DeadStateSkillDictionary.Add(ResurrectionSkill.SkillId, ResurrectionSkill);
+            AddSkillToDictionary(ResurrectionSkill, DeadStateSkillDictionary);
+
             #endregion
 
 
             #region  NonStateSkills
 
-            TestSkill = new TestAttackSkill(NonStateSkillsSettings.GetTestSkillInfo(), DefenceStateSkillDictionary, _stateMachine);
-            ThrowAttackSkill = new ThrowAttackSkill(NonStateSkillsSettings.GetThrowSkillInfo(), AttackStateSkillDictionary, _stateMachine);
-            NonStateSkillDictionary.Add(ThrowAttackSkill.SkillId, ThrowAttackSkill);
-            NonStateSkillDictionary.Add(TestSkill.SkillId, TestSkill);
+            TestSkill = new TestAttackSkill(NonStateSkillsSettings.GetTestSkillInfo(), NonStateSkillDictionary, _stateMachine);
+            ThrowAttackSkill = new ThrowAttackSkill(NonStateSkillsSettings.GetThrowSkillInfo(), NonStateSkillDictionary, _stateMachine);
+            AddSkillToDictionary(TestSkill, NonStateSkillDictionary);
+            AddSkillToDictionary(ThrowAttackSkill, NonStateSkillDictionary);
 
             #endregion
 
 
         }
 
+        public void UseSkill(Dictionary<int, BossBaseSkill> dic, int skillId)
+        {
+            if(dic.ContainsKey(skillId) && dic[skillId].IsSkillReady)
+            {
+                dic[skillId].UseSkill(skillId);
+            }
+        }
         public void ForceUseSkill(Dictionary<int,BossBaseSkill> dic, int skillId)
         {
-            dic[skillId].UseSkill(skillId);
+            if (dic.ContainsKey(skillId))
+            {
+                if (!dic[skillId].IsSkillUsing)
+                {
+                    dic[skillId].UseSkill(skillId);
+                    DOVirtual.DelayedCall(4.5f, () => dic[skillId].IsSkillUsing = false);
+                }
+            }
+            else
+            {
+                Debug.LogError(skillId);
+                throw new Exception($"Skill with ID = {skillId} is Disable");
+            }
+        }
+
+        private void AddSkillToDictionary(BossBaseSkill skill, Dictionary<int, BossBaseSkill> dic)
+        {
+            if(skill.IsEnable)
+            {
+                dic.Add(skill.SkillId, skill);
+            }
         }
     }
 }

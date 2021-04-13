@@ -11,13 +11,13 @@ namespace BeastHunter
 
         private GameObject _vinePrefab; //GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 
-        public VineFishingAttackSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
-            : base(Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
+        //public VineFishingAttackSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
+        //    : base(Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
+        //{
+        //}
+        public VineFishingAttackSkill((bool, int, float, float, float, bool, bool, GameObject) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
-        }
-        public VineFishingAttackSkill((int, float, float, float, bool, bool, GameObject) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
-        {
-            _vinePrefab = skillInfo.Item7;
+            _vinePrefab = skillInfo.Item8;
         }
 
         public override void UseSkill(int id)

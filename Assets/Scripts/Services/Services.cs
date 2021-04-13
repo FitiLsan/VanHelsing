@@ -15,7 +15,7 @@
         public BuffService BuffService { get; private set; }
         public TimeSkipService TimeSkipService { get; private set; }
         public TrapService TrapService { get; private set; }
-        public NoiseService NoiseService { get; private set; }
+        public AnnouncementService AnnouncementService { get; private set; }
         public AudioService AudioService { get; private set; }
 
         #endregion
@@ -26,7 +26,7 @@
         public void InitializeGameServices(GameContext context)
         {
             PhysicsService = new PhysicsService();
-            InventoryService = new InventoryService();
+          //  InventoryService = new InventoryService();
             AttackService = new AttackService(context);
             CameraService = new CameraService(context);
             EventManager = new EventManager();
@@ -34,7 +34,7 @@
             UnityTimeService = new UnityTimeService();
             TimeSkipService = new TimeSkipService();
             TrapService = new TrapService(context);
-            NoiseService = new NoiseService();
+            AnnouncementService = new AnnouncementService();
             AudioService = new AudioService(context);
         }
 

@@ -3,14 +3,13 @@
 
 namespace BeastHunter
 {
-    public sealed class InputController : IAwake, IUpdate
+    public sealed class InputController : IAwake, IUpdate, ITearDown
     {
         #region Properties
 
         private readonly GameContext _context;
-        private CharacterModel _characterModel;
+        private readonly MainInput _mainInput;
         private InputModel _inputModel;
-        private EventManager _eventManager;
 
         #endregion
 
@@ -20,63 +19,58 @@ namespace BeastHunter
         public InputController(GameContext context)
         {
             _context = context;
+            _mainInput = new MainInput();
             _inputModel = new InputModel();
             _context.InputModel = _inputModel;
-            _eventManager = Services.SharedInstance.EventManager;
         }
 
         #endregion
 
 
-        #region OnAwake
+        #region IAwake
 
         public void OnAwake()
         {
-            _characterModel = _context.CharacterModel;
-            _inputModel.MouseInputX = 0f;
-            _inputModel.MouseInputY = 0f;
-            _inputModel.InputAxisX = 0f;
-            _inputModel.InputAxisY = 0f;
-            _inputModel.InputTotalAxisX = 0f;
-            _inputModel.InputTotalAxisY = 0f;
-            _inputModel.IsInputMove = false;
-            _inputModel.IsInputRun = false;
-
-            _inputModel.inputOnButtonDown.Add("NO_BUTTON_1", InputEventTypes.MoveStart);
-            _inputModel.inputOnButtonDown.Add("NO_BUTTON_2", InputEventTypes.MoveStop);
-            _inputModel.inputOnButtonDown.Add("NO_BUTTON_3", InputEventTypes.RunStart);
-            _inputModel.inputOnButtonDown.Add("NO_BUTTON_4", InputEventTypes.RunStop);
-            _inputModel.inputOnButtonDown.Add("NO_BUTTON_5", InputEventTypes.WeaponWheelOpen);
-            _inputModel.inputOnButtonDown.Add("NO_BUTTON_6", InputEventTypes.WeaponWheelClose);
-            _inputModel.inputOnButtonDown.Add("NO_BUTTON_7", InputEventTypes.AimStart);
-            _inputModel.inputOnButtonDown.Add("NO_BUTTON_8", InputEventTypes.AimEnd);
-
-            _inputModel.inputOnButtonDown.Add("Jump", InputEventTypes.Jump);
-            _inputModel.inputOnButtonDown.Add("Attack", InputEventTypes.Attack);
-            _inputModel.inputOnButtonDown.Add("AimTarget", InputEventTypes.Aim);
-            _inputModel.inputOnButtonDown.Add("Use", InputEventTypes.Use);
-            _inputModel.inputOnButtonDown.Add("Cancel", InputEventTypes.Cancel);
-            _inputModel.inputOnButtonDown.Add("NumberOne", InputEventTypes.NumberOne);
-            _inputModel.inputOnButtonDown.Add("NumberTwo", InputEventTypes.NumberTwo);
-            _inputModel.inputOnButtonDown.Add("NumberThree", InputEventTypes.NumberThree);
-            _inputModel.inputOnButtonDown.Add("NumberFour", InputEventTypes.NumberFour);
-            _inputModel.inputOnButtonDown.Add("Inventory", InputEventTypes.Inventory);
-            _inputModel.inputOnButtonDown.Add("QuestJournal", InputEventTypes.QuestJournal);
-            _inputModel.inputOnButtonDown.Add("Sneak", InputEventTypes.Sneak);
-            _inputModel.inputOnButtonDown.Add("TimeSkip", InputEventTypes.TimeSkipMenu);
-            _inputModel.inputOnButtonDown.Add("ButtonsInfo", InputEventTypes.ButtonsInfoMenu);
-            _inputModel.inputOnButtonDown.Add("Bestiary", InputEventTypes.Bestiary);
-            _inputModel.inputOnButtonDown.Add("WeaponRemove", InputEventTypes.WeaponRemove);
+            _mainInput.Enable();
+            _mainInput.Player.Movement.performed += ctx => GetInputMovement(ctx.ReadValue<Vector2>());
+            _mainInput.Player.Run.performed += ctx => GetInputRun(ctx.ReadValueAsButton());
+            _mainInput.Player.Aim.performed += ctx => _inputModel.OnAim?.Invoke();
+            _mainInput.Player.Attack.performed += ctx => _inputModel.OnAttack?.Invoke();
+            _mainInput.Player.Bestiary.performed += ctx => _inputModel.OnBestiary?.Invoke();
+            _mainInput.Player.ButtonsInfo.performed += ctx => _inputModel.OnButtonsInfo?.Invoke();
+            _mainInput.Player.Cancel.performed += ctx => _inputModel.OnPressCancel?.Invoke();
+            _mainInput.Player.Enter.performed += ctx => _inputModel.OnPressEnter?.Invoke();
+            _mainInput.Player.Jump.performed += ctx => _inputModel.OnJump?.Invoke();
+            _mainInput.Player.NumberFour.performed += ctx => _inputModel.OnPressNumberFour?.Invoke();
+            _mainInput.Player.NumberThree.performed += ctx => _inputModel.OnPressNumberThree?.Invoke();
+            _mainInput.Player.NumberTwo.performed += ctx => _inputModel.OnPressNumberTwo?.Invoke();
+            _mainInput.Player.NumberOne.performed += ctx => _inputModel.OnPressNumberOne?.Invoke();
+            _mainInput.Player.SneakSlide.performed += ctx => _inputModel.OnSneakSlide?.Invoke();
+            _mainInput.Player.Use.performed += ctx => _inputModel.OnUse?.Invoke();
+            _mainInput.Player.WeaponRemove.performed += ctx => _inputModel.OnRemoveWeapon?.Invoke();
+            _mainInput.Player.WeaponWheel.performed += ctx => _inputModel.OnWeaponWheel?.Invoke(ctx.ReadValueAsButton());
         }
 
         #endregion
 
 
-        #region Updating
+        #region IUpdate
 
         public void Updating()
         {
-            GetInput();
+            GetMouseInput(_mainInput.Player.MouseLook.ReadValue<Vector2>());
+        }
+
+        #endregion
+
+
+        #region ITearDown
+
+        public void TearDown()
+        {
+            _mainInput.Player.Movement.performed -= ctx => GetInputMovement(ctx.ReadValue<Vector2>());
+            _mainInput.Player.Run.performed -= ctx => GetInputRun(ctx.ReadValueAsButton());
+            _mainInput.Disable();
         }
 
         #endregion
@@ -84,36 +78,29 @@ namespace BeastHunter
 
         #region Methods
 
-        public void GetInput()
+        private void GetInputMovement(Vector2 movementVector)
         {
-            _inputModel.MouseInputX = Input.GetAxis("Mouse X");
-            _inputModel.MouseInputY = Input.GetAxis("Mouse Y");
-            _inputModel.InputAxisX = Input.GetAxis("Horizontal");
-            _inputModel.InputAxisY = Input.GetAxis("Vertical");
-            _inputModel.IsInputMove = (_inputModel.InputAxisX != 0 || _inputModel.InputAxisY != 0) ? true : false;
-            _inputModel.IsInputRun = Input.GetButton("Sprint");
-            _inputModel.IsInputAim = Input.GetButton("AimTarget");
-            _inputModel.IsInputWeaponChoise = Input.GetButton("WeaponWheel");
-
+            _inputModel.InputAxisX = movementVector.x;
+            _inputModel.InputAxisY = movementVector.y;
             CheckAxisTotal();
-            CheckEvents();
+        }
+
+        private void GetMouseInput(Vector2 mouseMovementVector)
+        {
+            _inputModel.MouseInputX = mouseMovementVector.x;
+            _inputModel.MouseInputY = mouseMovementVector.y;
+        }
+
+        private void GetInputRun(bool isPressed)
+        {
+            _inputModel.IsInputRun = isPressed;
         }
 
         private void CheckAxisTotal()
         {
             _inputModel.InputTotalAxisX = _inputModel.InputAxisX > 0 ? 1 : _inputModel.InputAxisX < 0 ? -1 : 0;
             _inputModel.InputTotalAxisY = _inputModel.InputAxisY > 0 ? 1 : _inputModel.InputAxisY < 0 ? -1 : 0;
-        }
-
-        private void CheckEvents()
-        {
-            foreach (var onButtonDownInput in _inputModel.inputOnButtonDown)
-            {
-                if (!onButtonDownInput.Key.Contains("NO_BUTTON") && Input.GetButtonDown(onButtonDownInput.Key))
-                {
-                    _eventManager.TriggerEvent(onButtonDownInput.Value);
-                }                 
-            }
+            _inputModel.IsInputMove = _inputModel.InputTotalAxisX != 0 || _inputModel.InputTotalAxisY != 0;
         }
 
         #endregion

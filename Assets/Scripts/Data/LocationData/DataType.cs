@@ -8,6 +8,7 @@
         Rabbit          = 3,
         HellHound       = 4,
         TwoHeadedSnake  = 5,
+        Dummy           = 6,
     }
 }
 

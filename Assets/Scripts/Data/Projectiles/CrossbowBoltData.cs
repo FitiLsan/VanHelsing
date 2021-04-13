@@ -25,6 +25,8 @@ namespace BeastHunter
                 switch (touchedBehavior.Type)
                 {
                     case InteractableObjectType.Enemy:
+                        Services.SharedInstance.AttackService.CountAndDealDamage(ProjectileDamage,
+                            touchedCollider.transform.root.gameObject.GetInstanceID());
                         break;
                     case InteractableObjectType.WeakHitBox:
                         MessageBroker.Default.Publish(
@@ -33,9 +35,7 @@ namespace BeastHunter
                     default:
                         break;
                 }
-
-                Services.SharedInstance.AttackService.CountAndDealDamage(ProjectileDamage,
-                    touchedCollider.transform.GetMainParent().gameObject.GetInstanceID());
+         
                 StackInObject(projectileInterface, touchedCollider, true);
             }
             else
@@ -48,7 +48,7 @@ namespace BeastHunter
         {
             if (doChangeParent)
             {
-                projectileInterface.GameObject.transform.GetMainParent().parent = touchedCollider.transform;
+                projectileInterface.GameObject.transform.root.parent = touchedCollider.transform;
             }
 
             Destroy(projectileInterface.GameObject.GetComponent<Rigidbody>());

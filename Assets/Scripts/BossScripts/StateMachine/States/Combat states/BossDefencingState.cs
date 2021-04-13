@@ -43,14 +43,10 @@ namespace BeastHunter
             CanExit = false;
             CanBeOverriden = true;
             IsBattleState = true;
-            isAnySkillUsed = false;
+            IsAnySkillUsed = false;
             base.CurrentAttackTime = 0f;
             SetNavMeshAgent(_bossModel.BossTransform.position, 0);
-
-            for (var i = 0; i < _stateMachine.BossSkills.DefenceStateSkillDictionary.Count; i++)
-            {
-                _stateMachine.BossSkills.DefenceStateSkillDictionary[i].StartCooldown(_stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillId, _stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillCooldown);
-            }
+            StartCoolDownSkills(_bossSkills.DefenceStateSkillDictionary);
         }
 
         public override void OnAwake()
@@ -71,26 +67,9 @@ namespace BeastHunter
         private void ChoosingDefenceSkill(bool isDefault = false)
         {
             _readySkillDictionary.Clear();
-            var j = 0;
 
+            ChooseReadySkills(_bossSkills.DefenceStateSkillDictionary, _readySkillDictionary);
 
-            for (var i = 0; i < _stateMachine.BossSkills.DefenceStateSkillDictionary.Count; i++)
-            {
-                if (_stateMachine.BossSkills.DefenceStateSkillDictionary[i].IsSkillReady)
-                {
-                    if (CheckDistance(_stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillRangeMin, _stateMachine.BossSkills.DefenceStateSkillDictionary[i].SkillRangeMax))
-                    {
-                        _readySkillDictionary.Add(j, i);
-                        j++;
-                    }
-                }
-            }
-
-            //if (_readySkillDictionary.Count == 0 & _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position) >= DISTANCE_TO_START_ATTACK)
-            //{
-            //    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
-            //    return;
-            //}
 
             if (!isDefault & _readySkillDictionary.Count != 0)
             {
@@ -102,18 +81,25 @@ namespace BeastHunter
                 _skillId = DEFAULT_ATTACK_ID;
             }
 
-            CurrentSkill = _stateMachine.BossSkills.DefenceStateSkillDictionary[_skillId];
-            CurrentSkill.UseSkill(_skillId);
-            isAnySkillUsed = true;
+            if (_bossSkills.DefenceStateSkillDictionary.ContainsKey(_skillId))
+            {
+                CurrentSkill = _bossSkills.DefenceStateSkillDictionary[_skillId];
+                CurrentSkill.UseSkill(_skillId);
+                IsAnySkillUsed = true;
+            }
+            else
+            {
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
+            }
         }
 
 
         private void CheckNextMove()
         {
-            if (isAnimationPlay)
+            if (IsAnimationPlay)
             {
                 base.CurrentAttackTime = _bossModel.BossAnimator.GetCurrentAnimatorStateInfo(0).length + ANIMATION_DELAY;
-                isAnimationPlay = false;
+                IsAnimationPlay = false;
                 //TimeRemaining timeRemaining = new TimeRemaining(() => CurrentSkill.StopSkill(), CurrentAttackTime);
                 //timeRemaining.AddTimeRemaining();
             }
@@ -127,7 +113,7 @@ namespace BeastHunter
             {                                      
                // isAnySkillUsed = false;
                 CurrentSkill?.StopSkill();
-                if (!isAnimationPlay & isAnySkillUsed)
+                if (!IsAnimationPlay & IsAnySkillUsed)
                 {
                    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
                     return;

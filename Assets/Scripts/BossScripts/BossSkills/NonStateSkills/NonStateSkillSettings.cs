@@ -12,6 +12,8 @@ namespace BeastHunter
 
         [Header("[Test Attack]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _testSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _testSkillId;
         [Tooltip("Skill Range Min")]
@@ -28,6 +30,8 @@ namespace BeastHunter
 
         [Header("[Throw Attack]")]
 
+        [Tooltip("Enable")]
+        [SerializeField] private bool _throwSkillEnable;
         [Tooltip("Skill ID")]
         [SerializeField] private int _throwSkillId;
         [Tooltip("Skill Range Min")]
@@ -41,17 +45,20 @@ namespace BeastHunter
         [SerializeField] private float _throwSkillCooldown;
         [Tooltip("Skill Ready")]
         [SerializeField] private bool _throwSkillReady;
+
         #endregion
 
 
         #region Properties
 
+        public bool TestSkillEnable => _testSkillEnable;
         public int TestSkillId => _testSkillId;
         public float TestSkillRangeMin => _testSkillRangeMin;
         public float TestSkillRangeMax => _testSkillRangeMax;
         public float TestSkillCooldown => _testSkillCooldown;
         public bool TestSkillReady => _testSkillReady;
 
+        public bool ThrowSkillEnable => _throwSkillEnable;
         public int ThrowSkillId => _throwSkillId;
         public float ThrowSkillRangeMin => _throwSkillRangeMin;
         public float ThrowSkillRangeMax => _throwSkillRangeMax;
@@ -63,15 +70,15 @@ namespace BeastHunter
 
         #region Methods
 
-        public (int, float, float, float, bool, bool) GetTestSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetTestSkillInfo()
         {
-            var tuple = (TestSkillId, TestSkillRangeMin, TestSkillRangeMax, TestSkillCooldown, TestSkillReady, false);
+            var tuple = (TestSkillEnable, TestSkillId, TestSkillRangeMin, TestSkillRangeMax, TestSkillCooldown, TestSkillReady, false);
             return tuple;
         }
 
-        public (int, float, float, float, bool, bool) GetThrowSkillInfo()
+        public (bool, int, float, float, float, bool, bool) GetThrowSkillInfo()
         {
-            var tuple = (ThrowSkillId, ThrowSkillRangeMin, ThrowSkillRangeMax, ThrowSkillCooldown, ThrowSkillReady, false);
+            var tuple = (ThrowSkillEnable, ThrowSkillId, ThrowSkillRangeMin, ThrowSkillRangeMax, ThrowSkillCooldown, ThrowSkillReady, false);
             return tuple;
         }
 

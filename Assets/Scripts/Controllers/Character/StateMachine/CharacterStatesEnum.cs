@@ -15,10 +15,13 @@
         Dead,       
         Stunned,
         Shooting,
+        Throwing,
         TimeSkip,
         TrapPlacing,
         KnockedDown,
         GettingUp,
+        MidAir,
+        Hitted,
     }
 }
 

@@ -72,7 +72,7 @@ namespace BeastHunter
 #if UNITY_EDITOR
             return Path.Combine(Application.streamingAssetsPath, FILE_NAME);
 #elif UNITY_STANDALONE
-                var filePath = Path.Combine(Application.dataPath, FileName);
+                var filePath = Path.Combine(Application.dataPath, FILE_NAME);
                 if(!File.Exists(filePath)) UnpackDatabase(filePath);
                 return filePath;
 #endif

@@ -64,19 +64,19 @@ namespace BeastHunter
 
         public void Update()
         {
-            if (Input.GetButtonDown("Bestiary"))
-            {
-                Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.BestiaryOpened, null);
-                Switcher();
-            }
+            //if (Input.GetButtonDown("Bestiary"))
+            //{
+            //    Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.BestiaryOpened, null);
+            //    Switcher();
+            //}
 
-            if (Input.GetButtonDown("Cancel"))
-            {
-                if (canvas.enabled)
-                {
-                    Off();
-                }
-            }
+            //if (Input.GetButtonDown("Cancel"))
+            //{
+            //    if (canvas.enabled)
+            //    {
+            //        Off();
+            //    }
+            //}
         }
 
         #endregion

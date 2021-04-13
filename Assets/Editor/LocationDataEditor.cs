@@ -1,39 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditorInternal;
+﻿using UnityEditor;
 using UnityEngine;
+
+
 namespace BeastHunter
 {
-
     [CustomEditor(typeof(LocationData))]
-    //[CanEditMultipleObjects]
     public class LocationDataEditor : Editor
     {
+        #region Constants
+
         private const float MINI_BUTTON_WIDTH = 25.0f;
+
+        #endregion
+
+
+        #region Fields
 
         private LocationData _script = null;
 
-        private bool _playerFold = false;
-        private SerializedProperty _playerPosition;
+        private SerializedProperty _playerPositions;
+        private SerializedProperty _bossPositions;
+        private SerializedProperty _enemySpawnpoints;
+        private SerializedProperty _interactiveObjectSpawnpoints;
+        private SerializedProperty _doRandomizePlayerPosition;
+        private SerializedProperty _doRandomizeBossPosition;
 
-        private bool _bossFold = false;
-        private SerializedProperty _bossPosition;
+        #endregion
 
-        private bool _enemiesFold = false;
-        private SerializedProperty _enemySpawnPoints;
 
-        private static GUIContent addButtonContent = new GUIContent("+", "Add");
-        private static GUIContent deleteButtonContent = new GUIContent("-", "Delete");
-
-        ReorderableList list;
+        #region Methods
 
         private void OnEnable()
         {
             _script = (LocationData)target;
-            _playerPosition = serializedObject.FindProperty("_playerSpawnPosition");
-            _bossPosition = serializedObject.FindProperty("_bossSpawnPosition");
-            _enemySpawnPoints = serializedObject.FindProperty("_enemySpawnPointData");
+
+            _playerPositions = serializedObject.FindProperty(LocationData.PLAYER_SPAWN_POSITIONS_FIELD_NAME);
+            _bossPositions = serializedObject.FindProperty(LocationData.BOSS_SPAWN_POSITIONS_FIELD_NAME);
+            _enemySpawnpoints = serializedObject.FindProperty(LocationData.ENEMY_SWAPN_POINT_DATA_FIELD_NAME);
+            _interactiveObjectSpawnpoints = serializedObject.FindProperty(LocationData.INTERACTIVE_OBJECTS_SPAWN_DATA_FIELD_NAME);
+            _doRandomizePlayerPosition = serializedObject.FindProperty(LocationData.DO_RANDOMIZE_PLAYER_POSITION_FIELD_NAME);
+            _doRandomizeBossPosition = serializedObject.FindProperty(LocationData.DO_RANDOMIZE_BOSS_POSITION_FIELD_NAME);
         }
 
         public override void OnInspectorGUI()
@@ -41,118 +47,111 @@ namespace BeastHunter
             serializedObject.Update();
             EditorGUILayout.LabelField(_script.name, EditorStyles.boldLabel);
 
-            var clicked = GUILayout.Button("Scan Scene", GUILayout.Height(2 * EditorGUIUtility.singleLineHeight));
-            if (clicked)
-            {
-                ScanLocation();
-            }
-            EditorGUILayout.Space();
+            var clickedScanAndSavePoints = GUILayout.Button("Scan and save points", 
+                GUILayout.Height(2 * EditorGUIUtility.singleLineHeight));
+            var clickedPlacePoints = GUILayout.Button("Place points on scene", 
+                GUILayout.Height(2 * EditorGUIUtility.singleLineHeight));
 
-            _playerFold = EditorGUILayout.Foldout(_playerFold, "Player Spawn Point");
-            if (_playerFold)
-            {
-                _playerPosition.vector3Value = EditorGUILayout.Vector3Field("Position:", _playerPosition.vector3Value);
-            }
-            EditorGUILayout.Space();
+            if (clickedScanAndSavePoints) ScanAndSavePoints();
+            if (clickedPlacePoints) PlacePointsOnScene();
 
-            _bossFold = EditorGUILayout.Foldout(_bossFold, "Boss Spawn Point");
-            if (_bossFold)
-            {
-                _bossPosition.vector3Value = EditorGUILayout.Vector3Field("Position:", _bossPosition.vector3Value);
-            }
             EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_doRandomizePlayerPosition, true);
+            EditorGUILayout.PropertyField(_doRandomizeBossPosition, true);
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(_playerPositions, true);
+            EditorGUILayout.PropertyField(_bossPositions, true);
+            EditorGUILayout.PropertyField(_enemySpawnpoints, true);
+            EditorGUILayout.PropertyField(_interactiveObjectSpawnpoints, true);
 
-            _enemiesFold = EditorGUILayout.Foldout(_enemiesFold, "Enemies Spawn Points");
-            if (_enemiesFold)
-            {
-                ShowList(_enemySpawnPoints);
-                EditorGUI.indentLevel += 1;
-                if (GUILayout.Button(addButtonContent, EditorStyles.miniButton))
-                {
-                    _script.AddEnemySpawnPointData();
-                }
-                EditorGUI.indentLevel -= 1;
-            }
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void ShowList(SerializedProperty list)
+        private void ScanAndSavePoints()
         {
-            EditorGUI.indentLevel += 1;
-            if (list.isExpanded)
-            {
-                for (int i = 0; i < list.arraySize; i++)
-                {
-                    EditorGUILayout.BeginHorizontal();
-
-                    var property = list.GetArrayElementAtIndex(i);
-                    property.isExpanded = EditorGUILayout.Foldout(property.isExpanded, $"Spawn Point {i + 1}");
-                    var clicked = GUILayout.Button(deleteButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(MINI_BUTTON_WIDTH));//duplicate?
-
-                    EditorGUILayout.EndHorizontal();
-
-                    if (property.isExpanded)
-                    {
-                        EditorGUILayout.PropertyField(property);
-                    }
-                    if (clicked)
-                    {
-                        int oldSize = list.arraySize;
-                        list.DeleteArrayElementAtIndex(i);
-                        if (list.arraySize == oldSize)
-                        {
-                            _script.AddEnemySpawnPointData();
-                            list.DeleteArrayElementAtIndex(i);
-                        }
-                    }
-                }
-            }
-            EditorGUI.indentLevel -= 1;
-        }
-
-        private void ScanLocation()
-        {
-            int playerPos = -1;
-            int bossPos = -1;
-            var spawnPoints = GameObject.FindGameObjectsWithTag("Spawnpoint");
+            GameObject[] foundSpawnpoints = GameObject.FindGameObjectsWithTag(TagManager.SPAWNPOINT);
             
-            if (spawnPoints != null)
+            if(foundSpawnpoints.Length > 0)
             {
-                _enemySpawnPoints.ClearArray();
-                for (int i = 0; i < spawnPoints.Length; i++)
+                _playerPositions.ClearArray();
+                _bossPositions.ClearArray();
+                _enemySpawnpoints.ClearArray();
+                _interactiveObjectSpawnpoints.ClearArray();
+                _script.ClearLists();
+
+                foreach (var spawnpoint in foundSpawnpoints)
                 {
-                    if (spawnPoints[i].name == "PlayerSpawnpoint")
+                    if (spawnpoint.name.Contains(LocationData.PLAYER_SPAWNPOINT_NAME))
                     {
-                        playerPos = i;
-                        _playerPosition.vector3Value = spawnPoints[playerPos].transform.position;
+                        _script.AddPlayerPosition(new LocationPosition(spawnpoint.transform));
                     }
-                    else if (spawnPoints[i].name == "BossSpawnpoint")
+                    else if(spawnpoint.name.Contains(LocationData.BOSS_SPAWNPOINT_NAME))
                     {
-                        bossPos = i;
-                        _bossPosition.vector3Value = spawnPoints[bossPos].transform.position;
+                        _script.AddBossPosition(new LocationPosition(spawnpoint.transform));
+                    }
+                    else if(spawnpoint.TryGetComponent(out SpawnPointScript foundSpawnpointScript))
+                    {
+                        _script.AddEnemySpawnPointData(foundSpawnpointScript.spawnEntities, 
+                            new LocationPosition(spawnpoint.transform), foundSpawnpointScript.spawnRadius, 
+                                foundSpawnpointScript.numberToSpawn);
+                    }
+                    else if(spawnpoint.TryGetComponent(out InteractiveObjectLocationInfo foundObjectLocationInfo))
+                    {
+                        _script.AddInteractiveObjectData(new SpawnInteractiveObjectData(
+                            new LocationPosition(spawnpoint.transform), foundObjectLocationInfo.InteractiveObjectType));
                     }
                     else
                     {
-                        var spawnPointScript = spawnPoints[i].GetComponent<SpawnPointScript>();
-                        if (spawnPointScript != null)
-                        {
-                            _script.AddEnemySpawnPointData(spawnPointScript.spawnEntities, spawnPoints[i].transform.position,
-                                spawnPointScript.spawnRadius, spawnPointScript.numberToSpawn);
-                        }
+                        throw new System.Exception("Found not recognized spawnpoint");
                     }
-                }
-                if (playerPos == -1)
-                {
-                    Debug.Log("No object named 'PlayerSpawnpoint' found on scene");
+
+                    DestroyImmediate(spawnpoint);
                 }
 
-                if (bossPos == -1)
-                {
-                    Debug.Log("No object named 'BossSpawnpoint' found on scene");
-                }
+                serializedObject.Update();
             }
-            
+            else
+            {
+                ShowPopupMessage.Init("There is no spawnpoints on scene!");
+            }
         }
+
+        private void PlacePointsOnScene()
+        {
+            for (int i = 0; i < _script.PlayerSpawnPositions.Count; i++)
+            {
+                _script.PlaceObjectOnScene(GameObject.
+                    Instantiate(Data.SpawnpointsData.PlayerSpawnpointPrefab), _script.PlayerSpawnPositions[i]);
+            }
+
+            for (int i = 0; i < _script.BossSpawnPositions.Count; i++)
+            {
+                _script.PlaceObjectOnScene(GameObject.
+                    Instantiate(Data.SpawnpointsData.BossSpawnpointPrefab), _script.BossSpawnPositions[i]);
+            }
+
+            for (int i = 0; i < _script.EnemySpawnPointData.Count; i++)
+            {
+                GameObject newEnemySpawner = GameObject.Instantiate(Data.SpawnpointsData.EnemySpawnpointPrefab);
+                _script.PlaceObjectOnScene(newEnemySpawner, _script.EnemySpawnPointData[i].SpawnPosition);
+                SpawnPointScript newEnemySpawnerScript = newEnemySpawner.GetComponent<SpawnPointScript>();
+                newEnemySpawnerScript.spawnEntities = _script.EnemySpawnPointData[i].SpawnDataList;
+                newEnemySpawnerScript.spawnRadius = _script.EnemySpawnPointData[i].SpawnRadius;
+                newEnemySpawnerScript.numberToSpawn = _script.EnemySpawnPointData[i].NumberToSpawn;
+            }
+
+            for (int i = 0; i < _script.InteractiveObjectSpawnData.Count; i++)
+            {
+                GameObject newInteractiveObjectSpawnpoint = GameObject.Instantiate(Data.SpawnpointsData.
+                    InteractiveObjectSpawnpointPrefab);
+                _script.PlaceObjectOnScene(newInteractiveObjectSpawnpoint,
+                    _script.InteractiveObjectSpawnData[i].ObjectPosition);
+                newInteractiveObjectSpawnpoint.GetComponent<InteractiveObjectLocationInfo>().
+                    InteractiveObjectType = _script.InteractiveObjectSpawnData[i].Type;
+            }
+        }
+
+        #endregion
     }
 }
 

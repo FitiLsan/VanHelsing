@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Extensions;
-
+using DG.Tweening;
 
 namespace BeastHunter
 {
@@ -52,8 +52,10 @@ namespace BeastHunter
         {
             _bossModel.LeftHandBehavior.OnFilterHandler += OnHitBoxFilter;
             _bossModel.RightHandBehavior.OnFilterHandler += OnHitBoxFilter;
+            _bossModel.RightFingerTrigger.OnFilterHandler += OnHitBoxFilter;
             _bossModel.LeftHandBehavior.OnTriggerEnterHandler += OnLeftHitBoxHit;
             _bossModel.RightHandBehavior.OnTriggerEnterHandler += OnRightHitBoxHit;
+            _bossModel.RightFingerTrigger.OnTriggerEnterHandler += OnRightFingerHitBoxHit;
             _bossModel.InteractionSystem.OnInteractionPickUp += OnPickUp;
             ThrowAttackSkill.HandDrop += OnDrop;
         }
@@ -65,11 +67,7 @@ namespace BeastHunter
             IsBattleState = true;
             base.CurrentAttackTime = 0f;
             SetNavMeshAgent(_bossModel.BossTransform.position, 0);
-
-            for (var i = 0; i < _stateMachine.BossSkills.AttackStateSkillDictionary.Count; i++)
-            {
-                _stateMachine.BossSkills.AttackStateSkillDictionary[i].StartCooldown(_stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillId, _stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillCooldown);
-            }
+            StartCoolDownSkills(_bossSkills.AttackStateSkillDictionary);
         }
 
         public override void Execute()
@@ -85,58 +83,52 @@ namespace BeastHunter
         {
             _bossModel.LeftHandBehavior.OnFilterHandler -= OnHitBoxFilter;
             _bossModel.RightHandBehavior.OnFilterHandler -= OnHitBoxFilter;
+            _bossModel.RightFingerTrigger.OnFilterHandler -= OnHitBoxFilter;
             _bossModel.LeftHandBehavior.OnTriggerEnterHandler -= OnLeftHitBoxHit;
             _bossModel.RightHandBehavior.OnTriggerEnterHandler -= OnRightHitBoxHit;
+            _bossModel.RightFingerTrigger.OnTriggerEnterHandler -= OnRightFingerHitBoxHit;
             _bossModel.InteractionSystem.OnInteractionPickUp -= OnPickUp;
             ThrowAttackSkill.HandDrop -= OnDrop;
         }
 
-        private void ChoosingAttackSkill(bool isDefault = false)
+        private void ChoosingAttackSkill()
         {
             _readySkillDictionary.Clear();
-            var j = 0;
 
+            ChooseReadySkills(_bossSkills.AttackStateSkillDictionary, _readySkillDictionary);
 
-            for (var i = 0; i < _stateMachine.BossSkills.AttackStateSkillDictionary.Count; i++)
-            {
-                if (_stateMachine.BossSkills.AttackStateSkillDictionary[i].IsSkillReady)
-                {
-                    if (CheckDistance(_stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillRangeMin, _stateMachine.BossSkills.AttackStateSkillDictionary[i].SkillRangeMax))
-                    {
-                        _readySkillDictionary.Add(j, i);
-                        j++;
-                    }
-                }
-            }
-
-            if(_readySkillDictionary.Count==0 & _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position)>=DISTANCE_TO_START_ATTACK)
+            if (_readySkillDictionary.Count == 0 || _bossModel.BossCurrentTarget==null && _bossData.GetTargetDistance(_bossModel.BossTransform.position, _bossModel.BossCurrentTarget.transform.position) >= DISTANCE_TO_START_ATTACK)
             {
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Chasing);
                 return;
             }
 
-            if (!isDefault & _readySkillDictionary.Count!=0)
+            if (_readySkillDictionary.Count != 0)
             {
                 var readyId = UnityEngine.Random.Range(0, _readySkillDictionary.Count);
                 _skillId = _readySkillDictionary[readyId];
             }
             else
             {
-                _skillId = DEFAULT_ATTACK_ID;
+                _skillId = SKIP_ID;
             }
 
-            // _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId].UseSkill(_skillId);
-            CurrentSkill = _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId];
-            CurrentSkill.UseSkill(_skillId);
-            isAnySkillUsed = true;
+            if (_bossSkills.AttackStateSkillDictionary.ContainsKey(_skillId))
+            {
+                CurrentSkill = _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId];
+                CurrentSkill.UseSkill(_skillId);
+                IsAnySkillUsed = true;
+            }
         }
 
         private void CheckNextMove()
         {
-            if (isAnimationPlay)
+            RotateToTarget();
+
+            if (IsAnimationPlay)
             {
                 base.CurrentAttackTime = _bossModel.BossAnimator.GetCurrentAnimatorStateInfo(0).length + ANIMATION_DELAY;
-                isAnimationPlay = false;
+                IsAnimationPlay = false;
             }
 
             if (base.CurrentAttackTime > 0)
@@ -146,6 +138,7 @@ namespace BeastHunter
             }
             if (base.CurrentAttackTime <= 0)
             {
+                AnimateRotation();
                 DecideNextMove();
             }
         }
@@ -158,7 +151,7 @@ namespace BeastHunter
             _bossModel.LeftHandCollider.enabled = false;
             _bossModel.RightHandCollider.enabled = false;
 
-            if (!_bossModel.CurrentStats.BaseStats.IsDead && CheckDirection() && !_bossModel.IsPickUped)
+            if (!_bossModel.CurrentStats.BaseStats.IsDead  && !IsRotating && !_bossModel.IsPickUped)
             {
                 ChoosingAttackSkill();
             }
@@ -180,14 +173,12 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                handDamage.PhysicalDamage = Random.Range(5f, 15f);
-                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
+                handDamage.PhysicalDamage = hitBox.TempDamage; //Random.Range(5f, 15f);
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
                     gameObject.GetInstanceID());
 
-             //   CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine._context.CharacterModel.CharacterStats));
-
                 hitBox.IsInteractable = false;
-                _bossModel.LeftHandCollider.enabled = false;
+              //  _bossModel.LeftHandCollider.enabled = false;
                 
             }
         }
@@ -196,15 +187,23 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                handDamage.PhysicalDamage = Random.Range(5f, 15f);
-                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
+                var hitBoxInfo = (InteractableObjectBehavior)hitBox;
+                handDamage.PhysicalDamage = hitBoxInfo.TempDamage;
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
                     gameObject.GetInstanceID());
-
-                //DealDamage(_stateMachine._context.CharacterModel.PlayerBehavior, Services.SharedInstance.AttackService.
-                //    CountDamage(_bossModel.WeaponData, _bossModel.BossStats.MainStats, _stateMachine.
-                //        _context.CharacterModel.CharacterStats));
                 hitBox.IsInteractable = false;
-                _bossModel.RightHandCollider.enabled = false;
+            //   _bossModel.RightHandCollider.enabled = false;
+            }
+        }
+
+        private void OnRightFingerHitBoxHit(ITrigger hitBox, Collider enemy)
+        {
+            if (hitBox.IsInteractable)
+            {
+                handDamage.PhysicalDamage = Random.Range(5f, 15f);
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
+                    gameObject.GetInstanceID());
+                hitBox.IsInteractable = false;
             }
         }
 

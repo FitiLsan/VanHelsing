@@ -10,13 +10,13 @@ namespace BeastHunter
         private const float CATCH_DELAY = 0.3f;
         private float _catchRadius = 4f;
 
-        public CanibalHealingSkill((int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
+        public CanibalHealingSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
         }
 
-        public CanibalHealingSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
-        {
-        }
+        //public CanibalHealingSkill(bool IsEnable, int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(IsEnable, Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
+        //{
+        //}
 
         public override void UseSkill(int id)
         {

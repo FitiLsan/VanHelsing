@@ -47,12 +47,14 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.Battle, new BattleState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Dodging, new DodgingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Dead, new DeadState(_context, this));
-            CharacterStates.Add(CharacterStatesEnum.TimeSkip, new TimeSkipState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.TrapPlacing, new TrapPlacingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Aiming, new AimingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Shooting, new ShootingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Throwing, new ThrowingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.KnockedDown, new KnockedDownState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.GettingUp, new GettingUpState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.MidAir, new MidAirState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.Hitted, new HittedState(_context, this));
         }
 
         #endregion

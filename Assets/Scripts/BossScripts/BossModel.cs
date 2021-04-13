@@ -81,13 +81,20 @@ namespace BeastHunter
         public FullBodyBipedEffector CurrentHand;
         public int ClosestTriggerIndex;
         public AimIK RightHandAimIK;
+        public Transform RightHandAimIKTarget;
+        public bool IsRage;
+        public ParticleSystem Wisps;
+        public Light EyeLeft;
+        public Light EyeRight;
+        Color32 notRageColor = new Color32(42, 181, 229, 255);
+        Color32 RageColor = new Color32(162, 5, 5, 255);
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public BossModel(GameObject objectOnScene, BossData data, Vector3 groundPosition, GameContext context) : 
+        public BossModel(GameObject objectOnScene, BossData data, LocationPosition position, GameContext context) : 
             base(objectOnScene, data)
         {
             Lair = GameObject.Find("Lair");
@@ -134,7 +141,9 @@ namespace BeastHunter
                 BossCapsuleCollider.height = BossSettings.CapsuleColliderHeight;
             }
 
-            BossCapsuleCollider.transform.position = groundPosition;
+            BossTransform.position = position.Position;
+            BossTransform.eulerAngles = position.Eulers;
+            BossTransform.localScale = position.Scale;
 
             if (objectOnScene.GetComponent<SphereCollider>() != null)
             {
@@ -170,7 +179,7 @@ namespace BeastHunter
                 BossBehavior = objectOnScene.AddComponent<BossBehavior>();
             }
 
-          //  BossBehavior.SetType(InteractableObjectType.Enemy);
+            BossBehavior.SetType(InteractableObjectType.Enemy);
          //   BossBehavior.Stats = BossStats.MainStats;
             BossStateMachine = new BossStateMachine(context, this);
 
@@ -215,7 +224,7 @@ namespace BeastHunter
             LeftHandCollider.enabled = false;
             LeftHand.gameObject.AddComponent<Rigidbody>().isKinematic = true;
             LeftHandBehavior = leftHandFist.AddComponent<WeaponHitBoxBehavior>();
-          //  LeftHandBehavior.SetType(InteractableObjectType.HitBox);
+            LeftHandBehavior.SetType(InteractableObjectType.HitBox);
             LeftHandBehavior.IsInteractable = false;
 
             var rightFist = new GameObject("[RightFist]");
@@ -234,10 +243,10 @@ namespace BeastHunter
             rb.isKinematic = true;
             rb.mass = 30f;
             RightHandBehavior = rightHandFist.AddComponent<WeaponHitBoxBehavior>();
-        //    RightHandBehavior.SetType(InteractableObjectType.HitBox);
+            RightHandBehavior.SetType(InteractableObjectType.HitBox);
             RightHandBehavior.IsInteractable = false;
             RightFingerTrigger = BossTransform.Find(BossSettings.RightFingerPath).GetComponent<WeaponHitBoxBehavior>();
-          //  RightFingerTrigger.SetType(InteractableObjectType.HitBox);
+            RightFingerTrigger.SetType(InteractableObjectType.HitBox);
             RightFingerTrigger.IsInteractable = false;
 
             StompPufPrefab = BossSettings.StompPuf;
@@ -256,6 +265,7 @@ namespace BeastHunter
             GameObject _callOfForestEffect = GameObject.Instantiate(CallOfForestEffectPrefab, BossTransform.position + new Vector3(-0.65f, 5, 1), Quaternion.identity, BossTransform);
             callOfForestEffect = _callOfForestEffect.GetComponent<ParticleSystem>();
             callOfForestEffect.Stop();
+          
 
             GameObject leftFootStompPuf = GameObject.Instantiate(StompPufPrefab, LeftFoot.position, LeftFoot.rotation, LeftFoot);
             leftStompEffect = leftFootStompPuf.GetComponent<ParticleSystem>();
@@ -287,12 +297,18 @@ namespace BeastHunter
             ThirdWeakPointBehavior.AdditionalDamage = ThirdWeakPointData.AdditionalDamage;
 
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
-            SporePrefab = BossSettings.SporePrefab;
             Ruler = BossSettings.Ruler;
             GameObject.Instantiate(Ruler, BossTransform.position + Vector3.up, Quaternion.identity, BossTransform);
 
             InteractionSystem = BossTransform.GetComponent<InteractionSystem>();
             RightHandAimIK = BossTransform.GetComponent<AimIK>();
+            RightHandAimIK.solver.IKPositionWeight = 0;
+            RightHandAimIKTarget = new GameObject().transform;
+            Wisps = BossTransform.Find("Wisps").GetComponent<ParticleSystem>();
+            Wisps.maxParticles = 0;
+            EyeLeft = BossTransform.Find(BossSettings.LeftEyePath).GetComponentInChildren<Light>();
+            EyeRight = BossTransform.Find(BossSettings.RightEyePath).GetComponentInChildren<Light>();
+
         }
 
         #endregion
@@ -337,6 +353,20 @@ namespace BeastHunter
             BossStateMachine.OnTearDown();
         }
 
+        private void CheckIsRage(bool isRage)
+        {
+            IsRage = isRage;
+            if(IsRage)
+            {
+                EyeLeft.color = EyeRight.color = RageColor;
+                BossAnimator.speed = 1.5f;
+            }
+            else
+            {
+                EyeLeft.color = EyeRight.color = notRageColor;
+                BossAnimator.speed = 1f;
+            }
+        }
         public void HealthCheck()
         {
             if (CurrentStats.BaseStats.CurrentHealthPoints <= 0)
@@ -344,6 +374,23 @@ namespace BeastHunter
                 BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Dead);
                 return;
             }
+
+            if (CurrentStats.BaseStats.CurrentHealthPart <= BossSettings.ActivateRage)
+            {
+                CheckIsRage(true);
+
+
+                DG.Tweening.DOVirtual.DelayedCall(BossSettings.DurationRage, () => CheckIsRage(false));
+                return;
+            }
+
+            //if (CurrentStats.BaseStats.CurrentHealthPart <= 0.1f)
+            //{
+            //    var id = 3;
+            //    BossStateMachine.BossSkills.ForceUseSkill(BossStateMachine.BossSkills.NonStateSkillDictionary, id);
+            //    //  BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
+            //    return;
+            //}
 
             if (CurrentStats.BaseStats.CurrentHealthPart <= 0.5f)
             {
@@ -356,7 +403,7 @@ namespace BeastHunter
 
             if (CurrentStats.BaseStats.CurrentHealthPart <= 0.2f)
             {
-                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
+              //  BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating);
                 return;
             }
         }
@@ -365,11 +412,10 @@ namespace BeastHunter
         {
             if (damage >= CurrentStats.BaseStats.MaximalHealthPoints * 0.2f)
             {
-                //currentState.15%Damage();
                 Debug.Log("Hit 18% hp");
                 if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
                 {
-                    BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                   // BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
                 }
             }
             else if (!BossStateMachine.CurrentState.IsBattleState)

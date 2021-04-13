@@ -8,21 +8,28 @@ namespace BeastHunter
     public class StompSplashAttackSkill : BossBaseSkill
     {
         private const float DELAY_HAND_TRIGGER = 0.2f;
+        private const float UPWARDS_MODIFIER = 1.5f;
+        private const float DELAY_BEFORE_STANDING = 1.5f;
+        private const float DEFAULT_FORCE = 50f;
+        private const float DELAY_AFTER_ANIM = 0.65f;
 
-        public StompSplashAttackSkill(int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
-            : base(Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
+        private GameObject _target;
+        private float _radius;
+        public StompSplashAttackSkill(bool IsEnable, int Id, float RangeMin, float RangeMax, float Cooldown, bool IsReady, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) 
+            : base(IsEnable, Id, RangeMin, RangeMax, Cooldown, IsReady, skillDictionary, stateMachine)
         {
         }
 
-        public StompSplashAttackSkill((int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
+        public StompSplashAttackSkill((bool, int, float, float, float, bool, bool, float) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine) : base(skillInfo, skillDictionary, stateMachine)
         {
+            _radius = SkillRangeMax;
         }
 
         public override void UseSkill(int id)
         {
             Debug.Log("StompAttackSkill");
             _bossModel.BossAnimator.Play("BossStompAttack", 0, 0f);
-            var TimeRem = new TimeRemaining(() => StompShockWave(), 0.65f);
+            var TimeRem = new TimeRemaining(() => StompShockWave(), DELAY_AFTER_ANIM);
             TimeRem.AddTimeRemaining(0.65f);
 
           //  TurnOnHitBoxTrigger (_currenTriggertHand,_stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
@@ -33,35 +40,32 @@ namespace BeastHunter
         private void StompShockWave()
         {
             _bossModel.leftStompEffect.Play(true);
-            var force = 50f;
             var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.LeftFoot.position, 20f, "Player");
             if (list.Count != 0)
             {
                 var target = list.Find(x => x.name == "Player");
-                var rb = target.GetComponent<Rigidbody>();
-                var pm = target.transform.parent.Find("PuppetMaster").GetComponent<PuppetMaster>();
 
-                if (pm != null && rb != null)
+                if (target != null)
                 {
-                    pm.state = PuppetMaster.State.Frozen;
-                    rb.AddExplosionForce(force, _bossModel.LeftFoot.transform.position, 15f, 1.5f, ForceMode.Impulse);
-                    DelayCall(() => pm.state = PuppetMaster.State.Alive, 2f);
+                    _stateMachine._context.CharacterModel.BehaviorPuppet.SetState(BehaviourPuppet.State.Unpinned);
+
+                    foreach (var item in _stateMachine._context.CharacterModel.PuppetMaster.muscles)
+                    {
+                        item.rigidbody.AddExplosionForce(DEFAULT_FORCE, _bossModel.LeftFoot.transform.position, _radius, UPWARDS_MODIFIER, ForceMode.Impulse);
+                    }
+                   // Damage();
                 }
-
             }
-
-
-            //foreach (var obj in list)
-            //{
-            //    if (list.Count != 0)
-            //    {
-            //        obj.GetComponent<Rigidbody>().AddForce((_bossModel.LeftFoot.position - _bossModel.BossCurrentPosition) * force, ForceMode.Impulse);
-            //    }
-            //}
 
         }
         public override void StopSkill()
         {
+        }
+        private void Damage()
+        {
+            var damage = new Damage();
+            damage.PhysicalDamage = Random.Range(15f, 30f);
+            Services.SharedInstance.AttackService.CountAndDealDamage(damage, _target.transform.root.gameObject.GetInstanceID());;
         }
     }
 }

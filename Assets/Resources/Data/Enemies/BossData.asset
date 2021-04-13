@@ -17,7 +17,7 @@ MonoBehaviour:
     BaseStats:
       _maximalHealthPoints: 500
       _currentHealthPoints: 500
-      HealthRegenPerSecond: 0
+      HealthRegenPerSecond: 1.5
       _maximalStaminaPoints: 100
       _currentStaminaPoints: 100
       StaminaRegenPerSecond: 0
@@ -32,8 +32,6 @@ MonoBehaviour:
       _fireDamageResistance: 0
   _bossSettings:
     _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b,
-      type: 3}
-    _sporePrefab: {fileID: 1739478888274650687, guid: 5b539aacef1d12341abf243ed5fae008,
       type: 3}
     _ruler: {fileID: 840020148945437414, guid: eeb916fe90bdfb64399aa1eefe4321bb, type: 3}
     _stompPuf: {fileID: 6489853080604144049, guid: 88642e36c52040645a62f7a268884b65,
@@ -61,6 +59,12 @@ MonoBehaviour:
     _instanceLayer: 11
     _bossAnimator: {fileID: 9100000, guid: 14d982f6bf8adfd409a952a432e6ba01, type: 2}
     _instantiateDirection: -40
+    _activateRage: 0.9
+    _durationRage: 10
+    _leftEye: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_ Spine1/OAK_TEE_ENT_
+      Neck/OAK_TEE_ENT_ Head/OAK_TREE_ENT_EYE_L_ROOT/OAK_TREE_ENT_EYE_L/EyeLight_L
+    _rightEye: OAK_TEE_ENT_/OAK_TEE_ENT_ Pelvis/OAK_TEE_ENT_ Spine/OAK_TEE_ENT_ Spine1/OAK_TEE_ENT_
+      Neck/OAK_TEE_ENT_ Head/OAK_TREE_ENT_EYE_R_ROOT/OAK_TREE_ENT_EYE_R/EyeLight_R
     _rigitbodyMass: 1
     _rigitbodyDrag: 0
     _rigitbodyAngularDrag: 0.5
@@ -75,6 +79,7 @@ MonoBehaviour:
     _navMeshAcceleration: 1.5
     _walkSpeed: 1.6
     _runSpeed: 3.4
+    _rotateSpeed: 7
     _groundCheckHeight: 1
     _directionChangeLag: 0.242
     _animatorBaseSpeed: 1
@@ -83,77 +88,109 @@ MonoBehaviour:
     _rightHandHitBoxRadius: 1
     _rightHandHitBoxCenter: {x: -1, y: 0, z: 0}
   AttackStateSkills:
+    _defaultSkillEnable: 1
     _defaultSkillId: 0
+    _defaultSkillDamage: 5
     _defaultSkillRangeMin: 3
     _defaultSkillRangeMax: 5
-    _defaultSkillCooldown: 5
+    _defaultSkillCooldown: 2
     _defaultSkillReady: 1
+    _horizontalSkillEnable: 1
     _horizontalSkillId: 1
+    _horizontalSkillDamage: 7
     _horizontalSkillRangeMin: 3
     _horizontalSkillRangeMax: 5
-    _horizontalSkillCooldown: 5
-    _horizontalSkillReady: 0
+    _horizontalSkillCooldown: 15
+    _horizontalSkillReady: 1
+    _stompSplashSkillEnable: 1
     _stompSplashSkillId: 2
+    _stompSkillDamage: 10
     _stompSplashSkillRangeMin: 0
-    _stompSplashSkillRangeMax: 5
-    _stompSplashSkillCooldown: 10
+    _stompSplashSkillRangeMax: 10
+    _stompSplashSkillCooldown: 20
     _stompSplashSkillReady: 0
-    _rageOfForestSkillId: 3
-    _rageOfForestSkillRangeMin: 10
-    _rageOfForestSkillRangeMax: 30
-    _rageOfForestSkillCooldown: 30
-    _rageOfForestSkillReady: 0
-    _poisonSporesSkillId: 4
-    _poisonSporesSkillRangeMin: 10
+    _poisonSporesSkillEnable: 1
+    _poisonSporesSkillId: 3
+    _poisonSporesSkillDamage: 1
+    _poisonSporesSkillRangeMin: 5
     _poisonSporesSkillRangeMax: 20
-    _poisonSporesSkillCooldown: 15
+    _poisonSporesSkillCooldown: 30
     _poisonSporesSkillReady: 0
+    _sporeSkillPrefab: {fileID: 1739478888274650687, guid: 5b539aacef1d12341abf243ed5fae008,
+      type: 3}
+    _poisonSporesCircleSkillEnable: 1
+    _poisonSporesCircleSkillId: 4
+    _poisonSporesCircleSkillDamage: 2
+    _poisonSporesCircleSkillRangeMin: 0
+    _poisonSporesCircleSkillRangeMax: 10
+    _poisonSporesCircleSkillCooldown: 25
+    _poisonSporesCircleSkillReady: 1
+    _sporeCircleSkillPrefab: {fileID: 1739478888274650687, guid: 5b539aacef1d12341abf243ed5fae008,
+      type: 3}
+    _catchSkillEnable: 0
     _catchSkillId: 5
     _catchSkillRangeMin: 0
     _catchSkillRangeMax: 5
     _catchSkillCooldown: 22
     _catchSkillReady: 0
+    _fingerSkillEnable: 1
     _fingerSkillId: 6
+    _fingerSkillDamage: 15
     _fingerSkillRangeMin: 10
     _fingerSkillRangeMax: 20
-    _fingerSkillCooldown: 7
+    _fingerSkillCooldown: 15
     _fingerSkillReady: 0
+    _rageOfForestSkillEnable: 0
+    _rageOfForestSkillId: 7
+    _rageOfForestSkillDamage: 40
+    _rageOfForestSkillRangeMin: 10
+    _rageOfForestSkillRangeMax: 30
+    _rageOfForestSkillCooldown: 15
+    _rageOfForestSkillReady: 1
+    _vineFishingSkillEnable: 0
+    _vineFishingSkillId: 8
+    _vineFishingSkillRangeMin: 10.3
+    _vineFishingSkillRangeMax: 57
+    _vineFishingSkillCooldown: 20
+    _vineFishingSkillReady: 1
+    _vineFishingSkillPrefab: {fileID: 4545837303767770492, guid: d3997e0955628e9479f808f5a1002c94,
+      type: 3}
   DefenceStateSkills:
+    _defaultDefenceSkillEnable: 0
     _defaultDefenceSkillId: 0
     _defaultDefenceSkillRangeMin: -1
     _defaultDefenceSkillRangeMax: -1
     _defaultDefenceSkillCooldown: 5
     _defaultDefenceSkillReady: 1
+    _selfHealSkillEnable: 0
     _selfHealSkillId: 1
     _selfHealSkillRangeMin: -1
     _selfHealSkillRangeMax: -1
-    _selfHealSkillCooldown: 20
+    _selfHealSkillCooldown: 120
     _selfHealSkillReady: 1
     _selfHealSkillCanInterrupt: 1
+    _hardBarkSkillEnable: 0
     _hardBarkSkillId: 2
     _hardBarkSkillRangeMin: -1
     _hardBarkSkillRangeMax: -1
     _hardBarkSkillCooldown: 20
     _hardBarkSkillReady: 1
+    _canibalHealingSkillEnable: 0
     _canibalHealingSkillId: 3
     _canibalHealingSkillRangeMin: 0
     _canibalHealingSkillRangeMax: 4
     _canibalHealingSkillCooldown: 10
     _canibalHealingSkillReady: 1
-    _callOfForestSkillId: 4
+    _callOfForestSkillEnable: 1
+    _callOfForestSkillId: 9
     _callOfForestSkillRangeMin: -1
-    _callOfForestSkillRangeMax: -1
+    _callOfForestSkillRangeMax: 40
     _callOfForestSkillCooldown: 30
-    _callOfForestSkillReady: 1
-  ChasingStateSkills:
-    _vineFishingSkillId: 0
-    _vineFishingSkillRangeMin: 50
-    _vineFishingSkillRangeMax: 100
-    _vineFishingSkillCooldown: 10
-    _vineFishingSkillReady: 1
-    _vineFishingSkillPrefab: {fileID: 451594414436784737, guid: b0ed713a1062bc54ba292383f4251611,
+    _callOfForestSkillPrefab: {fileID: 127564, guid: c70fe6384f972f04b88cb40dd56cb8b7,
       type: 3}
+    _callOfForestSkillReady: 0
   RetreatingStateSkills:
+    _fakeTreeSkillEnable: 0
     _fakeTreeSkillId: 0
     _fakeTreeSkillRangeMin: 0
     _fakeTreeSkillRangeMax: 0
@@ -161,23 +198,30 @@ MonoBehaviour:
     _fakeTreeSkillReady: 1
     _fakeTreePrefab: {fileID: 127564, guid: d6564a5e1c5e6474f9d7ed2851d18ea7, type: 3}
   SearchingStateSkills:
-    _bushTriggerSkillId: 0
-    _bushTriggerSkillRangeMin: 0
-    _bushTriggerSkillRangeMax: 0
-    _bushTriggerSkillCooldown: 0
-    _bushTriggerSkillReady: 0
+    _bushTriggerSkillEnable: 1
+    _bushTriggerSkillId: 10
+    _bushTriggerSkillRangeMin: 8.1
+    _bushTriggerSkillRangeMax: 60
+    _bushTriggerSkillCount: 10
+    _bushTriggerSkillCooldown: 25
+    _bushTriggerSkillPrefab: {fileID: 6953022481052749130, guid: 0e78b6ad75e10d7438aaa5b1be181e6c,
+      type: 3}
+    _bushTriggerSkillReady: 1
   DeadStateSkills:
+    _resurrectionSkillEnable: 0
     _resurrectionSkillId: 0
     _resurrectionSkillRangeMin: 0
     _resurrectionSkillRangeMax: 0
     _resurrectionSkillCooldown: 30
     _resurrectionSkillReady: 1
   NonStateSkills:
+    _testSkillEnable: 0
     _testSkillId: 0
     _testSkillRangeMin: 0
     _testSkillRangeMax: 0
     _testSkillCooldown: 0
     _testSkillReady: 0
+    _throwSkillEnable: 0
     _throwSkillId: 1
     _throwSkillRangeMin: 0
     _throwSkillRangeMax: 0
