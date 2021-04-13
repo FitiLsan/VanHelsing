@@ -21,7 +21,7 @@ namespace BeastHunter
         public override void UseSkill(int id)
         {
             Debug.Log("Canibal Healing Skill");
-            _bossData.SetNavMeshAgent(_bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
+            _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             _bossModel.BossAnimator.Play($"CanibalHealing", 0, 0f);
             TimeRemaining timeRemaining = new TimeRemaining(() => CatchTarget(), CATCH_DELAY);
             timeRemaining.AddTimeRemaining(CATCH_DELAY);

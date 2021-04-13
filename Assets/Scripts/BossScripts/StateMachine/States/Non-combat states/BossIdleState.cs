@@ -48,7 +48,7 @@ namespace BeastHunter
                 _stateMachine._model.BossAnimator.Play("IdleState", 0, 0f);
             }
             _timeToIdle = Random.Range(MINIMAL_IDLE_TIME, MAXIMAL_IDLE_TIME);
-            _bossData.SetNavMeshAgentSpeed(_bossModel.BossNavAgent, 0);
+            _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, 0);
             _isHunger = _stateMachine._mainState.IsHunger;
         }
 

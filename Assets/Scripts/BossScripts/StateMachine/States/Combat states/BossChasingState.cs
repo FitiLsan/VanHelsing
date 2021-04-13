@@ -49,7 +49,7 @@ namespace BeastHunter
             CanExit = false;
             CanBeOverriden = true;
             IsBattleState = true;
-            _bossData.SetNavMeshAgentSpeed(_bossModel.BossNavAgent, _bossData._bossSettings.RunSpeed);
+            _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, _bossData._bossSettings.RunSpeed);
             _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK; // ?
             _stateMachine._model.BossAnimator.Play("MovingState");
             _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);

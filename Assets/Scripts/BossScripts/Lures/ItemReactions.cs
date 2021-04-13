@@ -9,9 +9,12 @@ namespace BeastHunter
     public struct ItemReactions
     {
         [Header("Boss Item Reactions")]
-        [SerializeField] private List<LureData> ScaryItems;
-        [SerializeField] private List<LureData> AttractiveItems;
-        [SerializeField] private List<LureSmellTypeEnum> ScarySmell;
-        [SerializeField] private List<LureSmellTypeEnum> AttractiveSmell;
+        [SerializeField] public List<LureData> FoodItems;
+        [SerializeField] public List<LureData> AttractiveItems;
+        [SerializeField] public List<LureData> ScaryItems;
+
+        [SerializeField] public List<LureSmellTypeEnum> AttractiveSmell;
+        [SerializeField] public List<LureSmellTypeEnum> ScarySmell;
+
     }
 }

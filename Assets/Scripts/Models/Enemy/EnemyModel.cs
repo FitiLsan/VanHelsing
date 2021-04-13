@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using Extensions;
-
+using System.Collections.Generic;
 
 namespace BeastHunter
 {
@@ -8,17 +8,17 @@ namespace BeastHunter
     {
         #region Fields
 
-        public Stats CurrentStats;
+        public List<GameObject> FoodListInSight = new List<GameObject>();
 
         #endregion
 
 
         #region Properties
 
-        public GameObject ObjectOnScene { get; }
-        public EnemyData ThisEnemyData { get; }
-        public GameObject BuffEffectPrefab { get; protected set; }
-        public int InstanceID { get; }
+        //public GameObject ObjectOnScene { get; }
+        //public EnemyData ThisEnemyData { get; }
+        //public GameObject BuffEffectPrefab { get; protected set; }
+        //public int InstanceID { get; }
 
         #endregion
 

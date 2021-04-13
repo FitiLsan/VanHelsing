@@ -254,9 +254,9 @@ namespace BeastHunter
 
             if (interactableObject == InteractableObjectType.Food)
             {
-                if (!_stateMachine._model.FoodList.Contains(enteredObject.gameObject))
+                if (!_stateMachine._model.FoodListInSight.Contains(enteredObject.gameObject))
                 {
-                    _stateMachine._model.FoodList.Add(enteredObject.gameObject);
+                    _stateMachine._model.FoodListInSight.Add(enteredObject.gameObject);
                 }
             }
         }
@@ -267,9 +267,9 @@ namespace BeastHunter
 
             if (interactableObject == InteractableObjectType.Food)
             {
-                if (_stateMachine._model.FoodList.Contains(enteredObject.gameObject))
+                if (_stateMachine._model.FoodListInSight.Contains(enteredObject.gameObject))
                 {
-                    _stateMachine._model.FoodList.Remove(enteredObject.gameObject);
+                    _stateMachine._model.FoodListInSight.Remove(enteredObject.gameObject);
                 }
             }
             if (interactableObject == InteractableObjectType.Player & !enteredObject.isTrigger)
@@ -339,7 +339,7 @@ namespace BeastHunter
         private void OnSpeedUpdate()
         {
             var speed = _stateMachine.CurrentState.IsBattleState ? _bossModel.BossSettings.RunSpeed : _bossModel.BossSettings.WalkSpeed;
-            _bossData.SetNavMeshAgentSpeed(_bossModel.BossNavAgent, speed);
+            _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, speed);
         }
 
         #endregion

@@ -48,7 +48,6 @@ namespace BeastHunter
         public FeelingController FeelingController { get; }
 
         public Animator BossAnimator { get; set; }
-        public Collider Player { get; set; }
         public float CurrentSpeed { get; set; }
         public float AnimationSpeed { get; set; }
 
@@ -61,13 +60,13 @@ namespace BeastHunter
 
         public MovementPoint[] MovementPoints { get; set; }
 
-        public List<GameObject> FoodList = new List<GameObject>();
-        public List<GameObject> ScaryList = new List<GameObject>();
-        public List<GameObject> InterestedList = new List<GameObject>();
+        //public List<GameObject> FoodList = new List<GameObject>();
+        //public List<GameObject> ScaryList = new List<GameObject>();
+        //public List<GameObject> InterestedList = new List<GameObject>();
 
         public GameObject Lair;
         public GameObject BossCurrentTarget;
-        public Vector3 BossCurrentPosition;
+        //public Vector3 BossCurrentPosition;
         public GameObject SporePrefab;
         public GameObject Ruler;
         public GameObject StompPufPrefab;
@@ -194,7 +193,6 @@ namespace BeastHunter
             EffectReactionController = new EffectReactionController(context, this);
             FeelingController = new FeelingController(context, this);
 
-            Player = null;
             IsMoving = false;
             IsGrounded = false;
             IsPlayerNear = false;

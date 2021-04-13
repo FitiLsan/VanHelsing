@@ -73,7 +73,7 @@ namespace BeastHunter
             if (list.Count != 0)
             {
                 _bossModel.BossAnimator.Play("MovingState", 0, 0);
-                _bossData.SetNavMeshAgent(_bossModel.BossNavAgent, list[0].transform.position, _bossModel.BossSettings.RunSpeed);
+                _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, list[0].transform.position, _bossModel.BossSettings.RunSpeed);
 
             }
             else

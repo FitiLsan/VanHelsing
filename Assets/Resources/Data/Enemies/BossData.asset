@@ -32,12 +32,14 @@ MonoBehaviour:
       _fireDamageResistance: 0
     InstanceID: 0
   _itemReactions:
-    ScaryItems:
-    - {fileID: 11400000, guid: cd77032424837da49b80482c845e7d72, type: 2}
+    FoodItems: []
     AttractiveItems:
     - {fileID: 11400000, guid: 098d5a356fa280946ab1056de484a65b, type: 2}
-    ScarySmell: 03000000
-    AttractiveSmell: 01000000
+    - {fileID: 11400000, guid: ae0c80cf6f6924948872f935850d6f70, type: 2}
+    ScaryItems:
+    - {fileID: 11400000, guid: cd77032424837da49b80482c845e7d72, type: 2}
+    AttractiveSmell: 
+    ScarySmell: 
   _bossSettings:
     _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b,
       type: 3}

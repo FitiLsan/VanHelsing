@@ -58,7 +58,7 @@ namespace BeastHunter
             CanBeOverriden = true;
             _isTargetSet = false;
             _stuckTIme = STUCK_TIME_COUNT;
-            _bossData.SetNavMeshAgentSpeed(_bossModel.BossNavAgent,_bossData._bossSettings.WalkSpeed);
+            _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent,_bossData._bossSettings.WalkSpeed);
             _stateMachine._model.BossNavAgent.stoppingDistance = 0.2f; //?;
             _stateMachine._model.BossAnimator.Play("MovingState");           
         }

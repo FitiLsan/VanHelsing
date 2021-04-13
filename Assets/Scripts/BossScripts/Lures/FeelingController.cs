@@ -51,7 +51,7 @@ namespace BeastHunter
 
         private void CatchNoise(Noise noise)
         {
-            var distance = (_model as BossModel).BossData.GetTargetDistance((_model as BossModel).BossCurrentPosition, noise.NoisePointPosition);
+            var distance = (_model as BossModel).BossData.GetTargetDistance((_model as BossModel).CurrentPosition, noise.NoisePointPosition);
             if (noise.HearingDistance < distance)
             {
                 return;
@@ -75,27 +75,33 @@ namespace BeastHunter
 
         private void CatchSmell(Smell smell)
         {
-            var distance = (_model as BossModel).BossData.GetTargetDistance((_model as BossModel).BossCurrentPosition, smell.SmellPointPosition);
+            var distance = _model.ThisEnemyData.GetTargetDistance(_model.CurrentPosition, smell.SmellPointPosition);
             if (smell.SmellingDistance < distance)
             {
                 return;
             }
-
-            switch (smell.Type)
+            //boss only
+            if (_model is BossModel)
             {
-                case LureSmellTypeEnum.fungal:
-                    Debug.LogError("Fungal spawn");
-                    var model = (_model as BossModel);
-                    model.BossCurrentTarget = smell.SmellObject;
-                    model.BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Moving);
-                    model.BossData.NavMeshMoveTo(model.BossNavAgent, smell.SmellPointPosition, model.BossSettings.WalkSpeed);
-                    break;
-                case LureSmellTypeEnum.meaty:
-                    break;
-                case LureSmellTypeEnum.smoky:
-                    break;
-                default:
-                    break;
+                var model = (_model as BossModel);
+                model.BossCurrentTarget = smell.SmellObject;
+                CheckSmellAttitude(smell);
+            }
+        }
+
+        private void CheckSmellAttitude(Smell smell)
+        {
+            if(_model.CurrentStats.ItemReactions.AttractiveItems.Find(x=> x.LureSmellType.Equals(smell.Type)))
+            {
+                (_model as BossModel).BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Moving);
+            }
+            else if(_model.CurrentStats.ItemReactions.ScaryItems.Find(x =>x.LureSmellType.Equals(smell.Type)))
+            {
+                (_model as BossModel).BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Retreating); // TODO logic in retreating state
+            }
+            else
+            {
+                (_model as BossModel).BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
             }
         }
 
