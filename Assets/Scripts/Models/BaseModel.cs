@@ -7,7 +7,7 @@ namespace BeastHunter
         #region Fields
 
         public Stats CurrentStats;
-        public Vector3 CurrentPosition;
+        public Vector3 CurrentPosition => ObjectOnScene.transform.position;
 
         #endregion
 

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4474172447847354ea270be31e527933, type: 3}
-  m_Name: Bomb
+  m_Name: LureCharcoalWeapon
   m_EditorClassIdentifier: 
   _handType: 1
   _type: 3
@@ -50,8 +50,8 @@ MonoBehaviour:
   _timeBeforeGrab: 0
   _totalTimeToRemove: 0
   _timeBeforeLetGo: 0
-  _actualWeapon: {fileID: 11400000, guid: 97da455c127ed7c4285cdc4a8d9d9fd5, type: 2}
-  _projectileData: {fileID: 11400000, guid: 661f26f7f45485d43a56c88e38410967, type: 2}
+  _actualWeapon: {fileID: 11400000, guid: 893f76df54acfbb49aa2a80d08d3b583, type: 2}
+  _projectileData: {fileID: 11400000, guid: 9ff6a733f0efcb04e9d5001892b7863d, type: 2}
   _delayBeforeThrow: 0.4
   _hitDistance: 100
   _aimingAnimationPostfix: BombAiming

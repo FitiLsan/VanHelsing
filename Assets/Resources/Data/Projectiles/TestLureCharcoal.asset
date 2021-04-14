@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50aedcad7b2a80b43bf442efaf0b8788, type: 3}
-  m_Name: TestLureMeat
+  m_Name: TestLureCharcoal
   m_EditorClassIdentifier: 
   _projectileType: 4
-  _projectilePrefab: {fileID: 172868, guid: 59651494fd91a074fa5269b30462afa0, type: 3}
+  _projectilePrefab: {fileID: 172868, guid: d53273b3760ab54438e80a12e6a30a08, type: 3}
   _flyingSound:
-    _soundClip: {fileID: 8300000, guid: 1d8c5d754ceedb9418dfb33af1882c4a, type: 3}
+    _soundClip: {fileID: 0}
     _volume: 0
     _pitch: 0
     _doLoop: 0
@@ -34,4 +34,4 @@ MonoBehaviour:
   _timeToDestroyAfterHit: 0
   _projectileColliderSize: 0.33
   _smellingDistance: 50
-  _lureSmellType: 2
+  _lureSmellType: 3

@@ -11,6 +11,7 @@ namespace BeastHunter
         #region Fields
 
         [SerializeField] private float _smellingDistance;
+        [SerializeField] private LureSmellTypeEnum _lureSmellType;
 
         #endregion
 
@@ -18,6 +19,7 @@ namespace BeastHunter
         #region Properties
 
         public float SmellingDistance => _smellingDistance;
+        public LureSmellTypeEnum LureSmellType => _lureSmellType; 
 
         #endregion
 
@@ -38,7 +40,7 @@ namespace BeastHunter
 
         private void StartSmelling(IProjectile projectileInterface, Collision touchedCollider)
         {
-            Services.SharedInstance.AnnouncementService.MakeSmell(new Smell(projectileInterface.GameObject.transform, LureSmellTypeEnum.meaty, _smellingDistance ));
+            Services.SharedInstance.AnnouncementService.MakeSmell(new Smell(projectileInterface.GameObject.transform, _lureSmellType, _smellingDistance ));
             Rigidbody bombRigidbody = projectileInterface.GameObject.GetComponent<Rigidbody>();
             bombRigidbody.velocity = Vector3.zero;
             bombRigidbody.isKinematic = true;

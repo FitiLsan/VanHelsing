@@ -157,7 +157,8 @@ namespace BeastHunter
             _inputModel.OnButtonsInfo += OpenCloseButtonsInfoMenu;
             _inputModel.OnUse += UseInteractiveObject;
             _inputModel.OnRemoveWeapon += () => OnWeaponChange?.Invoke();
-            _inputModel.OnPressNumberOne += () => GetThrowableWeapon(Data.BombData);
+            _inputModel.OnPressNumberOne += () => GetThrowableWeapon(Data.LureMeatData);
+            _inputModel.OnPressNumberTwo += () => GetThrowableWeapon(Data.LureCharcoalData);
             OnWeaponChange += _services.TrapService.RemoveTrap;
             OnTrapPlace += _services.TrapService.PlaceTrap;
             OnHealthChange += HealthBarUpdate;
@@ -202,6 +203,7 @@ namespace BeastHunter
             _inputModel.OnUse = null;
             _inputModel.OnRemoveWeapon = null;
             _inputModel.OnPressNumberOne = null;
+            _inputModel.OnPressNumberTwo = null;
             OnWeaponChange -= _services.TrapService.RemoveTrap;
             OnTrapPlace -= _services.TrapService.PlaceTrap;
             OnHealthChange -= HealthBarUpdate;

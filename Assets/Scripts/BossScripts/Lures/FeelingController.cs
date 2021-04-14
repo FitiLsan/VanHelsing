@@ -101,7 +101,7 @@ namespace BeastHunter
             }
             else
             {
-                (_model as BossModel).BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
+                (_model as BossModel).BossStateMachine.SetCurrentState(BossStatesEnum.Idle);
             }
         }
 

@@ -85,7 +85,7 @@ namespace BeastHunter
                 HealthCheck();
                 CheckDirection();
                 HungerCheck();
-             //   CheckCurrentFieldOfView();
+             //  CheckCurrentFieldOfView();
                 HitCounter();
                 InteractionTriggerUpdate();
             }
@@ -325,6 +325,7 @@ namespace BeastHunter
                 return _bossModel.BossTransform.position;
             }
         }
+
 
         private void InteractionTriggerUpdate()
         {
