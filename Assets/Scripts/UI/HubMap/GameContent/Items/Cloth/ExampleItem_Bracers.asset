@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a58ad0e072761ad47a2f2a4ca96083a6, type: 3}
+  m_Name: ExampleItem_Bracers
+  m_EditorClassIdentifier: 
+  _name: "\u041D\u0430\u0440\u0443\u0447\u0438"
+  _description: "\u041A\u0430\u043A\u0438\u0435-\u0442\u043E \u043D\u0430\u0440\u0443\u0447\u0438"
+  _icon: {fileID: 21300000, guid: 70a77abda853dd941a0c8debf1de9b04, type: 3}
+  _shopPrice: 1
+  _requiredReputationForBuyInShop: 0
+  _clothType: 1
+  _fantasyHeroMaterial: {fileID: 2100000, guid: d06e1cb2b33faa24e89d53860a09cc61,
+    type: 2}
+  _clothesPartsNamesAllGender: []
+  _clothesPartsNamesMale:
+  - Chr_ArmLowerLeft_Male_16
+  - Chr_ArmLowerRight_Male_16
+  _clothesPartsNamesFemale:
+  - Chr_ArmLowerLeft_Female_16
+  - Chr_ArmLowerRight_Female_16
+  _disabledHeadParts: 

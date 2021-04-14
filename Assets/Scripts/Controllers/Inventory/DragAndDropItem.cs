@@ -60,7 +60,7 @@ namespace BeastHunter
             Discription = Instantiate(Resources.Load("Inventory/Discription"), canvas.transform) as GameObject;
             Discription.transform.localPosition = new Vector3(-620, -280);
             Text DiscriptionText = Discription.GetComponent<Text>();
-            DiscriptionText.text = ItemData.ItemStruct.Discription;
+            DiscriptionText.text = ItemData.ItemStruct.Description;
         }
 
         public void OnPointerDown(PointerEventData data)

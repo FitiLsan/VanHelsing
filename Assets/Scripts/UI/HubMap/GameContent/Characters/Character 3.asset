@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a77a23247dc3ae4faab1e37156d973f, type: 3}
+  m_Name: Character 3
+  m_EditorClassIdentifier: 
+  _name: 
+  _portrait: {fileID: 21300000, guid: 6f82c769d51ea504083832377e952d62, type: 3}
+  _isFemale: 0
+  _view3DModelPrefab: {fileID: 6667037347063198021, guid: dac53557101305c46bf45b75f46b571a,
+    type: 3}
+  _view3DModelAnimatorController: {fileID: 9100000, guid: 4fde703d67cadff4a9a1c1dfb6de6662,
+    type: 2}
+  _startBackpuckItems:
+  - {fileID: 11400000, guid: b82379ba5dbb65c4a9c24795aacbca77, type: 2}
+  - {fileID: 11400000, guid: 2f80044f5c527464e90eead336176198, type: 2}
+  _startEquipmentItems:
+  - {fileID: 11400000, guid: 4ef6411f36ddde84e85833d692065971, type: 2}
+  - {fileID: 11400000, guid: d251bc27e1e3b004db86ee0f06a83739, type: 2}
+  - {fileID: 11400000, guid: 95a772b527171d1429d829162c1411bb, type: 2}
+  - {fileID: 11400000, guid: a4a3ebf3a1fac67498eae459e1b55ef7, type: 2}
+  - {fileID: 11400000, guid: b70d1f904cbdf3e4f891776021a10569, type: 2}
+  _defaultMaterial: {fileID: 2100000, guid: 5f3e0cdb8949ede4992d6471c3fbf042, type: 2}
+  _defaultModuleParts:
+  - _type: 8
+    _names:
+    - Chr_Torso_Male_00
+  - _type: 5
+    _names:
+    - Chr_Hips_Male_00
+  - _type: 6
+    _names:
+    - Chr_LegLeft_Male_00
+    - Chr_LegRight_Male_00
+  - _type: 7
+    _names:
+    - Chr_ArmUpperRight_Male_00
+    - Chr_ArmUpperLeft_Male_00
+  - _type: 1
+    _names:
+    - Chr_ArmLowerRight_Male_00
+    - Chr_ArmLowerLeft_Male_00
+  - _type: 3
+    _names:
+    - Chr_HandRight_Male_00
+    - Chr_HandLeft_Male_00
+  _defaultHeadParts:
+  - _type: 3
+    _name: Chr_Eyebrow_Male_01
+    _isActivateByDefault: 1
+  - _type: 4
+    _name: Chr_FacialHair_Male_16
+    _isActivateByDefault: 1
+  - _type: 2
+    _name: Chr_Hair_07
+    _isActivateByDefault: 1
+  - _type: 1
+    _name: Chr_Head_Male_00
+    _isActivateByDefault: 1
