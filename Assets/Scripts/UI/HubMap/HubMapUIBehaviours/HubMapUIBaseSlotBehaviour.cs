@@ -79,7 +79,7 @@ namespace BeastHunter
             {
                 if (_itemImage.sprite != null)
                 {
-                    _draggedObject = Instantiate(_itemImage.gameObject, gameObject.transform.GetMainParent().Find("Canvas"));
+                    _draggedObject = Instantiate(_itemImage.gameObject, gameObject.transform.root.Find("Canvas"));
 
                     RectTransform draggedObjectRectTransform = _draggedObject.GetComponent<RectTransform>();
                     draggedObjectRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
