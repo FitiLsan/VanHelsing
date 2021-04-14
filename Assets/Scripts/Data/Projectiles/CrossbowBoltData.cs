@@ -50,6 +50,11 @@ namespace BeastHunter
             {
                 projectileInterface.GameObject.transform.root.parent = touchedCollider.transform;
             }
+          var behavior =  projectileInterface.GameObject.GetComponent<InteractableObjectBehavior>();
+            if (behavior.Type.Equals(InteractableObjectType.Fire))
+            {
+                Services.SharedInstance.BuffService.AddTemporaryBuff(touchedCollider.gameObject.GetInstanceID(), Resources.Load("Data/Buffs/FireDebuffData") as TemporaryBuff);
+            }
 
             Destroy(projectileInterface.GameObject.GetComponent<Rigidbody>());
             Destroy(projectileInterface.GameObject.GetComponent<SphereCollider>());
