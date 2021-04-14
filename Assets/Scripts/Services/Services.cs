@@ -1,4 +1,6 @@
-﻿namespace BeastHunter
+﻿using UnityEngine;
+
+namespace BeastHunter
 {
     public sealed class Services
     {
@@ -18,6 +20,7 @@
         public AnnouncementService AnnouncementService { get; private set; }
         public AudioService AudioService { get; private set; }
 
+        public GameContext Context { get; private set; }
         #endregion
 
 
@@ -26,16 +29,17 @@
         public void InitializeGameServices(GameContext context)
         {
             PhysicsService = new PhysicsService();
-          //  InventoryService = new InventoryService();
+            InventoryService = new InventoryService();
             AttackService = new AttackService(context);
             CameraService = new CameraService(context);
             EventManager = new EventManager();
-            BuffService = new BuffService();
+            BuffService = new BuffService(context);
             UnityTimeService = new UnityTimeService();
             TimeSkipService = new TimeSkipService();
             TrapService = new TrapService(context);
             AnnouncementService = new AnnouncementService();
             AudioService = new AudioService(context);
+            Context = context;
         }
 
         public void DisposeGameServices()
@@ -43,7 +47,6 @@
             CameraService.Dispose();
             AudioService.Dispose();
         }
-
         #endregion
     }
 }

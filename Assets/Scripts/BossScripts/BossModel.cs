@@ -43,9 +43,11 @@ namespace BeastHunter
         public BossSettings BossSettings { get; }
         public BossStateMachine BossStateMachine { get; }
 
-        public Animator BossAnimator { get; set; }
-        public Collider Player { get; set; }
+        public VisualEffectController VisualEffectController { get; }
+        public EffectReactionController EffectReactionController { get; }
+        public FeelingController FeelingController { get; }
 
+        public Animator BossAnimator { get; set; }
         public float CurrentSpeed { get; set; }
         public float AnimationSpeed { get; set; }
 
@@ -53,13 +55,18 @@ namespace BeastHunter
         public bool IsGrounded { get; set; }
         public bool IsPlayerNear { get; set; }
         public bool IsPickUped { get; set; }
+        
+
 
         public MovementPoint[] MovementPoints { get; set; }
 
-        public List<GameObject> FoodList = new List<GameObject>();
+        //public List<GameObject> FoodList = new List<GameObject>();
+        //public List<GameObject> ScaryList = new List<GameObject>();
+        //public List<GameObject> InterestedList = new List<GameObject>();
+
         public GameObject Lair;
         public GameObject BossCurrentTarget;
-        public Vector3 BossCurrentPosition;
+        //public Vector3 BossCurrentPosition;
         public GameObject SporePrefab;
         public GameObject Ruler;
         public GameObject StompPufPrefab;
@@ -98,14 +105,15 @@ namespace BeastHunter
             base(objectOnScene, data)
         {
             Lair = GameObject.Find("Lair");
-
             BossData = data;
             BossSettings = BossData._bossSettings;
+            BossData.BossModel = this;
             BossTransform = objectOnScene.transform;
             BossTransform.rotation = Quaternion.Euler(0, BossSettings.InstantiateDirection, 0);
             BossTransform.name = BossSettings.InstanceName;
             BossTransform.tag = BossSettings.InstanceTag;
             BossTransform.gameObject.layer = BossSettings.InstanceLayer;
+            BuffEffectPrefab = BossTransform.Find("Effects").gameObject;
 
             Transform[] children = BossTransform.GetComponentsInChildren<Transform>();
 
@@ -180,10 +188,11 @@ namespace BeastHunter
             }
 
             BossBehavior.SetType(InteractableObjectType.Enemy);
-         //   BossBehavior.Stats = BossStats.MainStats;
             BossStateMachine = new BossStateMachine(context, this);
+            VisualEffectController = new VisualEffectController(context, this);
+            EffectReactionController = new EffectReactionController(context, this);
+            FeelingController = new FeelingController(context, this);
 
-            Player = null;
             IsMoving = false;
             IsGrounded = false;
             IsPlayerNear = false;
@@ -319,6 +328,9 @@ namespace BeastHunter
         public void OnAwake()
         {
             BossStateMachine.OnAwake();
+            VisualEffectController.OnAwake();
+            EffectReactionController.OnAwake();
+            FeelingController.OnAwake();
         }
 
         public override void TakeDamage(Damage damage)
@@ -351,15 +363,19 @@ namespace BeastHunter
         public void TearDown()
         {
             BossStateMachine.OnTearDown();
+            VisualEffectController.OnTearDown();
+            EffectReactionController.OnTearDown();
+            FeelingController.OnTearDown();
         }
 
-        private void CheckIsRage(bool isRage)
+        public void CheckIsRage(bool isRage)
         {
             IsRage = isRage;
             if(IsRage)
             {
                 EyeLeft.color = EyeRight.color = RageColor;
                 BossAnimator.speed = 1.5f;
+                DG.Tweening.DOVirtual.DelayedCall(BossSettings.DurationRage, () => CheckIsRage(false));
             }
             else
             {
@@ -378,9 +394,6 @@ namespace BeastHunter
             if (CurrentStats.BaseStats.CurrentHealthPart <= BossSettings.ActivateRage)
             {
                 CheckIsRage(true);
-
-
-                DG.Tweening.DOVirtual.DelayedCall(BossSettings.DurationRage, () => CheckIsRage(false));
                 return;
             }
 
@@ -415,12 +428,19 @@ namespace BeastHunter
                 Debug.Log("Hit 18% hp");
                 if (BossStateMachine.CurrentStateType != BossStatesEnum.Defencing)
                 {
-                   // BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
+                    // BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Defencing);
                 }
             }
-            else if (!BossStateMachine.CurrentState.IsBattleState)
+            if (!BossStateMachine.CurrentState.IsBattleState)
             {
-                BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
+                if (BossCurrentTarget != null)
+                {
+                    BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
+                }
+                else
+                {
+                  //  BossStateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
+                }
             }
         }
 

@@ -8,19 +8,22 @@ namespace BeastHunter
         #region Properties
 
         public Vector3 SmellPointPosition { get; }
-        public SmellType Type { get; }
-        public float HearingDistance { get; }
+        public LureSmellTypeEnum Type { get; }
+        public float SmellingDistance { get; }
+        public GameObject SmellObject { get; }
 
         #endregion
 
 
         #region ClassLifeCycle
 
-        public Smell(Vector3 smellPointPosition, SmellType type, float hearingDistance)
+        public Smell(Transform smellPointTransform, LureSmellTypeEnum type, float smellingDistance)
         {
-            SmellPointPosition = smellPointPosition;
+            SmellObject = smellPointTransform.gameObject;
+            SmellPointPosition = smellPointTransform.position;
             Type = type;
-            HearingDistance = hearingDistance;
+            SmellingDistance = smellingDistance;
+            
         }
 
         #endregion

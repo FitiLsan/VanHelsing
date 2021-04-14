@@ -1,12 +1,19 @@
 ﻿using System;
 using UnityEngine;
-
+using UnityEngine.AI;
 
 namespace BeastHunter
 {
     [Serializable]
     public sealed class BaseStats
     {
+        #region Events
+
+        public event Action SpeedUpdate;
+
+        #endregion
+
+
         #region Fields
 
         [Header("Basic stats")]
@@ -41,6 +48,7 @@ namespace BeastHunter
         [Tooltip("Is stunned flag.")]
         public bool IsStunned;
 
+        private float _speedModifier;
         #endregion
 
 
@@ -107,6 +115,19 @@ namespace BeastHunter
             get
             {
                 return CurrentStaminaPoints / MaximalStaminaPoints;
+            }
+        }
+
+        public float SpeedModifier
+        {
+            get
+            {
+                return _speedModifier;
+            }
+            set
+            {
+                _speedModifier = value;
+                SpeedUpdate?.Invoke();
             }
         }
 

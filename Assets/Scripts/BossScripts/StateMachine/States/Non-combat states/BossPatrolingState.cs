@@ -11,7 +11,7 @@ namespace BeastHunter
         private const float MINIMAL_TARGET_DISTANCE = 5f;
         private const float MAXIMAL_TARGET_DISTANCE = 10f;
         private const float MAXIMAL_PATH_DISTANCE = 30f;
-        private const float MINIMAL_DISTANCE_TO_TARGET = 0.7f;
+        private const float MINIMAL_DISTANCE_TO_TARGET = 1.7f;
         private const float PROBABILITY_TO_CONTINUE_PATROLING = 0.2f;
         private const float PROBABILITY_TO_START_SEARCHING = 0.9f;
         private const float MAXIMAL_DISTANCE_FROM_ANCHOR = 30f;
@@ -58,8 +58,8 @@ namespace BeastHunter
             CanBeOverriden = true;
             _isTargetSet = false;
             _stuckTIme = STUCK_TIME_COUNT;
-            _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
-            _stateMachine._model.BossNavAgent.stoppingDistance = 0.2f;
+            _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent,_bossData._bossSettings.WalkSpeed);
+            _stateMachine._model.BossNavAgent.stoppingDistance = 0.2f; //?;
             _stateMachine._model.BossAnimator.Play("MovingState");           
         }
 
@@ -112,6 +112,11 @@ namespace BeastHunter
                                         Random.Range(MINIMAL_TARGET_DISTANCE, MAXIMAL_TARGET_DISTANCE)
                                             + _currentPosition.z));
 
+                if(!_stateMachine._model.BossNavAgent.isOnNavMesh) // DEBUGONLY
+                {
+                    return;
+                }
+                
                 _stateMachine._model.BossNavAgent.CalculatePath(_checkTargetPosition, _path);
 
                 if (_path.status == NavMeshPathStatus.PathComplete)
@@ -142,11 +147,11 @@ namespace BeastHunter
                 {
                     if(Random.Range(0f, 1f) < PROBABILITY_TO_START_SEARCHING)
                     {
-                        _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
+                      //  _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
                     }
                     else
                     {
-                        _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
+                      //  _stateMachine.SetCurrentStateOverride(BossStatesEnum.Searching);
                     }                  
                 }
                 else

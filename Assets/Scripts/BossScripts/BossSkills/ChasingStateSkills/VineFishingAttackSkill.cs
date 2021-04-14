@@ -23,7 +23,7 @@ namespace BeastHunter
         public override void UseSkill(int id)
         {
             Debug.Log("VineFishingAttackSkill");
-            _bossModel.BossNavAgent.speed = 0;
+            _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             RotateToTarget();
             _bossModel.BossAnimator.Play("VineFishingAttack", 0, 0);
             DelayCall(CreateVine, 1f);

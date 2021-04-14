@@ -43,10 +43,12 @@ namespace BeastHunter
         {
             CanExit = true;
             CanBeOverriden = true;
-
+            if(_stateMachine.LastStateType!= BossStatesEnum.Patroling)
+            {
+                _stateMachine._model.BossAnimator.Play("IdleState", 0, 0f);
+            }
             _timeToIdle = Random.Range(MINIMAL_IDLE_TIME, MAXIMAL_IDLE_TIME);
-
-            _stateMachine._model.BossAnimator.Play("IdleState", 0, 0f);
+            _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, 0);
             _isHunger = _stateMachine._mainState.IsHunger;
         }
 
@@ -77,11 +79,11 @@ namespace BeastHunter
 
         private void HungerCheck()
         {
-            if (_isHunger & !_stateMachine.CurrentState.IsBattleState)
+            if (_isHunger && !_stateMachine.CurrentState.IsBattleState)
             {
                 if (_stateMachine.CurrentState != _stateMachine.States[BossStatesEnum.Eating])
                 {
-                    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Eating);
+                   // _stateMachine.SetCurrentStateOverride(BossStatesEnum.Eating);
                 }
             }
         }
@@ -89,9 +91,9 @@ namespace BeastHunter
         private void StaminaCheck()
         {
             if (_bossModel.CurrentStats.BaseStats.CurrentStaminaPoints >= _bossModel.CurrentStats.BaseStats.
-                MaximalStaminaPoints & !_stateMachine.CurrentState.IsBattleState)
+                MaximalStaminaPoints && !_stateMachine.CurrentState.IsBattleState)
             {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Resting);
+               // _stateMachine.SetCurrentStateOverride(BossStatesEnum.Resting);
             }
         }
 

@@ -10,13 +10,7 @@ namespace BeastHunter
     {
         public void OnPointerClick(PointerEventData eventData)
         {
-            SceneManager.LoadScene(0);
-        }
-
-
-        private void RestartGame()
-        {
-            Debug.Log("RESTART GAME");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

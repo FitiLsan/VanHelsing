@@ -23,8 +23,13 @@
 
         #region Methods
 
-        public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats = new Stats(), WeaponData usedWeapon = null)
+        public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats = null, WeaponData usedWeapon = null)
         {
+            if(dealerStats==null)
+            {
+                dealerStats = new Stats();
+            }
+
             Stats receiverStats = _context.CharacterModel.InstanceID == receiverID ?
                 _context.CharacterModel.CurrentStats : _context.NpcModels[receiverID].CurrentStats;
 
@@ -110,7 +115,7 @@
             }
         }
 
-        public void CountAndDealDamage(Damage baseDamage, int receiverID, Stats dealerStats = new Stats(), WeaponData usedWeapon = null)
+        public void CountAndDealDamage(Damage baseDamage, int receiverID, Stats dealerStats = null, WeaponData usedWeapon = null)
         {
             DealDamage(CountDamage(baseDamage, receiverID, dealerStats, usedWeapon), receiverID);
         }

@@ -16,7 +16,8 @@
         Retreating,
         Resurrecting,
         Searching,
-        Dead
+        Dead,
+        Standstill
     }
 }
 

@@ -74,7 +74,7 @@ namespace BeastHunter
         {
             Vector3 groundedPosition = position;
 
-            bool isHit = Physics.Raycast(new Vector3(position.x, positionY, position.z),
+            bool isHit = Physics.Raycast(new Vector3(position.x, position.y + positionY, position.z),
                 Vector3.down, out RaycastHit hit);
 
             if (isHit)

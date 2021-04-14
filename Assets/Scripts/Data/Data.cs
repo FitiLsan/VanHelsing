@@ -47,7 +47,8 @@ namespace BeastHunter
         [SerializeField] private string _fallingTreeDataPath;
         [SerializeField] private string _enemyHealthBarDataPath;
         [SerializeField] private string _spawnpointsDataPath;
-        [SerializeField] private string _bombDataPath;
+        [SerializeField] private string _lureMeatDataPath;
+        [SerializeField] private string _lureCharcoalDataPath;
 
         private static Data _instance;
         private static LocationData _locationData;
@@ -86,7 +87,8 @@ namespace BeastHunter
         private static FallingTreeData _fallingTreeData;
         private static EnemyHealthBarData _enemyHealthBarData;
         private static SpawnpointsData _spawnpointsData;
-        private static OneHandedThrowableWeapon _bombData;
+        private static OneHandedThrowableWeapon _LureMeatData;
+        private static OneHandedThrowableWeapon _LureCharcoalData;
 
         #endregion
 
@@ -521,15 +523,27 @@ namespace BeastHunter
             }
         }
 
-        public static OneHandedThrowableWeapon BombData
+        public static OneHandedThrowableWeapon LureMeatData
         {
             get
             {
-                if (_bombData == null)
+                if (_LureMeatData == null)
                 {
-                    _bombData = Resources.Load<OneHandedThrowableWeapon>("Data/" + Instance._bombDataPath);
+                    _LureMeatData = Resources.Load<OneHandedThrowableWeapon>("Data/" + Instance._lureMeatDataPath);
                 }
-                return _bombData;
+                return _LureMeatData;
+            }
+        }
+
+        public static OneHandedThrowableWeapon LureCharcoalData
+        {
+            get
+            {
+                if (_LureCharcoalData == null)
+                {
+                    _LureCharcoalData = Resources.Load<OneHandedThrowableWeapon>("Data/" + Instance._lureCharcoalDataPath);
+                }
+                return _LureCharcoalData;
             }
         }
 

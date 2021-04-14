@@ -25,7 +25,7 @@ namespace BeastHunter
         public override void UseSkill(int id)
         {
             Debug.Log(" SelfHeal Skill");
-            SetNavMeshAgent(_bossModel.BossTransform.position, 0);
+            _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             _bossModel.BossAnimator.Play($"SelfHeal", 0, 0f);
             _bossModel.healAura.Play(true);
 
