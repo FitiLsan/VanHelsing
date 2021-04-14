@@ -45,7 +45,7 @@ namespace BeastHunter
 
             if (_bossModel.BossCurrentTarget != null)
             {
-                _target = _bossModel.BossCurrentTarget.transform.position;
+                _target = Services.SharedInstance.PhysicsService.GetGroundedPosition(_bossModel.BossCurrentTarget.transform.position, 30f);
             }
         }
 
@@ -58,6 +58,7 @@ namespace BeastHunter
             }
             else
             {
+                _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, 0f);
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle) ;
             }
         }

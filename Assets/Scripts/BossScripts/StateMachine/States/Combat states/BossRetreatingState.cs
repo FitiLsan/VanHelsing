@@ -142,6 +142,7 @@ namespace BeastHunter
             if (_isTargetSet &&  _bossData.CheckIsNearTarget(_bossModel.CurrentPosition, _checkTargetPosition, 2f))
             {
                 _isTargetSet = false;
+                _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, 0f);
                 _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
             }
         }
