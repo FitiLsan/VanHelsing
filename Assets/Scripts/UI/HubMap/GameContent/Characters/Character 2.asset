@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a77a23247dc3ae4faab1e37156d973f, type: 3}
+  m_Name: Character 2
+  m_EditorClassIdentifier: 
+  _name: 
+  _portrait: {fileID: 21300000, guid: 3bf854bf2bc26094d86801b40d9b7279, type: 3}
+  _isFemale: 1
+  _view3DModelPrefab: {fileID: 6667037347063198021, guid: dac53557101305c46bf45b75f46b571a,
+    type: 3}
+  _view3DModelAnimatorController: {fileID: 9100000, guid: 4fde703d67cadff4a9a1c1dfb6de6662,
+    type: 2}
+  _startBackpuckItems: []
+  _startEquipmentItems: []
+  _defaultMaterial: {fileID: 2100000, guid: 5f3e0cdb8949ede4992d6471c3fbf042, type: 2}
+  _defaultModuleParts:
+  - _type: 4
+    _names:
+    - Chr_HeadCoverings_No_Hair_05
+    - Chr_HeadCoverings_No_FacialHair_04
+  - _type: 8
+    _names:
+    - Chr_Torso_Female_00
+  - _type: 5
+    _names:
+    - Chr_Hips_Female_02
+  - _type: 6
+    _names:
+    - Chr_LegRight_Female_00
+    - Chr_LegLeft_Female_00
+  - _type: 7
+    _names:
+    - Chr_ArmUpperRight_Female_00
+    - Chr_ArmUpperLeft_Female_00
+  - _type: 1
+    _names:
+    - Chr_ArmLowerRight_Female_00
+    - Chr_ArmLowerLeft_Female_00
+  - _type: 3
+    _names:
+    - Chr_HandRight_Female_00
+    - Chr_HandLeft_Female_00
+  _defaultHeadParts:
+  - _type: 3
+    _name: Chr_Eyebrow_Female_04
+    _isActivateByDefault: 1
+  - _type: 2
+    _name: Chr_Hair_21
+    _isActivateByDefault: 0
+  - _type: 1
+    _name: Chr_Head_Female_08
+    _isActivateByDefault: 1

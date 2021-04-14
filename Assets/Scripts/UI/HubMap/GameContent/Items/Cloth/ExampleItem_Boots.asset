@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a58ad0e072761ad47a2f2a4ca96083a6, type: 3}
+  m_Name: ExampleItem_Boots
+  m_EditorClassIdentifier: 
+  _name: "\u0411\u043E\u0442\u0438\u043D\u043A\u0438"
+  _description: "\u041A\u0430\u043A\u0438\u0435-\u0442\u043E \u0431\u043E\u0442\u0438\u043D\u043A\u0438"
+  _icon: {fileID: 21300000, guid: e420c5bc93cb2604695a893500c897e3, type: 3}
+  _shopPrice: 1
+  _requiredReputationForBuyInShop: 0
+  _clothType: 6
+  _pocketsAmount: 2
+  _fantasyHeroMaterial: {fileID: 2100000, guid: 9af0cca3370fbad47ac241337c8551e7,
+    type: 2}
+  _clothesPartsNamesAllGender: []
+  _clothesPartsNamesMale:
+  - Chr_LegLeft_Male_16
+  - Chr_LegRight_Male_16
+  _clothesPartsNamesFemale:
+  - Chr_LegLeft_Female_16
+  - Chr_LegRight_Female_16
+  _disabledHeadParts: 

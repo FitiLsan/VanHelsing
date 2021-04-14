@@ -20,7 +20,7 @@ namespace BeastHunter
 
         #region Methods
 
-        private void AddInitializeControllers(GameContext context) 
+        private void AddInitializeControllers(GameContext context)
         {
             Add(new UIBestiarylInitializeController(context));
             Add(new LocationInitializeController(context));
@@ -37,7 +37,7 @@ namespace BeastHunter
             Add(new TimeRemainingController(context));
             Add(new CharacterController(context));
             Add(new CharacterAnimationController(context));
-            Add(new TrapController(context));          
+            Add(new TrapController(context));
             Add(new InteractiveObjectController(context));
             //Add(new DialogueSystemController(context));
             //Add(new StartDialogueController(context));

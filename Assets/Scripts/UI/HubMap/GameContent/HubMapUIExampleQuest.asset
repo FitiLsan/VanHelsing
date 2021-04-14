@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bb70218c962d204e96c150ade232478, type: 3}
+  m_Name: HubMapUIExampleQuest
+  m_EditorClassIdentifier: 
+  _title: Example quest
+  _tasks:
+  - _id: 0
+    _nextQuestTaskId: 1
+    _targetCitizen: {fileID: 11400000, guid: 71545226823a9ad438b5553d63687638, type: 2}
+    _targetQuestAnswerId: 0
+    _isCitizenInitiateDialog: 1
+    _initiatedDialogId: 0
+    _givenItemData: {fileID: 11400000, guid: 92f5ea27fd6261a47ad984a545947ad3, type: 2}
+    _takenItemData: {fileID: 0}
+    _additionalCitizensAnswers: []
+  - _id: 1
+    _nextQuestTaskId: 2
+    _targetCitizen: {fileID: 11400000, guid: 17a1729913f8bc2449a4c5893db22200, type: 2}
+    _targetQuestAnswerId: 0
+    _isCitizenInitiateDialog: 0
+    _initiatedDialogId: 0
+    _givenItemData: {fileID: 0}
+    _takenItemData: {fileID: 11400000, guid: 92f5ea27fd6261a47ad984a545947ad3, type: 2}
+    _additionalCitizensAnswers:
+    - _citizen: {fileID: 11400000, guid: 71545226823a9ad438b5553d63687638, type: 2}
+      _answerId: 2
+  - _id: 2
+    _nextQuestTaskId: 3
+    _targetCitizen: {fileID: 11400000, guid: 71545226823a9ad438b5553d63687638, type: 2}
+    _targetQuestAnswerId: 1
+    _isCitizenInitiateDialog: 0
+    _initiatedDialogId: 0
+    _givenItemData: {fileID: 0}
+    _takenItemData: {fileID: 0}
+    _additionalCitizensAnswers: []
+  - _id: 3
+    _nextQuestTaskId: 3
+    _targetCitizen: {fileID: 0}
+    _targetQuestAnswerId: 0
+    _isCitizenInitiateDialog: 0
+    _initiatedDialogId: 0
+    _givenItemData: {fileID: 0}
+    _takenItemData: {fileID: 0}
+    _additionalCitizensAnswers: []
+  _firstTaskId: 0
+  _emptyEndTaskId: 3
+  _requiredReputation:
+    _city: {fileID: 11400000, guid: b0fed0d57aef54a48b35754d9082df4c, type: 2}
+    _reputation: 30
+  _requiredQuest: {fileID: 0}

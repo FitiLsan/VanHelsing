@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a1547fde60487a46b963d1e4498ab3a, type: 3}
+  m_Name: HubMapUIContextData
+  m_EditorClassIdentifier: 
+  _shopsSlotsAmount: 20
+  _player: {fileID: 11400000, guid: 6dc1beb443f3bb24db85b44c8bd1d503, type: 2}
+  _charactersInventorySlotAmount: 10
+  _charactersClothSlots: 0200000004000000080000000900000005000000060000000700000001000000030000000a0000000b0000000b000000
+  _characters:
+  - {fileID: 11400000, guid: 9fb474a159a104d49a106419732f29d4, type: 2}
+  - {fileID: 11400000, guid: 5bedb4bb121491a418e9a717db215ba4, type: 2}
+  - {fileID: 11400000, guid: 5e2a56911803eb640a1facc3389c8627, type: 2}
+  - {fileID: 11400000, guid: 4e3ca3341ad44d047b3985d33cb9bf09, type: 2}
+  _cities:
+  - {fileID: 11400000, guid: b0fed0d57aef54a48b35754d9082df4c, type: 2}
+  _locations:
+  - {fileID: 11400000, guid: 744614ebf3a669b4f855ee609c71b538, type: 2}
+  - {fileID: 11400000, guid: 5a390b452918f4046948d2da88f1333c, type: 2}
+  - {fileID: 11400000, guid: 860d3696ec691de4e9302d6819bd9cda, type: 2}
+  - {fileID: 11400000, guid: 9b605ac1c7e3a6b458708df1317a7eaf, type: 2}
+  - {fileID: 11400000, guid: a4953306eee0c584a8c7fc514f731fbb, type: 2}
+  _quests:
+  - {fileID: 11400000, guid: 81ad56c84f8679347b6301f8a566d862, type: 2}

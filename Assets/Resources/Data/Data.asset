@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b31b7596ae2b4a4ab972d36383fc2fb, type: 3}
   m_Name: Data
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   _locationDataPath: LocationData
   _characterDataPath: CharacterData
   _startDialogueDataPath: StartDialogueData
@@ -33,9 +33,9 @@ MonoBehaviour:
   _bossFirstWeakPointPath: WeakPoints/BossFirstWeakPoint
   _bossSecondWeakPointPath: WeakPoints/BossSecondWeakPoint
   _bossThirdWeakPointPath: WeakPoints/BossThirdWeakPoint
-  _shouldersPath: 
-  _shoesPath: 
-  _ironGreavesPath: 
+  _shouldersPath:
+  _shoesPath:
+  _ironGreavesPath:
   _uiElementsDataPath: UIElementsData
   _materialsDataPath: MaterialsData
   _torchObjectPath: InteractiveObjects/SimpleInteractiveObjects/TorchData
@@ -48,5 +48,6 @@ MonoBehaviour:
   _fallingTreeDataPath: InteractiveObjects/SimpleInteractiveObjects/FallingTreeData
   _enemyHealthBarDataPath: EnemyHealthBarData
   _spawnpointsDataPath: SpawnpointsData
+  _hubMapUIDataPath: HubMapUIData
   _lureMeatDataPath: Weapons/LureMeatWeapon
   _lureCharcoalDataPath: Weapons/LureCharcoalWeapon
