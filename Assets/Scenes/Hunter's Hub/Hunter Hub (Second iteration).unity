@@ -2759,57 +2759,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4fb40fd0313a7b4892bc1ab977cc60b, type: 3}
---- !u!1001 &929455067
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 951496058}
-    m_Modifications:
-    - target: {fileID: 180038, guid: fd479d726efdf3d4da9cb024a97137e4, type: 3}
-      propertyPath: m_Name
-      value: SM_Env_Ceiling_Stone_Curved_01 (26)
-      objectReference: {fileID: 0}
-    - target: {fileID: 409580, guid: fd479d726efdf3d4da9cb024a97137e4, type: 3}
-      propertyPath: m_RootOrder
-      value: 26
-      objectReference: {fileID: 0}
-    - target: {fileID: 409580, guid: fd479d726efdf3d4da9cb024a97137e4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 409580, guid: fd479d726efdf3d4da9cb024a97137e4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 409580, guid: fd479d726efdf3d4da9cb024a97137e4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 409580, guid: fd479d726efdf3d4da9cb024a97137e4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 409580, guid: fd479d726efdf3d4da9cb024a97137e4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 409580, guid: fd479d726efdf3d4da9cb024a97137e4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 409580, guid: fd479d726efdf3d4da9cb024a97137e4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fd479d726efdf3d4da9cb024a97137e4, type: 3}
---- !u!4 &929455068 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 409580, guid: fd479d726efdf3d4da9cb024a97137e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 929455067}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &951496057
 GameObject:
   m_ObjectHideFlags: 0
@@ -2858,9 +2807,6 @@ Transform:
   - {fileID: 444948020}
   - {fileID: 1478107215}
   - {fileID: 1953179462}
-  - {fileID: 929455068}
-  - {fileID: 975112263}
-  - {fileID: 1459569747}
   - {fileID: 334745855}
   - {fileID: 178045442}
   - {fileID: 1901819967}
@@ -2888,7 +2834,6 @@ Transform:
   - {fileID: 1240060763}
   - {fileID: 1368611780}
   - {fileID: 1360527845}
-  - {fileID: 1629911953}
   - {fileID: 1972067601}
   - {fileID: 746166375}
   - {fileID: 1510829672}
@@ -2910,57 +2855,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &975112262
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 951496058}
-    m_Modifications:
-    - target: {fileID: 101048, guid: df71eb9ba610fdf4087431bd6adab96b, type: 3}
-      propertyPath: m_Name
-      value: SM_Env_Ceiling_Stone_Curved_02 (35)
-      objectReference: {fileID: 0}
-    - target: {fileID: 435388, guid: df71eb9ba610fdf4087431bd6adab96b, type: 3}
-      propertyPath: m_RootOrder
-      value: 27
-      objectReference: {fileID: 0}
-    - target: {fileID: 435388, guid: df71eb9ba610fdf4087431bd6adab96b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 435388, guid: df71eb9ba610fdf4087431bd6adab96b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 435388, guid: df71eb9ba610fdf4087431bd6adab96b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 435388, guid: df71eb9ba610fdf4087431bd6adab96b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 435388, guid: df71eb9ba610fdf4087431bd6adab96b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 435388, guid: df71eb9ba610fdf4087431bd6adab96b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 435388, guid: df71eb9ba610fdf4087431bd6adab96b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: df71eb9ba610fdf4087431bd6adab96b, type: 3}
---- !u!4 &975112263 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 435388, guid: df71eb9ba610fdf4087431bd6adab96b,
-    type: 3}
-  m_PrefabInstance: {fileID: 975112262}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &991433135
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4401,57 +4295,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 181c5c49a962f96468635ea191e01184, type: 3}
---- !u!1001 &1459569746
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 951496058}
-    m_Modifications:
-    - target: {fileID: 147372, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_Name
-      value: SM_Env_Ceiling_Stone_Curved_Corner_01 (19)
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_RootOrder
-      value: 28
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
---- !u!4 &1459569747 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1459569746}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1461695093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4932,57 +4775,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 449052, guid: 939f27c57ef13654eafcf37ff873a454,
     type: 3}
   m_PrefabInstance: {fileID: 1590097383}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1629911952
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 951496058}
-    m_Modifications:
-    - target: {fileID: 147372, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_Name
-      value: SM_Env_Ceiling_Stone_Curved_Corner_01 (20)
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_RootOrder
-      value: 66
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -15
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.70710784
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.70710576
-      objectReference: {fileID: 0}
-    - target: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 85f5f4776e3804945ab0095870a1212b, type: 3}
---- !u!4 &1629911953 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 496582, guid: 85f5f4776e3804945ab0095870a1212b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1629911952}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1710979626
 GameObject:
