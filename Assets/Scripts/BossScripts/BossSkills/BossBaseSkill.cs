@@ -24,6 +24,7 @@ namespace BeastHunter
         private int _count;
 
         protected BossModel _bossModel;
+        protected BossData _bossData;
         protected WeaponHitBoxBehavior _currenTriggertHand;
         protected WeaponHitBoxBehavior _rightFingerTrigger;
         protected Collider _currenColliderHand;
@@ -44,6 +45,7 @@ namespace BeastHunter
             _isSkillReady = IsReady;
             _stateMachine = stateMachine;
             _bossModel = stateMachine._model;
+            _bossData = _bossModel.BossData;
             _skillDictionary = skillDictionary;
         }
 
@@ -207,12 +209,6 @@ namespace BeastHunter
         {
             TimeRemaining enableHitBox = new TimeRemaining(() => hitBox.enabled = isOn, currentAttackTime * delayTime);
             enableHitBox.AddTimeRemaining(currentAttackTime * delayTime);
-        }
-
-        protected void SetNavMeshAgent(Vector3 targetPosition, float speed)
-        {
-            _bossModel.BossNavAgent.SetDestination(targetPosition);
-            _bossModel.BossNavAgent.speed = speed;
         }
 
         internal virtual void SwitchAllowed(bool v)

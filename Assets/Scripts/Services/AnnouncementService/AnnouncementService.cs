@@ -1,4 +1,5 @@
-﻿using UniRx;
+﻿using System;
+using UniRx;
 
 
 namespace BeastHunter
@@ -12,9 +13,19 @@ namespace BeastHunter
             MessageBroker.Default.Publish(noise);
         }
 
-        public void MakeSmell(Smell drag)
+        public void MakeSmell(Smell smell)
         {
-            MessageBroker.Default.Publish(drag);
+            MessageBroker.Default.Publish(smell);
+        }
+
+        public IDisposable TakeNoise(Action<Noise> onDone)
+        {
+            return MessageBroker.Default.Receive<Noise>().Subscribe(onDone);
+        }
+
+        public IDisposable TakeSmell(Action<Smell> onDone)
+        {
+          return  MessageBroker.Default.Receive<Smell>().Subscribe(onDone);
         }
 
         #endregion
