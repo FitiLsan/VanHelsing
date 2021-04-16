@@ -124,8 +124,8 @@ namespace BeastHunter
                     break;
             }
 
-            Shoot(gunsPosition, Services.SharedInstance.CameraService.CharacterCamera.transform.forward * 
-                HitDistance, CurrentAttack.AttackType);
+            Shoot(gunsPosition, (Services.SharedInstance.CameraService.CameraDynamicTarget.
+                transform.position - gunsPosition).normalized * HitDistance, CurrentAttack.AttackType);
         }
 
         public void Shoot(Vector3 gunPosition, Vector3 forwardDirection, HandsEnum inWhichHand)
@@ -157,7 +157,8 @@ namespace BeastHunter
 
             if (raycastCheck)
             {
-                InteractableObjectBehavior enemyBehavior = rayHit.transform.root.GetComponent<InteractableObjectBehavior>();
+                InteractableObjectBehavior enemyBehavior = rayHit.transform.root.
+                    GetComponentInChildren<InteractableObjectBehavior>();
 
                 if(enemyBehavior != null)
                 {

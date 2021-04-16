@@ -95,7 +95,7 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""faa3a3e2-b371-4694-ae9c-c9f1dc7d4131"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""ScaleVector2(x=0.5,y=0.5)"",
+                    ""processors"": ""ScaleVector2(x=0.5,y=0.5),StickDeadzone(min=0.02,max=1)"",
                     ""interactions"": """"
                 },
                 {

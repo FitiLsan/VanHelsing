@@ -25,8 +25,20 @@
 
         public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats = new Stats(), WeaponData usedWeapon = null)
         {
-            Stats receiverStats = _context.CharacterModel.InstanceID == receiverID ?
-                _context.CharacterModel.CurrentStats : _context.NpcModels[receiverID].CurrentStats;
+            Stats receiverStats;
+            
+            if(_context.CharacterModel.InstanceID == receiverID)
+            {
+                receiverStats = _context.CharacterModel.CurrentStats;
+            }
+            else if (_context.NpcModels.ContainsKey(receiverID))
+            {
+                receiverStats = _context.NpcModels[receiverID].CurrentStats;
+            }
+            else
+            {
+                return new Damage();
+            }
 
             if(usedWeapon == null)
             {

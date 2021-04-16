@@ -34,6 +34,8 @@ namespace BeastHunter
         private CinemachineBasicMultiChannelPerlin[] _freeLookPerlins;
         private CinemachineBasicMultiChannelPerlin _targetPerlin;
         private CinemachineBasicMultiChannelPerlin _aimingPerlin;
+        private CinemachineComposer _aimComposer;
+        private CinemachineTransposer _aimTransposer;
 
         private float _weaponHitDistance;
         private float _projectileMass;
@@ -73,7 +75,7 @@ namespace BeastHunter
             _cameraData = Data.CameraData;
 
 #if (UNITY_EDITOR)
-            EditorApplication.playModeStateChanged += SaveCameraSettings;
+            //EditorApplication.playModeStateChanged += SaveCameraSettings;
 #endif
         }
 
@@ -84,27 +86,29 @@ namespace BeastHunter
 
         public void Initialize(CharacterModel characterModel)
         {
-            CharacterCamera = _cameraData._cameraSettings.CreateCharacterCamera();
+            CharacterCamera = _cameraData.CreateCharacterCamera();
             CameraCinemachineBrain = CharacterCamera.GetComponent<CinemachineBrain>() ?? null;
 
-            _cameraDynamicTarget = GameObject.Instantiate(new GameObject(), characterModel.CharacterTransform);
-            _dynamicTargetCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight,
-                _cameraData._cameraSettings.CameraTargetForwardMovementDistance);
+            _cameraDynamicTarget = GameObject.Instantiate(_cameraData.CharacterAimingCameraSettings.AimDotPrefab, 
+                characterModel.CharacterTransform);
+            _dynamicTargetCenterPosition = new Vector3(0f, _cameraData.CharacterAimingCameraSettings.CameraTargetHeight,
+                _cameraData.CharacterAimingCameraSettings.CameraTargetForwardMovementDistance);
             _cameraDynamicTarget.transform.localPosition = _dynamicTargetCenterPosition;
-            _cameraDynamicTarget.name = _cameraData._cameraSettings.CameraTargetName + "Dynamic";
+            _cameraDynamicTarget.name = _cameraData.CharacterAimingCameraSettings.CameraTargetName + "Dynamic";
+            _cameraDynamicTarget.SetActive(false);
 
             _cameraStaticTarget = GameObject.Instantiate(new GameObject(), characterModel.CharacterTransform);
-            _staticTargetCenterPosition = new Vector3(0f, _cameraData._cameraSettings.CameraTargetHeight, 0f);
+            _staticTargetCenterPosition = new Vector3(0f, _cameraData.CharacterAimingCameraSettings.CameraTargetHeight, 0f);
             _cameraStaticTarget.transform.localPosition = _staticTargetCenterPosition;
-            _cameraStaticTarget.name = _cameraData._cameraSettings.CameraTargetName + "Static";
-            _aimCanvas = GameObject.Instantiate(_cameraData._cameraSettings.AimCanvasPrefab);
+            _cameraStaticTarget.name = _cameraData.CharacterAimingCameraSettings.CameraTargetName + "Static";
+            _aimCanvas = GameObject.Instantiate(_cameraData.CharacterAimingCameraSettings.AimCanvasPrefab);
             _aimCanvas.SetActive(false);
 
             _aimingDots = new GameObject[AMOUNT_OF_AIM_LINE_STEPS];
 
             for (int i = 0; i < AMOUNT_OF_AIM_LINE_STEPS; i++)
             {
-                _aimingDots[i] = GameObject.Instantiate(_cameraData._cameraSettings.AimProjectileLinePrefab,
+                _aimingDots[i] = GameObject.Instantiate(_cameraData.CharacterAimingCameraSettings.AimProjectileLinePrefab,
                     _cameraStaticTarget.transform.position, Quaternion.identity);
             }
 
@@ -112,14 +116,16 @@ namespace BeastHunter
 
             CharacterCamera.transform.rotation = Quaternion.Euler(0, characterModel.CharacterCommonSettings.
                 InstantiateDirection, 0);
-            CharacterFreelookCamera = _cameraData._cameraSettings.CreateCharacterFreelookCamera(_cameraStaticTarget.
-                transform, _cameraStaticTarget.transform);
+            CharacterFreelookCamera = _cameraData.CharacterFreelookCameraSettings.
+                CreateCharacterFreelookCamera(_cameraStaticTarget.transform, _cameraStaticTarget.transform);
             //CharacterKnockedDownCamera = _cameraData._cameraSettings.CreateCharacterKnockedDownCamera(characterModel.
             //    PuppetMaster.transform.GetChild(0), characterModel.PuppetMaster.transform.GetChild(0));
-            CharacterTargetCamera = _cameraData._cameraSettings.CreateCharacterTargetCamera(_cameraStaticTarget.
-                transform, _cameraStaticTarget.transform);
-            CharacterAimingCamera = _cameraData._cameraSettings.CreateCharacterAimingCamera(_cameraStaticTarget.
-                transform, _cameraDynamicTarget.transform);
+            CharacterTargetCamera = _cameraData.CharacterTargetingCameraSettings.
+                CreateCharacterTargetCamera(_cameraStaticTarget.transform, _cameraStaticTarget.transform);
+            CharacterAimingCamera = _cameraData.CharacterAimingCameraSettings.
+                CreateCharacterAimingCamera(_cameraStaticTarget.transform, _cameraDynamicTarget.transform);
+            _aimComposer = CharacterAimingCamera.GetCinemachineComponent<CinemachineComposer>();
+            _aimTransposer = CharacterAimingCamera.GetCinemachineComponent<CinemachineTransposer>();
 
             CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
 
@@ -168,21 +174,21 @@ namespace BeastHunter
             switch (currentState?.StateName)
             {
                 case CharacterStatesEnum.Aiming:
-                    SetBlendTime(_cameraData._cameraSettings.CharacterAimingCameraBlendTIme);
+                    SetBlendTime(_cameraData.CharacterAimingCameraSettings.CharacterAimingCameraBlendTIme);
                     SetActiveCamera(CharacterAimingCamera);
                     GetWeaponShootTransform();
                     break;
                 case CharacterStatesEnum.Battle:
-                    SetBlendTime(_cameraData._cameraSettings.CharacterTargetCameraBlendTime);
+                    SetBlendTime(_cameraData.CharacterTargetingCameraSettings.CharacterTargetCameraBlendTime);
                     SetActiveCamera(CharacterTargetCamera);
                     break;
                 case CharacterStatesEnum.Dead:
                     //GetKnockedDownCameraToFreeLookPosition();
-                    SetBlendTime(_cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime);
+                    SetBlendTime(_cameraData.CharacterKnockedDownCameraSettings.CharacterKnockedDownCameraBlendTime);
                     SetActiveCamera(CharacterFreelookCamera);
                     break;
                 case CharacterStatesEnum.Idle:
-                    SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
+                    SetBlendTime(_cameraData.CharacterFreelookCameraSettings.CharacterFreelookCameraBlendTime);
                     SetActiveCamera(CharacterFreelookCamera);
                     break;
                 case CharacterStatesEnum.Movement:
@@ -192,17 +198,17 @@ namespace BeastHunter
                     }
                     else
                     {
-                        SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
+                        SetBlendTime(_cameraData.CharacterFreelookCameraSettings.CharacterFreelookCameraBlendTime);
                     }
                     SetActiveCamera(CharacterFreelookCamera);
                     break;
                 case CharacterStatesEnum.KnockedDown:
                     //GetKnockedDownCameraToFreeLookPosition();
-                    SetBlendTime(_cameraData._cameraSettings.CharacterKnockedDownCameraBlendTime);
+                    SetBlendTime(_cameraData.CharacterKnockedDownCameraSettings.CharacterKnockedDownCameraBlendTime);
                     SetActiveCamera(CharacterFreelookCamera);
                     break;
                 case CharacterStatesEnum.GettingUp:
-                    SetBlendTime(_cameraData._cameraSettings.CharacterFreelookCameraBlendTime);
+                    SetBlendTime(_cameraData.CharacterFreelookCameraSettings.CharacterFreelookCameraBlendTime);
                     SetActiveCamera(CharacterFreelookCamera);
                     break;
                 default:
@@ -237,10 +243,10 @@ namespace BeastHunter
 
         public void UnlockFreeLookCamera()
         {
-            CharacterFreelookCamera.m_XAxis.m_MaxSpeed = _cameraData._cameraSettings.CharacterFreelookCamera.
-                m_XAxis.m_MaxSpeed;
-            CharacterFreelookCamera.m_YAxis.m_MaxSpeed = _cameraData._cameraSettings.CharacterFreelookCamera.
-                m_YAxis.m_MaxSpeed;
+            CharacterFreelookCamera.m_XAxis.m_MaxSpeed = _cameraData.CharacterFreelookCameraSettings.
+                CharacterFreelookCamera.m_XAxis.m_MaxSpeed;
+            CharacterFreelookCamera.m_YAxis.m_MaxSpeed = _cameraData.CharacterFreelookCameraSettings.
+                CharacterFreelookCamera.m_YAxis.m_MaxSpeed;
         }
 
         public void CenterCameraTarget()
@@ -250,39 +256,47 @@ namespace BeastHunter
 
         public void SetCameraTargetPosition(Vector3 position, bool isPositionAdded)
         {
-            if (isPositionAdded)
+            if (_context.CharacterModel.CurrentWeaponData.Value != null)
             {
-                _cameraDynamicTarget.transform.localPosition = new Vector3(
-                    Mathf.Clamp(_cameraDynamicTarget.transform.localPosition.x - position.x * _cameraData._cameraSettings.
-                        CameraTargetSpeedX * Time.deltaTime, _cameraData._cameraSettings.CameraTargetDistanceMoveX.x,
-                            _cameraData._cameraSettings.CameraTargetDistanceMoveX.y),
-                    Mathf.Clamp(_cameraDynamicTarget.transform.localPosition.y - position.y * _cameraData._cameraSettings.
-                        CameraTargetSpeedY * Time.deltaTime, _cameraData._cameraSettings.CameraTargetDistanceMoveY.x,
-                            _cameraData._cameraSettings.CameraTargetDistanceMoveY.y),
-                    _cameraDynamicTarget.transform.localPosition.z);
-            }
-            else
-            {
-                _cameraDynamicTarget.transform.localPosition = new Vector3(
-                    Mathf.Clamp(position.x * _cameraData._cameraSettings.
-                        CameraTargetSpeedX * Time.deltaTime, _cameraData._cameraSettings.CameraTargetDistanceMoveX.x,
-                            _cameraData._cameraSettings.CameraTargetDistanceMoveX.y),
-                    Mathf.Clamp(position.y * _cameraData._cameraSettings.
-                        CameraTargetSpeedY * Time.deltaTime, _cameraData._cameraSettings.CameraTargetDistanceMoveY.x,
-                            _cameraData._cameraSettings.CameraTargetDistanceMoveY.y),
-                    _cameraDynamicTarget.transform.localPosition.z);
+                if (isPositionAdded)
+                {
+                    _cameraDynamicTarget.transform.localPosition = new Vector3(
+                        _weaponShootTransform.localPosition.x,
+                        Mathf.Clamp(_cameraDynamicTarget.transform.localPosition.y - position.y * _cameraData.
+                            CharacterAimingCameraSettings.CameraTargetSpeedY * Time.deltaTime, _cameraData.
+                                CharacterAimingCameraSettings.CameraTargetDistanceMoveY.x, _cameraData.
+                                    CharacterAimingCameraSettings.CameraTargetDistanceMoveY.y), _cameraDynamicTarget.
+                                        transform.localPosition.z);
+                }
+                else
+                {
+                    _cameraDynamicTarget.transform.localPosition = new Vector3(
+                        _weaponShootTransform.localPosition.x,
+                        Mathf.Clamp(position.y * _cameraData.CharacterAimingCameraSettings.CameraTargetSpeedY *
+                            Time.deltaTime, _cameraData.CharacterAimingCameraSettings.CameraTargetDistanceMoveY.x,
+                                _cameraData.CharacterAimingCameraSettings.CameraTargetDistanceMoveY.y),
+                        _cameraDynamicTarget.transform.localPosition.z);
+                }
+
+                float difference = _weaponShootTransform != null ? (_weaponShootTransform.position - _context.CharacterModel.
+                    CharacterTransform.position).x : 0;
+                //_aimComposer.m_TrackedObjectOffset.x = -difference;
+                _aimTransposer.m_FollowOffset.x = difference / 2;
             }
         }
 
         private void EnableDisableAimTarget(CinemachineVirtualCameraBase currentCamera)
         {
-            if (currentCamera == CharacterAimingCamera && !_isCurrentWeaponWithProjectile)
+            if (currentCamera == CharacterAimingCamera && _context.CharacterModel.
+                CurrentWeaponData.Value.Type == WeaponType.Shooting)
             {
-                _aimCanvas.SetActive(true);
+                //_aimCanvas.SetActive(true);
+                _cameraDynamicTarget.SetActive(true);
             }
-            else if (PreviousActiveCamera == CharacterAimingCamera && _aimCanvas.activeSelf)
+            else if (PreviousActiveCamera == CharacterAimingCamera)
             {
-                _aimCanvas.SetActive(false);
+                //_aimCanvas.SetActive(false);
+                _cameraDynamicTarget.SetActive(false);
             }
         }
 
@@ -472,8 +486,9 @@ namespace BeastHunter
         {
             if (state == PlayModeStateChange.ExitingPlayMode)
             {
-                _cameraData._cameraSettings.SaveCameraSettings(CharacterFreelookCamera, 
-                    CharacterTargetCamera, CharacterAimingCamera);
+                _cameraData.CharacterFreelookCameraSettings.SaveCameraSettings(CharacterFreelookCamera);
+                _cameraData.CharacterTargetingCameraSettings.SaveTargetCameraSettings(CharacterTargetCamera);
+                _cameraData.CharacterAimingCameraSettings.SaveAimingCameraSettings(CharacterAimingCamera);
                 EditorApplication.playModeStateChanged -= SaveCameraSettings;
             }
         }
