@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 namespace BeastHunter
@@ -26,19 +27,23 @@ namespace BeastHunter
 
         public bool IsEnoughFreeSlots(int amount)
         {
-            int freeSlots = 0;
-            for (int i = 0; i < _items.Count; i++)
+            if (amount > 0)
             {
-                if (_items[i] == null)
+                int freeSlots = 0;
+                for (int i = 0; i < _items.Count; i++)
                 {
-                    freeSlots++;
-                    if (freeSlots >= amount)
+                    if (_items[i] == null)
                     {
-                        return true;
+                        freeSlots++;
+                        if (freeSlots >= amount)
+                        {
+                            return true;
+                        }
                     }
                 }
+                return false;
             }
-            return false;
+            return true;
         }
 
         public bool RemovePockets(int amount)
@@ -73,6 +78,26 @@ namespace BeastHunter
                 }
             }
             return true;
+        }
+
+        public override bool PutItem(int slotIndex, HubMapUIBaseItemModel item)
+        {
+            if (item != null)
+            {
+                if (item.ItemType == HubMapUIItemType.PocketItem)
+                {
+                    return base.PutItem(slotIndex, item);
+                }
+                else
+                {
+                    HubMapUIServices.SharedInstance.GameMessages.Notice("This is not a pocket thing");
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

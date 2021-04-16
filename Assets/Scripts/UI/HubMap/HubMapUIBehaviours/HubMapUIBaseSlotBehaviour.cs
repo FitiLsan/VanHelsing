@@ -2,8 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Extensions;
-
+using UnityEngine.InputSystem;
 
 namespace BeastHunter
 {
@@ -105,7 +104,7 @@ namespace BeastHunter
         {
             if (_draggedObject != null)
             {
-                _draggedObject.transform.position = Input.mousePosition;
+                _draggedObject.transform.position = Mouse.current.position.ReadValue();
             }
         }
 

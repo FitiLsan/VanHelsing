@@ -3,7 +3,7 @@
     public enum HubMapUIItemStorageType
     {
         None = 0,
-        CharacterInventory = 1,
+        CharacterBackpuck = 1,
         GeneralInventory = 2,
         ShopStorage = 3,
         BuyBackStorage = 4,

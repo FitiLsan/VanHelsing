@@ -54,7 +54,7 @@ namespace BeastHunter
             _view3DModelAnimatorController = data.View3DModelAnimatorController;
             _defaultCharacterMaterial = data.DefaultMaterial;
 
-            Backpack = new HubMapUIItemStorage(backpackSize, HubMapUIItemStorageType.CharacterInventory);
+            Backpack = new HubMapUIItemStorage(backpackSize, HubMapUIItemStorageType.CharacterBackpuck);
             for (int i = 0; i < data.StartBackpuckItems.Length; i++)
             {
                 HubMapUIBaseItemModel itemModel = HubMapUIServices.SharedInstance.ItemInitializeService.InitializeItemModel(data.StartBackpuckItems[i]);

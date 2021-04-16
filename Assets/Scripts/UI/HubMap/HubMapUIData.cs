@@ -17,6 +17,7 @@ namespace BeastHunter
         [SerializeField] private GameObject _shopSlotUIPrefab;
         [SerializeField] private GameObject _answerButtonUIPrefab;
         [SerializeField] private GameObject _characters3DViewRenderingPrefab;
+        [SerializeField] private GameObject _characterBackpuckSlotUIPrefab;
 
         [Header("UI settings")]
         [SerializeField] private bool _mapOnStartEnabled;
@@ -29,19 +30,19 @@ namespace BeastHunter
         [SerializeField] private HubMapUIContextData _contextData;
 
         [Header("Equipment slot type sprites")]
-        [SerializeField] Sprite WeaponSlotIcon;
-        [SerializeField] Sprite ArmSlotIcon;
-        [SerializeField] Sprite BackSlotIcon;
-        [SerializeField] Sprite HandSlotIcon;
-        [SerializeField] Sprite HeadSlotIcon;
-        [SerializeField] Sprite HipsSlotIcon;
-        [SerializeField] Sprite LegSlotIcon;
-        [SerializeField] Sprite ShoulderSlotIcon;
-        [SerializeField] Sprite TorsoSlotIcon;
-        [SerializeField] Sprite RingSlotIcon;
-        [SerializeField] Sprite AmuletSlotIcon;
-        [SerializeField] Sprite BeltSlotIcon;
-        [SerializeField] Sprite PocketItemSlotIcon;
+        [SerializeField] Sprite _weaponSlotIcon;
+        [SerializeField] Sprite _armSlotIcon;
+        [SerializeField] Sprite _backSlotIcon;
+        [SerializeField] Sprite _handSlotIcon;
+        [SerializeField] Sprite _headSlotIcon;
+        [SerializeField] Sprite _hipsSlotIcon;
+        [SerializeField] Sprite _legSlotIcon;
+        [SerializeField] Sprite _shoulderSlotIcon;
+        [SerializeField] Sprite _torsoSlotIcon;
+        [SerializeField] Sprite _ringSlotIcon;
+        [SerializeField] Sprite _amuletSlotIcon;
+        [SerializeField] Sprite _beltSlotIcon;
+        [SerializeField] Sprite _pocketItemSlotIcon;
 
         #endregion
 
@@ -57,12 +58,16 @@ namespace BeastHunter
         public GameObject AnswerButtonUIPrefab => _answerButtonUIPrefab;
         public GameObject Characters3DViewRenderingPrefab => _characters3DViewRenderingPrefab;
         public Vector3 Characters3DViewRenderingObjectPosition => _characters3DViewRenderingObjectPosition;
+        public GameObject CharacterBackpuckSlotUIPrefab => _characterBackpuckSlotUIPrefab;
 
         public bool MapOnStartEnabled => _mapOnStartEnabled;
 
         public HubMapUIMapObjectData[] MapObjects => (HubMapUIMapObjectData[])_mapObjects.Clone();
 
         public HubMapUIContextData ContextData => _contextData;
+
+        public Sprite WeaponSlotIcon => _weaponSlotIcon;
+        public Sprite PocketItemSlotIcon => _pocketItemSlotIcon;
 
         #endregion
 
@@ -73,17 +78,17 @@ namespace BeastHunter
         {
             switch (clothType)
             {
-                case HubMapUIClothesType.Arms: return ArmSlotIcon;
-                case HubMapUIClothesType.Back: return BackSlotIcon;
-                case HubMapUIClothesType.Hands: return HandSlotIcon;
-                case HubMapUIClothesType.Head: return HeadSlotIcon;
-                case HubMapUIClothesType.Hips: return HipsSlotIcon;
-                case HubMapUIClothesType.Legs: return LegSlotIcon;
-                case HubMapUIClothesType.Shoulders: return ShoulderSlotIcon;
-                case HubMapUIClothesType.Torso: return TorsoSlotIcon;
-                case HubMapUIClothesType.Ring: return RingSlotIcon;
-                case HubMapUIClothesType.Amulet: return AmuletSlotIcon;
-                case HubMapUIClothesType.Belt: return BeltSlotIcon;
+                case HubMapUIClothesType.Arms: return _armSlotIcon;
+                case HubMapUIClothesType.Back: return _backSlotIcon;
+                case HubMapUIClothesType.Hands: return _handSlotIcon;
+                case HubMapUIClothesType.Head: return _headSlotIcon;
+                case HubMapUIClothesType.Hips: return _hipsSlotIcon;
+                case HubMapUIClothesType.Legs: return _legSlotIcon;
+                case HubMapUIClothesType.Shoulders: return _shoulderSlotIcon;
+                case HubMapUIClothesType.Torso: return _torsoSlotIcon;
+                case HubMapUIClothesType.Ring: return _ringSlotIcon;
+                case HubMapUIClothesType.Amulet: return _amuletSlotIcon;
+                case HubMapUIClothesType.Belt: return _beltSlotIcon;
                 default:
                     Debug.LogError(this + ": incorrect cloth type");
                     return null;

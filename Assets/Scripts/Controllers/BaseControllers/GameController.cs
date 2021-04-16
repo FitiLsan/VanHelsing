@@ -8,17 +8,11 @@ namespace BeastHunter
         #region Fields
 
         private GameStateController _activeController;
-        private MainInput Input;
 
         #endregion
 
 
         #region UnityMetods
-
-        private void Awake()
-        {
-            Input = new MainInput();
-        }
 
         void Start()
         {
@@ -26,7 +20,6 @@ namespace BeastHunter
             Services.SharedInstance.InitializeGameServices(context);            
             _activeController = new GameSystemsController(context);
             _activeController.Initialize();
-            Input.Player.Bestiary.performed += x => Debug.LogError("pressed ");
         }
 
         private void Update()
@@ -48,16 +41,6 @@ namespace BeastHunter
         {
             _activeController.TearDown();
             Services.SharedInstance.DisposeGameServices();
-        }
-
-        private void OnEnable()
-        {
-            Input.Enable();
-        }
-
-        private void OnDisable()
-        {
-            Input.Disable();
         }
 
         #endregion

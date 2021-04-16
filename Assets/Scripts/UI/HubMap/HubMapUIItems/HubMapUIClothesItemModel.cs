@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 namespace BeastHunter
 {
     public class HubMapUIClothesItemModel : HubMapUIBaseItemModel
@@ -17,16 +18,15 @@ namespace BeastHunter
         #endregion
 
 
-        public HubMapUIClothesItemModel(HubMapUIBaseItemData data) : base(data)
+        public HubMapUIClothesItemModel(HubMapUIClothesItemData data) : base(data)
         {
-            HubMapUIClothesItemData clothesData = data as HubMapUIClothesItemData;
-            ClothesType = clothesData.ClothesType;
-            PocketsAmount = clothesData.PocketsAmount;
-            FantasyHeroMaterial = clothesData.FantasyHeroMaterial;
-            PartsNamesAllGender = clothesData.ClothesPartsNamesAllGender;
-            PartsNamesMale = clothesData.ClothesPartsNamesMale;
-            PartsNamesFemale = clothesData.ClothesPartsNamesFemale;
-            DisabledHeadParts = clothesData.DisabledHeadParts;
+            ClothesType = data.ClothesType;
+            PocketsAmount = data.PocketsAmount;
+            FantasyHeroMaterial = data.FantasyHeroMaterial;
+            PartsNamesAllGender = data.ClothesPartsNamesAllGender;
+            PartsNamesMale = data.ClothesPartsNamesMale;
+            PartsNamesFemale = data.ClothesPartsNamesFemale;
+            DisabledHeadParts = data.DisabledHeadParts;
         }
     }
 }
