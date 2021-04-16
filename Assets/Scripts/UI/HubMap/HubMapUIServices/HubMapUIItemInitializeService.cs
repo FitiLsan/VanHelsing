@@ -10,7 +10,10 @@
                     return new HubMapUIBaseItemModel(data);
 
                 case HubMapUIItemType.Cloth:
-                    return new HubMapUIClothesItemModel(data);
+                    return new HubMapUIClothesItemModel(data as HubMapUIClothesItemData);
+
+                case HubMapUIItemType.PocketItem:
+                    return new HubMapUIPocketItemModel(data as HubMapUIPocketItemData);
 
                 //todo other cases
 

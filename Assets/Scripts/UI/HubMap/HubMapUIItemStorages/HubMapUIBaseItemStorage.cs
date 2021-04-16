@@ -26,27 +26,27 @@ namespace BeastHunter
 
         #region Methods
 
-        public abstract bool PutItem(int slotNumber, HubMapUIBaseItemModel item);
+        public abstract bool PutItem(int slotIndex, HubMapUIBaseItemModel item);
         public abstract bool PutItemToFirstEmptySlot(HubMapUIBaseItemModel item);
 
-        public virtual HubMapUIBaseItemModel TakeItem(int slotNumber)
+        public virtual bool RemoveItem(int slotIndex)
         {
-            HubMapUIBaseItemModel takedItem = _items[slotNumber];
-            _items[slotNumber] = null;
-            OnTakeItemFromSlot(slotNumber, takedItem);
-            return takedItem;
+            HubMapUIBaseItemModel takenItem = _items[slotIndex];
+            _items[slotIndex] = null;
+            OnTakeItemFromSlot(slotIndex, takenItem);
+            return true;
         }
 
-        public virtual HubMapUIBaseItemModel GetItemBySlot(int slotNumber)
+        public virtual HubMapUIBaseItemModel GetItemBySlot(int slotIndex)
         {
-            return _items[slotNumber];
+            return _items[slotIndex];
         }
 
-        public virtual Sprite GetItemIconBySlot(int slotNumber)
+        public virtual Sprite GetItemIconBySlot(int slotIndex)
         {
-            if (_items[slotNumber] != null)
+            if (_items[slotIndex] != null)
             {
-                return _items[slotNumber].Icon;
+                return _items[slotIndex].Icon;
             }
             else
             {
@@ -65,19 +65,19 @@ namespace BeastHunter
             {
                 if (_items[i] != null)
                 {
-                    TakeItem(i);
+                    RemoveItem(i);
                 }
             }
         }
 
-        protected virtual void OnPutItemToSlot(int slotNumber, HubMapUIBaseItemModel newItem)
+        protected virtual void OnPutItemToSlot(int slotIndex, HubMapUIBaseItemModel newItem)
         {
-            OnPutItemToSlotHandler?.Invoke(StorageType, slotNumber, newItem);
+            OnPutItemToSlotHandler?.Invoke(StorageType, slotIndex, newItem);
         }
 
-        protected virtual void OnTakeItemFromSlot(int slotNumber, HubMapUIBaseItemModel takedItem)
+        protected virtual void OnTakeItemFromSlot(int slotIndex, HubMapUIBaseItemModel takedItem)
         {
-            OnTakeItemFromSlotHandler?.Invoke(StorageType, slotNumber, takedItem);
+            OnTakeItemFromSlotHandler?.Invoke(StorageType, slotIndex, takedItem);
         }
 
         #endregion

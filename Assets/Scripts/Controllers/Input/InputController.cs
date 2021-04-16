@@ -49,6 +49,7 @@ namespace BeastHunter
             _mainInput.Player.Use.performed += ctx => _inputModel.OnUse?.Invoke();
             _mainInput.Player.WeaponRemove.performed += ctx => _inputModel.OnRemoveWeapon?.Invoke();
             _mainInput.Player.WeaponWheel.performed += ctx => _inputModel.OnWeaponWheel?.Invoke(ctx.ReadValueAsButton());
+            _mainInput.Player.Bestiary.performed += x => Debug.LogError("pressed ");
         }
 
         #endregion

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
+
 namespace BeastHunter
 {
     class HubMapUIView3DModelBehaviour : MonoBehaviour, IDragHandler, IDropHandler
@@ -16,7 +17,7 @@ namespace BeastHunter
         {
             if (RotateObject != null)
             {
-                float rotX = Input.GetAxis("Mouse X") * ROTATE_SPEED * Mathf.Deg2Rad;
+                float rotX = HubMapUIServices.SharedInstance.MainInput.Player.MouseLook.ReadValue<Vector2>().x * ROTATE_SPEED * Mathf.Deg2Rad;
                 RotateObject.transform.Rotate(Vector3.up, -rotX);
             }
         }

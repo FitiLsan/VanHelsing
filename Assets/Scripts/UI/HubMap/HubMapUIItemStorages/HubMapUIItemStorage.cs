@@ -25,13 +25,13 @@ namespace BeastHunter
 
         #region Methods
 
-        public override bool PutItem(int slotNumber, HubMapUIBaseItemModel item)
+        public override bool PutItem(int slotIndex, HubMapUIBaseItemModel item)
         {
             bool isSucceful = false;
 
-            if (_items[slotNumber] == null)
+            if (_items[slotIndex] == null)
             {
-                _items[slotNumber] = item;
+                _items[slotIndex] = item;
                 isSucceful = true;
             }
             else
@@ -41,7 +41,11 @@ namespace BeastHunter
 
             if (isSucceful)
             {
-                OnPutItemToSlot(slotNumber, item);
+                OnPutItemToSlot(slotIndex, item);
+            }
+            else
+            {
+                HubMapUIServices.SharedInstance.GameMessages.Notice(StorageType + " is full");
             }
 
             return isSucceful;
@@ -89,7 +93,7 @@ namespace BeastHunter
             {
                 if (_items[i].DataInstanceID == item.GetInstanceID())
                 {
-                    TakeItem(i);
+                    RemoveItem(i);
                     return true;
                 }
             }
