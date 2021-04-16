@@ -71,8 +71,8 @@ namespace BeastHunter
                interactionSystem.StopInteraction(currentHand);
                 target.GetComponent<Rigidbody>().isKinematic = false;
                 currentTarget.transform.rotation = Quaternion.Euler(0,0,0);
-                puppetMaster.mode = PuppetMaster.Mode.Active;
-                puppetMaster.state = PuppetMaster.State.Frozen;
+               puppetMaster.mode = PuppetMaster.Mode.Active;
+               puppetMaster.state = PuppetMaster.State.Frozen;
                 TimeRemaining timeRemaining = new TimeRemaining(() => puppetMaster.state = PuppetMaster.State.Alive, 1f);
                 timeRemaining.AddTimeRemaining(1f);
 
