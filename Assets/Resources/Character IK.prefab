@@ -9151,6 +9151,7 @@ GameObject:
   - component: {fileID: 5295378123164078622}
   - component: {fileID: 5773304041574916820}
   - component: {fileID: 8335986095076144122}
+  - component: {fileID: 2560276046512151630}
   m_Layer: 8
   m_Name: Chr_FantasyHero_Preset_79
   m_TagString: Player
@@ -9898,7 +9899,7 @@ MonoBehaviour:
   camRaycastDistance: 1
   fullBody: {fileID: 5295378123164078622}
   lookAt:
-    ik: {fileID: 0}
+    ik: {fileID: 2560276046512151630}
     lerpSpeed: 5
     weightSpeed: 1
     isPaused: 0
@@ -9914,11 +9915,114 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 165b0e06ae116d94582457e831c305d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LookAtIK: {fileID: 2560276046512151630}
   interactionSystem: {fileID: 5773304041574916820}
   target: {fileID: 0}
   interrupt: 0
   ClosestTriggerIndex: 0
-  currentTarget: {fileID: 0}
+--- !u!114 &2560276046512151630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7669808007086646823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776adaaacdc5c4e8ab0395120a6e972b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fixTransforms: 1
+  solver:
+    IKPosition: {x: 0, y: 0.8762761, z: 3}
+    IKPositionWeight: 1
+    root: {fileID: 6191437859889331572}
+    target: {fileID: 0}
+    spine:
+    - transform: {fileID: 9167029004425647974}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: -10.393265, y: 1.3322676e-15, z: 4.6155367e-15}
+      defaultLocalRotation: {x: 0.9950197, y: -0.09967895, z: 1.3224718e-15, w: 7.094358e-17}
+      length: 0
+      sqrMag: 0
+      axis: {x: -0.049695373, y: -0.9987646, z: -0.00000011920929}
+      baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
+    - transform: {fileID: 6267063690394123750}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: -18.151169, y: 1.5543122e-15, z: -7.1010728e-15}
+      defaultLocalRotation: {x: 0.99518615, y: -0.098002784, z: -6.0366487e-16, w: -1.2097554e-16}
+      length: 0
+      sqrMag: 0
+      axis: {x: 0.14608017, y: 0.98927283, z: -0.00000008940697}
+      baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
+    - transform: {fileID: 1896288131759483171}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: -17.903725, y: 2.220446e-15, z: 7.5097255e-15}
+      defaultLocalRotation: {x: 0.9938103, y: -0.11109032, z: -3.483493e-17, w: -6.5507636e-17}
+      length: 0
+      sqrMag: 0
+      axis: {x: -0.075962186, y: -0.9971106, z: 0.00000011920929}
+      baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
+    - transform: {fileID: 2118113804177416548}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: -0, y: 87.62761, z: 0}
+      defaultLocalRotation: {x: 0.46113664, y: -0.5360532, z: -0.46113664, w: 0.5360532}
+      length: 0
+      sqrMag: 0
+      axis: {x: 0.149412, y: 0.9887751, z: -0.000000029802322}
+      baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
+    head:
+      transform: {fileID: 5856136678530886795}
+      weight: 1
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 1}
+      defaultLocalPosition: {x: -12.164435, y: -1.5099033e-14, z: -5.059176e-15}
+      defaultLocalRotation: {x: 0.458571, y: -0.5382496, z: 0.458571, w: 0.5382496}
+      length: 0
+      sqrMag: 0
+      axis: {x: 0, y: 0.00000005960465, z: 1}
+      baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
+    eyes: []
+    bodyWeight: 0.5
+    headWeight: 0.5
+    eyesWeight: 1
+    clampWeight: 0.5
+    clampWeightHead: 0.5
+    clampWeightEyes: 0.5
+    clampSmoothing: 2
+    spineWeightCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.3
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    spineTargetOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &7690889148778830307
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,11 +8,11 @@ namespace BeastHunter
 {
     public class PlayerInteractionCatch : MonoBehaviour
     {
+        public LookAtIK LookAtIK;
         public InteractionSystem interactionSystem; // Reference to the InteractionSystem component on the character
         public InteractionObject target; // The object to interact with
-        public bool interrupt;
-        public int ClosestTriggerIndex;
-        public InteractionObject currentTarget;
+        public bool interrupt = false;
+        public int ClosestTriggerIndex; // for debug
 
         private void Update()
         {
@@ -37,14 +37,20 @@ namespace BeastHunter
         private void InteractionTriggerUpdate()
         {
             ClosestTriggerIndex = interactionSystem.GetClosestTriggerIndex();
-                if (ClosestTriggerIndex == -1)
-                {
-                    return;
-                }
+            if (ClosestTriggerIndex == -1)
+            {
+                target = null;
+                LookAtIK.solver.target = null;
+                return;
+            }
+            if (ClosestTriggerIndex >= 0)
+            {
                 target = interactionSystem.GetClosestInteractionObjectInRange();
-                interactionSystem.TriggerInteraction(ClosestTriggerIndex, false, out currentTarget);
+                interactionSystem.TriggerInteraction(ClosestTriggerIndex, interrupt);
+                LookAtIK.solver.target = target.transform;
+            }
 
-            
+
         }
     }
 }
