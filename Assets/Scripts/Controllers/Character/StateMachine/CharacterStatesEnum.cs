@@ -21,6 +21,7 @@
         GettingUp,
         MidAir,
         Hitted,
+        ControlTransferring,
     }
 }
 

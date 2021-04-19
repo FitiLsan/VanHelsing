@@ -55,6 +55,7 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.GettingUp, new GettingUpState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.MidAir, new MidAirState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Hitted, new HittedState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.ControlTransferring, new ControlTransferringState(_context, this));
         }
 
         #endregion
