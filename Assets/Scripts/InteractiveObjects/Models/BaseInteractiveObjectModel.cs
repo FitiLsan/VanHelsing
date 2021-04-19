@@ -7,6 +7,7 @@
         public BaseInteractiveObjectData InteractiveObjectData { get; protected set; }
         public bool IsInteractive { get; set; }
         public bool IsNeedControl { get; set; }
+        public bool IsActivated { get; set; }
 
         #endregion
     }

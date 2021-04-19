@@ -12,6 +12,7 @@ namespace BeastHunter
         public Transform BoltPointTransform;
         public Transform HorizontalTurn;
         public Transform VerticalTurn;
+        public bool IsActive;
 
         private void Awake()
         {
@@ -19,6 +20,11 @@ namespace BeastHunter
         }
         private void Update()
         {
+            if(!IsActive)
+            {
+                return;
+            }    
+
             if (Input.GetKeyDown(KeyCode.C))
             {
                 Reload();

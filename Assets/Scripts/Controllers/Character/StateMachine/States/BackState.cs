@@ -872,9 +872,17 @@ namespace BeastHunter
                 if (interactiveObjectModel.IsInteractive)
                 {
                     interactiveObjectModel.InteractiveObjectData.Interact(interactiveObjectModel);
-                    if(interactiveObjectModel.IsNeedControl)
+
+                    if (interactiveObjectModel.IsNeedControl)
                     {
-                        _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.ControlTransferring]);
+                        if (interactiveObjectModel.IsActivated)
+                        {
+                            _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.ControlTransferring]);
+                        }
+                        else
+                        {
+                            _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Idle]);
+                        }
                     }
                 }
             }

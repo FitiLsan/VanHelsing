@@ -1,6 +1,7 @@
 using RootMotion.FinalIK;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 
@@ -20,13 +21,12 @@ namespace BeastHunter
 
             if (Input.GetKeyDown(KeyCode.N))
             {
-                interactionSystem.StartInteraction(FullBodyBipedEffector.LeftHand, target, interrupt);
-                interactionSystem.StartInteraction(FullBodyBipedEffector.RightHand, target, interrupt);
+                StartInteract();
             }
 
             if (Input.GetKeyDown(KeyCode.M))
             {
-                interactionSystem.StopAll();
+                StopInteract();
             }
         }
         private void OnTriggerEnter(Collider other)
@@ -48,9 +48,19 @@ namespace BeastHunter
                 target = interactionSystem.GetClosestInteractionObjectInRange();
                 interactionSystem.TriggerInteraction(ClosestTriggerIndex, interrupt);
                 LookAtIK.solver.target = target.transform;
+                MessageBroker.Default.Publish(this);
             }
+        }
 
+        public void StartInteract()
+        {
+            interactionSystem.StartInteraction(FullBodyBipedEffector.LeftHand, target, interrupt);
+            interactionSystem.StartInteraction(FullBodyBipedEffector.RightHand, target, interrupt);
+        }
 
+        public void StopInteract()
+        {
+            interactionSystem.StopAll();
         }
     }
 }

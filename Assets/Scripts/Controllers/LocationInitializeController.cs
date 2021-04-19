@@ -54,6 +54,7 @@ namespace BeastHunter
             _interactiveObjectsFactoryList.Add(new CreateHideBushModel());
             _interactiveObjectsFactoryList.Add(new CreateBouldersModel());
             _interactiveObjectsFactoryList.Add(new CreateFallingTreeModel());
+            _interactiveObjectsFactoryList.Add(new CreateBallistaModel());
         }
 
         private void RemoveSpawnPoints()
@@ -148,6 +149,9 @@ namespace BeastHunter
                         break;
                     case InteractiveObjectType.FallingTree:
                         interactiveObjectData = Data.FallingTreeData;
+                        break;
+                    case InteractiveObjectType.Ballista:
+                        interactiveObjectData = Data.BallistaData;
                         break;
                     default:
                         break;
