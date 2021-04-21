@@ -4,10 +4,19 @@ namespace BeastHunter
     public enum BuffEffectType
     {
         None,
-        Poison,
-        Blood,
-        Slow,
+
         Fire,
-        Water
+        Water,
+        Poison,
+        Electricity,
+        Frosting,
+
+        Smoke,
+        Steam,
+     
+        Bleeding,
+        Stunning,
+        Slowing,
+        Overturning,
     }
 }

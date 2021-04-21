@@ -78,11 +78,19 @@ namespace BeastHunter
 
         private void EnableEffect(BuffEffectType effectType)
         {
+            if(effectType.Equals(BuffEffectType.None))
+            {
+                return;
+            }
             _effectsDic[effectType.ToString()].Play(true);
         }
 
         private void DisableEffect(BuffEffectType effectType)
         {
+            if (effectType.Equals(BuffEffectType.None))
+            {
+                return;
+            }
             _effectsDic[effectType.ToString()].Stop(true);
         }
 

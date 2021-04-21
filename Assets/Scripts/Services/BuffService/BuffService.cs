@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+using System.Linq;
 
 namespace BeastHunter
 {
@@ -51,8 +52,16 @@ namespace BeastHunter
         {
             var stats = GetStatsByInstanceID(instanceID);
             var buffHolder = stats.BuffHolder;
+            if (buffHolder.PermanentBuffList.Contains(buff))
+            {
+                return;
+            }
             foreach (var effect in buff.Effects)
             {
+                if (effect.BuffEffectType != BuffEffectType.None && buffHolder.PermanentBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect.BuffEffectType))))
+                {
+                    continue;
+                }
                 PermanentBuffDictionary[effect.Buff](stats, effect.Value);
             }
 
@@ -82,8 +91,16 @@ namespace BeastHunter
         {
             var stats = GetStatsByInstanceID(instanceID);
             var buffHolder = stats.BuffHolder;
+            if (buffHolder.TemporaryBuffList.Contains(buff))
+            {
+                return;
+            }
             foreach (var effect in buff.Effects)
             {
+                if (effect.BuffEffectType!= BuffEffectType.None && buffHolder.TemporaryBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect.BuffEffectType))))
+                {
+                    continue;
+                }
                 var modifiedBuffValue = buff.Type.Equals(BuffType.Debuf) ? effect.Value : effect.Value * -1;
                 if (effect.IsTicking)
                 {
@@ -134,6 +151,8 @@ namespace BeastHunter
              //   throw new System.Exception("There is no such buff at that stats list!");
             }
         }
+
+        #region Stats Impact
 
         private void HealthRegenBuff(Stats stats, float value)
         {
@@ -190,6 +209,9 @@ namespace BeastHunter
                 _context.CharacterModel.CurrentStats : _context.NpcModels[receiverID].CurrentStats;
            return receiverStats;
         }
+
+        #endregion
+
         #endregion
     }
 }

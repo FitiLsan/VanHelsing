@@ -77,15 +77,28 @@ namespace BeastHunter
                         (_enemyModel as BossModel).BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Standstill, type);
                     }
                     break;
-                case BuffEffectType.Blood:
-                    break;
-                case BuffEffectType.Poison:
-                    break;
-                case BuffEffectType.Slow:
-                    break;
                 case BuffEffectType.Water:
                     WaterReaction();
                     break;
+                case BuffEffectType.Poison:
+                    break;
+                case BuffEffectType.Frosting:
+                    break;
+                case BuffEffectType.Electricity:
+                    break;
+                case BuffEffectType.Bleeding:
+                    break;
+                case BuffEffectType.Slowing:
+                    break;
+                case BuffEffectType.Stunning:
+                    break;
+                case BuffEffectType.Overturning:
+                    break;
+                case BuffEffectType.Steam:
+                    break;
+                case BuffEffectType.Smoke:
+                    break;
+
             }
         }
         private void EndReaction(BuffEffectType type)
@@ -98,14 +111,25 @@ namespace BeastHunter
                         (_enemyModel as BossModel).BossStateMachine.CurrentState.OnExit();
                     }
                     break;
-                case BuffEffectType.Blood:
+                case BuffEffectType.Water:
                     break;
                 case BuffEffectType.Poison:
                     break;
-                case BuffEffectType.Slow:
+                case BuffEffectType.Frosting:
                     break;
-                case BuffEffectType.Water:
-                    WaterReaction();
+                case BuffEffectType.Electricity:
+                    break;
+                case BuffEffectType.Bleeding:
+                    break;
+                case BuffEffectType.Slowing:
+                    break;
+                case BuffEffectType.Stunning:
+                    break;
+                case BuffEffectType.Overturning:
+                    break;
+                case BuffEffectType.Steam:
+                    break;
+                case BuffEffectType.Smoke:
                     break;
             }
         }
