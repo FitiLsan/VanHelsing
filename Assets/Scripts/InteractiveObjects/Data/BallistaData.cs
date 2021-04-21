@@ -49,6 +49,7 @@ namespace BeastHunter
         {
             interactiveObjectModel.IsInteractive = false;
             (interactiveObjectModel as BallistaModel).CanvasObject.gameObject.SetActive(false);
+            (interactiveObjectModel as BallistaModel).BallistaAnimationController.IsActive = false;
             currentTarget = null;
         }
 

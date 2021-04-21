@@ -8,7 +8,7 @@ namespace BeastHunter
     {
         #region Properties
 
-        public GameObject Prefab { get; protected set; }
+    //    public GameObject Prefab { get; protected set; }
         public Transform CanvasObject { get; protected set; }
         public InteractableObjectBehavior InteractiveBehavior { get; protected set; }
         

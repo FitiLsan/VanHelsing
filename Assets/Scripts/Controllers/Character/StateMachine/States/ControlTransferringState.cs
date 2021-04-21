@@ -1,6 +1,8 @@
-﻿namespace BeastHunter
+﻿using UnityEngine;
+
+namespace BeastHunter
 {
-    public sealed class ControlTransferringState : CharacterBaseState, IAwake, ITearDown
+    public sealed class ControlTransferringState : CharacterBaseState, IAwake, ITearDown, IUpdate
     {
         #region ClassLifeCycle
 
@@ -52,9 +54,23 @@
         public override void Initialize(CharacterBaseState previousState = null)
         {
             base.Initialize(previousState);
-            _stateMachine.BackState.StopCharacter();
-          //  _characterModel.CharacterRigitbody.constraints = UnityEngine.RigidbodyConstraints.FreezePositionX | 
-         //       UnityEngine.RigidbodyConstraints.FreezePositionZ | UnityEngine.RigidbodyConstraints.FreezeRotation;
+
+            _characterModel.CurrentSpeed = 1;
+            //_characterModel.CharacterRigitbody.constraints = UnityEngine.RigidbodyConstraints.FreezePositionX |
+            //     UnityEngine.RigidbodyConstraints.FreezePositionZ | UnityEngine.RigidbodyConstraints.FreezeRotation;
+        }
+
+        public void Updating()
+        {
+            _stateMachine.BackState.CountSpeed();
+            ControlMovement();
+        }
+
+
+        private void ControlMovement()
+        {
+            _stateMachine.BackState.RotateCharacter(false, true);
+            _stateMachine.BackState.MoveCharacter(true, true);
         }
 
         #endregion

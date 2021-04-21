@@ -190,7 +190,7 @@ MonoBehaviour:
   multipliers: []
   interactionSpeedMlp: 1
   pivot: {fileID: 5158900503020233885}
-  twistAxis: {x: 0, y: 1, z: 0}
+  twistAxis: {x: 0, y: 0, z: 0}
   twistWeight: 1
   swingWeight: 0
   rotateOnce: 0
@@ -240,8 +240,8 @@ MonoBehaviour:
   effectorType: 6
   multipliers: []
   interactionSpeedMlp: 1
-  pivot: {fileID: 5158900503020233885}
-  twistAxis: {x: 0, y: 1, z: 0}
+  pivot: {fileID: 4355882934804227592}
+  twistAxis: {x: 1, y: 0, z: 0}
   twistWeight: 1
   swingWeight: 0
   rotateOnce: 0
@@ -394,6 +394,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5158900503020233859}
+  - component: {fileID: 5186564853410662549}
   m_Layer: 0
   m_Name: balista_bone_VerticalTurn
   m_TagString: Untagged
@@ -420,6 +421,24 @@ Transform:
   m_Father: {fileID: 5158900503020233867}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 56, y: -89.519, z: -181.383}
+--- !u!114 &5186564853410662549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5158900503020402851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 484718f2c4ab849829491782b508958a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  axis: {x: 1, y: 0, z: 0}
+  defaultLocalRotation: {x: 0.6176436, y: 0.34083596, z: -0.63089734, w: 0.3229796}
+  useLimits: 1
+  min: -30
+  max: 30
+  zeroAxisDisplayOffset: 0
 --- !u!1 &5158900503020402853
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,8 +619,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.17535678, y: 0.120485276, z: 1.2968775}
-  m_Center: {x: 0.16746274, y: 0.019483633, z: -0.14843944}
+  m_Size: {x: 0.1753568, y: 0.1323761, z: 1.8836246}
+  m_Center: {x: 0.16746263, y: 0.013538229, z: 0.14493504}
 --- !u!1 &5158900503020402863
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,7 +630,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5158900503020233871}
-  - component: {fileID: 520794424}
   m_Layer: 0
   m_Name: balista_bone_10
   m_TagString: Untagged
@@ -635,19 +653,6 @@ Transform:
   m_Father: {fileID: 5158900503020233873}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &520794424
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5158900503020402863}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.427562, y: 0.17817356, z: 0.581052}
-  m_Center: {x: 0.007199591, y: -0.05695022, z: 0.20947014}
 --- !u!1 &5158900503020402865
 GameObject:
   m_ObjectHideFlags: 0
