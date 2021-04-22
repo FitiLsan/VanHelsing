@@ -11,7 +11,7 @@ namespace BeastHunter
         public event Action<PermanentBuff> PerammentBuffAdded;
         public event Action<TemporaryBuff> TemporaryBuffRemoved;
         public event Action<PermanentBuff> PerammentBuffRemoved;
-        public event Action<BuffEffectType> BuffEffectEnable;
+        public event Action<BuffEffectType, BaseBuff> BuffEffectEnable;
         public event Action<BuffEffectType> BuffEffectDisable;
 
         public List<PermanentBuff> PermanentBuffList = new List<PermanentBuff>();
@@ -32,7 +32,7 @@ namespace BeastHunter
             PerammentBuffAdded?.Invoke(buff);
             foreach(var effect in buff.Effects)
             {
-                BuffEffectEnable?.Invoke(effect.BuffEffectType);
+                BuffEffectEnable?.Invoke(effect.BuffEffectType, buff);
             }
            
         }
@@ -47,7 +47,7 @@ namespace BeastHunter
             TemporaryBuffAdded?.Invoke(buff);
             foreach (var effect in buff.Effects)
             {
-                BuffEffectEnable?.Invoke(effect.BuffEffectType);
+                BuffEffectEnable?.Invoke(effect.BuffEffectType, buff);
             }
         }
 

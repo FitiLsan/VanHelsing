@@ -53,7 +53,7 @@ namespace BeastHunter
             }
 
             var effects = _effects.GetComponentsInChildren<ParticleSystem>();
-            foreach (var effect in  effects)
+            foreach (var effect in effects)
             {
                 _effectsDic.Add(effect.name, effect);
             }
@@ -76,22 +76,22 @@ namespace BeastHunter
             }
         }
 
-        private void EnableEffect(BuffEffectType effectType)
+        private void EnableEffect(BuffEffectType effectType, BaseBuff buff)
         {
-            if(effectType.Equals(BuffEffectType.None))
+            if (!effectType.Equals(BuffEffectType.None) && _effectsDic.ContainsKey(effectType.ToString()))
             {
-                return;
+                _effectsDic[effectType.ToString()].Play(true);
             }
-            _effectsDic[effectType.ToString()].Play(true);
+
         }
 
         private void DisableEffect(BuffEffectType effectType)
         {
-            if (effectType.Equals(BuffEffectType.None))
+            if (!effectType.Equals(BuffEffectType.None) && _effectsDic.ContainsKey(effectType.ToString()))
             {
-                return;
+                _effectsDic[effectType.ToString()].Stop(true);
             }
-            _effectsDic[effectType.ToString()].Stop(true);
+
         }
 
         #endregion
