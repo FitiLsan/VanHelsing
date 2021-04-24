@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BeastHunter
+namespace BeastHunterHubUI
 {
     public class ReadOnlyInUnityInspectorAttribute: PropertyAttribute
     {

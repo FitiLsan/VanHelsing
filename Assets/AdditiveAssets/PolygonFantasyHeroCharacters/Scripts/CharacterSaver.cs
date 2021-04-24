@@ -2,28 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BeastHunter
+
+namespace BeastHunterHubUI
 {
+    //todo?:
+    //the ContextMenu method to quickly select a male or female character
+    //the ContextMenu method for randomization of one head only
     class CharacterSaver : MonoBehaviour
     {
-        [SerializeField] HubMapUICharacterData _characterData;
+        #region Fields
+
+        [Tooltip("Put the character SO, in which you want to save the form of the character on the scene")]
+        [SerializeField] CharacterData _characterData;
         [SerializeField] private Material _fantasyHeroMaterial;
 
         private GameObject _modularCharacters;
-        private List<HubMapUICharacterHeadPart> _savedHeadParts;
-        private List<HubMapUICharacterClothesModuleParts> _savedModuleParts;
-        private Dictionary<HubMapUIClothesType, List<string>> _modulePartsGroups;
-        private Dictionary<HubMapUICharacterHeadParts, List<string>> _headPartsGroups;
+        private List<CharacterHeadPart> _savedHeadParts;
+        private List<CharacterClothesModuleParts> _savedModuleParts;
+        private Dictionary<ClothesType, List<string>> _modulePartsGroups;
+        private Dictionary<CharacterHeadPartType, List<string>> _headPartsGroups;
 
+        #endregion
+
+
+        #region UnityMethods
 
         private void Start()
         {
             _modularCharacters = GameObject.Find("ModularCharacters");
-            _savedHeadParts = new List<HubMapUICharacterHeadPart>();
-            _savedModuleParts = new List<HubMapUICharacterClothesModuleParts>();
+            _savedHeadParts = new List<CharacterHeadPart>();
+            _savedModuleParts = new List<CharacterClothesModuleParts>();
             InitializeHeadPartsTypesDictionary();
             InitializeModulePartsTypesDictionary();
         }
+
+        #endregion
+
+
+        #region Methods
 
         [ContextMenu("SaveCharacterMaterial")]
         public void SaveCharacterMaterial()
@@ -36,7 +52,7 @@ namespace BeastHunter
         {
             SaveCharacterActiveModulePartsInList();
 
-            HubMapUICharacterClothesModuleParts[] defaultModulesParts = new HubMapUICharacterClothesModuleParts[_savedModuleParts.Count];
+            CharacterClothesModuleParts[] defaultModulesParts = new CharacterClothesModuleParts[_savedModuleParts.Count];
             for (int i = 0; i < _savedModuleParts.Count; i++)
             {
                 defaultModulesParts[i] = _savedModuleParts[i];
@@ -51,7 +67,7 @@ namespace BeastHunter
         {
             SaveCharacterActiveHeadPartsInList();
 
-            HubMapUICharacterHeadPart[] defaultHeadParts = new HubMapUICharacterHeadPart[_savedHeadParts.Count];
+            CharacterHeadPart[] defaultHeadParts = new CharacterHeadPart[_savedHeadParts.Count];
             for (int i = 0; i < _savedHeadParts.Count; i++)
             {
                 defaultHeadParts[i] = _savedHeadParts[i];
@@ -61,12 +77,11 @@ namespace BeastHunter
             _savedHeadParts.Clear();
         }
 
-
         private void SaveCharacterActiveModulePartsInList()
         {
-            foreach(KeyValuePair<HubMapUIClothesType, List<string>> kvp in _modulePartsGroups)
+            foreach(KeyValuePair<ClothesType, List<string>> kvp in _modulePartsGroups)
             {
-                HubMapUICharacterClothesModuleParts activeModuleParts = GetActiveModulePartsByClothesType(kvp.Key, kvp.Value);
+                CharacterClothesModuleParts activeModuleParts = GetActiveModulePartsByClothesType(kvp.Key, kvp.Value);
                 if(activeModuleParts != null)
                 {
                     _savedModuleParts.Add(activeModuleParts);
@@ -76,9 +91,9 @@ namespace BeastHunter
 
         private void SaveCharacterActiveHeadPartsInList()
         {
-            foreach (KeyValuePair<HubMapUICharacterHeadParts, List<string>> kvp in _headPartsGroups)
+            foreach (KeyValuePair<CharacterHeadPartType, List<string>> kvp in _headPartsGroups)
             {
-                HubMapUICharacterHeadPart activeHeadPart = GetActiveHeadPartsByHeadType(kvp.Key, kvp.Value);
+                CharacterHeadPart activeHeadPart = GetActiveHeadPartsByHeadType(kvp.Key, kvp.Value);
                 if (activeHeadPart != null)
                 {
                     _savedHeadParts.Add(activeHeadPart);
@@ -86,7 +101,7 @@ namespace BeastHunter
             }
         }
 
-        private HubMapUICharacterClothesModuleParts GetActiveModulePartsByClothesType(HubMapUIClothesType clothesType, List<string> moduleGroups)
+        private CharacterClothesModuleParts GetActiveModulePartsByClothesType(ClothesType clothesType, List<string> moduleGroups)
         {
             List<string> modulePartsNames = new List<string>();
 
@@ -105,7 +120,7 @@ namespace BeastHunter
 
             if (modulePartsNames.Count > 0)
             {
-                return new HubMapUICharacterClothesModuleParts(clothesType, modulePartsNames);
+                return new CharacterClothesModuleParts(clothesType, modulePartsNames);
             }
             else
             {
@@ -113,7 +128,7 @@ namespace BeastHunter
             }
         }
 
-        private HubMapUICharacterHeadPart GetActiveHeadPartsByHeadType(HubMapUICharacterHeadParts headPartType, List<string> headPartGroups)
+        private CharacterHeadPart GetActiveHeadPartsByHeadType(CharacterHeadPartType headPartType, List<string> headPartGroups)
         {
             string headPartsName = null;
 
@@ -133,7 +148,7 @@ namespace BeastHunter
 
             if (headPartsName != null)
             {
-                return new HubMapUICharacterHeadPart(headPartType, headPartsName);
+                return new CharacterHeadPart(headPartType, headPartsName);
             }
             else
             {
@@ -143,51 +158,51 @@ namespace BeastHunter
 
         private void InitializeHeadPartsTypesDictionary()
         {
-            _headPartsGroups = new Dictionary<HubMapUICharacterHeadParts, List<string>>();
+            _headPartsGroups = new Dictionary<CharacterHeadPartType, List<string>>();
 
             List<string> eyebrowsList = new List<string>()
             {
                 "Male_01_Eyebrows",
                 "Female_01_Eyebrows",
             };
-            _headPartsGroups.Add(HubMapUICharacterHeadParts.Eyebrows, eyebrowsList);
+            _headPartsGroups.Add(CharacterHeadPartType.Eyebrows, eyebrowsList);
 
             List<string> facialHairList = new List<string>()
             {
                 "Male_02_FacialHair",
             };
-            _headPartsGroups.Add(HubMapUICharacterHeadParts.FacialHair, facialHairList);
+            _headPartsGroups.Add(CharacterHeadPartType.FacialHair, facialHairList);
 
             List<string> hairList = new List<string>()
             {
                 "All_01_Hair",
             };
-            _headPartsGroups.Add(HubMapUICharacterHeadParts.Hair, hairList);
+            _headPartsGroups.Add(CharacterHeadPartType.Hair, hairList);
 
             List<string> headList = new List<string>()
             {
                 "Male_Head_All_Elements",
                 "Female_Head_All_Elements",
             };
-            _headPartsGroups.Add(HubMapUICharacterHeadParts.Head, headList);
+            _headPartsGroups.Add(CharacterHeadPartType.Head, headList);
 
             List<string> earsList = new List<string>()
             {
                 "Elf_Ear",
             };
-            _headPartsGroups.Add(HubMapUICharacterHeadParts.Ears, earsList);
+            _headPartsGroups.Add(CharacterHeadPartType.Ears, earsList);
         }
 
         private void InitializeModulePartsTypesDictionary()
         {
-            _modulePartsGroups = new Dictionary<HubMapUIClothesType, List<string>>();
+            _modulePartsGroups = new Dictionary<ClothesType, List<string>>();
 
             List<string> backList = new List<string>()
             {
                 "All_04_Back_Attachment",
 
             };
-            _modulePartsGroups.Add(HubMapUIClothesType.Back, backList);
+            _modulePartsGroups.Add(ClothesType.Back, backList);
 
             List<string> headList = new List<string>()
             {
@@ -198,14 +213,14 @@ namespace BeastHunter
                 "HeadCoverings_No_FacialHair",
                 "HeadCoverings_Base_Hair",
             };
-            _modulePartsGroups.Add(HubMapUIClothesType.Head, headList);
+            _modulePartsGroups.Add(ClothesType.Head, headList);
 
             List<string> torsoList = new List<string>()
             {
                 "Male_03_Torso",
                 "Female_03_Torso",
             };
-            _modulePartsGroups.Add(HubMapUIClothesType.Torso, torsoList);
+            _modulePartsGroups.Add(ClothesType.Torso, torsoList);
 
             List<string> hipsList = new List<string>()
             {
@@ -214,7 +229,7 @@ namespace BeastHunter
                 "All_10_Knee_Attachement_Right",
                 "All_11_Knee_Attachement_Left",
             };
-            _modulePartsGroups.Add(HubMapUIClothesType.Hips, hipsList);
+            _modulePartsGroups.Add(ClothesType.Hips, hipsList);
 
             List<string> legsList = new List<string>()
             {
@@ -223,7 +238,7 @@ namespace BeastHunter
                 "Male_12_Leg_Left",
                 "Female_12_Leg_Left",
             };
-            _modulePartsGroups.Add(HubMapUIClothesType.Legs, legsList);
+            _modulePartsGroups.Add(ClothesType.Legs, legsList);
 
             List<string> shouldersList = new List<string>()
             {
@@ -234,7 +249,7 @@ namespace BeastHunter
                 "Male_05_Arm_Upper_Left",
                 "Female_05_Arm_Upper_Left",
             };
-            _modulePartsGroups.Add(HubMapUIClothesType.Shoulders, shouldersList);
+            _modulePartsGroups.Add(ClothesType.Shoulders, shouldersList);
 
             List<string> armsList = new List<string>()
             {
@@ -243,7 +258,7 @@ namespace BeastHunter
                 "Male_07_Arm_Lower_Left",
                 "Female_07_Arm_Lower_Left",
             };
-            _modulePartsGroups.Add(HubMapUIClothesType.Arms, armsList);
+            _modulePartsGroups.Add(ClothesType.Arms, armsList);
 
             List<string> handsList = new List<string>()
             {
@@ -252,14 +267,16 @@ namespace BeastHunter
                 "Male_09_Hand_Left",
                 "Female_09_Hand_Left",
             };
-            _modulePartsGroups.Add(HubMapUIClothesType.Hands, handsList);
+            _modulePartsGroups.Add(ClothesType.Hands, handsList);
 
             List<string> beltList = new List<string>()
             {
                 "All_09_Hips_Attachment",
             };
-            _modulePartsGroups.Add(HubMapUIClothesType.Belt, beltList);
+            _modulePartsGroups.Add(ClothesType.Belt, beltList);
         }
+
+        #endregion
 
 
         ////WIP

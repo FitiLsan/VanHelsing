@@ -47,7 +47,7 @@ namespace BeastHunter
         [SerializeField] private string _fallingTreeDataPath;
         [SerializeField] private string _enemyHealthBarDataPath;
         [SerializeField] private string _spawnpointsDataPath;
-        [SerializeField] private string _hubMapUIDataPath;
+        [SerializeField] private string _hubUIDataPath;
         [SerializeField] private string _lureMeatDataPath;
         [SerializeField] private string _lureCharcoalDataPath;
 
@@ -88,7 +88,7 @@ namespace BeastHunter
         private static FallingTreeData _fallingTreeData;
         private static EnemyHealthBarData _enemyHealthBarData;
         private static SpawnpointsData _spawnpointsData;
-        private static HubMapUIData _hubMapUIData;
+        private static BeastHunterHubUI.HubUIData _hubUIData;
         private static OneHandedThrowableWeapon _LureMeatData;
         private static OneHandedThrowableWeapon _LureCharcoalData;
 
@@ -525,15 +525,15 @@ namespace BeastHunter
             }
         }
 
-        public static HubMapUIData HubMapData
+        public static BeastHunterHubUI.HubUIData HubUIData
         {
             get
             {
-                if (_hubMapUIData == null)
+                if (_hubUIData == null)
                 {
-                    _hubMapUIData = Resources.Load<HubMapUIData>("Data/" + Instance._hubMapUIDataPath);
+                    _hubUIData = Resources.Load<BeastHunterHubUI.HubUIData>("Data/" + Instance._hubUIDataPath);
                 }
-                return _hubMapUIData;
+                return _hubUIData;
             }
         }
 
