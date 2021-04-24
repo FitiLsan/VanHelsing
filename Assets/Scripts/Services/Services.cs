@@ -19,6 +19,7 @@ namespace BeastHunter
         public TrapService TrapService { get; private set; }
         public AnnouncementService AnnouncementService { get; private set; }
         public AudioService AudioService { get; private set; }
+        public EffectsManager EffectsManager { get; private set; }
 
         public GameContext Context { get; private set; }
         #endregion
@@ -39,6 +40,7 @@ namespace BeastHunter
             TrapService = new TrapService(context);
             AnnouncementService = new AnnouncementService();
             AudioService = new AudioService(context);
+            EffectsManager = new EffectsManager();
             Context = context;
         }
 

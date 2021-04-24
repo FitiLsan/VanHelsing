@@ -5,25 +5,13 @@ using UnityEngine;
 
 namespace BeastHunter
 {
-    public struct CombineEffect
-    {
-        public BuffEffectType firstEffect;
-        public BuffEffectType secondEffect;
-        
-        public CombineEffect(BuffEffectType firstEffect, BuffEffectType secondEffect)
-        {
-            this.firstEffect = firstEffect;
-            this.secondEffect = secondEffect;
-        }
-    }
+
     public class EffectReactionController
     {
         #region Fields
 
         private BaseModel _model;
         private GameContext _context;
-
-        private Dictionary<CombineEffect, BuffEffectType> CombineEffectDic = new Dictionary<CombineEffect, BuffEffectType>();
 
         #endregion
 
@@ -34,7 +22,6 @@ namespace BeastHunter
         {
             _context = context;
             _model = model;
-            CombineEffectDic.Add(new CombineEffect(BuffEffectType.Fire, BuffEffectType.Water), BuffEffectType.Steam);
         }
 
         #endregion
@@ -65,16 +52,23 @@ namespace BeastHunter
 
         private void StartReaction(BuffEffectType type, BaseBuff buff)
         {
+            if (TryCombineEffects(type, buff))
+            {
+                return;
+            }
+
+
             switch (type)
             {
                 case BuffEffectType.Fire:
+                    Debug.Log("огонь");
                     if (_model != null && _model is BossModel)
                     {
                         (_model as BossModel).BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Standstill, type);
                     }
                     break;
                 case BuffEffectType.Water:
-                    WaterReaction(buff);
+                    Debug.Log("вода");
                     break;
                 case BuffEffectType.Poison:
                     break;
@@ -91,6 +85,7 @@ namespace BeastHunter
                 case BuffEffectType.Overturning:
                     break;
                 case BuffEffectType.Steam:
+                    Debug.Log("пар");
                     break;
                 case BuffEffectType.Smoke:
                     break;
@@ -131,39 +126,31 @@ namespace BeastHunter
         }
 
 
-        private void WaterReaction(BaseBuff currentBuff)
+        private bool TryCombineEffects(BuffEffectType currentEffect, BaseBuff currentBuff)
         {
-            if (_model != null)
+            if (_model == null)
+            {
+                return false;
+            }
+            foreach (var effect in Services.SharedInstance.EffectsManager.GetAllEffects())
             {
                 TemporaryBuff buff;
-                if (buff = _model.CurrentStats.BuffHolder.TemporaryBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(BuffEffectType.Fire))))
+                TemporaryBuff newBuff;
+                if (currentEffect != effect && (buff = _model.CurrentStats.BuffHolder.TemporaryBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect)))))
                 {
-                    _model.CurrentStats.BuffHolder.RemoveTemporaryBuff(buff);
-                    _model.CurrentStats.BuffHolder.RemoveTemporaryBuff(currentBuff as TemporaryBuff);
-                    _model.CurrentStats.BuffHolder.AddTemporaryBuff(GetEffectCombinationResult(BuffEffectType.Fire, BuffEffectType.Water));
+                    newBuff = Services.SharedInstance.EffectsManager.GetEffectCombinationResult(effect, currentEffect);
+                    if (newBuff != null)
+                    {
+                        _model.CurrentStats.BuffHolder.RemoveTemporaryBuff(buff);
+                        _model.CurrentStats.BuffHolder.RemoveTemporaryBuff(currentBuff as TemporaryBuff); //Add and Remove  to base
+                        _model.CurrentStats.BuffHolder.AddTemporaryBuff(newBuff);
+                        return true;
+                    }
                 }
             }
-
-            #endregion
+            return false;
         }
         
-        private TemporaryBuff GetEffectCombinationResult(BuffEffectType firstEffect, BuffEffectType secondEffect)
-        {
-            var effectType = CombineEffectDic[new CombineEffect(firstEffect, secondEffect)];
-            var newEffect = new BuffEffect();
-            newEffect.Buff = Buff.SpeedChangeValue;
-            newEffect.BuffEffectType = effectType;
-            newEffect.IsTicking = false;
-            newEffect.Value = 2f;
-
-            var newBuff = new TemporaryBuff();
-            newBuff.Effects = new BuffEffect[1];
-            newBuff.Effects[0] = newEffect;
-            newBuff.Time = 15;
-            newBuff.Type = BuffType.Debuf;
-            
-
-            return newBuff;
-        }
+        #endregion
     }
 }
