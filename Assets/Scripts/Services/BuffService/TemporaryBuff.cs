@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 
 namespace BeastHunter
@@ -9,6 +10,8 @@ namespace BeastHunter
         #region Fields
 
         public float Time;
+        [HideInInspector]
+        public Tween onRemove;
 
         #endregion
     }

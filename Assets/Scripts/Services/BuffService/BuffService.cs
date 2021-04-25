@@ -91,6 +91,7 @@ namespace BeastHunter
         {
             var stats = GetStatsByInstanceID(instanceID);
             var buffHolder = stats.BuffHolder;
+            var isEffectExist = false;
             if (buffHolder.TemporaryBuffList.Contains(buff))
             {
                 return;
@@ -99,6 +100,7 @@ namespace BeastHunter
             {
                 if (effect.BuffEffectType!= BuffEffectType.None && buffHolder.TemporaryBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect.BuffEffectType))))
                 {
+                    isEffectExist = true;
                     continue;
                 }
                 var modifiedBuffValue = buff.Type.Equals(BuffType.Debuf) ? effect.Value : effect.Value * -1;
@@ -122,12 +124,12 @@ namespace BeastHunter
                     DOVirtual.DelayedCall(1f, () => BuffUse(time));
                 }
             }
+            if(isEffectExist)
+            {
+                return;
+            }
+            buff.onRemove = DOVirtual.DelayedCall(buff.Time, () => RemoveTemporaryBuff(stats, buff, buffHolder));
             buffHolder.AddTemporaryBuff(buff);
-
-            Action laterBuffRemove = () => RemoveTemporaryBuff(stats, buff, buffHolder);
-
-            TimeRemaining buffRemove = new TimeRemaining(laterBuffRemove, buff.Time);
-            buffRemove.AddTimeRemaining(buff.Time);
         }
 
         public void RemoveTemporaryBuff(Stats stats, TemporaryBuff buff, BuffHolder buffHolder)
@@ -145,6 +147,7 @@ namespace BeastHunter
                 }
 
                 buffHolder.RemoveTemporaryBuff(buff);
+                buff.onRemove.Kill();
             }
             else
             {

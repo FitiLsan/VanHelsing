@@ -141,9 +141,9 @@ namespace BeastHunter
                     newBuff = Services.SharedInstance.EffectsManager.GetEffectCombinationResult(effect, currentEffect);
                     if (newBuff != null)
                     {
-                        _model.CurrentStats.BuffHolder.RemoveTemporaryBuff(buff);
-                        _model.CurrentStats.BuffHolder.RemoveTemporaryBuff(currentBuff as TemporaryBuff); //Add and Remove  to base
-                        _model.CurrentStats.BuffHolder.AddTemporaryBuff(newBuff);
+                        Services.SharedInstance.BuffService.RemoveTemporaryBuff(_model.CurrentStats, buff, _model.CurrentStats.BuffHolder);
+                        Services.SharedInstance.BuffService.RemoveTemporaryBuff(_model.CurrentStats, (currentBuff as TemporaryBuff), _model.CurrentStats.BuffHolder);
+                        Services.SharedInstance.BuffService.AddTemporaryBuff(_model.CurrentStats.InstanceID, newBuff);
                         return true;
                     }
                 }
