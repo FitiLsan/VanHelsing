@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdc4f56eb8b4c2742b1415abd0385973, type: 3}
+  m_Name: HubUIData
+  m_EditorClassIdentifier: 
+  _messageWindowPrefab: {fileID: 8800125775024752673, guid: 1f584825ef8ac7c409d78790dd09a67a,
+    type: 3}
+  ContextDataStruct:
+    _locations:
+    - {fileID: 11400000, guid: 744614ebf3a669b4f855ee609c71b538, type: 2}
+    - {fileID: 11400000, guid: 5a390b452918f4046948d2da88f1333c, type: 2}
+    - {fileID: 11400000, guid: 860d3696ec691de4e9302d6819bd9cda, type: 2}
+    - {fileID: 11400000, guid: 9b605ac1c7e3a6b458708df1317a7eaf, type: 2}
+    - {fileID: 11400000, guid: a4953306eee0c584a8c7fc514f731fbb, type: 2}
+    _questsPool:
+    - {fileID: 11400000, guid: 81ad56c84f8679347b6301f8a566d862, type: 2}
+    PlayerSettings:
+      _goldAmount: 200
+      _inventorySlotsAmount: 60
+      _startInventoryItems:
+      - {fileID: 11400000, guid: b82379ba5dbb65c4a9c24795aacbca77, type: 2}
+      - {fileID: 11400000, guid: 4ef6411f36ddde84e85833d692065971, type: 2}
+      - {fileID: 11400000, guid: e88f2f60d12eaf7499c76e491be54eba, type: 2}
+      - {fileID: 11400000, guid: d251bc27e1e3b004db86ee0f06a83739, type: 2}
+      - {fileID: 11400000, guid: b5414bdaa16c2a24795504aaab30a25a, type: 2}
+      - {fileID: 11400000, guid: a4a3ebf3a1fac67498eae459e1b55ef7, type: 2}
+      - {fileID: 11400000, guid: 61e1c8d68c279de4ab6e825ce3ea7967, type: 2}
+      - {fileID: 11400000, guid: 043b19e6b22373e4fa1fd2f190b2b871, type: 2}
+      - {fileID: 11400000, guid: 94090163ee36659408d33ec787c120ce, type: 2}
+      - {fileID: 11400000, guid: bf4007d09f37b5c45a3fe947240beda0, type: 2}
+      - {fileID: 11400000, guid: 2f80044f5c527464e90eead336176198, type: 2}
+      - {fileID: 11400000, guid: b70d1f904cbdf3e4f891776021a10569, type: 2}
+      - {fileID: 11400000, guid: 95a772b527171d1429d829162c1411bb, type: 2}
+      - {fileID: 11400000, guid: 3624a46c93231c840a317cef98d92a07, type: 2}
+      - {fileID: 11400000, guid: 2aadd9546a993ac4c962f5bfb2c48ebc, type: 2}
+      - {fileID: 11400000, guid: f6e185ac30a19194cbf45439c92e3b36, type: 2}
+      - {fileID: 11400000, guid: 8460c4d8fab1f4d4399d4e7e715de911, type: 2}
+      - {fileID: 11400000, guid: 899f376411d00d646aeb701d5ddb4f7e, type: 2}
+      - {fileID: 11400000, guid: 23967b094b19e7340acee48cc5005df4, type: 2}
+      - {fileID: 11400000, guid: 5c85a6f9efa72f442aa3990239013733, type: 2}
+      - {fileID: 11400000, guid: b2764ecbd1fcbd94fb45cfeee1f80140, type: 2}
+      - {fileID: 11400000, guid: 7188440d0dd19614882227cf7c80e002, type: 2}
+      _startHiredCharacters:
+      - {fileID: 11400000, guid: 9fb474a159a104d49a106419732f29d4, type: 2}
+      - {fileID: 11400000, guid: 5bedb4bb121491a418e9a717db215ba4, type: 2}
+      - {fileID: 11400000, guid: 5e2a56911803eb640a1facc3389c8627, type: 2}
+      - {fileID: 11400000, guid: 4e3ca3341ad44d047b3985d33cb9bf09, type: 2}
+    _cities:
+    - {fileID: 11400000, guid: b0fed0d57aef54a48b35754d9082df4c, type: 2}
+    _shopsSlotsAmount: 20
+    _charactersPool:
+    - {fileID: 11400000, guid: 9fb474a159a104d49a106419732f29d4, type: 2}
+    - {fileID: 11400000, guid: 5bedb4bb121491a418e9a717db215ba4, type: 2}
+    - {fileID: 11400000, guid: 5e2a56911803eb640a1facc3389c8627, type: 2}
+    - {fileID: 11400000, guid: 4e3ca3341ad44d047b3985d33cb9bf09, type: 2}
+    CharacterSettings:
+      _clothesSlots: 0200000004000000080000000900000005000000060000000700000001000000030000000a0000000b0000000b000000
+      _backpuckSlotAmount: 12
+      _weaponSetsAmount: 3
+    TimeSettings:
+      _hoursAmountPerDay: 24
+      _hoursOnStartGame: 12
+      _dayOnStartGame: 1
+      _timePassingDelay: 1
+  MapDataStruct:
+    _citizenUIPrefab: {fileID: 5311113231720852829, guid: a9a2ad70cde8fd5409f8b95ef49c4e33,
+      type: 3}
+    _locationTextUIPrefab: {fileID: 4845705783241596257, guid: a6b652d58e47e6b48807f69de54a5709,
+      type: 3}
+    _characterUIPrefab: {fileID: 3663167388749810844, guid: d76eafa59c0177848b959baa6daa5a28,
+      type: 3}
+    _equipmentSlotUIPrefab: {fileID: 3626724097013294678, guid: 04ea21eb6d34e4c41b741649af0b2ae4,
+      type: 3}
+    _inventorySlotUIPrefab: {fileID: 4453913233983459706, guid: 30984c6c07d235c459e8e3c072b4a15c,
+      type: 3}
+    _shopSlotUIPrefab: {fileID: 6062753379447882041, guid: 1edea349712c2eb448e6e5caa33b4599,
+      type: 3}
+    _answerButtonUIPrefab: {fileID: 4532874562538034351, guid: d3bcb53cab92ad245a8f95bd2cb657e2,
+      type: 3}
+    _characters3DViewRenderingPrefab: {fileID: 5064816351402119910, guid: 284a4960537acb849a2b3d9f00a331e9,
+      type: 3}
+    _characterBackpuckSlotUIPrefab: {fileID: 4649815293729276567, guid: 7899f865f88bda740864b45d02cbea24,
+      type: 3}
+    _mapOnStartEnabled: 0
+    _tooltipShowingDelay: 0.75
+    _charactersPanelSwipeStep: 1
+    _characters3DViewRenderingObjectPosition: {x: 1000, y: 1000, z: 1000}
+    _mapObjects:
+    - {fileID: 11400000, guid: b0fed0d57aef54a48b35754d9082df4c, type: 2}
+    - {fileID: 11400000, guid: 744614ebf3a669b4f855ee609c71b538, type: 2}
+    - {fileID: 11400000, guid: 5a390b452918f4046948d2da88f1333c, type: 2}
+    - {fileID: 11400000, guid: 860d3696ec691de4e9302d6819bd9cda, type: 2}
+    - {fileID: 11400000, guid: 9b605ac1c7e3a6b458708df1317a7eaf, type: 2}
+    - {fileID: 11400000, guid: a4953306eee0c584a8c7fc514f731fbb, type: 2}
+    _weaponSlotIcon: {fileID: 21300000, guid: 5fd50594014b70e48bd6993443d46b32, type: 3}
+    _armSlotIcon: {fileID: 21300000, guid: 70a77abda853dd941a0c8debf1de9b04, type: 3}
+    _backSlotIcon: {fileID: 21300000, guid: 6fc27c9d7fc2d9448af6851bf935e6d2, type: 3}
+    _handSlotIcon: {fileID: 21300000, guid: d4f5634edede200468fc1ccf30e6f3a1, type: 3}
+    _headSlotIcon: {fileID: 21300000, guid: fd6e4fc32c78509458fc45ea4a478ba8, type: 3}
+    _hipsSlotIcon: {fileID: 21300000, guid: b8fb302c5768e334ca82005f50e58121, type: 3}
+    _legSlotIcon: {fileID: 21300000, guid: e420c5bc93cb2604695a893500c897e3, type: 3}
+    _shoulderSlotIcon: {fileID: 21300000, guid: f126324fd2486a641842ea5a8244c2d1,
+      type: 3}
+    _torsoSlotIcon: {fileID: 21300000, guid: 2f1eaeeaad36ee5469eff7ff158f37ba, type: 3}
+    _ringSlotIcon: {fileID: 21300000, guid: 970324311431c794ca338446ea889948, type: 3}
+    _amuletSlotIcon: {fileID: 21300000, guid: 0e123cfdc54a3ca4684816a34167a566, type: 3}
+    _beltSlotIcon: {fileID: 21300000, guid: da09804303305f542a686824630e7269, type: 3}
+    _pocketItemSlotIcon: {fileID: 21300000, guid: fe025e83f69d0b54f8a4fe3c7c128fd7,
+      type: 3}

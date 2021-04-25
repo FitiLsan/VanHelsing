@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 
 
-namespace BeastHunter
+namespace BeastHunterHubUI
 {
     [CustomPropertyDrawer(typeof(ReadOnlyInUnityInspectorAttribute))]
     public class ReadOnlyInUnityInspectorDrawer : PropertyDrawer
