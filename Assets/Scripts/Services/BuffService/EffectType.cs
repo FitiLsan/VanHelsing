@@ -1,7 +1,7 @@
 
 namespace BeastHunter
 {
-    public enum BuffEffectType
+    public enum EffectType
     {
         None,
         Burning,
@@ -11,8 +11,7 @@ namespace BeastHunter
         Oiling,
         Poisoning,
         Gassing,
-        Smoking,
-        Steaming,
+        Suffocation,
         Bleeding,
         Stunning, 
         Slowing,

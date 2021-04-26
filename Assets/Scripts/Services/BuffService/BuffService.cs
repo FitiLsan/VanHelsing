@@ -60,7 +60,7 @@ namespace BeastHunter
             }
             foreach (var effect in buff.Effects)
             {
-                if (effect.BuffEffectType != BuffEffectType.None && buffHolder.PermanentBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect.BuffEffectType))))
+                if (effect.BuffEffectType != EffectType.None && buffHolder.PermanentBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect.BuffEffectType))))
                 {
                     continue;
                 }
@@ -100,7 +100,7 @@ namespace BeastHunter
             }
             foreach (var effect in buff.Effects)
             {
-                if (effect.BuffEffectType!= BuffEffectType.None && buffHolder.TemporaryBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect.BuffEffectType))))
+                if (effect.BuffEffectType!= EffectType.None && buffHolder.TemporaryBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect.BuffEffectType))))
                 {
                     isEffectExist = true;
                     continue;

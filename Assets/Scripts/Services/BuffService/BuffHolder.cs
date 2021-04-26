@@ -11,8 +11,8 @@ namespace BeastHunter
         public event Action<PermanentBuff> PerammentBuffAdded;
         public event Action<TemporaryBuff> TemporaryBuffRemoved;
         public event Action<PermanentBuff> PerammentBuffRemoved;
-        public event Action<BuffEffectType, BaseBuff> BuffEffectEnable;
-        public event Action<BuffEffectType> BuffEffectDisable;
+        public event Action<EffectType, BaseBuff> BuffEffectEnable;
+        public event Action<EffectType> BuffEffectDisable;
 
         public List<PermanentBuff> PermanentBuffList = new List<PermanentBuff>();
         public List<TemporaryBuff> TemporaryBuffList = new List<TemporaryBuff>();

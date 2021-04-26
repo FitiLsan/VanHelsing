@@ -6,24 +6,24 @@ namespace BeastHunter
 {
     public class EffectsManager
     {
-        private Dictionary<CombinedEffect, BuffEffectType> _combinedEffectDictionary = new Dictionary<CombinedEffect, BuffEffectType>();
-        private List<BuffEffectType> _allEffectsTypes = new List<BuffEffectType>();
+        private Dictionary<CombinedEffect, EffectType> _combinedEffectDictionary = new Dictionary<CombinedEffect, EffectType>();
+        private List<EffectType> _allEffectsTypes = new List<EffectType>();
 
         public EffectsManager()
         {
-            _combinedEffectDictionary.Add(new CombinedEffect(BuffEffectType.Burning, BuffEffectType.Wetting), BuffEffectType.Steaming);
-            _combinedEffectDictionary.Add(new CombinedEffect(BuffEffectType.Wetting, BuffEffectType.Burning), BuffEffectType.Steaming);
+            _combinedEffectDictionary.Add(new CombinedEffect(EffectType.Burning, EffectType.Wetting), EffectType.Suffocation);
+            _combinedEffectDictionary.Add(new CombinedEffect(EffectType.Wetting, EffectType.Burning), EffectType.Suffocation);
 
-            _allEffectsTypes.AddRange(new BuffEffectType[]
-                    {   BuffEffectType.Burning,
-                        BuffEffectType.Wetting,
-                        BuffEffectType.Steaming
+            _allEffectsTypes.AddRange(new EffectType[]
+                    {   EffectType.Burning,
+                        EffectType.Wetting,
+                        EffectType.Suffocation
                     });
         }
 
-        public TemporaryBuff GetEffectCombinationResult(BuffEffectType firstEffect, BuffEffectType secondEffect)
+        public TemporaryBuff GetEffectCombinationResult(EffectType firstEffect, EffectType secondEffect)
         {
-            BuffEffectType effectType;
+            EffectType effectType;
             if (!_combinedEffectDictionary.TryGetValue(new CombinedEffect(firstEffect, secondEffect), out effectType))
             {
                 return null;
@@ -43,7 +43,7 @@ namespace BeastHunter
             return newBuff;
         }
 
-        public List<BuffEffectType> GetAllEffects()
+        public List<EffectType> GetAllEffects()
         {
             return _allEffectsTypes;
         }

@@ -50,7 +50,7 @@ namespace BeastHunter
             }
         }
 
-        private void StartReaction(BuffEffectType type, BaseBuff buff)
+        private void StartReaction(EffectType type, BaseBuff buff)
         {
             if (TryCombineEffects(type, buff))
             {
@@ -60,73 +60,96 @@ namespace BeastHunter
 
             switch (type)
             {
-                case BuffEffectType.Burning:
-                    Debug.Log("огонь");
+                case EffectType.Burning:
                     if (_model != null && _model is BossModel)
                     {
                         (_model as BossModel).BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Standstill, type);
                     }
                     break;
-                case BuffEffectType.Wetting:
-                    Debug.Log("вода");
+                case EffectType.Wetting:
                     break;
-                case BuffEffectType.Poisoning:
+                case EffectType.Freezing:
                     break;
-                case BuffEffectType.Freezing:
+                case EffectType.Electrization:
                     break;
-                case BuffEffectType.Electrization:
+                case EffectType.Oiling:
                     break;
-                case BuffEffectType.Bleeding:
+                case EffectType.Poisoning:
                     break;
-                case BuffEffectType.Slowing:
+                case EffectType.Gassing:
                     break;
-                case BuffEffectType.Stunning:
+                case EffectType.Suffocation:
                     break;
-                case BuffEffectType.Overturning:
+                case EffectType.Bleeding:
                     break;
-                case BuffEffectType.Steaming:
-                    Debug.Log("пар");
+                case EffectType.Stunning:
                     break;
-                case BuffEffectType.Smoking:
+                case EffectType.Slowing:
+                    break;
+                case EffectType.Overturning:
+                    break;
+                case EffectType.Contusion:
+                    break;
+                case EffectType.Intoxication:
+                    break;
+                case EffectType.Blinding:
+                    break;
+                case EffectType.Explosion:
+                    break;
+                default:
+                    CustomDebug.LogError($"Type {type} does not exist");
                     break;
 
             }
         }
-        private void EndReaction(BuffEffectType type)
+        private void EndReaction(EffectType type)
         {
             switch (type)
             {
-                case BuffEffectType.Burning:
+                case EffectType.Burning:
                     if (_model != null && _model is BossModel)
                     {
                         (_model as BossModel).BossStateMachine.CurrentState.OnExit();
                     }
                     break;
-                case BuffEffectType.Wetting:
+                case EffectType.Wetting:
                     break;
-                case BuffEffectType.Poisoning:
+                case EffectType.Freezing:
                     break;
-                case BuffEffectType.Freezing:
+                case EffectType.Electrization:
                     break;
-                case BuffEffectType.Electrization:
+                case EffectType.Oiling:
                     break;
-                case BuffEffectType.Bleeding:
+                case EffectType.Poisoning:
                     break;
-                case BuffEffectType.Slowing:
+                case EffectType.Gassing:
                     break;
-                case BuffEffectType.Stunning:
+                case EffectType.Suffocation:
                     break;
-                case BuffEffectType.Overturning:
+                case EffectType.Bleeding:
                     break;
-                case BuffEffectType.Steaming:
+                case EffectType.Stunning:
                     break;
-                case BuffEffectType.Smoking:
+                case EffectType.Slowing:
+                    break;
+                case EffectType.Overturning:
+                    break;
+                case EffectType.Contusion:
+                    break;
+                case EffectType.Intoxication:
+                    break;
+                case EffectType.Blinding:
+                    break;
+                case EffectType.Explosion:
+                    break;
+                default:
+                    CustomDebug.LogError($"Type {type} does not exist");
                     break;
             }
         }
 
 
-        private bool TryCombineEffects(BuffEffectType currentEffect, BaseBuff currentBuff)
+        private bool TryCombineEffects(EffectType currentEffect, BaseBuff currentBuff)
         {
             if (_model == null)
             {

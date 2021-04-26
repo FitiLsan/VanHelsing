@@ -2,10 +2,10 @@ namespace BeastHunter
 {
     public struct CombinedEffect
     {
-        public BuffEffectType firstEffect;
-        public BuffEffectType secondEffect;
+        public EffectType firstEffect;
+        public EffectType secondEffect;
 
-        public CombinedEffect(BuffEffectType firstEffect, BuffEffectType secondEffect)
+        public CombinedEffect(EffectType firstEffect, EffectType secondEffect)
         {
             this.firstEffect = firstEffect;
             this.secondEffect = secondEffect;

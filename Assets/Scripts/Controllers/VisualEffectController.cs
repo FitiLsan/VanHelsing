@@ -76,18 +76,18 @@ namespace BeastHunter
             }
         }
 
-        private void EnableEffect(BuffEffectType effectType, BaseBuff buff)
+        private void EnableEffect(EffectType effectType, BaseBuff buff)
         {
-            if (!effectType.Equals(BuffEffectType.None) && _effectsDic.ContainsKey(effectType.ToString()))
+            if (!effectType.Equals(EffectType.None) && _effectsDic.ContainsKey(effectType.ToString()))
             {
                 _effectsDic[effectType.ToString()].Play(true);
             }
 
         }
 
-        private void DisableEffect(BuffEffectType effectType)
+        private void DisableEffect(EffectType effectType)
         {
-            if (!effectType.Equals(BuffEffectType.None) && _effectsDic.ContainsKey(effectType.ToString()))
+            if (!effectType.Equals(EffectType.None) && _effectsDic.ContainsKey(effectType.ToString()))
             {
                 _effectsDic[effectType.ToString()].Stop(true);
             }

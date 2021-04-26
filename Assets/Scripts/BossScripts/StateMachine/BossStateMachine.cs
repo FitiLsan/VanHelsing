@@ -146,7 +146,7 @@ namespace BeastHunter
             }
         }
 
-        public void SetCurrentStateAnyway(BossStatesEnum name, BuffEffectType type = BuffEffectType.None)
+        public void SetCurrentStateAnyway(BossStatesEnum name, EffectType type = EffectType.None)
         {
             if (States.ContainsKey(name))
             {
