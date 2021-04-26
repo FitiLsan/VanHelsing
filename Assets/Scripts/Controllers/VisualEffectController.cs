@@ -52,7 +52,7 @@ namespace BeastHunter
                 _enemyModel.CurrentStats.BuffHolder.BuffEffectDisable += DisableEffect;
             }
 
-            var effects = _effects.GetComponentsInChildren<ParticleSystem>();
+            var effects = _effects.GetComponentsInChildren<ParticleSystem>(false);
             foreach (var effect in effects)
             {
                 _effectsDic.Add(effect.name, effect);

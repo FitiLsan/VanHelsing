@@ -60,21 +60,21 @@ namespace BeastHunter
 
             switch (type)
             {
-                case BuffEffectType.Fire:
+                case BuffEffectType.Burning:
                     Debug.Log("огонь");
                     if (_model != null && _model is BossModel)
                     {
                         (_model as BossModel).BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Standstill, type);
                     }
                     break;
-                case BuffEffectType.Water:
+                case BuffEffectType.Wetting:
                     Debug.Log("вода");
                     break;
-                case BuffEffectType.Poison:
+                case BuffEffectType.Poisoning:
                     break;
-                case BuffEffectType.Frosting:
+                case BuffEffectType.Freezing:
                     break;
-                case BuffEffectType.Electricity:
+                case BuffEffectType.Electrization:
                     break;
                 case BuffEffectType.Bleeding:
                     break;
@@ -84,10 +84,10 @@ namespace BeastHunter
                     break;
                 case BuffEffectType.Overturning:
                     break;
-                case BuffEffectType.Steam:
+                case BuffEffectType.Steaming:
                     Debug.Log("пар");
                     break;
-                case BuffEffectType.Smoke:
+                case BuffEffectType.Smoking:
                     break;
 
             }
@@ -96,19 +96,19 @@ namespace BeastHunter
         {
             switch (type)
             {
-                case BuffEffectType.Fire:
+                case BuffEffectType.Burning:
                     if (_model != null && _model is BossModel)
                     {
                         (_model as BossModel).BossStateMachine.CurrentState.OnExit();
                     }
                     break;
-                case BuffEffectType.Water:
+                case BuffEffectType.Wetting:
                     break;
-                case BuffEffectType.Poison:
+                case BuffEffectType.Poisoning:
                     break;
-                case BuffEffectType.Frosting:
+                case BuffEffectType.Freezing:
                     break;
-                case BuffEffectType.Electricity:
+                case BuffEffectType.Electrization:
                     break;
                 case BuffEffectType.Bleeding:
                     break;
@@ -118,9 +118,9 @@ namespace BeastHunter
                     break;
                 case BuffEffectType.Overturning:
                     break;
-                case BuffEffectType.Steam:
+                case BuffEffectType.Steaming:
                     break;
-                case BuffEffectType.Smoke:
+                case BuffEffectType.Smoking:
                     break;
             }
         }

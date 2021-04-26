@@ -56,10 +56,10 @@ namespace BeastHunter
         {
             switch (CurrentEffectType)
             {
-                case BuffEffectType.Fire:
+                case BuffEffectType.Burning:
                     FireReaction();
                     break;
-                case BuffEffectType.Water:
+                case BuffEffectType.Wetting:
                     WaterReaction();
                     break;
                 default:

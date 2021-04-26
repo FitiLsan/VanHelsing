@@ -11,13 +11,13 @@ namespace BeastHunter
 
         public EffectsManager()
         {
-            _combinedEffectDictionary.Add(new CombinedEffect(BuffEffectType.Fire, BuffEffectType.Water), BuffEffectType.Steam);
-            _combinedEffectDictionary.Add(new CombinedEffect(BuffEffectType.Water, BuffEffectType.Fire), BuffEffectType.Steam);
+            _combinedEffectDictionary.Add(new CombinedEffect(BuffEffectType.Burning, BuffEffectType.Wetting), BuffEffectType.Steaming);
+            _combinedEffectDictionary.Add(new CombinedEffect(BuffEffectType.Wetting, BuffEffectType.Burning), BuffEffectType.Steaming);
 
             _allEffectsTypes.AddRange(new BuffEffectType[]
-                    {   BuffEffectType.Fire,
-                        BuffEffectType.Water,
-                        BuffEffectType.Steam
+                    {   BuffEffectType.Burning,
+                        BuffEffectType.Wetting,
+                        BuffEffectType.Steaming
                     });
         }
 

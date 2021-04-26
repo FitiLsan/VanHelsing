@@ -28,6 +28,7 @@ namespace BeastHunter
             TemporaryBuffDictionary = new Dictionary<Buff, BuffDelegate>();
             PermanentBuffDictionary = new Dictionary<Buff, BuffDelegate>();
 
+            PermanentBuffDictionary.Add(Buff.None, NoneDebugBuff);
             PermanentBuffDictionary.Add(Buff.HealthRegenSpeed, HealthRegenBuff);
             PermanentBuffDictionary.Add(Buff.HealthMaximalAmount, HealthMaximumBuff);
             PermanentBuffDictionary.Add(Buff.StaminaRegenSpeed, StaminaRegenBuff);
@@ -35,6 +36,7 @@ namespace BeastHunter
             PermanentBuffDictionary.Add(Buff.CurrentHealthChangeValue, CurrentHealthChangeValue);
             PermanentBuffDictionary.Add(Buff.SpeedChangeValue, SpeedChangeValue);
 
+            TemporaryBuffDictionary.Add(Buff.None, NoneDebugBuff);
             TemporaryBuffDictionary.Add(Buff.HealthRegenSpeed, HealthRegenBuff);
             TemporaryBuffDictionary.Add(Buff.HealthMaximalAmount, HealthMaximumBuff);
             TemporaryBuffDictionary.Add(Buff.StaminaRegenSpeed, StaminaRegenBuff);
@@ -157,6 +159,10 @@ namespace BeastHunter
 
         #region Stats Impact
 
+        private void NoneDebugBuff(Stats stats, float value)
+        {
+            Debug.Log("DebugBuff, Nothing happens ");
+        }
         private void HealthRegenBuff(Stats stats, float value)
         {
             stats.BaseStats.HealthRegenPerSecond += value;
