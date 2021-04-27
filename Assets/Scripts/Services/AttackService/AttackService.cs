@@ -6,6 +6,8 @@
 
         private readonly GameContext _context;
         private Damage _damage;
+        private Stats _receiverStats;
+        private Stats _dealerStats;
 
         #endregion
 
@@ -23,35 +25,29 @@
 
         #region Methods
 
-        public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats = null, WeaponData usedWeapon = null)
+        public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats = null, WeaponData usedWeapon = null) // mb stats.BaseStats.CurrentWeapon ?
         {
             if(dealerStats==null)
             {
-                dealerStats = new Stats();
+                _dealerStats = new Stats();
             }
-
-            Stats receiverStats = _context.CharacterModel.InstanceID == receiverID ?
+                _dealerStats = dealerStats;
+                _receiverStats = _context.CharacterModel.InstanceID == receiverID ?
                 _context.CharacterModel.CurrentStats : _context.NpcModels[receiverID].CurrentStats;
 
             if(usedWeapon == null)
             {
-                if(dealerStats.Equals(new Stats()))
+                if (_dealerStats.Equals(new Stats()))
                 {
-                    _damage.PhysicalDamage = baseDamage.PhysicalDamage *
-                        (1 - receiverStats.DefenceStats.PhysicalDamageResistance);
-                    _damage.StunProbability = baseDamage.StunProbability *
-                        (1 - receiverStats.DefenceStats.StunProbabilityResistance);
-                    _damage.FireDamage = baseDamage.FireDamage *
-                        (1 - receiverStats.DefenceStats.FireDamageResistance);
+                    _damage.PhysicalDamageValue = baseDamage.PhysicalDamageValue * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType));
+                    _damage.ElementDamageValue = baseDamage.ElementDamageValue * (1 - GetElementResistance(baseDamage.ElementDamageType));
                 }
                 else
                 {
-                    _damage.PhysicalDamage = (baseDamage.PhysicalDamage + dealerStats.AttackStats.PhysicalPower) *
-                        (1 - receiverStats.DefenceStats.PhysicalDamageResistance);
-                    _damage.StunProbability = baseDamage.StunProbability *
-                        (1 - receiverStats.DefenceStats.StunProbabilityResistance);
-                    _damage.FireDamage = baseDamage.FireDamage *
-                        (1 - receiverStats.DefenceStats.FireDamageResistance);
+                    _damage.PhysicalDamageValue =
+                        (baseDamage.PhysicalDamageValue + GetPhysicalPower(baseDamage.PhysicalDamageType)) * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType));
+                    _damage.ElementDamageValue =
+                        (baseDamage.ElementDamageValue + GetElementPower(baseDamage.ElementDamageType)) * (1 - GetElementResistance(baseDamage.ElementDamageType));
                 }
             }
             else
@@ -60,38 +56,29 @@
                 {
                     case WeaponType.Melee:
 
-                        if(dealerStats.Equals(new Stats()))
+                        if(_dealerStats.Equals(new Stats()))
                         {
-                            _damage.PhysicalDamage = baseDamage.PhysicalDamage *
-                            (1 - receiverStats.DefenceStats.PhysicalDamageResistance) *
+                            _damage.PhysicalDamageValue = 
+                                (baseDamage.PhysicalDamageValue + GetPhysicalPower(baseDamage.PhysicalDamageType)) * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType)) *
                                 usedWeapon.CurrentAttack.WeaponItem.Weight;
-                            _damage.StunProbability = baseDamage.StunProbability *
-                                (1 - receiverStats.DefenceStats.StunProbabilityResistance) *
-                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
-                            _damage.FireDamage = baseDamage.FireDamage *
-                                (1 - receiverStats.DefenceStats.FireDamageResistance) *
-                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
+                            _damage.ElementDamageValue =
+                                (baseDamage.ElementDamageValue + GetElementPower(baseDamage.ElementDamageType)) * (1 - GetElementResistance(baseDamage.ElementDamageType)) *
+                                usedWeapon.CurrentAttack.WeaponItem.Weight;
+
                         }
                         else
                         {
-                            _damage.PhysicalDamage = (baseDamage.PhysicalDamage + dealerStats.AttackStats.PhysicalPower) *
-                            (1 - receiverStats.DefenceStats.PhysicalDamageResistance) *
+                            _damage.PhysicalDamageValue =
+                                (baseDamage.PhysicalDamageValue + GetPhysicalPower(baseDamage.PhysicalDamageType)) * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType)) *
                                 usedWeapon.CurrentAttack.WeaponItem.Weight;
-                            _damage.StunProbability = baseDamage.StunProbability *
-                                (1 - receiverStats.DefenceStats.StunProbabilityResistance) *
-                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
-                            _damage.FireDamage = baseDamage.FireDamage *
-                                (1 - receiverStats.DefenceStats.FireDamageResistance) *
-                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
+                            _damage.ElementDamageValue =
+                                (baseDamage.ElementDamageValue + GetElementPower(baseDamage.ElementDamageType)) * (1 - GetElementResistance(baseDamage.ElementDamageType)) *
+                             usedWeapon.CurrentAttack.WeaponItem.Weight;
                         }
                         break;
                     case WeaponType.Shooting:
-                        _damage.PhysicalDamage = baseDamage.PhysicalDamage * 
-                            (1 - receiverStats.DefenceStats.PhysicalDamageResistance);
-                        _damage.StunProbability = baseDamage.StunProbability * 
-                            (1 - receiverStats.DefenceStats.StunProbabilityResistance);
-                        _damage.FireDamage = baseDamage.FireDamage * 
-                            (1 - receiverStats.DefenceStats.FireDamageResistance);
+                        _damage.PhysicalDamageValue = baseDamage.PhysicalDamageValue * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType));
+                        _damage.ElementDamageValue = baseDamage.ElementDamageValue * (1 - GetElementResistance(baseDamage.ElementDamageType));
                         break;
                     case WeaponType.Throwing:
                         break;
@@ -120,6 +107,193 @@
             DealDamage(CountDamage(baseDamage, receiverID, dealerStats, usedWeapon), receiverID);
         }
 
+        public float GetElementResistance(ElementDamageType type)
+        {
+            float resistanceValue;
+            switch (type)
+            {
+                case ElementDamageType.Fire:
+                    {
+                         resistanceValue = _receiverStats.DefenceStats.FireDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Water:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.WaterDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Ice:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.IceDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Electricity:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.ElectricityDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Oil:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.OilDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Toxin:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.ToxinDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Gas:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.GasDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.SmokeAndSteam:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.SmokeAndSteamDamageResistance;
+                    }
+                    break;
+                default:
+                     resistanceValue = 0;
+                    break;
+            }
+            return resistanceValue;
+        }
+
+        public float GetPhysicalResistance(PhysicalDamageType type)
+        {
+            float resistanceValue;
+            switch (type)
+            {
+                case PhysicalDamageType.Cutting:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.CuttingDamageResistance;
+                    }
+                    break;
+                case PhysicalDamageType.Piercing:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.PiercingDamageResistance;
+                    }
+                    break;
+                case PhysicalDamageType.Chopping:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.ChoppingDamageResistance;
+                    }
+                    break;
+                case PhysicalDamageType.Crushing:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.CrushingDamageResistance;
+                    }
+                    break;
+                case PhysicalDamageType.Penetration:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.PenetrationDamageResistance;
+                    }
+                    break;
+                case PhysicalDamageType.Explosion:
+                    {
+                        resistanceValue = _receiverStats.DefenceStats.ExplosionProbabilityResistance;
+                    }
+                    break;
+                default:
+                    resistanceValue = 0f;
+                    break;
+            }
+            return resistanceValue;
+        }
+
+        public float GetPhysicalPower(PhysicalDamageType type)
+        {
+            float powerValue;
+            switch (type)
+            {
+                case PhysicalDamageType.Cutting:
+                    {
+                        powerValue = _dealerStats.AttackStats.CuttingPower;
+                    }
+                    break;
+                case PhysicalDamageType.Piercing:
+                    {
+                        powerValue = _dealerStats.AttackStats.PiersingPower;
+                    }
+                    break;
+                case PhysicalDamageType.Chopping:
+                    {
+                        powerValue = _dealerStats.AttackStats.ChoppingPower;
+                    }
+                    break;
+                case PhysicalDamageType.Crushing:
+                    {
+                        powerValue = _dealerStats.AttackStats.CrushingPower;
+                    }
+                    break;
+                case PhysicalDamageType.Penetration:
+                    {
+                        powerValue = _dealerStats.AttackStats.PenetrationPower;
+                    }
+                    break;
+                case PhysicalDamageType.Explosion:
+                    {
+                        powerValue = _dealerStats.AttackStats.ExplosionPower;
+                    }
+                    break;
+                default:
+                    powerValue = 0f;
+                    break;
+            }
+            return powerValue;
+        }
+
+        public float GetElementPower(ElementDamageType type)
+        {
+            float powerValue;
+            switch (type)
+            {
+                case ElementDamageType.Fire:
+                    {
+                        powerValue = _receiverStats.AttackStats.FirePower;
+                    }
+                    break;
+                case ElementDamageType.Water:
+                    {
+                        powerValue = _receiverStats.AttackStats.WaterPower;
+                    }
+                    break;
+                case ElementDamageType.Ice:
+                    {
+                        powerValue = _receiverStats.AttackStats.IcePower;
+                    }
+                    break;
+                case ElementDamageType.Electricity:
+                    {
+                        powerValue = _receiverStats.AttackStats.ElectricityPower;
+                    }
+                    break;
+                case ElementDamageType.Oil:
+                    {
+                        powerValue = _receiverStats.AttackStats.OilPower;
+                    }
+                    break;
+                case ElementDamageType.Toxin:
+                    {
+                        powerValue = _receiverStats.AttackStats.ToxinPower;
+                    }
+                    break;
+                case ElementDamageType.Gas:
+                    {
+                        powerValue = _receiverStats.AttackStats.GasPower;
+                    }
+                    break;
+                case ElementDamageType.SmokeAndSteam:
+                    {
+                        powerValue = _receiverStats.AttackStats.SmokeAndSteamPower;
+                    }
+                    break;
+                default:
+                    powerValue = 0;
+                    break;
+            }
+            return powerValue;
+        }
         #endregion
     }
 }

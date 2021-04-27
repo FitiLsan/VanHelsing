@@ -346,7 +346,7 @@ namespace BeastHunter
             Debug.Log("Boss recieved: " + damage.PhysicalDamage + " of damage and has: " + 
                 CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
             
-            if (damage.StunProbability > CurrentStats.DefenceStats.StunProbabilityResistance)
+            if (damage.StunProbability > CurrentStats.DefenceStats.StunningProbabilityResistance)
             {
                 MessageBroker.Default.Publish(new OnBossStunnedEventClass());
             }

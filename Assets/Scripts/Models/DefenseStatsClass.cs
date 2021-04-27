@@ -30,6 +30,10 @@ namespace BeastHunter
         [Range(-2f, 2.0f)]
         [SerializeField] private float _penetratingDamageResistance;
 
+        [Tooltip(" between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _explosionDamageResistance;
+
         [Header("Element Damage Resistance")]
 
         [Tooltip("resistance between -2 and 2.")]
@@ -138,7 +142,7 @@ namespace BeastHunter
 
         #region Properties
 
-        public float PhysicalDamageResistance
+        public float CuttingDamageResistance
         {
             get
             {
@@ -150,18 +154,50 @@ namespace BeastHunter
             }
         }
 
-        public float StunProbabilityResistance
+        public float PiercingDamageResistance
         {
             get
             {
-                return _stunningProbabilityResistance;
+                return _piercingDamageResistance;
             }
             set
             {
-                _stunningProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+                _piercingDamageResistance = Mathf.Clamp(value, 0f, 1f);
             }
         }
-
+        public float ChoppingDamageResistance
+        {
+            get
+            {
+                return _choppingDamageResistance;
+            }
+            set
+            {
+                _choppingDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float CrushingDamageResistance
+        {
+            get
+            {
+                return _crushingDamageResistance;
+            }
+            set
+            {
+                _crushingDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float PenetrationDamageResistance
+        {
+            get
+            {
+                return _penetratingDamageResistance;
+            }
+            set
+            {
+                _penetratingDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
         public float FireDamageResistance
         {
             get
@@ -173,6 +209,262 @@ namespace BeastHunter
                 _fireDamageResistance = Mathf.Clamp(value, 0f, 1f);
             }
         }
+        public float WaterDamageResistance
+        {
+            get
+            {
+                return _waterDamageResistance;
+            }
+            set
+            {
+                _waterDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float IceDamageResistance
+        {
+            get
+            {
+                return _iceDamageResistance;
+            }
+            set
+            {
+                _iceDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float ElectricityDamageResistance
+        {
+            get
+            {
+                return _electricityDamageResistance;
+            }
+            set
+            {
+               _electricityDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float OilDamageResistance
+        {
+            get
+            {
+                return _oilDamageResistance;
+            }
+            set
+            {
+                _oilDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float ToxinDamageResistance
+        {
+            get
+            {
+                return _toxinDamageResistance;
+            }
+            set
+            {
+                _toxinDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float GasDamageResistance
+        {
+            get
+            {
+                return _gasDamageResistance;
+            }
+            set
+            {
+                _gasDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float SmokeAndSteamDamageResistance
+        {
+            get
+            {
+                return SmokeAndSteamDamageResistance;
+            }
+            set
+            {
+                _smokeAndSteamDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+
+        public float BurningProbabilityResistance
+        {
+            get
+            {
+                return _burningProbabilityResistance;
+            }
+            set
+            {
+               _burningProbabilityResistance  = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float WeetingProbabilityResistance
+        {
+            get
+            {
+                return _weetingProbabilityResistance;
+            }
+            set
+            {
+                _weetingProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float FreezingProbabilityResistance
+        {
+            get
+            {
+                return _freezingProbabilityResistance;
+            }
+            set
+            {
+               _freezingProbabilityResistance  = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float ElectrizationProbabilityResistance
+        {
+            get
+            {
+                return _electrizationProbabilityResistance;
+            }
+            set
+            {
+                _electrizationProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float OilingProbabilityResistance
+        {
+            get
+            {
+                return _oilingProbabilityResistance;
+            }
+            set
+            {
+               _oilingProbabilityResistance  = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float PoisoningProbabilityResistance
+        {
+            get
+            {
+                return _poisoningProbabilityResistance;
+            }
+            set
+            {
+               _poisoningProbabilityResistance  = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float GassingProbabilityResistance
+        {
+            get
+            {
+                return _gassingProbabilityResistance;
+            }
+            set
+            {
+                _gassingProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float SuffocationProbabilityResistance
+        {
+            get
+            {
+                return _suffocationProbabilityResistance;
+            }
+            set
+            {
+               _suffocationProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float BleedingProbabilityResistance
+        {
+            get
+            {
+                return _bleedingProbabilityResistance;
+            }
+            set
+            {
+                _bleedingProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float StunningProbabilityResistance
+        {
+            get
+            {
+                return _stunningProbabilityResistance;
+            }
+            set
+            {
+                _stunningProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float SlowingProbabilityResistance
+        {
+            get
+            {
+                return _slowingProbabilityResistance;
+            }
+            set
+            {
+               _slowingProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float OverturningProbabilityResistance
+        {
+            get
+            {
+                return _overturningProbabilityResistance;
+            }
+            set
+            {
+               _overturningProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float ProbabilityResistance
+        {
+            get
+            {
+                return _contusionProbabilityResistance;
+            }
+            set
+            {
+                _contusionProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float IntoxicationProbabilityResistance
+        {
+            get
+            {
+                return _intoxicationProbabilityResistance;
+            }
+            set
+            {
+                _intoxicationProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float BlindingProbabilityResistance
+        {
+            get
+            {
+                return _blindingProbabilityResistance;
+            }
+            set
+            {
+                _blindingProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float ExplosionProbabilityResistance
+        {
+            get
+            {
+                return _explosionProbabilityResistance;
+            }
+            set
+            {
+                 _explosionProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+
+
 
         #endregion
     }

@@ -156,10 +156,14 @@ namespace BeastHunter
                 return false;
             }
 
-            foreach (var effect in Services.SharedInstance.EffectsManager.GetAllEffects())
+            var allBuffEffects  = _model.CurrentStats.BuffHolder.TemporaryBuffList.SelectMany(x => x.Effects);//Services.SharedInstance.EffectsManager.GetAllEffects();
+
+            foreach (var buffEffect in allBuffEffects)
             {
                 TemporaryBuff buff;
                 TemporaryBuff newBuff;
+                var effect = buffEffect.BuffEffectType;
+
                 if (currentEffect != effect && (buff = _model.CurrentStats.BuffHolder.TemporaryBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect)))))
                 {
                     newBuff = Services.SharedInstance.EffectsManager.GetEffectCombinationResult(effect, currentEffect);

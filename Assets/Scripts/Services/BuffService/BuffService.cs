@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using DG.Tweening;
 using System.Linq;
+using Random = UnityEngine.Random;
 
 namespace BeastHunter
 {
@@ -206,8 +207,11 @@ namespace BeastHunter
 
         private void CurrentHealthChangeValue(Stats stats, float value)
         {
-            var damage = new Damage();
-            damage.PhysicalDamage = value;
+            var damage = new Damage(); 
+            damage.ElementDamageType = ElementDamageType.Fire; // need realy type
+            damage.ElementDamageValue = Random.Range(15f, 30f);
+            damage.PhysicalDamageType = PhysicalDamageType.None;
+            damage.PhysicalDamageValue = Random.Range(15f, 30f);
             Services.SharedInstance.AttackService.CountAndDealDamage(damage, stats.InstanceID);
         }
 
