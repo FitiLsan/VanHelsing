@@ -8,18 +8,130 @@ namespace BeastHunter
     public sealed class DefenceStatsClass
     {
         #region Fields
+        [Header("Physical Damage resistance")]
 
-        [Tooltip("Physical damage resistance between 0 and 1.")]
-        [Range(0.0f, 1.0f)]
-        [SerializeField] private float _physicalDamageResistance;
+        [Tooltip(" between -2 and 2.")]
+        [Range(-2.0f, 2.0f)]
+        [SerializeField] private float _cuttingDamageResistance;
 
-        [Tooltip("Stun resistance between 0 and 1.")]
-        [Range(0.0f, 1.0f)]
-        [SerializeField] private float _stunProbabilityResistance;
+        [Tooltip(" between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _piercingDamageResistance;
 
-        [Tooltip("Fire resistance between 0 and 1.")]
-        [Range(0.0f, 1.0f)]
+        [Tooltip(" between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _choppingDamageResistance;
+
+        [Tooltip(" between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _crushingDamageResistance;
+
+        [Tooltip(" between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _penetratingDamageResistance;
+
+        [Header("Element Damage Resistance")]
+
+        [Tooltip("resistance between -2 and 2.")]
+        [Range(-2f, 2.0f)]
         [SerializeField] private float _fireDamageResistance;
+
+        [Tooltip("resistance between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _waterDamageResistance;
+
+        [Tooltip("resistance between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _iceDamageResistance;
+
+        [Tooltip("resistance between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _electricityDamageResistance;
+
+        [Tooltip("resistance between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _oilDamageResistance;
+
+        [Tooltip("resistance between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _toxinDamageResistance;
+
+        [Tooltip("resistance between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _gasDamageResistance;
+
+        [Tooltip("resistance between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _smokeAndSteamDamageResistance;
+
+        [Header("Effects Probability Resistance")]
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _burningProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _weetingProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _freezingProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _electrizationProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _oilingProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _poisoningProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _gassingProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _suffocationProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _bleedingProbabilityResistance;
+
+        [Tooltip("resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _stunningProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _slowingProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _overturningProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _contusionProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _intoxicationProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _blindingProbabilityResistance;
+
+        [Tooltip(" resistance between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField] private float _explosionProbabilityResistance;
+
+
+
 
         #endregion
 
@@ -30,11 +142,11 @@ namespace BeastHunter
         {
             get
             {
-                return _physicalDamageResistance;
+                return _cuttingDamageResistance;
             }
             set
             {
-                _physicalDamageResistance = Mathf.Clamp(value, 0f, 1f);
+                _cuttingDamageResistance = Mathf.Clamp(value, 0f, 1f);
             }
         }
 
@@ -42,11 +154,11 @@ namespace BeastHunter
         {
             get
             {
-                return _stunProbabilityResistance;
+                return _stunningProbabilityResistance;
             }
             set
             {
-                _stunProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
+                _stunningProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
             }
         }
 

@@ -62,7 +62,7 @@ namespace BeastHunter
             {
                 if (effect.BuffEffectType != EffectType.None && buffHolder.PermanentBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect.BuffEffectType))))
                 {
-                    continue;
+                    return;
                 }
                 PermanentBuffDictionary[effect.Buff](stats, effect.Value);
             }
@@ -103,7 +103,7 @@ namespace BeastHunter
                 if (effect.BuffEffectType!= EffectType.None && buffHolder.TemporaryBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect.BuffEffectType))))
                 {
                     isEffectExist = true;
-                    continue;
+                    return;
                 }
                 var modifiedBuffValue = buff.Type.Equals(BuffType.Debuf) ? effect.Value : effect.Value * -1;
                 if (effect.IsTicking)

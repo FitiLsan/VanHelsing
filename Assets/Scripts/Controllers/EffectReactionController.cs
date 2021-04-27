@@ -155,6 +155,7 @@ namespace BeastHunter
             {
                 return false;
             }
+
             foreach (var effect in Services.SharedInstance.EffectsManager.GetAllEffects())
             {
                 TemporaryBuff buff;
