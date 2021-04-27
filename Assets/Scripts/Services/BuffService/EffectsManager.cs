@@ -118,6 +118,104 @@ namespace BeastHunter
             return newBuff;
         }
 
+        public ElementDamageType GetElementByEffect(EffectType effectType)
+        {
+            ElementDamageType elementType;
+            switch (effectType)
+            {
+                case EffectType.Burning:
+                    elementType = ElementDamageType.Fire;
+                    break;
+                case EffectType.Wetting:
+                    elementType = ElementDamageType.Water;
+                    break;
+                case EffectType.Freezing:
+                    elementType = ElementDamageType.Ice;
+                    break;
+                case EffectType.Electrization:
+                    elementType = ElementDamageType.Electricity;
+                    break;
+                case EffectType.Oiling:
+                    elementType = ElementDamageType.Oil;
+                    break;
+                case EffectType.Poisoning:
+                    elementType = ElementDamageType.Toxin;
+                    break;
+                case EffectType.Gassing:
+                    elementType = ElementDamageType.Gas;
+                    break;
+                case EffectType.Suffocation:
+                    elementType = ElementDamageType.SmokeAndSteam;
+                    break;
+                default:
+                    CustomDebug.LogError($"Type {effectType} does not exist");
+                    elementType = ElementDamageType.None;
+                    break;
+            }
+            return elementType;
+        }
+
+        public float GetEffectProbability(EffectType effectType, Stats stats)
+        {
+            float effectProbability;
+            switch (effectType)
+            {
+                case EffectType.Burning:
+                    effectProbability = stats.DefenceStats.BurningProbabilityResistance;
+                    break;
+                case EffectType.Wetting:
+                    effectProbability = stats.DefenceStats.WeetingProbabilityResistance;
+                    break;
+                case EffectType.Freezing:
+                    effectProbability = stats.DefenceStats.FreezingProbabilityResistance;
+                    break;
+                case EffectType.Electrization:
+                    effectProbability = stats.DefenceStats.ElectrizationProbabilityResistance;
+                    break;
+                case EffectType.Oiling:
+                    effectProbability = stats.DefenceStats.OilingProbabilityResistance;
+                    break;
+                case EffectType.Poisoning:
+                    effectProbability = stats.DefenceStats.PoisoningProbabilityResistance;
+                    break;
+                case EffectType.Gassing:
+                    effectProbability = stats.DefenceStats.GassingProbabilityResistance;
+                    break;
+                case EffectType.Suffocation:
+                    effectProbability = stats.DefenceStats.SuffocationProbabilityResistance;
+                    break;
+                case EffectType.Bleeding:
+                    effectProbability = stats.DefenceStats.BleedingProbabilityResistance;
+                    break;
+                case EffectType.Stunning:
+                    effectProbability = stats.DefenceStats.StunningProbabilityResistance;
+                    break;
+                case EffectType.Slowing:
+                    effectProbability = stats.DefenceStats.SlowingProbabilityResistance;
+                    break;
+                case EffectType.Overturning:
+                    effectProbability = stats.DefenceStats.OverturningProbabilityResistance;
+                    break;
+                case EffectType.Contusion:
+                    effectProbability = stats.DefenceStats.ContusionProbabilityResistance;
+                    break;
+                case EffectType.Intoxication:
+                    effectProbability = stats.DefenceStats.IntoxicationProbabilityResistance;
+                    break;
+                case EffectType.Blinding:
+                    effectProbability = stats.DefenceStats.BlindingProbabilityResistance;
+                    break;
+                case EffectType.Explosion:
+                    effectProbability = stats.DefenceStats.ExplosionProbabilityResistance;
+                    break;
+                default:
+                    CustomDebug.LogError($"Type {effectType} does not exist");
+                    effectProbability = 0;
+                    break;
+            }
+            return effectProbability;
+        }
+
         public List<EffectType> GetAllEffects()
         {
             return _allEffectsTypes;

@@ -109,12 +109,12 @@ MonoBehaviour:
       IsDead: 0
       IsStunned: 0
     AttackStats:
-      _physicalPower: 5
       _cuttingPower: 0
       _piercingPower: 0
       _choppingPower: 0
       _crushingPower: 0
       _penetrationPower: 0
+      _explosionPower: 0
       _firePower: 0
       _waterPower: 0
       _icePower: 0
@@ -129,6 +129,7 @@ MonoBehaviour:
       _choppingDamageResistance: 0
       _crushingDamageResistance: 0
       _penetratingDamageResistance: 0
+      _explosionDamageResistance: 0
       _fireDamageResistance: 0
       _waterDamageResistance: 0
       _iceDamageResistance: 0

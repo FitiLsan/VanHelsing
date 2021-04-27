@@ -15,6 +15,7 @@ namespace BeastHunter
         private Dictionary<Buff, BuffDelegate> TemporaryBuffDictionary;
         private Dictionary<Buff, BuffDelegate> PermanentBuffDictionary;
         private GameContext _context;
+        private BuffEffect _currentEffect;
 
         #endregion
 
@@ -65,6 +66,10 @@ namespace BeastHunter
                 {
                     return;
                 }
+                if (!CalculateProbability(Services.SharedInstance.EffectsManager.GetEffectProbability(effect.BuffEffectType, stats)))
+                {
+                    return;
+                }
                 PermanentBuffDictionary[effect.Buff](stats, effect.Value);
             }
 
@@ -95,6 +100,7 @@ namespace BeastHunter
             var stats = GetStatsByInstanceID(instanceID);
             var buffHolder = stats.BuffHolder;
             var isEffectExist = false;
+
             if (buffHolder.TemporaryBuffList.Contains(buff))
             {
                 return;
@@ -106,7 +112,14 @@ namespace BeastHunter
                     isEffectExist = true;
                     return;
                 }
+
+                if(!CalculateProbability(Services.SharedInstance.EffectsManager.GetEffectProbability(effect.BuffEffectType, stats)))
+                {
+                    return;
+                }
+
                 var modifiedBuffValue = buff.Type.Equals(BuffType.Debuf) ? effect.Value : effect.Value * -1;
+                _currentEffect = effect;
                 if (effect.IsTicking)
                 {
                     var time = buff.Time;
@@ -144,7 +157,6 @@ namespace BeastHunter
                     if (!effect.IsTicking)
                     {
                         var modifiedBuffValue = buff.Type.Equals(BuffType.Debuf) ? effect.Value : effect.Value * -1;
-
                         TemporaryBuffDictionary[effect.Buff](stats, -modifiedBuffValue);
                     }
                 }
@@ -207,14 +219,19 @@ namespace BeastHunter
 
         private void CurrentHealthChangeValue(Stats stats, float value)
         {
-            var damage = new Damage(); 
-            damage.ElementDamageType = ElementDamageType.Fire; // need realy type
-            damage.ElementDamageValue = Random.Range(15f, 30f);
-            damage.PhysicalDamageType = PhysicalDamageType.None;
-            damage.PhysicalDamageValue = Random.Range(15f, 30f);
+            var trace = new System.Diagnostics.StackTrace();
+            if (trace.GetFrame(1).GetMethod().Name.Equals("RemoveTemporaryBuff"))
+            {
+                return;
+            }
+            var damage = new Damage();
+            damage.ElementDamageType = Services.SharedInstance.EffectsManager.GetElementByEffect(_currentEffect.BuffEffectType);
+            damage.ElementDamageValue = value;
+
             Services.SharedInstance.AttackService.CountAndDealDamage(damage, stats.InstanceID);
         }
 
+        #endregion
 
         public Stats GetStatsByInstanceID(int receiverID)
         {
@@ -223,7 +240,13 @@ namespace BeastHunter
            return receiverStats;
         }
 
-        #endregion
+        private bool CalculateProbability(float probabilityValue)
+        {
+           return Random.Range(0f, 1f) > probabilityValue? true :  false;
+        }
+
+        
+      
 
         #endregion
     }

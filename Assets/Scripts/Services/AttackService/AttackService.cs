@@ -29,7 +29,7 @@
         {
             if(dealerStats==null)
             {
-                _dealerStats = new Stats();
+                dealerStats = new Stats();
             }
                 _dealerStats = dealerStats;
                 _receiverStats = _context.CharacterModel.InstanceID == receiverID ?

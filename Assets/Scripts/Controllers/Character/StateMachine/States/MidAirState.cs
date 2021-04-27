@@ -38,7 +38,10 @@ namespace BeastHunter
             base.Initialize(previousState);
             _characterModel.CharacterRigitbody.isKinematic = false;
             Damage damage = new Damage();
-            damage.PhysicalDamage = 10f;
+            damage.ElementDamageType = ElementDamageType.None;
+            damage.ElementDamageValue = 0;
+            damage.PhysicalDamageType = PhysicalDamageType.Crushing;
+            damage.PhysicalDamageValue = 10f;
             _stateMachine.BackState.TakeDamage(damage);
         }
 

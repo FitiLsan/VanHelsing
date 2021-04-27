@@ -279,7 +279,7 @@ namespace BeastHunter
         {
             get
             {
-                return SmokeAndSteamDamageResistance;
+                return _smokeAndSteamDamageResistance;
             }
             set
             {
@@ -419,7 +419,7 @@ namespace BeastHunter
                _overturningProbabilityResistance = Mathf.Clamp(value, 0f, 1f);
             }
         }
-        public float ProbabilityResistance
+        public float ContusionProbabilityResistance
         {
             get
             {
