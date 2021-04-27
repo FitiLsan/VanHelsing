@@ -5,7 +5,7 @@ using TMPro;
 
 namespace BeastHunter
 {
-    public sealed class DummyModel : EnemyModel
+    public sealed class DummyModel : EnemyModel, IAwake
     {
 
         #region Properties
@@ -15,6 +15,8 @@ namespace BeastHunter
         public Transform DamageTextObject { get; }
         public TextMeshPro DamageText { get; }
         public Color DamageTextColor { get; }
+        public VisualEffectController VisualEffectController { get; }
+        public EffectReactionController EffectReactionController { get; }
 
         #endregion
 
@@ -32,6 +34,10 @@ namespace BeastHunter
             DamageTextColor = DamageText.color;
             DamageText.text = string.Empty;
             DamageText.color = Color.clear;
+            BuffEffectPrefab = objectOnScene.transform.Find("Effects").gameObject;
+
+            VisualEffectController = new VisualEffectController(Services.SharedInstance.Context, this);
+            EffectReactionController = new EffectReactionController(Services.SharedInstance.Context, this);
         }
 
         #endregion
@@ -55,6 +61,13 @@ namespace BeastHunter
             if (doComplete && !DummyPushSequence.IsComplete()) DummyPushSequence.Complete();
             DummyPushSequence = DOTween.Sequence();
         }
+
+        public void OnAwake()
+        {
+            VisualEffectController.OnAwake();
+            EffectReactionController.OnAwake();
+        }
+
 
         #endregion
     }
