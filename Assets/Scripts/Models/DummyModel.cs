@@ -47,8 +47,10 @@ namespace BeastHunter
 
         public override void TakeDamage(Damage damage)
         {
+            Debug.Log($"Dummy recieved: PhysicalDamage:{damage.PhysicalDamageValue} Type: {damage.PhysicalDamageType} + ElementDamage:{damage.ElementDamageValue} Type: {damage.ElementDamageType} and has { CurrentStats.BaseStats.CurrentHealthPoints} of HP");
+
             ((DummyData)ThisEnemyData).CreateDamageObject(damage, this);
-            if (!damage.isEffectDamage)
+            if (!damage.IsEffectDamage)
             {
                 var elementEffect = Services.SharedInstance.EffectsManager.GetEffectByElementDamageType(damage.ElementDamageType);
                 var physicEffect = Services.SharedInstance.EffectsManager.GetEffectByPhysicalDamageType(damage.PhysicalDamageType);

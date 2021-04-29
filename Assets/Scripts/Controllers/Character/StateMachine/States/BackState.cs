@@ -361,7 +361,7 @@ namespace BeastHunter
                     MessageBroker.Default.Publish(new OnBossWeakPointHittedEventClass { WeakPointCollider = enemy });
                 }
 
-                _services.AttackService.CountAndDealDamage(_characterModel.CurrentWeaponData.Value.CurrentAttack.AttackDamage,
+                _services.AttackService.CountAndDealDamage(_characterModel.CurrentWeaponData.Value.WeaponDamage,
                     enemy.transform.root.gameObject.GetInstanceID(), _characterModel.CurrentStats, _characterModel.
                         CurrentWeaponData.Value);
                 hitBox.IsInteractable = false;

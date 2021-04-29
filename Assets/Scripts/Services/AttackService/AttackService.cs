@@ -27,58 +27,45 @@
 
         public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats = null, WeaponData usedWeapon = null)
         {
-            if(dealerStats==null)
+            var powerModifier = true;
+            if (dealerStats==null)
             {
                 dealerStats = new Stats();
+                powerModifier = false;
             }
                 _dealerStats = dealerStats;
                 _receiverStats = _context.CharacterModel.InstanceID == receiverID ?
                 _context.CharacterModel.CurrentStats : _context.NpcModels[receiverID].CurrentStats;
 
-            if(usedWeapon == null)
+            if (usedWeapon == null)
             {
-                if (_dealerStats.Equals(new Stats()))
-                {
-                    _damage.PhysicalDamageValue = baseDamage.PhysicalDamageValue * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType));
-                    _damage.ElementDamageValue = baseDamage.ElementDamageValue * (1 - GetElementResistance(baseDamage.ElementDamageType));
-                }
-                else
-                {
-                    _damage.PhysicalDamageValue =
-                        (baseDamage.PhysicalDamageValue + GetPhysicalPower(baseDamage.PhysicalDamageType)) * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType));
-                    _damage.ElementDamageValue =
-                        (baseDamage.ElementDamageValue + GetElementPower(baseDamage.ElementDamageType)) * (1 - GetElementResistance(baseDamage.ElementDamageType));
-                }
+                _damage.PhysicalDamageValue =
+                    (baseDamage.PhysicalDamageValue + GetPhysicalPower(baseDamage.PhysicalDamageType, powerModifier)) * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType));
+                _damage.ElementDamageValue =
+                    (baseDamage.ElementDamageValue + GetElementPower(baseDamage.ElementDamageType, powerModifier)) * (1 - GetElementResistance(baseDamage.ElementDamageType));
             }
             else
             {
                 switch (usedWeapon.Type)
                 {
                     case WeaponType.Melee:
-
-                        if(_dealerStats.Equals(new Stats()))
-                        {
-                            _damage.PhysicalDamageValue = 
-                                (baseDamage.PhysicalDamageValue + GetPhysicalPower(baseDamage.PhysicalDamageType)) * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType)) *
-                                usedWeapon.CurrentAttack.WeaponItem.Weight;
-                            _damage.ElementDamageValue =
-                                (baseDamage.ElementDamageValue + GetElementPower(baseDamage.ElementDamageType)) * (1 - GetElementResistance(baseDamage.ElementDamageType)) *
-                                usedWeapon.CurrentAttack.WeaponItem.Weight;
-
-                        }
-                        else
                         {
                             _damage.PhysicalDamageValue =
-                                (baseDamage.PhysicalDamageValue + GetPhysicalPower(baseDamage.PhysicalDamageType)) * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType)) *
+                                (baseDamage.PhysicalDamageValue + GetPhysicalPower(baseDamage.PhysicalDamageType, powerModifier)) * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType)) *
                                 usedWeapon.CurrentAttack.WeaponItem.Weight;
                             _damage.ElementDamageValue =
-                                (baseDamage.ElementDamageValue + GetElementPower(baseDamage.ElementDamageType)) * (1 - GetElementResistance(baseDamage.ElementDamageType)) *
+                                (baseDamage.ElementDamageValue + GetElementPower(baseDamage.ElementDamageType, powerModifier)) * (1 - GetElementResistance(baseDamage.ElementDamageType)) *
                              usedWeapon.CurrentAttack.WeaponItem.Weight;
                         }
                         break;
                     case WeaponType.Shooting:
-                        _damage.PhysicalDamageValue = baseDamage.PhysicalDamageValue * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType));
-                        _damage.ElementDamageValue = baseDamage.ElementDamageValue * (1 - GetElementResistance(baseDamage.ElementDamageType));
+                        // What unique weapon value ? Mb distance ?
+                        {
+                            _damage.PhysicalDamageValue =
+                                (baseDamage.PhysicalDamageValue + GetPhysicalPower(baseDamage.PhysicalDamageType, powerModifier)) * (1 - GetPhysicalResistance(baseDamage.PhysicalDamageType)); //* usedWeapon.CurrentAttack.WeaponItem.Weight;
+                            _damage.ElementDamageValue =
+                                (baseDamage.ElementDamageValue + GetElementPower(baseDamage.ElementDamageType, powerModifier)) * (1 - GetElementResistance(baseDamage.ElementDamageType)); //* usedWeapon.CurrentAttack.WeaponItem.Weight;
+                        }
                         break;
                     case WeaponType.Throwing:
                         break;
@@ -88,7 +75,7 @@
             }
             _damage.PhysicalDamageType = baseDamage.PhysicalDamageType;
             _damage.ElementDamageType = baseDamage.ElementDamageType;
-            _damage.isEffectDamage = baseDamage.isEffectDamage;
+            _damage.IsEffectDamage = baseDamage.IsEffectDamage;
             return _damage;
         }
 
@@ -204,8 +191,12 @@
             return resistanceValue;
         }
 
-        public float GetPhysicalPower(PhysicalDamageType type)
+        public float GetPhysicalPower(PhysicalDamageType type, bool isNeedCheckPower)
         {
+            if(!isNeedCheckPower)
+            {
+                return 0;
+            }
             float powerValue;
             switch (type)
             {
@@ -246,8 +237,12 @@
             return powerValue;
         }
 
-        public float GetElementPower(ElementDamageType type)
+        public float GetElementPower(ElementDamageType type, bool isNeedCheckPower)
         {
+            if (!isNeedCheckPower)
+            {
+                return 0;
+            }
             float powerValue;
             switch (type)
             {

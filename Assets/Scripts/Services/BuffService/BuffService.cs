@@ -57,6 +57,11 @@ namespace BeastHunter
 
         public void AddPermanentBuff(int instanceID, PermanentBuff buff)
         {
+            if (buff == null)
+            {
+                return;
+            }
+
             var stats = GetStatsByInstanceID(instanceID);
             var buffHolder = stats.BuffHolder;
             if (buffHolder.PermanentBuffList.Contains(buff))
@@ -81,6 +86,10 @@ namespace BeastHunter
 
         public void RemovePermanentBuff(int instanceID, PermanentBuff buff)
         {
+            if (buff == null)
+            {
+                return;
+            }
             var stats = GetStatsByInstanceID(instanceID);
             var buffHolder = stats.BuffHolder;
             if (buffHolder.PermanentBuffList.Contains(buff))
@@ -100,6 +109,11 @@ namespace BeastHunter
 
         public void AddTemporaryBuff(int instanceID, TemporaryBuff buff)
         {
+            if(buff==null)
+            {
+                return;
+            }
+
             var stats = GetStatsByInstanceID(instanceID);
             var buffHolder = stats.BuffHolder;
             var isEffectExist = false;
@@ -156,6 +170,10 @@ namespace BeastHunter
 
         public void RemoveTemporaryBuff(Stats stats, TemporaryBuff buff, BuffHolder buffHolder)
         {
+            if (buff == null)
+            {
+                return;
+            }
             if (buffHolder.TemporaryBuffList.Contains(buff))
             {
                 foreach (var effect in buff.Effects)
@@ -231,7 +249,7 @@ namespace BeastHunter
                 return;
             }
             var damage = new Damage();
-            damage.isEffectDamage = true;
+            damage.IsEffectDamage = true;
             damage.ElementDamageType = Services.SharedInstance.EffectsManager.GetElementByEffect(_currentEffect.BuffEffectType);
             damage.ElementDamageValue = value;
             Services.SharedInstance.AttackService.CountAndDealDamage(damage, stats.InstanceID);
