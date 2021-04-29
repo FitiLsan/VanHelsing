@@ -8,5 +8,6 @@ public enum ElementDamageType
     Oil,
     Toxin,
     Gas,
-    SmokeAndSteam
+    SmokeAndSteam,
+    Bleeding
 }

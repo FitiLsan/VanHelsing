@@ -147,6 +147,10 @@ namespace BeastHunter
                 case EffectType.Suffocation:
                     elementType = ElementDamageType.SmokeAndSteam;
                     break;
+                case EffectType.Bleeding:
+                    elementType = ElementDamageType.Bleeding;
+                    break;
+
                 default:
                     CustomDebug.LogError($"Type {effectType} does not exist");
                     elementType = ElementDamageType.None;
@@ -216,7 +220,101 @@ namespace BeastHunter
             return effectProbability;
         }
 
-        public List<EffectType> GetAllEffects()
+        public EffectType GetEffectByElementDamageType(ElementDamageType type)
+        {
+            EffectType effectType; ;
+            switch (type)
+            {
+                case ElementDamageType.Fire:
+                    {
+                        effectType = EffectType.Burning;
+                    }
+                    break;
+                case ElementDamageType.Water:
+                    {
+                        effectType = EffectType.Wetting;
+                    }
+                    break;
+                case ElementDamageType.Ice:
+                    {
+                        effectType = EffectType.Freezing;
+                    }
+                    break;
+                case ElementDamageType.Electricity:
+                    {
+                        effectType = EffectType.Electrization;
+                    }
+                    break;
+                case ElementDamageType.Oil:
+                    {
+                        effectType = EffectType.Oiling;
+                    }
+                    break;
+                case ElementDamageType.Toxin:
+                    {
+                        effectType = EffectType.Poisoning;
+                    }
+                    break;
+                case ElementDamageType.Gas:
+                    {
+                        effectType = EffectType.Gassing;
+                    }
+                    break;
+                case ElementDamageType.SmokeAndSteam:
+                    {
+                        effectType = EffectType.Suffocation;
+                    }
+                    break;
+                default:
+                    effectType = EffectType.None;
+                    break;
+            }
+            return effectType;
+        }
+
+        public EffectType GetEffectByPhysicalDamageType(PhysicalDamageType type)
+        {
+            EffectType effectType;
+            switch (type)
+            {
+                case PhysicalDamageType.Cutting:
+                    {
+                        effectType = EffectType.Bleeding;
+                    }
+                    break;
+                case PhysicalDamageType.Piercing:
+                    {
+                        effectType = EffectType.Bleeding;
+                    }
+                    break;
+                case PhysicalDamageType.Chopping:
+                    {
+                        effectType = Random.Range(1, 3) == 1 ? EffectType.Stunning : EffectType.Overturning;
+                    }
+                    break;
+                case PhysicalDamageType.Crushing:
+                    {
+                        effectType = Random.Range(1, 3) == 1 ? EffectType.Stunning : EffectType.Overturning;
+                    }
+                    break;
+                case PhysicalDamageType.Penetration:
+                    {
+                        effectType = EffectType.Bleeding;
+                    }
+                    break;
+                case PhysicalDamageType.Explosion:
+                    {
+                        effectType = Random.Range(1, 3) == 1 ? EffectType.Contusion : EffectType.Overturning;
+                    }
+                    break;
+                default:
+                    effectType = EffectType.None;
+                    break;
+            }
+            return effectType;
+        }
+
+            public List<EffectType> GetAllEffects()
         {
             return _allEffectsTypes;
         }

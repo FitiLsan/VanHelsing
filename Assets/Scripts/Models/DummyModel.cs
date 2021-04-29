@@ -48,6 +48,14 @@ namespace BeastHunter
         public override void TakeDamage(Damage damage)
         {
             ((DummyData)ThisEnemyData).CreateDamageObject(damage, this);
+            if (!damage.isEffectDamage)
+            {
+                var elementEffect = Services.SharedInstance.EffectsManager.GetEffectByElementDamageType(damage.ElementDamageType);
+                var physicEffect = Services.SharedInstance.EffectsManager.GetEffectByPhysicalDamageType(damage.PhysicalDamageType);
+                
+                Services.SharedInstance.BuffService.AddTemporaryBuff(InstanceID, Resources.Load($"Data/Buffs/BaseDebuffs/{physicEffect}") as TemporaryBuff);
+                Services.SharedInstance.BuffService.AddTemporaryBuff(InstanceID, Resources.Load($"Data/Buffs/BaseDebuffs/{elementEffect}") as TemporaryBuff);
+            }
         }
 
         public void RefreshDamageTextSequence(bool doComplete)

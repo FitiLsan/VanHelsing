@@ -21,6 +21,7 @@ namespace BeastHunter
         [Range(0.0f, 1000.0f)]
         public float ElementDamageValue;
 
+        public bool isEffectDamage;
         #endregion
 
 

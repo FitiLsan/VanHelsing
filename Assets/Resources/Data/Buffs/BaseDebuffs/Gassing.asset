@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ed80e7e67b6fac44938b9de902b200e, type: 3}
-  m_Name: Slowing
+  m_Name: Gassing
   m_EditorClassIdentifier: 
-  Name: "\u0437\u0430\u043C\u0435\u0434\u043B\u0435\u043D\u0438\u0435"
+  Name: "\u043E\u0442\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435(\u0433\u0430\u0437)"
   Description: 
   Type: 1
-  Sprite: {fileID: 21300000, guid: 2681520e8d2b5b6459a4a96f31840525, type: 3}
+  Sprite: {fileID: 21300000, guid: e331f810b71056645b0ebdfaf0fed527, type: 3}
   Effects:
   - Buff: 0
-    BuffEffectType: 11
+    BuffEffectType: 7
     Value: 0
     IsTicking: 0
-  Time: 15
+  Time: 5

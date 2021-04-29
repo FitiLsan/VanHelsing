@@ -6,5 +6,5 @@ public enum PhysicalDamageType
     Chopping,
     Crushing,
     Penetration,
-    Explosion,
+    Explosion
 }

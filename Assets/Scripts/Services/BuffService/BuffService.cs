@@ -10,12 +10,15 @@ namespace BeastHunter
     public sealed class BuffService :  IService
     {
         #region Fields
+        private const float DELAY_TIME_MIN = 0.75f;
+        private const float DELAY_TIME_MAX = 1.25f;
 
         private delegate void BuffDelegate(Stats stats, float parameter);
         private Dictionary<Buff, BuffDelegate> TemporaryBuffDictionary;
         private Dictionary<Buff, BuffDelegate> PermanentBuffDictionary;
         private GameContext _context;
         private BuffEffect _currentEffect;
+        private float _currentDelayTime;
 
         #endregion
 
@@ -100,6 +103,7 @@ namespace BeastHunter
             var stats = GetStatsByInstanceID(instanceID);
             var buffHolder = stats.BuffHolder;
             var isEffectExist = false;
+           // _currentBuffDamage = buffDamage;
 
             if (buffHolder.TemporaryBuffList.Contains(buff))
             {
@@ -119,11 +123,12 @@ namespace BeastHunter
                 }
 
                 var modifiedBuffValue = buff.Type.Equals(BuffType.Debuf) ? effect.Value : effect.Value * -1;
-                _currentEffect = effect;
+                
                 if (effect.IsTicking)
                 {
                     var time = buff.Time;
-                    BuffUse(time);
+                     _currentDelayTime = _currentDelayTime == DELAY_TIME_MIN ? DELAY_TIME_MAX : DELAY_TIME_MIN;
+                    DOVirtual.DelayedCall(_currentDelayTime, () => BuffUse(time));
                 }
                 else
                 {
@@ -136,6 +141,7 @@ namespace BeastHunter
                     {
                         return;
                     }
+                    _currentEffect = effect;
                     TemporaryBuffDictionary[effect.Buff](stats, modifiedBuffValue);
                     DOVirtual.DelayedCall(1f, () => BuffUse(time));
                 }
@@ -225,9 +231,9 @@ namespace BeastHunter
                 return;
             }
             var damage = new Damage();
+            damage.isEffectDamage = true;
             damage.ElementDamageType = Services.SharedInstance.EffectsManager.GetElementByEffect(_currentEffect.BuffEffectType);
             damage.ElementDamageValue = value;
-
             Services.SharedInstance.AttackService.CountAndDealDamage(damage, stats.InstanceID);
         }
 

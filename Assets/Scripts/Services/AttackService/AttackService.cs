@@ -25,7 +25,7 @@
 
         #region Methods
 
-        public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats = null, WeaponData usedWeapon = null) // mb stats.BaseStats.CurrentWeapon ?
+        public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats = null, WeaponData usedWeapon = null)
         {
             if(dealerStats==null)
             {
@@ -86,7 +86,9 @@
                         break;
                 }
             }
-
+            _damage.PhysicalDamageType = baseDamage.PhysicalDamageType;
+            _damage.ElementDamageType = baseDamage.ElementDamageType;
+            _damage.isEffectDamage = baseDamage.isEffectDamage;
             return _damage;
         }
 
@@ -104,7 +106,8 @@
 
         public void CountAndDealDamage(Damage baseDamage, int receiverID, Stats dealerStats = null, WeaponData usedWeapon = null)
         {
-            DealDamage(CountDamage(baseDamage, receiverID, dealerStats, usedWeapon), receiverID);
+            var damage = CountDamage(baseDamage, receiverID, dealerStats, usedWeapon);
+            DealDamage(damage, receiverID);
         }
 
         public float GetElementResistance(ElementDamageType type)

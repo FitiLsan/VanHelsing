@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ed80e7e67b6fac44938b9de902b200e, type: 3}
-  m_Name: Oiling
+  m_Name: Wetting
   m_EditorClassIdentifier: 
-  Name: "\u043F\u0440\u043E\u043C\u0430\u0441\u043B\u0438\u0432\u0430\u043D\u0438\u0435"
+  Name: "\u043D\u0430\u043C\u043E\u043A\u0430\u043D\u0438\u0435"
   Description: 
   Type: 1
-  Sprite: {fileID: 21300000, guid: 5cc9c4a6db9a74a40aaed761fc99294c, type: 3}
+  Sprite: {fileID: 21300000, guid: 87206693f5a6a4e4590538396bd8dc43, type: 3}
   Effects:
-  - Buff: 0
-    BuffEffectType: 5
-    Value: 0
+  - Buff: 5
+    BuffEffectType: 2
+    Value: 50
     IsTicking: 0
-  Time: 15
+  Time: 5

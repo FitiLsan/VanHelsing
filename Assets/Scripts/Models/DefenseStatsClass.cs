@@ -34,6 +34,10 @@ namespace BeastHunter
         [Range(-2f, 2.0f)]
         [SerializeField] private float _explosionDamageResistance;
 
+        [Tooltip(" between -2 and 2.")]
+        [Range(-2f, 2.0f)]
+        [SerializeField] private float _bleedingDamageResistance;
+
         [Header("Element Damage Resistance")]
 
         [Tooltip("resistance between -2 and 2.")]
@@ -284,6 +288,17 @@ namespace BeastHunter
             set
             {
                 _smokeAndSteamDamageResistance = Mathf.Clamp(value, 0f, 1f);
+            }
+        }
+        public float BleedingDamageResistance
+        {
+            get
+            {
+                return  _bleedingDamageResistance;
+            }
+            set
+            {
+                _bleedingDamageResistance = Mathf.Clamp(value, 0f, 1f);
             }
         }
 
