@@ -27,7 +27,6 @@ namespace BeastHunter
 
         public BuffService(GameContext context)
         {
-
             _context = context;
 
             TemporaryBuffDictionary = new Dictionary<Buff, BuffDelegate>();
@@ -117,7 +116,6 @@ namespace BeastHunter
             var stats = GetStatsByInstanceID(instanceID);
             var buffHolder = stats.BuffHolder;
             var isEffectExist = false;
-           // _currentBuffDamage = buffDamage;
 
             if (buffHolder.TemporaryBuffList.Contains(buff))
             {

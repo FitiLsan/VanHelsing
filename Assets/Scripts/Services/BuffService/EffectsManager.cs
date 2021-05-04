@@ -72,10 +72,6 @@ namespace BeastHunter
             _combinedEffectDictionary.Add(new CombinedEffect(EffectType.Explosion, EffectType.Gassing), EffectType.Explosion);
             _combinedEffectDictionary.Add(new CombinedEffect(EffectType.Explosion, EffectType.Suffocation), EffectType.Explosion);
 
-
-
-
-
             _allEffectsTypes.AddRange(new EffectType[]
                     {    EffectType.Wetting,
                          EffectType.Freezing,
@@ -93,6 +89,11 @@ namespace BeastHunter
                          EffectType.Blinding,
                          EffectType.Explosion,
                     });
+        }
+
+        public List<EffectType> GetAllEffects()
+        {
+            return _allEffectsTypes;
         }
 
         public TemporaryBuff GetEffectCombinationResult(EffectType firstEffect, EffectType secondEffect)
@@ -313,10 +314,200 @@ namespace BeastHunter
             }
             return effectType;
         }
-
-            public List<EffectType> GetAllEffects()
+        public float GetElementResistance(ElementDamageType type, Stats receiverStats)
         {
-            return _allEffectsTypes;
+            float resistanceValue;
+            switch (type)
+            {
+                case ElementDamageType.Fire:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.FireDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Water:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.WaterDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Ice:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.IceDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Electricity:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.ElectricityDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Oil:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.OilDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Toxin:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.ToxinDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.Gas:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.GasDamageResistance;
+                    }
+                    break;
+                case ElementDamageType.SmokeAndSteam:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.SmokeAndSteamDamageResistance;
+                    }
+                    break;
+                default:
+                    resistanceValue = 0;
+                    break;
+            }
+            return resistanceValue;
+        }
+
+        public float GetPhysicalResistance(PhysicalDamageType type, Stats receiverStats)
+        {
+            float resistanceValue;
+            switch (type)
+            {
+                case PhysicalDamageType.Cutting:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.CuttingDamageResistance;
+                    }
+                    break;
+                case PhysicalDamageType.Piercing:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.PiercingDamageResistance;
+                    }
+                    break;
+                case PhysicalDamageType.Chopping:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.ChoppingDamageResistance;
+                    }
+                    break;
+                case PhysicalDamageType.Crushing:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.CrushingDamageResistance;
+                    }
+                    break;
+                case PhysicalDamageType.Penetration:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.PenetrationDamageResistance;
+                    }
+                    break;
+                case PhysicalDamageType.Explosion:
+                    {
+                        resistanceValue = receiverStats.DefenceStats.ExplosionProbabilityResistance;
+                    }
+                    break;
+                default:
+                    resistanceValue = 0f;
+                    break;
+            }
+            return resistanceValue;
+        }
+
+        public float GetPhysicalPower(PhysicalDamageType type, Stats dealerStats, bool isNeedCheckPower)
+        {
+            if (!isNeedCheckPower)
+            {
+                return 0;
+            }
+            float powerValue;
+            switch (type)
+            {
+                case PhysicalDamageType.Cutting:
+                    {
+                        powerValue = dealerStats.AttackStats.CuttingPower;
+                    }
+                    break;
+                case PhysicalDamageType.Piercing:
+                    {
+                        powerValue = dealerStats.AttackStats.PiersingPower;
+                    }
+                    break;
+                case PhysicalDamageType.Chopping:
+                    {
+                        powerValue = dealerStats.AttackStats.ChoppingPower;
+                    }
+                    break;
+                case PhysicalDamageType.Crushing:
+                    {
+                        powerValue = dealerStats.AttackStats.CrushingPower;
+                    }
+                    break;
+                case PhysicalDamageType.Penetration:
+                    {
+                        powerValue = dealerStats.AttackStats.PenetrationPower;
+                    }
+                    break;
+                case PhysicalDamageType.Explosion:
+                    {
+                        powerValue = dealerStats.AttackStats.ExplosionPower;
+                    }
+                    break;
+                default:
+                    powerValue = 0f;
+                    break;
+            }
+            return powerValue;
+        }
+
+        public float GetElementPower(ElementDamageType type, Stats receiverStats, bool isNeedCheckPower)
+        {
+            if (!isNeedCheckPower)
+            {
+                return 0;
+            }
+            float powerValue;
+            switch (type)
+            {
+                case ElementDamageType.Fire:
+                    {
+                        powerValue = receiverStats.AttackStats.FirePower;
+                    }
+                    break;
+                case ElementDamageType.Water:
+                    {
+                        powerValue = receiverStats.AttackStats.WaterPower;
+                    }
+                    break;
+                case ElementDamageType.Ice:
+                    {
+                        powerValue = receiverStats.AttackStats.IcePower;
+                    }
+                    break;
+                case ElementDamageType.Electricity:
+                    {
+                        powerValue = receiverStats.AttackStats.ElectricityPower;
+                    }
+                    break;
+                case ElementDamageType.Oil:
+                    {
+                        powerValue = receiverStats.AttackStats.OilPower;
+                    }
+                    break;
+                case ElementDamageType.Toxin:
+                    {
+                        powerValue = receiverStats.AttackStats.ToxinPower;
+                    }
+                    break;
+                case ElementDamageType.Gas:
+                    {
+                        powerValue = receiverStats.AttackStats.GasPower;
+                    }
+                    break;
+                case ElementDamageType.SmokeAndSteam:
+                    {
+                        powerValue = receiverStats.AttackStats.SmokeAndSteamPower;
+                    }
+                    break;
+                default:
+                    powerValue = 0;
+                    break;
+            }
+            return powerValue;
         }
     }
 }
