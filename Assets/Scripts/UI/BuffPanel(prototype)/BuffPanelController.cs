@@ -77,19 +77,24 @@ namespace BeastHunter
         {
             _context = Services.SharedInstance.Context;
             _characterModel = _context.CharacterModel;
-
-            _characterModel.CurrentStats.BuffHolder.PerammentBuffAdded += AddBuffImage;
-            _characterModel.CurrentStats.BuffHolder.TemporaryBuffAdded += AddBuffImage;
-            _characterModel.CurrentStats.BuffHolder.PerammentBuffRemoved += RemoveBuffImage;
-            _characterModel.CurrentStats.BuffHolder.TemporaryBuffRemoved += RemoveBuffImage;
+            if(_characterModel != null)
+            {
+                _characterModel.CurrentStats.BuffHolder.PerammentBuffAdded += AddBuffImage;
+                _characterModel.CurrentStats.BuffHolder.TemporaryBuffAdded += AddBuffImage;
+                _characterModel.CurrentStats.BuffHolder.PerammentBuffRemoved += RemoveBuffImage;
+                _characterModel.CurrentStats.BuffHolder.TemporaryBuffRemoved += RemoveBuffImage;
+            }
         }
 
         private void OnDestroy()
         {
-            _characterModel.CurrentStats.BuffHolder.PerammentBuffAdded -= AddBuffImage;
-            _characterModel.CurrentStats.BuffHolder.TemporaryBuffAdded -= AddBuffImage;
-            _characterModel.CurrentStats.BuffHolder.PerammentBuffRemoved -= RemoveBuffImage;
-            _characterModel.CurrentStats.BuffHolder.TemporaryBuffRemoved -= RemoveBuffImage;
+            if (_characterModel != null)
+            {
+                _characterModel.CurrentStats.BuffHolder.PerammentBuffAdded -= AddBuffImage;
+                _characterModel.CurrentStats.BuffHolder.TemporaryBuffAdded -= AddBuffImage;
+                _characterModel.CurrentStats.BuffHolder.PerammentBuffRemoved -= RemoveBuffImage;
+                _characterModel.CurrentStats.BuffHolder.TemporaryBuffRemoved -= RemoveBuffImage;
+            }
         }
     }
 }

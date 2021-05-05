@@ -22,7 +22,8 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public LocationInitializeController(GameContext context)
+        public LocationInitializeController(GameContext context, bool doCreateCharacter, bool doCreateBoss, 
+            bool doCreateMobs, bool doCreateInteractiveObjects)
         {
             _context = context;
             _locationData = Data.LocationData;
@@ -32,10 +33,10 @@ namespace BeastHunter
             AddFactories();
             RemoveSpawnPoints();
 
-            IntializePlayer();
-            InitializeBoss();
-            InitializeEnemies();
-            InitializeInteractiveObjects();
+            if (doCreateCharacter) IntializePlayer();
+            if (doCreateBoss) InitializeBoss();
+            if (doCreateMobs) InitializeEnemies();
+            if (doCreateInteractiveObjects) InitializeInteractiveObjects();
         }
 
         #endregion

@@ -1,15 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 namespace BeastHunter
 {
-    public class EffectTester : MonoBehaviour
-    {    
+    public sealed class EffectTester : MonoBehaviour
+    {
+        #region Fields
+
         public BaseBuff buff;
         private Image bg;
         private Text _buffName;
+        private new Transform camera;
+
+        #endregion
+
+
+        #region UnityMethods
 
         private void Awake()
         {
@@ -20,17 +27,17 @@ namespace BeastHunter
         private void Start()
         {
             _buffName.text = $"{buff.Name} ({buff.Type})";
-            
+            camera = Services.SharedInstance.CameraService.CharacterCamera?.transform;
         }
 
         private void Update()
-        {
-            var camera = Services.SharedInstance.CameraService.CharacterCamera.transform;
+        {        
             if (camera != null)
             {
                 bg.transform.LookAt(camera);
             }
         }
+
         private void OnTriggerEnter(Collider other)
         {
             var obj = other.GetComponent<InteractableObjectBehavior>();
@@ -53,5 +60,7 @@ namespace BeastHunter
                 }
             }
         }
+
+        #endregion
     }
 }

@@ -86,6 +86,7 @@ namespace BeastHunter
             BackState.Updating();
 
             if (CurrentState is IUpdate) (CurrentState as IUpdate).Updating();
+            CustomDebug.Log(CurrentState);
         }
 
         public void OnTearDown()

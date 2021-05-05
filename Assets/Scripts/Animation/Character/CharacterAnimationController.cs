@@ -119,12 +119,10 @@ namespace BeastHunter
                     SetRootMotion(false);
                     PlayArmsSimpleAttackAnimation();
                     break;
-                case CharacterStatesEnum.Throwing:
-                    
+                case CharacterStatesEnum.Throwing:                  
                     SetTopBodyAnimationWeigth(1f, 1f);
                     SetRootMotion(false);
                     PlayArmsSimpleAttackAnimation();
-                    Debug.LogError("here");
                     break;
                 case CharacterStatesEnum.Battle:
                     SetTopBodyAnimationWeigth(1f, 0f);

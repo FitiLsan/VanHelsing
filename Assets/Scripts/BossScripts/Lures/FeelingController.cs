@@ -60,7 +60,6 @@ namespace BeastHunter
             switch(noise.Type)
             {
                 case NoiseType.Explosion:
-                    Debug.LogError("explosion spawn");
                     break;
                 case NoiseType.FireBurning:
                     break;

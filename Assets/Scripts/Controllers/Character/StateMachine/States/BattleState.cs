@@ -56,7 +56,8 @@ namespace BeastHunter
             }
             
             return _characterModel.ClosestEnemy.Value != null && _characterModel.IsWeaponInHands && _characterModel.
-                CurrentWeaponData.Value.Type != WeaponType.Shooting;
+                CurrentWeaponData.Value.Type != WeaponType.Shooting && _characterModel.
+                    CurrentWeaponData.Value.Type != WeaponType.Throwing;
         }
 
         protected override void EnableActions()

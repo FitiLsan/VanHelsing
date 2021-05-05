@@ -87,7 +87,16 @@ namespace BeastHunter
         {
             base.MakeSimpleAttack(out currentAttackIntex, bodyTransform);
 
-            Shoot(ParticleSystem.transform.position, (ParticleSystem.transform.forward) * HitDistance, CurrentAttack.AttackType);
+            float step = Data.CameraData.CharacterAimingCameraSettings.CameraTargetForwardMovementDistance;
+            float projectileMass = ProjectileData.ProjectilePrefab.GetComponent<Rigidbody>().mass;
+            float power = ((Services.SharedInstance.CameraService.CameraDynamicTarget.transform.position -
+                ParticleSystem.transform.position - 0.5f * Physics.gravity * step) * projectileMass).magnitude;
+            float devider = (_context.CharacterModel.CharacterTransform.up + _context.CharacterModel.
+                CharacterTransform.forward).normalized.magnitude;
+            float finalPower = power / devider;
+
+            Shoot(ParticleSystem.transform.position, (Services.SharedInstance.CameraService.CameraDynamicTarget.
+                transform.position - ParticleSystem.transform.position).normalized * finalPower, CurrentAttack.AttackType);
         }
 
         public void Shoot(Vector3 gunPosition, Vector3 forwardDirection, HandsEnum inWhichHand)
