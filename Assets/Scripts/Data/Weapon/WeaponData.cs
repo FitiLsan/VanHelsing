@@ -17,6 +17,7 @@ namespace BeastHunter
         [SerializeField] protected Sprite _weaponImage;
         [SerializeField] private Sound _gettingSound;
         [SerializeField] private Sound _removingSound;
+        [SerializeField] private Damage _weaponDamage;
         [SerializeField] protected AttackModel[] _simpleAttacks;
         [SerializeField] protected AttackModel[] _specialAttacks;
 
@@ -61,6 +62,7 @@ namespace BeastHunter
         public Sprite WeaponImage => _weaponImage;
         public Sound GettingSound => _gettingSound;
         public Sound RemovingSound => _removingSound;
+        public Damage WeaponDamage => _weaponDamage;
         public AttackModel[] SimpleAttacks => _simpleAttacks;
         public AttackModel[] SpecialAttacks => _specialAttacks;
         public AttackModel CurrentAttack { get; private set; }

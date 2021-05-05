@@ -37,7 +37,7 @@ namespace BeastHunter
 
         public override void Execute()
         {
-            if (CurrentEffectType == BuffEffectType.None)
+            if (CurrentEffectType == EffectType.None)
             {
                 _stateMachine.SetCurrentStateAnyway(_stateMachine.LastStateType);
             }
@@ -45,7 +45,7 @@ namespace BeastHunter
 
         public override void OnExit()
         {
-            CurrentEffectType = BuffEffectType.None;
+            CurrentEffectType = EffectType.None;
         }
 
         public override void OnTearDown()
@@ -56,10 +56,10 @@ namespace BeastHunter
         {
             switch (CurrentEffectType)
             {
-                case BuffEffectType.Fire:
+                case EffectType.Burning:
                     FireReaction();
                     break;
-                case BuffEffectType.Water:
+                case EffectType.Wetting:
                     WaterReaction();
                     break;
                 default:

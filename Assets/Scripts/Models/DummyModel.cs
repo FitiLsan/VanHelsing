@@ -5,7 +5,7 @@ using TMPro;
 
 namespace BeastHunter
 {
-    public sealed class DummyModel : EnemyModel
+    public sealed class DummyModel : EnemyModel, IAwake
     {
 
         #region Properties
@@ -15,6 +15,8 @@ namespace BeastHunter
         public Transform DamageTextObject { get; }
         public TextMeshPro DamageText { get; }
         public Color DamageTextColor { get; }
+        public VisualEffectController VisualEffectController { get; }
+        public EffectReactionController EffectReactionController { get; }
 
         #endregion
 
@@ -32,6 +34,10 @@ namespace BeastHunter
             DamageTextColor = DamageText.color;
             DamageText.text = string.Empty;
             DamageText.color = Color.clear;
+            BuffEffectPrefab = objectOnScene.transform.Find("Effects").gameObject;
+
+            VisualEffectController = new VisualEffectController(Services.SharedInstance.Context, this);
+            EffectReactionController = new EffectReactionController(Services.SharedInstance.Context, this);
         }
 
         #endregion
@@ -41,7 +47,17 @@ namespace BeastHunter
 
         public override void TakeDamage(Damage damage)
         {
+            Debug.Log($"Dummy recieved: PhysicalDamage:{damage.PhysicalDamageValue} Type: {damage.PhysicalDamageType} + ElementDamage:{damage.ElementDamageValue} Type: {damage.ElementDamageType} and has { CurrentStats.BaseStats.CurrentHealthPoints} of HP");
+
             ((DummyData)ThisEnemyData).CreateDamageObject(damage, this);
+            if (!damage.IsEffectDamage)
+            {
+                var elementEffect = Services.SharedInstance.EffectsManager.GetEffectByElementDamageType(damage.ElementDamageType);
+                var physicEffect = Services.SharedInstance.EffectsManager.GetEffectByPhysicalDamageType(damage.PhysicalDamageType);
+                
+                Services.SharedInstance.BuffService.AddTemporaryBuff(InstanceID, Resources.Load($"Data/Buffs/BaseDebuffs/{physicEffect}") as TemporaryBuff);
+                Services.SharedInstance.BuffService.AddTemporaryBuff(InstanceID, Resources.Load($"Data/Buffs/BaseDebuffs/{elementEffect}") as TemporaryBuff);
+            }
         }
 
         public void RefreshDamageTextSequence(bool doComplete)
@@ -55,6 +71,13 @@ namespace BeastHunter
             if (doComplete && !DummyPushSequence.IsComplete()) DummyPushSequence.Complete();
             DummyPushSequence = DOTween.Sequence();
         }
+
+        public void OnAwake()
+        {
+            VisualEffectController.OnAwake();
+            EffectReactionController.OnAwake();
+        }
+
 
         #endregion
     }

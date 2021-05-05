@@ -173,7 +173,11 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                handDamage.PhysicalDamage = hitBox.TempDamage; //Random.Range(5f, 15f);
+                handDamage.ElementDamageType = ElementDamageType.None;
+                handDamage.ElementDamageValue = 0;
+                handDamage.PhysicalDamageType = PhysicalDamageType.Crushing;
+                handDamage.PhysicalDamageValue = hitBox.TempDamage;
+
                 Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
                     gameObject.GetInstanceID());
 
@@ -188,7 +192,11 @@ namespace BeastHunter
             if (hitBox.IsInteractable)
             {
                 var hitBoxInfo = (InteractableObjectBehavior)hitBox;
-                handDamage.PhysicalDamage = hitBoxInfo.TempDamage;
+                handDamage.ElementDamageType = ElementDamageType.None;
+                handDamage.ElementDamageValue = 0;
+                handDamage.PhysicalDamageType = PhysicalDamageType.Crushing;
+                handDamage.PhysicalDamageValue = hitBoxInfo.TempDamage;
+
                 Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
                     gameObject.GetInstanceID());
                 hitBox.IsInteractable = false;
@@ -200,7 +208,11 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                handDamage.PhysicalDamage = Random.Range(5f, 15f);
+               handDamage.ElementDamageType = ElementDamageType.None;
+               handDamage.ElementDamageValue = 0;
+               handDamage.PhysicalDamageType = PhysicalDamageType.Piercing;
+               handDamage.PhysicalDamageValue = Random.Range(5f, 15f);
+
                 Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
                     gameObject.GetInstanceID());
                 hitBox.IsInteractable = false;
