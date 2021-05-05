@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NewCrossbowBoltData
   m_EditorClassIdentifier: 
   _projectileType: 2
-  _projectilePrefab: {fileID: 3660602131783454729, guid: 9e1ccf8f91f3a2a49a82d94920dabb7b,
+  _projectilePrefab: {fileID: 3660602131783454729, guid: 5185eed9838708a4f8f8c5297865d4b0,
     type: 3}
   _flyingSound:
     _soundClip: {fileID: 8300000, guid: 1d8c5d754ceedb9418dfb33af1882c4a, type: 3}
@@ -26,9 +26,10 @@ MonoBehaviour:
     _pitch: 1
     _doLoop: 0
   _projectileDamage:
-    PhysicalDamage: 12
-    StunProbability: 0
-    FireDamage: 0
+    PhysicalDamageType: 4
+    PhysicalDamageValue: 13
+    ElementDamageType: 4
+    ElementDamageValue: 10
   _isDestroyedAfterInstantiation: 0
   _isDestroyedAfterHit: 0
   _timeToDestroyAfterInstantiation: 0

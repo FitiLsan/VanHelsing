@@ -17,7 +17,7 @@ namespace BeastHunter
 
         #region Properties
 
-        public Stats CurrentStats { get; set; }
+      //  public Stats CurrentStats { get; set; }
         public ReactiveProperty<WeaponData> CurrentWeaponData { get; set; }
         public GameObject CurrentWeaponLeft { get; set; }
         public GameObject CurrentWeaponRight { get; set; }

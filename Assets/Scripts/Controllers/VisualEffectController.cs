@@ -52,8 +52,8 @@ namespace BeastHunter
                 _enemyModel.CurrentStats.BuffHolder.BuffEffectDisable += DisableEffect;
             }
 
-            var effects = _effects.GetComponentsInChildren<ParticleSystem>();
-            foreach (var effect in  effects)
+            var effects = _effects.GetComponentsInChildren<ParticleSystem>(false);
+            foreach (var effect in effects)
             {
                 _effectsDic.Add(effect.name, effect);
             }
@@ -76,14 +76,22 @@ namespace BeastHunter
             }
         }
 
-        private void EnableEffect(BuffEffectType effectType)
+        private void EnableEffect(EffectType effectType, BaseBuff buff)
         {
-            _effectsDic[effectType.ToString()].Play(true);
+            if (!effectType.Equals(EffectType.None) && _effectsDic.ContainsKey(effectType.ToString()))
+            {
+                _effectsDic[effectType.ToString()].Play(true);
+            }
+
         }
 
-        private void DisableEffect(BuffEffectType effectType)
+        private void DisableEffect(EffectType effectType)
         {
-            _effectsDic[effectType.ToString()].Stop(true);
+            if (!effectType.Equals(EffectType.None) && _effectsDic.ContainsKey(effectType.ToString()))
+            {
+                _effectsDic[effectType.ToString()].Stop(true);
+            }
+
         }
 
         #endregion

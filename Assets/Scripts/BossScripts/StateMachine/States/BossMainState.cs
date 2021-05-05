@@ -175,7 +175,7 @@ namespace BeastHunter
 
         public void DamageCounter(Damage damage)
         {
-            _damagePerTime += damage.PhysicalDamage;
+            _damagePerTime += damage.GetTotalDamage();
 
             if (_damagePerTime >= 20)
             {
