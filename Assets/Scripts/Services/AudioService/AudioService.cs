@@ -143,7 +143,7 @@ namespace BeastHunter
 
         public void Dispose()
         {
-            _context.CharacterModel.CurrentCharacterState.Dispose();
+            _context.CharacterModel?.CurrentCharacterState.Dispose();
         }
 
         #region MusicMethods

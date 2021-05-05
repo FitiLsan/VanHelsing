@@ -38,16 +38,25 @@ namespace BeastHunter
 
         #region Methods
 
-        public void SaveCharacterKnockedDownSettings(CinemachineVirtualCamera targetCamera)
+        public void SaveCharacterKnockedDownSettings(CinemachineVirtualCamera targetCamera, bool hasToBeCamera)
         {
             if (targetCamera == null)
-            {
-                throw new NullReferenceException("Can't save target camera settings, argument is null!");
+            {              
+                if (hasToBeCamera)
+                {
+                    throw new NullReferenceException("Can't save knocked down camera settings, argument is null!");
+                }
+                else
+                {
+                    Debug.LogWarning("Knocked down camera was not saved cause it was not implemented");
+                }
             }
-
-            string parametersDataString = JsonUtility.ToJson(targetCamera);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, _characterKnockedDownCameraJSONFileName),
-                parametersDataString);
+            else
+            {
+                string parametersDataString = JsonUtility.ToJson(targetCamera);
+                File.WriteAllText(Path.Combine(Application.persistentDataPath, _characterKnockedDownCameraJSONFileName),
+                    parametersDataString);
+            }
         }
 
         public CinemachineFreeLook CreateCharacterKnockedDownCamera(Transform followTransform, Transform lookAtTransform,

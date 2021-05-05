@@ -82,16 +82,25 @@ namespace BeastHunter
 
         #region Methods
 
-        public void SaveCharacterAimingCameraSettings(CinemachineVirtualCamera aimingCamera)
+        public void SaveCharacterAimingCameraSettings(CinemachineVirtualCamera aimingCamera, bool hasToBeCamera)
         {
             if(aimingCamera == null)
-            {
-                throw new NullReferenceException("Can't save aiming camera settings, argument is null!");
+            {            
+                if (hasToBeCamera)
+                {
+                    throw new NullReferenceException("Can't save aiming camera settings, argument is null!");
+                }
+                else
+                {
+                    Debug.LogWarning("Aiming camera was not saved cause it was not implemented");
+                }
             }
-
-            string parametersDataString = JsonUtility.ToJson(aimingCamera);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, _characterAimingCameraJSONFileName),
-                parametersDataString);
+            else
+            {
+                string parametersDataString = JsonUtility.ToJson(aimingCamera);
+                File.WriteAllText(Path.Combine(Application.persistentDataPath, _characterAimingCameraJSONFileName),
+                    parametersDataString);
+            }
         }
 
         public CinemachineVirtualCamera CreateCharacterAimingCamera(Transform followTransform, Transform lookAtTransform,

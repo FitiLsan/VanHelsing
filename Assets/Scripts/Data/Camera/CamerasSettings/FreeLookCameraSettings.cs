@@ -39,16 +39,25 @@ namespace BeastHunter
 
         #region Methods
 
-        public void SaveCharacterFreelookCameraSettings(CinemachineFreeLook freeLookCamera)
+        public void SaveCharacterFreelookCameraSettings(CinemachineFreeLook freeLookCamera, bool hasToBeCamera)
         {
             if (freeLookCamera == null)
             {
-                throw new NullReferenceException("Can't save free look camera settings - argument is null!");
+                if (hasToBeCamera)
+                {
+                    throw new NullReferenceException("Can't save free look camera settings - argument is null!");
+                }
+                else
+                {
+                    Debug.LogWarning("Free look camera was not saved cause it was not implemented");
+                }
             }
-
-            string parametersDataString = JsonUtility.ToJson(freeLookCamera);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, _characterFreelookCameraJSONFileName), 
-                parametersDataString);
+            else
+            {
+                string parametersDataString = JsonUtility.ToJson(freeLookCamera);
+                File.WriteAllText(Path.Combine(Application.persistentDataPath, _characterFreelookCameraJSONFileName),
+                    parametersDataString);
+            }
         }
 
         public CinemachineFreeLook CreateCharacterFreelookCamera(Transform followTransform, Transform lookAtTransform, 

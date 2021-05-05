@@ -7,51 +7,51 @@ namespace BeastHunter
 {
     public class EffectTester : MonoBehaviour
     {    
-        public BaseBuff buff;
-        private Image bg;
-        private Text _buffName;
+        //public BaseBuff buff;
+        //private Image bg;
+        //private Text _buffName;
 
-        private void Awake()
-        {
-            bg = GetComponentInChildren<Image>();
-            _buffName = GetComponentInChildren<Text>();
-        }
+        //private void Awake()
+        //{
+        //    bg = GetComponentInChildren<Image>();
+        //    _buffName = GetComponentInChildren<Text>();
+        //}
 
-        private void Start()
-        {
-            _buffName.text = $"{buff.Name} ({buff.Type})";
+        //private void Start()
+        //{
+        //    _buffName.text = $"{buff.Name} ({buff.Type})";
             
-        }
+        //}
 
-        private void Update()
-        {
-            var camera = Services.SharedInstance.CameraService.CharacterCamera.transform;
-            if (camera != null)
-            {
-                bg.transform.LookAt(camera);
-            }
-        }
-        private void OnTriggerEnter(Collider other)
-        {
-            var obj = other.GetComponent<InteractableObjectBehavior>();
-            if (obj != null && !other.isTrigger)
-            {
-                if (obj.Type == InteractableObjectType.Player || obj.Type == InteractableObjectType.Enemy)
-                {
-                    var instanceID = other.transform.root.gameObject.GetInstanceID();
+        //private void Update()
+        //{
+        //    var camera = Services.SharedInstance.CameraService.CharacterCamera.transform;
+        //    if (camera != null)
+        //    {
+        //        bg.transform.LookAt(camera);
+        //    }
+        //}
+        //private void OnTriggerEnter(Collider other)
+        //{
+        //    var obj = other.GetComponent<InteractableObjectBehavior>();
+        //    if (obj != null && !other.isTrigger)
+        //    {
+        //        if (obj.Type == InteractableObjectType.Player || obj.Type == InteractableObjectType.Enemy)
+        //        {
+        //            var instanceID = other.transform.root.gameObject.GetInstanceID();
 
-                    if (buff is TemporaryBuff)
-                    {
-                        Services.SharedInstance.BuffService.AddTemporaryBuff(instanceID, buff as TemporaryBuff);
-                    }
-                    else
-                    {
-                        Services.SharedInstance.BuffService.AddPermanentBuff(instanceID, buff as PermanentBuff);
-                    }
-                    gameObject.SetActive(false);
-                    DG.Tweening.DOVirtual.DelayedCall(3, () => gameObject.SetActive(true));
-                }
-            }
-        }
+        //            if (buff is TemporaryBuff)
+        //            {
+        //                Services.SharedInstance.BuffService.AddTemporaryBuff(instanceID, buff as TemporaryBuff);
+        //            }
+        //            else
+        //            {
+        //                Services.SharedInstance.BuffService.AddPermanentBuff(instanceID, buff as PermanentBuff);
+        //            }
+        //            gameObject.SetActive(false);
+        //            DG.Tweening.DOVirtual.DelayedCall(3, () => gameObject.SetActive(true));
+        //        }
+        //    }
+        //}
     }
 }

@@ -381,8 +381,8 @@ namespace BeastHunter
 
         public void Dispose()
         {
-            _context.CharacterModel.CurrentCharacterState.Dispose();
-            CurrentActiveCamera.Dispose();
+            _context.CharacterModel?.CurrentCharacterState.Dispose();
+            CurrentActiveCamera?.Dispose();
         }
 
         public void ShakeCurrentCamera(float power)
@@ -486,9 +486,12 @@ namespace BeastHunter
         {
             if (state == PlayModeStateChange.ExitingPlayMode)
             {
-                _cameraData.CharacterFreelookCameraSettings.SaveCharacterFreelookCameraSettings(CharacterFreelookCamera);
-                _cameraData.CharacterTargetingCameraSettings.SaveCharacterTargetingCameraSettings(CharacterTargetCamera);
-                _cameraData.CharacterAimingCameraSettings.SaveCharacterAimingCameraSettings(CharacterAimingCamera);
+                _cameraData.CharacterFreelookCameraSettings.SaveCharacterFreelookCameraSettings(CharacterFreelookCamera,
+                    _context.GameControllerParameters.DoImplementPlayer);
+                _cameraData.CharacterTargetingCameraSettings.SaveCharacterTargetingCameraSettings(CharacterTargetCamera,
+                    _context.GameControllerParameters.DoImplementPlayer);
+                _cameraData.CharacterAimingCameraSettings.SaveCharacterAimingCameraSettings(CharacterAimingCamera,
+                    _context.GameControllerParameters.DoImplementPlayer);
                 EditorApplication.playModeStateChanged -= SaveCamerasSettings;
             }
         }
