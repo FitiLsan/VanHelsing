@@ -25,7 +25,6 @@ namespace BeastHunter
         private CameraData _cameraData;
         private GameObject _cameraDynamicTarget;
         private GameObject _cameraStaticTarget;
-        private GameObject _aimCanvas;
         private Vector3 _staticTargetCenterPosition;
         private Vector3 _dynamicTargetCenterPosition;
         private Vector3 _shootinWeaponDirection;
@@ -75,7 +74,7 @@ namespace BeastHunter
             _cameraData = Data.CameraData;
 
 #if (UNITY_EDITOR)
-            //EditorApplication.playModeStateChanged += SaveCameraSettings;
+            EditorApplication.playModeStateChanged += SaveCamerasSettings;
 #endif
         }
 
@@ -101,8 +100,6 @@ namespace BeastHunter
             _staticTargetCenterPosition = new Vector3(0f, _cameraData.CharacterAimingCameraSettings.CameraTargetHeight, 0f);
             _cameraStaticTarget.transform.localPosition = _staticTargetCenterPosition;
             _cameraStaticTarget.name = _cameraData.CharacterAimingCameraSettings.CameraTargetName + "Static";
-            _aimCanvas = GameObject.Instantiate(_cameraData.CharacterAimingCameraSettings.AimCanvasPrefab);
-            _aimCanvas.SetActive(false);
 
             _aimingDots = new GameObject[AMOUNT_OF_AIM_LINE_STEPS];
 
@@ -121,7 +118,7 @@ namespace BeastHunter
             //CharacterKnockedDownCamera = _cameraData._cameraSettings.CreateCharacterKnockedDownCamera(characterModel.
             //    PuppetMaster.transform.GetChild(0), characterModel.PuppetMaster.transform.GetChild(0));
             CharacterTargetCamera = _cameraData.CharacterTargetingCameraSettings.
-                CreateCharacterTargetCamera(_cameraStaticTarget.transform, _cameraStaticTarget.transform);
+                CreateCharacterTargetingCamera(_cameraStaticTarget.transform, _cameraStaticTarget.transform);
             CharacterAimingCamera = _cameraData.CharacterAimingCameraSettings.
                 CreateCharacterAimingCamera(_cameraStaticTarget.transform, _cameraDynamicTarget.transform);
             _aimComposer = CharacterAimingCamera.GetCinemachineComponent<CinemachineComposer>();
@@ -290,12 +287,10 @@ namespace BeastHunter
             if (currentCamera == CharacterAimingCamera && _context.CharacterModel.
                 CurrentWeaponData.Value.Type == WeaponType.Shooting)
             {
-                //_aimCanvas.SetActive(true);
                 _cameraDynamicTarget.SetActive(true);
             }
             else if (PreviousActiveCamera == CharacterAimingCamera)
             {
-                //_aimCanvas.SetActive(false);
                 _cameraDynamicTarget.SetActive(false);
             }
         }
@@ -487,14 +482,14 @@ namespace BeastHunter
         }
 
 #if (UNITY_EDITOR)
-        private void SaveCameraSettings(PlayModeStateChange state)
+        private void SaveCamerasSettings(PlayModeStateChange state)
         {
             if (state == PlayModeStateChange.ExitingPlayMode)
             {
-                _cameraData.CharacterFreelookCameraSettings.SaveCameraSettings(CharacterFreelookCamera);
-                _cameraData.CharacterTargetingCameraSettings.SaveTargetCameraSettings(CharacterTargetCamera);
-                _cameraData.CharacterAimingCameraSettings.SaveAimingCameraSettings(CharacterAimingCamera);
-                EditorApplication.playModeStateChanged -= SaveCameraSettings;
+                _cameraData.CharacterFreelookCameraSettings.SaveCharacterFreelookCameraSettings(CharacterFreelookCamera);
+                _cameraData.CharacterTargetingCameraSettings.SaveCharacterTargetingCameraSettings(CharacterTargetCamera);
+                _cameraData.CharacterAimingCameraSettings.SaveCharacterAimingCameraSettings(CharacterAimingCamera);
+                EditorApplication.playModeStateChanged -= SaveCamerasSettings;
             }
         }
 #endif

@@ -19,155 +19,24 @@ MonoBehaviour:
     _characterFreelookCamera: {fileID: 1046887095545056062, guid: ffe73034ef64698439bb105d6f12a131,
       type: 3}
     _characterFreelookCameraName: CharacterFreeLookCamera
+    _characterFreelookCameraJSONFileName: FreeLookCameraSettings
     _characterFreelookCameraBlendTime: 0.2
-    _freeLookFieldOfView: 0
-    _freeLookNearClipPlane: 0
-    _freeLookFarClipPlane: 0
-    _freeLookDutch: 0
-    _freeLookSpeedX: 0
-    _freeLookAccelerationLagX: 0
-    _freeLookDecelerationLagX: 0
-    _isInvertedAxisX: 0
-    _freeLookSpeedY: 0
-    _freeLookAccelerationLagY: 0
-    _freeLookDecelerationLagY: 0
-    _isInvertedAxisY: 0
-    _freeLookSplineCurvature: 0
-    _freeLookTopRigHeight: 0
-    _freeLookTopRigRadius: 0
-    _freeLookMiddleRigHeight: 0
-    _freeLookMiddleRigRadius: 0
-    _freeLookBottomRigHeight: 0
-    _freeLookBottomRigRadius: 0
-    _freeLookTopRigBodyDampingY: 0
-    _freeLookTopRigBodyDampingZ: 0
-    _freeLookTopRigOffsetX: 0
-    _freeLookTopRigOffsetY: 0
-    _freeLookTopRigOffsetZ: 0
-    _freeLookTopRigLookaheadTime: 0
-    _freeLookTopRigLookaheadSmoothing: 0
-    _freeLookTopRigHorizontalDamping: 0
-    _freeLookTopRigVerticalDamping: 0
-    _freeLookTopRigScreenX: 0
-    _freeLookTopRigScreenY: 0
-    _freeLookTopRigDeadZoneWidth: 0
-    _freeLookTopRigDeadZoneHeight: 0
-    _freeLookTopRigSoftZoneWidth: 0
-    _freeLookTopRigSoftZoneHeight: 0
-    _freeLookTopRigBiasX: 0
-    _freeLookTopRigBiasY: 0
-    _freeLookMiddleRigBodyDampingY: 0
-    _freeLookMiddleRigBodyDampingZ: 0
-    _freeLookMiddleRigOffsetX: 0
-    _freeLookMiddleRigOffsetY: 0
-    _freeLookMiddleRigOffsetZ: 0
-    _freeLookMiddleRigLookaheadTime: 0
-    _freeLookMiddleRigLookaheadSmoothing: 0
-    _freeLookMiddleRigHorizontalDamping: 0
-    _freeLookMiddleRigVerticalDamping: 0
-    _freeLookMiddleRigScreenX: 0
-    _freeLookMiddleRigScreenY: 0
-    _freeLookMiddleRigDeadZoneWidth: 0
-    _freeLookMiddleRigDeadZoneHeight: 0
-    _freeLookMiddleRigSoftZoneWidth: 0
-    _freeLookMiddleRigSoftZoneHeight: 0
-    _freeLookMiddleRigBiasX: 0
-    _freeLookMiddleRigBiasY: 0
-    _freeLookBottomRigBodyDampingY: 0
-    _freeLookBottomRigBodyDampingZ: 0
-    _freeLookBottomRigOffsetX: 0
-    _freeLookBottomRigOffsetY: 0
-    _freeLookBottomRigOffsetZ: 0
-    _freeLookBottomRigLookaheadTime: 0
-    _freeLookBottomRigLookaheadSmoothing: 0
-    _freeLookBottomRigHorizontalDamping: 0
-    _freeLookBottomRigVerticalDamping: 0
-    _freeLookBottomRigScreenX: 0
-    _freeLookBottomRigScreenY: 0
-    _freeLookBottomRigDeadZoneWidth: 0
-    _freeLookBottomRigDeadZoneHeight: 0
-    _freeLookBottomRigSoftZoneWidth: 0
-    _freeLookBottomRigSoftZoneHeight: 0
-    _freeLookBottomRigBiasX: 0
-    _freeLookBottomRigBiasY: 0
-    _colliderMinDistanceFromTarget: 0
-    _isColliderAvoidingObstacles: 0
-    _colliderDistanceLimit: 0
-    _colliderCameraRadius: 0
-    _colliderDamping: 0
-    _colliderOptimalTargetDistance: 0
   _characterTargetingCameraSettings:
     _characterTargetCamera: {fileID: 7502929037863473527, guid: 754e3a8556acf0a43814c84409669089,
       type: 3}
     _characterTargetCameraName: CharacterTargetCamera
+    _characterTargetCameraJSONFileName: TargetingCameraSettings
     _characterTargetCameraBlendTime: 1
-    _targetCameraFieldOfView: 0
-    _targetCameraNearClipPlane: 0
-    _targetCameraFarClipPlane: 0
-    _targetCameraDutch: 0
-    _targetCameraFollowOffsetX: 0
-    _targetCameraFollowOffsetY: 0
-    _targetCameraFollowOffsetZ: 0
-    _targetCameraDampingX: 0
-    _targetCameraDampingY: 0
-    _targetCameraDampingZ: 0
-    _targetCameraPitchDamping: 0
-    _targetCameraYawDamping: 0
-    _targetCameraRollDamping: 0
-    _targetCameraTrackedOffsetX: 0
-    _targetCameraTrackedOffsetY: 0
-    _targetCameraTrackedOffsetZ: 0
-    _targetCameraLookaheadTime: 0
-    _targetCameraLookaheadSmoothing: 0
-    _targetCameraHorizontalDamping: 0
-    _targetCameraVerticalDamping: 0
-    _targetCameraScreenX: 0
-    _targetCameraScreenY: 0
-    _targetCameraDeadZoneWidth: 0
-    _targetCameraDeadZoneHeight: 0
-    _targetCameraSoftZoneWidth: 0
-    _targetCameraSoftZoneHeight: 0
-    _targetCameraBiasX: 0
-    _targetCameraBiasY: 0
   _characterAimingCameraSettings:
     _characterAimingCamera: {fileID: 7502929037863473527, guid: 93d64c43965a1ee4394b13e780d22afa,
       type: 3}
     _characterAimingCameraName: CharacterAimingCamera
+    _characterAimingCameraJSONFileName: AimingCameraSettings
     _characterAimingCameraBlendTime: 1
-    _aimCanvasPrefab: {fileID: 1261407756581847835, guid: 4516dd8390dae034a8e58dee02b4bbbc,
-      type: 3}
     _aimProjectileLinePrefab: {fileID: 2890280644428487904, guid: 3a80d21ca1e78194c8abdb87e28d79a0,
       type: 3}
     _aimDotPrefab: {fileID: 7345637511314836422, guid: a84a8d1075b240d48b160938e239e178,
       type: 3}
-    _aimingCameraFieldOfView: 0
-    _aimingCameraNearClipPlane: 0
-    _aimingCameraFarClipPlane: 0
-    _aimingCameraDutch: 0
-    _aimingCameraFollowOffsetX: 0
-    _aimingCameraFollowOffsetY: 0
-    _aimingCameraFollowOffsetZ: 0
-    _aimingCameraDampingX: 0
-    _aimingCameraDampingY: 0
-    _aimingCameraDampingZ: 0
-    _aimingCameraPitchDamping: 0
-    _aimingCameraYawDamping: 0
-    _aimingCameraRollDamping: 0
-    _aimingCameraTrackedOffsetX: 0
-    _aimingCameraTrackedOffsetY: 0
-    _aimingCameraTrackedOffsetZ: 0
-    _aimingCameraLookaheadTime: 0
-    _aimingCameraLookaheadSmoothing: 0
-    _aimingCameraHorizontalDamping: 0
-    _aimingCameraVerticalDamping: 0
-    _aimingCameraScreenX: 0
-    _aimingCameraScreenY: 0
-    _aimingCameraDeadZoneWidth: 0
-    _aimingCameraDeadZoneHeight: 0
-    _aimingCameraSoftZoneWidth: 0
-    _aimingCameraSoftZoneHeight: 0
-    _aimingCameraBiasX: 0
-    _aimingCameraBiasY: 0
     _cameraTargetName: AimingCameraTarget
     _cameraTargetHeight: 1.5
     _cameraTargetForwardMovementDistance: 10

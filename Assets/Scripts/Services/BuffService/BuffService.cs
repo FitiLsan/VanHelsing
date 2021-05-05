@@ -81,36 +81,39 @@ namespace BeastHunter
         public void AddTemporaryBuff(int instanceID, TemporaryBuff buff)
         {
             var stats = GetStatsByInstanceID(instanceID);
-            var buffHolder = stats.BuffHolder;
-            foreach (var effect in buff.Effects)
+            if(stats != null)
             {
-                var modifiedBuffValue = buff.Type.Equals(BuffType.Debuf) ? effect.Value : effect.Value * -1;
-                if (effect.IsTicking)
+                var buffHolder = stats.BuffHolder;
+                foreach (var effect in buff.Effects)
                 {
-                    var time = buff.Time;
-                    BuffUse(time);
-                }
-                else
-                {
-                    TemporaryBuffDictionary[effect.Buff](stats, modifiedBuffValue);
-                }
-                void BuffUse(float time)
-                {
-                    time--;
-                    if (time < 0)
+                    var modifiedBuffValue = buff.Type.Equals(BuffType.Debuf) ? effect.Value : effect.Value * -1;
+                    if (effect.IsTicking)
                     {
-                        return;
+                        var time = buff.Time;
+                        BuffUse(time);
                     }
-                    TemporaryBuffDictionary[effect.Buff](stats, modifiedBuffValue);
-                    DOVirtual.DelayedCall(1f, () => BuffUse(time));
+                    else
+                    {
+                        TemporaryBuffDictionary[effect.Buff](stats, modifiedBuffValue);
+                    }
+                    void BuffUse(float time)
+                    {
+                        time--;
+                        if (time < 0)
+                        {
+                            return;
+                        }
+                        TemporaryBuffDictionary[effect.Buff](stats, modifiedBuffValue);
+                        DOVirtual.DelayedCall(1f, () => BuffUse(time));
+                    }
                 }
-            }
-            buffHolder.AddTemporaryBuff(buff);
+                buffHolder.AddTemporaryBuff(buff);
 
-            Action laterBuffRemove = () => RemoveTemporaryBuff(stats, buff, buffHolder);
+                Action laterBuffRemove = () => RemoveTemporaryBuff(stats, buff, buffHolder);
 
-            TimeRemaining buffRemove = new TimeRemaining(laterBuffRemove, buff.Time);
-            buffRemove.AddTimeRemaining(buff.Time);
+                TimeRemaining buffRemove = new TimeRemaining(laterBuffRemove, buff.Time);
+                buffRemove.AddTimeRemaining(buff.Time);
+            }        
         }
 
         public void RemoveTemporaryBuff(Stats stats, TemporaryBuff buff, BuffHolder buffHolder)
@@ -188,7 +191,7 @@ namespace BeastHunter
         {
             Stats receiverStats = _context.CharacterModel.InstanceID == receiverID ?
                 _context.CharacterModel.CurrentStats : _context.NpcModels.ContainsKey(receiverID) ?
-                    _context.NpcModels[receiverID].CurrentStats : new Stats();
+                    _context.NpcModels[receiverID].CurrentStats : null;
            return receiverStats;
         }
         #endregion
