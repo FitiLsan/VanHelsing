@@ -23,9 +23,15 @@
 
         #region Methods
 
-        public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats = new Stats(), WeaponData usedWeapon = null)
+        public Damage CountDamage(Damage baseDamage, int receiverID, WeaponData usedWeapon = null)
+        {
+            return CountDamage(baseDamage, receiverID, new Stats(), usedWeapon);
+        }
+
+        public Damage CountDamage(Damage baseDamage, int receiverID, Stats dealerStats, WeaponData usedWeapon = null)
         {
             Stats receiverStats;
+
             
             if(_context.CharacterModel.InstanceID == receiverID)
             {
@@ -37,60 +43,33 @@
             }
             else
             {
+                CustomDebug.Log("no active reciever for damage found");
                 return new Damage();
             }
 
             if(usedWeapon == null)
             {
-                if(dealerStats.Equals(new Stats()))
-                {
-                    _damage.PhysicalDamage = baseDamage.PhysicalDamage *
+                _damage.PhysicalDamage = (baseDamage.PhysicalDamage + dealerStats.AttackStats.PhysicalPower) *
                         (1 - receiverStats.DefenceStats.PhysicalDamageResistance);
-                    _damage.StunProbability = baseDamage.StunProbability *
-                        (1 - receiverStats.DefenceStats.StunProbabilityResistance);
-                    _damage.FireDamage = baseDamage.FireDamage *
-                        (1 - receiverStats.DefenceStats.FireDamageResistance);
-                }
-                else
-                {
-                    _damage.PhysicalDamage = (baseDamage.PhysicalDamage + dealerStats.AttackStats.PhysicalPower) *
-                        (1 - receiverStats.DefenceStats.PhysicalDamageResistance);
-                    _damage.StunProbability = baseDamage.StunProbability *
-                        (1 - receiverStats.DefenceStats.StunProbabilityResistance);
-                    _damage.FireDamage = baseDamage.FireDamage *
-                        (1 - receiverStats.DefenceStats.FireDamageResistance);
-                }
+                _damage.StunProbability = baseDamage.StunProbability *
+                    (1 - receiverStats.DefenceStats.StunProbabilityResistance);
+                _damage.FireDamage = baseDamage.FireDamage *
+                    (1 - receiverStats.DefenceStats.FireDamageResistance);
             }
             else
             {
                 switch (usedWeapon.Type)
                 {
                     case WeaponType.Melee:
-
-                        if(dealerStats.Equals(new Stats()))
-                        {
-                            _damage.PhysicalDamage = baseDamage.PhysicalDamage *
-                            (1 - receiverStats.DefenceStats.PhysicalDamageResistance) *
+                        _damage.PhysicalDamage = (baseDamage.PhysicalDamage + dealerStats.AttackStats.PhysicalPower) *
+                           (1 - receiverStats.DefenceStats.PhysicalDamageResistance) *
+                               usedWeapon.CurrentAttack.WeaponItem.Weight;
+                        _damage.StunProbability = baseDamage.StunProbability *
+                            (1 - receiverStats.DefenceStats.StunProbabilityResistance) *
                                 usedWeapon.CurrentAttack.WeaponItem.Weight;
-                            _damage.StunProbability = baseDamage.StunProbability *
-                                (1 - receiverStats.DefenceStats.StunProbabilityResistance) *
-                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
-                            _damage.FireDamage = baseDamage.FireDamage *
-                                (1 - receiverStats.DefenceStats.FireDamageResistance) *
-                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
-                        }
-                        else
-                        {
-                            _damage.PhysicalDamage = (baseDamage.PhysicalDamage + dealerStats.AttackStats.PhysicalPower) *
-                            (1 - receiverStats.DefenceStats.PhysicalDamageResistance) *
+                        _damage.FireDamage = baseDamage.FireDamage *
+                            (1 - receiverStats.DefenceStats.FireDamageResistance) *
                                 usedWeapon.CurrentAttack.WeaponItem.Weight;
-                            _damage.StunProbability = baseDamage.StunProbability *
-                                (1 - receiverStats.DefenceStats.StunProbabilityResistance) *
-                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
-                            _damage.FireDamage = baseDamage.FireDamage *
-                                (1 - receiverStats.DefenceStats.FireDamageResistance) *
-                                    usedWeapon.CurrentAttack.WeaponItem.Weight;
-                        }
                         break;
                     case WeaponType.Shooting:
                         _damage.PhysicalDamage = baseDamage.PhysicalDamage * 
@@ -122,9 +101,14 @@
             }
         }
 
-        public void CountAndDealDamage(Damage baseDamage, int receiverID, Stats dealerStats = new Stats(), WeaponData usedWeapon = null)
+        public void CountAndDealDamage(Damage baseDamage, int receiverID, Stats dealerStats, WeaponData usedWeapon = null)
         {
             DealDamage(CountDamage(baseDamage, receiverID, dealerStats, usedWeapon), receiverID);
+        }
+
+        public void CountAndDealDamage(Damage baseDamage, int receiverID, WeaponData usedWeapon = null)
+        {
+            DealDamage(CountDamage(baseDamage, receiverID, usedWeapon), receiverID);
         }
 
         #endregion

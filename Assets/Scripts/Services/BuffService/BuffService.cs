@@ -187,7 +187,8 @@ namespace BeastHunter
         public Stats GetStatsByInstanceID(int receiverID)
         {
             Stats receiverStats = _context.CharacterModel.InstanceID == receiverID ?
-                _context.CharacterModel.CurrentStats : _context.NpcModels[receiverID].CurrentStats;
+                _context.CharacterModel.CurrentStats : _context.NpcModels.ContainsKey(receiverID) ?
+                    _context.NpcModels[receiverID].CurrentStats : new Stats();
            return receiverStats;
         }
         #endregion

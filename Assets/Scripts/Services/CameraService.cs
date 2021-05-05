@@ -281,7 +281,7 @@ namespace BeastHunter
                 float difference = _weaponShootTransform != null ? (_weaponShootTransform.position - _context.CharacterModel.
                     CharacterTransform.position).x : 0;
                 //_aimComposer.m_TrackedObjectOffset.x = -difference;
-                _aimTransposer.m_FollowOffset.x = difference / 2;
+                //_aimTransposer.m_FollowOffset.x = difference / 2;
             }
         }
 
@@ -313,6 +313,11 @@ namespace BeastHunter
                 _weaponShootTransform = throable.ActualWeapon.WeaponObjectOnScene.transform;
                 _projectileMass = throable.ProjectileData.ProjectilePrefab.GetComponent<Rigidbody>().mass;
                 _weaponHitDistance = throable.HitDistance;
+            }
+            else if(_context.CharacterModel.CurrentWeaponData.Value is TwoHandedShootingWeapon thoHandedWeapon)
+            {
+                _weaponShootTransform = thoHandedWeapon.RightActualWeapon.WeaponObjectOnScene.transform;
+                _weaponHitDistance = thoHandedWeapon.HitDistance;
             }
             else
             {
