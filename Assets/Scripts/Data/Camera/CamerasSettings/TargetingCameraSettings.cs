@@ -17,7 +17,7 @@ namespace BeastHunter
         [SerializeField] private string _characterTargetCameraName;
 
         [Tooltip("Character target camera JSON file name.")]
-        [SerializeField] private string _characterTargetCameraJSONFileName;
+        [SerializeField] private string _characterTargetCameraJSONFilePath;
 
         [Range(0.0f, 10.0f)]
         [Tooltip("Target camera blend time between 0 and 10.")]
@@ -53,7 +53,7 @@ namespace BeastHunter
             else
             {
                 string parametersDataString = JsonUtility.ToJson(targetCamera);
-                File.WriteAllText(Path.Combine(Application.persistentDataPath, _characterTargetCameraJSONFileName),
+                File.WriteAllText(Path.Combine(Application.dataPath, _characterTargetCameraJSONFilePath),
                     parametersDataString);
             }
         }
@@ -72,10 +72,10 @@ namespace BeastHunter
                 characterTargetCameraObject = GameObject.Instantiate(CharacterTargetCamera, parent);
             }
 
-            if (File.Exists(Path.Combine(Application.persistentDataPath, _characterTargetCameraJSONFileName)))
+            if (File.Exists(Path.Combine(Application.dataPath, _characterTargetCameraJSONFilePath)))
             {
                 JsonUtility.FromJsonOverwrite(File.
-                    ReadAllText(Path.Combine(Application.persistentDataPath, _characterTargetCameraJSONFileName)),
+                    ReadAllText(Path.Combine(Application.dataPath, _characterTargetCameraJSONFilePath)),
                         characterTargetCameraObject);
             }
             else
