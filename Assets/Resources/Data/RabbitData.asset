@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RabbitData
   m_EditorClassIdentifier: 
   _prefab: {fileID: 6850293822335465738, guid: 635352c46b7621145938ab221e63e0d1, type: 3}
+  _dataType: 3
   _startStats:
     BaseStats:
       _maximalHealthPoints: 5
@@ -37,3 +38,4 @@ MonoBehaviour:
     _moveSpeed: 0.5
     _jumpHeight: 2
     _canIdle: 1
+  SpawnData: {fileID: 11400000}

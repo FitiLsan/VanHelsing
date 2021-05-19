@@ -37,6 +37,7 @@ namespace BeastHunter
         [SerializeField] private string _ironGreavesPath;
         [SerializeField] private string _uiElementsDataPath;
         [SerializeField] private string _materialsDataPath;
+        [SerializeField] private string _entitySpawnerDataPath;
         [SerializeField] private string _torchObjectPath;
         [SerializeField] private string _hellHoundDataPath;
         [SerializeField] private string _twoHeadedSnakeDataPath;
@@ -75,6 +76,7 @@ namespace BeastHunter
         private static WeakPointData _bossThirdWeakPoint;
         private static UIElementsData _uiElementsData;
         private static MaterialsData _materialsData;
+        private static EntitySpawnerData _entitySpawnerData;
         private static TorchData _torchObjectData;
         private static HellHoundData _hellHoundData;
         private static TwoHeadedSnakeData _twoHeadedSnakeData;
@@ -394,6 +396,18 @@ namespace BeastHunter
                     _materialsData = Load<MaterialsData>("Data/" + Instance._materialsDataPath);
                 }
                 return _materialsData;
+            }
+        }
+
+        public static EntitySpawnerData EntitySpawnerData
+        {
+            get
+            {
+                if (_entitySpawnerData == null)
+                {
+                    _entitySpawnerData = Load<EntitySpawnerData>("Data/" + Instance._entitySpawnerDataPath);
+                }
+                return _entitySpawnerData;
             }
         }
 

@@ -17,6 +17,7 @@
         public TrapService TrapService { get; private set; }
         public NoiseService NoiseService { get; private set; }
         public AudioService AudioService { get; private set; }
+        public InitializationService InitializationService { get; private set; }
 
         #endregion
 
@@ -36,6 +37,7 @@
             TrapService = new TrapService(context);
             NoiseService = new NoiseService();
             AudioService = new AudioService(context);
+            InitializationService = new InitializationService(context); //dispose?
         }
 
         public void DisposeGameServices()

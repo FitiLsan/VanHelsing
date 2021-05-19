@@ -8,14 +8,16 @@ namespace BeastHunter
         #region Fields
 
         [SerializeField] private GameObject _prefab;
+        [SerializeField] private DataType _dataType;
         [SerializeField] private Stats _startStats;
-
+        
         #endregion
 
 
         #region Properties
 
         public GameObject Prefab => _prefab;
+        public DataType DataType => _dataType;
         public Stats StartStats => _startStats;
 
         #endregion

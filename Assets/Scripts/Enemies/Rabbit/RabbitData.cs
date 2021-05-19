@@ -68,6 +68,24 @@ namespace BeastHunter
         #endregion
 
 
+        #region NpcData
+
+        public override void TakeDamage(EnemyModel model, Damage damage)
+        {
+            base.TakeDamage(model, damage);
+            //Debug.Log("Rabbit got " + damage.PhysicalDamage + " damage");
+
+            if (model.CurrentStats.BaseStats.IsDead)
+            {
+                //Debug.Log("You killed a bunny! You monster!");
+                var rabbit = model as RabbitModel;
+                rabbit.Rabbit.GetComponent<Renderer>().material.color = Color.red;
+            }
+        }
+
+        #endregion
+
+
         #region Metods
 
         public override void Act(EnemyModel enemyModel)
@@ -78,6 +96,7 @@ namespace BeastHunter
             {
                 _physicsService = Services.SharedInstance.PhysicsService;
             }
+
             if ((rabbitModel.RabbitState != BehaviourState.Fleeing) && rabbitModel.DangerousObjects.Count > 0)
             {
                 rabbitModel.RabbitState = BehaviourState.Fleeing;
@@ -365,24 +384,6 @@ namespace BeastHunter
         private Vector2 RotateByAngle(Vector2 vector, float angle)
         {
             return new Vector2(vector.x * Mathf.Cos(angle) - vector.y * Mathf.Sin(angle), vector.x * Mathf.Sin(angle) + vector.y * Mathf.Cos(angle));
-        }
-
-        #endregion
-
-
-        #region NpcData
-
-        public override void TakeDamage(EnemyModel model, Damage damage)
-        {
-            base.TakeDamage(model, damage);
-            //Debug.Log("Rabbit got " + damage.PhysicalDamage + " damage");
-
-            if (model.CurrentStats.BaseStats.IsDead)
-            {
-                //Debug.Log("You killed a bunny! You monster!");
-                var rabbit = model as RabbitModel;
-                rabbit.Rabbit.GetComponent<Renderer>().material.color = Color.red;
-            }
         }
 
         #endregion
