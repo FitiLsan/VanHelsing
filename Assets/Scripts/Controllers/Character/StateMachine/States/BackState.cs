@@ -765,7 +765,7 @@ namespace BeastHunter
 
         private void UseInteractiveObject()
         {
-            foreach (BaseInteractiveObjectModel interactiveObjectModel in _context.InteractableObjectModels.Values)
+            foreach (BaseInteractiveObjectModel interactiveObjectModel in _context.InteractiveObjectModels.Values)
             {
                 if (interactiveObjectModel.IsInteractive)
                 {

@@ -19,6 +19,7 @@ namespace BeastHunter
         public TrapService TrapService { get; private set; }
         public AnnouncementService AnnouncementService { get; private set; }
         public AudioService AudioService { get; private set; }
+        public InitializationService InitializationService { get; private set; }
         public EffectsManager EffectsManager { get; private set; }
 
         public GameContext Context { get; private set; }
@@ -40,6 +41,7 @@ namespace BeastHunter
             TrapService = new TrapService(context);
             AnnouncementService = new AnnouncementService();
             AudioService = new AudioService(context);
+            InitializationService = new InitializationService(context); //dispose?
             EffectsManager = new EffectsManager();
             Context = context;
         }
