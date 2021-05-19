@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using Extensions;
+
 
 namespace BeastHunter
 {
@@ -67,9 +67,14 @@ namespace BeastHunter
         }
         private void Damage(Collider enemy)
         {
-            Damage poisonDamage = new Damage();
-            poisonDamage.PhysicalDamage = _damage;
-            Services.SharedInstance.AttackService.CountAndDealDamage(poisonDamage, enemy.transform.GetMainParent().gameObject.GetInstanceID());
+            Damage damage = new Damage();
+            damage.ElementDamageType = ElementDamageType.Toxin;
+            damage.ElementDamageValue = Random.Range(15f, 30f);
+            damage.PhysicalDamageType = PhysicalDamageType.Cutting;
+            damage.PhysicalDamageValue = 0;
+
+            Services.SharedInstance.AttackService.CountAndDealDamage(damage, 
+                enemy.transform.root.gameObject.GetInstanceID());
         }
     }
 }

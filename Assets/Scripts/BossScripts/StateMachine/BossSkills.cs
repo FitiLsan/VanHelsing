@@ -64,13 +64,13 @@ namespace BeastHunter
         {
             _stateMachine = stateMachine;
 
-            AttackStateSkillsSettings = _stateMachine._model.BossData.AttackStateSkills;
-            DefenceStateSkillsSettings = _stateMachine._model.BossData.DefenceStateSkills;
-            ChasingStateSkillsSettings = _stateMachine._model.BossData.ChasingStateSkills;
-            RetreatingStateSkillsSettings = _stateMachine._model.BossData.RetreatingStateSkills;
-            SearchingStateSkillsSettings = _stateMachine._model.BossData.SearchingStateSkills;
-            DeadStateSkillsSettings = _stateMachine._model.BossData.DeadStateSkills;
-            NonStateSkillsSettings = _stateMachine._model.BossData.NonStateSkills;
+            AttackStateSkillsSettings = _stateMachine._model.BossData.BossSkills.AttackStateSkills;
+            DefenceStateSkillsSettings = _stateMachine._model.BossData.BossSkills.DefenceStateSkills;
+            ChasingStateSkillsSettings = _stateMachine._model.BossData.BossSkills.ChasingStateSkills;
+            RetreatingStateSkillsSettings = _stateMachine._model.BossData.BossSkills.RetreatingStateSkills;
+            SearchingStateSkillsSettings = _stateMachine._model.BossData.BossSkills.SearchingStateSkills;
+            DeadStateSkillsSettings = _stateMachine._model.BossData.BossSkills.DeadStateSkills;
+            NonStateSkillsSettings = _stateMachine._model.BossData.BossSkills.NonStateSkills;
 
 
 

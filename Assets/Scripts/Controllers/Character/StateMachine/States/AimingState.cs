@@ -9,6 +9,7 @@ namespace BeastHunter
 
         private float _baseAnimationSpeed;
         private float _animationSpeedWhileRun;
+        private bool _isThrowing;
 
         #endregion
 
@@ -35,7 +36,7 @@ namespace BeastHunter
             _stateMachine.BackState.CountSpeed();
             ControlMovement();
             ControlAimingTarget();
-            _stateMachine.BackState.UpdateAimingDotsForProjectile();
+            if (_isThrowing) _stateMachine.BackState.UpdateAimingDotsForProjectile();
         }
 
         #endregion
@@ -45,28 +46,28 @@ namespace BeastHunter
 
         public override bool CanBeActivated()
         {
-            return _characterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting;
+            return _characterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting ||
+                _characterModel.CurrentWeaponData.Value.Type == WeaponType.Throwing;
         }
 
         protected override void EnableActions()
         {
             base.EnableActions();
-            _stateMachine.BackState.OnAim = () => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
-            _stateMachine.BackState.OnAttack = () => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Shooting]);
-            _stateMachine.BackState.OnStartRun = () => _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
-            _stateMachine.BackState.OnStopRun = () => _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
-            _stateMachine.BackState.OnJump = Dodge;
+
+            _inputModel.OnAim += () => _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
+            _inputModel.OnAttack += () => _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Shooting]);
+            _inputModel.OnRunStart += () => _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
+            _inputModel.OnRunStop += () => _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
+            _inputModel.OnJump += () => Dodge();
         }
 
         protected override void DisableActions()
         {
-            _stateMachine.BackState.OnAim = null;
-            _stateMachine.BackState.OnAttack = null;
-            _stateMachine.BackState.OnStartRun = null;
-            _stateMachine.BackState.OnStopRun = null;
-            _stateMachine.BackState.OnJump = null;
+            _inputModel.OnAim = null;
+            _inputModel.OnAttack = null;
+            _inputModel.OnRunStart = null;
+            _inputModel.OnRunStop = null;
+            _inputModel.OnJump = null;
             base.DisableActions();
         }
 
@@ -78,14 +79,14 @@ namespace BeastHunter
             {
                 _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
             }
-
-            Services.SharedInstance.CameraService.StartDrawAimLine();
+            _isThrowing = _characterModel.CurrentWeaponData.Value.Type == WeaponType.Throwing;
+            if(_isThrowing) Services.SharedInstance.CameraService.StartDrawAimLine();
         }
 
         public override void OnExit(CharacterBaseState nextState = null)
         {
             _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
-            Services.SharedInstance.CameraService.StopDrawAimLine();
+            if (_isThrowing)  Services.SharedInstance.CameraService.StopDrawAimLine();
 
             base.OnExit();
         }

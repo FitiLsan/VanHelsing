@@ -24,28 +24,25 @@
         protected override void EnableActions()
         {
             base.EnableActions();
-            _stateMachine.BackState.OnMove = () => _stateMachine.
+            _inputModel.OnMove += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
-            _stateMachine.BackState.OnSneak = () => _stateMachine.
+            _inputModel.OnSneakSlide += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Sneaking]);
-            _stateMachine.BackState.OnAttack = () => _stateMachine.
+            _inputModel.OnAttack += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
-            _stateMachine.BackState.OnJump = () => _stateMachine.
+            _inputModel.OnJump += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Jumping]);
-            _stateMachine.BackState.OnAim = () => _stateMachine.
+            _inputModel.OnAim += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Battle]);
-            _stateMachine.BackState.OnTimeSkipOpenClose = () => _stateMachine.
-                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.TimeSkip]);
         }
 
         protected override void DisableActions()
         {
-            _stateMachine.BackState.OnMove = null;
-            _stateMachine.BackState.OnSneak = null;
-            _stateMachine.BackState.OnAttack = null;
-            _stateMachine.BackState.OnJump = null;
-            _stateMachine.BackState.OnAim = null;
-            _stateMachine.BackState.OnTimeSkipOpenClose = null;
+            _inputModel.OnMove = null;
+            _inputModel.OnSneakSlide = null;
+            _inputModel.OnAttack = null;
+            _inputModel.OnJump = null;
+            _inputModel.OnAim = null;
             base.DisableActions();
         }
 

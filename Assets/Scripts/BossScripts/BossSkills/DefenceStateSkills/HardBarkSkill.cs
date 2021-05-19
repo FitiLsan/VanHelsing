@@ -29,7 +29,7 @@ namespace BeastHunter
             if (_isAllowed && _skillDictionary[id].IsSkillReady)
             {
                 Debug.Log("Hard Bark Skill");
-                SetNavMeshAgent(_bossModel.BossTransform.position, 0);
+                _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
                 _bossModel.BossAnimator.Play($"HardBark", 0, 0f);
 
                 SwitchBark(true);

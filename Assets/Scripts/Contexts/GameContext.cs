@@ -7,7 +7,8 @@ namespace BeastHunter
     public sealed class GameContext : Contexts
     {
         #region Fields
-        
+
+        public readonly GameControllerParametersData GameControllerParameters;
         public UIBestiaryModel UIBestiaryModel;
         public StartDialogueModel StartDialogueModel;
         public DialogueSystemModel DialogueSystemModel;
@@ -31,8 +32,9 @@ namespace BeastHunter
 
         #region ClassLifeCycles
 
-        public GameContext()
+        public GameContext(GameControllerParametersData gameControllerParameters)
         {
+            GameControllerParameters = gameControllerParameters;
             _onTriggers = new SortedList<InteractableObjectType, List<IInteractable>>();
             _interactables = new List<IInteractable>();
 

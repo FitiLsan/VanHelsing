@@ -166,8 +166,8 @@ namespace BeastHunter
 
         [Header("Character battle settings")]
 
-        [Tooltip("Character aiming direction change speed between 0 and 50.")]
-        [Range(0.0f, 50.0f)]
+        [Tooltip("Character aiming direction change speed between 0 and 250.")]
+        [Range(0.0f, 250.0f)]
         [SerializeField] private float _aimingDirectionChangeSpeed;
 
         [Tooltip("Actual rolling time between 0 and 10.")]

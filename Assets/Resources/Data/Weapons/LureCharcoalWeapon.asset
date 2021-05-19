@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4474172447847354ea270be31e527933, type: 3}
+  m_Name: LureCharcoalWeapon
+  m_EditorClassIdentifier: 
+  _handType: 1
+  _type: 3
+  _inWhichHand: 2
+  _weaponImage: {fileID: 0}
+  _gettingSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
+  _removingSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
+  _simpleAttacks:
+  - Name: Throwing
+    AnimationName: Throw
+    AttackDamage:
+      PhysicalDamage: 0
+      StunProbability: 0
+      FireDamage: 0
+    WeaponItem: {fileID: 11400000, guid: d9d3f197ba48de7448e270b94524d191, type: 2}
+    AttackType: 2
+    AttackTime: 1
+    AttackStaminaCost: 0
+  _specialAttacks: []
+  _weaponName: Bomb
+  _simpleAttackAnimationPrefix: BombSimpleAttack
+  _specialAttackAnimationPrefix: BombSpecialAttack
+  _strafeAnimationPostfix: Strafe
+  _dodgeAnimationPostfix: Dodge
+  _gettingAnimationPostfix: 
+  _holdingAnimationPostfix: BombAiming
+  _removingAnimationPostfix: 
+  _totalTimeToGet: 0
+  _timeBeforeGrab: 0
+  _totalTimeToRemove: 0
+  _timeBeforeLetGo: 0
+  _actualWeapon: {fileID: 11400000, guid: 893f76df54acfbb49aa2a80d08d3b583, type: 2}
+  _projectileData: {fileID: 11400000, guid: 9ff6a733f0efcb04e9d5001892b7863d, type: 2}
+  _delayBeforeThrow: 0.4
+  _hitDistance: 100
+  _aimingAnimationPostfix: BombAiming

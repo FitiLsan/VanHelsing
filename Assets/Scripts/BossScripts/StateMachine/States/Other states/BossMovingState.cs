@@ -39,31 +39,33 @@ namespace BeastHunter
 
         public override void Initialise()
         {
-            _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.WalkSpeed;
-            _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_EATING;
-            _stateMachine._model.BossAnimator.Play("MovingState");
+            _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, _bossData._bossSettings.WalkSpeed);
+            _bossModel.BossNavAgent.stoppingDistance = DISTANCE_TO_START_EATING;
+            _bossModel.BossAnimator.Play("MovingState");
 
             if (_bossModel.BossCurrentTarget != null)
             {
-                _target = _bossModel.BossCurrentTarget.transform.position;
+                _target = Services.SharedInstance.PhysicsService.GetGroundedPosition(_bossModel.BossCurrentTarget.transform.position, 30f);
             }
         }
 
         public override void Execute()
         {
-            if (!CheckDistance() & _target!= Vector3.zero)
+            if (_bossModel.BossCurrentTarget != null && _target!= Vector3.zero && !CheckDistance())
             {
                 MoveTo();
                 RotateTo();
             }
             else
             {
-                _stateMachine.SetCurrentStateOverride(_stateMachine.LastStateType);
+                _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, 0f);
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle) ;
             }
         }
 
         public override void OnExit()
         {
+            _target = Vector3.zero;
         }
 
         public override void OnTearDown()
@@ -73,18 +75,18 @@ namespace BeastHunter
 
         private bool CheckDistance()
         {
-            var isNear = _stateMachine._model.BossData.CheckIsNearTarget(_stateMachine._model.BossTransform.position, _target, DISTANCE_TO_START_EATING, ANGLE_RANGE);
+            var isNear = _bossModel.BossData.CheckIsNearTarget(_bossModel.BossTransform.position, _target, DISTANCE_TO_START_EATING, ANGLE_RANGE);
             return isNear;
         }
 
         private void MoveTo()
         {
-            _stateMachine._model.BossData.MoveTo(_stateMachine._model.BossNavAgent, _target, _stateMachine._model.BossData._bossSettings.WalkSpeed);
+            _bossModel.BossData.NavMeshMoveTo(_bossModel.BossNavAgent, _target, _bossModel.BossData._bossSettings.WalkSpeed);
         }
 
         private void RotateTo()
         {
-            _bossModel.BossTransform.rotation = _stateMachine._model.BossData.RotateTo(_stateMachine._model.BossTransform, _stateMachine._model.BossCurrentTarget.transform , ANGLE_SPEED);
+            _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform , ANGLE_SPEED);
         }
 
         #endregion

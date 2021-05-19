@@ -119,6 +119,11 @@ namespace BeastHunter
                     SetRootMotion(false);
                     PlayArmsSimpleAttackAnimation();
                     break;
+                case CharacterStatesEnum.Throwing:                  
+                    SetTopBodyAnimationWeigth(1f, 1f);
+                    SetRootMotion(false);
+                    PlayArmsSimpleAttackAnimation();
+                    break;
                 case CharacterStatesEnum.Battle:
                     SetTopBodyAnimationWeigth(1f, 0f);
                     SetRootMotion(false);
@@ -324,6 +329,12 @@ namespace BeastHunter
                     AimingAnimationPostfix, 1);
                 PlayTorsoNoneAnimation();
             }        
+            else if(_context.CharacterModel.CurrentWeaponData.Value.Type == WeaponType.Throwing)
+            {
+                _characterAnimator.Play((_context.CharacterModel.CurrentWeaponData.Value as OneHandedThrowableWeapon).
+                    AimingAnimationPostfix, 1);
+                PlayTorsoNoneAnimation();
+            }
         }
 
         private void PlayArmsAnimationRemovingWeapon()

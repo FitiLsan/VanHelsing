@@ -255,8 +255,10 @@ namespace BeastHunter
         {
             Damage damage = new Damage()
             {
-                PhysicalDamage = settings.PhysicalDamage,
-                StunProbability = settings.StunProbability
+                ElementDamageType = ElementDamageType.None,
+                ElementDamageValue = 0,
+                PhysicalDamageType = PhysicalDamageType.Cutting,
+                PhysicalDamageValue = settings.PhysicalDamage
             };
 
             InteractableObjectBehavior enemy = collider.gameObject.GetComponent<InteractableObjectBehavior>();

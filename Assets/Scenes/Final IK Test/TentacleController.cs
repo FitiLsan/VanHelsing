@@ -94,11 +94,11 @@ namespace BeastHunter
                 return;
             }
 
-            if(Input.GetKeyDown(KeyCode.P))
-            {
-                AddForceToTarget();
-                //Click();
-            }
+            //if(Input.GetKeyDown(KeyCode.P))
+            //{
+            //    AddForceToTarget();
+            //    //Click();
+            //}
 
             RotateToTarget();
 

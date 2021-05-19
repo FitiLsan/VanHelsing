@@ -7,7 +7,7 @@ namespace BeastHunter
     {
         #region Fields
 
-        [SerializeField] ProjectileData _projectileData;
+        [SerializeField] private ProjectileData _projectileData;
 
         #endregion
 
@@ -15,6 +15,7 @@ namespace BeastHunter
         #region Properties
 
         public GameObject GameObject => gameObject;
+        public ProjectileData ProjectileData => _projectileData;
 
         #endregion
 

@@ -166,7 +166,7 @@ namespace BeastHunter
                 if (kvp.Value != null && model.Rigidbody.velocity.sqrMagnitude > _sqrHitSpeed)
                 {
                     Services.SharedInstance.AttackService.CountAndDealDamage(_damage, kvp.Value.transform.
-                        GetMainParent().gameObject.GetInstanceID());
+                        root.gameObject.GetInstanceID());
                     _dealDamageMsg?.Invoke(kvp.Value.ToString());
                     changingDictionaryValues.Add(kvp.Key);
                 }
@@ -203,7 +203,7 @@ namespace BeastHunter
 
         public void TriggerEnter(Collider collider, FallingTreeModel model)
         {
-            int entityID = collider.transform.GetMainParent().GetInstanceID();
+            int entityID = collider.transform.root.GetInstanceID();
             InteractableObjectBehavior entityIO = collider.GetComponent<InteractableObjectBehavior>();
 
             if (!model.StayCollisionEntities.ContainsKey(entityID))
@@ -219,7 +219,7 @@ namespace BeastHunter
             if (model.Rigidbody.velocity.sqrMagnitude > _sqrHitSpeed && model.StayCollisionEntities[entityID] != null)
             {
                 Services.SharedInstance.AttackService.CountAndDealDamage(_damage, entityIO.transform.
-                    GetMainParent().gameObject.GetInstanceID());
+                    root.gameObject.GetInstanceID());
                 _dealDamageMsg?.Invoke(entityIO.ToString());
                 //note: set value as null means the entity has already taken damage
                 model.StayCollisionEntities[entityID] = null;
@@ -228,11 +228,11 @@ namespace BeastHunter
 
         public void TriggerExit(Collider collider, FallingTreeModel model)
         {
-            int entityID = collider.transform.GetMainParent().GetInstanceID();
+            int entityID = collider.transform.root.GetInstanceID();
             if (model.StayCollisionEntities.ContainsKey(entityID) && model.StayCollisionEntities[entityID] != null)
             {
                 //note: the entity is removed from the dictionary only if it has not yet taken damage (IOBehavior!=null)
-                model.StayCollisionEntities.Remove(collider.transform.GetMainParent().GetInstanceID());
+                model.StayCollisionEntities.Remove(collider.transform.root.GetInstanceID());
             }
         }
 

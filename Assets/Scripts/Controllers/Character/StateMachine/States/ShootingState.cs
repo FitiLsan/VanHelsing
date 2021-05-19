@@ -43,6 +43,10 @@ namespace BeastHunter
 
         public override bool CanBeActivated()
         {
+            if (_characterModel.CurrentWeaponData.Value?.Type == WeaponType.Throwing)
+            {
+                _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Throwing]);
+            }
             return _characterModel.CurrentWeaponData.Value?.Type == WeaponType.Shooting;
         }
 

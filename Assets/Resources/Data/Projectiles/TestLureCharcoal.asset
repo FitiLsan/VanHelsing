@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50aedcad7b2a80b43bf442efaf0b8788, type: 3}
+  m_Name: TestLureCharcoal
+  m_EditorClassIdentifier: 
+  _projectileType: 4
+  _projectilePrefab: {fileID: 172868, guid: d53273b3760ab54438e80a12e6a30a08, type: 3}
+  _flyingSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
+  _collisionSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
+  _projectileDamage:
+    PhysicalDamageType: 0
+    PhysicalDamageValue: 0
+    ElementDamageType: 1
+    ElementDamageValue: 4
+  _isDestroyedAfterInstantiation: 0
+  _isDestroyedAfterHit: 0
+  _timeToDestroyAfterInstantiation: 0
+  _timeToDestroyAfterHit: 0
+  _projectileColliderSize: 0.33
+  _smellingDistance: 50
+  _lureSmellType: 3

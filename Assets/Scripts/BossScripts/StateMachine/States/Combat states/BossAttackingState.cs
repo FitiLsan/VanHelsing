@@ -66,7 +66,7 @@ namespace BeastHunter
             CanBeOverriden = true;
             IsBattleState = true;
             base.CurrentAttackTime = 0f;
-            SetNavMeshAgent(_bossModel.BossTransform.position, 0);
+            _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             StartCoolDownSkills(_bossSkills.AttackStateSkillDictionary);
         }
 
@@ -145,7 +145,7 @@ namespace BeastHunter
 
         private void DecideNextMove()
         {
-            SetNavMeshAgent(_bossModel.BossTransform.position, 0);
+            _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             _bossModel.LeftHandBehavior.IsInteractable = false;
             _bossModel.RightHandBehavior.IsInteractable = false;
             _bossModel.LeftHandCollider.enabled = false;
@@ -173,8 +173,12 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                handDamage.PhysicalDamage = hitBox.TempDamage; //Random.Range(5f, 15f);
-                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
+                handDamage.ElementDamageType = ElementDamageType.None;
+                handDamage.ElementDamageValue = 0;
+                handDamage.PhysicalDamageType = PhysicalDamageType.Crushing;
+                handDamage.PhysicalDamageValue = hitBox.TempDamage;
+
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
                     gameObject.GetInstanceID());
 
                 hitBox.IsInteractable = false;
@@ -188,8 +192,12 @@ namespace BeastHunter
             if (hitBox.IsInteractable)
             {
                 var hitBoxInfo = (InteractableObjectBehavior)hitBox;
-                handDamage.PhysicalDamage = hitBoxInfo.TempDamage;
-                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
+                handDamage.ElementDamageType = ElementDamageType.None;
+                handDamage.ElementDamageValue = 0;
+                handDamage.PhysicalDamageType = PhysicalDamageType.Crushing;
+                handDamage.PhysicalDamageValue = hitBoxInfo.TempDamage;
+
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
                     gameObject.GetInstanceID());
                 hitBox.IsInteractable = false;
             //   _bossModel.RightHandCollider.enabled = false;
@@ -200,8 +208,12 @@ namespace BeastHunter
         {
             if (hitBox.IsInteractable)
             {
-                handDamage.PhysicalDamage = Random.Range(5f, 15f);
-                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.GetMainParent().
+               handDamage.ElementDamageType = ElementDamageType.None;
+               handDamage.ElementDamageValue = 0;
+               handDamage.PhysicalDamageType = PhysicalDamageType.Piercing;
+               handDamage.PhysicalDamageValue = Random.Range(5f, 15f);
+
+                Services.SharedInstance.AttackService.CountAndDealDamage(handDamage, enemy.transform.root.
                     gameObject.GetInstanceID());
                 hitBox.IsInteractable = false;
             }

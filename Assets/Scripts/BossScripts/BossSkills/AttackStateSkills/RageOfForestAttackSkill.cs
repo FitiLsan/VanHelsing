@@ -24,7 +24,7 @@ namespace BeastHunter
 
             Debug.Log("RAGEAttackSkill");
             _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
-             SetNavMeshAgent((Vector3)_stateMachine._mainState.GetTargetCurrentPosition(), 5f);
+            _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, (Vector3)_stateMachine._mainState.GetTargetCurrentPosition(), 5f);
             _bossModel.BossAnimator.Play("BossRageAttack", 0, 0f);
 
             TurnOnHitBoxTrigger(_bossModel.RightHandBehavior, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER, SkillDamage);

@@ -49,8 +49,8 @@ namespace BeastHunter
             CanExit = false;
             CanBeOverriden = true;
             IsBattleState = true;
-            _stateMachine._model.BossNavAgent.speed = _stateMachine._model.BossData._bossSettings.RunSpeed;
-            _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK;
+            _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, _bossData._bossSettings.RunSpeed);
+            _stateMachine._model.BossNavAgent.stoppingDistance = DISTANCE_TO_START_ATTACK; // ?
             _stateMachine._model.BossAnimator.Play("MovingState");
             _forceAttackTime = Random.Range(FORCE_ATTACK_TIME_MIN, FORCE_ATTACK_TIME_MAX);
             StartCoolDownSkills(_bossSkills.ChasingStateSkillDictionary);
@@ -73,8 +73,11 @@ namespace BeastHunter
 
         private void CheckTarget()
         {
-            _target = _stateMachine._model.BossCurrentTarget.transform.position;
-            _stateMachine._model.BossNavAgent.SetDestination(_target);
+            if (_bossModel.BossCurrentTarget != null)
+            {
+                _target = _bossModel.BossCurrentTarget.transform.position;
+                _bossModel.BossNavAgent.SetDestination(_target);
+            }
         }
 
         private void CheckDistance()

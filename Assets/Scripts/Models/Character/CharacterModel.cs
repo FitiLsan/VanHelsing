@@ -6,7 +6,7 @@ using UniRx;
 
 namespace BeastHunter
 {
-    public sealed class CharacterModel
+    public sealed class CharacterModel: BaseModel
     {
         #region Fields
 
@@ -17,7 +17,7 @@ namespace BeastHunter
 
         #region Properties
 
-        public Stats CurrentStats { get; set; }
+      //  public Stats CurrentStats { get; set; }
         public ReactiveProperty<WeaponData> CurrentWeaponData { get; set; }
         public GameObject CurrentWeaponLeft { get; set; }
         public GameObject CurrentWeaponRight { get; set; }
@@ -42,7 +42,6 @@ namespace BeastHunter
         public PuppetMaster PuppetMaster { get; }
         public BehaviourPuppet BehaviorPuppet { get; }
         public BehaviourFall BehaviorFall { get; }
-        public LineRenderer ProjectileTrajectoryPredict { get; }
 
         public ReactiveCollection<Collider> EnemiesInTrigger { get; set; }
         public ReactiveProperty<Collider> ClosestEnemy { get; set; }
@@ -65,6 +64,7 @@ namespace BeastHunter
         }
 
         public int InstanceID { get; }
+        public GameObject BuffEffectPrefab { get; private set; }
 
         #endregion
 
@@ -73,7 +73,6 @@ namespace BeastHunter
 
         public CharacterModel(GameObject objectOnScene, CharacterData characterData, LocationPosition groundedPosition)
         {
-            InstanceID = objectOnScene.GetInstanceID();
             CharacterData = characterData;
             CharacterCommonSettings = CharacterData.CharacterCommonSettings;
             CharacterStartStats = CharacterData.CharacterStatsSettings;
@@ -86,6 +85,10 @@ namespace BeastHunter
             CharacterTransform.name = CharacterCommonSettings.InstanceName;
             CharacterTransform.tag = CharacterCommonSettings.InstanceTag;
             CurrentStats = CharacterStartStats.DeepCopy();
+            InstanceID = CurrentStats.InstanceID = objectOnScene.GetInstanceID();
+            CurrentStats.BuffHolder = new BuffHolder();
+            BuffEffectPrefab = CharacterTransform.Find("Effects").gameObject;
+
 
             AudioSource[] characterAudioSources = CharacterTransform.gameObject.GetComponentsInChildren<AudioSource>();
             SpeechAudioSource = characterAudioSources[0];
@@ -146,7 +149,7 @@ namespace BeastHunter
             BehaviorFall = objectOnScene.transform.GetChild(0).GetChild(1).gameObject.GetComponent<BehaviourFall>();
 
             EnemiesInTrigger = new ReactiveCollection<Collider>();
-            
+
             ClosestEnemy = new ReactiveProperty<Collider>();
             IsGrounded = false;
             IsSneaking = false;
@@ -162,7 +165,7 @@ namespace BeastHunter
             CurrentWeaponRight = null;
             CurrentPlacingTrapModel = new ReactiveProperty<TrapModel>();
             CurrentPlacingTrapModel.Value = null;
-            CharacterAnimationModel = new CharacterAnimationModel(CharacterTransform.GetComponent<Animator>(), 
+            CharacterAnimationModel = new CharacterAnimationModel(CharacterTransform.GetComponent<Animator>(),
                 CharacterCommonSettings.CharacterAnimator, CharacterCommonSettings.BeginningApplyRootMotion);
             CurrentCharacterState = new ReactiveProperty<CharacterBaseState>();
             PreviousCharacterState = new ReactiveProperty<CharacterBaseState>();

@@ -8,18 +8,19 @@ namespace BeastHunter
         #region Fields
 
         private GameStateController _activeController;
+        [SerializeField] private GameControllerParametersData _parametersData;
 
         #endregion
 
 
         #region UnityMetods
 
-        void Start()
+        private void Awake()
         {
-            GameContext context = new GameContext();
+            GameContext context = new GameContext(_parametersData);
             Services.SharedInstance.InitializeGameServices(context);
-
-            _activeController = new GameSystemsController(context);
+            _parametersData.CheckParametersCorrectInput();
+            _activeController = new GameSystemsController(context, _parametersData);
             _activeController.Initialize();
         }
 

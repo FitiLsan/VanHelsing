@@ -34,6 +34,7 @@ namespace BeastHunter
         public bool IsAnySkillUsed { get; protected set; }
         public float CurrentAttackTime { get; protected set; }
         public BossBaseSkill CurrentSkill { get; protected set; }
+        public EffectType CurrentEffectType { get; set; }
 
         #endregion
 
@@ -63,15 +64,6 @@ namespace BeastHunter
         public abstract void OnExit();
 
         public abstract void OnTearDown();
-
-        protected virtual void SetNavMeshAgent(Vector3 targetPosition, float speed)
-        {
-            if (_bossModel.BossNavAgent.enabled)
-            {
-                _bossModel.BossNavAgent.SetDestination(targetPosition);
-                _bossModel.BossNavAgent.speed = speed;
-            }
-        }
 
         protected bool CheckDirection()
         {
@@ -140,7 +132,7 @@ namespace BeastHunter
             }
             return isNear;
         }
-
+        #region Skills
         protected void CurrentSkillStop()
         {
             _stateMachine.CurrentState.IsAnySkillUsed = false;
@@ -175,6 +167,20 @@ namespace BeastHunter
                 }
             }
         }
+        #endregion
+
+        #region EffectReaction
+
+        protected virtual void FireReaction()
+        {
+        }
+
+        protected virtual void WaterReaction()
+        {
+
+        }
+
+        #endregion
 
         #endregion
     }

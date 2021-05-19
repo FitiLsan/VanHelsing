@@ -27,7 +27,7 @@ namespace BeastHunter
         public override void UseSkill(int id)
         {
             Debug.Log("Call of Forest Skill");
-            SetNavMeshAgent(_bossModel.BossTransform.position, 0);
+            _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             _bossModel.BossAnimator.Play($"CallOfForest", 0, 0f);
             _bossModel.callOfForestEffect.Play();
             DG.Tweening.DOVirtual.DelayedCall(3f, Call);
