@@ -631,11 +631,11 @@ namespace BeastHunter
             _characterModel.CharacterRigitbody.velocity = Vector3.zero;
         }
 
-        public void MoveCharacter(bool isStrafing)
+        public void MoveCharacter(bool isStrafing, bool onlyStrafing = false)
         {
             if (_characterModel.IsGrounded)
             {
-                if (isStrafing && _inputModel.IsInputMove)
+                if (isStrafing && _inputModel.IsInputMove && !onlyStrafing)
                 {
                     Vector3 moveDirection = (Vector3.forward * _inputModel.InputAxisY + Vector3.right *
                         _inputModel.InputAxisX);
@@ -648,12 +648,26 @@ namespace BeastHunter
                     _characterModel.CharacterData.Move(_characterModel.CharacterTransform, _characterModel.CurrentSpeed,
                         moveDirection);
                 }
-                else
+                else if(!onlyStrafing)
                 {
                     _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, _characterModel.CurrentSpeed);
                 }
+                else
+                {
+                    Vector3 moveDirection = (Vector3.forward * 0 + Vector3.right *
+                                          _inputModel.InputAxisX);
+
+                    if (Math.Abs(_inputModel.InputAxisX) + Math.Abs(_inputModel.InputAxisY) == 2)
+                    {
+                        moveDirection *= ANGULAR_MOVE_SPEED_REDUCTION_INDEX;
+                    }
+
+                    _characterModel.CharacterData.Move(_characterModel.CharacterTransform, _characterModel.CurrentSpeed,
+                        moveDirection);
+                }
             }
         }
+
 
         public void RotateCharacter(bool hasCameraControl, bool isStrafing = false)
         {
@@ -736,6 +750,9 @@ namespace BeastHunter
                 case CharacterStatesEnum.Battle:
                     _activeSpeedCounter = _battleSpeedCounter;
                     break;
+                case CharacterStatesEnum.ControlTransferring:
+                    _activeSpeedCounter = _sneakingSpeedCounter;
+                    break;
                 default:
                     break;
             }
@@ -770,6 +787,19 @@ namespace BeastHunter
                 if (interactiveObjectModel.IsInteractive)
                 {
                     interactiveObjectModel.InteractiveObjectData.Interact(interactiveObjectModel);
+
+                    if (interactiveObjectModel.IsNeedControl)
+                    {
+                        if (interactiveObjectModel.IsActivated)
+                        {
+                            _characterModel.ClosestEnemy.Value = interactiveObjectModel.Prefab.GetComponent<Collider>();
+                            _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.ControlTransferring]);
+                        }
+                        else
+                        {
+                            _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Idle]);
+                        }
+                    }
                 }
             }
         }
