@@ -18,16 +18,6 @@ namespace BeastHunter
         private void Update()
         {
             InteractionTriggerUpdate();
-
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                StartInteract();
-            }
-
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                StopInteract();
-            }
         }
         private void OnTriggerEnter(Collider other)
         {
