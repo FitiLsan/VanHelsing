@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace BeastHunter
 {
@@ -40,6 +41,24 @@ namespace BeastHunter
 
 
         #region Methods
+
+        protected override void EnableActions()
+        {
+            base.EnableActions();
+            _characterModel.StartControl();
+          
+        }
+
+        protected override void DisableActions()
+        {
+            _characterModel.StopControl();
+            _inputModel.OnAim = null;
+            _inputModel.OnAttack = null;
+            _inputModel.OnRunStart = null;
+            _inputModel.OnRunStop = null;
+            _inputModel.OnJump = null;
+            base.DisableActions();
+        }
 
         public override bool CanBeActivated()
         {
