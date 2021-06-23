@@ -40,12 +40,14 @@ namespace BeastHunter
         protected override void Activate(SimpleInteractiveObjectModel interactiveObjectModel)
         {
             (interactiveObjectModel as BallistaModel).CanvasObject.gameObject.SetActive(false);
+            (interactiveObjectModel as BallistaModel).IsActive = true;
             _playerInteractionCatch.StartInteract();
         }
 
         protected override void Deactivate(SimpleInteractiveObjectModel interactiveObjectModel)
         {
             (interactiveObjectModel as BallistaModel).CanvasObject.gameObject.SetActive(true);
+            (interactiveObjectModel as BallistaModel).IsActive = false;
             _playerInteractionCatch.StopInteract();
         }
 

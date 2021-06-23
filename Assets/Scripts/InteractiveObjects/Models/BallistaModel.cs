@@ -24,7 +24,6 @@ namespace BeastHunter
         private Animator _animator;
         private InputModel _inputModel;
         private BallistaData _ballistaData;
-        private bool _isActive;
         private GameContext _context;
         private bool _isMoving;
 
@@ -33,7 +32,7 @@ namespace BeastHunter
         #region Properties
 
         public BallistaAnimationController BallistaAnimationController { get; private set; }
-
+        public bool IsActive { get; set; }
         #endregion
 
 
@@ -117,10 +116,12 @@ namespace BeastHunter
 
         private void AttachListeners()
         {
-            _inputModel.OnAttack += () => Shoot();
-            _inputModel.OnAttack += () => Reload();
-            _isMoving = true;
-            
+            if (IsActive)
+            {
+                _inputModel.OnAttack += () => Shoot();
+                _inputModel.OnAttack += () => Reload();
+                _isMoving = true;
+            }
         }
 
         private void DetachListeners()
