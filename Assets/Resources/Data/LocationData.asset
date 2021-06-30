@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: LocationData
   m_EditorClassIdentifier: 
   _playerSpawnPositions:
-  - _position: {x: 390.95, y: 88.2, z: 170.67}
+  - _position: {x: 236.259, y: 109.027, z: 255.468}
     _eulers: {x: -0, y: 0, z: 0}
     _scale: {x: 1, y: 1, z: 1}
   _bossSpawnPositions:
-  - _position: {x: 136.99, y: 85.92, z: 229.99068}
+  - _position: {x: 137.72, y: 86.03, z: 235.43}
     _eulers: {x: -0, y: 0, z: 0}
     _scale: {x: 1, y: 1, z: 1}
   _enemySpawnPointData:
@@ -89,8 +89,13 @@ MonoBehaviour:
       _scale: {x: 0, y: 0, z: 0}
     _type: 4
   - _objectPosition:
-      _position: {x: 395.95, y: 88.2, z: 170.67}
-      _eulers: {x: -0, y: 297.75916, z: 0}
+      _position: {x: 235.85466, y: 108.98806, z: 255.601}
+      _eulers: {x: -0, y: 180, z: 0}
+      _scale: {x: 0, y: 0, z: 0}
+    _type: 6
+  - _objectPosition:
+      _position: {x: 395.17, y: 88.2, z: 180.03}
+      _eulers: {x: -0, y: 180, z: 0}
       _scale: {x: 0, y: 0, z: 0}
     _type: 6
   _doRandomizePlayerPosition: 0

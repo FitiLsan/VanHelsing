@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6698162560827060105}
   - component: {fileID: 6698162560827060103}
   - component: {fileID: 6698162560827060101}
+  - component: {fileID: 7125539604535082433}
   m_Layer: 0
   m_Name: Ballista_bolt_01
   m_TagString: Untagged
@@ -128,3 +129,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _velocityMult: 2
   _angularVelocityMult: 0.1
+--- !u!114 &7125539604535082433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6698162560827060106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97fe0664b28543c4a9e55d291b5860a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectileData: {fileID: 11400000, guid: 62de72265a39b16409ca877dd7a539c8, type: 2}

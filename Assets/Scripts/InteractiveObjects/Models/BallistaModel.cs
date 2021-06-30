@@ -26,6 +26,7 @@ namespace BeastHunter
         private BallistaData _ballistaData;
         private GameContext _context;
         private bool _isMoving;
+        private BoltController _bolt;
 
         #endregion
 
@@ -46,11 +47,11 @@ namespace BeastHunter
             BoltPointTransform = BallistaAnimationController.BoltPointTransform;
             HorizontalTurn = BallistaAnimationController.HorizontalTurn;
             VerticalTurn = BallistaAnimationController.VerticalTurn;
+            _bolt = BallistaAnimationController.Bolt.GetComponent<BoltController>();
             _animator = prefab.GetComponent<Animator>();
             IsNeedControl = true;
             MessageBroker.Default.Receive<PlayerInteractionCatch>().Subscribe(data.CallTriggerInteraction);
             _context = context;
-
             context.CharacterModel.StartControlEvent += AttachListeners;
             context.CharacterModel.StopControlEvent += DetachListeners;
         }
@@ -81,6 +82,7 @@ namespace BeastHunter
             {
                 return;
             }
+            _bolt._isActive = true;
             _isShooting = true;
             _isLoad = false;
             _animator.SetTrigger("Shoot");
@@ -96,6 +98,8 @@ namespace BeastHunter
             var newBolt = GameObject.Instantiate(Bolt, BoltPointTransform.position, BoltPointTransform.rotation, BoltPointTransform);
             BoltRb = newBolt.GetComponent<Rigidbody>();
             BoltRb.isKinematic = true;
+            _bolt = newBolt.GetComponent<BoltController>();
+            _bolt._isActive = false;
         }
 
         private void VertialTurnRotation(float direction)
@@ -129,6 +133,7 @@ namespace BeastHunter
             _inputModel.OnAttack -= () => Shoot();
             _inputModel.OnAttack -= () => Reload();
             _isMoving = false;
+            _bolt._isActive = false;
         }
 
         public void OnAwake()
