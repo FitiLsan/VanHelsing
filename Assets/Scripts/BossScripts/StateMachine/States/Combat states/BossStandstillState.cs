@@ -70,7 +70,10 @@ namespace BeastHunter
         {
             var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.BossTransform.position, 500f, "Water");
 
-            if (list.Count != 0)
+            var rand = Random.Range(0, 2); //delete later
+
+
+            if (list.Count != 0 && rand == 2)
             {
                 _bossModel.BossAnimator.Play("MovingState", 0, 0);
                 _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, list[0].transform.position, _bossModel.BossSettings.RunSpeed);

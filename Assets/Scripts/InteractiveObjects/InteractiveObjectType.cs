@@ -8,6 +8,7 @@ namespace BeastHunter
         HideBush      = 3,
         Boulders      = 4,
         FallingTree   = 5,
+		Ballista      = 6
     }
 }
 

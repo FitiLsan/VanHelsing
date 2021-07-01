@@ -46,6 +46,7 @@ namespace BeastHunter
             _interactiveObjectsFactoryList.Add(new CreateHideBushModel());
             _interactiveObjectsFactoryList.Add(new CreateBouldersModel());
             _interactiveObjectsFactoryList.Add(new CreateFallingTreeModel());
+            _interactiveObjectsFactoryList.Add(new CreateBallistaModel(_context));
         }
 
         public void InitializeEnemy(EnemyData data, LocationPosition position, float radius = 0.0f, int number = 1)
@@ -108,6 +109,9 @@ namespace BeastHunter
                     break;
                 case InteractiveObjectType.FallingTree:
                     interactiveObjectData = Data.FallingTreeData;
+                    break;
+                case InteractiveObjectType.Ballista:
+                    interactiveObjectData = Data.BallistaData;
                     break;
                 default:
                     break;
