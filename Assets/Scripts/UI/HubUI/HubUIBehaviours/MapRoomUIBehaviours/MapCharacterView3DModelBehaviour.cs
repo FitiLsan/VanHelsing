@@ -9,7 +9,7 @@ namespace BeastHunterHubUI
     {
         #region Constants
 
-        private const float ROTATE_SPEED = 100.0f;
+        private const float ROTATE_SPEED = 1000.0f;
 
         #endregion
 
