@@ -11,12 +11,10 @@ namespace BeastHunter
         #region Fields
 
         private int _newEntry = 1;
-        private List<int> _completedQuests;
-        private List<Quest> _activeQuests;
         private readonly ISaveFileWrapper _saveFileWrapper;
-        
+
         #endregion
-        
+
 
         #region Methods
 
@@ -24,11 +22,11 @@ namespace BeastHunter
         {
             _saveFileWrapper = wrapper;
         }
-        
-        public void SaveGame(string filename)//= null)
+
+        public void SaveGame(string filename)//= null for saving into new file everytime)
         {
-            _saveFileWrapper.CreateNewSave(filename ?? DateTime.Now.ToString("s").Replace(':','-')+".bytes");
-            EventManager.TriggerEvent(GameEventTypes.Saving, null);
+            _saveFileWrapper.CreateNewSave(filename ?? DateTime.Now.ToString("s").Replace(':', '-') + ".bytes");
+            Services.SharedInstance.EventManager.TriggerEvent(GameEventTypes.Saving, null);
             SaveInfo();
         }
 
@@ -41,55 +39,6 @@ namespace BeastHunter
         {
             _saveFileWrapper.LoadSave(filename);
             _newEntry = _saveFileWrapper.GetNextItemEntry();
-            _completedQuests = _saveFileWrapper.GetCompletedQuests().ToList();
-            _activeQuests = LoadQuestLog();
-        }
-        
-        public void SaveQuestLog(List<Quest> quests)
-        {
-            _saveFileWrapper.SaveQuestLog(quests, _completedQuests);           
-        }
-
-        public List<Quest> LoadQuestLog()
-        {           
-            var res = new List<Quest>();
-            var qd = _saveFileWrapper.GetActiveQuests();
-            var od = _saveFileWrapper.GetActiveObjectives();
-            foreach (var i in qd)
-            {
-                var quest = new Quest(QuestRepository.GetById(i.Key));
-                if (quest.IsTimed) quest.ReduceTime(quest.TimeAllowed-i.Value);
-                foreach (var task in quest.Tasks)
-                {
-                    if (od.ContainsKey(task.Id))
-                    {
-                        task.AddAmount(od[task.Id]);
-                    }
-                }
-                res.Add(quest);
-            }
-
-            return res;
-        }
-
-        public void QuestCompleted(int id)
-        {
-            if (_completedQuests.Contains(id))
-            {
-                Debug.LogWarning($"SaveManager::QuestComplete: Quest[{id}] already completed!");
-                return;
-            }
-            _completedQuests.Add(id);
-        }
-
-        public List<int> GetAllCompletedQuests()
-        {
-            return _completedQuests ?? (_completedQuests = _saveFileWrapper.GetCompletedQuests().ToList());
-        }
-       
-        public List<Quest> GetAllActiveQuests()
-        {
-            return _activeQuests ?? (_activeQuests = LoadQuestLog());
         }
 
         #endregion

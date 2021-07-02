@@ -1,28 +1,31 @@
 ﻿using System.IO;
 using UnityEngine;
 
+
 namespace BeastHunter {
     [CreateAssetMenu (fileName = "Data", menuName = "DataTest")]
     public sealed class Data : ScriptableObject {
         #region Fields
 
+        [SerializeField] private string _locationDataPath;
         [SerializeField] private string _sphereDataPath;
         [SerializeField] private string _characterDataPath;
-        [SerializeField] private string _startDialogueDataPath;
-        [SerializeField] private string _dialogueSystemDataPath;
-        [SerializeField] private string _giantMudCrabDataPath;
+        [SerializeField] private string _rabbitDataPath;
+        [SerializeField] private string _feastPath;
+        [SerializeField] private string _jacketPath;
+        [SerializeField] private string _cameraDataPath;
 
         private static Data _instance;
-
+        private static LocationData _locationData;
         private static SphereData _sphereData;
         private static CharacterData _characterData;
-        private static StartDialogueData _startDialogueData;
-        private static DialogueSystemData _dialogueSystemData;
-        private static GiantMudCrabData _giantMudCrabData;
+        private static RabbitData _rabbitData;
         private static WeaponItem _feast;
         private static ClothItem _jacket;
+        private static CameraData _cameraData;
 
         #endregion
+
 
         #region Properties
 
@@ -31,8 +34,19 @@ namespace BeastHunter {
                 if (_instance == null) {
                     _instance = Resources.Load<Data> ("Data/" + typeof (Data).Name);
                 }
-
                 return _instance;
+            }
+        }
+
+        public static LocationData LocationData
+        {
+            get
+            {
+                if (_locationData == null)
+                {
+                    _locationData = Resources.Load<LocationData>("Data/" + Instance._locationDataPath);
+                }
+                return _locationData;
             }
         }
 
@@ -45,24 +59,6 @@ namespace BeastHunter {
             }
         }
 
-        public static StartDialogueData StartDialogueData {
-            get {
-                if (_startDialogueData == null) {
-                    _startDialogueData = Load<StartDialogueData> ("Data/" + Instance._startDialogueDataPath);
-                }
-                return _startDialogueData;
-            }
-        }
-
-        public static DialogueSystemData DialogueSystemData {
-            get {
-                if (_dialogueSystemData == null) {
-                    _dialogueSystemData = Load<DialogueSystemData> ("Data/" + Instance._dialogueSystemDataPath);
-                }
-                return _dialogueSystemData;
-            }
-        }
-
         public static CharacterData CharacterData {
             get {
                 if (_characterData == null) {
@@ -72,19 +68,22 @@ namespace BeastHunter {
             }
         }
 
-        public static GiantMudCrabData GiantMudCrabData {
-            get {
-                if (_giantMudCrabData == null) {
-                    _giantMudCrabData = Load<GiantMudCrabData> ("Data/" + Instance._giantMudCrabDataPath);
+        public static RabbitData RabbitData
+        {
+            get
+            {
+                if (_rabbitData == null)
+                {
+                    _rabbitData = Load<RabbitData>("Data/" + Instance._rabbitDataPath);
                 }
-                return _giantMudCrabData;
-            }
+                return _rabbitData;
+			}
         }
 
         public static WeaponItem Feast {
             get {
                 if (_feast == null) {
-                    _feast = Resources.Load<WeaponItem> ("Data/Weapons/FeastWeapon"); //TODO Сделать по примеру выше через Instance.****DataPath) и не забыть указать путь в инспекторе!
+                    _feast = Resources.Load<WeaponItem> ("Data/" + Instance._feastPath); 
                 }
                 return _feast;
             }
@@ -93,13 +92,26 @@ namespace BeastHunter {
         public static ClothItem Jacket {
             get {
                 if (_jacket == null) {
-                    _jacket = Resources.Load<ClothItem> ("Data/Clothes/Jacket"); //TODO Сделать по примеру выше через Instance.****DataPath)
+                    _jacket = Resources.Load<ClothItem> ("Data/" + Instance._jacketPath);
                 }
                 return _jacket;
             }
         }
 
+        public static CameraData CameraData
+        {
+            get
+            {
+                if (_cameraData == null)
+                {
+                    _cameraData = Resources.Load<CameraData>("Data/" + Instance._cameraDataPath);
+                }
+                return _cameraData;
+            }
+        }
+
         #endregion
+
 
         #region Methods
 
