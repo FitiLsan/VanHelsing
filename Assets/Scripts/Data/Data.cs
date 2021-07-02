@@ -2,10 +2,10 @@
 using UnityEngine;
 
 
-namespace BeastHunter 
+namespace BeastHunter
 {
     [CreateAssetMenu (fileName = "Data", menuName = "MainData/Data")]
-    public sealed class Data : ScriptableObject 
+    public sealed class Data : ScriptableObject
     {
         #region Fields
 
@@ -47,6 +47,7 @@ namespace BeastHunter
         [SerializeField] private string _fallingTreeDataPath;
         [SerializeField] private string _enemyHealthBarDataPath;
         [SerializeField] private string _spawnpointsDataPath;
+        [SerializeField] private string _hubUIDataPath;
         [SerializeField] private string _lureMeatDataPath;
         [SerializeField] private string _lureCharcoalDataPath;
 
@@ -89,6 +90,7 @@ namespace BeastHunter
         private static FallingTreeData _fallingTreeData;
         private static EnemyHealthBarData _enemyHealthBarData;
         private static SpawnpointsData _spawnpointsData;
+        private static BeastHunterHubUI.HubUIData _hubUIData;
         private static OneHandedThrowableWeapon _LureMeatData;
         private static OneHandedThrowableWeapon _LureCharcoalData;
 
@@ -172,7 +174,7 @@ namespace BeastHunter
         public static WeaponItem Feast {
             get {
                 if (_feast == null) {
-                    _feast = Resources.Load<WeaponItem> ("Data/" + Instance._feastPath); 
+                    _feast = Resources.Load<WeaponItem> ("Data/" + Instance._feastPath);
                 }
                 return _feast;
             }
@@ -546,6 +548,18 @@ namespace BeastHunter
                     _spawnpointsData = Resources.Load<SpawnpointsData>("Data/" + Instance._spawnpointsDataPath);
                 }
                 return _spawnpointsData;
+            }
+        }
+
+        public static BeastHunterHubUI.HubUIData HubUIData
+        {
+            get
+            {
+                if (_hubUIData == null)
+                {
+                    _hubUIData = Resources.Load<BeastHunterHubUI.HubUIData>("Data/" + Instance._hubUIDataPath);
+                }
+                return _hubUIData;
             }
         }
 
