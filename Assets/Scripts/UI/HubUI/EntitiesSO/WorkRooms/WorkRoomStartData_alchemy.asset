@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a331e7eaf987ef4cb49d798f6898a4c, type: 3}
+  m_Name: WorkRoomStartData_alchemy
+  m_EditorClassIdentifier: 
+  _workRoomData:
+    _baseWorkRoomData:
+      _roomType: 2
+      _usedSkill: 1
+      _name: "\u041A\u043E\u043C\u043D\u0430\u0442\u0430 \u0430\u043B\u0445\u0438\u043C\u0438\u0438"
+      _level: 2
+      _progressScheme:
+      - _level: 1
+        _progress:
+          _assistansAmount: 1
+          _ordersSlots: 1
+      - _level: 2
+        _progress:
+          _assistansAmount: 2
+          _ordersSlots: 2
+      - _level: 3
+        _progress:
+          _assistansAmount: 3
+          _ordersSlots: 3
+      _chiefWorker: {fileID: 0}
+      _assistants: []
+    _orders: []

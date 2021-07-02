@@ -1,0 +1,165 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdc4f56eb8b4c2742b1415abd0385973, type: 3}
+  m_Name: HubUIData
+  m_EditorClassIdentifier: 
+  _startGameData:
+    _currentGameTime:
+      _day: 1
+      _hour: 12
+    _playerData:
+      _rank: 0
+      _goldAmount: 200
+      _inventorySlotsAmount: 60
+      _inventoryItems:
+      - {fileID: 11400000, guid: b82379ba5dbb65c4a9c24795aacbca77, type: 2}
+      - {fileID: 11400000, guid: 4ef6411f36ddde84e85833d692065971, type: 2}
+      - {fileID: 11400000, guid: e88f2f60d12eaf7499c76e491be54eba, type: 2}
+      - {fileID: 11400000, guid: d251bc27e1e3b004db86ee0f06a83739, type: 2}
+      - {fileID: 11400000, guid: b5414bdaa16c2a24795504aaab30a25a, type: 2}
+      - {fileID: 11400000, guid: a4a3ebf3a1fac67498eae459e1b55ef7, type: 2}
+      - {fileID: 11400000, guid: 61e1c8d68c279de4ab6e825ce3ea7967, type: 2}
+      - {fileID: 11400000, guid: 043b19e6b22373e4fa1fd2f190b2b871, type: 2}
+      - {fileID: 11400000, guid: 94090163ee36659408d33ec787c120ce, type: 2}
+      - {fileID: 11400000, guid: bf4007d09f37b5c45a3fe947240beda0, type: 2}
+      - {fileID: 11400000, guid: 2f80044f5c527464e90eead336176198, type: 2}
+      - {fileID: 11400000, guid: b70d1f904cbdf3e4f891776021a10569, type: 2}
+      - {fileID: 11400000, guid: 95a772b527171d1429d829162c1411bb, type: 2}
+      - {fileID: 11400000, guid: 23967b094b19e7340acee48cc5005df4, type: 2}
+      - {fileID: 11400000, guid: 5c85a6f9efa72f442aa3990239013733, type: 2}
+      - {fileID: 11400000, guid: b2764ecbd1fcbd94fb45cfeee1f80140, type: 2}
+      - {fileID: 11400000, guid: 7188440d0dd19614882227cf7c80e002, type: 2}
+      - {fileID: 11400000, guid: 3624a46c93231c840a317cef98d92a07, type: 2}
+      - {fileID: 11400000, guid: 2aadd9546a993ac4c962f5bfb2c48ebc, type: 2}
+      - {fileID: 11400000, guid: f6e185ac30a19194cbf45439c92e3b36, type: 2}
+      - {fileID: 11400000, guid: 8460c4d8fab1f4d4399d4e7e715de911, type: 2}
+      - {fileID: 11400000, guid: 899f376411d00d646aeb701d5ddb4f7e, type: 2}
+      - {fileID: 11400000, guid: 0095dc81f4df59045abcc52e5a8d23d1, type: 2}
+      _availableCharacters: []
+    _locationsSO:
+    - {fileID: 11400000, guid: a4953306eee0c584a8c7fc514f731fbb, type: 2}
+    - {fileID: 11400000, guid: 744614ebf3a669b4f855ee609c71b538, type: 2}
+    - {fileID: 11400000, guid: 5a390b452918f4046948d2da88f1333c, type: 2}
+    - {fileID: 11400000, guid: 860d3696ec691de4e9302d6819bd9cda, type: 2}
+    - {fileID: 11400000, guid: 9b605ac1c7e3a6b458708df1317a7eaf, type: 2}
+    _citiesSO:
+    - {fileID: 11400000, guid: b0fed0d57aef54a48b35754d9082df4c, type: 2}
+    _workRoomsSO:
+    - {fileID: 11400000, guid: 538f84166fed25a459e3eb52a5ac7aac, type: 2}
+    - {fileID: 11400000, guid: 90082b5b7c854a7479b78cae329f1dee, type: 2}
+  _questsSOPool:
+  - {fileID: 11400000, guid: 81ad56c84f8679347b6301f8a566d862, type: 2}
+  _huntingQuestsSOPool:
+  - {fileID: 11400000, guid: 6569354df43ee3c42b7aad209f3a8887, type: 2}
+  - {fileID: 11400000, guid: 666a5504f1c1909428191750e9c916a6, type: 2}
+  _bossesSOPool:
+  - {fileID: 11400000, guid: 2c3011b637f41c8478a9ff84ef154776, type: 2}
+  - {fileID: 11400000, guid: 10da2d25f5f199641bb3b02d2ef18da7, type: 2}
+  _itemSOPools: {fileID: 11400000, guid: 5efb51aa2c6b6b0449cb922c915b405e, type: 2}
+  _gameTimeGlobalData:
+    _hoursAmountPerDay: 24
+    _timePassingDelay: 1
+  _charactersGlobalData:
+    _clothesSlots: 0200000004000000080000000900000005000000060000000700000001000000030000000a0000000b0000000b000000
+    _backpuckSlotAmount: 12
+    _weaponSetsAmount: 3
+    _charactersAmountForHire: 5
+    _view3DModelPrefab: {fileID: 6667037347063198021, guid: 67ebd21778b32cb47bc276ed852041f2,
+      type: 3}
+    _view3DModelAnimatorController: {fileID: 9100000, guid: 4fde703d67cadff4a9a1c1dfb6de6662,
+      type: 2}
+    _characters3DViewRenderingPrefab: {fileID: 5064816351402119910, guid: 284a4960537acb849a2b3d9f00a331e9,
+      type: 3}
+    _characters3DViewRenderingObjectPosition: {x: 1000, y: 1000, z: 1000}
+    _modularCharactersPrefab: {fileID: 1588895830433058, guid: ddc4cd0622acc4847817cc15268b4a19,
+      type: 3}
+    _modularCharactersChildGOForModulesName: Modular_Characters
+    _femaleGenderChance: 0.5
+    _femaleNamesPool:
+    - "\u041E\u043B\u044C\u0433\u0430 \u041A\u0430\u043C\u0431\u0430\u043B\u0430"
+    - "\u042D\u043B\u0438\u0437\u0430\u0431\u0435\u0442 \u0421\u0443\u043E\u043D\u043D"
+    - "\u041C\u044D\u0440\u0438 \u0414\u0436\u0435\u0439\u043D"
+    - "\u042D\u043B\u043B\u0435\u043D \u041C\u0430\u043A\u043A\u043B\u0435\u0439\u043D"
+    - "\u0421\u0435\u0431\u0438\u043B\u043B\u0430 \u041E\u0445\u043E\u0442\u043D\u0438\u0446\u0430"
+    - "\u041A\u0438\u0440\u0430 \u041C\u044B\u0448\u044C"
+    - "\u0421\u043E\u043D\u044F \u0411\u043B\u0435\u0439\u0434"
+    - "\u0427\u0435\u043B\u043B \u041A\u0430\u0440\u0430\u043C\u0438\u044F"
+    - "\u041B\u0430\u0440\u0430 \u041A\u0440\u043E\u0444\u0442"
+    - "\u0413\u0435\u0440\u043C\u0438\u043E\u043D\u0430 \u0413\u0440\u0435\u0439\u043D\u0434\u0436\u0435\u0440"
+    _maleNamesPool:
+    - "\u0414\u0435\u0439\u0432\u0438 \u0414\u0436\u043E\u043D\u0441"
+    - "\u0413\u0435\u043A\u0442\u043E\u0440 \u0411\u0430\u0440\u0431\u043E\u0441\u0441\u0430"
+    - "\u0414\u0436\u0435\u043A \u0412\u043E\u0440\u043E\u0431\u0435\u0439"
+    - "\u0411\u0440\u044E\u0441 \u0423\u044D\u0439\u043D"
+    - "\u041F\u0438\u0442\u0435\u0440 \u041F\u0430\u0440\u043A\u0435\u0440"
+    - "\u0413\u0430\u0440\u0440\u0438 \u041F\u043E\u0442\u0442\u0435\u0440"
+    - "\u0420\u043E\u043D \u0423\u0438\u0437\u043B\u0438"
+    - "\u042D\u043D\u0430\u043A\u0438\u043D \u0421\u043A\u0430\u0439\u0443\u043E\u043A\u0435\u0440"
+    - "\u041E\u0431\u0438\u0432\u0430\u043D \u041A\u0435\u043D\u043E\u0431\u0438"
+    - "\u0428\u0438\u0432 \u041F\u0430\u043B\u043F\u0430\u0442\u0438\u043D"
+    _fantasyHeroMaterialsPool:
+    - {fileID: 2100000, guid: dbae4d513a8c3de4896a75d794a5c2fd, type: 2}
+    - {fileID: 2100000, guid: 5f3e0cdb8949ede4992d6471c3fbf042, type: 2}
+    - {fileID: 2100000, guid: b54a620d9608cc341a4eec9068746498, type: 2}
+    _minClothesEquipItemsAmount: 6
+    _hairlessChance: 0.1
+    _maleFacialHairChance: 0.8
+  _citiesShopsSlotsAmount: 20
+  _messageWindowPrefab: {fileID: 8800125775024752673, guid: 1f584825ef8ac7c409d78790dd09a67a,
+    type: 3}
+  _mapData:
+    _citizenUIPrefab: {fileID: 5311113231720852829, guid: a9a2ad70cde8fd5409f8b95ef49c4e33,
+      type: 3}
+    _locationTextUIPrefab: {fileID: 4845705783241596257, guid: a6b652d58e47e6b48807f69de54a5709,
+      type: 3}
+    _characterUIPrefab: {fileID: 3663167388749810844, guid: d76eafa59c0177848b959baa6daa5a28,
+      type: 3}
+    _equipmentSlotUIPrefab: {fileID: 3626724097013294678, guid: 04ea21eb6d34e4c41b741649af0b2ae4,
+      type: 3}
+    _inventorySlotUIPrefab: {fileID: 4453913233983459706, guid: 30984c6c07d235c459e8e3c072b4a15c,
+      type: 3}
+    _shopSlotUIPrefab: {fileID: 6062753379447882041, guid: 1edea349712c2eb448e6e5caa33b4599,
+      type: 3}
+    _answerButtonUIPrefab: {fileID: 4532874562538034351, guid: d3bcb53cab92ad245a8f95bd2cb657e2,
+      type: 3}
+    _characterBackpuckSlotUIPrefab: {fileID: 4649815293729276567, guid: 7899f865f88bda740864b45d02cbea24,
+      type: 3}
+    _tooltipShowingDelay: 1.75
+    _charactersPanelSwipeStep: 1
+    _weaponSlotIcon: {fileID: 21300000, guid: 5fd50594014b70e48bd6993443d46b32, type: 3}
+    _armSlotIcon: {fileID: 21300000, guid: 70a77abda853dd941a0c8debf1de9b04, type: 3}
+    _backSlotIcon: {fileID: 21300000, guid: 6fc27c9d7fc2d9448af6851bf935e6d2, type: 3}
+    _handSlotIcon: {fileID: 21300000, guid: d4f5634edede200468fc1ccf30e6f3a1, type: 3}
+    _headSlotIcon: {fileID: 21300000, guid: fd6e4fc32c78509458fc45ea4a478ba8, type: 3}
+    _hipsSlotIcon: {fileID: 21300000, guid: b8fb302c5768e334ca82005f50e58121, type: 3}
+    _legSlotIcon: {fileID: 21300000, guid: e420c5bc93cb2604695a893500c897e3, type: 3}
+    _shoulderSlotIcon: {fileID: 21300000, guid: f126324fd2486a641842ea5a8244c2d1,
+      type: 3}
+    _torsoSlotIcon: {fileID: 21300000, guid: 2f1eaeeaad36ee5469eff7ff158f37ba, type: 3}
+    _ringSlotIcon: {fileID: 21300000, guid: 970324311431c794ca338446ea889948, type: 3}
+    _amuletSlotIcon: {fileID: 21300000, guid: 0e123cfdc54a3ca4684816a34167a566, type: 3}
+    _beltSlotIcon: {fileID: 21300000, guid: da09804303305f542a686824630e7269, type: 3}
+    _pocketItemSlotIcon: {fileID: 21300000, guid: fe025e83f69d0b54f8a4fe3c7c128fd7,
+      type: 3}
+  _questRoomData:
+    _questListItemPrefab: {fileID: 4561106657247383774, guid: 1f6cb4251a86aab46912695617d8e932,
+      type: 3}
+    _huntingQuestAmount: 2
+  _workRoomData:
+    _workRoomButtonPrefab: {fileID: 6542063352831393134, guid: 422c2fe1f43e8e2489906de36f97dc94,
+      type: 3}
+    _workerSlotPrefab: {fileID: 1306646833271779637, guid: 59466932bc7fdc048a3cb794d04cb730,
+      type: 3}
+    _orderSlotPrefab: {fileID: 5585337752527616096, guid: 114647e0e418d7e4ab742b56e7d0131f,
+      type: 3}
+    _characterListItemPrefab: {fileID: 5008816691853892247, guid: b299710c61697a84483131e556e9a550,
+      type: 3}
