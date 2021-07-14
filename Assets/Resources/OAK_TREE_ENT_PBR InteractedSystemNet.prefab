@@ -106,8 +106,12 @@ GameObject:
   - component: {fileID: 1089479055950577501}
   - component: {fileID: 1089479055950577500}
   - component: {fileID: 587616346}
+  - component: {fileID: -6925633417761676607}
+  - component: {fileID: 6006484842406433766}
+  - component: {fileID: 1489975803483721269}
+  - component: {fileID: 2605324079868768065}
   m_Layer: 0
-  m_Name: OAK_TREE_ENT_PBR InteractedSystem
+  m_Name: OAK_TREE_ENT_PBR InteractedSystemNet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,13 +165,13 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1089479054640090349}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &1089479055950577490
 CapsuleCollider:
@@ -210,7 +214,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1089479054640090349}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 537b81dc57e504256a6c74c4bcf6bca9, type: 3}
   m_Name: 
@@ -238,7 +242,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1089479054640090349}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a70e525c82ce9413fa4d940ad7fcf1db, type: 3}
   m_Name: 
@@ -696,7 +700,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1089479054640090349}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5013856973b27429d937d256dc082f2e, type: 3}
   m_Name: 
@@ -738,6 +742,107 @@ MonoBehaviour:
     poleTarget: {fileID: 0}
     clampWeight: 0
     clampSmoothing: 2
+--- !u!114 &-6925633417761676607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640090349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 6006484842406433766}
+  - {fileID: 1489975803483721269}
+  - {fileID: 2605324079868768065}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &6006484842406433766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640090349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &1489975803483721269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640090349}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abdd407f22b62e44af28776aa91a55f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2605324079868768065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640090349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 2
+    Name: Speed
+  - Type: 1
+    SynchronizeType: 2
+    Name: HitNumber
+  - Type: 1
+    SynchronizeType: 2
+    Name: IdleState
+  - Type: 9
+    SynchronizeType: 2
+    Name: isAttack0
+  - Type: 9
+    SynchronizeType: 2
+    Name: isAttack1
+  - Type: 9
+    SynchronizeType: 2
+    Name: isAttack2
+  - Type: 9
+    SynchronizeType: 2
+    Name: isAttack3
+  - Type: 9
+    SynchronizeType: 2
+    Name: isAttackStomp
+  - Type: 9
+    SynchronizeType: 2
+    Name: isAttackPoison
+  - Type: 9
+    SynchronizeType: 2
+    Name: isAttackFinger
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
 --- !u!1 &1089479054640091091
 GameObject:
   m_ObjectHideFlags: 0
@@ -2241,6 +2346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054639944471}
+  - component: {fileID: 3223467051411801466}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ L Foot
   m_TagString: Untagged
@@ -2265,6 +2371,19 @@ Transform:
   m_Father: {fileID: 1089479054640013259}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &3223467051411801466
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640162477}
+  m_Material: {fileID: 13400000, guid: a1e3ef68e2c78461089ab56644e6b319, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.19829938
+  m_Center: {x: -0.085606955, y: -3.540763e-10, z: 0.016720224}
 --- !u!1 &1089479054640163757
 GameObject:
   m_ObjectHideFlags: 0
@@ -3028,6 +3147,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1089479054639998395}
+  - component: {fileID: 1518377868189339665}
   m_Layer: 0
   m_Name: OAK_TEE_ENT_ R Foot
   m_TagString: Untagged
@@ -3052,6 +3172,19 @@ Transform:
   m_Father: {fileID: 1089479054639999331}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1518377868189339665
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089479054640187651}
+  m_Material: {fileID: 13400000, guid: a1e3ef68e2c78461089ab56644e6b319, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.19829938
+  m_Center: {x: -0.085606955, y: -3.540763e-10, z: 0.016720224}
 --- !u!1 &1089479054640188709
 GameObject:
   m_ObjectHideFlags: 0

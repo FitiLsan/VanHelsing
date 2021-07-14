@@ -82,7 +82,7 @@ namespace BeastHunter
 
 
             //SetFirstState(_model.MovementPoints.Length > 0 ? BossStatesEnum.Moving : BossStatesEnum.Idle);
-            SetFirstState(BossStatesEnum.Idle);
+            SetFirstState(BossStatesEnum.Moving);
         }
 
         public void Execute()

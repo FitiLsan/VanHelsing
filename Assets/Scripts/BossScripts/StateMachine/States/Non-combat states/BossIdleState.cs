@@ -45,7 +45,7 @@ namespace BeastHunter
             CanBeOverriden = true;
             if(_stateMachine.LastStateType!= BossStatesEnum.Patroling)
             {
-                _stateMachine._model.BossAnimator.Play("IdleState", 0, 0f);
+               // _stateMachine._model.BossAnimator.Play("IdleState", 0, 0f);
             }
             _timeToIdle = Random.Range(MINIMAL_IDLE_TIME, MAXIMAL_IDLE_TIME);
             _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, 0);
@@ -111,7 +111,7 @@ namespace BeastHunter
             }
             else
             {
-                _stateMachine.SetCurrentState(BossStatesEnum.Patroling);
+               // _stateMachine.SetCurrentState(BossStatesEnum.Patroling);
             }
 
         }

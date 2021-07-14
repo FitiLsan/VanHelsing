@@ -42,7 +42,7 @@ namespace BeastHunter
 
         public override void OnCreatedRoom()
         {
-            PhotonNetwork.LoadLevel("MultiPlayerGameScene");
+            PhotonNetwork.LoadLevel("LDI Example");
         }
 
         public override void OnJoinedRoom()

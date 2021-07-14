@@ -18,7 +18,7 @@ namespace BeastHunter
         public InputModel InputModel;
 		public List<QuestIndicatorModel> QuestIndicatorModelList = new List<QuestIndicatorModel>();
         public QuestJournalModel QuestJournalModel;
-
+        public Dictionary<int, CharacterModel> PlayersModels;//
         public Dictionary<int, EnemyModel> NpcModels;
         public Dictionary<int, TrapModel> TrapModels;
         public Dictionary<int, BaseInteractiveObjectModel> InteractiveObjectModels;
@@ -38,6 +38,7 @@ namespace BeastHunter
             _onTriggers = new SortedList<InteractableObjectType, List<IInteractable>>();
             _interactables = new List<IInteractable>();
 
+            PlayersModels = new Dictionary<int, CharacterModel>();
             NpcModels = new Dictionary<int, EnemyModel>();
             TrapModels = new Dictionary<int, TrapModel>();
             InteractiveObjectModels = new Dictionary<int, BaseInteractiveObjectModel>();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Extensions;
 using Random = UnityEngine.Random;
-
+using Photon.Pun;
 
 namespace BeastHunter
 {
@@ -28,8 +28,7 @@ namespace BeastHunter
             _initializationService = Services.SharedInstance.InitializationService;
 
             RemoveSpawnPoints();
-
-            if (doCreateCharacter) IntializePlayer();
+            if (doCreateCharacter) IntializePlayer();          
             if (doCreateBoss) InitializeBoss();
             if (doCreateMobs) InitializeEnemies();
             if (doCreateInteractiveObjects) InitializeInteractiveObjects();
@@ -58,8 +57,12 @@ namespace BeastHunter
                 LocationPosition playerPosition = _locationData.DoRandomizePlayerPosition ? _locationData.PlayerSpawnPositions.
                     ReturnRandom() : _locationData.PlayerSpawnPositions[0];
 
-                GameObject instance = GameObject.Instantiate(characterData.CharacterCommonSettings.Prefab);
-                _context.CharacterModel = new CharacterModel(instance, characterData, playerPosition);
+                GameObject instance = PhotonNetwork.Instantiate(characterData.CharacterCommonSettings.Prefab.name, playerPosition.Position, Quaternion.identity); //GameObject.Instantiate(characterData.CharacterCommonSettings.Prefab);
+                if (instance.GetComponent<PhotonView>().IsMine)
+                {
+                    _context.CharacterModel = new CharacterModel(instance, characterData, playerPosition);
+                }
+                _context.PlayersModels.Add(instance.GetInstanceID(), _context.CharacterModel);
             }
         }
 
@@ -72,7 +75,7 @@ namespace BeastHunter
                 LocationPosition bossPosition = _locationData.DoRandomizeBossPosition ? _locationData.BossSpawnPositions.
                     ReturnRandom() : _locationData.BossSpawnPositions[0];
 
-                GameObject instance = GameObject.Instantiate(bossData.Prefab);
+                GameObject instance = PhotonNetwork.Instantiate(bossData.Prefab.name, Vector3.zero, Quaternion.identity);//GameObject.Instantiate(bossData.Prefab);
                 _context.NpcModels.Add(instance.GetInstanceID(), new BossModel(instance, bossData, bossPosition, _context));
             }
         }

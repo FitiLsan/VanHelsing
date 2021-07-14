@@ -19,12 +19,14 @@ namespace BeastHunter
 
         public override void UseSkill(int id)
         {
+            base.UseSkill(id);
             Debug.Log("FingerAttackSkill");
-            _bossModel.RightHandAimIKTarget.position = _bossModel.BossCurrentTarget.transform.position + new Vector3(0, 1, 0);
-            _bossModel.RightHandAimIK.solver.target = _bossModel.RightHandAimIKTarget;
-            _bossModel.RightHandAimIK.solver.IKPositionWeight = 1f;
-           _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
-            _bossModel.BossAnimator.Play("FingerAttack", 0, 0);
+            // _bossModel.RightHandAimIKTarget.position = _bossModel.BossCurrentTarget.transform.position + new Vector3(0, 1, 0);
+            //     _bossModel.RightHandAimIK.solver.target = _bossModel.RightHandAimIKTarget;
+            //    _bossModel.RightHandAimIK.solver.IKPositionWeight = 1f;
+            //    _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
+            //  _bossModel.BossAnimator.Play("FingerAttack", 0, 0);
+            _bossModel.BossAnimator.SetTrigger($"isAttackFinger");
             DOVirtual.DelayedCall(0.1f, () => _bossModel.RightFingerTrigger.IsInteractable = true);
            // TurnOnHitBoxTrigger(_bossModel.RightFingerTrigger, _stateMachine.CurrentState.CurrentAttackTime, DELAY_HAND_TRIGGER);
             DelayCall(() => ResetAimIk(), 2f);
@@ -38,6 +40,7 @@ namespace BeastHunter
         }
         public override void StopSkill()
         {
+            base.StopSkill();
         }
     }
 }

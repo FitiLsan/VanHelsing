@@ -20,9 +20,10 @@ namespace BeastHunter
         public override void UseSkill(int id)
         {
             Debug.Log("DefaultAttackSkill");
-            _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
+          //  _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
             var attackDirection = UnityEngine.Random.Range(0, 2);
-            _bossModel.BossAnimator.Play($"BossFeastsAttack_{attackDirection}", 0, 0f);
+          //  _bossModel.BossAnimator.Play($"BossFeastsAttack_{attackDirection}", 0, 0f);
+            _bossModel.BossAnimator.SetTrigger($"isAttack{attackDirection}");
             switch (attackDirection)
             {
                 case 0:
@@ -44,6 +45,7 @@ namespace BeastHunter
 
         public override void StopSkill()
         {
+            base.StopSkill();
         }
     }
 }

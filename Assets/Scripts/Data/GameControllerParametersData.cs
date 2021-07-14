@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Photon.Pun;
 
 
 [Serializable]
@@ -20,9 +21,9 @@ public sealed class GameControllerParametersData
 
     #region Properties
 
-    public bool DoImplementPlayer => _doImplementPlayer;
+    public bool DoImplementPlayer => !PhotonNetwork.IsMasterClient ? _doImplementPlayer : false;
     public bool DoImplementInput => _doImplementInput;
-    public bool DoImplementBoss => _doImplementBoss;
+    public bool DoImplementBoss => PhotonNetwork.IsMasterClient ? _doImplementBoss : false;
     public bool DoImplementMobs => _doImplementMobs;
     public bool DoImplementInteractiveObjects => _doImplementInteractiveObjects;
     public bool DoImplementDialogSystem => _doImplementDialogSystem;
