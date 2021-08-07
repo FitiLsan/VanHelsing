@@ -40,7 +40,8 @@ namespace BeastHunter
 
         private void AddFactories()
         {
-            _enemiesFactoryList.Add(new CreateRabbitModel());
+            // _enemiesFactoryList.Add(new CreateRabbitModel());
+            _enemiesFactoryList.Add(new CreateButterflyModel(() => _context.CharacterModel.CharacterTransform.gameObject));
         }
 
         private void RemoveSpawnPoints()
