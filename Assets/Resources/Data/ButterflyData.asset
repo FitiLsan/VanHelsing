@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a16ef8339ffd8d45bfd94075a9ca414, type: 3}
+  m_Name: ButterflyData
+  m_EditorClassIdentifier: 
+  BaseStats:
+    MaxHealth: 10
+    BaseStats:
+      _physicalPower: 1
+      _physicalDamageResistance: 0.12
+      _stunProbabilityResistance: 0.519
+    Prefab: {fileID: 1906723840163595340, guid: def2015fbab360a439a4151ced50a370,
+      type: 3}
+  ButterflyStats:
+    RunningRadius: 10
+    MoveSpeed: 0.5
+    JumpHeight: 2
+    ViewRadius: 3
+    ViewAngle: 90
+    CanIdle: 1
+  BehaviourStateButterfly: -1
+  _timeOfTheStateChange: 2

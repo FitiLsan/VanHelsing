@@ -14,7 +14,7 @@ namespace BeastHunter
 
         #region UnityMetods
 
-        void Start()
+        private void Start()
         {
             GameContext context = new GameContext();
             Services services = Services.SharedInstance;

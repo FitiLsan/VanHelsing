@@ -16,7 +16,7 @@
 
         #region Methods
 
-        private void AddInitializeControllers(GameContext context) 
+        private void AddInitializeControllers(GameContext context)
         {
             Add(new LocationInitializeController(context));
         }
@@ -26,7 +26,7 @@
             Add(new EnemyController(context));
             Add(new TargetController(context));
             Add(new InputController(context));
-            Add(new CharacterController(context));           
+            Add(new CharacterController(context));
         }
 
         #endregion
