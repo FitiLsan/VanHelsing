@@ -1,0 +1,34 @@
+﻿using UnityEngine;
+using UnityEngine.Events;
+
+public class Item : MonoBehaviour {
+
+    /// <summary>
+    /// класс объекта карта добовляится на объект 
+    /// </summary>
+
+    public string nameItem;
+    [Range(1,999)]
+    public int id;
+    [HideInInspector]
+    public int countItem ;
+    public bool isStackable;
+    [TextArea(5,50)]
+    public string descriptiongoodItem;
+    [TextArea(5, 50)]
+    public string descriptionbadItem;
+    public Sprite Icon;
+
+
+    public bool isRemovable;
+    public bool isDroped;
+  
+    public UnityEvent OnItemUse;
+
+    public UnityEvent customEvent;
+
+    public Item getCopy()
+    {
+        return (Item)this.MemberwiseClone();
+    }
+}
