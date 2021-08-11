@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace BeastHunter
+﻿namespace BeastHunter
 {
     public abstract class EnemyModel : IDoSmth, ITakeDamage
     {
@@ -28,6 +24,7 @@ namespace BeastHunter
         public abstract void DoSmth(string how);
 
         #endregion
+
 
         #region ITakeDamge
 

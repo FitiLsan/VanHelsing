@@ -144,7 +144,7 @@ namespace BeastHunter
                 default:
                     break;
             }
-            Debug.Log(rabbit.RabbitState);
+            //Debug.Log(rabbit.RabbitState);
         }
 
         private void Idle()
@@ -240,6 +240,7 @@ namespace BeastHunter
             float singleStep = ROTATION_SPEED * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(from, to, singleStep, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDirection);
+
             float dot = Vector3.Dot(from.normalized, to.normalized);
             rotationFinished = Mathf.Approximately(dot, 1.0f);
         }
