@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace BeastHunter
 {
@@ -11,11 +13,19 @@ namespace BeastHunter
         public ButterflyStats ButterflyStats;
         public BehaviourStateButterfly BehaviourStateButterfly;
 
-        [SerializeField, Range(0,10), Header("Время смены состояния")] private float _timeOfTheStateChange;
+        [SerializeField, Range(0, 10), Header("Время смены состояния")] private float _timeOfTheStateChange;
 
         private PhysicsService _physicsService;
 
         #endregion
+
+
+        #region Constants
+
+        private const float MAX_ANGLE_DEVIATION = 40.0f;
+
+        #endregion
+
 
 
         #region ClassLifeCycles
@@ -41,20 +51,53 @@ namespace BeastHunter
                     Fly(butterflyModel);
                     break;
                 default:
-                    break;
+                    throw new System.ArgumentOutOfRangeException("Недопустимое состояние");
             }
         }
 
-        private void Idle(ButterflyModel butterflyModel)
+        private void Idle(ButterflyModel butterfly)
         {
             Debug.Log($"Бабочка сидит на месте");
-            StartTimerToChangeState(butterflyModel, BehaviourStateButterfly.Fly);
+            StartTimerToChangeState(butterfly, BehaviourStateButterfly.Fly);
+            butterfly.NextCoord = RandomNextCoord(butterfly.ButterflyTransform, butterfly.ButterflyStartPosition);
+            var vec = butterfly.ButterflyTransform.position + butterfly.NextCoord * Time.deltaTime * ButterflyStats.MoveSpeed;
+
+            butterfly.ButterflyRigidbody.MovePosition(vec);
+        }
+
+        public Vector3 RandomNextCoord(Transform transform, Vector3 startPosition)
+        {
+            var direction = Random.Range(0.0f, 100.0f);
+            var angle = 0.0f;  // TURN_FORWARD;
+            if (direction >= 80.0f)
+            {
+                angle = 90; // TURN_LEFT;
+            }
+            else if (direction >= 60.0f)
+            {
+                angle = 270;    // TURN_RIGHT;
+            }
+            else if (direction >= 45.0f)
+            {
+                angle = 180;    // TURN_BACK;
+            }
+            angle += Random.Range(-MAX_ANGLE_DEVIATION, MAX_ANGLE_DEVIATION);
+            angle *= Mathf.Deg2Rad;
+
+            var forward = new Vector2(transform.forward.x, transform.forward.z);
+            return new Vector3(RotateByAngle(forward, angle).x, transform.forward.y, RotateByAngle(forward, angle).y);
+        }
+
+        private Vector2 RotateByAngle(Vector2 vector, float angle)
+        {
+            return new Vector2(vector.x * Mathf.Cos(angle) - vector.y * Mathf.Sin(angle), vector.x * Mathf.Sin(angle) + vector.y * Mathf.Cos(angle));
         }
 
         private void Fly(ButterflyModel butterfly)
         {
             Debug.Log($"Бабочка взлетает");
             StartTimerToChangeState(butterfly, BehaviourStateButterfly.Idle);
+            butterfly.ButterflyRigidbody.velocity = butterfly.NextCoord * Time.deltaTime;
         }
 
         private void StartTimerToChangeState(ButterflyModel butterfly, BehaviourStateButterfly state)

@@ -10,6 +10,7 @@ namespace BeastHunter
         
         public BehaviourStateButterfly ButterflyState;
         internal float TimeSinceTheState;
+        internal Vector3 NextCoord;
 
         #endregion
 
