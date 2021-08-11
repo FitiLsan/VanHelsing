@@ -59,27 +59,48 @@ namespace BeastHunter
         {
             Debug.Log($"Бабочка сидит на месте");
             StartTimerToChangeState(butterfly, BehaviourStateButterfly.Fly);
-            butterfly.NextCoord = RandomNextCoord(butterfly.ButterflyTransform, butterfly.ButterflyStartPosition);
-            var vec = butterfly.ButterflyTransform.position + butterfly.NextCoord * Time.deltaTime * ButterflyStats.MoveSpeed;
 
-            butterfly.ButterflyRigidbody.MovePosition(vec);
+            //TODO - вариант 1
+            //butterfly.NextCoord = RandomNextCoord(butterfly.ButterflyTransform);
+            //var vec = butterfly.ButterflyTransform.position + butterfly.NextCoord * Time.deltaTime * ButterflyStats.MoveSpeed;
+            //butterfly.ButterflyRigidbody.MovePosition(vec);
+
+            //TODO - вариант 2
+            if ((butterfly.NextCoord - butterfly.ButterflyTransform.position).magnitude <= 1.0f)
+            {
+                butterfly.NextCoord = RandomNextCoord(butterfly.ButterflyTransform);
+            }
+            var direction = butterfly.NextCoord.normalized;
+            var directionAlongSurface = Project(butterfly.ButterflyTransform, direction);
+            var offset = directionAlongSurface * (ButterflyStats.MoveSpeed * Time.deltaTime);
+
+            butterfly.ButterflyRigidbody.MovePosition(butterfly.ButterflyRigidbody.position + offset);
         }
 
-        public Vector3 RandomNextCoord(Transform transform, Vector3 startPosition)
+        private Vector3 Project(Transform transform, Vector3 direction)
+        {
+            if (_physicsService.CheckGround(transform.position, 1.0f, out var hit))
+            {
+                return direction - Vector3.Dot(direction, hit.normalized) * hit.normalized;
+            }
+            return direction;
+        }
+
+        public Vector3 RandomNextCoord(Transform transform)
         {
             var direction = Random.Range(0.0f, 100.0f);
             var angle = 0.0f;  // TURN_FORWARD;
             if (direction >= 80.0f)
             {
-                angle = 90; // TURN_LEFT;
+                angle = 90.0f; // TURN_LEFT;
             }
             else if (direction >= 60.0f)
             {
-                angle = 270;    // TURN_RIGHT;
+                angle = 270.0f;    // TURN_RIGHT;
             }
             else if (direction >= 45.0f)
             {
-                angle = 180;    // TURN_BACK;
+                angle = 180.0f;    // TURN_BACK;
             }
             angle += Random.Range(-MAX_ANGLE_DEVIATION, MAX_ANGLE_DEVIATION);
             angle *= Mathf.Deg2Rad;
