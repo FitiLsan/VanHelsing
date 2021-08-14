@@ -1,5 +1,4 @@
 using System;
-using BeastHunter;
 using UnityEngine;
 
 namespace BeastHunter
@@ -8,26 +7,22 @@ namespace BeastHunter
     {
         #region Fields
         
+        private Vector3 _playerPreviousPosition;
+        private readonly ButterflyData _data;
         public ButterflyState State;
         public Vector3 TargetCoordinates;
         public readonly Transform Transform;
         public readonly Rigidbody Rigidbody;
-        private readonly ButterflyData data;
         public readonly GameObject GameObject;
-        private float playerSpeed;
-
+        public readonly GameObject Player;
+        
         #endregion
 
 
         #region Properties
 
-        
-        public GameObject Player { get; set; }
-        
-        public Vector3 PlayerPreviousPosition { get; set; }
-
         public float PlayerSpeed => (Player.transform.position -
-                PlayerPreviousPosition).magnitude /
+                _playerPreviousPosition).magnitude /
             (Time.deltaTime.Equals(0) ? float.Epsilon : Time.deltaTime);
 
         #endregion
@@ -35,33 +30,32 @@ namespace BeastHunter
         
         #region ClassLifeCycles
 
-        public ButterflyModel(ButterflyData data, GameObject gameObject)
+        public ButterflyModel(ButterflyData data, GameObject butterfly, GameObject player)
         {
-            Rigidbody = gameObject.GetComponent<Rigidbody>() ??
-                throw new ArgumentNullException(nameof(gameObject));
-            Transform = gameObject.transform;
+            Rigidbody = butterfly.GetComponent<Rigidbody>() ??
+                throw new ArgumentNullException(nameof(butterfly));
+            Transform = butterfly.transform;
             CurrentHealth = data.BaseStats.MaxHealth;
             IsDead = false;
             State = ButterflyState.Calm;
-            this.data = data;
-            GameObject = gameObject;
+            GameObject = butterfly;
+            Player = player;
+            _data = data;
         }
 
         #endregion
 
 
         #region Methods
-
         
         public override void Execute()
         {
-            data.Act(this);
+            _data.Act(this);
+            _playerPreviousPosition = Player.transform.position;
         }
 
-        public override EnemyStats GetStats()
-        {
-            return data.BaseStats;
-        }
+        public override EnemyStats GetStats() =>
+            _data.BaseStats;
 
         public override void DoSmth(string how)
         {
@@ -71,7 +65,7 @@ namespace BeastHunter
         {
             if (!IsDead)
             {
-                data.TakeDamage(this, damage);
+                _data.TakeDamage(this, damage);
             }
         }
 

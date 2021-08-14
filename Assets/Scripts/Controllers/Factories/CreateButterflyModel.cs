@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace BeastHunter
@@ -7,7 +6,7 @@ namespace BeastHunter
     {
         #region Fields
 
-        private readonly Func<GameObject> _playerAccessor;
+        private readonly GameObject _player;
         private const DataType CREATED_DATA_TYPE = DataType.Butterfly;
 
         #endregion
@@ -15,9 +14,9 @@ namespace BeastHunter
         
         #region ClassLifeCycle
         
-        public CreateButterflyModel(Func<GameObject> playerAccessor)
+        public CreateButterflyModel(GameObject player)
         {
-            _playerAccessor = playerAccessor;
+            _player = player;
         }
 
         #endregion
@@ -30,8 +29,7 @@ namespace BeastHunter
         public override EnemyModel CreateModel(GameObject instance, EnemyData data)
         {
             var butterflyData = (ButterflyData)data;
-            butterflyData.PlayerAccessor ??= _playerAccessor;
-            return new ButterflyModel(butterflyData, instance);
+            return new ButterflyModel(butterflyData, instance, _player);
         }
 
         #endregion

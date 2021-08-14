@@ -18,21 +18,13 @@ namespace BeastHunter
 
         private static PhysicsService PhysicsService => Services.SharedInstance.PhysicsService;
 
-        public Func<GameObject> PlayerAccessor { get; set; }
-
         #endregion
 
 
         #region Methods
 
-        private void Initialize(ButterflyModel butterfly)
-        {
-            butterfly.Player ??= PlayerAccessor();
-        }
-
         public void Act(ButterflyModel butterfly)
         {
-            Initialize(butterfly);
             if (!butterfly.IsDead)
             {
                 switch (butterfly.State)
@@ -51,7 +43,6 @@ namespace BeastHunter
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                butterfly.PlayerPreviousPosition = butterfly.Player.transform.position;
 
                 ExecuteState(butterfly);
             }
@@ -61,9 +52,10 @@ namespace BeastHunter
         {
             var speed = butterfly.State != ButterflyState.Escape ? Stats.NormalSpeed : Stats.EscapeSpeed;
             var position = butterfly.GameObject.transform.position;
-            var velocityToDestiny = (butterfly.TargetCoordinates - position).normalized * speed;
+            var direction = (butterfly.TargetCoordinates - position);
+            var velocityToDestiny = direction.normalized * speed;
             butterfly.Transform.LookAt(butterfly.TargetCoordinates);
-            butterfly.Rigidbody.velocity = (butterfly.TargetCoordinates - position).magnitude <= 0.1f 
+            butterfly.Rigidbody.velocity = direction.magnitude <= 0.1f 
                 ? Vector3.zero 
                 : velocityToDestiny;
         }
@@ -74,7 +66,7 @@ namespace BeastHunter
             butterfly.TargetCoordinates = GetAboveGroundCoordinates(playersPosition +
                 (butterfly.GameObject.transform.position - playersPosition) *
                 Stats.MovingObjectsEscapeRadius, butterfly.Transform.position, Stats.NormalFlyingHeight);
-            if (!CheckNearbyPlayer(butterfly, Stats.MovingObjectsEscapeRadius * (butterfly.State != ButterflyState.Escape ? 2 : 1)))
+            if (!CheckNearbyPlayer(butterfly, Stats.MovingObjectsEscapeRadius * 2))
             {
                 butterfly.State = ButterflyState.Calm;
             }
@@ -83,16 +75,18 @@ namespace BeastHunter
         private void ActCurious(ButterflyModel butterfly)
         {
             var playerPosition = butterfly.Player.transform.position;
-            butterfly.State = CheckPlayerResting(butterfly)
-                ? ButterflyState.Curious
-                : ButterflyState.Escape;
-            if (CheckNearbyPlayer(butterfly, Stats.MovingObjectsEscapeRadius) && !CheckNearbyPlayer(butterfly, 1.0f))
+            var isPlayerResting = CheckPlayerResting(butterfly, Stats.MaximumRestingSpeed);
+            if (!isPlayerResting)
+                butterfly.State = ButterflyState.Escape;
+            var isPlayerInRadius = CheckNearbyPlayer(butterfly, Stats.MovingObjectsEscapeRadius);
+            var isPlayerCallCuriosity = isPlayerInRadius && !CheckNearbyPlayer(butterfly, 1.0f) && isPlayerResting;
+            if (isPlayerCallCuriosity)
             {
                 butterfly.TargetCoordinates = GetAboveGroundCoordinates(
                     playerPosition + butterfly.Player.transform.forward,
                     butterfly.Transform.position, playerPosition.y);
             }
-            else
+            if (!isPlayerInRadius)
             {
                 butterfly.State = ButterflyState.Calm;
             }
@@ -104,35 +98,46 @@ namespace BeastHunter
             butterfly.TargetCoordinates = GetAboveGroundCoordinates(
                 position,
                 position, Stats.NormalFlyingHeight);
-            if (CheckNearbyPlayer(butterfly, Stats.MovingObjectsEscapeRadius))
+            if (CheckNearbyPlayer(butterfly, Stats.MovingObjectsEscapeRadius) && !CheckNearbyPlayer(butterfly, 1.0f))
             {
-                butterfly.State = CheckPlayerResting(butterfly)
+                butterfly.State = CheckPlayerResting(
+                    butterfly, 
+                    Stats.MaximumRestingSpeed)
                     ? ButterflyState.Curious
                     : ButterflyState.Escape;
             }
         }
 
-        private bool CheckPlayerResting(ButterflyModel butterfly)
-        {
-            return butterfly.PlayerSpeed < Stats.MaximumRestingSpeed;
-        }
+        private static bool CheckPlayerResting(
+            ButterflyModel butterfly, 
+            float maxSpeed) =>
+            butterfly.PlayerSpeed < maxSpeed;
 
-        private static bool CheckNearbyPlayer(ButterflyModel butterfly, float radius)
-        {
-            var distanceToEnemy = butterfly.Player.transform.position - butterfly.Transform.position;
-            return distanceToEnemy.magnitude < radius;
-        }
+        private static bool CheckNearbyPlayer(
+            ButterflyModel butterfly, 
+            float radius) =>
+            (butterfly.Player.transform.position - butterfly.Transform.position)
+            .magnitude < radius;
 
 
-        private static Vector3 GetAboveGroundCoordinates(Vector3 targetCoordinates, Vector3 currentCoordinates, float height)
+        private static Vector3 GetAboveGroundCoordinates(
+            Vector3 targetCoordinates,
+            Vector3 currentCoordinates, 
+            float height)
         {
-            if (PhysicsService.CheckGround(targetCoordinates, height * 2, out var targetPoint))
+            if (PhysicsService.CheckGround(
+                targetCoordinates,
+                height * 2,
+                out var targetPoint))
             {
                 var targetHeight = targetPoint.y + height;
                 targetCoordinates.y = targetHeight;
                 return targetCoordinates;
             }
-            if (PhysicsService.CheckGround(currentCoordinates, height * 2, out var currentPoint))
+            if (PhysicsService.CheckGround(
+                currentCoordinates,
+                height * 2,
+                out var currentPoint))
             {
                 var currentHeight = currentPoint.y + height;
                 targetCoordinates.y = currentHeight;
