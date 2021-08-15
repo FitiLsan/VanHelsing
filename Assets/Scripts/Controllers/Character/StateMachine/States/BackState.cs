@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System;
 using RootMotion.Dynamics;
 using UniRx;
@@ -12,26 +11,12 @@ namespace BeastHunter
     {
         #region Constants
 
+        private const float ANGULAR_VELOCITY_FADE_SPEED = 0.2f;
+        private const float ANGULAR_MOVE_SPEED_REDUCTION_INDEX = 0.7f;
         private const float CAMERA_LOW_SIDE_ANGLE = 45f;
         private const float CAMERA_HALF_SIDE_ANGLE = 90f;
         private const float CAMERA_BACK_SIDE_ANGLE = 225f;
         private const float CAMERA_BACK_ANGLE = 180f;
-
-        private const float ANGULAR_VELOCITY_FADE_SPEED = 0.2f;
-        private const float ANGULAR_MOVE_SPEED_REDUCTION_INDEX = 0.7f;
-
-        private const float WEAPON_WHEEL_MAX_CYCLE_DISTANCE = 15f;
-        private const float WEAPON_WHEEL_DISTANCE_TO_SET_WEAPON = 7.5f;
-        private const float WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_ALFA = 0.3f;
-        private const float WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA = 0.4f;
-        private const float WEAPON_WHEEL_PARENT_IMAGE_DEDICATED_ALFA = 0.6f;
-        private const float WEAPON_WHEEL_CHILD_IMAGE_DEDICATED_ALFA = 0.7f;
-        private const float WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE = 0.7f;
-        private const float WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_SCALE = 0.75f;
-        private const float WEAPON_WHEEL_IMAGE_DEDICATED_SCALE = 0.85f;
-
-        private const string WEAPON_WHEEL_PANEL_NAME = "Panel";
-        private const string WEAPON_WHEEL_CYCLE_NAME = "Cycle";
 
         #endregion
 
@@ -56,19 +41,15 @@ namespace BeastHunter
         private GameObject _weaponWheelUI;
         private GameObject _buttonsInfoUI;
 
-        private WeaponCircle[] _weaponWheelItems;
-        private WeaponCircle _closestWeaponOnWheel;
-
         private Transform _cameraTransform;
-        private Transform _weaponWheelTransform;
 
         private Vector3 _groundHit;
         private Vector3 _lastPosition;
         private Vector3 _currentPosition;
 
-        private Text _weaponWheelText;
         private CharacterSpeedCounter _activeSpeedCounter;
         private PlayerHealthBarModel _playerHealthBarModel;
+        private WeaponWheelController _weaponWheelController;
 
         private CharacterAnimationEventTypes _lastAnimationEventType;
 
@@ -77,9 +58,7 @@ namespace BeastHunter
         private float _targetSpeed;
         private float _speedChangeLag;
         private float _currentVelocity;
-        private float _weaponWheelDistance;
 
-        private bool _isWeaponWheelOpen;
         private bool _isCurrentWeaponWithProjectile;
 
 
@@ -109,15 +88,8 @@ namespace BeastHunter
             _characterModel = _context.CharacterModel;
             _inputModel = _context.InputModel;
             _puppetController = _characterModel.PuppetMaster;
-            
-            _weaponWheelUI = GameObject.Instantiate(Data.UIElementsData.WeaponWheelPrefab);
-            _weaponWheelTransform = _weaponWheelUI.transform.
-                Find(WEAPON_WHEEL_PANEL_NAME).Find(WEAPON_WHEEL_CYCLE_NAME).transform;
-            _weaponWheelItems = _weaponWheelUI.transform.Find(WEAPON_WHEEL_PANEL_NAME).
-                GetComponentsInChildren<WeaponCircle>();
-            _weaponWheelText = _weaponWheelUI.transform.GetComponentInChildren<Text>();
-            InitAllWeaponItemsOnWheel();
 
+            _weaponWheelController = new WeaponWheelController(_characterModel, _inputModel);
             _standartSpeedCounter = new CharacterSpeedCounter(_characterModel.CharacterCommonSettings.WalkSpeed,
                 _characterModel.CharacterCommonSettings.RunSpeed, _characterModel.CharacterCommonSettings.AccelerationLag,
                     _characterModel.CharacterCommonSettings.DecelerationLag,
@@ -138,7 +110,6 @@ namespace BeastHunter
             _buttonsInfoUI = GameObject.Instantiate(Data.UIElementsData.ButtonsInformationPrefab);
 
             _cameraTransform = _services.CameraService.CharacterCamera.transform;
-            CloseWeaponWheel();
 
             GameObject playerHealthBar = GameObject.Instantiate(Data.PlayerHealthBarData.HealthBarPrefab);
             _playerHealthBarModel = new PlayerHealthBarModel(playerHealthBar, Data.PlayerHealthBarData);
@@ -153,7 +124,6 @@ namespace BeastHunter
         public void OnAwake()
         {
             _characterModel.PlayerBehavior.SetTakeDamageEvent(TakeDamage);
-            _inputModel.OnWeaponWheel += ControlWeaponWheelOpen;
             _inputModel.OnButtonsInfo += OpenCloseButtonsInfoMenu;
             _inputModel.OnUse += UseInteractiveObject;
             _inputModel.OnRemoveWeapon += () => OnWeaponChange?.Invoke();
@@ -162,6 +132,12 @@ namespace BeastHunter
             OnWeaponChange += _services.TrapService.RemoveTrap;
             OnTrapPlace += _services.TrapService.PlaceTrap;
             OnHealthChange += HealthBarUpdate;
+
+            _weaponWheelController.OnWheelOpen += _services.CameraService.LockFreeLookCamera;
+            _weaponWheelController.OnWheelClose += _services.CameraService.UnlockFreeLookCamera;
+            _weaponWheelController.OnWeaponChange += OnWeaponChange;
+            _weaponWheelController.OnNewWeapon += GetWeapon;
+            _weaponWheelController.OnNewTrap += GetTrap;
 
             _characterModel.CurrentWeaponData.Subscribe(OnWeaponChangeHandler);
             _characterModel.CurrentCharacterState.Subscribe(UpdateSpeedCounterByState);
@@ -186,7 +162,6 @@ namespace BeastHunter
         {
             GroundCheck();
             MovementCheck();
-            ControlWeaponWheel();
             EnemyHealthBarUpdate();
         }
 
@@ -382,199 +357,6 @@ namespace BeastHunter
         private void MovementCheck()
         {
             _inputModel.IsInputMove = _context.InputModel.IsInputMove;
-        }
-
-        #endregion
-
-
-        #region WeaponWheelControls
-
-        private void ControlWeaponWheelOpen(bool doOpen)
-        {
-            if (doOpen)
-            {
-                OpenWeaponWheel();
-            }
-            else
-            {
-                CloseWeaponWheel();
-            }
-        }
-
-        private void OpenWeaponWheel()
-        {
-            _weaponWheelUI.SetActive(true);
-            _services.CameraService.LockFreeLookCamera();
-            _weaponWheelTransform.localPosition = Vector3.zero;
-            _closestWeaponOnWheel = null;
-            _isWeaponWheelOpen = true;
-        }
-
-        private void CloseWeaponWheel()
-        {
-            _weaponWheelUI.SetActive(false);
-            _services.CameraService.UnlockFreeLookCamera();
-            _isWeaponWheelOpen = false;
-
-            if (_closestWeaponOnWheel != null)
-            {
-                if (_closestWeaponOnWheel.WeaponData != null)
-                {
-                    if (_closestWeaponOnWheel.WeaponData != _characterModel.CurrentWeaponData.Value)
-                    {
-                        OnWeaponChange?.Invoke();
-                        GetWeapon(_closestWeaponOnWheel.WeaponData);
-                    }
-                }
-                else if (_closestWeaponOnWheel.TrapData != null)
-                {
-                    if (_closestWeaponOnWheel.TrapData != _characterModel.CurrentPlacingTrapModel.Value?.TrapData)
-                    {
-                        OnWeaponChange?.Invoke();
-                        GetTrap(_closestWeaponOnWheel.TrapData);
-                    }
-                }
-                else
-                {
-                    OnWeaponChange?.Invoke();
-                }
-            }
-        }
-
-        private void ControlWeaponWheel()
-        {
-            if (_isWeaponWheelOpen)
-            {
-                _weaponWheelTransform.localPosition = new Vector3(
-                    Mathf.Clamp(_weaponWheelTransform.localPosition.x + _inputModel.MouseInputX,
-                    -WEAPON_WHEEL_MAX_CYCLE_DISTANCE, WEAPON_WHEEL_MAX_CYCLE_DISTANCE),
-                    Mathf.Clamp(_weaponWheelTransform.localPosition.y + _inputModel.MouseInputY,
-                    -WEAPON_WHEEL_MAX_CYCLE_DISTANCE, WEAPON_WHEEL_MAX_CYCLE_DISTANCE),
-                    _weaponWheelTransform.localPosition.z);
-
-                float distanceFromCenter = (_weaponWheelTransform.localPosition - Vector3.zero).sqrMagnitude;
-
-                if (distanceFromCenter > WEAPON_WHEEL_MAX_CYCLE_DISTANCE)
-                {
-                    _weaponWheelTransform.localPosition *= WEAPON_WHEEL_MAX_CYCLE_DISTANCE / distanceFromCenter;
-                }
-
-                if (distanceFromCenter > WEAPON_WHEEL_DISTANCE_TO_SET_WEAPON)
-                {
-                    _closestWeaponOnWheel = GetClosestWeaponItemInWheel();
-                }
-                else
-                {
-                    DisableAllWeaponItemsInWheel();
-                    _closestWeaponOnWheel = null;
-                }
-            }
-        }
-
-        private WeaponCircle GetClosestWeaponItemInWheel()
-        {
-            float minimalDistance = Mathf.Infinity;
-            float currentDistance = minimalDistance;
-            WeaponCircle chosenWeapon = null;
-
-            for (int item = 0; item < _weaponWheelItems.Length; item++)
-            {
-                currentDistance = (_weaponWheelItems[item].AnchorPosition - _weaponWheelTransform.localPosition).
-                    sqrMagnitude;
-
-                if (currentDistance < minimalDistance)
-                {
-                    minimalDistance = currentDistance;
-                    chosenWeapon = _weaponWheelItems[item];
-                }
-            }
-
-            if (_closestWeaponOnWheel != chosenWeapon)
-            {
-                SetActivityOfElementOnWeaponWheel(_closestWeaponOnWheel, false);
-                SetActivityOfElementOnWeaponWheel(chosenWeapon, true);
-            }
-
-            return chosenWeapon;
-        }
-
-        private void DisableAllWeaponItemsInWheel()
-        {
-            foreach (var item in _weaponWheelItems)
-            {
-                SetActivityOfElementOnWeaponWheel(item, false);
-            }
-        }
-
-        private void InitAllWeaponItemsOnWheel()
-        {
-            foreach (var item in _weaponWheelItems)
-            {
-                Image[] images = item.GetComponentsInChildren<Image>();
-                RectTransform[] rects = item.GetComponentsInChildren<RectTransform>();
-
-                if (item.WeaponData != null)
-                {
-                    item.GetComponentsInChildren<Image>()[1].sprite = item.WeaponData.WeaponImage;
-                    images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
-                }
-                else if (item.TrapData != null)
-                {
-                    item.GetComponentsInChildren<Image>()[1].sprite = item.TrapData.TrapImage;
-                    images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
-                }
-                else
-                {
-                    images[1].color = new Color(1f, 1f, 1f, 0f);
-                }
-
-                images[0].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_ALFA);
-                rects[0].localScale = new Vector3(WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE,
-                    WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE, 1f);
-                rects[1].localScale = new Vector3(WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_SCALE,
-                    WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE, 1f);
-            }
-        }
-
-        private void SetActivityOfElementOnWeaponWheel(WeaponCircle item, bool doActivate)
-        {
-            if (item != null)
-            {
-                Image[] images = item.GetComponentsInChildren<Image>();
-                RectTransform[] rects = item.GetComponentsInChildren<RectTransform>();
-
-                if (doActivate && item.IsNotEmpty)
-                {
-                    images[0].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_PARENT_IMAGE_DEDICATED_ALFA);
-                    images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_DEDICATED_ALFA);
-
-                    rects[0].localScale = new Vector3(WEAPON_WHEEL_IMAGE_DEDICATED_SCALE,
-                        WEAPON_WHEEL_IMAGE_DEDICATED_SCALE, 1f);
-                    rects[1].localScale = new Vector3(WEAPON_WHEEL_IMAGE_DEDICATED_SCALE,
-                        WEAPON_WHEEL_IMAGE_DEDICATED_SCALE, 1f);
-
-                    if (item.WeaponData != null)
-                    {
-                        _weaponWheelText.text = item.WeaponData.WeaponName;
-                    }
-                    else if (item.TrapData != null)
-                    {
-                        _weaponWheelText.text = item.TrapData.TrapStruct.TrapName;
-                    }
-                }
-                else if (item.IsNotEmpty)
-                {
-                    images[0].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_ALFA);
-                    images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
-
-                    rects[0].localScale = new Vector3(WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE,
-                        WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE, 1f);
-                    rects[1].localScale = new Vector3(WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_SCALE,
-                        WEAPON_WHEEL_PARENT_IMAGE_NON_DEDICATED_SCALE, 1f);
-
-                    _weaponWheelText.text = string.Empty;
-                }
-            }
         }
 
         #endregion
