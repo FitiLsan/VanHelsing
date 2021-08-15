@@ -14,6 +14,7 @@ namespace BeastHunter {
         [SerializeField] private string _feastPath;
         [SerializeField] private string _jacketPath;
         [SerializeField] private string _cameraDataPath;
+        [SerializeField] private string _butterflyDataPath;
 
         private static Data _instance;
         private static LocationData _locationData;
@@ -23,6 +24,7 @@ namespace BeastHunter {
         private static WeaponItem _feast;
         private static ClothItem _jacket;
         private static CameraData _cameraData;
+        private static ButterflyData _butterflyData;
 
         #endregion
 
@@ -107,6 +109,18 @@ namespace BeastHunter {
                     _cameraData = Resources.Load<CameraData>("Data/" + Instance._cameraDataPath);
                 }
                 return _cameraData;
+            }
+        }
+
+        public static ButterflyData ButterflyData
+        {
+            get
+            {
+                if(_butterflyData == null)
+                {
+                    _butterflyData = Load<ButterflyData>("Data/" + Instance._butterflyDataPath);
+                }
+                return _butterflyData;
             }
         }
 
