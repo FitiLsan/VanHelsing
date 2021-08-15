@@ -163,6 +163,7 @@ namespace BeastHunter
             GroundCheck();
             MovementCheck();
             EnemyHealthBarUpdate();
+            _weaponWheelController.Updating();
         }
 
         #endregion

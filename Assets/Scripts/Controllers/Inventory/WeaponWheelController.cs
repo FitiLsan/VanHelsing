@@ -37,8 +37,17 @@ namespace BeastHunter
             _weaponWheelView = GameObject.Instantiate(Data.UIElementsData.WeaponWheelPrefab).GetComponent<WeaponWheelView>();
             _weaponWheelView.Init(_weaponWheelModel.WeaponWheelPanelName, _weaponWheelModel.WeaponWheelCycleName);
             InitAllWeaponItemsOnWheel();
-            ControlWeaponWheel();
             CloseWeaponWheel();
+        }
+
+        #endregion
+
+
+        #region IUpdate
+
+        public void Updating()
+        {
+            ControlWeaponWheel();
         }
 
         #endregion
