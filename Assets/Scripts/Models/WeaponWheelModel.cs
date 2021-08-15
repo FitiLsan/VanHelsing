@@ -63,11 +63,6 @@ namespace BeastHunter
             _isWeaponWheelOpen = state;
         }
 
-        public void AssightClosestWeaponOnWheel(WeaponCircle value)
-        {
-            _closestWeaponOnWheel = value;
-        }
-
         #endregion
     }
 }

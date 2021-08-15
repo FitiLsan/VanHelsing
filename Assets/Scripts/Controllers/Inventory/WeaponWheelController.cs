@@ -62,7 +62,6 @@ namespace BeastHunter
         {
             _weaponWheelView.WeaponWheelUI.SetActive(true);
             OnWheelOpen?.Invoke();
-            //_services.CameraService.LockFreeLookCamera();
             _weaponWheelView.WeaponWheelTransform.localPosition = Vector3.zero;
             _weaponWheelModel.AssignClosestWeaponOnWheel(null);
             _weaponWheelModel.AssightIsWeaponWheelOpen(true);
@@ -72,7 +71,6 @@ namespace BeastHunter
         {
             _weaponWheelView.WeaponWheelUI.SetActive(false);
             OnWheelClose?.Invoke();
-            //_services.CameraService.UnlockFreeLookCamera();
             _weaponWheelModel.AssightIsWeaponWheelOpen(false);
 
             if (_weaponWheelModel.ClosestWeaponOnWheel != null)
@@ -81,7 +79,6 @@ namespace BeastHunter
                 {
                     if (_weaponWheelModel.ClosestWeaponOnWheel.WeaponData != _characterModel.CurrentWeaponData.Value)
                     {
-                        //Подписать в BackState
                         OnWeaponChange?.Invoke();
                         OnNewWeapon?.Invoke(_weaponWheelModel.ClosestWeaponOnWheel.WeaponData);
                     }
@@ -90,7 +87,6 @@ namespace BeastHunter
                 {
                     if (_weaponWheelModel.ClosestWeaponOnWheel.TrapData != _characterModel.CurrentPlacingTrapModel.Value?.TrapData)
                     {
-                        //Подписать в BackState
                         OnWeaponChange?.Invoke();
                         OnNewTrap?.Invoke(_weaponWheelModel.ClosestWeaponOnWheel.TrapData);
                     }
@@ -122,12 +118,12 @@ namespace BeastHunter
 
                 if (distanceFromCenter > _weaponWheelModel.WeaponWheelDistanceToSetWeapon)
                 {
-                    _weaponWheelModel.AssightClosestWeaponOnWheel(GetClosestWeaponItemInWheel());
+                    _weaponWheelModel.AssignClosestWeaponOnWheel(GetClosestWeaponItemInWheel());
                 }
                 else
                 {
                     DisableAllWeaponItemsInWheel();
-                    _weaponWheelModel.AssightClosestWeaponOnWheel(null);
+                    _weaponWheelModel.AssignClosestWeaponOnWheel(null);
                 }
             }
         }

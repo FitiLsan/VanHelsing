@@ -183,6 +183,13 @@ namespace BeastHunter
             OnTrapPlace -= _services.TrapService.PlaceTrap;
             OnHealthChange -= HealthBarUpdate;
 
+
+            _weaponWheelController.OnWheelOpen -= _services.CameraService.LockFreeLookCamera;
+            _weaponWheelController.OnWheelClose -= _services.CameraService.UnlockFreeLookCamera;
+            _weaponWheelController.OnWeaponChange -= OnWeaponChange;
+            _weaponWheelController.OnNewWeapon -= GetWeapon;
+            _weaponWheelController.OnNewTrap -= GetTrap;
+
             _characterModel.CurrentWeaponData.Dispose();
             _characterModel.CurrentCharacterState.Dispose();
             _characterModel.EnemiesInTrigger.Dispose();
