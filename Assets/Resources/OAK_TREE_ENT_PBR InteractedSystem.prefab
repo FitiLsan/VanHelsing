@@ -2146,9 +2146,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 6
   AdditionalDamage:
-    PhysicalDamage: 0
-    StunProbability: 0
-    FireDamage: 0
+    PhysicalDamageType: 0
+    PhysicalDamageValue: 0
+    ElementDamageType: 0
+    ElementDamageValue: 0
 --- !u!135 &7617763137656970912
 SphereCollider:
   m_ObjectHideFlags: 0

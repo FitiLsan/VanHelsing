@@ -19,10 +19,12 @@ namespace BeastHunter
         }
         public override void UseSkill(int id)
         {
+            base.UseSkill(id);
             Debug.Log("HorizontalAttackSkill");
-            _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
+         //   _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
             var attackDirection = UnityEngine.Random.Range(2, 4);
-            _bossModel.BossAnimator.Play($"BossFeastsAttack_{attackDirection}", 0, 0f);
+            // _bossModel.BossAnimator.Play($"BossFeastsAttack_{attackDirection}", 0, 0f);
+            _bossModel.BossAnimator.SetTrigger($"isAttack{attackDirection}");
             switch (attackDirection)
             {
                 case 2:
@@ -44,6 +46,7 @@ namespace BeastHunter
 
         public override void StopSkill()
         {
+            base.StopSkill();
         }
     }
 }

@@ -135,7 +135,7 @@ namespace BeastHunter
                 BossRigitbody.angularDrag = BossSettings.RigitbodyAngularDrag;
             }
 
-            BossRigitbody.isKinematic = BossData._bossSettings.IsRigitbodyKinematic;
+            BossRigitbody.isKinematic = false;//BossData._bossSettings.IsRigitbodyKinematic;
 
             if (objectOnScene.GetComponent<CapsuleCollider>() != null)
             {
@@ -281,29 +281,29 @@ namespace BeastHunter
             GameObject rightFootStompPuf = GameObject.Instantiate(StompPufPrefab, RightFoot.position, RightFoot.rotation, RightFoot);
             rightStompEffect = rightFootStompPuf.GetComponent<ParticleSystem>();
 
-            FirstWeakPointData = Data.BossFirstWeakPoint;
-            GameObject firstWeakPoint = GameObject.Instantiate(FirstWeakPointData.InstancePrefab,
-                BossAnimator.GetBoneTransform(HumanBodyBones.Chest));
-            firstWeakPoint.tag = TagManager.HITBOX;
-            firstWeakPoint.transform.localPosition = FirstWeakPointData.PrefabLocalPosition;
-            FirstWeakPointBehavior = firstWeakPoint.GetComponent<HitBoxBehavior>();
-            FirstWeakPointBehavior.AdditionalDamage = FirstWeakPointData.AdditionalDamage;
+            //FirstWeakPointData = Data.BossFirstWeakPoint;
+            //GameObject firstWeakPoint = GameObject.Instantiate(FirstWeakPointData.InstancePrefab,
+            //    BossAnimator.GetBoneTransform(HumanBodyBones.Chest));
+            //firstWeakPoint.tag = TagManager.HITBOX;
+            //firstWeakPoint.transform.localPosition = FirstWeakPointData.PrefabLocalPosition;
+            //FirstWeakPointBehavior = firstWeakPoint.GetComponent<HitBoxBehavior>();
+            //FirstWeakPointBehavior.AdditionalDamage = FirstWeakPointData.AdditionalDamage;
 
-            SecondWeakPointData = Data.BossSecondWeakPoint;
-            GameObject secondWeakPoint = GameObject.Instantiate(SecondWeakPointData.InstancePrefab,
-                BossAnimator.GetBoneTransform(HumanBodyBones.Hips));
-            secondWeakPoint.tag = TagManager.HITBOX;
-            secondWeakPoint.transform.localPosition = SecondWeakPointData.PrefabLocalPosition;
-            SecondWeakPointBehavior = secondWeakPoint.GetComponent<HitBoxBehavior>();
-            SecondWeakPointBehavior.AdditionalDamage = SecondWeakPointData.AdditionalDamage;
+            //SecondWeakPointData = Data.BossSecondWeakPoint;
+            //GameObject secondWeakPoint = GameObject.Instantiate(SecondWeakPointData.InstancePrefab,
+            //    BossAnimator.GetBoneTransform(HumanBodyBones.Hips));
+            //secondWeakPoint.tag = TagManager.HITBOX;
+            //secondWeakPoint.transform.localPosition = SecondWeakPointData.PrefabLocalPosition;
+            //SecondWeakPointBehavior = secondWeakPoint.GetComponent<HitBoxBehavior>();
+            //SecondWeakPointBehavior.AdditionalDamage = SecondWeakPointData.AdditionalDamage;
 
-            ThirdWeakPointData = Data.BossThirdWeakPoint;
-            GameObject thirdWeakPoint = GameObject.Instantiate(ThirdWeakPointData.InstancePrefab,
-                BossAnimator.GetBoneTransform(HumanBodyBones.RightLowerLeg));
-            thirdWeakPoint.tag = TagManager.HITBOX;
-            thirdWeakPoint.transform.localPosition = ThirdWeakPointData.PrefabLocalPosition;
-            ThirdWeakPointBehavior = thirdWeakPoint.GetComponent<HitBoxBehavior>();
-            ThirdWeakPointBehavior.AdditionalDamage = ThirdWeakPointData.AdditionalDamage;
+            //ThirdWeakPointData = Data.BossThirdWeakPoint;
+            //GameObject thirdWeakPoint = GameObject.Instantiate(ThirdWeakPointData.InstancePrefab,
+            //    BossAnimator.GetBoneTransform(HumanBodyBones.RightLowerLeg));
+            //thirdWeakPoint.tag = TagManager.HITBOX;
+            //thirdWeakPoint.transform.localPosition = ThirdWeakPointData.PrefabLocalPosition;
+            //ThirdWeakPointBehavior = thirdWeakPoint.GetComponent<HitBoxBehavior>();
+            //ThirdWeakPointBehavior.AdditionalDamage = ThirdWeakPointData.AdditionalDamage;
 
             BossNavAgent.acceleration = BossSettings.NavMeshAcceleration;
             Ruler = BossSettings.Ruler;
@@ -317,7 +317,7 @@ namespace BeastHunter
             Wisps.maxParticles = 0;
             EyeLeft = BossTransform.Find(BossSettings.LeftEyePath).GetComponentInChildren<Light>();
             EyeRight = BossTransform.Find(BossSettings.RightEyePath).GetComponentInChildren<Light>();
-
+            Services.SharedInstance.CameraService.Initialize(this);
         }
 
         #endregion

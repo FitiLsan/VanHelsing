@@ -3,6 +3,7 @@ using RootMotion.Dynamics;
 using Extensions;
 using UniRx;
 using System;
+using Photon.Pun;
 
 namespace BeastHunter
 {
@@ -68,6 +69,7 @@ namespace BeastHunter
         public int InstanceID { get; }
         public GameObject BuffEffectPrefab { get; private set; }
 
+        public PhotonView photonView;
         #endregion
 
 
@@ -90,6 +92,7 @@ namespace BeastHunter
             InstanceID = CurrentStats.InstanceID = objectOnScene.GetInstanceID();
             CurrentStats.BuffHolder = new BuffHolder();
             BuffEffectPrefab = CharacterTransform.Find("Effects").gameObject;
+            photonView = objectOnScene.GetComponent<PhotonView>();
 
 
             AudioSource[] characterAudioSources = CharacterTransform.gameObject.GetComponentsInChildren<AudioSource>();

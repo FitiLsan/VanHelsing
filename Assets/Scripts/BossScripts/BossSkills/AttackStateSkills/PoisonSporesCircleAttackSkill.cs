@@ -15,9 +15,11 @@ namespace BeastHunter
 
         public override void UseSkill(int id)
         {
+            base.UseSkill(id);
             Debug.Log("POISON CIRCLE AttackSkill");
-            _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
-            _bossModel.BossAnimator.Play("PoisonAttack", 0, 0f);
+            //  _bossModel.BossTransform.rotation = _bossModel.BossData.RotateTo(_bossModel.BossTransform, _bossModel.BossCurrentTarget.transform, 1, true);
+            //   _bossModel.BossAnimator.Play("PoisonAttack", 0, 0f);
+            _bossModel.BossAnimator.SetTrigger($"isAttackPoison");
             CreateSpores(5f, 10);
             ReloadSkill(id);
         }
@@ -38,6 +40,7 @@ namespace BeastHunter
         }
         public override void StopSkill()
         {
+            base.StopSkill();
         }
 
         private Vector3 CreateCircle(Vector3 center, float radius)

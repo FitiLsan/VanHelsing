@@ -1,4 +1,6 @@
-﻿namespace BeastHunter
+﻿using Photon.Pun;
+
+namespace BeastHunter
 {
     public abstract class CharacterBaseState
     {

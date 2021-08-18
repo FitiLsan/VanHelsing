@@ -10,7 +10,7 @@ namespace BeastHunter
     {
         private float _healPower = 55f;
         private TimeRemaining _delayCall;
-        private GameObject _guardPrefab = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        private GameObject _guardPrefab; //= GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 
         public SelfHealSkill((bool, int, float, float, float, bool, bool) skillInfo, Dictionary<int, BossBaseSkill> skillDictionary, BossStateMachine stateMachine)
             : base(skillInfo, skillDictionary, stateMachine)
