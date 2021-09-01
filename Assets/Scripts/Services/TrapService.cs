@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 
 namespace BeastHunter
@@ -40,8 +41,13 @@ namespace BeastHunter
             {
                 _context.CharacterModel.CurrentPlacingTrapModel.Value.
                     TrapObjectInFrontOfCharacter.transform.parent = null;
+
                 _currentTrapData.Place(_context, _context.CharacterModel.CurrentPlacingTrapModel.Value);
-                GameObject.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInHands);
+
+                PhotonNetwork.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInHands);
+
+                //GameObject.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInHands);
+
                 _context.CharacterModel.CurrentPlacingTrapModel.Value = null;
                 _currentTrapData = null;
             }
@@ -53,8 +59,11 @@ namespace BeastHunter
             {
                 _context.CharacterModel.PuppetMaster.propMuscles[0].currentProp = null;
 
-                GameObject.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInHands);
-                GameObject.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInFrontOfCharacter);
+                PhotonNetwork.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInHands);
+                PhotonNetwork.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInFrontOfCharacter);
+
+                //GameObject.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInHands);
+                //GameObject.Destroy(_context.CharacterModel.CurrentPlacingTrapModel.Value.TrapObjectInFrontOfCharacter);
 
                 _context.CharacterModel.CurrentPlacingTrapModel.Value = null;
                 _currentTrapData = null;

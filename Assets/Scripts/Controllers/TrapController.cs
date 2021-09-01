@@ -22,7 +22,7 @@ namespace BeastHunter
         public TrapController(GameContext context)
         {
             _context = context;
-            _context.TrapModels = new System.Collections.Generic.Dictionary<int, TrapModel>();                
+            _context.TrapModels = new System.Collections.Generic.Dictionary<int, TrapModel>();
         }
 
         #endregion
@@ -62,7 +62,7 @@ namespace BeastHunter
 
         private void UpdateCurrentTrapPositionInformation(TrapModel trapModel)
         {
-            if(trapModel != null)
+            if (trapModel != null)
             {
                 _currentTrapModel = trapModel;
                 _trapPlacementDistance = _currentTrapModel.TrapStruct.ProjectionDistanceFromCharacter;
