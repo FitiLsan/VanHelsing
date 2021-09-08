@@ -200,6 +200,8 @@ namespace BeastHunter
             _characterModel.PlayerBehavior.OnTriggerExitHandler -= OnTriggerExitSomething;
             _characterModel.BehaviorFall.OnPostActivate -= () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.KnockedDown]);
+
+            _weaponWheelController.TearDown();
         }
 
         #endregion

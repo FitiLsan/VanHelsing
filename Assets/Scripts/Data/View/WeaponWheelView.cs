@@ -27,9 +27,9 @@ namespace BeastHunter
 
         #region Methods
 
-        public void Init(string wheelPanelName, string wheelCyrcleName)
+        public void Init(string wheelPanelName, string wheelCyrcleName, GameObject weaponUI)
         {
-            _weaponWheelUI = GameObject.Instantiate(Data.UIElementsData.WeaponWheelPrefab);
+            _weaponWheelUI = weaponUI;
             _weaponWheelTransform = WeaponWheelUI.transform.
                 Find(wheelPanelName).Find(wheelCyrcleName).transform;
             _weaponWheelItems = WeaponWheelUI.transform.Find(wheelPanelName).

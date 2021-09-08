@@ -21,6 +21,7 @@ namespace BeastHunter
 
         private WeaponWheelModel _weaponWheelModel;
         private WeaponWheelView _weaponWheelView;
+        private GameObject _weaponUI;
         private readonly CharacterModel _characterModel;
         private readonly InputModel _inputModel;
 
@@ -34,10 +35,13 @@ namespace BeastHunter
             _characterModel = characterModel;
             _inputModel = inputModel;
             _weaponWheelModel = new WeaponWheelModel();
-            _weaponWheelView = GameObject.Instantiate(Data.UIElementsData.WeaponWheelPrefab).GetComponent<WeaponWheelView>();
-            _weaponWheelView.Init(_weaponWheelModel.WeaponWheelPanelName, _weaponWheelModel.WeaponWheelCycleName);
+            _weaponUI = GameObject.Instantiate(Data.UIElementsData.WeaponWheelPrefab);
+            _weaponWheelView = _weaponUI.GetComponent<WeaponWheelView>();
+            _weaponWheelView.Init(_weaponWheelModel.WeaponWheelPanelName, _weaponWheelModel.WeaponWheelCycleName, _weaponUI);
             InitAllWeaponItemsOnWheel();
             CloseWeaponWheel();
+
+            _inputModel.OnWeaponWheel += ControlWeaponWheelOpen;
         }
 
         #endregion
@@ -245,5 +249,10 @@ namespace BeastHunter
         }
 
         #endregion
+
+        public void TearDown()
+        {
+            _inputModel.OnWeaponWheel -= ControlWeaponWheelOpen;
+        }
     }
 }
