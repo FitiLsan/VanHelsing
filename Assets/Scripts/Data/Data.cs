@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BeastHunter 
 {
     [CreateAssetMenu (fileName = "Data", menuName = "MainData/Data")]
-    public sealed class Data : ScriptableObject 
+    public sealed class Data : ScriptableObject
     {
         #region Fields
 
@@ -89,8 +89,8 @@ namespace BeastHunter
         private static FallingTreeData _fallingTreeData;
         private static EnemyHealthBarData _enemyHealthBarData;
         private static SpawnpointsData _spawnpointsData;
-        private static OneHandedThrowableWeapon _LureMeatData;
-        private static OneHandedThrowableWeapon _LureCharcoalData;
+        private static OneHandedThrowableWeapon _lureMeatData;
+        private static OneHandedThrowableWeapon _lureCharcoalData;
 
         #endregion
 
@@ -553,11 +553,11 @@ namespace BeastHunter
         {
             get
             {
-                if (_LureMeatData == null)
+                if (_lureMeatData == null)
                 {
-                    _LureMeatData = Resources.Load<OneHandedThrowableWeapon>("Data/" + Instance._lureMeatDataPath);
+                    _lureMeatData = Resources.Load<OneHandedThrowableWeapon>("Data/" + Instance._lureMeatDataPath);
                 }
-                return _LureMeatData;
+                return _lureMeatData;
             }
         }
 
@@ -565,11 +565,11 @@ namespace BeastHunter
         {
             get
             {
-                if (_LureCharcoalData == null)
+                if (_lureCharcoalData == null)
                 {
-                    _LureCharcoalData = Resources.Load<OneHandedThrowableWeapon>("Data/" + Instance._lureCharcoalDataPath);
+                    _lureCharcoalData = Resources.Load<OneHandedThrowableWeapon>("Data/" + Instance._lureCharcoalDataPath);
                 }
-                return _LureCharcoalData;
+                return _lureCharcoalData;
             }
         }
 
