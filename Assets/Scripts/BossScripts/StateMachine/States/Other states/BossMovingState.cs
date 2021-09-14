@@ -40,10 +40,6 @@ namespace BeastHunter
         public override void Initialise()
         {
             _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, _bossData._bossSettings.WalkSpeed);
-            if (Services.SharedInstance.Context.InputModel.IsInputRun)
-            {
-                _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, _bossData._bossSettings.RunSpeed);
-            }
             _bossModel.BossNavAgent.stoppingDistance = DISTANCE_TO_START_EATING;
             _bossModel.BossAnimator.Play("MovingState");
 
@@ -55,16 +51,16 @@ namespace BeastHunter
 
         public override void Execute()
         {
-            //if (_bossModel.BossCurrentTarget != null && _target!= Vector3.zero && !CheckDistance())
-            //{
-            //    MoveTo();
-            //    RotateTo();
-            //}
-            //else
-            //{
-            //    _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, 0f);
-            //    _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle) ;
-            //}
+            if (_bossModel.BossCurrentTarget != null && _target!= Vector3.zero && !CheckDistance())
+            {
+                MoveTo();
+                RotateTo();
+            }
+            else
+            {
+                _bossData.SetNavMeshAgentSpeed(_bossModel, _bossModel.BossNavAgent, 0f);
+                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle) ;
+            }
         }
 
         public override void OnExit()

@@ -265,8 +265,7 @@ namespace BeastHunter
 
         private void PlaySlideForwardAnimation()
         {
-            _characterAnimator.SetTrigger("slide");
-          //  _characterAnimator.Play(_animationModel.SlidingForwardAnimationHash);
+            _characterAnimator.Play(_animationModel.SlidingForwardAnimationHash);
         }
 
         private void PlayTrapPlacingAnimation()
@@ -276,11 +275,9 @@ namespace BeastHunter
 
         private void PlaySimpleAttackAnimationMelee()
         {
-            _characterAnimator.SetTrigger($"{_context.CharacterModel.CurrentWeaponData.Value.SimpleAttackAnimationPrefix}" +
-                $"{_context.CharacterModel.CurrentWeaponData.Value.CurrentAttack.AnimationName}");
-          //  _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
-          //      SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
-           //         CurrentAttack.AnimationName);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName);
         }
 
         private void PlaySpecialAttackAnimationMelee()
@@ -292,14 +289,12 @@ namespace BeastHunter
 
         private void PlayArmsSimpleAttackAnimation()
         {
-            _characterAnimator.SetTrigger($"{_context.CharacterModel.CurrentWeaponData.Value.SimpleAttackAnimationPrefix}" +
-                $"{ _context.CharacterModel.CurrentWeaponData.Value.CurrentAttack.AnimationName}");
-            //_characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
-            //    SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
-            //        CurrentAttack.AnimationName, 1);
-            //_characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
-            //    SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
-            //        CurrentAttack.AnimationName, 2);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName, 1);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName, 2);
         }
 
         private void PlayArmsSpecialAttackAnimation()
@@ -321,27 +316,23 @@ namespace BeastHunter
         {
             if (_characterModel.CurrentWeaponData.Value != null)
             {
-               // _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.HoldingAnimationPostfix, 1);
-                _characterAnimator.SetTrigger($"{_context.CharacterModel.CurrentWeaponData.Value.HoldingAnimationPostfix}");
+                _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.HoldingAnimationPostfix, 1);
                 PlayTorsoNoneAnimation();
             }         
         }
 
         private void PlayArmsAnimationAimingWeapon()
         {
-            if (_context.CharacterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting)
+            if(_context.CharacterModel.CurrentWeaponData.Value.Type == WeaponType.Shooting)
             {
-
-                //   _characterAnimator.Play((_context.CharacterModel.CurrentWeaponData.Value as IShoot).
-                //     AimingAnimationPostfix, 1);
-                _characterAnimator.SetTrigger($"{(_context.CharacterModel.CurrentWeaponData.Value as IShoot).AimingAnimationPostfix}");
+                _characterAnimator.Play((_context.CharacterModel.CurrentWeaponData.Value as IShoot).
+                    AimingAnimationPostfix, 1);
                 PlayTorsoNoneAnimation();
-            }
-            else if (_context.CharacterModel.CurrentWeaponData.Value.Type == WeaponType.Throwing)
+            }        
+            else if(_context.CharacterModel.CurrentWeaponData.Value.Type == WeaponType.Throwing)
             {
-               // _characterAnimator.Play((_context.CharacterModel.CurrentWeaponData.Value as OneHandedThrowableWeapon).
-              //      AimingAnimationPostfix, 1);
-                _characterAnimator.SetTrigger($"{(_context.CharacterModel.CurrentWeaponData.Value as OneHandedThrowableWeapon).AimingAnimationPostfix}");
+                _characterAnimator.Play((_context.CharacterModel.CurrentWeaponData.Value as OneHandedThrowableWeapon).
+                    AimingAnimationPostfix, 1);
                 PlayTorsoNoneAnimation();
             }
         }

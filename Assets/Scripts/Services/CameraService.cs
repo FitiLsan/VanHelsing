@@ -48,7 +48,6 @@ namespace BeastHunter
         #region Properties
 
         public Camera CharacterCamera { get; private set; }
-        public Camera BossCamera { get; private set; }
         public CinemachineFreeLook CharacterFreelookCamera { get; private set; }
         //public CinemachineFreeLook CharacterKnockedDownCamera { get; private set; }
         public CinemachineVirtualCamera CharacterTargetCamera { get; private set; }
@@ -142,67 +141,6 @@ namespace BeastHunter
             SetActiveCamera(CharacterFreelookCamera);
 
             characterModel.CurrentCharacterState.Subscribe(UpdateCameraForCharacterState);
-            CurrentActiveCamera.Subscribe(EnableDisableAimTarget);
-        }
-
-        public void Initialize(BossModel bossModel)
-        {
-            BossCamera = _cameraData.CreateCharacterCamera();
-            CameraCinemachineBrain = BossCamera.GetComponent<CinemachineBrain>() ?? null;
-
-            _cameraDynamicTarget = GameObject.Instantiate(_cameraData.CharacterAimingCameraSettings.AimDotPrefab,
-                bossModel.BossTransform);
-            _dynamicTargetCenterPosition = new Vector3(0f, _cameraData.CharacterAimingCameraSettings.CameraTargetHeight,
-                _cameraData.CharacterAimingCameraSettings.CameraTargetForwardMovementDistance);
-            _cameraDynamicTarget.transform.localPosition = _dynamicTargetCenterPosition;
-            _cameraDynamicTarget.name = _cameraData.CharacterAimingCameraSettings.CameraTargetName + "Dynamic";
-            _cameraDynamicTarget.SetActive(false);
-
-            _cameraStaticTarget = GameObject.Instantiate(new GameObject(), bossModel.BossTransform);
-            _staticTargetCenterPosition = new Vector3(0, _cameraData.CharacterAimingCameraSettings.CameraTargetHeight+4, -2f);
-            _cameraStaticTarget.transform.localPosition = _staticTargetCenterPosition;
-            _cameraStaticTarget.name = _cameraData.CharacterAimingCameraSettings.CameraTargetName + "Static";
-
-            _aimingDots = new GameObject[AMOUNT_OF_AIM_LINE_STEPS];
-
-            for (int i = 0; i < AMOUNT_OF_AIM_LINE_STEPS; i++)
-            {
-                _aimingDots[i] = GameObject.Instantiate(_cameraData.CharacterAimingCameraSettings.AimProjectileLinePrefab,
-                    _cameraStaticTarget.transform.position, Quaternion.identity);
-            }
-
-            StopDrawAimLine();
-
-            BossCamera.transform.rotation = Quaternion.Euler(0, -40, 0);
-        //    BossCamera.transform.position = new Vector3(0, 0, 0);
-            CharacterFreelookCamera = _cameraData.CharacterFreelookCameraSettings.
-                CreateCharacterFreelookCamera(_cameraStaticTarget.transform, _cameraStaticTarget.transform);
-            //CharacterKnockedDownCamera = _cameraData._cameraSettings.CreateCharacterKnockedDownCamera(characterModel.
-            //    PuppetMaster.transform.GetChild(0), characterModel.PuppetMaster.transform.GetChild(0));
-            CharacterTargetCamera = _cameraData.CharacterTargetingCameraSettings.
-                CreateCharacterTargetingCamera(_cameraStaticTarget.transform, _cameraStaticTarget.transform);
-            CharacterAimingCamera = _cameraData.CharacterAimingCameraSettings.
-                CreateCharacterAimingCamera(_cameraStaticTarget.transform, _cameraDynamicTarget.transform);
-            _aimComposer = CharacterAimingCamera.GetCinemachineComponent<CinemachineComposer>();
-            _aimTransposer = CharacterAimingCamera.GetCinemachineComponent<CinemachineTransposer>();
-
-            CharacterFreelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
-
-            _freeLookPerlins = new CinemachineBasicMultiChannelPerlin[3];
-
-            for (int i = 0; i < _freeLookPerlins.Length; i++)
-            {
-                _freeLookPerlins[i] = CharacterFreelookCamera.GetRig(i).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-            }
-
-            _targetPerlin = CharacterTargetCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-            _aimingPerlin = CharacterAimingCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-
-            CurrentActiveCamera = new ReactiveProperty<CinemachineVirtualCameraBase>();
-            PreviousActiveCamera = CharacterFreelookCamera;
-            SetActiveCamera(CharacterFreelookCamera);
-
-           // bossModel.CurrentCharacterState.Subscribe(UpdateCameraForCharacterState);
             CurrentActiveCamera.Subscribe(EnableDisableAimTarget);
         }
 

@@ -3,7 +3,6 @@ using UniRx;
 using System;
 using Extensions;
 using DG.Tweening;
-using Photon.Pun;
 
 namespace BeastHunter
 {
@@ -18,15 +17,6 @@ namespace BeastHunter
         private const float TIME_TO_NORMILIZE_WEAK_POINT = 5f;
 
         private const float HUNGER_TIME = 5f;
-
-        private const float CAMERA_LOW_SIDE_ANGLE = 45f;
-        private const float CAMERA_HALF_SIDE_ANGLE = 90f;
-        private const float CAMERA_BACK_SIDE_ANGLE = 225f;
-        private const float CAMERA_BACK_ANGLE = 180f;
-
-        private const float ANGULAR_VELOCITY_FADE_SPEED = 0.2f;
-        private const float ANGULAR_MOVE_SPEED_REDUCTION_INDEX = 0.7f;
-        private const float DIRECTION_CHANGE_LAG = 0.2f;
 
         #endregion
 
@@ -48,23 +38,11 @@ namespace BeastHunter
         private float _realNavAgentSpeed;
         private float _lastSpeedModifier = -1;
 
-        private InputModel _inputModel;
-        private GameContext _context;
-        private Services _services;
-        private PhotonView _photonView;
-        private float _targetAngleVelocity;
-        private Transform _cameraTransform;
-
         #endregion
 
         #region Properties
 
         public bool IsHunger { get; private set; }
-
-        private float TargetDirection { get; set; }
-        private float CurrentDirecton { get; set; }
-        private float AdditionalDirection { get; set; }
-        private float CurrentAngle { get; set; }
 
         #endregion
 
@@ -91,19 +69,6 @@ namespace BeastHunter
             MessageBroker.Default.Receive<OnBossWeakPointHittedEventClass>().Subscribe(MakeWeakPointBurst);
             _bossModel.CurrentStats.BaseStats.SpeedUpdate += OnSpeedUpdate;
             // MessageBroker.Default.Receive<OnPlayerSneakingEventClass>().Subscribe(OnPlayerSneakingHandler);
-
-            _services = Services.SharedInstance;
-            _context = _services.Context;
-            _inputModel = _context.InputModel;
-            _photonView = _bossModel.ObjectOnScene.GetComponent<PhotonView>();
-            _cameraTransform = _services.CameraService.BossCamera.transform;
-
-            _inputModel.OnAttack += BossAttack;
-            _inputModel.OnPressNumberOne += BossAttack;
-            _inputModel.OnPressNumberTwo += BossAttack;
-            _inputModel.OnPressNumberThree += BossAttack;
-            _inputModel.OnPressNumberFour += BossAttack;
-
         }
 
         public override void Initialise()
@@ -112,109 +77,15 @@ namespace BeastHunter
             CanBeOverriden = false;
         }
 
-
-
-
-
-
-        /// <summary>
-        /// //////////////////////////////////////////////
-        /// </summary>
-
-
-        public void MoveBoss(bool isStrafing, bool onlyStrafing = false)
-        {
-            if (!_bossModel.IsGrounded)
-            {
-                if (_inputModel.IsInputMove)
-                {
-                    _stateMachine.SetCurrentState(BossStatesEnum.Moving);
-                    _bossModel.BossData.MoveForward(_bossModel.BossTransform, _bossModel.CurrentSpeed);
-                }
-
-                else
-                {
-                    _stateMachine.SetCurrentState(BossStatesEnum.Idle);
-                }
-            }
-        }
-
-        public void RotateBoss(bool hasCameraControl, bool isStrafing = false)
-        {
-            if (!_bossModel.IsGrounded)
-            {
-                if (hasCameraControl && !_services.CameraService.CameraCinemachineBrain.IsBlending)
-                {
-                    switch (_inputModel.InputTotalAxisY)
-                    {
-                        case 1:
-                            AdditionalDirection = CAMERA_LOW_SIDE_ANGLE * _inputModel.InputTotalAxisX;
-                            break;
-                        case -1:
-                            switch (_inputModel.InputTotalAxisX)
-                            {
-                                case 0:
-                                    AdditionalDirection = CAMERA_BACK_ANGLE;
-                                    break;
-                                default:
-                                    AdditionalDirection = -CAMERA_BACK_SIDE_ANGLE * _inputModel.InputTotalAxisX;
-                                    break;
-                            }
-                            break;
-                        case 0:
-                            AdditionalDirection = CAMERA_HALF_SIDE_ANGLE * _inputModel.InputTotalAxisX;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    CurrentDirecton = _bossModel.BossTransform.localEulerAngles.y;
-                    TargetDirection = _cameraTransform.localEulerAngles.y + AdditionalDirection;
-                    CurrentAngle = Mathf.SmoothDampAngle(CurrentDirecton, TargetDirection, ref _targetAngleVelocity,
-                        DIRECTION_CHANGE_LAG);
-                }
-                else
-                {
-                    _targetAngleVelocity = Mathf.SmoothStep(_targetAngleVelocity, 0, ANGULAR_VELOCITY_FADE_SPEED);
-
-                    if (isStrafing)
-                    {
-                       // _bossModel.BossTransform?.LookAt(_bossModel.ClosestEnemy.Value.transform.position);
-                        CurrentAngle = _bossModel.BossTransform.eulerAngles.y;
-                    }
-                }
-
-                _bossModel.BossTransform.localRotation = Quaternion.Euler(0, CurrentAngle,
-                    -_targetAngleVelocity * Time.fixedDeltaTime);
-            }
-        }
-
-
-        private void BossAttack()
-        {
-            if (_stateMachine.CurrentStateType != BossStatesEnum.Attacking)
-            {
-                _stateMachine.SetCurrentStateOverride(BossStatesEnum.Attacking);
-            }
-        }
-
-
-
-        /// <summary>
-        /// /////////////////////////////////////
-        /// </summary>
-
         public override void Execute()
         {
             if (!_bossModel.CurrentStats.BaseStats.IsDead)
             {
                 SpeedCheck();
                 HealthCheck();
-                MoveBoss(false);
-                RotateBoss(true);
-                //  CheckDirection(); //disable for Photon
-                //   HungerCheck();//disable for Photon
-                //  CheckCurrentFieldOfView();
+                CheckDirection();
+                HungerCheck();
+             //  CheckCurrentFieldOfView();
                 HitCounter();
                 InteractionTriggerUpdate();
             }
@@ -373,7 +244,6 @@ namespace BeastHunter
 
         private void OnTriggerEnterHandler(ITrigger thisdObject, Collider enteredObject)
         {
-            return;//
             var interactableObject = enteredObject.GetComponent<InteractableObjectBehavior>().Type;
 
             if (interactableObject == InteractableObjectType.Player && !enteredObject.isTrigger && !_stateMachine.CurrentState.IsBattleState)
@@ -393,7 +263,6 @@ namespace BeastHunter
 
         private void OnTriggerExitHandler(ITrigger thisdObject, Collider enteredObject)
         {
-            return;//
             var interactableObject = enteredObject.GetComponent<InteractableObjectBehavior>().Type;
 
             if (interactableObject == InteractableObjectType.Food)
@@ -411,7 +280,6 @@ namespace BeastHunter
 
         private void OnTriggerStayHandler(ITrigger thisdObject, Collider enteredObject)
         {
-            return;//
             var interactableObject = enteredObject.GetComponent<InteractableObjectBehavior>().Type;
             if (interactableObject == InteractableObjectType.Player && !enteredObject.isTrigger)
             {

@@ -27,10 +27,8 @@ namespace BeastHunter
 
         public override void UseSkill(int id)
         {
-            base.UseSkill(id);
             Debug.Log("StompAttackSkill");
-            //   _bossModel.BossAnimator.Play("BossStompAttack", 0, 0f);
-            _bossModel.BossAnimator.SetTrigger($"isAttackStomp");
+            _bossModel.BossAnimator.Play("BossStompAttack", 0, 0f);
             var TimeRem = new TimeRemaining(() => StompShockWave(), DELAY_AFTER_ANIM);
             TimeRem.AddTimeRemaining(0.65f);
 
@@ -62,7 +60,6 @@ namespace BeastHunter
         }
         public override void StopSkill()
         {
-            base.StopSkill();
         }
         private void Damage()
         {

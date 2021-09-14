@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f161af36797e6e478e36cd9c678073d, type: 3}
   m_Name: BossData
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 1089479054640090349, guid: af2b3e0c098993c4fb73f5ec8ca3a1ca, type: 3}
+  _prefab: {fileID: 1089479054640090349, guid: 550d6e029f657e240ab964c0ad434b0b, type: 3}
   _dataType: 2
   _startStats:
     BaseStats:
@@ -25,52 +25,12 @@ MonoBehaviour:
       IsDead: 0
       IsStunned: 0
     AttackStats:
-      _cuttingPower: 0
-      _piercingPower: 0
-      _choppingPower: 0
-      _crushingPower: 0
-      _penetrationPower: 0
-      _explosionPower: 0
-      _firePower: 0
-      _waterPower: 0
-      _icePower: 0
-      _electricityPower: 0
-      _oilPower: 0
-      _toxinPower: 0
-      _gasPower: 0
-      _smokeAndSteamPower: 0
+      _physicalPower: 50
+      _magicalPower: 0
     DefenceStats:
-      _cuttingDamageResistance: 0
-      _piercingDamageResistance: 0
-      _choppingDamageResistance: 0
-      _crushingDamageResistance: 0
-      _penetratingDamageResistance: 0
-      _explosionDamageResistance: 0
-      _bleedingDamageResistance: 0
+      _physicalDamageResistance: 0.4
+      _stunProbabilityResistance: 0.2
       _fireDamageResistance: 0
-      _waterDamageResistance: 0
-      _iceDamageResistance: 0
-      _electricityDamageResistance: 0
-      _oilDamageResistance: 0
-      _toxinDamageResistance: 0
-      _gasDamageResistance: 0
-      _smokeAndSteamDamageResistance: 0
-      _burningProbabilityResistance: 0
-      _weetingProbabilityResistance: 0
-      _freezingProbabilityResistance: 0
-      _electrizationProbabilityResistance: 0
-      _oilingProbabilityResistance: 0
-      _poisoningProbabilityResistance: 0
-      _gassingProbabilityResistance: 0
-      _suffocationProbabilityResistance: 0
-      _bleedingProbabilityResistance: 0
-      _stunningProbabilityResistance: 0
-      _slowingProbabilityResistance: 0
-      _overturningProbabilityResistance: 0
-      _contusionProbabilityResistance: 0
-      _intoxicationProbabilityResistance: 0
-      _blindingProbabilityResistance: 0
-      _explosionProbabilityResistance: 0
     InstanceID: 0
   _itemReactions:
     FoodItems: []
@@ -147,20 +107,20 @@ MonoBehaviour:
       _defaultSkillRangeMax: 5
       _defaultSkillCooldown: 2
       _defaultSkillReady: 1
-      _horizontalSkillEnable: 1
+      _horizontalSkillEnable: 0
       _horizontalSkillId: 1
       _horizontalSkillDamage: 7
       _horizontalSkillRangeMin: 2
       _horizontalSkillRangeMax: 5
       _horizontalSkillCooldown: 15
       _horizontalSkillReady: 1
-      _stompSplashSkillEnable: 1
+      _stompSplashSkillEnable: 0
       _stompSplashSkillId: 2
       _stompSkillDamage: 0
       _stompSplashSkillRangeMin: 0
       _stompSplashSkillRangeMax: 10
       _stompSplashSkillCooldown: 15.3
-      _stompSplashSkillReady: 1
+      _stompSplashSkillReady: 0
       _poisonSporesSkillEnable: 0
       _poisonSporesSkillId: 3
       _poisonSporesSkillDamage: 10
@@ -184,13 +144,13 @@ MonoBehaviour:
       _catchSkillRangeMax: 5
       _catchSkillCooldown: 22
       _catchSkillReady: 0
-      _fingerSkillEnable: 1
+      _fingerSkillEnable: 0
       _fingerSkillId: 6
       _fingerSkillDamage: 15
       _fingerSkillRangeMin: 10
       _fingerSkillRangeMax: 20
       _fingerSkillCooldown: 22
-      _fingerSkillReady: 1
+      _fingerSkillReady: 0
       _rageOfForestSkillEnable: 0
       _rageOfForestSkillId: 7
       _rageOfForestSkillDamage: 40

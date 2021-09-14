@@ -141,7 +141,7 @@ namespace BeastHunter
 
         public void SetNavMeshAgentDestination(NavMeshAgent bossNavAgent, Vector3 targetPosition)
         {
-         //   bossNavAgent.SetDestination(targetPosition);
+            bossNavAgent.SetDestination(targetPosition);
         }
         public void SetNavMeshAgentSpeed(BaseModel model, NavMeshAgent bossNavAgent, float speed)
         {

@@ -3100,7 +3100,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3870624199602500348}
-  - component: {fileID: 67007996219661351}
   m_Layer: 0
   m_Name: Character IK
   m_TagString: Untagged
@@ -3125,30 +3124,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &67007996219661351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4136213756536918307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 3079173864468754058}
-  - {fileID: 47255049968487898}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &4202160363016839757
 GameObject:
   m_ObjectHideFlags: 0
@@ -9177,9 +9152,6 @@ GameObject:
   - component: {fileID: 5773304041574916820}
   - component: {fileID: 8335986095076144122}
   - component: {fileID: 2560276046512151630}
-  - component: {fileID: 3079173864468754058}
-  - component: {fileID: 47255049968487898}
-  - component: {fileID: 1078233377350392908}
   m_Layer: 8
   m_Name: Chr_FantasyHero_Preset_79
   m_TagString: Player
@@ -9219,7 +9191,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 038320a534bd8b444b43734860d1a211, type: 3}
   m_Controller: {fileID: 9100000, guid: 71768c8e0d54fb34396989829cda6ca1, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -9427,7 +9399,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7669808007086646823}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -10051,132 +10023,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     spineTargetOffset: {x: 0, y: 0, z: 0}
---- !u!114 &3079173864468754058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7669808007086646823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
---- !u!114 &47255049968487898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7669808007086646823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 1
-    SynchronizeType: 2
-    Name: MoveSpeed
-  - Type: 1
-    SynchronizeType: 2
-    Name: AxisX
-  - Type: 1
-    SynchronizeType: 2
-    Name: AxisY
-  - Type: 1
-    SynchronizeType: 2
-    Name: CrouchLevel
-  - Type: 1
-    SynchronizeType: 2
-    Name: FallBlend
-  - Type: 3
-    SynchronizeType: 2
-    Name: WeaponIndex
-  - Type: 1
-    SynchronizeType: 2
-    Name: MouseAxisX
-  - Type: 1
-    SynchronizeType: 2
-    Name: DodgeAxisX
-  - Type: 1
-    SynchronizeType: 2
-    Name: DodgeAxisY
-  - Type: 9
-    SynchronizeType: 2
-    Name: slide
-  - Type: 9
-    SynchronizeType: 2
-    Name: BombThrow
-  - Type: 9
-    SynchronizeType: 2
-    Name: BombAiming
-  - Type: 9
-    SynchronizeType: 2
-    Name: DualPistolsSimpleAttackLeft
-  - Type: 9
-    SynchronizeType: 2
-    Name: DualPistolsSimpleAttackRight
-  - Type: 9
-    SynchronizeType: 2
-    Name: DualPistolsHolding
-  - Type: 9
-    SynchronizeType: 2
-    Name: DualPistolsAiming
-  - Type: 9
-    SynchronizeType: 2
-    Name: OHSwordSimpleAttack1
-  - Type: 9
-    SynchronizeType: 2
-    Name: OHSwordSimpleAttack2
-  - Type: 9
-    SynchronizeType: 2
-    Name: OHSwordSimpleAttack3
-  - Type: 9
-    SynchronizeType: 2
-    Name: BombardSimpleAttackShoot
-  - Type: 9
-    SynchronizeType: 2
-    Name: BombardHolding
-  - Type: 9
-    SynchronizeType: 2
-    Name: BombardAiming
-  - Type: 9
-    SynchronizeType: 2
-    Name: CrossbowSimpleAttackShoot
-  - Type: 9
-    SynchronizeType: 2
-    Name: CrossbowHolding
-  - Type: 9
-    SynchronizeType: 2
-    Name: CrossbowAiming
-  m_SynchronizeLayers:
-  - SynchronizeType: 2
-    LayerIndex: 0
-  - SynchronizeType: 2
-    LayerIndex: 1
-  - SynchronizeType: 2
-    LayerIndex: 2
---- !u!135 &1078233377350392908
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7669808007086646823}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.251823
-  m_Center: {x: 0.0055471733, y: 0.1, z: 0}
 --- !u!1 &7690889148778830307
 GameObject:
   m_ObjectHideFlags: 0

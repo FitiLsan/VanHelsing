@@ -58,12 +58,6 @@ namespace BeastHunter
             _bossModel.RightFingerTrigger.OnTriggerEnterHandler += OnRightFingerHitBoxHit;
             _bossModel.InteractionSystem.OnInteractionPickUp += OnPickUp;
             ThrowAttackSkill.HandDrop += OnDrop;
-            Services.SharedInstance.Context.InputModel.OnAttack += BossDefaultAttack;
-            Services.SharedInstance.Context.InputModel.OnPressNumberOne += () => BossSkillAttack(1);
-            Services.SharedInstance.Context.InputModel.OnPressNumberTwo += () => BossSkillAttack(2);
-            Services.SharedInstance.Context.InputModel.OnPressNumberThree += () => BossSkillAttack(4);
-            Services.SharedInstance.Context.InputModel.OnPressNumberFour += () => BossSkillAttack(6);
-
         }
 
         public override void Initialise()
@@ -74,7 +68,6 @@ namespace BeastHunter
             base.CurrentAttackTime = 0f;
             _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             StartCoolDownSkills(_bossSkills.AttackStateSkillDictionary);
-          
         }
 
         public override void Execute()
@@ -130,7 +123,7 @@ namespace BeastHunter
 
         private void CheckNextMove()
         {
-           // RotateToTarget();
+            RotateToTarget();
 
             if (IsAnimationPlay)
             {
@@ -145,22 +138,22 @@ namespace BeastHunter
             }
             if (base.CurrentAttackTime <= 0)
             {
-              //  AnimateRotation();
+                AnimateRotation();
                 DecideNextMove();
             }
         }
 
         private void DecideNextMove()
         {
-          //  _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
+            _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, _bossModel.BossTransform.position, 0);
             _bossModel.LeftHandBehavior.IsInteractable = false;
             _bossModel.RightHandBehavior.IsInteractable = false;
             _bossModel.LeftHandCollider.enabled = false;
             _bossModel.RightHandCollider.enabled = false;
-            _stateMachine.SetCurrentStateOverride(BossStatesEnum.Idle);
+
             if (!_bossModel.CurrentStats.BaseStats.IsDead  && !IsRotating && !_bossModel.IsPickUped)
             {
-              // ChoosingAttackSkill();
+                ChoosingAttackSkill();
             }
         }
 
@@ -272,57 +265,6 @@ namespace BeastHunter
             //_bossModel.BossAnimator.Play("Catch_Blend_Idle", 0, 0);
             _bossModel.IsPickUped = false;
         }
-
-
-        ///////////////////
-        ///
-
-        private void BossDefaultAttack()
-        {
-            _skillId = 0;
-            if (_bossSkills.AttackStateSkillDictionary.ContainsKey(_skillId))
-            {
-                CurrentSkill = _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId];
-                if(!CurrentSkill.IsSkillReady)
-                {
-                    return;
-                }
-                CurrentSkill.UseSkill(_skillId);
-                IsAnySkillUsed = true;
-            }
-        }
-
-        private void BossSkillAttack(int id)
-        {
-            _skillId = id;
-            if (_bossSkills.AttackStateSkillDictionary.ContainsKey(_skillId))
-            {
-                CurrentSkill = _stateMachine.BossSkills.AttackStateSkillDictionary[_skillId];
-                if (!CurrentSkill.IsSkillReady)
-                {
-                    return;
-                }
-                CurrentSkill.UseSkill(_skillId);
-                IsAnySkillUsed = true;
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        ////////////////////
 
         #endregion
     }
