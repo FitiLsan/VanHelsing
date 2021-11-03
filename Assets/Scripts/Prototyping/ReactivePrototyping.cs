@@ -72,7 +72,7 @@ namespace BeastHunter
         public void RPDealDamageToPlayer(float damage)
         {
             Damage newDamage = new Damage();
-            newDamage.PhysicalDamage = damage;
+            newDamage.PhysicalDamageValue = damage;
             Services.SharedInstance.AttackService.DealDamage(newDamage,Services.SharedInstance.Context.CharacterModel.InstanceID);
         }
 
@@ -102,7 +102,7 @@ namespace BeastHunter
             while (_isInside)
             {
                 Damage newDamage = new Damage();
-                newDamage.PhysicalDamage = value;
+                newDamage.PhysicalDamageValue = value;
                 Services.SharedInstance.AttackService.DealDamage(newDamage, Services.SharedInstance.Context.CharacterModel.InstanceID);
                 yield return new WaitForSeconds(1f);
             }
