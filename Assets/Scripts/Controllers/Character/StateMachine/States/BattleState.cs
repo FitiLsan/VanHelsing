@@ -80,7 +80,7 @@ namespace BeastHunter
             _inputModel.OnRunStart = null;
             _inputModel.OnRunStop = null;
             _inputModel.OnJump = null;
-            _inputModel.OnWeaponWheel = null;
+            _inputModel.OnWeaponWheel -= CheckCameraControl;
             base.DisableActions();
         }
 
