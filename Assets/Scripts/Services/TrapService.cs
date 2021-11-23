@@ -27,7 +27,7 @@ namespace BeastHunter
 
         public void GetTrap(TrapData trapData)
         {
-            if (trapData.TrapsAmount > 0)
+            if (trapData.TrapsAmountCurrent > 0)
             {
                 _currentTrapData = trapData;
                 new InitializeTrapController(_context, trapData);

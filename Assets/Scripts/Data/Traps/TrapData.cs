@@ -13,6 +13,7 @@ namespace BeastHunter
         [SerializeField] private Sprite _trapImage;
 
         [SerializeField] private int _trapsAmount;
+        [SerializeField] private int _trapsAmountCurrent;
         [SerializeField] private string _animationName;
 
         [Range(0f, 90f)]
@@ -30,17 +31,10 @@ namespace BeastHunter
         public TrapStruct TrapStruct => _trapStruct;
         public Sprite TrapImage => _trapImage;
 
-        public int TrapsAmount
-        {
-            get
-            {
-                return _trapsAmount;
-            }
-            protected set
-            {
-                _trapsAmount = value;
-            }
-        }
+
+        public int TrapsAmount { get { return _trapsAmount; } protected set { _trapsAmount = value; } }
+        public int TrapsAmountCurrent { get { return _trapsAmountCurrent; } set { _trapsAmountCurrent = value; } }
+
 
         public string AnimationName => _animationName;
         public float MaximalGroundAngle => _maximalGroundAngle;

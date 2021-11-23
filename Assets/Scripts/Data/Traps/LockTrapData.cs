@@ -30,7 +30,7 @@ namespace BeastHunter
             CurrentTrapModel.TrapObjectInFrontOfCharacter.GetComponentInChildren<Renderer>().
                 material = Data.MaterialsData.MetalLockTrapMaterial;
 
-            TrapsAmount--;
+            TrapsAmountCurrent--;
         }
 
         public override bool OnTriggerFilter(Collider enteredCollider)
