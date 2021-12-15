@@ -525,7 +525,7 @@ namespace BeastHunter
 
                     if(item.TrapData is LockTrapData)
                     {
-                        ((LockTrapData)item.TrapData).TrapsAmountCurrent = ((LockTrapData)item.TrapData).TrapsAmount;
+                        ((LockTrapData)item.TrapData).InitTrapsAmountCurrent();
                     }
                 }
                 else
