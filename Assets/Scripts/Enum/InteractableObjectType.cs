@@ -10,6 +10,7 @@
         Enemy  = 5,
         HitBox = 6,
         Npc    = 7,
-        Rabbit = 8
+        Rabbit = 8,
+        Rat = 9
     }
 }
