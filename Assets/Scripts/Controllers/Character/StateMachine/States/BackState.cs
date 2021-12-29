@@ -522,6 +522,11 @@ namespace BeastHunter
                 {
                     item.GetComponentsInChildren<Image>()[1].sprite = item.TrapData.TrapImage;
                     images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
+
+                    if(item.TrapData is LockTrapData)
+                    {
+                        ((LockTrapData)item.TrapData).InitTrapsAmountCurrent();
+                    }
                 }
                 else
                 {

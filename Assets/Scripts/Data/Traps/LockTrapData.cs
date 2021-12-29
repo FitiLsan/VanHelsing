@@ -9,6 +9,11 @@ namespace BeastHunter
     {
         #region Methods
 
+        public void InitTrapsAmountCurrent()
+        {
+            TrapsAmountCurrent = TrapsAmount;
+        }
+
         public override void Place(GameContext context, TrapModel trapModel)
         {
             base.Place(context, trapModel);
@@ -30,7 +35,7 @@ namespace BeastHunter
             CurrentTrapModel.TrapObjectInFrontOfCharacter.GetComponentInChildren<Renderer>().
                 material = Data.MaterialsData.MetalLockTrapMaterial;
 
-            TrapsAmount--;
+            TrapsAmountCurrent--;
         }
 
         public override bool OnTriggerFilter(Collider enteredCollider)
@@ -49,7 +54,7 @@ namespace BeastHunter
             TrapModel activatedTrapModel;
             Context.TrapModels.TryGetValue(activatedTrapITrigger.GameObject.GetInstanceID(), out activatedTrapModel);
 
-            if(activatedTrapITrigger != null)
+            if (activatedTrapITrigger != null)
             {
                 if (activatedTrapModel.ChargeAmount > 0)
                 {
