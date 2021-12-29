@@ -31,10 +31,10 @@ MonoBehaviour:
     _sphereColliderRadius: 7.2
     _sphereColliderRadiusIncrease: 1.365
     _healthPoints: 100
-    _walkSpeed: 4.6
-    _runSpeed: 7.4
-    _inBattleWalkSpeed: 2
-    _inBattleRunSpeed: 3
+    _walkSpeed: 10
+    _runSpeed: 15
+    _inBattleWalkSpeed: 5
+    _inBattleRunSpeed: 10
     _jumpHorizontalForce: 4.56
     _jumpVerticalForce: 4.52
     _groundCheckHeight: 1.2
@@ -61,6 +61,6 @@ MonoBehaviour:
     _rollFrameDistance: 5.55
     _rollAnimationSpeed: 1
   _characterStatsSettings:
-    _physicalPower: 2
+    _physicalPower: 0.5
     _physicalDamageResistance: 0.25
     _stunProbabilityResistance: 0.075

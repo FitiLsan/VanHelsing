@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fb2be35384bf3642965f30412720131, type: 3}
+  m_Name: RatData
+  m_EditorClassIdentifier: 
+  BaseStats:
+    MaxHealth: 10
+    BaseStats:
+      _physicalPower: 0
+      _physicalDamageResistance: 0
+      _stunProbabilityResistance: 0
+    Prefab: {fileID: 4477071089374910064, guid: 4f85483daea38534dab53d71e6c8e51a,
+      type: 3}
+  RatStats:
+    RunningRadius: 10
+    MoveSpeed: 0.3
+    JumpHeight: 0
+    ViewRadius: 10
+    ViewAngle: 120
+    CanIdle: 1

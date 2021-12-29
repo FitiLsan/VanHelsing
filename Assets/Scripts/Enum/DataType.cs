@@ -6,5 +6,6 @@ namespace BeastHunter
         Player = 1,
         Boss = 2,
         Rabbit = 3,
+        Rat = 4,
     }
 }

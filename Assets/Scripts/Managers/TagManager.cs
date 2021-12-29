@@ -8,6 +8,8 @@
 
         public const string RABBIT = "Rabbit";
 
+        public const string RAT = "Rat";
+
         public const string SPHERE = "Sphere";
         public const string NPC    = "NPC";
         public const string ENEMY  = "Enemy";
