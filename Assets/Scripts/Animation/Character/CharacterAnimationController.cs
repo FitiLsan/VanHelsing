@@ -260,7 +260,14 @@ namespace BeastHunter
 
         private void PlayLongDodgeAnimation()
         {
-            _characterAnimator.Play(_animationModel.LongDodgeAnimationHash);
+            if (_context.InputModel.IsInputRun)
+                PlayLongJumpAnimation();
+            else 
+                _characterAnimator.Play(_animationModel.LongDodgeAnimationHash);
+        }
+        private void PlayLongJumpAnimation()
+        {
+            _characterAnimator.Play(_animationModel.LongJumpAnimationHash);
         }
 
         private void PlaySlideForwardAnimation()
