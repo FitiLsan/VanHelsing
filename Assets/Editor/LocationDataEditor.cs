@@ -54,9 +54,9 @@ namespace BeastHunter
 
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
-            var clickedScanAndSavePoints = GUILayout.Button("Scan and save points", 
+            var clickedScanAndSavePoints = GUILayout.Button("Scan and save points",
                 GUILayout.Height(2 * EditorGUIUtility.singleLineHeight));
-            var clickedPlacePoints = GUILayout.Button("Place points on scene", 
+            var clickedPlacePoints = GUILayout.Button("Place points on scene",
                 GUILayout.Height(2 * EditorGUIUtility.singleLineHeight));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space();
@@ -86,8 +86,8 @@ namespace BeastHunter
         private void ScanAndSavePoints()
         {
             GameObject[] foundSpawnpoints = GameObject.FindGameObjectsWithTag(TagManager.SPAWNPOINT);
-            
-            if(foundSpawnpoints.Length > 0)
+
+            if (foundSpawnpoints.Length > 0)
             {
                 _playerPositions.ClearArray();
                 _bossPositions.ClearArray();
@@ -101,17 +101,17 @@ namespace BeastHunter
                     {
                         _script.AddPlayerPosition(new LocationPosition(spawnpoint.transform));
                     }
-                    else if(spawnpoint.name.Contains(LocationData.BOSS_SPAWNPOINT_NAME))
+                    else if (spawnpoint.name.Contains(LocationData.BOSS_SPAWNPOINT_NAME))
                     {
                         _script.AddBossPosition(new LocationPosition(spawnpoint.transform));
                     }
-                    else if(spawnpoint.TryGetComponent(out SpawnPointScript foundSpawnpointScript))
+                    else if (spawnpoint.TryGetComponent(out SpawnPointScript foundSpawnpointScript))
                     {
-                        _script.AddEnemySpawnPointData(foundSpawnpointScript.spawnEntities, 
-                            new LocationPosition(spawnpoint.transform), foundSpawnpointScript.spawnRadius, 
+                        _script.AddEnemySpawnPointData(foundSpawnpointScript.spawnEntities,
+                            new LocationPosition(spawnpoint.transform), foundSpawnpointScript.spawnRadius,
                                 foundSpawnpointScript.numberToSpawn);
                     }
-                    else if(spawnpoint.TryGetComponent(out InteractiveObjectLocationInfo foundObjectLocationInfo))
+                    else if (spawnpoint.TryGetComponent(out InteractiveObjectLocationInfo foundObjectLocationInfo))
                     {
                         _script.AddInteractiveObjectData(new SpawnInteractiveObjectData(
                             new LocationPosition(spawnpoint.transform), foundObjectLocationInfo.InteractiveObjectType));
@@ -134,6 +134,16 @@ namespace BeastHunter
 
         private void PlacePointsOnScene()
         {
+            GameObject[] foundSpawnpoints = GameObject.FindGameObjectsWithTag(TagManager.SPAWNPOINT);
+            if (foundSpawnpoints.Length > 0)
+            {
+                _playerPositions.ClearArray();
+                _bossPositions.ClearArray();
+                _enemySpawnpoints.ClearArray();
+                _interactiveObjectSpawnpoints.ClearArray();
+                _script.ClearLists();
+            }
+
             for (int i = 0; i < _script.PlayerSpawnPositions.Count; i++)
             {
                 _script.PlaceObjectOnScene(GameObject.
