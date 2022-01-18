@@ -40,7 +40,7 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""id"": ""00b7db60-f2b3-4660-ab89-f50c851ff90e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press""
+                    ""interactions"": ""Press(behavior=1)""
                 },
                 {
                     ""name"": ""Aim"",

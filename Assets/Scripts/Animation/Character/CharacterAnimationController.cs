@@ -114,6 +114,11 @@ namespace BeastHunter
                     PlaySimpleAttackAnimationMelee();
                     // TO REFACTOR - DONT KNOW HOW TO UNDERSTAND IF IT IS SPECIAL ATTACK
                     break;
+                case CharacterStatesEnum.LongAttacking:
+                    SetTopBodyAnimationWeigth(0f, 0f);
+                    SetRootMotion(true);
+                    PlaySpecialAttackAnimationMelee();
+                    break;
                 case CharacterStatesEnum.Shooting:
                     SetTopBodyAnimationWeigth(1f, 1f);
                     SetRootMotion(false);

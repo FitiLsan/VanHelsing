@@ -68,6 +68,8 @@ namespace BeastHunter
         public int InstanceID { get; }
         public GameObject BuffEffectPrefab { get; private set; }
 
+        public bool IsLongAttack { get; private set; }
+
         #endregion
 
 
@@ -186,6 +188,11 @@ namespace BeastHunter
         public void StopControl()
         {
             StopControlEvent?.Invoke();
+        }
+
+        public void SetIsLongAttack(bool isLong)
+        {
+            IsLongAttack = isLong;
         }
     }
 }

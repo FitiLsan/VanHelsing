@@ -5,6 +5,7 @@
         None,
         Aiming,
         Attacking,
+        LongAttacking,
         Idle,
         Movement,
         Sliding,

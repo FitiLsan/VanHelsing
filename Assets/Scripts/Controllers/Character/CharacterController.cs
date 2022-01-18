@@ -46,8 +46,7 @@ namespace BeastHunter
             _visualEffectController.OnAwake();
             _effectReactionController = new EffectReactionController(_context, _characterModel);
             _effectReactionController.OnAwake();
-           
-            
+            _inputModel.OnLongAttack += _characterModel.SetIsLongAttack; 
         }
 
         #endregion
@@ -73,6 +72,7 @@ namespace BeastHunter
         {
             _stateMachine.OnTearDown();
             _visualEffectController.OnTearDown();
+            _inputModel.OnLongAttack -= _characterModel.SetIsLongAttack;
         }
 
         #endregion
