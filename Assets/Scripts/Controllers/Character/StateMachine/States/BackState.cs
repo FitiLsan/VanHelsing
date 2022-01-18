@@ -932,6 +932,8 @@ namespace BeastHunter
             {
                 if (_characterModel.ClosestEnemy.Value != null)
                 {
+                    if (_context.NpcModels.Count == 0)
+                        return;
                     _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.root.
                         gameObject.GetInstanceID()];
 
