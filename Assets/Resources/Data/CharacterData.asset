@@ -84,6 +84,7 @@ MonoBehaviour:
     _strafingAnimationName: Strafe
     _slidingForwardAnimationName: SlideForward
     _longDodgeAnimationName: JumpForward
+    _longJumpAnimationName: LongJumpForward
     _shortDodgeAnimationName: Dodge
     _trapPlacingAnimationName: TrapPlacing
     _xAxisAnimatorParameterName: AxisX
@@ -100,8 +101,6 @@ MonoBehaviour:
     _aimingLookToClampWeightIK: 1
   _characterStatsSettings:
     BaseStats:
-      _maximalHealthPoints: 100
-      _currentHealthPoints: 100
       HealthRegenPerSecond: 0
       _maximalStaminaPoints: 0
       _currentStaminaPoints: 0
