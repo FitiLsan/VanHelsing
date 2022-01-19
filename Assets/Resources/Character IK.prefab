@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 1890419561658990287}
   - component: {fileID: 4793681898695752072}
   - component: {fileID: 813086249410374210}
-  m_Layer: 13
+  m_Layer: 12
   m_Name: Prop Muscle Hand_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1964,10 +1964,10 @@ MonoBehaviour:
   collisionLayers:
     serializedVersion: 2
     m_Bits: 2051
-  collisionThreshold: 0
+  collisionThreshold: 20
   collisionResistance:
     mode: 0
-    floatValue: 700
+    floatValue: 100
     curve:
       serializedVersion: 2
       m_Curve:
@@ -1996,7 +1996,12 @@ MonoBehaviour:
       get knocked out more easily. If using a curve, the value will be evaluated
       by each muscle's target velocity magnitude. This can be used to make collision
       resistance higher while the character moves or animates faster.
-  collisionResistanceMultipliers: []
+  collisionResistanceMultipliers:
+  - layers:
+      serializedVersion: 2
+      m_Bits: 1
+    multiplier: 5
+    collisionThreshold: 1000
   maxCollisions: 30
   regainPinSpeed: 1
   boostFalloff: 1
@@ -3415,7 +3420,7 @@ GameObject:
   - component: {fileID: 6149098237378773654}
   - component: {fileID: 3812637314120095725}
   - component: {fileID: 2867218212118492248}
-  m_Layer: 13
+  m_Layer: 12
   m_Name: Additional Pin
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -7321,10 +7326,10 @@ MonoBehaviour:
     target: {fileID: 4483475827601791657}
     props:
       group: 8
-      mappingWeight: 0
-      pinWeight: 0
-      muscleWeight: 0
-      muscleDamper: 0
+      mappingWeight: 1
+      pinWeight: 1
+      muscleWeight: 1
+      muscleDamper: 1
       mapPosition: 0
       internalCollisionIgnores:
         ignoreAll: 1
