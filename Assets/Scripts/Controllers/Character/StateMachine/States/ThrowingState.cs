@@ -31,8 +31,8 @@ namespace BeastHunter
         {
             _stateMachine.BackState.CountSpeed();
             ControlMovement();
-            ControlAimingTarget();
             CountExtiTime();
+            ControlAimingTarget();
             _stateMachine.BackState.UpdateAimingDotsForProjectile();
         }
 
