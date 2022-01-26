@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a6c2d3e882c0484e9ba4f3065b7c52b, type: 3}
-  m_Name: OneHandedSword
+  m_Name: OneHandedDagger
   m_EditorClassIdentifier: 
-  _handType: 1
+  _handType: 0
   _type: 1
-  _inWhichHand: 2
-  _weaponImage: {fileID: 21300000, guid: fff6f4db7e9ad874d8ba024d5ea7469d, type: 3}
+  _inWhichHand: 3
+  _weaponImage: {fileID: 21300000, guid: 87206693f5a6a4e4590538396bd8dc43, type: 3}
   _gettingSound:
     _soundClip: {fileID: 0}
     _volume: 0
@@ -78,4 +78,4 @@ MonoBehaviour:
   _timeBeforeGrab: 1
   _totalTimeToRemove: 2
   _timeBeforeLetGo: 1
-  _actualWeapon: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
+  _actualWeapon: {fileID: 11400000, guid: 34f425cf92d84c84bb11d67ce25e3060, type: 2}

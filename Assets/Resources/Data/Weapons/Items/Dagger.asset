@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e6b6e6a3a4733e4bb82f476c7e2cba8, type: 3}
-  m_Name: TwoHandedSword
+  m_Name: Dagger
   m_EditorClassIdentifier: 
   ItemStruct:
-    Name: TwoHandedSword
-    Discription: large two handed sword
-    SlotSize: 3
+    Name: Dagger
+    Discription: something about the dagger
+    SlotSize: 1
     ItemType: 2
     MeshOfObject: {fileID: 0}
     Icon: {fileID: 0}
-  WeaponPrefab: {fileID: 4069437575317329397, guid: 224e279e2ac93b643bd9cee702d561d5,
+  WeaponPrefab: {fileID: 5567878901024264889, guid: f6f7887f138bdc749b929ac330d34568,
     type: 3}
   WeaponObjectOnScene: {fileID: 0}
-  Weight: 5
+  Weight: 1

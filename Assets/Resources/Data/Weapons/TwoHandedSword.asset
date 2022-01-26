@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a6c2d3e882c0484e9ba4f3065b7c52b, type: 3}
-  m_Name: OneHandedSword
+  m_Name: TwoHandedSword
   m_EditorClassIdentifier: 
   _handType: 1
   _type: 1
   _inWhichHand: 2
-  _weaponImage: {fileID: 21300000, guid: fff6f4db7e9ad874d8ba024d5ea7469d, type: 3}
+  _weaponImage: {fileID: 21300000, guid: 03e92acfa9936644eae9672db29b795b, type: 3}
   _gettingSound:
     _soundClip: {fileID: 0}
     _volume: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
     AttackTime: 1.5
     AttackStaminaCost: 0
   _specialAttacks: []
-  _weaponName: One handed sword
+  _weaponName: Two handed sword
   _simpleAttackAnimationPrefix: OHSwordSimpleAttack
   _specialAttackAnimationPrefix: OHSwordSpecialAttack
   _strafeAnimationPostfix: OHSwordStrafe
@@ -78,4 +78,4 @@ MonoBehaviour:
   _timeBeforeGrab: 1
   _totalTimeToRemove: 2
   _timeBeforeLetGo: 1
-  _actualWeapon: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
+  _actualWeapon: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}

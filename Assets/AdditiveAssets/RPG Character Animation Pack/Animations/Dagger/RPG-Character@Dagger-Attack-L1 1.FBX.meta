@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7b5b17e2d42e0424f9c36012595dc9b6
+guid: 97404854261538d48b5705b3896131d1
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
@@ -317,9 +317,6 @@ ModelImporter:
     second: RPG-Character-Mesh
   - first:
       1: 100208
-    second: Box001
-  - first:
-      1: 100210
     second: Exporter
   - first:
       4: 400000
@@ -635,9 +632,6 @@ ModelImporter:
     second: RPG-Character-Mesh
   - first:
       4: 400208
-    second: Box001
-  - first:
-      4: 400210
     second: Exporter
   - first:
       23: 2300000
@@ -655,9 +649,6 @@ ModelImporter:
       23: 2300008
     second: USP
   - first:
-      23: 2300010
-    second: Box001
-  - first:
       33: 3300000
     second: Mesh_Soldier_A
   - first:
@@ -672,9 +663,6 @@ ModelImporter:
   - first:
       33: 3300008
     second: USP
-  - first:
-      33: 3300010
-    second: Box001
   - first:
       43: 4300000
     second: Mesh_Soldier_A
@@ -697,11 +685,8 @@ ModelImporter:
       43: 4300012
     second: RPG-Character-Mesh
   - first:
-      43: 4300014
-    second: Box001
-  - first:
       74: 7400000
-    second: 2Hand-Sword-Attack2
+    second: Dagger-Attack-L1d2
   - first:
       95: 9500000
     second: //RootNode
@@ -734,8 +719,8 @@ ModelImporter:
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'B_Spine' has translation animation that
-      will be discarded.\n\t'B_Spine1' has translation animation that will be discarded.\n"
+      to improve retargeting quality.\n\t'B_Spine1' has translation animation that
+      will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -749,11 +734,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: 2Hand-Sword-Attack2
+      name: Dagger-Attack-L1d2
       takeName: Take 001
       internalID: 7400000
       firstFrame: 0
-      lastFrame: 36
+      lastFrame: 30
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -772,14 +757,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.39020616
-        functionName: Hit
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {fileID: 101100000, guid: 4ebc95c8618479f4d8251c7dafa10029, type: 2}
@@ -807,7 +785,7 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
-    meshOptimizationFlags: 0
+    meshOptimizationFlags: 1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
