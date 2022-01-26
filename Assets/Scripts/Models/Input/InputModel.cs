@@ -13,6 +13,7 @@ namespace BeastHunter
         public Action OnRunStop;
         public Action OnAttack;
         public Action<bool> OnLongAttack;
+        public Action OnAttackOffset;
         public Action OnUse;
         public Action<bool> OnWeaponWheel;
         public Action OnRemoveWeapon;

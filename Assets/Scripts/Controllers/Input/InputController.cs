@@ -120,6 +120,7 @@ namespace BeastHunter
 
             _inputModel.OnLongAttack?.Invoke(isLongAttack);
             _inputModel.OnAttack?.Invoke();
+            _inputModel.OnAttackOffset?.Invoke();
             _attackTime = 0;
         }
 

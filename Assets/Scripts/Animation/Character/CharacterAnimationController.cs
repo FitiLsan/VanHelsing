@@ -288,15 +288,13 @@ namespace BeastHunter
         private void PlaySimpleAttackAnimationMelee()
         {
             _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
-                SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
-                    CurrentAttack.AnimationName);
+                SimpleAttackAnimationPrefix + "0");// _context.CharacterModel.CurrentWeaponData.Value.CurrentAttack.AnimationName);
         }
 
         private void PlaySpecialAttackAnimationMelee()
         {
             _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
-                SpecialAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
-                    CurrentAttack.AnimationName);
+                SpecialAttackAnimationPrefix + "1"); //_context.CharacterModel.CurrentWeaponData.Value.CurrentAttack.AnimationName);
         }
 
         private void PlayArmsSimpleAttackAnimation()
