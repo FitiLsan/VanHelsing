@@ -11,36 +11,28 @@ namespace BeastHunter
     public class PlayerInteractionCatch : MonoBehaviour
     {
         public LookAtIK LookAtIK;
+        public AimIK AimIK;
         public InteractionSystem interactionSystem; // Reference to the InteractionSystem component on the character
         public InteractionObject target; // The object to interact with
         public bool interrupt = false;
         public int ClosestTriggerIndex; // for debug
 
-        [SerializeField] private InteractionObject _hitTargetUp;
-        [SerializeField] private InteractionObject _hitTargetMiddle;
-        [SerializeField] private InteractionObject _hitTargetDown;
-
         private CinemachineFreeLook _cameraYAxis;
-        private InteractionObject _hitTarget;
+        private Transform _camera;
+
 
         private void Start()
         {
-              Services.SharedInstance.Context.InputModel.OnPressNumberFour += () => TryHit(_hitTargetUp, 0.2f);
-            //  Services.SharedInstance.Context.InputModel.OnPressNumberThree += () => TryHit();
-            // Services.SharedInstance.Context.InputModel.OnPressNumberTwo += () => TryHit();
-          
-            Services.SharedInstance.Context.InputModel.OnAttackOffset += () => TryHit(_hitTarget, 0.3f);
+           // Services.SharedInstance.Context.InputModel.OnAttackOffset += () => TryHit(_hitTarget, 0.3f);
             _cameraYAxis = Services.SharedInstance.CameraService.CharacterFreelookCamera;
+            _camera = Services.SharedInstance.CameraService.CharacterCamera.transform;
+            AimIK.solver.target = _camera;
+
         }
         private void Update()
         {
                InteractionTriggerUpdate();
             Debug.Log($"Camera Y: {_cameraYAxis.m_YAxis.Value}");
-            if (_cameraYAxis.m_YAxis.Value > 0.7f)
-                _hitTarget = _hitTargetDown;
-            else if (_cameraYAxis.m_YAxis.Value < 0.1)
-                _hitTarget = _hitTargetUp;
-            else _hitTarget = null;
         }
         private void OnTriggerEnter(Collider other)
         {
