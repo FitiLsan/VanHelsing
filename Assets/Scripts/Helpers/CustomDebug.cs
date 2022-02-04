@@ -32,7 +32,7 @@ namespace BeastHunter
         {
             if (Enable) 
             {
-                Debug.Log(message);
+                //Debug.Log(message);
             }
         }
 
@@ -40,7 +40,7 @@ namespace BeastHunter
         {
             if (Enable) 
             {
-                Debug.Log(message, context);
+                //Debug.Log(message, context);
             }
         }
 
@@ -48,7 +48,7 @@ namespace BeastHunter
         {
             if (Enable) 
             {
-                Debug.LogWarning(message);
+                //Debug.LogWarning(message);
             }
         }
 
@@ -56,7 +56,7 @@ namespace BeastHunter
         {
             if (Enable) 
             {
-                Debug.LogWarning(message, context);
+                //Debug.LogWarning(message, context);
             }
         }
 
@@ -64,7 +64,7 @@ namespace BeastHunter
         {
             if (Enable) 
             {
-                Debug.LogError(message);
+                //Debug.LogError(message);
             }
         }
 
@@ -72,7 +72,7 @@ namespace BeastHunter
         {
             if (Enable) 
             {
-                Debug.LogError(message, context);
+                //Debug.LogError(message, context);
             }
         }
 
@@ -80,7 +80,7 @@ namespace BeastHunter
         {
             if (Enable) 
             {
-                Debug.LogFormat(format, args);
+                //Debug.LogFormat(format, args);
             }
         }
         
@@ -88,7 +88,7 @@ namespace BeastHunter
         {
             if (Enable) 
             {
-                Debug.LogWarningFormat(format, args);
+                //Debug.LogWarningFormat(format, args);
             }
         }
         
@@ -96,7 +96,7 @@ namespace BeastHunter
         {
             if (Enable) 
             {
-                Debug.LogErrorFormat(format, args);
+                //Debug.LogErrorFormat(format, args);
             }
         }
         

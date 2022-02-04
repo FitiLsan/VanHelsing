@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a6c2d3e882c0484e9ba4f3065b7c52b, type: 3}
-  m_Name: OneHandedSword
+  m_Name: OneHandedMace
   m_EditorClassIdentifier: 
   _handType: 1
   _type: 1
   _inWhichHand: 2
-  _weaponImage: {fileID: 21300000, guid: fff6f4db7e9ad874d8ba024d5ea7469d, type: 3}
+  _weaponImage: {fileID: 21300000, guid: 839bc711d81d7f8408675154e10c3f81, type: 3}
   _gettingSound:
     _soundClip: {fileID: 0}
     _volume: 0
@@ -39,31 +39,9 @@ MonoBehaviour:
       PhysicalDamageValue: 0
       ElementDamageType: 0
       ElementDamageValue: 0
-    WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
+    WeaponItem: {fileID: 11400000, guid: 256499136ffeaac429c6bed9d159d2b7, type: 2}
     AttackType: 0
-    AttackTime: 1.5
-    AttackStaminaCost: 0
-  - Name: Simple attack 2
-    AnimationName: 2
-    AttackDamage:
-      PhysicalDamageType: 0
-      PhysicalDamageValue: 0
-      ElementDamageType: 0
-      ElementDamageValue: 0
-    WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
-    AttackType: 0
-    AttackTime: 1.5
-    AttackStaminaCost: 0
-  - Name: Simple attack 3
-    AnimationName: 3
-    AttackDamage:
-      PhysicalDamageType: 0
-      PhysicalDamageValue: 0
-      ElementDamageType: 0
-      ElementDamageValue: 0
-    WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
-    AttackType: 0
-    AttackTime: 1.5
+    AttackTime: 2
     AttackStaminaCost: 0
   _simpleHoldAttacks:
   - Name: Hold attack 1
@@ -73,9 +51,9 @@ MonoBehaviour:
       PhysicalDamageValue: 0
       ElementDamageType: 0
       ElementDamageValue: 0
-    WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
+    WeaponItem: {fileID: 11400000, guid: 256499136ffeaac429c6bed9d159d2b7, type: 2}
     AttackType: 0
-    AttackTime: 1.5
+    AttackTime: 2
     AttackStaminaCost: 0
   _specialAttacks:
   - Name: 
@@ -101,11 +79,11 @@ MonoBehaviour:
     AttackType: 0
     AttackTime: 0
     AttackStaminaCost: 0
-  _weaponName: One handed sword
-  _simpleAttackAnimationPrefix: OHSwordSimpleAttack
-  _simpleHoldAttackAnimationPrefix: OHSwordSimpleHoldAttack
-  _specialAttackAnimationPrefix: OHSwordSpecialAttack
-  _specialHoldAttackAnimationPrefix: OHSwordSpecialHoldAttack
+  _weaponName: One handed mace
+  _simpleAttackAnimationPrefix: OHMaceSimpleAttack
+  _simpleHoldAttackAnimationPrefix: OHMaceSimpleHoldAttack
+  _specialAttackAnimationPrefix: OHMaceSpecialAttack
+  _specialHoldAttackAnimationPrefix: OHMaceSpecialHoldAttack
   _strafeAnimationPostfix: OHSwordStrafe
   _dodgeAnimationPostfix: OHSwordDodge
   _gettingAnimationPostfix: OHSwordGetting
@@ -115,4 +93,4 @@ MonoBehaviour:
   _timeBeforeGrab: 1
   _totalTimeToRemove: 2
   _timeBeforeLetGo: 1
-  _actualWeapon: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
+  _actualWeapon: {fileID: 11400000, guid: 256499136ffeaac429c6bed9d159d2b7, type: 2}

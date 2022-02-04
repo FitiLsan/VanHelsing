@@ -30,6 +30,8 @@
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Sneaking]);
             _inputModel.OnAttack += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
+            _inputModel.OnSpecialAttack += () => _stateMachine.
+                SetState(_stateMachine.CharacterStates[CharacterStatesEnum.SpecialAttacking]);
             _inputModel.OnJump += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Jumping]);
             _inputModel.OnAim += () => _stateMachine.
@@ -41,6 +43,7 @@
             _inputModel.OnMove = null;
             _inputModel.OnSneakSlide = null;
             _inputModel.OnAttack = null;
+            _inputModel.OnSpecialAttack = null;
             _inputModel.OnJump = null;
             _inputModel.OnAim = null;
             base.DisableActions();

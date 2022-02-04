@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f20e4aa9fdc574644af01edec8581912, type: 3}
-  m_Name: TwoHandedSwordWeapon
+  m_Name: TwoHandedSpearWeapon
   m_EditorClassIdentifier: 
   _handType: 2
   _type: 1
   _inWhichHand: 2
-  _weaponImage: {fileID: 21300000, guid: 03e92acfa9936644eae9672db29b795b, type: 3}
+  _weaponImage: {fileID: 21300000, guid: 0b4b58087fa268140b5588bcb2c5ad06, type: 3}
   _gettingSound:
     _soundClip: {fileID: 0}
     _volume: 0
@@ -39,21 +39,21 @@ MonoBehaviour:
       PhysicalDamageValue: 0
       ElementDamageType: 0
       ElementDamageValue: 0
-    WeaponItem: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}
+    WeaponItem: {fileID: 11400000, guid: db36f80377333784bba42579435e249a, type: 2}
     AttackType: 0
     AttackTime: 1.5
     AttackStaminaCost: 0
   _simpleHoldAttacks:
-  - Name: Simple hold attack 1
-    AnimationName: 1
+  - Name: 
+    AnimationName: 
     AttackDamage:
       PhysicalDamageType: 0
       PhysicalDamageValue: 0
       ElementDamageType: 0
       ElementDamageValue: 0
-    WeaponItem: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}
+    WeaponItem: {fileID: 0}
     AttackType: 0
-    AttackTime: 1.5
+    AttackTime: 0
     AttackStaminaCost: 0
   _specialAttacks:
   - Name: Special attack 1
@@ -63,7 +63,7 @@ MonoBehaviour:
       PhysicalDamageValue: 0
       ElementDamageType: 0
       ElementDamageValue: 0
-    WeaponItem: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}
+    WeaponItem: {fileID: 11400000, guid: db36f80377333784bba42579435e249a, type: 2}
     AttackType: 0
     AttackTime: 1.5
     AttackStaminaCost: 0
@@ -75,23 +75,23 @@ MonoBehaviour:
       PhysicalDamageValue: 0
       ElementDamageType: 0
       ElementDamageValue: 0
-    WeaponItem: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}
+    WeaponItem: {fileID: 11400000, guid: db36f80377333784bba42579435e249a, type: 2}
     AttackType: 0
-    AttackTime: 1.5
+    AttackTime: 0
     AttackStaminaCost: 0
-  _weaponName: Two handed sword
-  _simpleAttackAnimationPrefix: THSwordSimpleAttack
-  _simpleHoldAttackAnimationPrefix: THSwordSimpleHoldAttack
-  _specialAttackAnimationPrefix: THSwordSpecialAttack
-  _specialHoldAttackAnimationPrefix: THSwordSpecialHoldAttack
+  _weaponName: Two handed Spear
+  _simpleAttackAnimationPrefix: THSpearSimpleAttack
+  _simpleHoldAttackAnimationPrefix: THSpearSimpleHoldAttack
+  _specialAttackAnimationPrefix: THSpearSpecialAttack
+  _specialHoldAttackAnimationPrefix: THSpearSpecialHoldAttack
   _strafeAnimationPostfix: THSwordSimpleAttack
   _dodgeAnimationPostfix: THSwordStrafe
   _gettingAnimationPostfix: THSwordDodge
-  _holdingAnimationPostfix: 2Hand-Sword-Idle
+  _holdingAnimationPostfix: 2Hand-Spear-Idle
   _removingAnimationPostfix: THSwordRemoving
   _totalTimeToGet: 2
   _timeBeforeGrab: 1
   _totalTimeToRemove: 2
   _timeBeforeLetGo: 1
-  LeftActualWeapon: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}
-  RightActualWeapon: {fileID: 11400000, guid: a112be0be6cd4654dba61d5196087e68, type: 2}
+  LeftActualWeapon: {fileID: 11400000, guid: db36f80377333784bba42579435e249a, type: 2}
+  RightActualWeapon: {fileID: 11400000, guid: db36f80377333784bba42579435e249a, type: 2}

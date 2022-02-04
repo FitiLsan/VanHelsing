@@ -54,6 +54,7 @@ namespace BeastHunter
             _characterModel.StopControl();
             _inputModel.OnAim = null;
             _inputModel.OnAttack = null;
+            _inputModel.OnSpecialAttack = null;
             _inputModel.OnRunStart = null;
             _inputModel.OnRunStop = null;
             _inputModel.OnJump = null;

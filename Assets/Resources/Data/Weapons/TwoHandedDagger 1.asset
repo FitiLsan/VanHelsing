@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a6c2d3e882c0484e9ba4f3065b7c52b, type: 3}
-  m_Name: OneHandedDagger
+  m_Script: {fileID: 11500000, guid: f20e4aa9fdc574644af01edec8581912, type: 3}
+  m_Name: TwoHandedDagger 1
   m_EditorClassIdentifier: 
   _handType: 1
   _type: 1
-  _inWhichHand: 1
+  _inWhichHand: 2
   _weaponImage: {fileID: 21300000, guid: 87206693f5a6a4e4590538396bd8dc43, type: 3}
   _gettingSound:
     _soundClip: {fileID: 0}
@@ -27,8 +27,8 @@ MonoBehaviour:
     _pitch: 0
     _doLoop: 0
   _weaponDamage:
-    PhysicalDamageType: 1
-    PhysicalDamageValue: 3
+    PhysicalDamageType: 0
+    PhysicalDamageValue: 0
     ElementDamageType: 0
     ElementDamageValue: 0
   _simpleAttacks:
@@ -43,9 +43,8 @@ MonoBehaviour:
     AttackType: 0
     AttackTime: 1.5
     AttackStaminaCost: 0
-  _simpleHoldAttacks:
-  - Name: Hold attack 1
-    AnimationName: 1
+  - Name: Simple attack 2
+    AnimationName: 2
     AttackDamage:
       PhysicalDamageType: 0
       PhysicalDamageValue: 0
@@ -53,44 +52,35 @@ MonoBehaviour:
       ElementDamageValue: 0
     WeaponItem: {fileID: 11400000, guid: 34f425cf92d84c84bb11d67ce25e3060, type: 2}
     AttackType: 0
-    AttackTime: 2
+    AttackTime: 1.5
     AttackStaminaCost: 0
+  _simpleHoldAttacks: []
   _specialAttacks:
-  - Name: 
-    AnimationName: 
+  - Name: Hold atack 1
+    AnimationName: 3
     AttackDamage:
       PhysicalDamageType: 0
       PhysicalDamageValue: 0
       ElementDamageType: 0
       ElementDamageValue: 0
-    WeaponItem: {fileID: 0}
+    WeaponItem: {fileID: 11400000, guid: 34f425cf92d84c84bb11d67ce25e3060, type: 2}
     AttackType: 0
-    AttackTime: 0
+    AttackTime: 1.5
     AttackStaminaCost: 0
-  _specialHoldAttacks:
-  - Name: 
-    AnimationName: 
-    AttackDamage:
-      PhysicalDamageType: 0
-      PhysicalDamageValue: 0
-      ElementDamageType: 0
-      ElementDamageValue: 0
-    WeaponItem: {fileID: 0}
-    AttackType: 0
-    AttackTime: 0
-    AttackStaminaCost: 0
-  _weaponName: One handed dagger
-  _simpleAttackAnimationPrefix: OHDaggerSimpleAttack
-  _simpleHoldAttackAnimationPrefix: OHDaggerSimpleHoldAttack
-  _specialAttackAnimationPrefix: OHDaggerSpecialAttack
-  _specialHoldAttackAnimationPrefix: OHDaggerSpecialHoldAttack
-  _strafeAnimationPostfix: DaggerStrafe
-  _dodgeAnimationPostfix: DaggerDodge
-  _gettingAnimationPostfix: DaggerGetting
+  _specialHoldAttacks: []
+  _weaponName: Dagger
+  _simpleAttackAnimationPrefix: DaggerSimpleAttack
+  _simpleHoldAttackAnimationPrefix: 
+  _specialAttackAnimationPrefix: DaggerSpecialAttack
+  _specialHoldAttackAnimationPrefix: 
+  _strafeAnimationPostfix: DaggerSimpleAttack
+  _dodgeAnimationPostfix: DaggerStrafe
+  _gettingAnimationPostfix: DaggerDodge
   _holdingAnimationPostfix: DaggerHoldAttack
   _removingAnimationPostfix: DaggerRemoving
   _totalTimeToGet: 2
   _timeBeforeGrab: 1
   _totalTimeToRemove: 2
   _timeBeforeLetGo: 1
-  _actualWeapon: {fileID: 11400000, guid: 34f425cf92d84c84bb11d67ce25e3060, type: 2}
+  LeftActualWeapon: {fileID: 11400000, guid: 34f425cf92d84c84bb11d67ce25e3060, type: 2}
+  RightActualWeapon: {fileID: 11400000, guid: 34f425cf92d84c84bb11d67ce25e3060, type: 2}

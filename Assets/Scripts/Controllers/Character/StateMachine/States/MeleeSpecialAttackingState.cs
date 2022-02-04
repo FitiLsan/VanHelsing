@@ -3,7 +3,7 @@
 
 namespace BeastHunter
 {
-    public sealed class MeleeAttackingState : CharacterBaseState, IUpdate
+    public sealed class MeleeSpecialAttackingState : CharacterBaseState, IUpdate
     {
         #region Fields
 
@@ -15,9 +15,9 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public MeleeAttackingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
+        public MeleeSpecialAttackingState(GameContext context, CharacterStateMachine stateMachine) : base(context, stateMachine)
         {
-            StateName = CharacterStatesEnum.Attacking;
+            StateName = CharacterStatesEnum.SpecialAttacking;
             IsTargeting = false;
             IsAttacking = true;
         }
@@ -68,14 +68,15 @@ namespace BeastHunter
 
             if (_characterModel.IsHoldAttack)
             {
-                StateName = CharacterStatesEnum.HoldAttacking;
-                _characterModel.CurrentWeaponData.Value.MakeSimpleHoldAttack(out _attackIndex, _characterModel.CharacterTransform);
+                StateName = CharacterStatesEnum.SpecialHoldAttacking;
+                _characterModel.CurrentWeaponData.Value.MakeSpecialHoldAttack(out _attackIndex, _characterModel.CharacterTransform);
             }
             else
             {
-                StateName = CharacterStatesEnum.Attacking;
-                _characterModel.CurrentWeaponData.Value.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
+                StateName = CharacterStatesEnum.SpecialAttacking;
+                _characterModel.CurrentWeaponData.Value.MakeSpecialAttack(out _attackIndex, _characterModel.CharacterTransform);
             }
+            //_characterModel.CurrentWeaponData.Value.MakeSpecialAttack(out _attackIndex, _characterModel.CharacterTransform);
             _exitTIme = _characterModel.CurrentWeaponData.Value.CurrentAttack.AttackTime;
 
             _stateMachine.BackState.StopCharacter();
