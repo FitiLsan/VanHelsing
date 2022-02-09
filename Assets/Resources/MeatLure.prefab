@@ -13,10 +13,11 @@ GameObject:
   - component: {fileID: 2398272}
   - component: {fileID: 1316482262844376123}
   - component: {fileID: 8208525312627490843}
+  - component: {fileID: 5644512054315051352}
   - component: {fileID: 5474512995076820274}
   - component: {fileID: 7801733844595089379}
   - component: {fileID: 7009678069621664235}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MeatLure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,6 +116,22 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.33
   m_Center: {x: 0, y: 0.011978865, z: 0}
+--- !u!114 &5644512054315051352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43aaa308d7eae7f49991d87e388d1a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isActive: 1
+  _velocityMult: 1
+  _angularVelocityMult: 0.1
+  timeActiveGlueInSec: 1000
 --- !u!114 &5474512995076820274
 MonoBehaviour:
   m_ObjectHideFlags: 0

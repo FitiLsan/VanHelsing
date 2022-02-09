@@ -16,6 +16,7 @@ namespace BeastHunter
 
         public GameObject GameObject => gameObject;
         public ProjectileData ProjectileData => _projectileData;
+        private Rigidbody _rigidbody;
 
         #endregion
 
@@ -24,7 +25,9 @@ namespace BeastHunter
 
         private void Awake()
         {
+            
             _projectileData.DestroyProjectileAfterInstantiation(this as IProjectile);
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -32,7 +35,15 @@ namespace BeastHunter
             if (_projectileData.FilterCollision(collision))
             {
                 _projectileData.HitProjectile(this as IProjectile, collision);
-            }           
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            
+            Vector3 cross = Vector3.Cross(transform.forward, _rigidbody.velocity.normalized);
+            _rigidbody.AddTorque(cross * _rigidbody.velocity.magnitude);// * _velocityMult);
+            _rigidbody.AddTorque((-_rigidbody.angularVelocity + Vector3.Project(_rigidbody.angularVelocity, transform.forward) * _rigidbody.velocity.magnitude));// * _angularVelocityMult));
         }
 
         #endregion
