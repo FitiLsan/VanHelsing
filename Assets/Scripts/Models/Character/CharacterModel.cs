@@ -69,6 +69,7 @@ namespace BeastHunter
         public GameObject BuffEffectPrefab { get; private set; }
 
         public bool IsLongAttack { get; private set; }
+        public bool IsHoldAttack { get; private set; }
 
         #endregion
 
@@ -193,6 +194,10 @@ namespace BeastHunter
         public void SetIsLongAttack(bool isLong)
         {
             IsLongAttack = isLong;
+        }
+        public void SetIsHoldAttack(bool isLong)
+        {
+            IsHoldAttack = isLong;
         }
     }
 }

@@ -65,11 +65,16 @@ namespace BeastHunter
                 default:
                     break;
             }
-           
+     
             if(_characterModel.IsLongAttack)
             {
                 StateName = CharacterStatesEnum.LongAttacking;
                 _characterModel.CurrentWeaponData.Value.MakeSpecialAttack(out _attackIndex, _characterModel.CharacterTransform);
+
+            if (_characterModel.IsHoldAttack)
+            {
+                StateName = CharacterStatesEnum.HoldAttacking;
+                _characterModel.CurrentWeaponData.Value.MakeSimpleHoldAttack(out _attackIndex, _characterModel.CharacterTransform);
             }
             else
             {
@@ -80,7 +85,7 @@ namespace BeastHunter
 
             _stateMachine.BackState.StopCharacter();
             
-        }
+            }
 
         public override void OnExit(CharacterBaseState nextState = null)
         {

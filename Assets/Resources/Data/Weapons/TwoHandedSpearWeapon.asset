@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f20e4aa9fdc574644af01edec8581912, type: 3}
+  m_Name: TwoHandedSpearWeapon
+  m_EditorClassIdentifier: 
+  _handType: 2
+  _type: 1
+  _inWhichHand: 2
+  _weaponImage: {fileID: 21300000, guid: 0b4b58087fa268140b5588bcb2c5ad06, type: 3}
+  _gettingSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
+  _removingSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
+  _weaponDamage:
+    PhysicalDamageType: 0
+    PhysicalDamageValue: 0
+    ElementDamageType: 0
+    ElementDamageValue: 0
+  _simpleAttacks:
+  - Name: Simple attack 1
+    AnimationName: 1
+    AttackDamage:
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
+    WeaponItem: {fileID: 11400000, guid: db36f80377333784bba42579435e249a, type: 2}
+    AttackType: 0
+    AttackTime: 1.5
+    AttackStaminaCost: 0
+  _simpleHoldAttacks:
+  - Name: 
+    AnimationName: 
+    AttackDamage:
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
+    WeaponItem: {fileID: 0}
+    AttackType: 0
+    AttackTime: 0
+    AttackStaminaCost: 0
+  _specialAttacks:
+  - Name: Special attack 1
+    AnimationName: 1
+    AttackDamage:
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
+    WeaponItem: {fileID: 11400000, guid: db36f80377333784bba42579435e249a, type: 2}
+    AttackType: 0
+    AttackTime: 1.5
+    AttackStaminaCost: 0
+  _specialHoldAttacks:
+  - Name: Special hold attack 1
+    AnimationName: 1
+    AttackDamage:
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
+    WeaponItem: {fileID: 11400000, guid: db36f80377333784bba42579435e249a, type: 2}
+    AttackType: 0
+    AttackTime: 0
+    AttackStaminaCost: 0
+  _weaponName: Two handed Spear
+  _simpleAttackAnimationPrefix: THSpearSimpleAttack
+  _simpleHoldAttackAnimationPrefix: THSpearSimpleHoldAttack
+  _specialAttackAnimationPrefix: THSpearSpecialAttack
+  _specialHoldAttackAnimationPrefix: THSpearSpecialHoldAttack
+  _strafeAnimationPostfix: THSwordSimpleAttack
+  _dodgeAnimationPostfix: THSwordStrafe
+  _gettingAnimationPostfix: THSwordDodge
+  _holdingAnimationPostfix: 2Hand-Spear-Idle
+  _removingAnimationPostfix: THSwordRemoving
+  _totalTimeToGet: 2
+  _timeBeforeGrab: 1
+  _totalTimeToRemove: 2
+  _timeBeforeLetGo: 1
+  LeftActualWeapon: {fileID: 11400000, guid: db36f80377333784bba42579435e249a, type: 2}
+  RightActualWeapon: {fileID: 11400000, guid: db36f80377333784bba42579435e249a, type: 2}

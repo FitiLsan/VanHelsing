@@ -10,8 +10,10 @@ namespace BeastHunter
 
         public TwoHandedMeleeWeapon()
         {
-          //  HandType = WeaponHandType.TwoHanded;
-          //  Type = WeaponType.Melee;
+            //  HandType = WeaponHandType.TwoHanded;
+            //  Type = WeaponType.Melee;
+            _handType = WeaponHandType.TwoHanded;
+            _type = WeaponType.Melee;
         }
 
         #endregion

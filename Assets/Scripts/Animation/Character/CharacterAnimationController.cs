@@ -109,16 +109,36 @@ namespace BeastHunter
                     PlayArmsAnimationAimingWeapon();
                     break;
                 case CharacterStatesEnum.Attacking:
+                    Debug.Log("Attacking");
                     SetTopBodyAnimationWeigth(0f, 0f);
                     SetRootMotion(true);
                     PlaySimpleAttackAnimationMelee();
                     // TO REFACTOR - DONT KNOW HOW TO UNDERSTAND IF IT IS SPECIAL ATTACK
                     break;
-                case CharacterStatesEnum.LongAttacking:
+                case CharacterStatesEnum.HoldAttacking:
+                    Debug.Log("HoldAttacking");
+                    SetTopBodyAnimationWeigth(0f, 0f);
+                    SetRootMotion(true);
+                    PlaySimpleHoldAttackAnimationMelee();
+                    // TO REFACTOR - DONT KNOW HOW TO UNDERSTAND IF IT IS SPECIAL ATTACK
+                    break;
+                case CharacterStatesEnum.SpecialAttacking:
+                    Debug.Log("SpecialAttacking");
                     SetTopBodyAnimationWeigth(0f, 0f);
                     SetRootMotion(true);
                     PlaySpecialAttackAnimationMelee();
                     break;
+                case CharacterStatesEnum.SpecialHoldAttacking:
+                    Debug.Log("SpecialHoldAttacking");
+                    SetTopBodyAnimationWeigth(0f, 0f);
+                    SetRootMotion(true);
+                    PlaySpecialHoldAttackAnimationMelee();
+                    break;
+                /*case CharacterStatesEnum.LongAttacking:
+                    SetTopBodyAnimationWeigth(0f, 0f);
+                    SetRootMotion(true);
+                    PlaySpecialAttackAnimationMelee();
+                    break;*/
                 case CharacterStatesEnum.Shooting:
                     SetTopBodyAnimationWeigth(1f, 1f);
                     SetRootMotion(false);
@@ -287,14 +307,35 @@ namespace BeastHunter
 
         private void PlaySimpleAttackAnimationMelee()
         {
+            Debug.Log(_context.CharacterModel.CurrentWeaponData.Value.
+                SimpleHoldAttackAnimationPrefix + " называется, Анимация Номер: " + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName);
             _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
-                SimpleAttackAnimationPrefix + "0");// _context.CharacterModel.CurrentWeaponData.Value.CurrentAttack.AnimationName);
+                SimpleAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName);
+        }
+        private void PlaySimpleHoldAttackAnimationMelee()
+        {
+            Debug.Log(_context.CharacterModel.CurrentWeaponData.Value.
+                SimpleHoldAttackAnimationPrefix + " называется, Анимация Номер: " + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName);
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SimpleHoldAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName);
         }
 
         private void PlaySpecialAttackAnimationMelee()
         {
             _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
-                SpecialAttackAnimationPrefix + "1"); //_context.CharacterModel.CurrentWeaponData.Value.CurrentAttack.AnimationName);
+                SpecialAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName);
+        }
+
+        private void PlaySpecialHoldAttackAnimationMelee()
+        {
+            _characterAnimator.Play(_context.CharacterModel.CurrentWeaponData.Value.
+                SpecialHoldAttackAnimationPrefix + _context.CharacterModel.CurrentWeaponData.Value.
+                    CurrentAttack.AnimationName);
         }
 
         private void PlayArmsSimpleAttackAnimation()

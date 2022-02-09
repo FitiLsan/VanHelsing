@@ -15,7 +15,7 @@ namespace BeastHunter
 
         #endregion
 
-        
+
         #region ClassLifeCycle
 
         public InputController(GameContext context)
@@ -39,6 +39,8 @@ namespace BeastHunter
             _mainInput.Player.Aim.performed += ctx => _inputModel.OnAim?.Invoke();
             _mainInput.Player.Attack.started += ctx => StartAttack();
             _mainInput.Player.Attack.performed += ctx => StopAttack();
+            _mainInput.Player.SpecialAttack.started += ctx => StartAttack();
+            _mainInput.Player.SpecialAttack.performed += ctx => StopSpecialAttack();
             _mainInput.Player.Bestiary.performed += ctx => _inputModel.OnBestiary?.Invoke();
             _mainInput.Player.ButtonsInfo.performed += ctx => _inputModel.OnButtonsInfo?.Invoke();
             _mainInput.Player.Cancel.performed += ctx => _inputModel.OnPressCancel?.Invoke();
@@ -110,17 +112,34 @@ namespace BeastHunter
         private void StartAttack()
         {
             _isTimerOn = true;
+            Debug.Log("StartAttack: " + _attackTime);
+
         }
 
         private void StopAttack()
         {
             _isTimerOn = false;
-
             var isLongAttack = _attackTime < 0.2f ? false : true;
 
             _inputModel.OnLongAttack?.Invoke(isLongAttack);
             _inputModel.OnAttack?.Invoke();
             _inputModel.OnAttackOffset?.Invoke();
+            var isHoldAttack = _attackTime < 0.5f ? false : true;
+            _inputModel.OnHoldAttack?.Invoke(isHoldAttack);
+            _inputModel.OnAttack?.Invoke();
+            Debug.Log("StopAttack: " + _attackTime);
+            _attackTime = 0;
+        }
+
+        private void StopSpecialAttack()
+        {
+            _isTimerOn = false;
+
+            var isHoldAttack = _attackTime < 0.5f ? false : true;
+
+            _inputModel.OnSpecialHoldAttack?.Invoke(isHoldAttack);
+            _inputModel.OnSpecialAttack?.Invoke();
+            Debug.Log("StopSpecialAttack: " + _attackTime);
             _attackTime = 0;
         }
 

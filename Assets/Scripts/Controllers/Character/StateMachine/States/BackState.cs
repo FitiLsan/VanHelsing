@@ -237,7 +237,7 @@ namespace BeastHunter
                     _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Dead]);
                 }
 
-                Debug.LogError("Player has: " + _characterModel.CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
+                Debug.Log("Player has: " + _characterModel.CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
 
                 //if (_stateMachine.CurrentState != _stateMachine.CharacterStates[CharacterStatesEnum.MidAir] &&
                 //    _stateMachine.CurrentState != _stateMachine.CharacterStates[CharacterStatesEnum.KnockedDown])
