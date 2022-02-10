@@ -57,7 +57,10 @@
                 UnityEngine.RigidbodyConstraints.FreezePositionZ | UnityEngine.RigidbodyConstraints.FreezeRotation;
             _characterModel.CharacterRigitbody.isKinematic = true;
             Damage damage = new Damage();
-            damage.PhysicalDamage = 10f;
+            damage.ElementDamageType = ElementDamageType.None;
+            damage.ElementDamageValue = 0;
+            damage.PhysicalDamageType = PhysicalDamageType.Crushing;
+            damage.PhysicalDamageValue = 10f;
             _stateMachine.BackState.TakeDamage(damage);
         }
 

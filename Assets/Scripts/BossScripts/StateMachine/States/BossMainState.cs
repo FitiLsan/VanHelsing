@@ -175,7 +175,7 @@ namespace BeastHunter
 
         public void DamageCounter(Damage damage)
         {
-            _damagePerTime += damage.PhysicalDamage;
+            _damagePerTime += damage.GetTotalDamage();
 
             if (_damagePerTime >= 20)
             {
@@ -310,8 +310,8 @@ namespace BeastHunter
 
         private void CheckDirection()
         {
-            _targetDirection = (_stateMachine._context.CharacterModel.CharacterTransform.position -
-                _stateMachine._model.BossTransform.position).normalized;
+            _targetDirection = _stateMachine._context.CharacterModel != null ? (_stateMachine._context.CharacterModel.
+                CharacterTransform.position - _stateMachine._model.BossTransform.position).normalized : Vector3.zero;
             TargetRotation = Quaternion.LookRotation(_targetDirection);
         }
         

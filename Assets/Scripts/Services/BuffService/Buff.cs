@@ -2,6 +2,7 @@
 {
     public enum Buff
     {
+        None,
         HealthMaximalAmount,
         HealthRegenSpeed,
         StaminaMaximalAmount,

@@ -26,9 +26,10 @@ MonoBehaviour:
     _pitch: 1
     _doLoop: 0
   _projectileDamage:
-    PhysicalDamage: 15
-    StunProbability: 0.25
-    FireDamage: 15
+    PhysicalDamageType: 6
+    PhysicalDamageValue: 22
+    ElementDamageType: 9
+    ElementDamageValue: 3
   _isDestroyedAfterInstantiation: 0
   _isDestroyedAfterHit: 0
   _timeToDestroyAfterInstantiation: 0

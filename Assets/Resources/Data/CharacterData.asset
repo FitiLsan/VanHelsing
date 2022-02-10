@@ -54,7 +54,7 @@ MonoBehaviour:
     _directionChangeLag: 0.194
     _animatorBaseSpeed: 1
     _timeToContinueMovingAfterStop: 1
-    _aimingDirectionChangeSpeed: 6.1
+    _aimingDirectionChangeSpeed: 134
     _jumpTime: 0.75
     _slideTime: 1.3
     _rollTime: 0.9
@@ -109,10 +109,49 @@ MonoBehaviour:
       IsDead: 0
       IsStunned: 0
     AttackStats:
-      _physicalPower: 5
-      _magicalPower: 0
+      _cuttingPower: 0
+      _piercingPower: 0
+      _choppingPower: 0
+      _crushingPower: 0
+      _penetrationPower: 0
+      _explosionPower: 0
+      _firePower: 0
+      _waterPower: 0
+      _icePower: 0
+      _electricityPower: 0
+      _oilPower: 0
+      _toxinPower: 0
+      _gasPower: 0
+      _smokeAndSteamPower: 0
     DefenceStats:
-      _physicalDamageResistance: 0
-      _stunProbabilityResistance: 0
+      _cuttingDamageResistance: 0
+      _piercingDamageResistance: 0
+      _choppingDamageResistance: 0
+      _crushingDamageResistance: 0
+      _penetratingDamageResistance: 0
+      _explosionDamageResistance: 0
       _fireDamageResistance: 0
+      _waterDamageResistance: 0
+      _iceDamageResistance: 0
+      _electricityDamageResistance: 0
+      _oilDamageResistance: 0
+      _toxinDamageResistance: 0
+      _gasDamageResistance: 0
+      _smokeAndSteamDamageResistance: 0
+      _burningProbabilityResistance: 0
+      _weetingProbabilityResistance: 0
+      _freezingProbabilityResistance: 0
+      _electrizationProbabilityResistance: 0
+      _oilingProbabilityResistance: 0
+      _poisoningProbabilityResistance: 0
+      _gassingProbabilityResistance: 0
+      _suffocationProbabilityResistance: 0
+      _bleedingProbabilityResistance: 0
+      _stunningProbabilityResistance: 0
+      _slowingProbabilityResistance: 0
+      _overturningProbabilityResistance: 0
+      _contusionProbabilityResistance: 0
+      _intoxicationProbabilityResistance: 0
+      _blindingProbabilityResistance: 0
+      _explosionProbabilityResistance: 0
     InstanceID: 0

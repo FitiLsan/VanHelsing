@@ -9,6 +9,7 @@ namespace BeastHunter
 
         private float _baseAnimationSpeed;
         private float _animationSpeedWhileRun;
+        private bool _isThrowing;
 
         #endregion
 
@@ -35,7 +36,7 @@ namespace BeastHunter
             _stateMachine.BackState.CountSpeed();
             ControlMovement();
             ControlAimingTarget();
-            _stateMachine.BackState.UpdateAimingDotsForProjectile();
+            if (_isThrowing) _stateMachine.BackState.UpdateAimingDotsForProjectile();
         }
 
         #endregion
@@ -78,14 +79,14 @@ namespace BeastHunter
             {
                 _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
             }
-
-            Services.SharedInstance.CameraService.StartDrawAimLine();
+            _isThrowing = _characterModel.CurrentWeaponData.Value.Type == WeaponType.Throwing;
+            if(_isThrowing) Services.SharedInstance.CameraService.StartDrawAimLine();
         }
 
         public override void OnExit(CharacterBaseState nextState = null)
         {
             _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
-            Services.SharedInstance.CameraService.StopDrawAimLine();
+            if (_isThrowing)  Services.SharedInstance.CameraService.StopDrawAimLine();
 
             base.OnExit();
         }

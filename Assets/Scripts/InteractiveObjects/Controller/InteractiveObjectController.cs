@@ -23,13 +23,13 @@ namespace BeastHunter
         public InteractiveObjectController(GameContext context)
         {
             _context = context;
-            _interactableObjectModelsWithIAwake = _context.InteractableObjectModels.Values.
+            _interactableObjectModelsWithIAwake = _context.InteractiveObjectModels.Values.
                 Where(x => x is IAwake).Cast<IAwake>().ToList();
-            _interactableObjectModelsWithIUpdate = _context.InteractableObjectModels.Values.
+            _interactableObjectModelsWithIUpdate = _context.InteractiveObjectModels.Values.
                 Where(x => x is IUpdate).Cast<IUpdate>().ToList();
-            _interactableObjectModelsWithITearDown = _context.InteractableObjectModels.Values.
+            _interactableObjectModelsWithITearDown = _context.InteractiveObjectModels.Values.
                 Where(x => x is ITearDown).Cast<ITearDown>().ToList();
-            _interactableObjectModelsWithInteractiveBehavior = _context.InteractableObjectModels.Values.
+            _interactableObjectModelsWithInteractiveBehavior = _context.InteractiveObjectModels.Values.
                 Where(x => x is IHaveInteractiveBehavior).Cast<IHaveInteractiveBehavior>().
                     Select(x => x.InteractiveBehavior).ToList();
         }
@@ -100,16 +100,16 @@ namespace BeastHunter
         private void OnTriggerEnterHandler(ITrigger interactiveObject, Collider enteredObject)
         {
             interactiveObject.IsInteractable = true;
-            _context.InteractableObjectModels[interactiveObject.GameObject.GetInstanceID()].
-                InteractiveObjectData.MakeInteractive(_context.InteractableObjectModels[interactiveObject.
+            _context.InteractiveObjectModels[interactiveObject.GameObject.GetInstanceID()].
+                InteractiveObjectData.MakeInteractive(_context.InteractiveObjectModels[interactiveObject.
                     GameObject.GetInstanceID()], interactiveObject, enteredObject);
         }
 
         private void OnTriggerExitHandler(ITrigger interactiveObject, Collider exitedObject)
         {
             interactiveObject.IsInteractable = false;
-            _context.InteractableObjectModels[interactiveObject.GameObject.GetInstanceID()].
-                InteractiveObjectData.MakeNotInteractive(_context.InteractableObjectModels[interactiveObject.
+            _context.InteractiveObjectModels[interactiveObject.GameObject.GetInstanceID()].
+                InteractiveObjectData.MakeNotInteractive(_context.InteractiveObjectModels[interactiveObject.
                     GameObject.GetInstanceID()], interactiveObject, exitedObject);
         }
 

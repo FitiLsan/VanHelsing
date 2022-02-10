@@ -114,17 +114,20 @@ namespace BeastHunter
                     PlaySimpleAttackAnimationMelee();
                     // TO REFACTOR - DONT KNOW HOW TO UNDERSTAND IF IT IS SPECIAL ATTACK
                     break;
+                case CharacterStatesEnum.LongAttacking:
+                    SetTopBodyAnimationWeigth(0f, 0f);
+                    SetRootMotion(true);
+                    PlaySpecialAttackAnimationMelee();
+                    break;
                 case CharacterStatesEnum.Shooting:
                     SetTopBodyAnimationWeigth(1f, 1f);
                     SetRootMotion(false);
                     PlayArmsSimpleAttackAnimation();
                     break;
-                case CharacterStatesEnum.Throwing:
-                    
+                case CharacterStatesEnum.Throwing:                  
                     SetTopBodyAnimationWeigth(1f, 1f);
                     SetRootMotion(false);
                     PlayArmsSimpleAttackAnimation();
-                    Debug.LogError("here");
                     break;
                 case CharacterStatesEnum.Battle:
                     SetTopBodyAnimationWeigth(1f, 0f);
@@ -262,7 +265,14 @@ namespace BeastHunter
 
         private void PlayLongDodgeAnimation()
         {
-            _characterAnimator.Play(_animationModel.LongDodgeAnimationHash);
+            if (_context.InputModel.IsInputRun)
+                PlayLongJumpAnimation();
+            else 
+                _characterAnimator.Play(_animationModel.LongDodgeAnimationHash);
+        }
+        private void PlayLongJumpAnimation()
+        {
+            _characterAnimator.Play(_animationModel.LongJumpAnimationHash);
         }
 
         private void PlaySlideForwardAnimation()

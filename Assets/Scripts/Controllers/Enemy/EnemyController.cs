@@ -68,18 +68,6 @@ namespace BeastHunter
         //    _context.NpcModels[gameObjectId].TakeDamage(damage);
         //}
 
-        //public void DealDamage(int gameObjectId, InteractableObjectBehavior enemy, Damage damage)
-        //{
-        //    //BaseStatsClass enemyStats = _context.NpcModels[enemy.GameObject.GetInstanceID()].GetStats().BaseStats;
-        //    //or BaseStatsClass enemyStats = _context.PlayerModel.GetStats().BaseStats;
-        //    //BaseStatsClass stats = _context.NpcModels[gameObjectId].GetStats().BaseStats;
-        //    //Services.SharedInstance.AttackService.CountDamage();
-        //    if (enemy != null && damage != null)
-        //    {
-        //        enemy.TakeDamageEvent(damage);
-        //    }
-        //}
-
         //#endregion
     }
 }

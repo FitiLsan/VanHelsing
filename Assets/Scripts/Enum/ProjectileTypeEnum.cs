@@ -6,7 +6,8 @@
         AcidBomb,
         CrossbowBolt,
         Bomb,
-        Lure
+        Lure,
+        BallistaBolt
     }
 }
 

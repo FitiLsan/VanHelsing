@@ -48,7 +48,7 @@
 
         public virtual void OnExit(CharacterBaseState nextState = null)
         {
-            DisableActions();       
+            DisableActions();
         }
 
         protected virtual void EnableActions() { IsActive = true; }

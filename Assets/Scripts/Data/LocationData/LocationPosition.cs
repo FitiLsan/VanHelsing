@@ -26,6 +26,13 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
+        public LocationPosition()
+        {
+            _position = Vector3.zero;
+            _eulers = Vector3.zero;
+            _scale = Vector3.one;
+        }
+
         public LocationPosition(Transform transform)
         {
             _position = transform.position;

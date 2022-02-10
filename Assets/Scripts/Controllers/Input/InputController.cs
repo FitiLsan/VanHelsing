@@ -10,6 +10,8 @@ namespace BeastHunter
         private readonly GameContext _context;
         private readonly MainInput _mainInput;
         private InputModel _inputModel;
+        private float _attackTime;
+        private bool _isTimerOn;
 
         #endregion
 
@@ -35,7 +37,8 @@ namespace BeastHunter
             _mainInput.Player.Movement.performed += ctx => GetInputMovement(ctx.ReadValue<Vector2>());
             _mainInput.Player.Run.performed += ctx => GetInputRun(ctx.ReadValueAsButton());
             _mainInput.Player.Aim.performed += ctx => _inputModel.OnAim?.Invoke();
-            _mainInput.Player.Attack.performed += ctx => _inputModel.OnAttack?.Invoke();
+            _mainInput.Player.Attack.started += ctx => StartAttack();
+            _mainInput.Player.Attack.performed += ctx => StopAttack();
             _mainInput.Player.Bestiary.performed += ctx => _inputModel.OnBestiary?.Invoke();
             _mainInput.Player.ButtonsInfo.performed += ctx => _inputModel.OnButtonsInfo?.Invoke();
             _mainInput.Player.Cancel.performed += ctx => _inputModel.OnPressCancel?.Invoke();
@@ -59,6 +62,7 @@ namespace BeastHunter
         public void Updating()
         {
             GetMouseInput(_mainInput.Player.MouseLook.ReadValue<Vector2>());
+            AttackTimer();
         }
 
         #endregion
@@ -101,6 +105,28 @@ namespace BeastHunter
             _inputModel.InputTotalAxisX = _inputModel.InputAxisX > 0 ? 1 : _inputModel.InputAxisX < 0 ? -1 : 0;
             _inputModel.InputTotalAxisY = _inputModel.InputAxisY > 0 ? 1 : _inputModel.InputAxisY < 0 ? -1 : 0;
             _inputModel.IsInputMove = _inputModel.InputTotalAxisX != 0 || _inputModel.InputTotalAxisY != 0;
+        }
+
+        private void StartAttack()
+        {
+            _isTimerOn = true;
+        }
+
+        private void StopAttack()
+        {
+            _isTimerOn = false;
+
+            var isLongAttack = _attackTime < 0.2f ? false : true;
+
+            _inputModel.OnLongAttack?.Invoke(isLongAttack);
+            _inputModel.OnAttack?.Invoke();
+            _attackTime = 0;
+        }
+
+        private void AttackTimer()
+        {
+            if (_isTimerOn)
+                _attackTime += Time.deltaTime;
         }
 
         #endregion
