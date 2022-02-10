@@ -110,10 +110,11 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172868}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a3fd0ffcf0d0a384ba3568687a96ab8e, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
+<<<<<<< Updated upstream
   m_Radius: 0.33
   m_Center: {x: 0, y: 0.011978865, z: 0}
 --- !u!114 &5644512054315051352
@@ -132,6 +133,10 @@ MonoBehaviour:
   _velocityMult: 1
   _angularVelocityMult: 0.1
   timeActiveGlueInSec: 1000
+=======
+  m_Radius: 0.5253591
+  m_Center: {x: 0, y: -0.02670894, z: -0.008389154}
+>>>>>>> Stashed changes
 --- !u!114 &5474512995076820274
 MonoBehaviour:
   m_ObjectHideFlags: 0

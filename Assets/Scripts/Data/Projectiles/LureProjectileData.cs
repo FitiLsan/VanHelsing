@@ -43,7 +43,7 @@ namespace BeastHunter
             Services.SharedInstance.AnnouncementService.MakeSmell(new Smell(projectileInterface.GameObject.transform, _lureSmellType, _smellingDistance ));
             Rigidbody bombRigidbody = projectileInterface.GameObject.GetComponent<Rigidbody>();
             bombRigidbody.velocity = Vector3.zero;
-            bombRigidbody.isKinematic = true;
+           // bombRigidbody.isKinematic = true;
             projectileInterface.GameObject.GetComponent<ParticleSystem>().Play();
             AudioSource projectileAudioSource = projectileInterface.GameObject.GetComponent<AudioSource>();
             projectileAudioSource.PlayOneShot(CollisionSound);

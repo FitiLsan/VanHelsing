@@ -32,7 +32,11 @@ namespace BeastHunter
             _stateMachine.BackState.CountSpeed();
             ControlMovement();
             CountExtiTime();
+<<<<<<< Updated upstream
             ControlAimingTarget();
+=======
+            ControlAimingTarget();        
+>>>>>>> Stashed changes
             _stateMachine.BackState.UpdateAimingDotsForProjectile();
         }
 
