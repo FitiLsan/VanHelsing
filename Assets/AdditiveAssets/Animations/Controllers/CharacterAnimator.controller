@@ -1245,12 +1245,13 @@ AnimatorStateMachine:
     m_Position: {x: 400, y: -140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7563502091408139723}
-    m_Position: {x: 400, y: -180, z: 0}
+    m_Position: {x: 400, y: -190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7646981365802271122}
     m_Position: {x: 700, y: -100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5396857155768993328}
+<<<<<<< Updated upstream
     m_Position: {x: 700, y: -140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1878968633341841507}
@@ -1258,6 +1259,12 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 6060162841807957102}
     m_Position: {x: 950, y: -180, z: 0}
+=======
+    m_Position: {x: 700, y: -160, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 757064668032665938}
+    m_Position: {x: 400, y: -240, z: 0}
+>>>>>>> Stashed changes
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -1342,6 +1349,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 7fbbf61d6b0c24f43a400b228522e0c5, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &-5013357086720603540
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 2HandHolAttackKick1
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 32d2cde36297e1a468ab6929e1b785c4, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1800,6 +1833,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 5b84e33e29596f44ab2a9e7e1500ad15, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &-2080978801339488715
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DodgeSpear
+  m_Speed: 0.9
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 5727735688585389506}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2472,14 +2531,22 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 9005161698582721453}
+<<<<<<< Updated upstream
 --- !u!1102 &599847825769850391
+=======
+--- !u!1102 &757064668032665938
+>>>>>>> Stashed changes
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_Name: DaggerSimpleAttack2
+=======
+  m_Name: 2Hand-Spear-Idle
+>>>>>>> Stashed changes
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -2492,7 +2559,11 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
+<<<<<<< Updated upstream
   m_Motion: {fileID: 7400000, guid: c81a2f8176a9f014c87062f6b125755b, type: 3}
+=======
+  m_Motion: {fileID: 7400000, guid: 68b4dea7637932e489c91c7e036fc26e, type: 3}
+>>>>>>> Stashed changes
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -3038,8 +3109,16 @@ AnimatorStateMachine:
     m_State: {fileID: -848434463045286388}
     m_Position: {x: -250, y: -90, z: 0}
   - serializedVersion: 1
+<<<<<<< Updated upstream
     m_State: {fileID: 8721772855566519769}
     m_Position: {x: 300, y: -180, z: 0}
+=======
+    m_State: {fileID: 5098048661665188517}
+    m_Position: {x: 540, y: -20, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -2080978801339488715}
+    m_Position: {x: 540, y: -70, z: 0}
+>>>>>>> Stashed changes
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: 3500659968496018246}
@@ -3372,13 +3451,19 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+<<<<<<< Updated upstream
 --- !u!1102 &4548580477493509696
 AnimatorState:
   serializedVersion: 6
+=======
+--- !u!206 &4486380154358051484
+BlendTree:
+>>>>>>> Stashed changes
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_Name: THSwordSpecialAttack1
   m_Speed: 1
   m_CycleOffset: 0
@@ -3398,6 +3483,89 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+=======
+  m_Name: Blend Tree
+  m_Childs:
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 0ddfbf404eff35149b4594e077c60bb1, type: 3}
+    m_Threshold: 0
+    m_Position: {x: -0.7, y: -0.7}
+    m_TimeScale: -1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: d98faba1583272a4c80bfc8347abc10c, type: 3}
+    m_Threshold: 0.11111111
+    m_Position: {x: -1, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: d98faba1583272a4c80bfc8347abc10c, type: 3}
+    m_Threshold: 0.22222222
+    m_Position: {x: -0.7, y: 0.7}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 07aa24531b6b7ee49aea0eac10d5a967, type: 3}
+    m_Threshold: 0.33333334
+    m_Position: {x: 0, y: -1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 68b4dea7637932e489c91c7e036fc26e, type: 3}
+    m_Threshold: 0.44444445
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 23802dd57e1bda444b6304e9941bae62, type: 3}
+    m_Threshold: 0.5555556
+    m_Position: {x: 0, y: 1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: d98faba1583272a4c80bfc8347abc10c, type: 3}
+    m_Threshold: 0.6666667
+    m_Position: {x: 0.7, y: -0.7}
+    m_TimeScale: -1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 0ddfbf404eff35149b4594e077c60bb1, type: 3}
+    m_Threshold: 0.7777778
+    m_Position: {x: 1, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 0ddfbf404eff35149b4594e077c60bb1, type: 3}
+    m_Threshold: 0.8888889
+    m_Position: {x: 0.7, y: 0.7}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  m_BlendParameter: AxisX
+  m_BlendParameterY: AxisY
+  m_MinThreshold: 0
+  m_MaxThreshold: 0.8888889
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 1
+>>>>>>> Stashed changes
 --- !u!206 &4577498057234539387
 BlendTree:
   m_ObjectHideFlags: 1
@@ -3507,14 +3675,22 @@ BlendTree:
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 0
+<<<<<<< Updated upstream
 --- !u!1102 &5118637256081515983
+=======
+--- !u!1102 &5098048661665188517
+>>>>>>> Stashed changes
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_Name: OHDaggerSimpleAttack1
+=======
+  m_Name: StrafeSpear
+>>>>>>> Stashed changes
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -3527,7 +3703,11 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
+<<<<<<< Updated upstream
   m_Motion: {fileID: 7400000, guid: 1df409e6ddc86e349bd1b737f4742f37, type: 3}
+=======
+  m_Motion: {fileID: 4486380154358051484}
+>>>>>>> Stashed changes
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -3658,13 +3838,19 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+<<<<<<< Updated upstream
 --- !u!1102 &5522410157870427019
 AnimatorState:
   serializedVersion: 6
+=======
+--- !u!206 &5727735688585389506
+BlendTree:
+>>>>>>> Stashed changes
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_Name: THSpearSpecialAttack1
   m_Speed: 1
   m_CycleOffset: 0
@@ -3684,6 +3870,76 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+=======
+  m_Name: Blend Tree
+  m_Childs:
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: d2167b882cd564b40a4956026c3e936a, type: 3}
+    m_Threshold: 0
+    m_Position: {x: -1, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: a8d47530ec83e5045a3623b2e5e340fb, type: 3}
+    m_Threshold: 0.043750003
+    m_Position: {x: 1, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 5cbe9e29aeade4347bbd9e6b1c751eef, type: 3}
+    m_Threshold: 0.087500006
+    m_Position: {x: 0, y: -1}
+    m_TimeScale: 0.8
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 5f082137c6986f94e9e603e41c21c3bb, type: 3}
+    m_Threshold: 0.13125001
+    m_Position: {x: 0, y: 1}
+    m_TimeScale: 0.8
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 2135104182756819115, guid: 555f5ffd7d2c547179966e1fbdc77893,
+      type: 3}
+    m_Threshold: 0.17500001
+    m_Position: {x: -0.7, y: -0.7}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 4261731884974967587, guid: 555f5ffd7d2c547179966e1fbdc77893,
+      type: 3}
+    m_Threshold: 0.21875001
+    m_Position: {x: 0.7, y: -0.7}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -9091421363356298868, guid: 555f5ffd7d2c547179966e1fbdc77893,
+      type: 3}
+    m_Threshold: 0.26250002
+    m_Position: {x: 0.7, y: 0.7}
+    m_TimeScale: 0.8
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MoveSpeed
+    m_Mirror: 0
+  m_BlendParameter: DodgeAxisX
+  m_BlendParameterY: DodgeAxisY
+  m_MinThreshold: 0
+  m_MaxThreshold: 0.26250002
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 1
+>>>>>>> Stashed changes
 --- !u!206 &5761706647597709174
 BlendTree:
   m_ObjectHideFlags: 1
@@ -3754,6 +4010,7 @@ AnimatorStateMachine:
     m_State: {fileID: -3943797644879079374}
     m_Position: {x: 550, y: -620, z: 0}
   - serializedVersion: 1
+<<<<<<< Updated upstream
     m_State: {fileID: 8127712531088460950}
     m_Position: {x: 550, y: -490, z: 0}
   - serializedVersion: 1
@@ -3783,6 +4040,19 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -6489011243585811601}
     m_Position: {x: 770, y: 60, z: 0}
+=======
+    m_State: {fileID: 3249773075236372126}
+    m_Position: {x: 530, y: -150, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -5013357086720603540}
+    m_Position: {x: 1220, y: -200, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 8258043624350030879}
+    m_Position: {x: 780, y: -200, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 8138172630808676519}
+    m_Position: {x: 1000, y: -200, z: 0}
+>>>>>>> Stashed changes
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -4299,15 +4569,24 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+<<<<<<< Updated upstream
 --- !u!1102 &8007826587657438024
+=======
+--- !u!1102 &8138172630808676519
+>>>>>>> Stashed changes
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_Name: THSwordSpecialHoldAttack1
   m_Speed: 1
+=======
+  m_Name: 2HandSpecialAttack1
+  m_Speed: 0.8
+>>>>>>> Stashed changes
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -4319,6 +4598,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
+<<<<<<< Updated upstream
   m_Motion: {fileID: 7400000, guid: 018ce46eeecfeae4abb8016f2c6841ca, type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -4346,6 +4626,9 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: fef0d93e821944f458ed5e503c29eac1, type: 3}
+=======
+  m_Motion: {fileID: 7400000, guid: c36035eaef5d9ab4eb68cde076ba3946, type: 3}
+>>>>>>> Stashed changes
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -4392,6 +4675,32 @@ BlendTree:
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
   m_BlendType: 0
+--- !u!1102 &8258043624350030879
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 2HandSimpleAttack1
+  m_Speed: 0.8
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 82d5b5f0c15f39540a67037f33d533b1, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &8300406283138117629
 AnimatorState:
   serializedVersion: 6
@@ -4445,15 +4754,24 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+<<<<<<< Updated upstream
 --- !u!1102 &8369358508641057014
+=======
+--- !u!1102 &8572257831370338861
+>>>>>>> Stashed changes
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_Name: OHMaceSimpleAttack2
   m_Speed: 0.7
+=======
+  m_Name: 2Hand-Spear-Idle
+  m_Speed: 1
+>>>>>>> Stashed changes
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -4465,7 +4783,11 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
+<<<<<<< Updated upstream
   m_Motion: {fileID: 7400000, guid: fef0d93e821944f458ed5e503c29eac1, type: 3}
+=======
+  m_Motion: {fileID: 7400000, guid: 68b4dea7637932e489c91c7e036fc26e, type: 3}
+>>>>>>> Stashed changes
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

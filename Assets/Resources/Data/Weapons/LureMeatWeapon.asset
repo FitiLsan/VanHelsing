@@ -15,7 +15,7 @@ MonoBehaviour:
   _handType: 1
   _type: 3
   _inWhichHand: 2
-  _weaponImage: {fileID: 0}
+  _weaponImage: {fileID: 21300000, guid: 9a0428a05ac65f246a92505d10614989, type: 3}
   _gettingSound:
     _soundClip: {fileID: 0}
     _volume: 0
@@ -26,19 +26,25 @@ MonoBehaviour:
     _volume: 0
     _pitch: 0
     _doLoop: 0
+  _weaponDamage:
+    PhysicalDamageType: 0
+    PhysicalDamageValue: 0
+    ElementDamageType: 0
+    ElementDamageValue: 0
   _simpleAttacks:
   - Name: Throwing
     AnimationName: Throw
     AttackDamage:
-      PhysicalDamage: 0
-      StunProbability: 0
-      FireDamage: 0
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
     WeaponItem: {fileID: 11400000, guid: d9d3f197ba48de7448e270b94524d191, type: 2}
     AttackType: 2
     AttackTime: 1
     AttackStaminaCost: 0
   _specialAttacks: []
-  _weaponName: Bomb
+  _weaponName: Meat
   _simpleAttackAnimationPrefix: BombSimpleAttack
   _specialAttackAnimationPrefix: BombSpecialAttack
   _strafeAnimationPostfix: Strafe
@@ -53,5 +59,5 @@ MonoBehaviour:
   _actualWeapon: {fileID: 11400000, guid: 97da455c127ed7c4285cdc4a8d9d9fd5, type: 2}
   _projectileData: {fileID: 11400000, guid: 661f26f7f45485d43a56c88e38410967, type: 2}
   _delayBeforeThrow: 0.4
-  _hitDistance: 100
+  _hitDistance: 50
   _aimingAnimationPostfix: BombAiming

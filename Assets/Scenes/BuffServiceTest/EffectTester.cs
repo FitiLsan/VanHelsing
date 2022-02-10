@@ -31,7 +31,7 @@ namespace BeastHunter
         }
 
         private void Update()
-        {        
+        {
             if (camera != null)
             {
                 bg.transform.LookAt(camera);
