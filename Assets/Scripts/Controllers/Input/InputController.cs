@@ -112,22 +112,16 @@ namespace BeastHunter
         private void StartAttack()
         {
             _isTimerOn = true;
-            Debug.Log("StartAttack: " + _attackTime);
-
         }
 
         private void StopAttack()
         {
             _isTimerOn = false;
-            var isLongAttack = _attackTime < 0.2f ? false : true;
 
-            _inputModel.OnLongAttack?.Invoke(isLongAttack);
-            _inputModel.OnAttack?.Invoke();
-            _inputModel.OnAttackOffset?.Invoke();
-            var isHoldAttack = _attackTime < 0.5f ? false : true;
+            var isHoldAttack = _attackTime < 0.2f ? false : true;
+
             _inputModel.OnHoldAttack?.Invoke(isHoldAttack);
             _inputModel.OnAttack?.Invoke();
-            Debug.Log("StopAttack: " + _attackTime);
             _attackTime = 0;
         }
 
@@ -135,11 +129,10 @@ namespace BeastHunter
         {
             _isTimerOn = false;
 
-            var isHoldAttack = _attackTime < 0.5f ? false : true;
+            var isHoldAttack = _attackTime < 0.2f ? false : true;
 
             _inputModel.OnSpecialHoldAttack?.Invoke(isHoldAttack);
             _inputModel.OnSpecialAttack?.Invoke();
-            Debug.Log("StopSpecialAttack: " + _attackTime);
             _attackTime = 0;
         }
 

@@ -66,26 +66,20 @@ namespace BeastHunter
                     break;
             }
 
-            if (_characterModel.IsLongAttack)
+            if (_characterModel.IsHoldAttack)
             {
-                StateName = CharacterStatesEnum.LongAttacking;
-                _characterModel.CurrentWeaponData.Value.MakeSpecialAttack(out _attackIndex, _characterModel.CharacterTransform);
-
-                if (_characterModel.IsHoldAttack)
-                {
-                    StateName = CharacterStatesEnum.HoldAttacking;
-                    _characterModel.CurrentWeaponData.Value.MakeSimpleHoldAttack(out _attackIndex, _characterModel.CharacterTransform);
-                }
-                else
-                {
-                    StateName = CharacterStatesEnum.Attacking;
-                    _characterModel.CurrentWeaponData.Value.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
-                }
-                _exitTIme = _characterModel.CurrentWeaponData.Value.CurrentAttack.AttackTime;
-
-                _stateMachine.BackState.StopCharacter();
-
+                StateName = CharacterStatesEnum.HoldAttacking;
+                _characterModel.CurrentWeaponData.Value.MakeSimpleHoldAttack(out _attackIndex, _characterModel.CharacterTransform);
             }
+            else
+            {
+                StateName = CharacterStatesEnum.Attacking;
+                _characterModel.CurrentWeaponData.Value.MakeSimpleAttack(out _attackIndex, _characterModel.CharacterTransform);
+            }
+            _exitTIme = _characterModel.CurrentWeaponData.Value.CurrentAttack.AttackTime;
+
+            _stateMachine.BackState.StopCharacter();
+
         }
 
         public override void OnExit(CharacterBaseState nextState = null)
