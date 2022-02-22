@@ -68,7 +68,7 @@ namespace BeastHunter
         public int InstanceID { get; }
         public GameObject BuffEffectPrefab { get; private set; }
 
-        public bool IsLongAttack { get; private set; }
+    //    public bool IsLongAttack { get; private set; }
         public bool IsHoldAttack { get; private set; }
 
         #endregion
@@ -191,13 +191,9 @@ namespace BeastHunter
             StopControlEvent?.Invoke();
         }
 
-        public void SetIsLongAttack(bool isLong)
+        public void SetIsHoldAttack(bool isHold)
         {
-            IsLongAttack = isLong;
-        }
-        public void SetIsHoldAttack(bool isLong)
-        {
-            IsHoldAttack = isLong;
+            IsHoldAttack = isHold;
         }
     }
 }

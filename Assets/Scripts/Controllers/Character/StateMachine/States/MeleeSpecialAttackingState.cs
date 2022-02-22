@@ -76,7 +76,6 @@ namespace BeastHunter
                 StateName = CharacterStatesEnum.SpecialAttacking;
                 _characterModel.CurrentWeaponData.Value.MakeSpecialAttack(out _attackIndex, _characterModel.CharacterTransform);
             }
-            //_characterModel.CurrentWeaponData.Value.MakeSpecialAttack(out _attackIndex, _characterModel.CharacterTransform);
             _exitTIme = _characterModel.CurrentWeaponData.Value.CurrentAttack.AttackTime;
 
             _stateMachine.BackState.StopCharacter();

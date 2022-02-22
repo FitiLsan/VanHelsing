@@ -8,7 +8,6 @@
         HoldAttacking,
         SpecialAttacking,
         SpecialHoldAttacking,
-        LongAttacking,
         Idle,
         Movement,
         Sliding,

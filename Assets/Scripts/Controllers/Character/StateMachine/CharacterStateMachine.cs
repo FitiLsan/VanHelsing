@@ -42,7 +42,6 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.Movement, new MovementState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Sneaking, new SneakingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Attacking, new MeleeAttackingState(_context, this));
-            CharacterStates.Add(CharacterStatesEnum.HoldAttacking, new MeleeAttackingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.SpecialAttacking, new MeleeSpecialAttackingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Jumping, new JumpingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Sliding, new SlidingState(_context, this));

@@ -31,8 +31,7 @@ namespace BeastHunter
         }
         private void Update()
         {
-               InteractionTriggerUpdate();
-            Debug.Log($"Camera Y: {_cameraYAxis.m_YAxis.Value}");
+            InteractionTriggerUpdate();
         }
         private void OnTriggerEnter(Collider other)
         {
