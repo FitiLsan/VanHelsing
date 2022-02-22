@@ -101,6 +101,8 @@ MonoBehaviour:
     _aimingLookToClampWeightIK: 1
   _characterStatsSettings:
     BaseStats:
+      _maximalHealthPoints: 1000
+      _currentHealthPoints: 1000
       HealthRegenPerSecond: 0
       _maximalStaminaPoints: 0
       _currentStaminaPoints: 0
@@ -129,6 +131,7 @@ MonoBehaviour:
       _crushingDamageResistance: 0
       _penetratingDamageResistance: 0
       _explosionDamageResistance: 0
+      _bleedingDamageResistance: 0
       _fireDamageResistance: 0
       _waterDamageResistance: 0
       _iceDamageResistance: 0
