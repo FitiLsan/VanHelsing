@@ -5,6 +5,13 @@ namespace BeastHunter
 {
     public sealed class JumpingState : CharacterBaseState, IUpdate
     {
+        #region Fields
+
+        private const float LONG_JUMP_MODIFY = 2f;
+
+        #endregion
+
+
         #region Properties
 
         private float _jumpTime;
@@ -45,6 +52,7 @@ namespace BeastHunter
         {
             base.Initialize();
             _jumpTime = _characterModel.CharacterData.CharacterCommonSettings.JumpTime;
+            _jumpTime = _inputModel.IsInputRun ? _jumpTime * LONG_JUMP_MODIFY : _jumpTime;
             _characterModel.PuppetMaster.mode = RootMotion.Dynamics.PuppetMaster.Mode.Kinematic;
             _characterModel.IsDodging = true;
         }

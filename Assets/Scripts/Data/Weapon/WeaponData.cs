@@ -17,12 +17,17 @@ namespace BeastHunter
         [SerializeField] protected Sprite _weaponImage;
         [SerializeField] private Sound _gettingSound;
         [SerializeField] private Sound _removingSound;
+        [SerializeField] private Damage _weaponDamage;
         [SerializeField] protected AttackModel[] _simpleAttacks;
+        [SerializeField] protected AttackModel[] _simpleHoldAttacks;
         [SerializeField] protected AttackModel[] _specialAttacks;
+        [SerializeField] protected AttackModel[] _specialHoldAttacks;
 
         [SerializeField] protected string _weaponName;
         [SerializeField] protected string _simpleAttackAnimationPrefix;
+        [SerializeField] protected string _simpleHoldAttackAnimationPrefix;
         [SerializeField] protected string _specialAttackAnimationPrefix;
+        [SerializeField] protected string _specialHoldAttackAnimationPrefix;
         [SerializeField] protected string _strafeAnimationPostfix;
         [SerializeField] protected string _dodgeAnimationPostfix;
         [SerializeField] protected string _gettingAnimationPostfix;
@@ -47,7 +52,9 @@ namespace BeastHunter
 
         protected GameContext _context;
         private int _currentSimpleAttackIndex = 0;
+        private int _currentSimpleHoldAttackIndex = 0;
         private int _currentSpecialAttackIndex = 0;
+        private int _currentSpecialHoldAttackIndex = 0;
 
         #endregion
 
@@ -61,13 +68,18 @@ namespace BeastHunter
         public Sprite WeaponImage => _weaponImage;
         public Sound GettingSound => _gettingSound;
         public Sound RemovingSound => _removingSound;
+        public Damage WeaponDamage => _weaponDamage;
         public AttackModel[] SimpleAttacks => _simpleAttacks;
+        public AttackModel[] SimpleHoldAttacks => _simpleHoldAttacks;
         public AttackModel[] SpecialAttacks => _specialAttacks;
+        public AttackModel[] SpecialHoldAttacks => _specialHoldAttacks;
         public AttackModel CurrentAttack { get; private set; }
 
         public string WeaponName => _weaponName;
         public string SimpleAttackAnimationPrefix => _simpleAttackAnimationPrefix;
+        public string SimpleHoldAttackAnimationPrefix => _simpleHoldAttackAnimationPrefix;
         public string SpecialAttackAnimationPrefix => _specialAttackAnimationPrefix;
+        public string SpecialHoldAttackAnimationPrefix => _specialHoldAttackAnimationPrefix;
         public string StrafeAnimationPostfix => _strafeAnimationPostfix;
         public string DodgeAnimationPostfix => _dodgeAnimationPostfix;
         public string GettingAnimationPostfix => _gettingAnimationPostfix;
@@ -100,6 +112,24 @@ namespace BeastHunter
                 }
             }
         }
+        public int CurrentSimpleHoldAttackIndex
+        {
+            get
+            {
+                return _currentSimpleHoldAttackIndex;
+            }
+            private set
+            {
+                if (value >= _simpleHoldAttacks.Length)
+                {
+                    _currentSimpleHoldAttackIndex = 0;
+                }
+                else
+                {
+                    _currentSimpleHoldAttackIndex = value;
+                }
+            }
+        }
 
         public int CurrentSpecialAttackIndex
         {
@@ -116,6 +146,25 @@ namespace BeastHunter
                 else
                 {
                     _currentSpecialAttackIndex = value;
+                }
+            }
+        }
+
+        public int CurrentSpecialHoldAttackIndex
+        {
+            get
+            {
+                return _currentSpecialHoldAttackIndex;
+            }
+            private set
+            {
+                if (value >= _specialHoldAttacks.Length)
+                {
+                    _currentSpecialHoldAttackIndex = 0;
+                }
+                else
+                {
+                    _currentSpecialHoldAttackIndex = value;
                 }
             }
         }
@@ -140,12 +189,28 @@ namespace BeastHunter
             CurrentSimpleAttackIndex++;
         }
 
+        public virtual void MakeSimpleHoldAttack(out int currentAttackIntex, Transform bodyTransform)
+        {
+            BodyTransform = bodyTransform;
+            currentAttackIntex = CurrentSimpleHoldAttackIndex;
+            CurrentAttack = SimpleHoldAttacks[CurrentSimpleHoldAttackIndex];
+            CurrentSimpleHoldAttackIndex++;
+        }
+
         public virtual void MakeSpecialAttack(out int currentAttackIntex, Transform bodyTransform)
         {
             BodyTransform = bodyTransform;
             currentAttackIntex = CurrentSpecialAttackIndex;
             CurrentAttack = SpecialAttacks[CurrentSpecialAttackIndex];
             CurrentSpecialAttackIndex++;
+        }
+
+        public virtual void MakeSpecialHoldAttack(out int currentAttackIntex, Transform bodyTransform)
+        {
+            BodyTransform = bodyTransform;
+            currentAttackIntex = CurrentSpecialHoldAttackIndex;
+            CurrentAttack = SpecialHoldAttacks[CurrentSpecialHoldAttackIndex];
+            CurrentSpecialHoldAttackIndex++;
         }
 
         public virtual void TakeWeapon()

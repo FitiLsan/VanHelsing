@@ -130,7 +130,7 @@ namespace BeastHunter
         public void Activate()
         {
             InventoryUI.SetActive(true);
-            PlayerDoll = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath("Assets/AdditiveAssets/PolygonFantasyHeroCharacters/Prefabs/ModularCharacters.prefab", typeof(GameObject))); //
+     //       PlayerDoll = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath("Assets/AdditiveAssets/PolygonFantasyHeroCharacters/Prefabs/ModularCharacters.prefab", typeof(GameObject))); //
             BuildLists();
             BuildDictionaryMeshes();
             LoadPlayerBase();
@@ -208,7 +208,7 @@ namespace BeastHunter
         {
             ClearUnactiveMeshes();
             ClearMeshes();
-            PrefabUtility.SaveAsPrefabAsset(PlayerDoll, PlayerSavePrefabPath); //
+       //     PrefabUtility.SaveAsPrefabAsset(PlayerDoll, PlayerSavePrefabPath); //
             GameObject.Destroy(PlayerDoll);
             InventoryUI.SetActive(false);
         }

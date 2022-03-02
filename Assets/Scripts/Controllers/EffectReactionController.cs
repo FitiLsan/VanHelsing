@@ -1,16 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BeastHunter
 {
+
     public class EffectReactionController
     {
         #region Fields
-        public Action<BuffEffectType> StartBuffEffect;
-        public Action<BuffEffectType> EndBuffEffect;
 
-        private CharacterModel _model; //base model?
-        private EnemyModel _enemyModel;
+        private BaseModel _model;
         private GameContext _context;
 
         #endregion
@@ -18,16 +18,10 @@ namespace BeastHunter
 
         #region ClassLifeCycle
 
-        public EffectReactionController(GameContext context, CharacterModel model)
+        public EffectReactionController(GameContext context, BaseModel model)
         {
             _context = context;
             _model = model;
-            
-        }
-        public EffectReactionController(GameContext context, EnemyModel model)
-        {
-            _context = context;
-            _enemyModel = model;
         }
 
         #endregion
@@ -42,11 +36,6 @@ namespace BeastHunter
                 _model.CurrentStats.BuffHolder.BuffEffectEnable += StartReaction;
                 _model.CurrentStats.BuffHolder.BuffEffectDisable += EndReaction;
             }
-            if (_enemyModel != null)
-            {
-                _enemyModel.CurrentStats.BuffHolder.BuffEffectEnable += StartReaction;
-                _enemyModel.CurrentStats.BuffHolder.BuffEffectDisable += EndReaction;
-            }
         }
         public void Execute()
         {
@@ -59,91 +48,137 @@ namespace BeastHunter
                 _model.CurrentStats.BuffHolder.BuffEffectEnable -= StartReaction;
                 _model.CurrentStats.BuffHolder.BuffEffectDisable -= EndReaction;
             }
-            if (_enemyModel != null)
-            {
-                _enemyModel.CurrentStats.BuffHolder.BuffEffectEnable -= StartReaction;
-                _enemyModel.CurrentStats.BuffHolder.BuffEffectDisable -= EndReaction;
-            }
         }
 
-        private void StartReaction(BuffEffectType type)
+        private void StartReaction(EffectType type, BaseBuff buff)
         {
-            switch(type)
+            if (TryCombineEffects(type, buff))
             {
-                case BuffEffectType.Fire:
-                    StartBuffEffect?.Invoke(type); //need?
-                    if (_enemyModel != null)
+                return;
+            }
+
+
+            switch (type)
+            {
+                case EffectType.Burning:
+                    if (_model != null && _model is BossModel)
                     {
-                        (_enemyModel as BossModel).BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Standstill, type);
+                        (_model as BossModel).BossStateMachine.SetCurrentStateAnyway(BossStatesEnum.Standstill, type);
                     }
                     break;
-                case BuffEffectType.Blood:
+                case EffectType.Wetting:
                     break;
-                case BuffEffectType.Poison:
+                case EffectType.Freezing:
                     break;
-                case BuffEffectType.Slow:
+                case EffectType.Electrization:
                     break;
-                case BuffEffectType.Water:
-                    WaterReaction();
+                case EffectType.Oiling:
                     break;
+                case EffectType.Poisoning:
+                    break;
+                case EffectType.Gassing:
+                    break;
+                case EffectType.Suffocation:
+                    break;
+                case EffectType.Bleeding:
+                    break;
+                case EffectType.Stunning:
+                    break;
+                case EffectType.Slowing:
+                    break;
+                case EffectType.Overturning:
+                    break;
+                case EffectType.Contusion:
+                    break;
+                case EffectType.Intoxication:
+                    break;
+                case EffectType.Blinding:
+                    break;
+                case EffectType.Explosion:
+                    break;
+                default:
+                    CustomDebug.LogError($"Type {type} does not exist");
+                    break;
+
             }
         }
-        private void EndReaction(BuffEffectType type)
+        private void EndReaction(EffectType type)
         {
             switch (type)
             {
-                case BuffEffectType.Fire:
-                    if (_enemyModel != null)
+                case EffectType.Burning:
+                    if (_model != null && _model is BossModel)
                     {
-                        (_enemyModel as BossModel).BossStateMachine.CurrentState.OnExit();
+                        (_model as BossModel).BossStateMachine.CurrentState.OnExit();
                     }
                     break;
-                case BuffEffectType.Blood:
+                case EffectType.Wetting:
                     break;
-                case BuffEffectType.Poison:
+                case EffectType.Freezing:
                     break;
-                case BuffEffectType.Slow:
+                case EffectType.Electrization:
                     break;
-                case BuffEffectType.Water:
-                    WaterReaction();
+                case EffectType.Oiling:
+                    break;
+                case EffectType.Poisoning:
+                    break;
+                case EffectType.Gassing:
+                    break;
+                case EffectType.Suffocation:
+                    break;
+                case EffectType.Bleeding:
+                    break;
+                case EffectType.Stunning:
+                    break;
+                case EffectType.Slowing:
+                    break;
+                case EffectType.Overturning:
+                    break;
+                case EffectType.Contusion:
+                    break;
+                case EffectType.Intoxication:
+                    break;
+                case EffectType.Blinding:
+                    break;
+                case EffectType.Explosion:
+                    break;
+                default:
+                    CustomDebug.LogError($"Type {type} does not exist");
                     break;
             }
         }
 
 
-        private void WaterReaction()
+        private bool TryCombineEffects(EffectType currentEffect, BaseBuff currentBuff)
         {
-            if (_enemyModel != null)
+            if (_model == null)
             {
-                foreach (var buff in _enemyModel.CurrentStats.BuffHolder.TemporaryBuffList)
-                {
-                    foreach (var effect in buff.Effects)
-                    {
-                        if (effect.BuffEffectType.Equals(BuffEffectType.Fire))
-                        {
-                            _enemyModel.CurrentStats.BuffHolder.RemoveTemporaryBuff(buff);
-                            return;
-                        }
-                    }
-                }
+                return false;
             }
-            if(_model!=null)
-            {
-                foreach (var buff in _model.CurrentStats.BuffHolder.TemporaryBuffList)
-                {
-                    foreach (var effect in buff.Effects)
-                    {
-                        if (effect.BuffEffectType.Equals(BuffEffectType.Fire))
-                        {
-                            _model.CurrentStats.BuffHolder.RemoveTemporaryBuff(buff);
-                            return;
-                        }
-                    }
-                }
-            }
-            
-        }
 
+            var allBuffEffects  = _model.CurrentStats.BuffHolder.TemporaryBuffList.SelectMany(x => x.Effects);//Services.SharedInstance.EffectsManager.GetAllEffects();
+
+            foreach (var buffEffect in allBuffEffects)
+            {
+                TemporaryBuff buff;
+                TemporaryBuff newBuff;
+                var effect = buffEffect.BuffEffectType;
+
+                if (currentEffect != effect && (buff = _model.CurrentStats.BuffHolder.TemporaryBuffList.Find(x => x.Effects.Any(y => y.BuffEffectType.Equals(effect)))))
+                {
+                    newBuff = Services.SharedInstance.EffectsManager.GetEffectCombinationResult(effect, currentEffect);
+                    if (newBuff != null)
+                    {
+                        Services.SharedInstance.BuffService.RemoveTemporaryBuff(_model.CurrentStats, buff, _model.CurrentStats.BuffHolder);
+                        Services.SharedInstance.BuffService.RemoveTemporaryBuff(_model.CurrentStats, (currentBuff as TemporaryBuff), _model.CurrentStats.BuffHolder);
+                        Services.SharedInstance.BuffService.AddTemporaryBuff(_model.CurrentStats.InstanceID, newBuff);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        
         #endregion
     }
 }

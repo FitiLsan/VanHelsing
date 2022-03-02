@@ -34,7 +34,7 @@ namespace BeastHunter
         public bool IsAnySkillUsed { get; protected set; }
         public float CurrentAttackTime { get; protected set; }
         public BossBaseSkill CurrentSkill { get; protected set; }
-        public BuffEffectType CurrentEffectType { get; set; }
+        public EffectType CurrentEffectType { get; set; }
 
         #endregion
 

@@ -340,22 +340,20 @@ namespace BeastHunter
                 return;
             }
 
-            CurrentStats.BaseStats.CurrentHealthPoints = CurrentStats.BaseStats.CurrentHealthPoints < damage.
-                PhysicalDamage ? 0 : CurrentStats.BaseStats.CurrentHealthPoints - damage.PhysicalDamage;
+            CurrentStats.BaseStats.CurrentHealthPoints = CurrentStats.BaseStats.CurrentHealthPoints < damage.GetTotalDamage() ? 0 : CurrentStats.BaseStats.CurrentHealthPoints - damage.GetTotalDamage();
 
-            Debug.Log("Boss recieved: " + damage.PhysicalDamage + " of damage and has: " + 
-                CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
+            Debug.Log($"Boss recieved: PhysicalDamage:{damage.PhysicalDamageValue} Type: {damage.PhysicalDamageType} + ElementDamage:{damage.ElementDamageValue} Type: {damage.ElementDamageType} and has { CurrentStats.BaseStats.CurrentHealthPoints} of HP");
             
-            if (damage.StunProbability > CurrentStats.DefenceStats.StunProbabilityResistance)
-            {
-                MessageBroker.Default.Publish(new OnBossStunnedEventClass());
-            }
-            else
-            {
-                MessageBroker.Default.Publish(new OnBossHittedEventClass());
-            }
+            //if (damage.StunProbability > CurrentStats.DefenceStats.StunningProbabilityResistance)
+            //{
+            //    MessageBroker.Default.Publish(new OnBossStunnedEventClass());
+            //}
+            //else
+            //{
+            //    MessageBroker.Default.Publish(new OnBossHittedEventClass());
+            //}
 
-            DamageCheck(damage.PhysicalDamage);
+            DamageCheck(damage.GetTotalDamage());
             HealthCheck();
             BossStateMachine._mainState.DamageCounter(damage);
         }

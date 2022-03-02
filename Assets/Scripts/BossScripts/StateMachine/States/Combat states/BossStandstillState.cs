@@ -37,7 +37,7 @@ namespace BeastHunter
 
         public override void Execute()
         {
-            if (CurrentEffectType == BuffEffectType.None)
+            if (CurrentEffectType == EffectType.None)
             {
                 _stateMachine.SetCurrentStateAnyway(_stateMachine.LastStateType);
             }
@@ -45,7 +45,7 @@ namespace BeastHunter
 
         public override void OnExit()
         {
-            CurrentEffectType = BuffEffectType.None;
+            CurrentEffectType = EffectType.None;
         }
 
         public override void OnTearDown()
@@ -56,10 +56,10 @@ namespace BeastHunter
         {
             switch (CurrentEffectType)
             {
-                case BuffEffectType.Fire:
+                case EffectType.Burning:
                     FireReaction();
                     break;
-                case BuffEffectType.Water:
+                case EffectType.Wetting:
                     WaterReaction();
                     break;
                 default:
@@ -70,7 +70,10 @@ namespace BeastHunter
         {
             var list = Services.SharedInstance.PhysicsService.GetObjectsInRadiusByTag(_bossModel.BossTransform.position, 500f, "Water");
 
-            if (list.Count != 0)
+            var rand = Random.Range(0, 2); //delete later
+
+
+            if (list.Count != 0 && rand == 2)
             {
                 _bossModel.BossAnimator.Play("MovingState", 0, 0);
                 _bossData.SetNavMeshAgent(_bossModel, _bossModel.BossNavAgent, list[0].transform.position, _bossModel.BossSettings.RunSpeed);

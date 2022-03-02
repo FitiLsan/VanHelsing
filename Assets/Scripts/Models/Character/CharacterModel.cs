@@ -2,7 +2,7 @@
 using RootMotion.Dynamics;
 using Extensions;
 using UniRx;
-
+using System;
 
 namespace BeastHunter
 {
@@ -11,13 +11,15 @@ namespace BeastHunter
         #region Fields
 
         private Collider _closestEnemy;
+        public event Action StartControlEvent;
+        public event Action StopControlEvent;
 
         #endregion
 
 
         #region Properties
 
-        public Stats CurrentStats { get; set; }
+        //  public Stats CurrentStats { get; set; }
         public ReactiveProperty<WeaponData> CurrentWeaponData { get; set; }
         public GameObject CurrentWeaponLeft { get; set; }
         public GameObject CurrentWeaponRight { get; set; }
@@ -65,6 +67,9 @@ namespace BeastHunter
 
         public int InstanceID { get; }
         public GameObject BuffEffectPrefab { get; private set; }
+
+    //    public bool IsLongAttack { get; private set; }
+        public bool IsHoldAttack { get; private set; }
 
         #endregion
 
@@ -175,5 +180,20 @@ namespace BeastHunter
         }
 
         #endregion
+
+        public void StartControl()
+        {
+            StartControlEvent?.Invoke();
+        }
+
+        public void StopControl()
+        {
+            StopControlEvent?.Invoke();
+        }
+
+        public void SetIsHoldAttack(bool isHold)
+        {
+            IsHoldAttack = isHold;
+        }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 
 
@@ -37,11 +35,13 @@ namespace BeastHunter
         [SerializeField] private string _ironGreavesPath;
         [SerializeField] private string _uiElementsDataPath;
         [SerializeField] private string _materialsDataPath;
+        [SerializeField] private string _entitySpawnerDataPath;
         [SerializeField] private string _torchObjectPath;
         [SerializeField] private string _hellHoundDataPath;
         [SerializeField] private string _twoHeadedSnakeDataPath;
         [SerializeField] private string _bouldersObjectPath;
         [SerializeField] private string _hideBushDataPath;
+        [SerializeField] private string _ballistaDataPath;
         [SerializeField] private string _audioDataPath;
         [SerializeField] private string _playerHealthBarDataPath;
         [SerializeField] private string _fallingTreeDataPath;
@@ -77,11 +77,13 @@ namespace BeastHunter
         private static WeakPointData _bossThirdWeakPoint;
         private static UIElementsData _uiElementsData;
         private static MaterialsData _materialsData;
+        private static EntitySpawnerData _entitySpawnerData;
         private static TorchData _torchObjectData;
         private static HellHoundData _hellHoundData;
         private static TwoHeadedSnakeData _twoHeadedSnakeData;
         private static BouldersData _bouldersObjectData;
         private static HideBushData _hideBushData;
+        private static BallistaData _ballistaData;
         private static AudioData _audioData;
         private static PlayerHealthBarData _playerHealthBarData;
         private static FallingTreeData _fallingTreeData;
@@ -401,6 +403,18 @@ namespace BeastHunter
             }
         }
 
+        public static EntitySpawnerData EntitySpawnerData
+        {
+            get
+            {
+                if (_entitySpawnerData == null)
+                {
+                    _entitySpawnerData = Load<EntitySpawnerData>("Data/" + Instance._entitySpawnerDataPath);
+                }
+                return _entitySpawnerData;
+            }
+        }
+
         public static TorchData TorchObjectData
         {
             get
@@ -460,6 +474,18 @@ namespace BeastHunter
                     _hideBushData = Resources.Load<HideBushData>("Data/" + Instance._hideBushDataPath);
                 }
                 return _hideBushData;
+            }
+        }
+
+        public static BallistaData BallistaData
+        {
+            get
+            {
+                if (_ballistaData == null)
+                {
+                    _ballistaData = Resources.Load<BallistaData>("Data/" + Instance._ballistaDataPath);
+                }
+                return _ballistaData;
             }
         }
 

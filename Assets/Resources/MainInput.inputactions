@@ -27,7 +27,7 @@
                     "id": "00b7db60-f2b3-4660-ab89-f50c851ff90e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press(behavior=1)"
                 },
                 {
                     "name": "Aim",
@@ -82,7 +82,7 @@
                     "type": "PassThrough",
                     "id": "faa3a3e2-b371-4694-ae9c-c9f1dc7d4131",
                     "expectedControlType": "Vector2",
-                    "processors": "ScaleVector2(x=0.5,y=0.5)",
+                    "processors": "ScaleVector2(x=0.5,y=0.5),StickDeadzone(min=0.02,max=1)",
                     "interactions": ""
                 },
                 {
@@ -148,6 +148,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "SpecialAttack",
+                    "type": "Button",
+                    "id": "3915924d-0c5e-4a9f-97f1-09a3af02b858",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)"
                 }
             ],
             "bindings": [
@@ -390,6 +398,28 @@
                     "processors": "",
                     "groups": "Keyboard and mouse",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2fda036c-4a76-4f64-9fcc-b45b350df399",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9a68d140-e466-4bb0-9012-6180a3cda747",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

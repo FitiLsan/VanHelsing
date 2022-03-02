@@ -56,7 +56,8 @@ namespace BeastHunter
             }
             
             return _characterModel.ClosestEnemy.Value != null && _characterModel.IsWeaponInHands && _characterModel.
-                CurrentWeaponData.Value.Type != WeaponType.Shooting;
+                CurrentWeaponData.Value.Type != WeaponType.Shooting && _characterModel.
+                    CurrentWeaponData.Value.Type != WeaponType.Throwing;
         }
 
         protected override void EnableActions()
@@ -66,6 +67,8 @@ namespace BeastHunter
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Movement]);
             _inputModel.OnAttack += () => _stateMachine.
                 SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Attacking]);
+            _inputModel.OnSpecialAttack += () => _stateMachine.
+               SetState(_stateMachine.CharacterStates[CharacterStatesEnum.SpecialAttacking]);
             _inputModel.OnRunStart = () => _stateMachine.BackState.SetAnimatorSpeed(_animationSpeedWhileRun);
             _inputModel.OnRunStop = () => _stateMachine.BackState.SetAnimatorSpeed(_baseAnimationSpeed);
             _inputModel.OnJump += Dodge;
@@ -76,10 +79,11 @@ namespace BeastHunter
         {
             _inputModel.OnAim = null;
             _inputModel.OnAttack = null;
+            _inputModel.OnSpecialAttack = null;
             _inputModel.OnRunStart = null;
             _inputModel.OnRunStop = null;
             _inputModel.OnJump = null;
-            _inputModel.OnWeaponWheel = null;
+            _inputModel.OnWeaponWheel -= CheckCameraControl;
             base.DisableActions();
         }
 

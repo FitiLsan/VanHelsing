@@ -14,14 +14,7 @@ namespace BeastHunter
         {
             Time.timeScale = 1;
             MenuPrefab.enabled = false;
-        }
-
-        private void Update()
-        {
-            //if (Input.GetKeyDown(KeyCode.Escape))
-            //{
-            //    Switcher();
-            //}
+            Services.SharedInstance.Context.InputModel.OnPressCancel += Switcher;
         }
 
         public void On()

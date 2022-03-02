@@ -12,6 +12,7 @@ namespace BeastHunter
         [SerializeField] private string _strafingAnimationName;
         [SerializeField] private string _slidingForwardAnimationName;
         [SerializeField] private string _longDodgeAnimationName;
+        [SerializeField] private string _longJumpAnimationName;
         [SerializeField] private string _shortDodgeAnimationName;
         [SerializeField] private string _trapPlacingAnimationName;
 
@@ -44,6 +45,7 @@ namespace BeastHunter
         public string StrafingAnimationName => _strafingAnimationName;
         public string SlidingForwardAnimationName => _slidingForwardAnimationName;
         public string LongDodgeAnimationName => _longDodgeAnimationName;
+        public string LongJumpAnimationName => _longJumpAnimationName;
         public string ShortDodgeAnimationName => _shortDodgeAnimationName;
         public string TrapPlacingAnimationName => _trapPlacingAnimationName;
 

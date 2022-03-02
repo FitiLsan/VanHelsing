@@ -16,7 +16,8 @@ GameObject:
   - component: {fileID: 5474512995076820274}
   - component: {fileID: 1975100845075946082}
   - component: {fileID: 1274641183926869793}
-  m_Layer: 0
+  - component: {fileID: -290415437814819372}
+  m_Layer: 12
   m_Name: CharcoalLure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4867,3 +4868,18 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &-290415437814819372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43aaa308d7eae7f49991d87e388d1a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isActive: 1
+  _velocityMult: 5
+  _angularVelocityMult: 0.5

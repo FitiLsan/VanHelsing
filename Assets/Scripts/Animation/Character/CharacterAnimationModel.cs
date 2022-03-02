@@ -15,6 +15,7 @@ namespace BeastHunter
         public int StrafingAnimationHash { get; }
         public int SlidingForwardAnimationHash { get; }
         public int LongDodgeAnimationHash { get; }
+        public int LongJumpAnimationHash { get; }
         public int ShortDodgeAnimationHash { get; }
         public int TrapPlacingAnimationHash { get; }
 
@@ -45,6 +46,7 @@ namespace BeastHunter
             StrafingAnimationHash = Animator.StringToHash(CharacterAnimationData.StrafingAnimationName);
             SlidingForwardAnimationHash = Animator.StringToHash(CharacterAnimationData.SlidingForwardAnimationName);
             LongDodgeAnimationHash = Animator.StringToHash(CharacterAnimationData.LongDodgeAnimationName);
+            LongJumpAnimationHash = Animator.StringToHash(CharacterAnimationData.LongJumpAnimationName);
             ShortDodgeAnimationHash = Animator.StringToHash(CharacterAnimationData.ShortDodgeAnimationName);
             TrapPlacingAnimationHash = Animator.StringToHash(CharacterAnimationData.TrapPlacingAnimationName);
         }

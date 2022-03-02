@@ -5,6 +5,9 @@
         None,
         Aiming,
         Attacking,
+        HoldAttacking,
+        SpecialAttacking,
+        SpecialHoldAttacking,
         Idle,
         Movement,
         Sliding,
@@ -22,6 +25,7 @@
         GettingUp,
         MidAir,
         Hitted,
+        ControlTransferring,
     }
 }
 

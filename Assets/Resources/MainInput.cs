@@ -40,7 +40,7 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""id"": ""00b7db60-f2b3-4660-ab89-f50c851ff90e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press""
+                    ""interactions"": ""Press(behavior=1)""
                 },
                 {
                     ""name"": ""Aim"",
@@ -95,7 +95,7 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""faa3a3e2-b371-4694-ae9c-c9f1dc7d4131"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""ScaleVector2(x=0.5,y=0.5)"",
+                    ""processors"": ""ScaleVector2(x=0.5,y=0.5),StickDeadzone(min=0.02,max=1)"",
                     ""interactions"": """"
                 },
                 {
@@ -161,6 +161,14 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""SpecialAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""3915924d-0c5e-4a9f-97f1-09a3af02b858"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)""
                 }
             ],
             ""bindings"": [
@@ -405,6 +413,28 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2fda036c-4a76-4f64-9fcc-b45b350df399"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a68d140-e466-4bb0-9012-6180a3cda747"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -470,6 +500,7 @@ public class @MainInput : IInputActionCollection, IDisposable
         m_Player_Enter = m_Player.FindAction("Enter", throwIfNotFound: true);
         m_Player_WeaponRemove = m_Player.FindAction("WeaponRemove", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_SpecialAttack = m_Player.FindAction("SpecialAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -537,6 +568,7 @@ public class @MainInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Enter;
     private readonly InputAction m_Player_WeaponRemove;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_SpecialAttack;
     public struct PlayerActions
     {
         private @MainInput m_Wrapper;
@@ -559,6 +591,7 @@ public class @MainInput : IInputActionCollection, IDisposable
         public InputAction @Enter => m_Wrapper.m_Player_Enter;
         public InputAction @WeaponRemove => m_Wrapper.m_Player_WeaponRemove;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @SpecialAttack => m_Wrapper.m_Player_SpecialAttack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -622,6 +655,9 @@ public class @MainInput : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @SpecialAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -680,6 +716,9 @@ public class @MainInput : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @SpecialAttack.started += instance.OnSpecialAttack;
+                @SpecialAttack.performed += instance.OnSpecialAttack;
+                @SpecialAttack.canceled += instance.OnSpecialAttack;
             }
         }
     }
@@ -731,5 +770,6 @@ public class @MainInput : IInputActionCollection, IDisposable
         void OnEnter(InputAction.CallbackContext context);
         void OnWeaponRemove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnSpecialAttack(InputAction.CallbackContext context);
     }
 }

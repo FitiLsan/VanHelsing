@@ -15,39 +15,75 @@ MonoBehaviour:
   _handType: 1
   _type: 1
   _inWhichHand: 2
-  _weaponImage: {fileID: 21300000, guid: 87206693f5a6a4e4590538396bd8dc43, type: 3}
+  _weaponImage: {fileID: 21300000, guid: fff6f4db7e9ad874d8ba024d5ea7469d, type: 3}
+  _gettingSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
+  _removingSound:
+    _soundClip: {fileID: 0}
+    _volume: 0
+    _pitch: 0
+    _doLoop: 0
+  _weaponDamage:
+    PhysicalDamageType: 1
+    PhysicalDamageValue: 3
+    ElementDamageType: 0
+    ElementDamageValue: 0
   _simpleAttacks:
   - Name: Simple attack 1
     AnimationName: 1
     AttackDamage:
-      PhysicalDamage: 10
-      StunProbability: 0
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
     WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
     AttackType: 0
-    AttackTime: 1.5
+    AttackTime: 0.75
     AttackStaminaCost: 0
-  - Name: Simple attack 2
-    AnimationName: 2
+  _simpleHoldAttacks:
+  - Name: Hold attack 1
+    AnimationName: 1
     AttackDamage:
-      PhysicalDamage: 10
-      StunProbability: 0
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
     WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
     AttackType: 0
-    AttackTime: 1.5
+    AttackTime: 0.75
     AttackStaminaCost: 0
-  - Name: Simple attack 3
-    AnimationName: 3
+  _specialAttacks:
+  - Name: 
+    AnimationName: 
     AttackDamage:
-      PhysicalDamage: 10
-      StunProbability: 0
-    WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
+    WeaponItem: {fileID: 0}
     AttackType: 0
-    AttackTime: 1.5
+    AttackTime: 0
     AttackStaminaCost: 0
-  _specialAttacks: []
+  _specialHoldAttacks:
+  - Name: 
+    AnimationName: 
+    AttackDamage:
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
+    WeaponItem: {fileID: 0}
+    AttackType: 0
+    AttackTime: 0
+    AttackStaminaCost: 0
   _weaponName: One handed sword
   _simpleAttackAnimationPrefix: OHSwordSimpleAttack
+  _simpleHoldAttackAnimationPrefix: OHSwordSimpleHoldAttack
   _specialAttackAnimationPrefix: OHSwordSpecialAttack
+  _specialHoldAttackAnimationPrefix: OHSwordSpecialHoldAttack
   _strafeAnimationPostfix: OHSwordStrafe
   _dodgeAnimationPostfix: OHSwordDodge
   _gettingAnimationPostfix: OHSwordGetting

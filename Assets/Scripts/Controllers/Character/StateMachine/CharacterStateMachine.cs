@@ -42,6 +42,7 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.Movement, new MovementState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Sneaking, new SneakingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Attacking, new MeleeAttackingState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.SpecialAttacking, new MeleeSpecialAttackingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Jumping, new JumpingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Sliding, new SlidingState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Battle, new BattleState(_context, this));
@@ -55,6 +56,7 @@ namespace BeastHunter
             CharacterStates.Add(CharacterStatesEnum.GettingUp, new GettingUpState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.MidAir, new MidAirState(_context, this));
             CharacterStates.Add(CharacterStatesEnum.Hitted, new HittedState(_context, this));
+            CharacterStates.Add(CharacterStatesEnum.ControlTransferring, new ControlTransferringState(_context, this));
         }
 
         #endregion
@@ -86,6 +88,7 @@ namespace BeastHunter
             BackState.Updating();
 
             if (CurrentState is IUpdate) (CurrentState as IUpdate).Updating();
+            CustomDebug.Log(CurrentState);
         }
 
         public void OnTearDown()

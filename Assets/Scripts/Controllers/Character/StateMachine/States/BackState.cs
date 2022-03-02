@@ -237,7 +237,7 @@ namespace BeastHunter
                     _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Dead]);
                 }
 
-                Debug.LogError("Player has: " + _characterModel.CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
+                Debug.Log("Player has: " + _characterModel.CurrentStats.BaseStats.CurrentHealthPoints + " of HP");
 
                 //if (_stateMachine.CurrentState != _stateMachine.CharacterStates[CharacterStatesEnum.MidAir] &&
                 //    _stateMachine.CurrentState != _stateMachine.CharacterStates[CharacterStatesEnum.KnockedDown])
@@ -361,7 +361,7 @@ namespace BeastHunter
                     MessageBroker.Default.Publish(new OnBossWeakPointHittedEventClass { WeakPointCollider = enemy });
                 }
 
-                _services.AttackService.CountAndDealDamage(_characterModel.CurrentWeaponData.Value.CurrentAttack.AttackDamage,
+                _services.AttackService.CountAndDealDamage(_characterModel.CurrentWeaponData.Value.WeaponDamage,
                     enemy.transform.root.gameObject.GetInstanceID(), _characterModel.CurrentStats, _characterModel.
                         CurrentWeaponData.Value);
                 hitBox.IsInteractable = false;
@@ -522,6 +522,11 @@ namespace BeastHunter
                 {
                     item.GetComponentsInChildren<Image>()[1].sprite = item.TrapData.TrapImage;
                     images[1].color = new Color(1f, 1f, 1f, WEAPON_WHEEL_CHILD_IMAGE_NON_DEDICATED_ALFA);
+
+                    if(item.TrapData is LockTrapData)
+                    {
+                        ((LockTrapData)item.TrapData).InitTrapsAmountCurrent();
+                    }
                 }
                 else
                 {
@@ -631,11 +636,11 @@ namespace BeastHunter
             _characterModel.CharacterRigitbody.velocity = Vector3.zero;
         }
 
-        public void MoveCharacter(bool isStrafing)
+        public void MoveCharacter(bool isStrafing, bool onlyStrafing = false)
         {
             if (_characterModel.IsGrounded)
             {
-                if (isStrafing && _inputModel.IsInputMove)
+                if (isStrafing && _inputModel.IsInputMove && !onlyStrafing)
                 {
                     Vector3 moveDirection = (Vector3.forward * _inputModel.InputAxisY + Vector3.right *
                         _inputModel.InputAxisX);
@@ -648,12 +653,26 @@ namespace BeastHunter
                     _characterModel.CharacterData.Move(_characterModel.CharacterTransform, _characterModel.CurrentSpeed,
                         moveDirection);
                 }
-                else
+                else if(!onlyStrafing)
                 {
                     _characterModel.CharacterData.MoveForward(_characterModel.CharacterTransform, _characterModel.CurrentSpeed);
                 }
+                else
+                {
+                    Vector3 moveDirection = (Vector3.forward * 0 + Vector3.right *
+                                          _inputModel.InputAxisX);
+
+                    if (Math.Abs(_inputModel.InputAxisX) + Math.Abs(_inputModel.InputAxisY) == 2)
+                    {
+                        moveDirection *= ANGULAR_MOVE_SPEED_REDUCTION_INDEX;
+                    }
+
+                    _characterModel.CharacterData.Move(_characterModel.CharacterTransform, _characterModel.CurrentSpeed,
+                        moveDirection);
+                }
             }
         }
+
 
         public void RotateCharacter(bool hasCameraControl, bool isStrafing = false)
         {
@@ -736,6 +755,9 @@ namespace BeastHunter
                 case CharacterStatesEnum.Battle:
                     _activeSpeedCounter = _battleSpeedCounter;
                     break;
+                case CharacterStatesEnum.ControlTransferring:
+                    _activeSpeedCounter = _sneakingSpeedCounter;
+                    break;
                 default:
                     break;
             }
@@ -765,11 +787,24 @@ namespace BeastHunter
 
         private void UseInteractiveObject()
         {
-            foreach (BaseInteractiveObjectModel interactiveObjectModel in _context.InteractableObjectModels.Values)
+            foreach (BaseInteractiveObjectModel interactiveObjectModel in _context.InteractiveObjectModels.Values)
             {
                 if (interactiveObjectModel.IsInteractive)
                 {
                     interactiveObjectModel.InteractiveObjectData.Interact(interactiveObjectModel);
+
+                    if (interactiveObjectModel.IsNeedControl)
+                    {
+                        if (interactiveObjectModel.IsActivated)
+                        {
+                            _characterModel.ClosestEnemy.Value = interactiveObjectModel.Prefab.GetComponent<Collider>();
+                            _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.ControlTransferring]);
+                        }
+                        else
+                        {
+                            _stateMachine.SetState(_stateMachine.CharacterStates[CharacterStatesEnum.Idle]);
+                        }
+                    }
                 }
             }
         }
@@ -897,6 +932,8 @@ namespace BeastHunter
             {
                 if (_characterModel.ClosestEnemy.Value != null)
                 {
+                    if (_context.NpcModels.Count == 0)
+                        return;
                     _targetEnemy = _context.NpcModels[_characterModel.ClosestEnemy.Value.transform.root.
                         gameObject.GetInstanceID()];
 

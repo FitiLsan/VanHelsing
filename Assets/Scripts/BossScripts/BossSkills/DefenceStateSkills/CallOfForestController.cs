@@ -120,7 +120,10 @@ namespace BeastHunter
         private void HitDamage()
         {
             var damage = new Damage();
-            damage.PhysicalDamage = Random.Range(1f, 3f);
+            damage.ElementDamageType = ElementDamageType.None;
+            damage.ElementDamageValue = Random.Range(15f, 30f);
+            damage.PhysicalDamageType = PhysicalDamageType.Cutting;
+            damage.PhysicalDamageValue = Random.Range(15f, 30f);
             Services.SharedInstance.AttackService.CountAndDealDamage(damage, _target.transform.root.gameObject.GetInstanceID()); ;
         }
     }

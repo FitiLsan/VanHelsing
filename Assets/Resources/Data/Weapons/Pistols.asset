@@ -26,13 +26,19 @@ MonoBehaviour:
     _volume: 0
     _pitch: 0
     _doLoop: 0
+  _weaponDamage:
+    PhysicalDamageType: 5
+    PhysicalDamageValue: 2
+    ElementDamageType: 0
+    ElementDamageValue: 0
   _simpleAttacks:
   - Name: Shot right
     AnimationName: Right
     AttackDamage:
-      PhysicalDamage: 8
-      StunProbability: 0.2
-      FireDamage: 0
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
     WeaponItem: {fileID: 11400000, guid: ea99992e50c6b0341aba96743a2e5c66, type: 2}
     AttackType: 2
     AttackTime: 0.5
@@ -40,9 +46,10 @@ MonoBehaviour:
   - Name: Shot left
     AnimationName: Left
     AttackDamage:
-      PhysicalDamage: 8
-      StunProbability: 0.2
-      FireDamage: 0
+      PhysicalDamageType: 0
+      PhysicalDamageValue: 0
+      ElementDamageType: 0
+      ElementDamageValue: 0
     WeaponItem: {fileID: 11400000, guid: d366ed2d437ddc940878a227352cf270, type: 2}
     AttackType: 1
     AttackTime: 0.5
@@ -74,7 +81,7 @@ MonoBehaviour:
     _pitch: 0
     _doLoop: 0
   _magazineSize: 2
-  _hitDistance: 25
+  _hitDistance: 50
   _timeBetweenShots: 1
   _reloadTime: 3
   _aimingAnimationPostfix: DualPistolsAiming
