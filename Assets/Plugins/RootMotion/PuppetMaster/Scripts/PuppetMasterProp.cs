@@ -90,7 +90,7 @@ namespace RootMotion.Dynamics
 
         private int defaultLayer;
         private Transform defaultParent;
-        private Collider[] colliders = new Collider[0];
+        public Collider[] colliders = new Collider[0];
         private PhysicMaterial[] droppedMaterials = new PhysicMaterial[0];
 
         private Rigidbody r;
@@ -285,5 +285,6 @@ namespace RootMotion.Dynamics
                 meshRoot.rotation = transform.rotation;
             }
         }
+
     }
 }

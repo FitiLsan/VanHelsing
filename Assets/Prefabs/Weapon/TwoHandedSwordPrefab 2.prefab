@@ -149,8 +149,9 @@ GameObject:
   - component: {fileID: 4069437575317329398}
   - component: {fileID: 7411822553401801372}
   - component: {fileID: 4069437575317329399}
+  - component: {fileID: 7100575691280850530}
   m_Layer: 12
-  m_Name: TwoHandedSwordPrefab 1
+  m_Name: TwoHandedSwordPrefab 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,6 +224,45 @@ MonoBehaviour:
   additionalPinWeight: 1
   additionalPinMass: 1
   colliders: []
+--- !u!114 &7100575691280850530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4069437575317329397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52de206d801d27543b86a962f9b3b126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRoot: {fileID: 0}
+  muscleProps:
+    group: 8
+    mappingWeight: 1
+    pinWeight: 1
+    muscleWeight: 1
+    muscleDamper: 1
+    mapPosition: 0
+    internalCollisionIgnores:
+      ignoreAll: 0
+      muscles: []
+      groups: 
+    animatedTargetChildren: []
+  forceLayers: 1
+  mass: 1
+  propType: 0
+  pickedUpMaterial: {fileID: 0}
+  additionalPinOffsetAdd: {x: 0, y: 0, z: 0}
+  additionalPinWeight: 1
+  additionalPinMass: 1
+  colliders: []
+  capsuleCollider: {fileID: 0}
+  boxCollider: {fileID: 0}
+  actionColliderRadiusMlp: 1
+  actionAdditionalPinWeight: 1
+  actionMassMlp: 1
+  COMOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &5345834697773882277
 GameObject:
   m_ObjectHideFlags: 0

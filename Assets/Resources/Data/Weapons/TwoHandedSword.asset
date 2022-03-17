@@ -41,7 +41,7 @@ MonoBehaviour:
       ElementDamageValue: 0
     WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
     AttackType: 0
-    AttackTime: 1.5
+    AttackTime: 2
     AttackStaminaCost: 0
   - Name: Simple attack 2
     AnimationName: 2
@@ -52,7 +52,7 @@ MonoBehaviour:
       ElementDamageValue: 0
     WeaponItem: {fileID: 11400000, guid: b5a982bf18b5fb6449b447c725b824a1, type: 2}
     AttackType: 0
-    AttackTime: 1.5
+    AttackTime: 2
     AttackStaminaCost: 0
   - Name: Simple attack 3
     AnimationName: 3
@@ -65,10 +65,14 @@ MonoBehaviour:
     AttackType: 0
     AttackTime: 1.5
     AttackStaminaCost: 0
+  _simpleHoldAttacks: []
   _specialAttacks: []
+  _specialHoldAttacks: []
   _weaponName: Two handed sword
   _simpleAttackAnimationPrefix: OHSwordSimpleAttack
+  _simpleHoldAttackAnimationPrefix: 
   _specialAttackAnimationPrefix: OHSwordSpecialAttack
+  _specialHoldAttackAnimationPrefix: 
   _strafeAnimationPostfix: OHSwordStrafe
   _dodgeAnimationPostfix: OHSwordDodge
   _gettingAnimationPostfix: OHSwordGetting
